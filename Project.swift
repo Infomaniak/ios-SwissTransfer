@@ -2,8 +2,9 @@ import Foundation
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let rootView = Feature(name: "RootView")
-let mainiOSAppFeatures = [rootView]
+let mainView = Feature(name: "MainView")
+let rootView = Feature(name: "RootView", dependencies: [mainView.asDependency])
+let mainiOSAppFeatures = [rootView, mainView]
 
 let project = Project(
     name: "SwissTransfer",
@@ -40,7 +41,7 @@ let project = Project(
             name: "SwissTransferTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "com.infomaniak.swisstransfer.SwissTransferTests",
+            bundleId: "\(Constants.baseIdentifier).SwissTransferTests",
             infoPlist: .default,
             sources: ["SwissTransferTests/**"],
             resources: [],
