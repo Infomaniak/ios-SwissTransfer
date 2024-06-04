@@ -16,23 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STMainView
 import SwiftUI
 
-public struct RootView: View {
-    @State private var showOnboarding = false
-
+public struct MainView: View {
     public init() {}
 
     public var body: some View {
-        if showOnboarding {
-            Text("Onboarding")
-        } else {
-            MainView()
-        }
+        Text("MainView")
     }
 }
 
 #Preview {
-    RootView()
+    MainView()
 }
