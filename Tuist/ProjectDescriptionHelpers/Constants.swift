@@ -19,6 +19,8 @@
 import ProjectDescription
 
 public enum Constants {
+    public static let baseIdentifier = "com.infomaniak.swisstransfer"
+
     public static let testSettings: [String: SettingValue] = [
         "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "TEST DEBUG"
     ]

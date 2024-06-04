@@ -17,12 +17,13 @@
  */
 
 import SwiftUI
+import STRootView
 
 @main
 struct SwissTransferApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }

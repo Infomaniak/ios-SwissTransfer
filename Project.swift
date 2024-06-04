@@ -2,48 +2,34 @@ import Foundation
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let baseIdentifier = "com.infomaniak.swisstransfer"
-
-func featureTarget(name: String,
-                   destinations: Set<Destination> = Set<Destination>([.iPhone, .iPad]),
-                   dependencies: [TargetDependency] = [.target(name: "SwissTransferCore"),
-                                                       .target(name: "SwissTransferCoreUI")]) -> Target {
-    .target(name: "ST\(name)",
-            destinations: destinations,
-            product: .framework,
-            bundleId: "\(baseIdentifier).features.\(name)",
-            deploymentTargets: Constants.deploymentTarget,
-            infoPlist: .default,
-            sources: "SwissTransferFeatures/\(name)/",
-            dependencies: dependencies,
-            settings: .settings(base: Constants.baseSettings))
-}
+let rootView = Feature(name: "RootView")
+let mainiOSAppFeatures = [rootView]
 
 let project = Project(
     name: "SwissTransfer",
-    targets: [
+    targets: mainiOSAppFeatures.asTargets + [
         .target(
             name: "SwissTransfer",
             destinations: Set<Destination>([.iPhone, .iPad]),
             product: .app,
-            bundleId: baseIdentifier,
+            bundleId: Constants.baseIdentifier,
             infoPlist: .extendingDefault(
                 with: [
                     "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
                     "CFBundleDisplayName": "$(PRODUCT_NAME)",
                     "CFBundleShortVersionString": "$(MARKETING_VERSION)",
                     "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
-                    "UILaunchStoryboardName": "LaunchScreen.storyboard",
+                    "UILaunchStoryboardName": "LaunchScreen.storyboard"
                 ]
             ),
             sources: ["SwissTransfer/Sources/**"],
             resources: [
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon
-                "SwissTransfer/Resources/PrivacyInfo.xcprivacy",
+                "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
             scripts: [Constants.swiftlintScript],
-            dependencies: [],
+            dependencies: mainiOSAppFeatures.asDependencies + [],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
                 "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).",
@@ -68,7 +54,7 @@ let project = Project(
         .target(name: "SwissTransferCore",
                 destinations: Constants.destinations,
                 product: .framework,
-                bundleId: "\(baseIdentifier).core",
+                bundleId: "\(Constants.baseIdentifier).core",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferCore/**",
@@ -78,7 +64,7 @@ let project = Project(
         .target(name: "SwissTransferCoreUI",
                 destinations: Constants.destinations,
                 product: .framework,
-                bundleId: "\(baseIdentifier).coreui",
+                bundleId: "\(Constants.baseIdentifier).coreui",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
@@ -88,16 +74,16 @@ let project = Project(
         .target(name: "SwissTransferResources",
                 destinations: Constants.destinations,
                 product: .staticLibrary,
-                bundleId: "\(baseIdentifier).resources",
+                bundleId: "\(Constants.baseIdentifier).resources",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 resources: [
                     "SwissTransferResources/**/*.xcassets",
                     "SwissTransferResources/**/*.strings",
                     "SwissTransferResources/**/*.stringsdict",
-                    "SwissTransferResources/**/*.json",
+                    "SwissTransferResources/**/*.json"
                 ],
-                settings: .settings(base: Constants.baseSettings)),
+                settings: .settings(base: Constants.baseSettings))
     ],
     fileHeaderTemplate: .file("file-header-template.txt")
 )
