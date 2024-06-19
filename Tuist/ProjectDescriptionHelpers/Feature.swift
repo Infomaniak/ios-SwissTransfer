@@ -19,14 +19,17 @@ public struct Feature {
 
     let destinations: Set<Destination>
     let dependencies: [TargetDependency]
+    let additionalDependencies: [TargetDependency]
 
     public init(name: String,
                 destinations: Set<Destination> = Set<Destination>([.iPhone, .iPad]),
                 dependencies: [TargetDependency] = [.target(name: "SwissTransferCore"),
-                                                    .target(name: "SwissTransferCoreUI")]) {
+                                                    .target(name: "SwissTransferCoreUI")],
+                additionalDependencies: [TargetDependency] = []) {
         self.name = name
         self.destinations = destinations
         self.dependencies = dependencies
+        self.additionalDependencies = additionalDependencies
     }
 
     public var asTarget: Target {
@@ -37,7 +40,7 @@ public struct Feature {
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferFeatures/\(name)/**",
-                dependencies: dependencies,
+                dependencies: dependencies + additionalDependencies,
                 settings: .settings(base: Constants.baseSettings))
     }
 

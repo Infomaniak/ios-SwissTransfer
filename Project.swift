@@ -2,8 +2,9 @@ import Foundation
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let rootView = Feature(name: "RootView")
-let mainiOSAppFeatures = [rootView]
+let mainView = Feature(name: "MainView")
+let rootView = Feature(name: "RootView", dependencies: [mainView.asDependency])
+let mainiOSAppFeatures = [rootView, mainView]
 
 let project = Project(
     name: "SwissTransfer",
