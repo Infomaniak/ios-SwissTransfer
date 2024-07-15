@@ -2,9 +2,28 @@ import Foundation
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let mainView = Feature(name: "MainView")
-let rootView = Feature(name: "RootView", dependencies: [mainView])
-let mainiOSAppFeatures = [rootView, mainView]
+// MARK: - Transfer
+
+let newTransferView = Feature(name: "NewTransferView")
+
+// MARK: - Upload
+
+let uploadProgressView = Feature(name: "UploadProgressView")
+
+// MARK: - Root
+
+let transferDetailsView = Feature(name: "TransferDetailsView")
+
+let settingsView = Feature(name: "SettingsView")
+let receivedView = Feature(name: "ReceivedView", dependencies: [transferDetailsView])
+let sentView = Feature(name: "SentView", dependencies: [transferDetailsView])
+
+let onboardingView = Feature(name: "OnboardingView")
+let mainView = Feature(name: "MainView", dependencies: [settingsView, receivedView])
+
+let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView])
+
+let mainiOSAppFeatures = [rootView, mainView, onboardingView, sentView, receivedView, settingsView, transferDetailsView, uploadProgressView, newTransferView]
 
 let project = Project(
     name: "SwissTransfer",
