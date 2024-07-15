@@ -3,7 +3,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let mainView = Feature(name: "MainView")
-let rootView = Feature(name: "RootView", dependencies: [mainView.asDependency])
+let rootView = Feature(name: "RootView", dependencies: [mainView])
 let mainiOSAppFeatures = [rootView, mainView]
 
 let project = Project(
