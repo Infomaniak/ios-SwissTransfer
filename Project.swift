@@ -15,15 +15,25 @@ let uploadProgressView = Feature(name: "UploadProgressView")
 let transferDetailsView = Feature(name: "TransferDetailsView")
 
 let settingsView = Feature(name: "SettingsView")
-let receivedView = Feature(name: "ReceivedView", dependencies: [transferDetailsView])
-let sentView = Feature(name: "SentView", dependencies: [transferDetailsView])
+let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView])
 
 let onboardingView = Feature(name: "OnboardingView")
-let mainView = Feature(name: "MainView", dependencies: [settingsView, receivedView])
+let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView])
 
 let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView])
 
-let mainiOSAppFeatures = [rootView, mainView, onboardingView, sentView, receivedView, settingsView, transferDetailsView, uploadProgressView, newTransferView]
+let mainiOSAppFeatures = [
+    rootView,
+    mainView,
+    onboardingView,
+    sentView,
+    receivedView,
+    settingsView,
+    transferDetailsView,
+    uploadProgressView,
+    newTransferView
+]
 
 let project = Project(
     name: "SwissTransfer",
@@ -49,7 +59,7 @@ let project = Project(
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
             scripts: [Constants.swiftlintScript],
-            dependencies: mainiOSAppFeatures.asDependencies + [],
+            dependencies: [rootView.asDependency],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
                 "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).",
@@ -89,6 +99,7 @@ let project = Project(
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
+                    .target(name: "SwissTransferResources")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferResources",
