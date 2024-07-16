@@ -52,7 +52,6 @@ public struct MainView: View {
                         )
                     }
             }
-            .tint(SwissTransferResourcesAsset.Colors.greenDark.swiftUIColor)
         }
     }
 }

@@ -16,14 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import STRootView
+import SwiftUI
+import SwissTransferResources
 
 @main
 struct SwissTransferApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .tint(SwissTransferResourcesAsset.Colors.greenMain.swiftUIColor)
         }
     }
 }
