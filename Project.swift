@@ -104,7 +104,7 @@ let project = Project(
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferResources",
                 destinations: Constants.destinations,
-                product: .staticLibrary,
+                product: .framework, // .staticLibrary ?
                 bundleId: "\(Constants.baseIdentifier).resources",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
