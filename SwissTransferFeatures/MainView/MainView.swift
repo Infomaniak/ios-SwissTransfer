@@ -9,7 +9,7 @@
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See them
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
@@ -32,7 +32,7 @@ public struct MainView: View {
                     .tabItem {
                         Label(
                             title: { Text("Envoyé") },
-                            icon: { SwissTransferResourcesAsset.arrowUpCircle.swiftUIImage }
+                            icon: { SwissTransferResourcesAsset.Images.arrowUpCircle.swiftUIImage }
                         )
                     }
 
@@ -40,7 +40,7 @@ public struct MainView: View {
                     .tabItem {
                         Label(
                             title: { Text("Recu") },
-                            icon: { SwissTransferResourcesAsset.arrowDownCircle.swiftUIImage }
+                            icon: { SwissTransferResourcesAsset.Images.arrowDownCircle.swiftUIImage }
                         )
                     }
 
@@ -48,11 +48,11 @@ public struct MainView: View {
                     .tabItem {
                         Label(
                             title: { Text("Paramètres") },
-                            icon: { SwissTransferResourcesAsset.sliderVertical3.swiftUIImage }
+                            icon: { SwissTransferResourcesAsset.Images.sliderVertical3.swiftUIImage }
                         )
                     }
             }
-            .tint(SwissTransferResourcesAsset.greenDark.swiftUIColor)
+            .tint(SwissTransferResourcesAsset.Colors.greenDark.swiftUIColor)
         }
     }
 }
