@@ -16,13 +16,44 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STReceivedView
+import STSentView
+import STSettingsView
 import SwiftUI
+import SwissTransferResources
 
 public struct MainView: View {
     public init() {}
 
     public var body: some View {
-        Text("MainView")
+        VStack {
+            TabView {
+                SentView()
+                    .tabItem {
+                        Label(
+                            title: { Text("Envoyé") },
+                            icon: { SwissTransferResourcesAsset.arrowUpCircle.swiftUIImage }
+                        )
+                    }
+
+                ReceivedView()
+                    .tabItem {
+                        Label(
+                            title: { Text("Recu") },
+                            icon: { SwissTransferResourcesAsset.arrowDownCircle.swiftUIImage }
+                        )
+                    }
+
+                SettingsView()
+                    .tabItem {
+                        Label(
+                            title: { Text("Paramètres") },
+                            icon: { SwissTransferResourcesAsset.sliderVertical3.swiftUIImage }
+                        )
+                    }
+            }
+            .tint(SwissTransferResourcesAsset.greenDark.swiftUIColor)
+        }
     }
 }
 
