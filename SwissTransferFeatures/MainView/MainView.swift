@@ -26,32 +26,30 @@ public struct MainView: View {
     public init() {}
 
     public var body: some View {
-        VStack {
-            TabView {
-                SentView()
-                    .tabItem {
-                        Label(
-                            title: { Text("Envoyé") },
-                            icon: { SwissTransferResourcesAsset.Images.arrowUpCircle.swiftUIImage }
-                        )
-                    }
+        TabView {
+            SentView()
+                .tabItem {
+                    Label(
+                        title: { Text("Envoyé") },
+                        icon: { SwissTransferResourcesAsset.Images.arrowUpCircle.swiftUIImage }
+                    )
+                }
 
-                ReceivedView()
-                    .tabItem {
-                        Label(
-                            title: { Text("Recu") },
-                            icon: { SwissTransferResourcesAsset.Images.arrowDownCircle.swiftUIImage }
-                        )
-                    }
+            ReceivedView()
+                .tabItem {
+                    Label(
+                        title: { Text("Recu") },
+                        icon: { SwissTransferResourcesAsset.Images.arrowDownCircle.swiftUIImage }
+                    )
+                }
 
-                SettingsView()
-                    .tabItem {
-                        Label(
-                            title: { Text("Paramètres") },
-                            icon: { SwissTransferResourcesAsset.Images.sliderVertical3.swiftUIImage }
-                        )
-                    }
-            }
+            SettingsView()
+                .tabItem {
+                    Label(
+                        title: { Text("Paramètres") },
+                        icon: { SwissTransferResourcesAsset.Images.sliderVertical3.swiftUIImage }
+                    )
+                }
         }
     }
 }

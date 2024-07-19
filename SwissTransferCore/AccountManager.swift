@@ -19,6 +19,5 @@
 import Foundation
 
 public actor AccountManager {
-    
-    
+
 }

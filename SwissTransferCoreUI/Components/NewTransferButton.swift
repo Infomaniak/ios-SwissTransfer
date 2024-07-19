@@ -39,7 +39,7 @@ struct NewTransferButton: View {
 
     var body: some View {
         Button(action: action) {
-            SwissTransferResourcesAsset.Images.add.swiftUIImage
+            SwissTransferResourcesAsset.Images.plus.swiftUIImage
                 .resizable()
                 .tint(.white)
                 .frame(width: style.size, height: style.size)
