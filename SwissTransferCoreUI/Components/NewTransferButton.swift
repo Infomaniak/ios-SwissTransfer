@@ -17,7 +17,7 @@
  */
 
 import SwiftUI
-import SwissTransferResources
+import STResources
 
 public enum NewTransferStyle {
     case big
@@ -48,7 +48,7 @@ struct NewTransferButton: View {
 
     var body: some View {
         Button(action: action) {
-            SwissTransferResourcesAsset.Images.plus.swiftUIImage
+            STResourcesAsset.Images.plus.swiftUIImage
                 .resizable()
                 .tint(.white)
                 .frame(width: style.size, height: style.size)

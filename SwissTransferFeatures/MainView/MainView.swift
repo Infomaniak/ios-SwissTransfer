@@ -20,7 +20,7 @@ import STReceivedView
 import STSentView
 import STSettingsView
 import SwiftUI
-import SwissTransferResources
+import STResources
 
 public struct MainView: View {
     public init() {}
@@ -31,7 +31,7 @@ public struct MainView: View {
                 .tabItem {
                     Label(
                         title: { Text("Envoyé") },
-                        icon: { SwissTransferResourcesAsset.Images.arrowUpCircle.swiftUIImage }
+                        icon: { STResourcesAsset.Images.arrowUpCircle.swiftUIImage }
                     )
                 }
 
@@ -39,7 +39,7 @@ public struct MainView: View {
                 .tabItem {
                     Label(
                         title: { Text("Recu") },
-                        icon: { SwissTransferResourcesAsset.Images.arrowDownCircle.swiftUIImage }
+                        icon: { STResourcesAsset.Images.arrowDownCircle.swiftUIImage }
                     )
                 }
 
@@ -47,7 +47,7 @@ public struct MainView: View {
                 .tabItem {
                     Label(
                         title: { Text("Paramètres") },
-                        icon: { SwissTransferResourcesAsset.Images.sliderVertical3.swiftUIImage }
+                        icon: { STResourcesAsset.Images.sliderVertical3.swiftUIImage }
                     )
                 }
         }
