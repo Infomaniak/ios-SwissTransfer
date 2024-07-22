@@ -16,13 +16,59 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
 
 public struct SentView: View {
-    public init() {}
+    public init() {
+        UITableView.appearance().sectionFooterHeight = 0
+    }
 
     public var body: some View {
-        Text("SentView")
+        List {
+            Text("Fichiers partagés")
+                .font(.header1)
+                .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                .padding(.horizontal, 16)
+                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowSeparator(.hidden)
+
+            Section {
+                SentItemView(itemCount: 6)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 16)
+                SentItemView(itemCount: 3)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 16)
+                SentItemView(itemCount: 4)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 16)
+                SentItemView(itemCount: 2)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 16)
+            } header: {
+                Text("Aujourd'hui")
+                    .font(.bodySmallRegular)
+                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                    .padding(.horizontal, 16)
+            }
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowSeparator(.hidden)
+
+            Section {
+                SentItemView(itemCount: 3)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 16)
+            } header: {
+                Text("Hier")
+                    .font(.bodySmallRegular)
+                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                    .padding(.horizontal, 16)
+            }
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
     }
 }
 
