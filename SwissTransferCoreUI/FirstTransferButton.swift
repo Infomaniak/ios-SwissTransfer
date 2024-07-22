@@ -17,7 +17,7 @@
  */
 
 import SwiftUI
-import SwissTransferResources
+import STResources
 
 struct FirstTransferButton: View {
     let style: NewTransferStyle
@@ -65,9 +65,9 @@ struct FirstTransferButton: View {
                 if style == .small {
                     Text("Fais ton premier transfert !")
                         .font(.bodyRegular)
-                        .foregroundStyle(SwissTransferResourcesAsset.Colors.greyElephant.swiftUIColor)
+                        .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
                 }
-                SwissTransferResourcesAsset.Images.arrow.swiftUIImage
+                STResourcesAsset.Images.arrow.swiftUIImage
                     .resizable()
                     .frame(width: width, height: height)
                     .rotationEffect(angle)

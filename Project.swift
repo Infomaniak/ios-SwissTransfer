@@ -96,7 +96,7 @@ let project = Project(
                 infoPlist: .default,
                 sources: "SwissTransferCore/**",
                 dependencies: [
-                    .target(name: "SwissTransferResources"),
+                    .target(name: "STResources"),
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
@@ -110,7 +110,7 @@ let project = Project(
                     .target(name: "SwissTransferCore")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
-        .target(name: "SwissTransferResources",
+        .target(name: "STResources",
                 destinations: Constants.destinations,
                 product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).resources",

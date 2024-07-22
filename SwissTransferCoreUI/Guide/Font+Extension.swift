@@ -19,7 +19,7 @@
 import Foundation
 import SwiftUI
 
-extension Font {
+public extension Font {
     static let header1 = system(size: 22).weight(.semibold)
     static let header2 = system(size: 18).weight(.semibold)
     static let bodyRegular = system(size: 16).weight(.regular)
