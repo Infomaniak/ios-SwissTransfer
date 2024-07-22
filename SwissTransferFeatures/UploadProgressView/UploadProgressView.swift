@@ -16,8 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
+import SwiftUI
 
-public actor AccountManager {
+public struct UploadProgressView: View {
+    public init() {}
 
+    public var body: some View {
+        Text("UploadProgressView")
+    }
+}
+
+#Preview {
+    UploadProgressView()
 }

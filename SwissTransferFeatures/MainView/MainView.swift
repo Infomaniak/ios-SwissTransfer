@@ -9,20 +9,48 @@
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See them
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STReceivedView
+import STSentView
+import STSettingsView
 import SwiftUI
+import SwissTransferResources
 
 public struct MainView: View {
     public init() {}
 
     public var body: some View {
-        Text("MainView")
+        TabView {
+            SentView()
+                .tabItem {
+                    Label(
+                        title: { Text("Envoyé") },
+                        icon: { SwissTransferResourcesAsset.Images.arrowUpCircle.swiftUIImage }
+                    )
+                }
+
+            ReceivedView()
+                .tabItem {
+                    Label(
+                        title: { Text("Recu") },
+                        icon: { SwissTransferResourcesAsset.Images.arrowDownCircle.swiftUIImage }
+                    )
+                }
+
+            SettingsView()
+                .tabItem {
+                    Label(
+                        title: { Text("Paramètres") },
+                        icon: { SwissTransferResourcesAsset.Images.sliderVertical3.swiftUIImage }
+                    )
+                }
+        }
     }
 }
 

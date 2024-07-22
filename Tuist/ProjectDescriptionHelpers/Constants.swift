@@ -37,4 +37,12 @@ public enum Constants {
     public static let destinations = Set<Destination>([.iPhone, .iPad, .mac])
 
     public static let swiftlintScript = TargetScript.post(path: "Scripts/lint.sh", name: "Swiftlint")
+
+    public static var productTypeBasedOnEnv: Product {
+        if case .string(let productType) = Environment.productType {
+            return productType == "static-library" ? .staticLibrary : .framework
+        } else {
+            return .framework
+        }
+    }
 }

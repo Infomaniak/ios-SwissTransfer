@@ -16,8 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
+import SwiftUI
 
-public actor AccountManager {
+public struct OnboardingView: View {
+    public init() {}
 
+    public var body: some View {
+        Text("OnboardingView")
+    }
+}
+
+#Preview {
+    OnboardingView()
 }

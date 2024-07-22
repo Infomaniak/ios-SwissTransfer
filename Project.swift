@@ -2,9 +2,43 @@ import Foundation
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let mainView = Feature(name: "MainView")
-let rootView = Feature(name: "RootView", dependencies: [mainView])
-let mainiOSAppFeatures = [rootView, mainView]
+// MARK: - Features
+
+// MARK: New Transfer
+
+let newTransferView = Feature(name: "NewTransferView")
+
+// MARK: New Upload
+
+let uploadProgressView = Feature(name: "UploadProgressView")
+
+// MARK: Root
+
+let transferDetailsView = Feature(name: "TransferDetailsView")
+let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView])
+
+let settingsView = Feature(name: "SettingsView")
+
+let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView])
+
+let onboardingView = Feature(name: "OnboardingView")
+
+let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView])
+
+let mainiOSAppFeatures = [
+    rootView,
+    mainView,
+    onboardingView,
+    sentView,
+    receivedView,
+    settingsView,
+    transferDetailsView,
+    uploadProgressView,
+    newTransferView
+]
+
+// MARK: - Project
 
 let project = Project(
     name: "SwissTransfer",
@@ -23,18 +57,21 @@ let project = Project(
                     "UILaunchStoryboardName": "LaunchScreen.storyboard"
                 ]
             ),
-            sources: ["SwissTransfer/Sources/**"],
+            sources: "SwissTransfer/Sources/**",
             resources: [
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
             scripts: [Constants.swiftlintScript],
-            dependencies: mainiOSAppFeatures.asDependencies + [],
+            dependencies: [
+                .target(name: "SwissTransferCore"),
+                .target(name: "SwissTransferCoreUI"),
+                rootView.asDependency
+            ],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
-                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).",
-                                                 isEnabled: true)
+                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
             ]
         ),
         .target(
@@ -43,38 +80,39 @@ let project = Project(
             product: .unitTests,
             bundleId: "\(Constants.baseIdentifier).SwissTransferTests",
             infoPlist: .default,
-            sources: ["SwissTransferTests/**"],
+            sources: "SwissTransferTests/**",
             resources: [],
             dependencies: [.target(name: "SwissTransfer")],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
-                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).",
-                                                 isEnabled: true)
+                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
             ]
         ),
         .target(name: "SwissTransferCore",
                 destinations: Constants.destinations,
-                product: .framework,
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).core",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferCore/**",
                 dependencies: [
+                    .target(name: "SwissTransferResources"),
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
                 destinations: Constants.destinations,
-                product: .framework,
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).coreui",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
+                    .target(name: "SwissTransferCore")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferResources",
                 destinations: Constants.destinations,
-                product: .staticLibrary,
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).resources",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,

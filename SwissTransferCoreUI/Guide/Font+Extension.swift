@@ -17,7 +17,20 @@
  */
 
 import Foundation
+import SwiftUI
 
-public actor AccountManager {
+extension Font {
+    static let header1 = system(size: 22).weight(.semibold)
+    static let header2 = system(size: 18).weight(.semibold)
+    static let bodyRegular = system(size: 16).weight(.regular)
+    static let bodyMedium = system(size: 16).weight(.medium)
+    static let bodySmallRegular = system(size: 14).weight(.regular)
+    static let bodySmallMedium = system(size: 14).weight(.medium)
+    static let labelRegular = system(size: 12).weight(.regular)
+    static let labelMedium = system(size: 12).weight(.medium)
 
+    // MARK: - Specific Font
+
+    static let specificMedium = system(size: 22).weight(.medium)
+    static let specificLight = system(size: 22).weight(.light)
 }
