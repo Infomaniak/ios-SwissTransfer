@@ -45,7 +45,7 @@ public struct Feature: Dependable {
     public var asTarget: Target {
         .target(name: targetName,
                 destinations: destinations,
-                product: .framework,
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).features.\(name)",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,

@@ -64,7 +64,11 @@ let project = Project(
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
             scripts: [Constants.swiftlintScript],
-            dependencies: [rootView.asDependency],
+            dependencies: [
+                .target(name: "SwissTransferCore"),
+                .target(name: "SwissTransferCoreUI"),
+                rootView.asDependency
+            ],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
                 "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
@@ -86,28 +90,29 @@ let project = Project(
         ),
         .target(name: "SwissTransferCore",
                 destinations: Constants.destinations,
-                product: .framework,
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).core",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferCore/**",
                 dependencies: [
+                    .target(name: "SwissTransferResources"),
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
                 destinations: Constants.destinations,
-                product: .framework,
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).coreui",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
-                    .target(name: "SwissTransferResources")
+                    .target(name: "SwissTransferCore")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferResources",
                 destinations: Constants.destinations,
-                product: .framework, // .staticLibrary ?
+                product: Constants.productTypeBasedOnEnv,
                 bundleId: "\(Constants.baseIdentifier).resources",
                 deploymentTargets: Constants.deploymentTarget,
                 infoPlist: .default,
