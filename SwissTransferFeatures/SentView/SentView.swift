@@ -20,9 +20,7 @@ import STResources
 import SwiftUI
 
 public struct SentView: View {
-    public init() {
-        UITableView.appearance().sectionFooterHeight = 0
-    }
+    public init() {}
 
     public var body: some View {
         List {
