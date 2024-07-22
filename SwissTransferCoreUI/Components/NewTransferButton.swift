@@ -19,7 +19,7 @@
 import SwiftUI
 import SwissTransferResources
 
-enum NewTransferStyle {
+public enum NewTransferStyle {
     case big
     case small
 
@@ -29,6 +29,15 @@ enum NewTransferStyle {
             return 24
         case .small:
             return 16
+        }
+    }
+
+    var buttonSize: CGFloat {
+        switch self {
+        case .big:
+            return 80
+        case .small:
+            return 56
         }
     }
 }
@@ -43,7 +52,7 @@ struct NewTransferButton: View {
                 .resizable()
                 .tint(.white)
                 .frame(width: style.size, height: style.size)
-                .padding(style.size)
+                .frame(width: style.buttonSize, height: style.buttonSize)
                 .background {
                     RoundedRectangle(cornerRadius: style.size)
                 }
