@@ -27,21 +27,18 @@ struct SentListView: View {
                 .font(.header1)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .padding(.horizontal, 16)
+                .padding(.top, 16)
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 .listRowSeparator(.hidden)
 
             Section {
                 SentItemView(itemCount: 6)
-                    .padding(.vertical, 4)
                     .padding(.horizontal, 16)
                 SentItemView(itemCount: 3)
-                    .padding(.vertical, 4)
                     .padding(.horizontal, 16)
                 SentItemView(itemCount: 4)
-                    .padding(.vertical, 4)
                     .padding(.horizontal, 16)
                 SentItemView(itemCount: 2)
-                    .padding(.vertical, 4)
                     .padding(.horizontal, 16)
             } header: {
                 Text("Aujourd'hui")
@@ -54,7 +51,6 @@ struct SentListView: View {
 
             Section {
                 SentItemView(itemCount: 3)
-                    .padding(.vertical, 4)
                     .padding(.horizontal, 16)
             } header: {
                 Text("Hier")
@@ -65,6 +61,7 @@ struct SentListView: View {
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             .listRowSeparator(.hidden)
         }
+        .listRowSpacing(8)
         .listStyle(.plain)
         .floatingActionButton(style: .newTransfer) {
             // Transfer

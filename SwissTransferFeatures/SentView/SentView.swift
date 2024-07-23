@@ -16,7 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct SentView: View {
     private let isEmpty: Bool
@@ -26,10 +28,25 @@ public struct SentView: View {
     }
 
     public var body: some View {
-        if isEmpty {
-            SentEmptyView()
-        } else {
-            SentListView()
+        NavigationStack {
+            Group {
+                if isEmpty {
+                    SentEmptyView()
+                } else {
+                    SentListView()
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) { // <3>
+                    STResourcesAsset.Images.logo.swiftUIImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 24)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(STResourcesAsset.Colors.greenDark.swiftUIColor, for: .navigationBar)
         }
     }
 }
