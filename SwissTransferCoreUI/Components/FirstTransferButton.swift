@@ -41,7 +41,7 @@ public struct FirstTransferButton: View {
         if style == .small {
             HStack(spacing: 10) {
                 VStack(alignment: .trailing, spacing: -5) {
-                    Text("Fais ton premier transfert !")
+                    Text(STResourcesStrings.Localizable.firstTransferDescription)
                         .font(.ST.body)
                         .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
 

@@ -23,7 +23,7 @@ import SwissTransferCoreUI
 struct SentListView: View {
     var body: some View {
         List {
-            Text("Fichiers partagés")
+            Text(STResourcesStrings.Localizable.sharedFilesTitle)
                 .font(.header1)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .padding(.horizontal, 16)

@@ -43,7 +43,7 @@ struct SentItemView: View {
                 HStack {
                     Text("50 Mo")
                     Text("·")
-                    Text("Expire dans 30 jours")
+                    Text(STResourcesStrings.Localizable.expiresIn(30))
                 }
                 .font(.bodySmallRegular)
                 .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)

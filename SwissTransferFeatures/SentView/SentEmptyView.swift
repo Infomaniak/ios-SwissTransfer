@@ -23,11 +23,11 @@ import SwissTransferCoreUI
 struct SentEmptyView: View {
     var body: some View {
         VStack(spacing: 16) {
-            Text("Notre histoire commence ici")
+            Text(STResourcesStrings.Localizable.sentEmptyTitle)
                 .font(.specificLargeHeaderMedium)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .multilineTextAlignment(.center)
-            Text("Fais ton premier transfert !")
+            Text(STResourcesStrings.Localizable.firstTransferDescription)
                 .font(.bodyRegular)
                 .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
             FirstTransferButton(style: .big) {
