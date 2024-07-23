@@ -18,6 +18,7 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 struct SentListView: View {
     var body: some View {
@@ -65,6 +66,9 @@ struct SentListView: View {
             .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
+        .floatingActionButton(style: .newTransfer) {
+            // Transfer
+        }
     }
 }
 

@@ -27,7 +27,7 @@ public struct MainView: View {
 
     public var body: some View {
         TabView {
-            SentView(isEmpty: true)
+            SentView(isEmpty: false)
                 .tabItem {
                     Label(
                         title: { Text("Envoyé") },

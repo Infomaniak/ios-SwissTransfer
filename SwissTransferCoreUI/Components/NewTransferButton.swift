@@ -42,11 +42,11 @@ public enum NewTransferStyle {
     }
 }
 
-struct NewTransferButton: View {
+public struct NewTransferButton: View {
     var style: NewTransferStyle = .small
     let action: () -> Void
 
-    var body: some View {
+    public var body: some View {
         Button(action: action) {
             STResourcesAsset.Images.plus.swiftUIImage
                 .resizable()
