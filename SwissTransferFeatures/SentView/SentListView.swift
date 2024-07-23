@@ -28,7 +28,7 @@ struct SentListView: View {
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowInsets(EdgeInsets(.zero))
                 .listRowSeparator(.hidden)
 
             Section {
@@ -46,7 +46,7 @@ struct SentListView: View {
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
                     .padding(.horizontal, 16)
             }
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowInsets(EdgeInsets(.zero))
             .listRowSeparator(.hidden)
 
             Section {
@@ -58,7 +58,7 @@ struct SentListView: View {
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
                     .padding(.horizontal, 16)
             }
-            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowInsets(EdgeInsets(.zero))
             .listRowSeparator(.hidden)
         }
         .listRowSpacing(8)
