@@ -38,14 +38,14 @@ struct SentItemView: View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Rapport d'oral - Master 2")
-                    .font(.bodyMedium)
+                    .font(.ST.headline)
                     .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 HStack {
                     Text("50 Mo")
                     Text("·")
                     Text(STResourcesStrings.Localizable.expiresIn(30))
                 }
-                .font(.bodySmallRegular)
+                .font(.ST.callout)
                 .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
 
                 HStack(spacing: 8) {
@@ -66,7 +66,7 @@ struct SentItemView: View {
                     }
                     if let additionalCount {
                         Text("+\(additionalCount)")
-                            .font(.bodyRegular)
+                            .font(.ST.body)
                             .foregroundStyle(STResourcesAsset.Colors.greenContrast.swiftUIColor)
                             .frame(width: 48, height: 48)
                             .background(

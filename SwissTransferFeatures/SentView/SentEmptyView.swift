@@ -24,11 +24,11 @@ struct SentEmptyView: View {
     var body: some View {
         VStack(spacing: 16) {
             Text(STResourcesStrings.Localizable.sentEmptyTitle)
-                .font(.specificLargeHeaderMedium)
+                .font(.ST.specificLargeTitleMedium)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .multilineTextAlignment(.center)
             Text(STResourcesStrings.Localizable.firstTransferDescription)
-                .font(.bodyRegular)
+                .font(.ST.body)
                 .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
             FirstTransferButton(style: .big) {
                 // Transfer

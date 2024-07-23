@@ -24,7 +24,7 @@ struct SentListView: View {
     var body: some View {
         List {
             Text(STResourcesStrings.Localizable.sharedFilesTitle)
-                .font(.header1)
+                .font(.ST.title)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -42,7 +42,7 @@ struct SentListView: View {
                     .padding(.horizontal, 16)
             } header: {
                 Text("Aujourd'hui")
-                    .font(.bodySmallRegular)
+                    .font(.ST.callout)
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
                     .padding(.horizontal, 16)
             }
@@ -54,7 +54,7 @@ struct SentListView: View {
                     .padding(.horizontal, 16)
             } header: {
                 Text("Hier")
-                    .font(.bodySmallRegular)
+                    .font(.ST.callout)
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
                     .padding(.horizontal, 16)
             }
