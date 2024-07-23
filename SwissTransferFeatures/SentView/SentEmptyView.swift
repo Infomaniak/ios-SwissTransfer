@@ -24,7 +24,7 @@ struct SentEmptyView: View {
     var body: some View {
         VStack(spacing: 16) {
             Text("Notre histoire commence ici")
-                .font(.bigTitle)
+                .font(.specificLargeHeaderMedium)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
                 .multilineTextAlignment(.center)
             Text("Fais ton premier transfert !")
