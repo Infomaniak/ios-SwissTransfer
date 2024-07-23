@@ -32,7 +32,7 @@ public enum Constants {
         .merging(["DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER": SettingValue(stringLiteral: "NO"),
                   "SWIFT_STRICT_CONCURRENCY": SettingValue(stringLiteral: "complete")])
 
-    public static let deploymentTarget = DeploymentTargets.iOS("15.0")
+    public static let deploymentTarget = DeploymentTargets.iOS("16.6")
 
     public static let destinations = Set<Destination>([.iPhone, .iPad, .mac])
 
