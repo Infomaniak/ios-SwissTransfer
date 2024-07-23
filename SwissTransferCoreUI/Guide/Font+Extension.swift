@@ -37,19 +37,17 @@ public extension Font {
         public static let calloutMedium = Font.dynamicTypeSizeFont(size: 14, weight: .medium, relativeTo: .callout)
         /// Figma name: Label Regular
         public static let caption = Font.dynamicTypeSizeFont(size: 12, weight: .regular, relativeTo: .caption)
-        /// Figma name: Label Medium
-        public static let captionMedium = Font.dynamicTypeSizeFont(size: 12, weight: .medium, relativeTo: .caption)
 
         // MARK: - Specific Font
 
         /// Figma name: Spécifique 32 Medium
-        static let specificLargeTitleMedium = Font.dynamicTypeSizeFont(size: 32, weight: .medium, relativeTo: .largeTitle)
+        public static let specificLargeTitleMedium = Font.dynamicTypeSizeFont(size: 32, weight: .medium, relativeTo: .largeTitle)
         /// Figma name: Spécifique 22 Medium
-        static let specificTitleMedium = Font.dynamicTypeSizeFont(size: 22, weight: .medium, relativeTo: .title)
+        public static let specificTitleMedium = Font.dynamicTypeSizeFont(size: 22, weight: .medium, relativeTo: .title)
         /// Figma name: Spécifique 22 Light
-        static let specificTitleLight = Font.dynamicTypeSizeFont(size: 22, weight: .light, relativeTo: .title)
+        public static let specificTitleLight = Font.dynamicTypeSizeFont(size: 22, weight: .light, relativeTo: .title)
         /// Figma name: Spécifique 18 Light
-        static let specificTitle2Light = Font.dynamicTypeSizeFont(size: 18, weight: .light, relativeTo: .title2)
+        public static let specificTitle2Light = Font.dynamicTypeSizeFont(size: 18, weight: .light, relativeTo: .title2)
     }
 
     /// Create a custom font with the UIFont preferred font family
@@ -81,8 +79,6 @@ public extension Font {
             .font(.ST.calloutMedium)
         Text("Caption")
             .font(.ST.caption)
-        Text("Caption Medium")
-            .font(.ST.captionMedium)
 
         Divider()
 
