@@ -16,24 +16,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
-public struct SentView: View {
-    private let isEmpty: Bool
-
-    public init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
-    }
-
-    public var body: some View {
-        if isEmpty {
-            SentEmptyView()
-        } else {
-            SentListView()
+struct SentEmptyView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Notre histoire commence ici")
+                .font(.bigTitle)
+                .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                .multilineTextAlignment(.center)
+            Text("Fais ton premier transfert !")
+                .font(.bodyRegular)
+                .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+            FirstTransferButton(style: .big) {
+                // Transfer
+            }
+            .padding(.top, 24)
         }
     }
 }
 
 #Preview {
-    SentView(isEmpty: true)
+    SentEmptyView()
 }

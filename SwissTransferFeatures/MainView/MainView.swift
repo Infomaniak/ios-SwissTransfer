@@ -17,17 +17,17 @@
  */
 
 import STReceivedView
+import STResources
 import STSentView
 import STSettingsView
 import SwiftUI
-import STResources
 
 public struct MainView: View {
     public init() {}
 
     public var body: some View {
         TabView {
-            SentView()
+            SentView(isEmpty: true)
                 .tabItem {
                     Label(
                         title: { Text("Envoyé") },
