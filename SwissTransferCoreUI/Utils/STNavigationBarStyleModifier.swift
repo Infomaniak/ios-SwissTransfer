@@ -18,29 +18,19 @@
 
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
 
-struct SentEmptyView: View {
-    var body: some View {
-        VStack(spacing: 40) {
-            VStack(spacing: 16) {
-                Text(STResourcesStrings.Localizable.sentEmptyTitle)
-                    .font(.ST.specificLargeTitleMedium)
-                    .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
-                    .multilineTextAlignment(.center)
-
-                Text(STResourcesStrings.Localizable.firstTransferDescription)
-                    .font(.ST.body)
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
-            }
-
-            FirstTransferButton(style: .big) {
-                // Transfer
-            }
-        }
+struct STNavigationBarStyleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(STResourcesAsset.Colors.greenDark.swiftUIColor, for: .navigationBar)
     }
 }
 
-#Preview {
-    SentEmptyView()
+public extension View {
+    /// Style the navigationBar
+    func stNavigationBarStyle() -> some View {
+        modifier(STNavigationBarStyleModifier())
+    }
 }

@@ -18,12 +18,6 @@
 
 import SwiftUI
 
-/// Weight:
-/// 300 = light
-/// 400 = regular
-/// 500 = medium
-/// 600 = semiBold
-
 public extension Font {
     /// List of fonts used by the SwissTransfer app.
     enum ST {

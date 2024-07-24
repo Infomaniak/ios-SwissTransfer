@@ -18,29 +18,25 @@
 
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
 
-struct SentEmptyView: View {
-    var body: some View {
-        VStack(spacing: 40) {
-            VStack(spacing: 16) {
-                Text(STResourcesStrings.Localizable.sentEmptyTitle)
-                    .font(.ST.specificLargeTitleMedium)
-                    .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
-                    .multilineTextAlignment(.center)
+// TODO: - Manage real preview (not only fileType)
+public struct SmallThumbnailView: View {
+    let icon: Image
 
-                Text(STResourcesStrings.Localizable.firstTransferDescription)
-                    .font(.ST.body)
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
-            }
+    public init(icon: Image) {
+        self.icon = icon
+    }
 
-            FirstTransferButton(style: .big) {
-                // Transfer
-            }
-        }
+    public var body: some View {
+        FileTypeIcon(icon: icon, type: .small)
+            .frame(width: 48, height: 48)
+            .background(
+                Color.white
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            )
     }
 }
 
 #Preview {
-    SentEmptyView()
+    SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
 }

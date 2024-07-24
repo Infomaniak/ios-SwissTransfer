@@ -31,8 +31,15 @@ struct FloatingActionButtonModifier: ViewModifier {
         ZStack(alignment: .bottomTrailing) {
             content
 
-            NewTransferButton(action: action)
-                .padding(16)
+            Group {
+                switch style {
+                case .newTransfer:
+                    NewTransferButton(action: action)
+                case .firstTransfer:
+                    FirstTransferButton(style: .small, action: action)
+                }
+            }
+            .padding(16)
         }
     }
 }

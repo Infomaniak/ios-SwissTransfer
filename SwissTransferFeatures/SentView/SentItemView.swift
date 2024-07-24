@@ -40,6 +40,7 @@ struct SentItemView: View {
                 Text("Rapport d'oral - Master 2")
                     .font(.ST.headline)
                     .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+
                 HStack {
                     Text("50 Mo")
                     Text("·")
@@ -50,19 +51,7 @@ struct SentItemView: View {
 
                 HStack(spacing: 8) {
                     ForEach(1 ... itemToShow, id: \.self) { _ in
-                        STResourcesAsset.Images.fileAdobe.swiftUIImage
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                            .padding(8)
-                            .background(
-                                STResourcesAsset.Colors.greyPolarBear.swiftUIColor
-                                    .clipShape(Circle())
-                            )
-                            .frame(width: 48, height: 48)
-                            .background(
-                                Color.white
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                            )
+                        SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
                     }
                     if let additionalCount {
                         Text("+\(additionalCount)")

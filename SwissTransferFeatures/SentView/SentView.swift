@@ -36,21 +36,15 @@ public struct SentView: View {
                     SentListView()
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) { // <3>
-                    STResourcesAsset.Images.logo.swiftUIImage
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 24)
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(STResourcesAsset.Colors.greenDark.swiftUIColor, for: .navigationBar)
+            .stNavigationBar()
         }
     }
 }
 
-#Preview {
+#Preview("SentView") {
+    SentView(isEmpty: false)
+}
+
+#Preview("Empty SentView") {
     SentView(isEmpty: true)
 }
