@@ -37,4 +37,4 @@ excluded:
  - Derived/Sources/*
  - DerivedData/
  - Derived/
- - .build/
+ - Tuist/.build/

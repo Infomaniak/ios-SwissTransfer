@@ -18,33 +18,19 @@
 
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
 
-public struct SentView: View {
-    private let isEmpty: Bool
-
-    public init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
-    }
-
-    public var body: some View {
-        NavigationStack {
-            Group {
-                if isEmpty {
-                    SentEmptyView()
-                } else {
-                    SentList()
-                }
-            }
-            .stNavigationBar()
-        }
+struct STNavigationBarStyleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(STResourcesAsset.Colors.greenDark.swiftUIColor, for: .navigationBar)
     }
 }
 
-#Preview("SentView") {
-    SentView(isEmpty: false)
-}
-
-#Preview("Empty SentView") {
-    SentView(isEmpty: true)
+public extension View {
+    /// Style the navigationBar
+    func stNavigationBarStyle() -> some View {
+        modifier(STNavigationBarStyleModifier())
+    }
 }

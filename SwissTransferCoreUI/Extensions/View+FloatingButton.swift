@@ -16,35 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
-import SwissTransferCoreUI
 
-public struct SentView: View {
-    private let isEmpty: Bool
+struct FloatingActionButtonModifier: ViewModifier {
+    let action: () -> Void
 
-    public init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
-    }
-
-    public var body: some View {
-        NavigationStack {
-            Group {
-                if isEmpty {
-                    SentEmptyView()
-                } else {
-                    SentList()
-                }
+    func body(content: Content) -> some View {
+        content
+            .safeAreaInset(edge: .bottom, alignment: .trailing) {
+                NewTransferButton(action: action)
+                    .padding([.trailing, .bottom], 16)
             }
-            .stNavigationBar()
-        }
     }
 }
 
-#Preview("SentView") {
-    SentView(isEmpty: false)
-}
-
-#Preview("Empty SentView") {
-    SentView(isEmpty: true)
+public extension View {
+    func floatingActionButton(perform action: @escaping () -> Void) -> some View {
+        modifier(FloatingActionButtonModifier(action: action))
+    }
 }

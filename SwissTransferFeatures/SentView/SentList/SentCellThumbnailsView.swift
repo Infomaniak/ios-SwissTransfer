@@ -20,31 +20,32 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-public struct SentView: View {
-    private let isEmpty: Bool
+struct SentCellThumbnailsView: View {
+    let itemCount: Int
 
-    public init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
+    private var additionalItemsCount: Int {
+        if itemCount > 4 {
+            return itemCount - 3
+        }
+        return 0
     }
 
-    public var body: some View {
-        NavigationStack {
-            Group {
-                if isEmpty {
-                    SentEmptyView()
-                } else {
-                    SentList()
-                }
+    private var itemsToShow: Int {
+        return itemCount - additionalItemsCount
+    }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(1 ... itemsToShow, id: \.self) { _ in
+                SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
             }
-            .stNavigationBar()
+            if additionalItemsCount > 0 {
+                SmallMoreItemsThumbnailView(count: additionalItemsCount)
+            }
         }
     }
 }
 
-#Preview("SentView") {
-    SentView(isEmpty: false)
-}
-
-#Preview("Empty SentView") {
-    SentView(isEmpty: true)
+#Preview {
+    SentCellThumbnailsView(itemCount: 8)
 }

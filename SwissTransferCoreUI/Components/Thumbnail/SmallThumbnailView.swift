@@ -18,33 +18,27 @@
 
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
 
-public struct SentView: View {
-    private let isEmpty: Bool
+// TODO: - Manage real preview (not only fileType)
+public struct SmallThumbnailView: View {
+    @ScaledMetric(relativeTo: .body) private var size = 48
 
-    public init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
+    let icon: Image
+
+    public init(icon: Image) {
+        self.icon = icon
     }
 
     public var body: some View {
-        NavigationStack {
-            Group {
-                if isEmpty {
-                    SentEmptyView()
-                } else {
-                    SentList()
-                }
-            }
-            .stNavigationBar()
-        }
+        FileIconView(icon: icon, type: .small)
+            .frame(width: size, height: size)
+            .background(
+                Color.white
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            )
     }
 }
 
-#Preview("SentView") {
-    SentView(isEmpty: false)
-}
-
-#Preview("Empty SentView") {
-    SentView(isEmpty: true)
+#Preview {
+    SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
 }

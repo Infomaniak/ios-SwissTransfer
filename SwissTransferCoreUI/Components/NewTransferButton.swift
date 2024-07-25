@@ -16,8 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import STResources
+import SwiftUI
 
 public enum NewTransferStyle {
     case big
@@ -56,6 +56,7 @@ struct NewTransferButton: View {
                 .background {
                     RoundedRectangle(cornerRadius: style.size)
                 }
+                .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
         }
     }
 }

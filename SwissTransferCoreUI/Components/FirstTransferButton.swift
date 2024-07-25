@@ -16,64 +16,52 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import STResources
+import SwiftUI
 
-struct FirstTransferButton: View {
-    let style: NewTransferStyle
-    let action: () -> Void
-
-    private var angle: Angle {
-        switch style {
-        case .small:
-            return Angle(degrees: -30)
-        case .big:
-            return .zero
-        }
-    }
+public struct FirstTransferButton: View {
+    private let style: NewTransferStyle
+    private let action: () -> Void
 
     private var offset: CGSize {
         switch style {
         case .small:
             return CGSize(width: 0, height: -15)
         case .big:
-            return CGSize(width: 0, height: -35)
+            return CGSize(width: -70, height: -35)
         }
     }
 
-    private var width: CGFloat {
-        switch style {
-        case .small:
-            return 28
-        case .big:
-            return 36
-        }
+    public init(style: NewTransferStyle, action: @escaping () -> Void) {
+        self.style = style
+        self.action = action
     }
 
-    private var height: CGFloat {
-        switch style {
-        case .small:
-            return 34
-        case .big:
-            return 44
-        }
-    }
-
-    var body: some View {
-        HStack(spacing: 10) {
-            VStack(alignment: .trailing, spacing: -5) {
-                if style == .small {
-                    Text("Fais ton premier transfert !")
+    public var body: some View {
+        if style == .small {
+            HStack(spacing: 10) {
+                VStack(alignment: .trailing, spacing: -5) {
+                    Text(STResourcesStrings.Localizable.firstTransferDescription)
                         .font(.ST.body)
                         .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+
+                    STResourcesAsset.Images.arrow.swiftUIImage
+                        .resizable()
+                        .frame(width: 28, height: 34)
+                        .rotationEffect(Angle(degrees: -30))
                 }
+                .offset(offset)
+                NewTransferButton(style: style, action: action)
+            }
+        } else {
+            ZStack {
+                NewTransferButton(style: style, action: action)
+
                 STResourcesAsset.Images.arrow.swiftUIImage
                     .resizable()
-                    .frame(width: width, height: height)
-                    .rotationEffect(angle)
+                    .frame(width: 36, height: 44)
+                    .offset(offset)
             }
-            .offset(offset)
-            NewTransferButton(style: style, action: action)
         }
     }
 }

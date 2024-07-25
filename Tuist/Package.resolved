@@ -1,0 +1,140 @@
+{
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
+        "version" : "5.9.1"
+      }
+    },
+    {
+      "identity" : "cocoalumberjack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CocoaLumberjack/CocoaLumberjack",
+      "state" : {
+        "revision" : "4b8714a7fb84d42393314ce897127b3939885ec3",
+        "version" : "3.8.5"
+      }
+    },
+    {
+      "identity" : "ios-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-core",
+      "state" : {
+        "revision" : "6c175294c2ff03c43eb7c9bd32ebd3a8c6448b0d",
+        "version" : "11.0.0"
+      }
+    },
+    {
+      "identity" : "ios-core-ui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-core-ui",
+      "state" : {
+        "revision" : "f45301c68bd9421a8f29f676bab658933e8a6807",
+        "version" : "10.1.0"
+      }
+    },
+    {
+      "identity" : "ios-dependency-injection",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-dependency-injection",
+      "state" : {
+        "revision" : "8dc9e67e6d3d9f4f5bd02d693a7ce1f93b125bcd",
+        "version" : "2.0.1"
+      }
+    },
+    {
+      "identity" : "ios-login",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-login",
+      "state" : {
+        "revision" : "7214a97f73b9b19858d3b3139a2fe47be86e142e",
+        "version" : "6.0.2"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "2ef543ee21d63734e1c004ad6c870255e8716c50",
+        "version" : "7.12.0"
+      }
+    },
+    {
+      "identity" : "matomo-sdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/matomo-org/matomo-sdk-ios",
+      "state" : {
+        "revision" : "a8800d8725fb84bad6b7dea555075f961952bc0a",
+        "version" : "7.6.0"
+      }
+    },
+    {
+      "identity" : "osinfo",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MarcoEidinger/OSInfo.git",
+      "state" : {
+        "revision" : "54fd6673923ef5966268918152235b0e15ed057c",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "60867846a0aca0c7da5e482282b293236f730216",
+        "version" : "14.11.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift",
+      "state" : {
+        "revision" : "13b12f8665f0c8173693a4d3f6e6d32b5a24d9a9",
+        "version" : "10.52.2"
+      }
+    },
+    {
+      "identity" : "sentry-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/getsentry/sentry-cocoa",
+      "state" : {
+        "revision" : "5421f94cc859eb65f5ae3866165a053aa634431e",
+        "version" : "8.32.0"
+      }
+    },
+    {
+      "identity" : "snackbar.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/SnackBar.swift",
+      "state" : {
+        "revision" : "7d8d20af50c6b744aa9791b597f7efbd0a15add2",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log",
+      "state" : {
+        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
+        "version" : "1.6.1"
+      }
+    }
+  ],
+  "version" : 2
+}

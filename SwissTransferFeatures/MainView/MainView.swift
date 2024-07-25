@@ -17,20 +17,20 @@
  */
 
 import STReceivedView
+import STResources
 import STSentView
 import STSettingsView
 import SwiftUI
-import STResources
 
 public struct MainView: View {
     public init() {}
 
     public var body: some View {
         TabView {
-            SentView()
+            SentView(isEmpty: false)
                 .tabItem {
                     Label(
-                        title: { Text("Envoyé") },
+                        title: { Text(STResourcesStrings.Localizable.sentTitle) },
                         icon: { STResourcesAsset.Images.arrowUpCircle.swiftUIImage }
                     )
                 }
@@ -38,7 +38,7 @@ public struct MainView: View {
             ReceivedView()
                 .tabItem {
                     Label(
-                        title: { Text("Recu") },
+                        title: { Text(STResourcesStrings.Localizable.receivedTitle) },
                         icon: { STResourcesAsset.Images.arrowDownCircle.swiftUIImage }
                     )
                 }
@@ -46,7 +46,7 @@ public struct MainView: View {
             SettingsView()
                 .tabItem {
                     Label(
-                        title: { Text("Paramètres") },
+                        title: { Text(STResourcesStrings.Localizable.settingsTitle) },
                         icon: { STResourcesAsset.Images.sliderVertical3.swiftUIImage }
                     )
                 }
