@@ -19,12 +19,16 @@
 import STResources
 import SwiftUI
 
-struct SmallMoreItemsThumbnailView: View {
+public struct SmallMoreItemsThumbnailView: View {
     @ScaledMetric(relativeTo: .body) private var size = 48
 
     let count: Int
 
-    var body: some View {
+    public init(count: Int) {
+        self.count = count
+    }
+
+    public var body: some View {
         Text("+\(count)")
             .font(.ST.body)
             .minimumScaleFactor(0.5)

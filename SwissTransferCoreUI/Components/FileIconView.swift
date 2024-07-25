@@ -81,7 +81,6 @@ public struct FileIconView: View {
 
         _scaledSize = ScaledMetric(wrappedValue: type.size, relativeTo: .body)
         _scaledPadding = ScaledMetric(wrappedValue: type.padding, relativeTo: .body)
-
     }
 
     public var body: some View {

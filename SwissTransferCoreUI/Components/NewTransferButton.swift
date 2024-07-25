@@ -16,8 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import STResources
+import SwiftUI
 
 public enum NewTransferStyle {
     case big
@@ -42,11 +42,11 @@ public enum NewTransferStyle {
     }
 }
 
-public struct NewTransferButton: View {
+struct NewTransferButton: View {
     var style: NewTransferStyle = .small
     let action: () -> Void
 
-    public var body: some View {
+    var body: some View {
         Button(action: action) {
             STResourcesAsset.Images.plus.swiftUIImage
                 .resizable()

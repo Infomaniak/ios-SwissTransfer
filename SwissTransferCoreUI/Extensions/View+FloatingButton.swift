@@ -18,34 +18,20 @@
 
 import SwiftUI
 
-public enum FloatingActionButtonStyle {
-    case newTransfer
-    case firstTransfer
-}
-
 struct FloatingActionButtonModifier: ViewModifier {
-    let style: FloatingActionButtonStyle
     let action: () -> Void
 
     func body(content: Content) -> some View {
-        ZStack(alignment: .bottomTrailing) {
-            content
-
-            Group {
-                switch style {
-                case .newTransfer:
-                    NewTransferButton(action: action)
-                case .firstTransfer:
-                    FirstTransferButton(style: .small, action: action)
-                }
+        content
+            .safeAreaInset(edge: .bottom, alignment: .trailing) {
+                NewTransferButton(action: action)
+                    .padding([.trailing, .bottom], 16)
             }
-            .padding(16)
-        }
     }
 }
 
 public extension View {
-    func floatingActionButton(style: FloatingActionButtonStyle, action: @escaping () -> Void) -> some View {
-        modifier(FloatingActionButtonModifier(style: style, action: action))
+    func floatingActionButton(perform action: @escaping () -> Void) -> some View {
+        modifier(FloatingActionButtonModifier(action: action))
     }
 }

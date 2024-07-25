@@ -58,9 +58,11 @@ struct SentList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .floatingActionButton(style: .newTransfer) {
-            // Transfer
-        }
+        .floatingActionButton(perform: createNewTransfer)
+    }
+
+    private func createNewTransfer() {
+        // Create new transfer
     }
 }
 
