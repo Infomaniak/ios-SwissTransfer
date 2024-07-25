@@ -33,7 +33,7 @@ public struct SentView: View {
                 if isEmpty {
                     SentEmptyView()
                 } else {
-                    SentListView()
+                    SentList()
                 }
             }
             .stNavigationBar()

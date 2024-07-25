@@ -76,6 +76,8 @@ struct SentCell: View {
             STResourcesAsset.Colors.greyPolarBear.swiftUIColor
                 .clipShape(RoundedRectangle(cornerRadius: 16))
         )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
     }
 }
 

@@ -20,7 +20,7 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct SentListView: View {
+struct SentList: View {
     var body: some View {
         List {
             Text(STResourcesStrings.Localizable.sharedFilesTitle)
@@ -33,13 +33,9 @@ struct SentListView: View {
 
             Section {
                 SentCell(itemCount: 6)
-                    .padding(.horizontal, 16)
                 SentCell(itemCount: 3)
-                    .padding(.horizontal, 16)
                 SentCell(itemCount: 4)
-                    .padding(.horizontal, 16)
                 SentCell(itemCount: 2)
-                    .padding(.horizontal, 16)
             } header: {
                 Text("Aujourd'hui")
                     .font(.ST.callout)
@@ -51,7 +47,6 @@ struct SentListView: View {
 
             Section {
                 SentCell(itemCount: 3)
-                    .padding(.horizontal, 16)
             } header: {
                 Text("Hier")
                     .font(.ST.callout)
@@ -61,7 +56,7 @@ struct SentListView: View {
             .listRowInsets(EdgeInsets(.zero))
             .listRowSeparator(.hidden)
         }
-        .listRowSpacing(8)
+        .listRowSpacing(0)
         .listStyle(.plain)
         .floatingActionButton(style: .newTransfer) {
             // Transfer
@@ -70,5 +65,5 @@ struct SentListView: View {
 }
 
 #Preview {
-    SentListView()
+    SentList()
 }
