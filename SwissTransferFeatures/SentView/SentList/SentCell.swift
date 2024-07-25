@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -39,16 +40,15 @@ struct SentCell: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             STResourcesAsset.Images.chevronRight.swiftUIImage
-                .resizable()
-                .frame(width: 16, height: 16)
+                .iconSize(.medium)
         }
-        .padding(16)
+        .padding(value: .medium)
         .background(
             STResourcesAsset.Colors.greyPolarBear.swiftUIColor
                 .clipShape(RoundedRectangle(cornerRadius: 16))
         )
-        .padding(.horizontal, 16)
-        .padding(.vertical, 4)
+        .padding(.horizontal, value: .medium)
+        .padding(.vertical, value: .extraSmall)
     }
 }
 

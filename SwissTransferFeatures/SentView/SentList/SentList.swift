@@ -26,8 +26,8 @@ struct SentList: View {
             Text(STResourcesStrings.Localizable.sharedFilesTitle)
                 .font(.ST.title)
                 .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
+                .padding(.horizontal, value: .medium)
+                .padding(.top, value: .medium)
                 .listRowInsets(EdgeInsets(.zero))
                 .listRowSeparator(.hidden)
 
@@ -40,7 +40,7 @@ struct SentList: View {
                 Text("Aujourd'hui")
                     .font(.ST.callout)
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, value: .medium)
             }
             .listRowInsets(EdgeInsets(.zero))
             .listRowSeparator(.hidden)
@@ -51,7 +51,7 @@ struct SentList: View {
                 Text("Hier")
                     .font(.ST.callout)
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, value: .medium)
             }
             .listRowInsets(EdgeInsets(.zero))
             .listRowSeparator(.hidden)

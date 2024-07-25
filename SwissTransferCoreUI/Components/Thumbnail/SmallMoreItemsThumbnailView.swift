@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 
@@ -34,7 +35,7 @@ public struct SmallMoreItemsThumbnailView: View {
             .minimumScaleFactor(0.5)
             .lineLimit(1)
             .foregroundStyle(STResourcesAsset.Colors.greenContrast.swiftUIColor)
-            .padding(4)
+            .padding(value: .extraSmall)
             .frame(width: size, height: size)
             .background(
                 STResourcesAsset.Colors.greenDark.swiftUIColor

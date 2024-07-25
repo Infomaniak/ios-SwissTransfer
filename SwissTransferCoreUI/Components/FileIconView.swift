@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 
@@ -35,9 +36,9 @@ public enum FileTypeIconSize {
     var padding: CGFloat {
         switch self {
         case .small:
-            return 8
+            return IKPadding.small
         case .big:
-            return 16
+            return IKPadding.medium
         }
     }
 
@@ -100,4 +101,5 @@ public struct FileIconView: View {
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
     }
+    .background(.blue)
 }

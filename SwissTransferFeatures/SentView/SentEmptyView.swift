@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -39,7 +40,7 @@ struct SentEmptyView: View {
                 // Transfer
             }
         }
-        .padding(16)
+        .padding(value: .medium)
     }
 }
 
