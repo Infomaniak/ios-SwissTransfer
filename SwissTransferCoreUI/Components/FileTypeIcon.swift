@@ -77,5 +77,4 @@ public struct FileTypeIcon: View {
         FileTypeIcon(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
         FileTypeIcon(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
     }
-    .background(.blue)
 }

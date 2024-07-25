@@ -1,3 +1,4 @@
+//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2024 Infomaniak Network SA
@@ -18,21 +19,34 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
-public struct DotSeparatorView: View {
-    @ScaledMetric(relativeTo: .body) private var size = 4
-    @ScaledMetric(relativeTo: .body) private var padding = 8
+struct SentCellThumbnailsView: View {
+    let itemCount: Int
 
-    public init() {}
+    private var additionalItemsCount: Int {
+        if itemCount > 4 {
+            return itemCount - 3
+        }
+        return 0
+    }
 
-    public var body: some View {
-        Circle()
-            .fill(STResourcesAsset.Colors.greyElephant.swiftUIColor)
-            .frame(width: size, height: size)
-            .padding(.horizontal, padding)
+    private var itemsToShow: Int {
+        return itemCount - additionalItemsCount
+    }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(1 ... itemsToShow, id: \.self) { _ in
+                SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+            }
+            if additionalItemsCount > 0 {
+                SmallMoreItemsThumbnailView(count: additionalItemsCount)
+            }
+        }
     }
 }
 
 #Preview {
-    DotSeparatorView()
+    SentCellThumbnailsView(itemCount: 8)
 }

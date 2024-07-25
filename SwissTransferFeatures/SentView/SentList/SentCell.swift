@@ -23,17 +23,6 @@ import SwissTransferCoreUI
 struct SentCell: View {
     let itemCount: Int
 
-    private var additionalItemsCount: Int {
-        if itemCount > 4 {
-            return itemCount - 3
-        }
-        return 0
-    }
-
-    private var itemsToShow: Int {
-        return itemCount - additionalItemsCount
-    }
-
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
@@ -41,31 +30,13 @@ struct SentCell: View {
                     .font(.ST.headline)
                     .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
 
-                HStack(spacing: 0) {
-                    Text("50 Mo")
-                    DotSeparatorView()
-                    Text(STResourcesStrings.Localizable.expiresIn(30))
-                }
-                .font(.ST.callout)
-                .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                Text("50 Mo · \(STResourcesStrings.Localizable.expiresIn(30))")
+                    .font(.ST.callout)
+                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
 
-                HStack(spacing: 8) {
-                    ForEach(1 ... itemsToShow, id: \.self) { _ in
-                        SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                    }
-                    if additionalItemsCount > 0 {
-                        Text("+\(additionalItemsCount)")
-                            .font(.ST.body)
-                            .foregroundStyle(STResourcesAsset.Colors.greenContrast.swiftUIColor)
-                            .frame(width: 48, height: 48)
-                            .background(
-                                STResourcesAsset.Colors.greenDark.swiftUIColor
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                            )
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                SentCellThumbnailsView(itemCount: itemCount)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             STResourcesAsset.Images.chevronRight.swiftUIImage
                 .resizable()
