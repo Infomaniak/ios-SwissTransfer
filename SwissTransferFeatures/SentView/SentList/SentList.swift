@@ -17,10 +17,13 @@
  */
 
 import STResources
+import STTransferDetailsView
 import SwiftUI
 import SwissTransferCoreUI
 
 struct SentList: View {
+    @State private var showDetail = false
+
     var body: some View {
         List {
             Text(STResourcesStrings.Localizable.sharedFilesTitle)
@@ -37,9 +40,7 @@ struct SentList: View {
                 SentCell(itemCount: 4)
                 SentCell(itemCount: 2)
             } header: {
-                Text("Aujourd'hui")
-                    .font(.ST.callout)
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                SectionHeaderView(title: "Aujourd'hui")
                     .padding(.horizontal, value: .medium)
             }
             .listRowInsets(EdgeInsets(.zero))
@@ -48,9 +49,7 @@ struct SentList: View {
             Section {
                 SentCell(itemCount: 3)
             } header: {
-                Text("Hier")
-                    .font(.ST.callout)
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                SectionHeaderView(title: "Hier")
                     .padding(.horizontal, value: .medium)
             }
             .listRowInsets(EdgeInsets(.zero))
@@ -58,11 +57,13 @@ struct SentList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .floatingActionButton(perform: createNewTransfer)
-    }
-
-    private func createNewTransfer() {
-        // Create new transfer
+        .floatingActionButton(style: .newTransfer) {
+            // Transfer
+            showDetail = true
+        }
+        .navigationDestination(isPresented: $showDetail) {
+            TransferDetailsView(title: "Rapport d'oral - Master 2")
+        }
     }
 }
 

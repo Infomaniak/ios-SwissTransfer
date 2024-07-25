@@ -16,9 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
 
-public struct TransferDetailsView: View {
+public struct SectionHeaderView: View {
     private let title: String
 
     public init(title: String) {
@@ -26,28 +27,12 @@ public struct TransferDetailsView: View {
     }
 
     public var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                TransferDetailsHeaderView()
-
-                TransferDetailsMessageView(destinataire: "john.smith@ik.me", message: "Le contenu du message")
-
-                TransferDetailsContentView()
-            }
-            .padding(.vertical, value: .large)
-            .padding(.horizontal, value: .medium)
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(title)
-                    .font(.ST.title2)
-                    .foregroundStyle(.white)
-            }
-        }
-        .stNavigationBarStyle()
+        Text(title)
+            .font(.ST.callout)
+            .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
     }
 }
 
 #Preview {
-    TransferDetailsView(title: "Rapport d'oral - Master 2")
+    SectionHeaderView(title: "Aujourd'hui")
 }
