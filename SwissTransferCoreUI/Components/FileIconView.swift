@@ -49,22 +49,46 @@ public enum FileTypeIconSize {
             return .white
         }
     }
+
+    var shouldScale: Bool {
+        switch self {
+        case .small:
+            return true
+        case .big:
+            return false
+        }
+    }
 }
 
-public struct FileTypeIcon: View {
+public struct FileIconView: View {
     private let icon: Image
     private let type: FileTypeIconSize
+
+    @ScaledMetric private var scaledSize: CGFloat
+    @ScaledMetric private var scaledPadding: CGFloat
+
+    private var size: CGFloat {
+        type.shouldScale ? scaledSize : type.size
+    }
+
+    private var padding: CGFloat {
+        type.shouldScale ? scaledPadding : type.padding
+    }
 
     public init(icon: Image, type: FileTypeIconSize) {
         self.icon = icon
         self.type = type
+
+        _scaledSize = ScaledMetric(wrappedValue: type.size, relativeTo: .body)
+        _scaledPadding = ScaledMetric(wrappedValue: type.padding, relativeTo: .body)
+
     }
 
     public var body: some View {
         icon
             .resizable()
-            .frame(width: type.size, height: type.size)
-            .padding(type.padding)
+            .frame(width: size, height: size)
+            .padding(padding)
             .background(
                 type.background
                     .clipShape(Circle())
@@ -74,7 +98,7 @@ public struct FileTypeIcon: View {
 
 #Preview {
     VStack {
-        FileTypeIcon(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
-        FileTypeIcon(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
+        FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
+        FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
     }
 }

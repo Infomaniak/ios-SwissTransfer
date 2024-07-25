@@ -30,7 +30,7 @@ public struct SmallThumbnailView: View {
     }
 
     public var body: some View {
-        FileTypeIcon(icon: icon, type: .small)
+        FileIconView(icon: icon, type: .small)
             .frame(width: size, height: size)
             .background(
                 Color.white
