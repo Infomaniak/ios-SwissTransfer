@@ -21,6 +21,8 @@ import SwiftUI
 
 // TODO: - Manage real preview (not only fileType)
 public struct SmallThumbnailView: View {
+    @ScaledMetric(relativeTo: .body) private var size = 48
+
     let icon: Image
 
     public init(icon: Image) {
@@ -29,7 +31,7 @@ public struct SmallThumbnailView: View {
 
     public var body: some View {
         FileTypeIcon(icon: icon, type: .small)
-            .frame(width: 48, height: 48)
+            .frame(width: size, height: size)
             .background(
                 Color.white
                     .clipShape(RoundedRectangle(cornerRadius: 8))
