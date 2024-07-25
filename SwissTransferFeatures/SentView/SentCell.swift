@@ -20,18 +20,18 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct SentItemView: View {
+struct SentCell: View {
     let itemCount: Int
 
-    private var additionalCount: Int? {
+    private var additionalItemsCount: Int {
         if itemCount > 4 {
             return itemCount - 3
         }
-        return nil
+        return 0
     }
 
-    private var itemToShow: Int {
-        return itemCount - (additionalCount ?? 0)
+    private var itemsToShow: Int {
+        return itemCount - additionalItemsCount
     }
 
     var body: some View {
@@ -41,20 +41,20 @@ struct SentItemView: View {
                     .font(.ST.headline)
                     .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
 
-                HStack {
+                HStack(spacing: 0) {
                     Text("50 Mo")
-                    Text("·")
+                    DotSeparatorView()
                     Text(STResourcesStrings.Localizable.expiresIn(30))
                 }
                 .font(.ST.callout)
                 .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
 
                 HStack(spacing: 8) {
-                    ForEach(1 ... itemToShow, id: \.self) { _ in
+                    ForEach(1 ... itemsToShow, id: \.self) { _ in
                         SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
                     }
-                    if let additionalCount {
-                        Text("+\(additionalCount)")
+                    if additionalItemsCount > 0 {
+                        Text("+\(additionalItemsCount)")
                             .font(.ST.body)
                             .foregroundStyle(STResourcesAsset.Colors.greenContrast.swiftUIColor)
                             .frame(width: 48, height: 48)
@@ -80,8 +80,5 @@ struct SentItemView: View {
 }
 
 #Preview {
-    VStack {
-        SentItemView(itemCount: 2)
-        SentItemView(itemCount: 6)
-    }
+    SentCell(itemCount: 6)
 }

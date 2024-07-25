@@ -32,13 +32,13 @@ struct SentListView: View {
                 .listRowSeparator(.hidden)
 
             Section {
-                SentItemView(itemCount: 6)
+                SentCell(itemCount: 6)
                     .padding(.horizontal, 16)
-                SentItemView(itemCount: 3)
+                SentCell(itemCount: 3)
                     .padding(.horizontal, 16)
-                SentItemView(itemCount: 4)
+                SentCell(itemCount: 4)
                     .padding(.horizontal, 16)
-                SentItemView(itemCount: 2)
+                SentCell(itemCount: 2)
                     .padding(.horizontal, 16)
             } header: {
                 Text("Aujourd'hui")
@@ -50,7 +50,7 @@ struct SentListView: View {
             .listRowSeparator(.hidden)
 
             Section {
-                SentItemView(itemCount: 3)
+                SentCell(itemCount: 3)
                     .padding(.horizontal, 16)
             } header: {
                 Text("Hier")
