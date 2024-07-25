@@ -3,9 +3,12 @@
  * Project: SwissTransfer
  * Locale: es, Spanish
  * Tagged: ios
- * Exported by: Ambroise Decouttere
- * Exported at: Wed, 24 Jul 2024 08:51:19 +0200
+ * Exported by: Valentin Perignon
+ * Exported at: Thu, 25 Jul 2024 09:20:03 +0200
  */
+
+/* loco:66a1fa770af8cf8470002102 */
+"contentDescriptionCreateNewTransferButton" = "Create New Transfer";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expires in %d days";

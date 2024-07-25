@@ -56,6 +56,7 @@ public struct NewTransferButton: View {
                 .background {
                     RoundedRectangle(cornerRadius: style.size)
                 }
+                .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
         }
     }
 }

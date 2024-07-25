@@ -32,6 +32,7 @@ struct SentEmptyView: View {
                 Text(STResourcesStrings.Localizable.firstTransferDescription)
                     .font(.ST.body)
                     .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                    .multilineTextAlignment(.center)
             }
 
             FirstTransferButton(style: .big) {
