@@ -38,6 +38,7 @@ struct SentEmptyView: View {
                 // Transfer
             }
         }
+        .padding(16)
     }
 }
 
