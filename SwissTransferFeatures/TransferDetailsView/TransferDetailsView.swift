@@ -29,11 +29,11 @@ public struct TransferDetailsView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: IKPadding.large) {
-                TransferDetailsHeaderView()
+                HeaderView()
 
-                TransferDetailsMessageView(recipient: "john.smith@ik.me", message: "Le contenu du message")
+                MessageView(recipient: "john.smith@ik.me", message: "Le contenu du message")
 
-                TransferDetailsContentView()
+                ContentView()
             }
             .padding(.vertical, value: .large)
             .padding(.horizontal, value: .medium)

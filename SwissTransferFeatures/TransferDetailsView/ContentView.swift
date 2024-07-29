@@ -20,38 +20,33 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct TransferDetailsHeaderView: View {
+struct ContentView: View {
+    let columns = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Aujourd'hui")
+            Text(STResourcesStrings.Localizable.transferContentHeader)
                 .sectionHeader()
-                .padding(.bottom, value: .small)
 
-            Label(
-                title: { Text("4 fichiers") },
-                icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
-            )
-            .labelStyle(STLabelStyle())
-
-            DividerView()
-
-            Label(
-                title: { Text(STResourcesStrings.Localizable.expiresIn(30)) },
-                icon: { STResourcesAsset.Images.clock.swiftUIImage }
-            )
-            .labelStyle(STLabelStyle())
-
-            DividerView()
-
-            Label(
-                title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(0, 250)) },
-                icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
-            )
-            .labelStyle(STLabelStyle())
+            LazyVGrid(
+                columns: columns,
+                alignment: .center,
+                spacing: 16,
+                pinnedViews: []
+            ) {
+                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+            }
         }
     }
 }
 
 #Preview {
-    TransferDetailsHeaderView()
+    ContentView()
 }
