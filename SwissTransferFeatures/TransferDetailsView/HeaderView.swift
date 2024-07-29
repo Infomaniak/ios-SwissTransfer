@@ -20,33 +20,38 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct TransferDetailsContentView: View {
-    let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
-
+struct HeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(STResourcesStrings.Localizable.transferContentHeader)
+            Text("Aujourd'hui")
                 .sectionHeader()
+                .padding(.bottom, value: .small)
 
-            LazyVGrid(
-                columns: columns,
-                alignment: .center,
-                spacing: 16,
-                pinnedViews: []
-            ) {
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-            }
+            Label(
+                title: { Text("4 fichiers") },
+                icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
+            )
+            .labelStyle(STLabelStyle())
+
+            DividerView()
+
+            Label(
+                title: { Text(STResourcesStrings.Localizable.expiresIn(30)) },
+                icon: { STResourcesAsset.Images.clock.swiftUIImage }
+            )
+            .labelStyle(STLabelStyle())
+
+            DividerView()
+
+            Label(
+                title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(0, 250)) },
+                icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
+            )
+            .labelStyle(STLabelStyle())
         }
     }
 }
 
 #Preview {
-    TransferDetailsContentView()
+    HeaderView()
 }

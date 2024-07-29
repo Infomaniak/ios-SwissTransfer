@@ -20,7 +20,7 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct TransferDetailsMessageView: View {
+struct MessageView: View {
     var recipient: String?
     var from: String?
     let message: String
@@ -67,7 +67,7 @@ struct TransferDetailsMessageView: View {
 }
 
 #Preview {
-    TransferDetailsMessageView(
+    MessageView(
         recipient: "john.smith@ik.me",
         from: "john.smith@ik.me",
         message: "Salut voici les images de la soirée chez Tanguy ! Hesite pas à me partager les tiennes dès que t'as un moment :)"
