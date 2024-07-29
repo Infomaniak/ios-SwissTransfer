@@ -19,7 +19,7 @@
 import STResources
 import SwiftUI
 
-public struct STLabelStyle: LabelStyle {
+public struct HorizontalLabelStyle: LabelStyle {
     private let spacing: CGFloat
     private let font: Font
     private let fontColor: Color
@@ -46,4 +46,8 @@ public struct STLabelStyle: LabelStyle {
         .font(font)
         .foregroundStyle(fontColor)
     }
+}
+
+public extension LabelStyle where Self == HorizontalLabelStyle {
+    static var horizontal: HorizontalLabelStyle { .init() }
 }
