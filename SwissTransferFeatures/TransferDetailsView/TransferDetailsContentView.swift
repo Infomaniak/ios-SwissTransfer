@@ -28,7 +28,8 @@ struct TransferDetailsContentView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            SectionHeaderView(title: STResourcesStrings.Localizable.transferContentHeader)
+            Text(STResourcesStrings.Localizable.transferContentHeader)
+                .sectionHeader()
 
             LazyVGrid(
                 columns: columns,

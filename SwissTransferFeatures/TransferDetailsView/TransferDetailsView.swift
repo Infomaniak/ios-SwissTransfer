@@ -17,6 +17,7 @@
  */
 
 import SwiftUI
+import InfomaniakCoreUI
 
 public struct TransferDetailsView: View {
     private let title: String
@@ -27,10 +28,10 @@ public struct TransferDetailsView: View {
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: IKPadding.large) {
                 TransferDetailsHeaderView()
 
-                TransferDetailsMessageView(destinataire: "john.smith@ik.me", message: "Le contenu du message")
+                TransferDetailsMessageView(recipient: "john.smith@ik.me", message: "Le contenu du message")
 
                 TransferDetailsContentView()
             }

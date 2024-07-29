@@ -40,7 +40,8 @@ struct SentList: View {
                 SentCell(itemCount: 4)
                 SentCell(itemCount: 2)
             } header: {
-                SectionHeaderView(title: "Aujourd'hui")
+                Text("Aujourd'hui")
+                    .sectionHeader()
                     .padding(.horizontal, value: .medium)
             }
             .listRowInsets(EdgeInsets(.zero))
@@ -49,7 +50,8 @@ struct SentList: View {
             Section {
                 SentCell(itemCount: 3)
             } header: {
-                SectionHeaderView(title: "Hier")
+                Text("Hier")
+                    .sectionHeader()
                     .padding(.horizontal, value: .medium)
             }
             .listRowInsets(EdgeInsets(.zero))
