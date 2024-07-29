@@ -100,6 +100,9 @@ public struct FileIconView: View {
     VStack {
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
+            .padding()
+            .background {
+                STResourcesAsset.Colors.greyPolarBear.swiftUIColor
+            }
     }
-    .background(.blue)
 }

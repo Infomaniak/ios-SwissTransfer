@@ -61,5 +61,4 @@ public struct BigThumbnailView: View {
 #Preview {
     BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.blue)
 }
