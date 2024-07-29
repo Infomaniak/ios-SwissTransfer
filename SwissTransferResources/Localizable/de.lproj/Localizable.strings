@@ -4,7 +4,7 @@
  * Locale: de, German
  * Tagged: ios
  * Exported by: Ambroise Decouttere
- * Exported at: Thu, 25 Jul 2024 14:57:40 +0200
+ * Exported at: Mon, 29 Jul 2024 11:55:28 +0200
  */
 
 /* loco:66a1fa770af8cf8470002102 */
@@ -29,7 +29,10 @@
 "receivedTitle" = "Received";
 
 /* loco:66a24aaccbb152954307a612 */
-"recipientsHeader" = "Recipient(s):";
+"recipientHeader" = "Recipient:";
+
+/* loco:66a765a7ec41ffa0250df2d3 */
+"recipientHeader-plural" = "Recipients:";
 
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "Our history begins here";

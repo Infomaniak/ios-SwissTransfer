@@ -28,7 +28,7 @@ struct TransferDetailsMessageView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             if let recipient {
-                Text(STResourcesStrings.Localizable.recipientsHeader)
+                Text(STResourcesStrings.Localizable.recipientHeader)
                     .sectionHeader()
                 Text(recipient)
                     .roundedLabel()
