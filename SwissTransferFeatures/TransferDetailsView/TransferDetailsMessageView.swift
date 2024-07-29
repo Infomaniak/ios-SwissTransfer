@@ -37,7 +37,7 @@ struct TransferDetailsMessageView: View {
             Text(STResourcesStrings.Localizable.messageHeader)
                 .sectionHeader()
 
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 0) {
                 if let from {
                     HStack(spacing: 8) {
                         Text(STResourcesStrings.Localizable.fromHeader)
@@ -46,15 +46,16 @@ struct TransferDetailsMessageView: View {
                         Text(from)
                             .roundedLabel()
                     }
+                    .padding(24)
+
                     DividerView()
-                        .padding(.horizontal, -24)
                 }
 
                 Text(message)
                     .font(.ST.callout)
                     .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                    .padding(24)
             }
-            .padding(24)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background {
                 RoundedRectangle(cornerRadius: 16)
