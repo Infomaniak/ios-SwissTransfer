@@ -31,7 +31,7 @@ struct HeaderView: View {
                 title: { Text("4 fichiers") },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
             )
-            .labelStyle(STLabelStyle())
+            .labelStyle(.horizontal)
 
             DividerView()
 
@@ -39,7 +39,7 @@ struct HeaderView: View {
                 title: { Text(STResourcesStrings.Localizable.expiresIn(30)) },
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
-            .labelStyle(STLabelStyle())
+            .labelStyle(.horizontal)
 
             DividerView()
 
@@ -47,7 +47,7 @@ struct HeaderView: View {
                 title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(0, 250)) },
                 icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
             )
-            .labelStyle(STLabelStyle())
+            .labelStyle(.horizontal)
         }
     }
 }
