@@ -23,7 +23,8 @@ import SwissTransferCoreUI
 struct TransferDetailsHeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            SectionHeaderView(title: "Aujourd'hui")
+            Text("Aujourd'hui")
+                .sectionHeader()
                 .padding(.bottom, value: .small)
 
             Label(
@@ -32,7 +33,7 @@ struct TransferDetailsHeaderView: View {
             )
             .labelStyle(STLabelStyle())
 
-            SeparatorView()
+            DividerView()
 
             Label(
                 title: { Text(STResourcesStrings.Localizable.expiresIn(30)) },
@@ -40,7 +41,7 @@ struct TransferDetailsHeaderView: View {
             )
             .labelStyle(STLabelStyle())
 
-            SeparatorView()
+            DividerView()
 
             Label(
                 title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(0, 250)) },
@@ -48,7 +49,6 @@ struct TransferDetailsHeaderView: View {
             )
             .labelStyle(STLabelStyle())
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

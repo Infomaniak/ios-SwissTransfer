@@ -19,17 +19,16 @@
 import STResources
 import SwiftUI
 
-public struct SeparatorView: View {
-    public init() {}
-
-    public var body: some View {
-        Rectangle()
-            .frame(maxWidth: .infinity)
-            .frame(height: 1)
-            .foregroundStyle(STResourcesAsset.Colors.greyMouse.swiftUIColor)
+struct SectionHeaderModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.ST.callout)
+            .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
     }
 }
 
-#Preview {
-    SeparatorView()
+public extension View {
+    func sectionHeader() -> some View {
+        modifier(SectionHeaderModifier())
+    }
 }

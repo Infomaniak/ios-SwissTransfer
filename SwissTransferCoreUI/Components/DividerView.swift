@@ -19,20 +19,17 @@
 import STResources
 import SwiftUI
 
-public struct SectionHeaderView: View {
-    private let title: String
-
-    public init(title: String) {
-        self.title = title
-    }
+public struct DividerView: View {
+    public init() {}
 
     public var body: some View {
-        Text(title)
-            .font(.ST.callout)
-            .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+        Rectangle()
+            .frame(maxWidth: .infinity)
+            .frame(height: 1)
+            .foregroundStyle(STResourcesAsset.Colors.greyMouse.swiftUIColor)
     }
 }
 
 #Preview {
-    SectionHeaderView(title: "Aujourd'hui")
+    DividerView()
 }

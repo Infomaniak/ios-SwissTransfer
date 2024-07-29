@@ -86,7 +86,7 @@ public extension Font {
         Text("Caption")
             .font(.ST.caption)
 
-        Divider()
+        DividerView()
 
         Text("SPECIFIC")
             .font(.title3)

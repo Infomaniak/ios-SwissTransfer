@@ -21,19 +21,21 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct TransferDetailsMessageView: View {
-    var destinataire: String?
+    var recipient: String?
     var from: String?
     let message: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            if let destinataire {
-                SectionHeaderView(title: STResourcesStrings.Localizable.recipientsHeader)
-                Text(destinataire)
+            if let recipient {
+                Text(STResourcesStrings.Localizable.recipientsHeader)
+                    .sectionHeader()
+                Text(recipient)
                     .roundedLabel()
             }
 
-            SectionHeaderView(title: STResourcesStrings.Localizable.messageHeader)
+            Text(STResourcesStrings.Localizable.messageHeader)
+                .sectionHeader()
 
             VStack(alignment: .leading, spacing: 24) {
                 if let from {
@@ -44,7 +46,7 @@ struct TransferDetailsMessageView: View {
                         Text(from)
                             .roundedLabel()
                     }
-                    SeparatorView()
+                    DividerView()
                         .padding(.horizontal, -24)
                 }
 
@@ -65,7 +67,7 @@ struct TransferDetailsMessageView: View {
 
 #Preview {
     TransferDetailsMessageView(
-        destinataire: "john.smith@ik.me",
+        recipient: "john.smith@ik.me",
         from: "john.smith@ik.me",
         message: "Salut voici les images de la soirée chez Tanguy ! Hesite pas à me partager les tiennes dès que t'as un moment :)"
     )

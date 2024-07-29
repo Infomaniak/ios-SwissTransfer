@@ -34,7 +34,6 @@ struct RoundedLabelModifier: ViewModifier {
 }
 
 public extension View {
-    /// The navigationBar with correct styling and SwissTransfer logo in the center
     func roundedLabel() -> some View {
         modifier(RoundedLabelModifier())
     }
