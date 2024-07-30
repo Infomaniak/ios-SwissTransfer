@@ -32,6 +32,56 @@ public extension Color {
             light: STResourcesAsset.Colors.greyElephant,
             dark: STResourcesAsset.Colors.greyShark
         )
+
+        // MARK: - General
+
+        public static let primary = STResourcesAsset.Colors.greenMain.swiftUIColor
+        public static let onPrimary = Color(
+            light: STResourcesAsset.Colors.greenText,
+            dark: STResourcesAsset.Colors.dark0
+        )
+
+        public static let secondary = STResourcesAsset.Colors.greenDark.swiftUIColor
+        public static let onSecondary = Color(
+            light: STResourcesAsset.Colors.greenContrast,
+            dark: STResourcesAsset.Colors.greenMain
+        )
+
+        public static let background = Color(
+            light: STResourcesAsset.Colors.white,
+            dark: STResourcesAsset.Colors.dark0
+        )
+        public static let divider = Color(
+            light: STResourcesAsset.Colors.greyMouse,
+            dark: STResourcesAsset.Colors.dark2
+        )
+        public static let error = STResourcesAsset.Colors.red.swiftUIColor
+        public static let textFieldBorder = Color(
+            light: STResourcesAsset.Colors.greyMouse,
+            dark: STResourcesAsset.Colors.dark2
+        )
+
+        // MARK: - Recipient Labels
+
+        public static let recipientLabelBackground = Color(
+            light: STResourcesAsset.Colors.greenContrast,
+            dark: STResourcesAsset.Colors.greenDark
+        )
+        public static let onRecipientLabelBackground = Color(
+            light: STResourcesAsset.Colors.greenDark,
+            dark: STResourcesAsset.Colors.greenMain
+        )
+
+        // MARK: - Cards
+
+        public static let cardBackground = Color(
+            light: STResourcesAsset.Colors.greyPolarBear,
+            dark: STResourcesAsset.Colors.dark1
+        )
+        public static let cardBorder = Color(
+            light: STResourcesAsset.Colors.greyMouse,
+            dark: STResourcesAsset.Colors.dark2
+        )
     }
 }
 
