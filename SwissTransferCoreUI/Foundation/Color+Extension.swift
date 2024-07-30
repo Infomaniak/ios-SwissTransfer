@@ -16,8 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
 
-@frozen public struct Theme {
-    
+public extension Color {
+    /// List of colors used by the SwissTransfer app.
+    enum ST {
+        
+    }
+}
+
+extension Color {
+    init(light: Color, dark: Color) {
+        let dynamicColor = UIColor { $0.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light) }
+        self.init(uiColor: dynamicColor)
+    }
 }
