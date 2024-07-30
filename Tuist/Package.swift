@@ -2,19 +2,17 @@
 import PackageDescription
 
 #if TUIST
-    import ProjectDescription
+import ProjectDescription
 
-    let packageSettings = PackageSettings(
-        // Customize the product types for specific package product
-        // Default is .staticFramework
-        // productTypes: ["Alamofire": .framework,] 
-        productTypes: [:]
-    )
+let packageSettings = PackageSettings(
+    productTypes: [:]
+)
 #endif
 
 let package = Package(
     name: "SwissTransfer",
     dependencies: [
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "10.1.0"))
+        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "10.1.0")),
+        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "0.0.1"))
     ]
 )

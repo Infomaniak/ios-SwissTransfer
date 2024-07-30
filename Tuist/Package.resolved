@@ -73,6 +73,15 @@
       }
     },
     {
+      "identity" : "multiplatform-swisstransfer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
+      "state" : {
+        "revision" : "301970aa5ee5197119fdbac7849e91935e2359ca",
+        "version" : "0.0.2"
+      }
+    },
+    {
       "identity" : "osinfo",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MarcoEidinger/OSInfo.git",
