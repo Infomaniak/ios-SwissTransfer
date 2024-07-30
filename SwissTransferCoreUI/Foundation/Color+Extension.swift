@@ -22,13 +22,22 @@ import SwiftUI
 public extension Color {
     /// List of colors used by the SwissTransfer app.
     enum ST {
-        
+        // MARK: - Texts
+
+        public static let textPrimary = Color(
+            light: STResourcesAsset.Colors.greyOrca,
+            dark: STResourcesAsset.Colors.greyRabbit
+        )
+        public static let textSecondary = Color(
+            light: STResourcesAsset.Colors.greyElephant,
+            dark: STResourcesAsset.Colors.greyShark
+        )
     }
 }
 
 extension Color {
-    init(light: Color, dark: Color) {
-        let dynamicColor = UIColor { $0.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light) }
+    init(light: STResourcesColors, dark: STResourcesColors) {
+        let dynamicColor = UIColor { $0.userInterfaceStyle == .dark ? light.color : dark.color }
         self.init(uiColor: dynamicColor)
     }
 }
