@@ -97,7 +97,10 @@ let project = Project(
                 sources: "SwissTransferCore/**",
                 dependencies: [
                     .target(name: "STResources"),
-                    .external(name: "InfomaniakCoreUI")
+                    .external(name: "InfomaniakCoreUI"),
+                    .external(name: "STCore"),
+                    .external(name: "STNetwork"),
+                    .external(name: "STDatabase")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
