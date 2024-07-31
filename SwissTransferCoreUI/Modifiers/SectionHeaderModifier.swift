@@ -16,14 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
 
 struct SectionHeaderModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.ST.callout)
-            .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+            .foregroundStyle(Color.ST.textSecondary)
     }
 }
 

@@ -29,11 +29,11 @@ struct SentCell: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Rapport d'oral - Master 2")
                     .font(.ST.headline)
-                    .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                    .foregroundStyle(Color.ST.textPrimary)
 
                 Text("50 Mo · \(STResourcesStrings.Localizable.expiresIn(30))")
                     .font(.ST.callout)
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                    .foregroundStyle(Color.ST.textSecondary)
 
                 SentCellThumbnailsView(itemCount: itemCount)
             }
@@ -44,7 +44,7 @@ struct SentCell: View {
         }
         .padding(value: .medium)
         .background(
-            STResourcesAsset.Colors.greyPolarBear.swiftUIColor
+            Color.ST.cardBackground
                 .clipShape(RoundedRectangle(cornerRadius: 16))
         )
         .padding(.horizontal, value: .medium)

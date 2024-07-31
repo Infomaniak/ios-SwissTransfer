@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
 
 public struct DividerView: View {
@@ -26,7 +25,7 @@ public struct DividerView: View {
         Rectangle()
             .frame(maxWidth: .infinity)
             .frame(height: 1)
-            .foregroundStyle(STResourcesAsset.Colors.greyMouse.swiftUIColor)
+            .foregroundStyle(Color.ST.divider)
     }
 }
 
