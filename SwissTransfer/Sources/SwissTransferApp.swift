@@ -18,14 +18,13 @@
 
 import STRootView
 import SwiftUI
-import STResources
 
 @main
 struct SwissTransferApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .tint(STResourcesAsset.Colors.greenMain.swiftUIColor)
+                .tint(.ST.primary)
         }
     }
 }

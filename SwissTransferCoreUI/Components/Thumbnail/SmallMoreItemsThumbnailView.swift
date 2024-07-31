@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreUI
-import STResources
 import SwiftUI
 
 public struct SmallMoreItemsThumbnailView: View {
@@ -34,11 +33,11 @@ public struct SmallMoreItemsThumbnailView: View {
             .font(.ST.body)
             .minimumScaleFactor(0.5)
             .lineLimit(1)
-            .foregroundStyle(STResourcesAsset.Colors.greenContrast.swiftUIColor)
+            .foregroundStyle(Color.ST.onSecondary)
             .padding(value: .extraSmall)
             .frame(width: size, height: size)
             .background(
-                STResourcesAsset.Colors.greenDark.swiftUIColor
+                Color.ST.secondary
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             )
     }

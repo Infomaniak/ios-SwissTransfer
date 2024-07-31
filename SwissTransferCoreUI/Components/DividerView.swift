@@ -18,18 +18,17 @@
 
 import SwiftUI
 
-struct STNavigationBarStyleModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
+public struct DividerView: View {
+    public init() {}
+
+    public var body: some View {
+        Rectangle()
+            .frame(maxWidth: .infinity)
+            .frame(height: 1)
+            .foregroundStyle(Color.ST.divider)
     }
 }
 
-public extension View {
-    /// Style the navigationBar
-    func stNavigationBarStyle() -> some View {
-        modifier(STNavigationBarStyleModifier())
-    }
+#Preview {
+    DividerView()
 }

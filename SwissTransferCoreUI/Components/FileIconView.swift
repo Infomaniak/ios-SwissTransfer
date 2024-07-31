@@ -45,9 +45,9 @@ public enum FileTypeIconSize {
     var background: Color {
         switch self {
         case .small:
-            return STResourcesAsset.Colors.greyPolarBear.swiftUIColor
+            return .ST.cardBackground
         case .big:
-            return .white
+            return .ST.background
         }
     }
 
@@ -100,6 +100,9 @@ public struct FileIconView: View {
     VStack {
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
+            .padding()
+            .background {
+                Color.ST.cardBackground
+            }
     }
-    .background(.blue)
 }

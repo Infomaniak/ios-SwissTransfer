@@ -43,7 +43,7 @@ public struct FirstTransferButton: View {
                 VStack(alignment: .trailing, spacing: -5) {
                     Text(STResourcesStrings.Localizable.firstTransferDescription)
                         .font(.ST.body)
-                        .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                        .foregroundStyle(Color.ST.textSecondary)
 
                     STResourcesAsset.Images.arrow.swiftUIImage
                         .resizable()
