@@ -20,7 +20,7 @@ import SwiftUI
 
 public extension Font {
     /// List of fonts used by the SwissTransfer app.
-    enum ST {
+    @frozen enum ST {
         // MARK: - Base
 
         /// Figma name: *Titre H1*
