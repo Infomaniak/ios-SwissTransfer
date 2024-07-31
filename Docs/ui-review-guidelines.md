@@ -3,7 +3,7 @@
 ## About This Document
 
 This guide gives you some advice about how to review a UI feature.
-It is a simple list of stuff to check to ensure the feature respect our quality guidelines.
+It is a simple list of stuff to check to ensure the feature respects our quality guidelines.
 The list is not supposed to be exhaustive. It is based on the mistakes we made in the past and on what we have learned along the way.
 
 This document will be useful to you as a reviewer, but also as a developer when you are working on a UI feature.
