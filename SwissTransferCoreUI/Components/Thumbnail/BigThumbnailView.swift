@@ -37,9 +37,9 @@ public struct BigThumbnailView: View {
 
             VStack(alignment: .leading) {
                 Text("prévisions2024.pptx")
-                    .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                    .foregroundStyle(Color.ST.textPrimary)
                 Text("14 Mo")
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                    .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -48,12 +48,12 @@ public struct BigThumbnailView: View {
         }
         .frame(maxWidth: .infinity)
         .background {
-            STResourcesAsset.Colors.greyPolarBear.swiftUIColor
+            Color.ST.cardBackground
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(STResourcesAsset.Colors.greyMouse.swiftUIColor)
+                .stroke(Color.ST.cardBorder)
         )
     }
 }

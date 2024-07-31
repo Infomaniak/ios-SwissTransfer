@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
 
 struct STNavigationBarStyleModifier: ViewModifier {
@@ -24,7 +23,7 @@ struct STNavigationBarStyleModifier: ViewModifier {
         content
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(STResourcesAsset.Colors.greenDark.swiftUIColor, for: .navigationBar)
+            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
     }
 }
 

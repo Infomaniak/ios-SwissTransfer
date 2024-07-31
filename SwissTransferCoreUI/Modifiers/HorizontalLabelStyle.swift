@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
 
 public struct HorizontalLabelStyle: LabelStyle {
@@ -28,8 +27,8 @@ public struct HorizontalLabelStyle: LabelStyle {
     public init(
         spacing: Double = 8.0,
         font: Font = .ST.callout,
-        fontColor: Color = STResourcesAsset.Colors.greyOrca.swiftUIColor,
-        iconColor: Color = STResourcesAsset.Colors.greenMain.swiftUIColor
+        fontColor: Color = .ST.textPrimary,
+        iconColor: Color = .ST.primary
     ) {
         self.spacing = spacing
         self.font = font

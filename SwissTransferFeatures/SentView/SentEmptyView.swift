@@ -27,12 +27,12 @@ struct SentEmptyView: View {
             VStack(spacing: 16) {
                 Text(STResourcesStrings.Localizable.sentEmptyTitle)
                     .font(.ST.specificLargeTitleMedium)
-                    .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                    .foregroundStyle(Color.ST.textPrimary)
                     .multilineTextAlignment(.center)
 
                 Text(STResourcesStrings.Localizable.firstTransferDescription)
                     .font(.ST.body)
-                    .foregroundStyle(STResourcesAsset.Colors.greyElephant.swiftUIColor)
+                    .foregroundStyle(Color.ST.textSecondary)
                     .multilineTextAlignment(.center)
             }
 

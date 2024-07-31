@@ -42,7 +42,7 @@ struct MessageView: View {
                     HStack(spacing: 8) {
                         Text(STResourcesStrings.Localizable.fromHeader)
                             .font(.ST.callout)
-                            .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                            .foregroundStyle(Color.ST.textPrimary)
                         Text(from)
                             .roundedLabel()
                     }
@@ -53,13 +53,13 @@ struct MessageView: View {
 
                 Text(message)
                     .font(.ST.callout)
-                    .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                    .foregroundStyle(Color.ST.textPrimary)
                     .padding(24)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .background {
                 RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(STResourcesAsset.Colors.greyPolarBear.swiftUIColor)
+                    .foregroundStyle(Color.ST.cardBackground)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

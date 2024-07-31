@@ -28,7 +28,7 @@ struct SentList: View {
         List {
             Text(STResourcesStrings.Localizable.sharedFilesTitle)
                 .font(.ST.title)
-                .foregroundStyle(STResourcesAsset.Colors.greyOrca.swiftUIColor)
+                .foregroundStyle(Color.ST.textPrimary)
                 .padding(.horizontal, value: .medium)
                 .padding(.top, value: .medium)
                 .listRowInsets(EdgeInsets(.zero))
