@@ -16,27 +16,32 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct TransferCellThumbnailsView: View {
-    let itemCount: Int
+    let files: [File]
 
     private var additionalItemsCount: Int {
-        if itemCount > 4 {
-            return itemCount - 3
+        if files.count > 99 + 3 { // +3 visible
+            return 99
+        }
+        if files.count > 4 {
+            return files.count - 3
         }
         return 0
     }
 
-    private var itemsToShow: Int {
-        return itemCount - additionalItemsCount
+    private var itemsToShow: [File] {
+        return Array(files.prefix(3))
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(1 ... itemsToShow, id: \.self) { _ in
+            ForEach(itemsToShow, id: \.uuid) { _ in
                 SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
             }
             if additionalItemsCount > 0 {
@@ -47,5 +52,5 @@ struct TransferCellThumbnailsView: View {
 }
 
 #Preview {
-    TransferCellThumbnailsView(itemCount: 4)
+    TransferCellThumbnailsView(files: [PreviewHelper.sampleFile, PreviewHelper.sampleFile, PreviewHelper.sampleFile])
 }

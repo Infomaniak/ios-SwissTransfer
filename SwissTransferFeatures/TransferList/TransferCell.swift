@@ -35,7 +35,7 @@ struct TransferCell: View {
                     .font(.ST.callout)
                     .foregroundStyle(Color.ST.textSecondary)
 
-                TransferCellThumbnailsView(itemCount: transfer.castedContainer.files.count)
+                TransferCellThumbnailsView(files: transfer.castedContainer.files)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
