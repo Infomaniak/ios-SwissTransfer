@@ -17,15 +17,38 @@
  */
 
 import SwiftUI
+import InfomaniakCoreUI
 
 public struct TransferDetailsView: View {
-    public init() {}
+    private let title: String
+
+    public init(title: String) {
+        self.title = title
+    }
 
     public var body: some View {
-        Text("TransferDetailsView")
+        ScrollView {
+            VStack(spacing: IKPadding.large) {
+                HeaderView()
+
+                MessageView(recipient: "john.smith@ik.me", message: "Le contenu du message")
+
+                ContentView()
+            }
+            .padding(.vertical, value: .large)
+            .padding(.horizontal, value: .medium)
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(title)
+                    .font(.ST.title2)
+                    .foregroundStyle(.white)
+            }
+        }
+        .stNavigationBarStyle()
     }
 }
 
 #Preview {
-    TransferDetailsView()
+    TransferDetailsView(title: "Rapport d'oral - Master 2")
 }

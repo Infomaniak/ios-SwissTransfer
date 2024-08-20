@@ -18,18 +18,22 @@
 
 import SwiftUI
 
-struct STNavigationBarStyleModifier: ViewModifier {
+struct RoundedLabelModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
+            .font(.ST.body)
+            .foregroundStyle(Color.ST.secondary)
+            .padding(.vertical, 2)
+            .padding(.horizontal, value: .small)
+            .background {
+                RoundedRectangle(cornerRadius: 30)
+                    .foregroundStyle(Color.ST.recipientLabelBackground)
+            }
     }
 }
 
 public extension View {
-    /// Style the navigationBar
-    func stNavigationBarStyle() -> some View {
-        modifier(STNavigationBarStyleModifier())
+    func roundedLabel() -> some View {
+        modifier(RoundedLabelModifier())
     }
 }
