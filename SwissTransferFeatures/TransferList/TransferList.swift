@@ -24,11 +24,12 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferList: View {
-    let transfers: [Transfer]
+    @StateObject var viewModel: TransferListViewModel
+
     let onSelect: (Transfer) -> Void
 
     public init(transfers: [Transfer], onSelect: @escaping (Transfer) -> Void) {
-        self.transfers = []
+        _viewModel = StateObject(wrappedValue: TransferListViewModel(transfers: transfers))
         self.onSelect = onSelect
     }
 
@@ -42,31 +43,22 @@ public struct TransferList: View {
                 .listRowInsets(EdgeInsets(.zero))
                 .listRowSeparator(.hidden)
 
-            Section {
-                TransferCell(transfer: PreviewHelper.sampleTransfer)
-                    .onTapGesture {
-                        onSelect(PreviewHelper.sampleTransfer)
+            ForEach(viewModel.sections ?? []) { section in
+                Section {
+                    ForEach(section.transfers, id: \.linkUUID) { transfer in
+                        TransferCell(transfer: transfer)
+                            .onTapGesture {
+                                onSelect(transfer)
+                            }
                     }
-                TransferCell(transfer: PreviewHelper.sampleTransfer)
-                TransferCell(transfer: PreviewHelper.sampleTransfer)
-                TransferCell(transfer: PreviewHelper.sampleTransfer)
-            } header: {
-                Text("Aujourd'hui")
-                    .sectionHeader()
-                    .padding(.horizontal, value: .medium)
+                } header: {
+                    Text(section.title)
+                        .sectionHeader()
+                        .padding(.horizontal, value: .medium)
+                }
+                .listRowInsets(EdgeInsets(.zero))
+                .listRowSeparator(.hidden)
             }
-            .listRowInsets(EdgeInsets(.zero))
-            .listRowSeparator(.hidden)
-
-            Section {
-                TransferCell(transfer: PreviewHelper.sampleTransfer)
-            } header: {
-                Text("Hier")
-                    .sectionHeader()
-                    .padding(.horizontal, value: .medium)
-            }
-            .listRowInsets(EdgeInsets(.zero))
-            .listRowSeparator(.hidden)
         }
         .listRowSpacing(0)
         .listStyle(.plain)
@@ -75,6 +67,11 @@ public struct TransferList: View {
 
 #Preview {
     TransferList(
-        transfers: [PreviewHelper.sampleTransfer, PreviewHelper.sampleTransfer, PreviewHelper.sampleTransfer]
+        transfers: [
+            PreviewHelper.sampleTransfer,
+            PreviewHelper.sampleTransfer,
+            PreviewHelper.sampleOldTransfer,
+            PreviewHelper.sampleTransfer
+        ]
     ) { _ in }
 }

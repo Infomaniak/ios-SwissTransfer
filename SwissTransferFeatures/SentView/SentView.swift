@@ -46,7 +46,7 @@ public struct SentView: View {
                     }
                 }
             }
-            .navigationDestination(for: NavigableTransfer.self) { value in
+            .navigationDestination(for: NavigableTransfer.self) { transfer in
                 TransferDetailsView(title: "Rapport d'oral - Master 2")
             }
             .stNavigationBar()

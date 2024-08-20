@@ -17,18 +17,28 @@
  */
 
 import STCore
+import STTransferDetailsView
 import STTransferList
 import SwiftUI
 import SwissTransferCore
 
 public struct ReceivedView: View {
-    @State private var transfers = [PreviewHelper.sampleTransfer]
+    @State private var viewRouter = ViewRouter()
+    @State private var transfers = [PreviewHelper.sampleTransfer, PreviewHelper.sampleTransfer]
 
     public init() {}
 
     public var body: some View {
-        TransferList(transfers: transfers) { transfer in
+        NavigationStack(path: $viewRouter.path) {
+            TransferList(transfers: transfers) { transfer in
+                viewRouter.navigate(to: transfer)
+            }
+            .navigationDestination(for: NavigableTransfer.self) { transfer in
+                TransferDetailsView(title: "Rapport d'oral - Master 2")
+            }
+            .stNavigationBar()
         }
+        .environmentObject(viewRouter)
     }
 }
 

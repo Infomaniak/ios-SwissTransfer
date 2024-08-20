@@ -55,7 +55,19 @@ public enum PreviewHelper {
     public static let sampleTransfer: Transfer = PreviewTransfer(
         container: sampleContainer,
         containerUUID: sampleContainer.uuid,
-        createdDateTimestamp: 0,
+        createdDateTimestamp: 1_723_960_169,
+        downloadCounterCredit: 0,
+        downloadHost: "",
+        expiredDateTimestamp: 0,
+        isDownloadOnetime: 0,
+        isMailSent: true,
+        linkUUID: "linkUUID"
+    )
+
+    public static let sampleOldTransfer: Transfer = PreviewTransfer(
+        container: sampleContainer,
+        containerUUID: sampleContainer.uuid,
+        createdDateTimestamp: 1_714_160_797,
         downloadCounterCredit: 0,
         downloadHost: "",
         expiredDateTimestamp: 0,

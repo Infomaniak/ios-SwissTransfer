@@ -18,10 +18,23 @@
 
 import Foundation
 import STCore
+import STResources
 
 public extension Transfer {
     var castedContainer: Container {
         return container as! Container
+    }
+
+    var date: Date {
+        Date(timeIntervalSince1970: TimeInterval(createdDateTimestamp))
+    }
+
+    var sectionDate: String {
+        if let sectionDateInterval = (ReferenceDate.allCases.first { $0.dateInterval.contains(date) }) {
+            return sectionDateInterval.rawValue
+        } else {
+            return "\(date.startOfMonth.timeIntervalSince1970)"
+        }
     }
 }
 
