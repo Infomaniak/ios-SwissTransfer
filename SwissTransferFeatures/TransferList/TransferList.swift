@@ -16,15 +16,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
+import STDatabase
 import STResources
-import STTransferDetailsView
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
-struct SentList: View {
-    @State private var showDetail = false
+public struct TransferList: View {
+    let transfers: [Transfer]
+    let onSelect: (Transfer) -> Void
 
-    var body: some View {
+    public init(transfers: [Transfer], onSelect: @escaping (Transfer) -> Void) {
+        self.transfers = []
+        self.onSelect = onSelect
+    }
+
+    public var body: some View {
         List {
             Text(STResourcesStrings.Localizable.sharedFilesTitle)
                 .font(.ST.title)
@@ -35,14 +43,13 @@ struct SentList: View {
                 .listRowSeparator(.hidden)
 
             Section {
-                SentCell(itemCount: 6)
+                TransferCell(transfer: PreviewHelper.sampleTransfer)
                     .onTapGesture {
-                        // Transfer
-                        showDetail = true
+                        onSelect(PreviewHelper.sampleTransfer)
                     }
-                SentCell(itemCount: 3)
-                SentCell(itemCount: 4)
-                SentCell(itemCount: 2)
+                TransferCell(transfer: PreviewHelper.sampleTransfer)
+                TransferCell(transfer: PreviewHelper.sampleTransfer)
+                TransferCell(transfer: PreviewHelper.sampleTransfer)
             } header: {
                 Text("Aujourd'hui")
                     .sectionHeader()
@@ -52,7 +59,7 @@ struct SentList: View {
             .listRowSeparator(.hidden)
 
             Section {
-                SentCell(itemCount: 3)
+                TransferCell(transfer: PreviewHelper.sampleTransfer)
             } header: {
                 Text("Hier")
                     .sectionHeader()
@@ -63,15 +70,11 @@ struct SentList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .floatingActionButton(style: .newTransfer) {
-            // New transfer
-        }
-        .navigationDestination(isPresented: $showDetail) {
-            TransferDetailsView(title: "Rapport d'oral - Master 2")
-        }
     }
 }
 
 #Preview {
-    SentList()
+    TransferList(
+        transfers: [PreviewHelper.sampleTransfer, PreviewHelper.sampleTransfer, PreviewHelper.sampleTransfer]
+    ) { _ in }
 }

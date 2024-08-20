@@ -20,7 +20,7 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct SentCellThumbnailsView: View {
+struct TransferCellThumbnailsView: View {
     let itemCount: Int
 
     private var additionalItemsCount: Int {
@@ -47,5 +47,5 @@ struct SentCellThumbnailsView: View {
 }
 
 #Preview {
-    SentCellThumbnailsView(itemCount: 8)
+    TransferCellThumbnailsView(itemCount: 4)
 }

@@ -16,18 +16,18 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreUI
+import STCore
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
+import SwissTransferCore
 
-struct SentCell: View {
-    let itemCount: Int
+struct TransferCell: View {
+    let transfer: Transfer
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Rapport d'oral - Master 2")
+                Text(transfer.castedContainer.message ?? "")
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 
@@ -35,7 +35,7 @@ struct SentCell: View {
                     .font(.ST.callout)
                     .foregroundStyle(Color.ST.textSecondary)
 
-                SentCellThumbnailsView(itemCount: itemCount)
+                TransferCellThumbnailsView(itemCount: transfer.castedContainer.files.count)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -53,5 +53,5 @@ struct SentCell: View {
 }
 
 #Preview {
-    SentCell(itemCount: 6)
+    TransferCell(transfer: PreviewHelper.sampleTransfer)
 }
