@@ -101,7 +101,7 @@ public extension Color {
 
 extension Color {
     init(light: STResourcesColors, dark: STResourcesColors) {
-        let dynamicColor = UIColor { $0.userInterfaceStyle == .dark ? light.color : dark.color }
+        let dynamicColor = UIColor { $0.userInterfaceStyle == .dark ? dark.color : light.color }
         self.init(uiColor: dynamicColor)
     }
 }
