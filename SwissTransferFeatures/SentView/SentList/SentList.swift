@@ -36,6 +36,10 @@ struct SentList: View {
 
             Section {
                 SentCell(itemCount: 6)
+                    .onTapGesture {
+                        // Transfer
+                        showDetail = true
+                    }
                 SentCell(itemCount: 3)
                 SentCell(itemCount: 4)
                 SentCell(itemCount: 2)
@@ -60,8 +64,7 @@ struct SentList: View {
         .listRowSpacing(0)
         .listStyle(.plain)
         .floatingActionButton(style: .newTransfer) {
-            // Transfer
-            showDetail = true
+            // New transfer
         }
         .navigationDestination(isPresented: $showDetail) {
             TransferDetailsView(title: "Rapport d'oral - Master 2")
