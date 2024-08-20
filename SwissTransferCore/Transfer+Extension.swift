@@ -16,33 +16,27 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import STCore
-import STMainView
-import STOnboardingView
-import SwiftUI
-import SwissTransferCoreUI
 
-public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
-
-    public init() {}
-
-    public var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
-            case .preloading:
-                PreloadingView()
-            case .onboarding:
-                OnboardingView()
-            }
-        }
-        .environmentObject(rootViewState)
+public extension Transfer {
+    var castedContainer: Container {
+        return container as! Container
     }
 }
 
-#Preview {
-    RootView()
+public struct NavigableTransfer: Hashable {
+    public static func == (lhs: NavigableTransfer, rhs: NavigableTransfer) -> Bool {
+        return lhs.transfer.linkUUID == rhs.transfer.linkUUID
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(transfer.linkUUID)
+    }
+
+    public let transfer: Transfer
+
+    public init(transfer: Transfer) {
+        self.transfer = transfer
+    }
 }

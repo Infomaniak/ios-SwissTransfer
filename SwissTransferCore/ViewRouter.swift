@@ -17,32 +17,17 @@
  */
 
 import STCore
-import STMainView
-import STOnboardingView
 import SwiftUI
-import SwissTransferCoreUI
 
-public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
+public class ViewRouter: ObservableObject {
+    @Published public var path: NavigationPath
 
-    public init() {}
-
-    public var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
-            case .preloading:
-                PreloadingView()
-            case .onboarding:
-                OnboardingView()
-            }
-        }
-        .environmentObject(rootViewState)
+    public init(path: NavigationPath = NavigationPath()) {
+        self.path = path
     }
-}
 
-#Preview {
-    RootView()
+    public func navigate(to transfer: Transfer) {
+        let navigableTransfer = NavigableTransfer(transfer: transfer)
+        path.append(navigableTransfer)
+    }
 }

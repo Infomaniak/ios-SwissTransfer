@@ -27,7 +27,7 @@ public struct MainView: View {
 
     public var body: some View {
         TabView {
-            SentView(isEmpty: false)
+            SentView(transfers: [])
                 .tabItem {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.sentTitle) },

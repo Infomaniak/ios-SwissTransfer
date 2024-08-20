@@ -16,33 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import STCore
-import STMainView
-import STOnboardingView
-import SwiftUI
-import SwissTransferCoreUI
 
-public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
-
-    public init() {}
-
-    public var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
-            case .preloading:
-                PreloadingView()
-            case .onboarding:
-                OnboardingView()
-            }
-        }
-        .environmentObject(rootViewState)
-    }
-}
-
-#Preview {
-    RootView()
-}
+extension TransferManager: ObservableObject {}

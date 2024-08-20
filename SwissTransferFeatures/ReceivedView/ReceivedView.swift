@@ -16,13 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
+import STTransferList
 import SwiftUI
+import SwissTransferCore
 
 public struct ReceivedView: View {
+    @State private var transfers = [PreviewHelper.sampleTransfer]
+
     public init() {}
 
     public var body: some View {
-        Text("ReceivedView")
+        TransferList(transfers: transfers) { transfer in
+        }
     }
 }
 
