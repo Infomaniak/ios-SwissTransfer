@@ -16,27 +16,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 
-// TODO: - Manage real preview (not only fileType)
 public struct BigThumbnailView: View {
-    private let icon: Image
+    private let file: File
 
-    public init(icon: Image) {
-        self.icon = icon
+    public init(file: File) {
+        self.file = file
     }
 
     public var body: some View {
         VStack(spacing: 0) {
             VStack {
-                FileIconView(icon: icon, type: .big)
+                FileIconView(icon: file.icon.swiftUIImage, type: .big)
             }
             .frame(height: 96)
             .frame(maxWidth: .infinity)
 
             VStack(alignment: .leading) {
-                Text("prévisions2024.pptx")
+                Text(file.fileName)
                     .foregroundStyle(Color.ST.textPrimary)
                 Text("14 Mo")
                     .foregroundStyle(Color.ST.textSecondary)
@@ -59,6 +60,6 @@ public struct BigThumbnailView: View {
 }
 
 #Preview {
-    BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+    BigThumbnailView(file: PreviewHelper.sampleFile)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
 }

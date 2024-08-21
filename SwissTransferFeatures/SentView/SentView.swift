@@ -38,7 +38,7 @@ public struct SentView: View {
                 if transfers.isEmpty {
                     SentEmptyView()
                 } else {
-                    TransferList(transfers: []) { transfer in
+                    TransferList(transfers: transfers) { transfer in
                         viewRouter.navigate(to: transfer)
                     }
                     .floatingActionButton(style: .newTransfer) {
@@ -46,8 +46,8 @@ public struct SentView: View {
                     }
                 }
             }
-            .navigationDestination(for: NavigableTransfer.self) { transfer in
-                TransferDetailsView(title: "Rapport d'oral - Master 2")
+            .navigationDestination(for: NavigableTransfer.self) { navTransfer in
+                TransferDetailsView(transfer: navTransfer.transfer)
             }
             .stNavigationBar()
         }
@@ -56,7 +56,12 @@ public struct SentView: View {
 }
 
 #Preview("SentView") {
-    SentView(transfers: [PreviewHelper.sampleTransfer])
+    SentView(transfers: [
+        PreviewHelper.sampleTransfer,
+        PreviewHelper.sampleTransfer,
+        PreviewHelper.sampleTransfer,
+        PreviewHelper.sampleOldTransfer
+    ])
 }
 
 #Preview("Empty SentView") {

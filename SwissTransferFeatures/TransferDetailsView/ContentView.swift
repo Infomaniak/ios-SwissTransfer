@@ -16,11 +16,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ContentView: View {
+    let files: [File]
     let columns = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
@@ -37,16 +40,14 @@ struct ContentView: View {
                 spacing: 16,
                 pinnedViews: []
             ) {
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-                BigThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+                ForEach(files, id: \.uuid) { file in
+                    BigThumbnailView(file: file)
+                }
             }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(files: [PreviewHelper.sampleFile, PreviewHelper.sampleFile, PreviewHelper.sampleFile])
 }

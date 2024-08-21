@@ -33,8 +33,8 @@ public struct ReceivedView: View {
             TransferList(transfers: transfers) { transfer in
                 viewRouter.navigate(to: transfer)
             }
-            .navigationDestination(for: NavigableTransfer.self) { transfer in
-                TransferDetailsView(title: "Rapport d'oral - Master 2")
+            .navigationDestination(for: NavigableTransfer.self) { navTransfer in
+                TransferDetailsView(transfer: navTransfer.transfer)
             }
             .stNavigationBar()
         }

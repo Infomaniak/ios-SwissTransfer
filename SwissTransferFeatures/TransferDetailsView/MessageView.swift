@@ -23,7 +23,7 @@ import SwissTransferCoreUI
 struct MessageView: View {
     var recipient: String?
     var from: String?
-    let message: String
+    let message: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -37,29 +37,31 @@ struct MessageView: View {
             Text(STResourcesStrings.Localizable.messageHeader)
                 .sectionHeader()
 
-            VStack(alignment: .leading, spacing: 0) {
-                if let from {
-                    HStack(spacing: 8) {
-                        Text(STResourcesStrings.Localizable.fromHeader)
-                            .font(.ST.callout)
-                            .foregroundStyle(Color.ST.textPrimary)
-                        Text(from)
-                            .roundedLabel()
+            if let message {
+                VStack(alignment: .leading, spacing: 0) {
+                    if let from {
+                        HStack(spacing: 8) {
+                            Text(STResourcesStrings.Localizable.fromHeader)
+                                .font(.ST.callout)
+                                .foregroundStyle(Color.ST.textPrimary)
+                            Text(from)
+                                .roundedLabel()
+                        }
+                        .padding(24)
+
+                        DividerView()
                     }
-                    .padding(24)
 
-                    DividerView()
+                    Text(message)
+                        .font(.ST.callout)
+                        .foregroundStyle(Color.ST.textPrimary)
+                        .padding(24)
                 }
-
-                Text(message)
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .padding(24)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundStyle(Color.ST.cardBackground)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .foregroundStyle(Color.ST.cardBackground)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
