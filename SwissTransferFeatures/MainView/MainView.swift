@@ -30,7 +30,7 @@ public struct MainView: View {
 
     public var body: some View {
         TabView {
-            SentView(transfers: [])
+            SentView()
                 .tabItem {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.sentTitle) },

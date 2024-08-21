@@ -41,7 +41,7 @@ public enum PreviewHelper {
         downloadLimit: 0,
         duration: 0,
         expiredDateTimestamp: 0,
-        files: [sampleFile, sampleFile, sampleFile],
+        files: [sampleFile],
         lang: "fr",
         message: "Rapport d'oral - Master 2",
         needPassword: 0,

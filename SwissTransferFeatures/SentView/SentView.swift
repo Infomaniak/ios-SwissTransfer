@@ -25,12 +25,10 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @State private var viewRouter = ViewRouter()
-    @State private var transfers: [Transfer]
+    @StateObject private var viewRouter = ViewRouter()
+    @State private var transfers: [Transfer] = [PreviewHelper.sampleTransfer]
 
-    public init(transfers: [Transfer]) {
-        self.transfers = transfers
-    }
+    public init() {}
 
     public var body: some View {
         NavigationStack(path: $viewRouter.path) {
@@ -56,14 +54,5 @@ public struct SentView: View {
 }
 
 #Preview("SentView") {
-    SentView(transfers: [
-        PreviewHelper.sampleTransfer,
-        PreviewHelper.sampleTransfer,
-        PreviewHelper.sampleTransfer,
-        PreviewHelper.sampleOldTransfer
-    ])
-}
-
-#Preview("Empty SentView") {
-    SentView(transfers: [])
+    SentView()
 }

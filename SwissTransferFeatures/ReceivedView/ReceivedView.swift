@@ -23,8 +23,8 @@ import SwiftUI
 import SwissTransferCore
 
 public struct ReceivedView: View {
-    @State private var viewRouter = ViewRouter()
-    @State private var transfers = [PreviewHelper.sampleTransfer, PreviewHelper.sampleTransfer]
+    @StateObject private var viewRouter = ViewRouter()
+    @State private var transfers = [PreviewHelper.sampleTransfer]
 
     public init() {}
 
