@@ -17,19 +17,28 @@
  */
 
 import STMainView
+import STOnboardingView
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct RootView: View {
-    @State private var showOnboarding = false
+    @StateObject private var rootViewState = RootViewState()
 
     public init() {}
 
     public var body: some View {
-        if showOnboarding {
-            Text("Onboarding")
-        } else {
-            MainView()
+        ZStack {
+            switch rootViewState.state {
+            case .mainView(let mainViewState):
+                MainView()
+                    .environmentObject(mainViewState)
+            case .preloading:
+                PreloadingView()
+            case .onboarding:
+                OnboardingView()
+            }
         }
+        .environmentObject(rootViewState)
     }
 }
 
