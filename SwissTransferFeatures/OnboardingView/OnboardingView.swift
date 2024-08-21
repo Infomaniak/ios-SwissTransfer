@@ -16,13 +16,30 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct OnboardingView: View {
+    @LazyInjectService private var accountManager: AccountManager
+
+    @EnvironmentObject private var rootViewState: RootViewState
+
     public init() {}
 
     public var body: some View {
-        Text("OnboardingView")
+        VStack {
+            Text("OnboardingView")
+            Button("Start") {
+                Task {
+                    await accountManager.createAndSetCurrentAccount()
+                    if let currentManager = await accountManager.getCurrentManager() {
+                        rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+                    }
+                }
+            }
+        }
     }
 }
 

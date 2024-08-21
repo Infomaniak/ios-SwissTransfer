@@ -17,7 +17,39 @@
  */
 
 import Foundation
+import InfomaniakCore
+import STCore
 
 public actor AccountManager {
+    /// In case we later choose to support multi account / login we simulate an existing guest
+    private static let guestUserId = -1
+    public typealias UserId = Int
 
+    private var managers = [UserId: TransferManager]()
+
+    init() {}
+
+    public func createAndSetCurrentAccount() {
+        UserDefaults.shared.currentUserId = AccountManager.guestUserId
+    }
+
+    public func getManager(userId: UserId) -> TransferManager? {
+        assert(userId == AccountManager.guestUserId, "Only guest user is supported")
+        if let manager = managers[userId] {
+            return manager
+        } else {
+            managers[userId] = SwissTransferInjection().transferManager
+            return managers[userId]
+        }
+    }
+
+    public func getCurrentManager() -> TransferManager? {
+        let currentUserId = UserDefaults.shared.currentUserId
+        guard currentUserId != 0 else {
+            return nil
+        }
+
+        assert(currentUserId == AccountManager.guestUserId, "Only guest user is supported")
+        return getManager(userId: currentUserId)
+    }
 }

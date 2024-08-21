@@ -16,18 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STRootView
-import SwiftUI
-import SwissTransferCore
+import Foundation
+import STCore
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
-
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-        }
+public final class MainViewState: ObservableObject {
+    public let transferManager: TransferManager
+    
+    public init(transferManager: TransferManager) {
+        self.transferManager = transferManager
     }
 }

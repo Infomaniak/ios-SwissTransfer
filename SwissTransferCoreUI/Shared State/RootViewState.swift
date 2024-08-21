@@ -16,18 +16,30 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STRootView
+import Foundation
 import SwiftUI
-import SwissTransferCore
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
-
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
+public enum RootViewType: Equatable {
+    public static func == (lhs: RootViewType, rhs: RootViewType) -> Bool {
+        switch (lhs, rhs) {
+        case (.onboarding, .onboarding):
+            return true
+        case (.preloading, .preloading):
+            return true
+        case (.mainView(let lhsMainViewState), .mainView(let rhsMainViewState)):
+            return lhsMainViewState.transferManager == rhsMainViewState.transferManager
+        default:
+            return false
         }
     }
+
+    case mainView(MainViewState)
+    case preloading
+    case onboarding
+}
+
+public final class RootViewState: ObservableObject {
+    @Published public var state: RootViewType = .preloading
+
+    public init() {}
 }

@@ -16,18 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STRootView
-import SwiftUI
-import SwissTransferCore
+import Foundation
+import OSLog
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
+extension Logger {
+    static let view = Logger(category: "View")
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-        }
+    init(category: String) {
+        self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
     }
 }

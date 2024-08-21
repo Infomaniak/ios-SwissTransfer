@@ -16,18 +16,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STRootView
+import InfomaniakDI
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
+struct PreloadingView: View {
+    @LazyInjectService private var accountManager: AccountManager
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-        }
+    @EnvironmentObject private var rootViewState: RootViewState
+
+    var body: some View {
+        ProgressView()
+            .task {
+                if let currentManager = await accountManager.getCurrentManager() {
+                    rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+                } else {
+                    rootViewState.state = .onboarding
+                }
+            }
     }
+}
+
+#Preview {
+    PreloadingView()
+        .environmentObject(RootViewState())
 }

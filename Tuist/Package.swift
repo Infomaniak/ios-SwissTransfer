@@ -5,7 +5,9 @@ import PackageDescription
 import ProjectDescription
 
 let packageSettings = PackageSettings(
-    productTypes: [:]
+    productTypes: [
+        "InfomaniakDI": .framework
+    ]
 )
 #endif
 
