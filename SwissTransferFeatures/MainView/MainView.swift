@@ -21,8 +21,11 @@ import STResources
 import STSentView
 import STSettingsView
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct MainView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
+
     public init() {}
 
     public var body: some View {
@@ -51,6 +54,7 @@ public struct MainView: View {
                     )
                 }
         }
+        .environmentObject(mainViewState.transferManager)
     }
 }
 
