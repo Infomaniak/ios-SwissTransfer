@@ -21,10 +21,8 @@ import STResources
 
 // TODO: - Move to InfomaniakCore ?
 extension Date {
-    var toString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d MMM y - HH:mm"
-        return formatter.string(from: self)
+    func toString(withTime: Bool = true) -> String {
+        return formatted(date: .long, time: withTime ? .shortened : .omitted)
     }
 
     static var yesterday: Date {

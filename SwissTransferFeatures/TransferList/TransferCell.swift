@@ -31,7 +31,7 @@ struct TransferCell: View {
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text("50 Mo · \(STResourcesStrings.Localizable.expiresIn(30))")
+                Text("50 Mo · \(STResourcesStrings.Localizable.expiresIn(transfer.expiresIn))")
                     .font(.ST.callout)
                     .foregroundStyle(Color.ST.textSecondary)
 

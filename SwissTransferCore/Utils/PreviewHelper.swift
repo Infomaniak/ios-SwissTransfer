@@ -58,7 +58,7 @@ public enum PreviewHelper {
         createdDateTimestamp: 1_723_960_169,
         downloadCounterCredit: 0,
         downloadHost: "",
-        expiredDateTimestamp: 0,
+        expiredDateTimestamp: expireTimeStamp(expired: false),
         isDownloadOnetime: 0,
         isMailSent: true,
         linkUUID: "linkUUID"
@@ -70,11 +70,19 @@ public enum PreviewHelper {
         createdDateTimestamp: 1_714_160_797,
         downloadCounterCredit: 0,
         downloadHost: "",
-        expiredDateTimestamp: 0,
+        expiredDateTimestamp: expireTimeStamp(expired: true),
         isDownloadOnetime: 0,
         isMailSent: true,
         linkUUID: "linkUUID"
     )
+
+    private static func expireTimeStamp(expired: Bool) -> Int64 {
+        let date = Date()
+        let calendar = Calendar(identifier: .gregorian)
+        let days = expired ? -4 : 4
+        let expireDate = calendar.date(byAdding: DateComponents(calendar: calendar, day: days), to: date)
+        return Int64(expireDate?.timeIntervalSince1970 ?? 0)
+    }
 }
 
 private class PreviewFile: File {

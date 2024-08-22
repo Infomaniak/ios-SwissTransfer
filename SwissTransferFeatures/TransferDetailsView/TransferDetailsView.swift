@@ -31,7 +31,7 @@ public struct TransferDetailsView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: IKPadding.large) {
-                HeaderView()
+                HeaderView(transfer: transfer)
 
                 MessageView(recipient: "john.smith@ik.me", from: "john.smith@ik.me", message: transfer.castedContainer.message)
 

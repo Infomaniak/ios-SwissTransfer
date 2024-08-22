@@ -16,14 +16,18 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct HeaderView: View {
+    let transfer: Transfer
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Aujourd'hui")
+            Text(transfer.detailDate)
                 .sectionHeader()
                 .padding(.bottom, value: .small)
 
@@ -36,7 +40,7 @@ struct HeaderView: View {
             DividerView()
 
             Label(
-                title: { Text(STResourcesStrings.Localizable.expiresIn(30)) },
+                title: { Text(STResourcesStrings.Localizable.expiresIn(transfer.expiresIn)) },
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -53,5 +57,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView()
+    HeaderView(transfer: PreviewHelper.sampleTransfer)
 }
