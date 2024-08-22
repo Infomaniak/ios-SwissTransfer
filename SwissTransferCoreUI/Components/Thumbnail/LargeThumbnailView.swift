@@ -21,7 +21,7 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-public struct BigThumbnailView: View {
+public struct LargeThumbnailView: View {
     private let file: File
 
     public init(file: File) {
@@ -60,6 +60,6 @@ public struct BigThumbnailView: View {
 }
 
 #Preview {
-    BigThumbnailView(file: PreviewHelper.sampleFile)
+    LargeThumbnailView(file: PreviewHelper.sampleFile)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
 }
