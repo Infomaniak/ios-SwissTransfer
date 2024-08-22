@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import STResources
 
 // TODO: - Move to InfomaniakCore ?
 extension Date {
@@ -91,20 +92,15 @@ public enum ReferenceDate: String, CaseIterable {
     public var title: String {
         switch self {
         case .today:
-            return "Today"
-//            return MailResourcesStrings.Localizable.threadListSectionToday
+            return STResourcesStrings.Localizable.transferListSectionToday
         case .yesterday:
-            return "Yesterday"
-//            return MailResourcesStrings.Localizable.messageDetailsYesterday
+            return STResourcesStrings.Localizable.transferListSectionYesterday
         case .thisWeek:
-            return "This week"
-//            return MailResourcesStrings.Localizable.threadListSectionThisWeek
+            return STResourcesStrings.Localizable.transferListSectionThisWeek
         case .lastWeek:
-            return "Last week"
-//            return MailResourcesStrings.Localizable.threadListSectionLastWeek
+            return STResourcesStrings.Localizable.transferListSectionLastWeek
         case .thisMonth:
-            return "This month"
-//            return MailResourcesStrings.Localizable.threadListSectionThisMonth
+            return STResourcesStrings.Localizable.transferListSectionThisMonth
         }
     }
 }
