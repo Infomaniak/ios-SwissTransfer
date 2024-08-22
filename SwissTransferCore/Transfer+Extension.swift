@@ -21,6 +21,10 @@ import STCore
 import STResources
 
 public extension Transfer {
+    var name: String {
+        return date.toString
+    }
+
     var castedContainer: Container {
         return container as! Container
     }

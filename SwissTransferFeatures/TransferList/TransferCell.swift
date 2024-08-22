@@ -27,7 +27,7 @@ struct TransferCell: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
-                Text(transfer.castedContainer.message ?? "")
+                Text(transfer.name)
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 

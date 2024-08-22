@@ -42,7 +42,7 @@ public struct TransferDetailsView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("Rapport d'oral - Master 2")
+                Text(transfer.name)
                     .font(.ST.title2)
                     .foregroundStyle(.white)
             }
