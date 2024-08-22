@@ -22,7 +22,7 @@ import STResources
 
 public extension Transfer {
     var name: String {
-        return date.toString()
+        return date.toString
     }
 
     var castedContainer: Container {
@@ -54,7 +54,7 @@ public extension Transfer {
         case .today, .yesterday:
             return refDate!.title
         default:
-            return date.toString(withTime: false)
+            return date.toString
         }
     }
 }
