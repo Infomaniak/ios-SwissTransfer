@@ -27,10 +27,6 @@ struct HeaderView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(transfer.detailDate)
-                .sectionHeader()
-                .padding(.bottom, value: .small)
-
             Label(
                 title: { Text("4 fichiers") },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
