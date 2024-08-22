@@ -28,10 +28,10 @@ public enum PreviewHelper {
         eVirus: "",
         expiredDateTimestamp: 0,
         fileName: "Nom du fichier",
-        fileSizeInBytes: 0,
+        fileSizeInBytes: 8561,
         mimeType: "image/jpeg",
         path: nil,
-        receivedSizeInBytes: 0,
+        receivedSizeInBytes: 8561,
         uuid: "uuid"
     )
 
@@ -45,8 +45,8 @@ public enum PreviewHelper {
         lang: "fr",
         message: "Rapport d'oral - Master 2",
         needPassword: 0,
-        numberOfFile: 3,
-        sizeUploaded: 0,
+        numberOfFile: 1,
+        sizeUploaded: 8561,
         source: "",
         swiftVersion: 0,
         uuid: "uuid"

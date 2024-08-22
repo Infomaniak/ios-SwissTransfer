@@ -39,7 +39,7 @@ public struct BigThumbnailView: View {
             VStack(alignment: .leading) {
                 Text(file.fileName)
                     .foregroundStyle(Color.ST.textPrimary)
-                Text("14 Mo")
+                Text(file.fileSizeInBytes.formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)

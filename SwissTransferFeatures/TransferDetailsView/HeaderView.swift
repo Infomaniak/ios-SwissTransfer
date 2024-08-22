@@ -28,7 +28,7 @@ struct HeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label(
-                title: { Text("4 fichiers") },
+                title: { Text("4 fichiers · \(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount))") },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
             )
             .labelStyle(.horizontal)

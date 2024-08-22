@@ -31,9 +31,11 @@ struct TransferCell: View {
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text("50 Mo · \(STResourcesStrings.Localizable.expiresIn(transfer.expiresIn))")
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textSecondary)
+                Text(
+                    "\(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount)) · \(STResourcesStrings.Localizable.expiresIn(transfer.expiresIn))"
+                )
+                .font(.ST.callout)
+                .foregroundStyle(Color.ST.textSecondary)
 
                 TransferCellThumbnailsView(files: transfer.castedContainer.files)
             }
