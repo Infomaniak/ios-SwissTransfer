@@ -33,7 +33,7 @@ public struct TransferDetailsView: View {
             VStack(spacing: IKPadding.large) {
                 HeaderView(transfer: transfer)
 
-                MessageView(recipient: "john.smith@ik.me", from: "john.smith@ik.me", message: transfer.castedContainer.message)
+                MessageView(message: transfer.castedContainer.message)
 
                 ContentView(files: transfer.castedContainer.files)
             }

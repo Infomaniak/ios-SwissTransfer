@@ -21,57 +21,31 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct MessageView: View {
-    var recipient: String?
-    var from: String?
     let message: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if let recipient {
-                Text(STResourcesStrings.Localizable.recipientHeader)
+        if let message {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(STResourcesStrings.Localizable.messageHeader)
                     .sectionHeader()
-                Text(recipient)
-                    .roundedLabel()
-            }
 
-            Text(STResourcesStrings.Localizable.messageHeader)
-                .sectionHeader()
-
-            if let message {
-                VStack(alignment: .leading, spacing: 0) {
-                    if let from {
-                        HStack(spacing: 8) {
-                            Text(STResourcesStrings.Localizable.fromHeader)
-                                .font(.ST.callout)
-                                .foregroundStyle(Color.ST.textPrimary)
-                            Text(from)
-                                .roundedLabel()
-                        }
-                        .padding(24)
-
-                        DividerView()
+                Text(message)
+                    .font(.ST.callout)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .padding(24)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background {
+                        RoundedRectangle(cornerRadius: 16)
+                            .foregroundStyle(Color.ST.cardBackground)
                     }
-
-                    Text(message)
-                        .font(.ST.callout)
-                        .foregroundStyle(Color.ST.textPrimary)
-                        .padding(24)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .foregroundStyle(Color.ST.cardBackground)
-                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
 #Preview {
     MessageView(
-        recipient: "john.smith@ik.me",
-        from: "john.smith@ik.me",
         message: "Salut voici les images de la soirée chez Tanguy ! Hesite pas à me partager les tiennes dès que t'as un moment :)"
     )
 }
