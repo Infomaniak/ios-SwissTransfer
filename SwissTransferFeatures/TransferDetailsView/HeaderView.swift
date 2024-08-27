@@ -23,12 +23,13 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct HeaderView: View {
-    let transfer: Transfer
+    let transferSize: Int64
+    let expiringTimestamp: Int64
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label(
-                title: { Text("4 fichiers · \(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount))") },
+                title: { Text("4 fichiers · \(transferSize.formatted(.defaultByteCount))") },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -36,7 +37,7 @@ struct HeaderView: View {
             DividerView()
 
             Label(
-                title: { Text(transfer.expiredDateTimestamp.formatted(.expiring)) },
+                title: { Text(expiringTimestamp.formatted(.expiring)) },
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -53,5 +54,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(transfer: PreviewHelper.sampleTransfer)
+    HeaderView(transferSize: 8561, expiringTimestamp: 0)
 }

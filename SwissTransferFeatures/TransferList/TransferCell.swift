@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STCore
 import STResources
 import SwiftUI
@@ -26,7 +27,7 @@ struct TransferCell: View {
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: IKPadding.small) {
                 Text(transfer.name)
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)

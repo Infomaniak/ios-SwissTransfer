@@ -24,7 +24,7 @@ import SwissTransferCoreUI
 
 struct ContentView: View {
     let files: [File]
-    let columns = [
+    private let columns = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
     ]

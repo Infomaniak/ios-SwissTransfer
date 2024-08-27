@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -25,7 +26,7 @@ struct MessageView: View {
 
     var body: some View {
         if let message {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: IKPadding.medium) {
                 Text(STResourcesStrings.Localizable.messageHeader)
                     .sectionHeader()
 
@@ -34,10 +35,7 @@ struct MessageView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .padding(24)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background {
-                        RoundedRectangle(cornerRadius: 16)
-                            .foregroundStyle(Color.ST.cardBackground)
-                    }
+                    .background(Color.ST.cardBackground, in: .rect(cornerRadius: 16))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

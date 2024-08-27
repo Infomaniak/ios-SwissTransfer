@@ -20,7 +20,7 @@ import Foundation
 import STCore
 import SwissTransferCore
 
-final class DateSection: Identifiable, Equatable {
+struct DateSection: Identifiable, Equatable {
     static func == (lhs: DateSection, rhs: DateSection) -> Bool {
         lhs.id == rhs.id && lhs.title == rhs.title // && lhs.transfers == rhs.transfers
     }
@@ -38,7 +38,7 @@ final class DateSection: Identifiable, Equatable {
 
 final class TransferListViewModel: ObservableObject {
     @Published var sections: [DateSection]?
-    var transfers: [Transfer]
+    private var transfers: [Transfer]
 
     init(transfers: [Transfer]) {
         self.transfers = transfers
