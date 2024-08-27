@@ -18,6 +18,7 @@
 
 import Foundation
 import STCore
+import SwiftUI
 import SwissTransferCore
 
 struct DateSection: Identifiable, Equatable {
@@ -36,26 +37,33 @@ struct DateSection: Identifiable, Equatable {
     }
 }
 
+@MainActor
 final class TransferListViewModel: ObservableObject {
     @Published var sections: [DateSection]?
     private var transfers: [Transfer]
 
     init(transfers: [Transfer]) {
         self.transfers = transfers
-        sections = mapSection(results: transfers)
+        mapSection(results: transfers)
     }
 
-    private func mapSection(results: [Transfer]) -> [DateSection] {
-        let results = Dictionary(grouping: results) { $0.sectionDate }
-            .sorted {
-                guard let firstDate = $0.value.first?.date,
-                      let secondDate = $1.value.first?.date else { return false }
-                return firstDate > secondDate
+    private func mapSection(results: [Transfer]) {
+        Task {
+            let results = Dictionary(grouping: results) { $0.sectionDate }
+                .sorted {
+                    guard let firstDate = $0.value.first?.date,
+                          let secondDate = $1.value.first?.date else { return false }
+                    return firstDate > secondDate
+                }
+
+            let mappedSections = results.map {
+                let sectionTransfers = Array($0.value)
+                return DateSection(sectionKey: $0.key, transfers: sectionTransfers)
             }
 
-        return results.map {
-            let sectionTransfers = Array($0.value)
-            return DateSection(sectionKey: $0.key, transfers: sectionTransfers)
+            withAnimation {
+                self.sections = mappedSections
+            }
         }
     }
 }
