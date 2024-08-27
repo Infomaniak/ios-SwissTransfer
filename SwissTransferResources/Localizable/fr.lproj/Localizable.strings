@@ -4,7 +4,7 @@
  * Locale: fr, French
  * Tagged: ios
  * Exported by: Ambroise Decouttere
- * Exported at: Thu, 22 Aug 2024 07:46:56 +0200
+ * Exported at: Thu, 22 Aug 2024 13:50:47 +0200
  */
 
 /* loco:66bf172f88dce506ed0a5ce2 */
@@ -24,6 +24,9 @@
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Transfert téléchargé : %d/%d ";
+
+/* loco:66c725c0834eeac04c0b2ee2 */
+"expiredThe" = "Expiré le %@";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expire dans %d jours";
@@ -63,6 +66,9 @@
 
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "Général";
+
+/* loco:66c6e297bb7794739b0ec0d2 */
+"settingsDownloadsLimitTitle" = "Défini une limite de téléchargements par défaut pour tes transferts";
 
 /* loco:66c6beb4953867da65029872 */
 "settingsEmailLanguageTitle" = "Défini une langue par défaut pour vos transferts par e-mail";
@@ -149,7 +155,7 @@
 "transferListSectionThisWeek" = "Cette semaine";
 
 /* loco:66c6d006e6247c4847026ec2 */
-"transferListSectionToday" = "Aujourd'hui";
+"transferListSectionToday" = "Aujourd’hui";
 
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Hier";

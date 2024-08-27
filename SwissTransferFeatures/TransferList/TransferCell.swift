@@ -31,9 +31,10 @@ struct TransferCell: View {
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text(
-                    "\(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount)) · \(STResourcesStrings.Localizable.expiresIn(transfer.expiresIn))"
-                )
+                HStack(spacing: 0) {
+                    Text("\(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount)) · ")
+                    Text(transfer.expiredDateTimestamp.formatted(.expiring))
+                }
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textSecondary)
 

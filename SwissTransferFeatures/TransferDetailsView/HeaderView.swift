@@ -36,7 +36,7 @@ struct HeaderView: View {
             DividerView()
 
             Label(
-                title: { Text(STResourcesStrings.Localizable.expiresIn(transfer.expiresIn)) },
+                title: { Text(transfer.expiredDateTimestamp.formatted(.expiring)) },
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
             .labelStyle(.horizontal)

@@ -60,6 +60,17 @@ extension Date {
         components.second = -1
         return Calendar.current.date(byAdding: components, to: startOfMonth)!
     }
+
+    public static func expiresDate(timestamp: Int64) -> Date {
+        Date(timeIntervalSince1970: TimeInterval(timestamp))
+    }
+
+    public static func expiresIn(timestamp: Int64) -> Int {
+        let expiresDate = expiresDate(timestamp: timestamp)
+        let calendar = Calendar(identifier: .gregorian)
+        let daysBeforeExpire = calendar.dateComponents([.day], from: Date(), to: expiresDate)
+        return daysBeforeExpire.day ?? 0
+    }
 }
 
 public enum ReferenceDate: String, CaseIterable {

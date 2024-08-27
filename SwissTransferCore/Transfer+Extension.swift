@@ -33,13 +33,6 @@ public extension Transfer {
         Date(timeIntervalSince1970: TimeInterval(createdDateTimestamp))
     }
 
-    var expiresIn: Int {
-        let expireDate = Date(timeIntervalSince1970: TimeInterval(expiredDateTimestamp))
-        let calendar = Calendar(identifier: .gregorian)
-        let daysBeforeExpire = calendar.dateComponents([.day], from: Date(), to: expireDate)
-        return daysBeforeExpire.day ?? 0
-    }
-
     var sectionDate: String {
         if let sectionDateInterval = (ReferenceDate.allCases.first { $0.dateInterval.contains(date) }) {
             return sectionDateInterval.rawValue

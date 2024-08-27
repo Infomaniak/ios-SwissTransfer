@@ -73,7 +73,7 @@ public enum PreviewHelper {
         expiredDateTimestamp: expireTimeStamp(expired: true),
         isDownloadOnetime: 0,
         isMailSent: true,
-        linkUUID: "linkUUID"
+        linkUUID: "linkUUIDOld"
     )
 
     private static func expireTimeStamp(expired: Bool) -> Int64 {
