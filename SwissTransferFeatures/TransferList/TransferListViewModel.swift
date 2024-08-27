@@ -53,11 +53,9 @@ final class TransferListViewModel: ObservableObject {
                 return firstDate > secondDate
             }
 
-        let sections = results.map {
+        return results.map {
             let sectionTransfers = Array($0.value)
             return DateSection(sectionKey: $0.key, transfers: sectionTransfers)
         }
-
-        return sections
     }
 }
