@@ -4,7 +4,7 @@
  * Locale: it, Italian
  * Tagged: ios
  * Exported by: Ambroise Decouttere
- * Exported at: Thu, 22 Aug 2024 13:50:47 +0200
+ * Exported at: Tue, 27 Aug 2024 14:21:24 +0200
  */
 
 /* loco:66bf172f88dce506ed0a5ce2 */
@@ -17,7 +17,7 @@
 "contentDescriptionButtonBack" = "Indietro";
 
 /* loco:66c5b8e29f9df1eb920ef483 */
-"contentDescriptionButtonClose" = "Chiudere";
+"contentDescriptionButtonClose" = "Chiudi";
 
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Nuovo trasferimento";
@@ -32,7 +32,7 @@
 "expiresIn" = "Scade tra %d giorni";
 
 /* loco:669f76984c6fad682900d032 */
-"firstTransferDescription" = "Effettuate il vostro primo trasferimento!";
+"firstTransferDescription" = "Effettua il tuo primo trasferimento!";
 
 /* loco:66a24aee8d282979b007c5d2 */
 "fromHeader" = "Da :";
@@ -92,7 +92,7 @@
 "settingsNotificationsTitle" = "Seleziona una preferenza";
 
 /* loco:66c3355378e62c3f0d0a4672 */
-"settingsOptionDiscoverInfomaniak" = "Scoprire Infomaniak";
+"settingsOptionDiscoverInfomaniak" = "Scopri Infomaniak";
 
 /* loco:66c3351479627944d00efd83 */
 "settingsOptionDownloadLimit" = "Limite di download";
@@ -101,13 +101,13 @@
 "settingsOptionEmailLanguage" = "Lingua della posta elettronica";
 
 /* loco:66c336f6f7bdfdc4d900cd12 */
-"settingsOptionGiveFeedback" = "Dite la vostra";
+"settingsOptionGiveFeedback" = "Di' la tua";
 
 /* loco:66c334b41bd6706567037508 */
 "settingsOptionNotifications" = "Notifiche";
 
 /* loco:66c3356b79627944d00efd88 */
-"settingsOptionShareIdeas" = "Condividete le vostre idee";
+"settingsOptionShareIdeas" = "Condividi le tue idee";
 
 /* loco:66c3348f7990bb4f500f8864 */
 "settingsOptionTheme" = "Tema";
@@ -176,13 +176,13 @@
 "transferTypeScreenTitle" = "Trasferimento";
 
 /* loco:66c4a98a0aee7eb62404ec62 */
-"transferTypeTitle" = "Invia i vostri file tramite";
+"transferTypeTitle" = "Invia i tuoi file tramite";
 
 /* loco:66c2f780c0a809339808e802 */
 "transferUploadSourceChoiceCamera" = "Macchina fotografica";
 
 /* loco:66c2f7d6c0a809339808e804 */
-"transferUploadSourceChoiceFiles" = "Sfogliare i file";
+"transferUploadSourceChoiceFiles" = "Sfoglia i file";
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galleria di foto e video";
