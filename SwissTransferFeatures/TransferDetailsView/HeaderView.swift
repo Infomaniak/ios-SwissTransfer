@@ -23,13 +23,18 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct HeaderView: View {
+    let filesCount: Int
     let transferSize: Int64
     let expiringTimestamp: Int64
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label(
-                title: { Text("4 fichiers · \(transferSize.formatted(.defaultByteCount))") },
+                title: {
+                    Text(
+                        "\(STResourcesStrings.Localizable.filesCount(filesCount)) · \(transferSize.formatted(.defaultByteCount))"
+                    )
+                },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -54,5 +59,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(transferSize: 8561, expiringTimestamp: 0)
+    HeaderView(filesCount: 4, transferSize: 8561, expiringTimestamp: 0)
 }

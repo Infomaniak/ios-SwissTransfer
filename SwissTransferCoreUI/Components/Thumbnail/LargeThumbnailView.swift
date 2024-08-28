@@ -22,24 +22,28 @@ import SwiftUI
 import SwissTransferCore
 
 public struct LargeThumbnailView: View {
-    private let file: File
+    private let fileName: String
+    private let fileSize: Int64
+    private let thumbnail: Image
 
-    public init(file: File) {
-        self.file = file
+    public init(fileName: String, fileSize: Int64, thumbnail: Image) {
+        self.fileName = fileName
+        self.fileSize = fileSize
+        self.thumbnail = thumbnail
     }
 
     public var body: some View {
         VStack(spacing: 0) {
             VStack {
-                FileIconView(icon: file.icon.swiftUIImage, type: .big)
+                FileIconView(icon: thumbnail, type: .big)
             }
             .frame(height: 96)
             .frame(maxWidth: .infinity)
 
             VStack(alignment: .leading) {
-                Text(file.fileName)
+                Text(fileName)
                     .foregroundStyle(Color.ST.textPrimary)
-                Text(file.fileSizeInBytes.formatted(.defaultByteCount))
+                Text(fileSize.formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)
@@ -60,6 +64,6 @@ public struct LargeThumbnailView: View {
 }
 
 #Preview {
-    LargeThumbnailView(file: PreviewHelper.sampleFile)
+    LargeThumbnailView(fileName: "Titre", fileSize: 8561, thumbnail: STResourcesAsset.Images.fileAdobe.swiftUIImage)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
 }

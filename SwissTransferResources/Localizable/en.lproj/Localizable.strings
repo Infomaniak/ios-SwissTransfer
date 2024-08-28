@@ -4,7 +4,7 @@
  * Locale: en, English
  * Tagged: ios
  * Exported by: Ambroise Decouttere
- * Exported at: Tue, 27 Aug 2024 14:21:23 +0200
+ * Exported at: Wed, 28 Aug 2024 09:20:12 +0200
  */
 
 /* loco:66bf172f88dce506ed0a5ce2 */
@@ -30,6 +30,9 @@
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expires in %d days";
+
+/* loco:66cecf7d39d10277c00c3102 */
+"filesCount" = "%d files";
 
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Make your first transfer!";
