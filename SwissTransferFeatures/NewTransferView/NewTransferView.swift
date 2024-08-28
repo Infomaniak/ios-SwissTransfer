@@ -16,13 +16,89 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
+import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    public init() {}
+    @Environment(\.dismiss) private var dismiss
+
+    public init() {
+        files = ["file 1", "file 2", "file 3", "file 4", "file 5", "file 6", "file 7", "file 8"]
+    }
+
+    private let files: [String] // File to upload
+    private let filesSize = 8561 // Size of files
+    private let columns = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
 
     public var body: some View {
-        Text("NewTransferView")
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))")
+
+                    LazyVGrid(
+                        columns: columns,
+                        alignment: .center,
+                        spacing: 16,
+                        pinnedViews: []
+                    ) {
+                        ForEach(files, id: \.self) { file in
+                            LargeThumbnailView(
+                                fileName: file,
+                                fileSize: 8561,
+                                thumbnail: STResourcesAsset.Images.fileAdobe.swiftUIImage
+                            )
+                        }
+                    }
+                    Spacer()
+                }
+                .padding(value: .medium)
+            }
+            .floatingContainer {
+                VStack(spacing: 0) {
+                    Button {
+                        // Import files
+                    } label: {
+                        Label(
+                            title: { Text(STResourcesStrings.Localizable.buttonAddFiles) },
+                            icon: { STResourcesAsset.Images.plus.swiftUIImage }
+                        )
+                    }
+                    .buttonStyle(.ikBorderless)
+
+                    NavigationLink {
+                        //
+                    } label: {
+                        Text(STResourcesStrings.Localizable.buttonNext)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.ikBorderedProminent)
+                }
+                .ikButtonFullWidth(true)
+                .controlSize(.large)
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(STResourcesStrings.Localizable.importFilesScreenTitle)
+                        .font(.ST.title2)
+                        .foregroundStyle(.white)
+                }
+
+                ToolbarItem(placement: .destructiveAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                }
+            }
+            .stNavigationBarStyle()
+        }
     }
 }
 
