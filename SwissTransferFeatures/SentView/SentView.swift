@@ -17,6 +17,7 @@
  */
 
 import STCore
+import STNewTransferView
 import STResources
 import STTransferDetailsView
 import STTransferList
@@ -26,6 +27,7 @@ import SwissTransferCoreUI
 
 public struct SentView: View {
     @State private var transfers: [Transfer] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
+    @State private var showNewTransferSheet = false
 
     public init() {}
 
@@ -41,9 +43,13 @@ public struct SentView: View {
                         }
                     }
                     .floatingActionButton(style: .newTransfer) {
-                        // New transfer
+                        showNewTransferSheet = true
                     }
             }
+        }
+        .environmentObject(viewRouter)
+        .fullScreenCover(isPresented: $showNewTransferSheet) {
+            NewTransferView()
         }
     }
 }

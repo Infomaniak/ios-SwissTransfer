@@ -20,7 +20,7 @@ let uploadProgressView = Feature(name: "UploadProgressView")
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView, transferList])
-let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList, newTransferView])
 
 let settingsView = Feature(name: "SettingsView")
 
