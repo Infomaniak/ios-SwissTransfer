@@ -21,12 +21,6 @@ import STResources
 
 // TODO: - Move to InfomaniakCore ?
 extension Date {
-    var toString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E. d MMMM"
-        return formatter.string(from: self)
-    }
-
     static var yesterday: Date {
         Calendar.current.date(byAdding: .day, value: -1, to: .now)!
     }

@@ -25,3 +25,17 @@ public extension FormatStyle where Self == ByteCountFormatStyle {
         return .byteCount(style: .binary)
     }
 }
+
+// MARK: - Date
+
+public struct PrettyDateFormat: FormatStyle {
+    public func format(_ value: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E. d MMMM"
+        return formatter.string(from: value)
+    }
+}
+
+public extension FormatStyle where Self == PrettyDateFormat {
+    static var prettyDate: PrettyDateFormat { .init() }
+}
