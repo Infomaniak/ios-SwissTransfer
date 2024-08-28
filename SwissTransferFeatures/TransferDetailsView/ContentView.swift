@@ -23,11 +23,12 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ContentView: View {
-    let files: [FileUi]
     private let columns = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
     ]
+
+    let files: [FileUi]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -41,7 +42,7 @@ struct ContentView: View {
                 pinnedViews: []
             ) {
                 ForEach(files, id: \.uid) { file in
-                    LargeThumbnailView(file: file)
+                    LargeThumbnailView(fileName: file.fileName, fileSize: file.fileSize, thumbnail: file.thumbnail)
                 }
             }
         }
