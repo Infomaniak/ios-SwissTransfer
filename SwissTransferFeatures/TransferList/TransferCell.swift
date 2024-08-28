@@ -17,25 +17,29 @@
  */
 
 import InfomaniakCoreUI
+import STCore
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
+import SwissTransferCore
 
-struct SentCell: View {
-    let itemCount: Int
+struct TransferCell: View {
+    let transfer: Transfer
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Rapport d'oral - Master 2")
+            VStack(alignment: .leading, spacing: IKPadding.small) {
+                Text(transfer.name)
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text("50 Mo · \(STResourcesStrings.Localizable.expiresIn(30))")
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textSecondary)
+                HStack(spacing: 0) {
+                    Text("\(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount)) · ")
+                    Text(transfer.expiredDateTimestamp.formatted(.expiring))
+                }
+                .font(.ST.callout)
+                .foregroundStyle(Color.ST.textSecondary)
 
-                SentCellThumbnailsView(itemCount: itemCount)
+                TransferCellThumbnailsView(files: transfer.castedContainer.files)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -53,5 +57,5 @@ struct SentCell: View {
 }
 
 #Preview {
-    SentCell(itemCount: 6)
+    TransferCell(transfer: PreviewHelper.sampleTransfer)
 }

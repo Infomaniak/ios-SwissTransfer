@@ -21,13 +21,16 @@ import STResources
 import STSentView
 import STSettingsView
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct MainView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
+
     public init() {}
 
     public var body: some View {
         TabView {
-            SentView(isEmpty: false)
+            SentView()
                 .tabItem {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.sentTitle) },
@@ -51,6 +54,7 @@ public struct MainView: View {
                     )
                 }
         }
+        .environmentObject(mainViewState.transferManager)
     }
 }
 

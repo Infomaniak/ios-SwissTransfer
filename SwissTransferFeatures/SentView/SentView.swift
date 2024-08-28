@@ -16,35 +16,43 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
+import STTransferDetailsView
+import STTransferList
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    private let isEmpty: Bool
+    @StateObject private var viewRouter = ViewRouter()
+    @State private var transfers: [Transfer] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
 
-    public init(isEmpty: Bool) {
-        self.isEmpty = isEmpty
-    }
+    public init() {}
 
     public var body: some View {
-        NavigationStack {
+        NavigationStack(path: $viewRouter.path) {
             Group {
-                if isEmpty {
+                if transfers.isEmpty {
                     SentEmptyView()
                 } else {
-                    SentList()
+                    TransferList(transfers: transfers) { transfer in
+                        viewRouter.navigate(to: transfer)
+                    }
+                    .floatingActionButton(style: .newTransfer) {
+                        // New transfer
+                    }
                 }
+            }
+            .navigationDestination(for: NavigableTransfer.self) { navTransfer in
+                TransferDetailsView(transfer: navTransfer.transfer)
             }
             .stNavigationBar()
         }
+        .environmentObject(viewRouter)
     }
 }
 
 #Preview("SentView") {
-    SentView(isEmpty: false)
-}
-
-#Preview("Empty SentView") {
-    SentView(isEmpty: true)
+    SentView()
 }

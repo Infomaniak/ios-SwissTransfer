@@ -4,14 +4,29 @@
  * Locale: en, English
  * Tagged: ios
  * Exported by: Ambroise Decouttere
- * Exported at: Mon, 29 Jul 2024 11:55:28 +0200
+ * Exported at: Tue, 27 Aug 2024 14:21:23 +0200
  */
 
+/* loco:66bf172f88dce506ed0a5ce2 */
+"buttonAddFiles" = "Add files";
+
+/* loco:66bf171580717241110432a2 */
+"buttonNext" = "Next";
+
+/* loco:66c5b8a600121e93c00c79d2 */
+"contentDescriptionButtonBack" = "Back";
+
+/* loco:66c5b8e29f9df1eb920ef483 */
+"contentDescriptionButtonClose" = "Close";
+
 /* loco:66a1fa770af8cf8470002102 */
-"contentDescriptionCreateNewTransferButton" = "Create New Transfer";
+"contentDescriptionCreateNewTransferButton" = "New transfer";
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Downloaded transfer: %d/%d ";
+
+/* loco:66c725c0834eeac04c0b2ee2 */
+"expiredThe" = "Expired the %@";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expires in %d days";
@@ -21,6 +36,9 @@
 
 /* loco:66a24aee8d282979b007c5d2 */
 "fromHeader" = "From:";
+
+/* loco:66c5b683919c7a5f1b024142 */
+"importFilesScreenTitle" = "Files to transfer";
 
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Message:";
@@ -35,16 +53,145 @@
 "recipientHeader-plural" = "Recipients:";
 
 /* loco:669f76052093b5a83708e5e4 */
-"sentEmptyTitle" = "Our history begins here";
+"sentEmptyTitle" = "Our story begins here";
 
 /* loco:669f755c502e59a518017423 */
 "sentTitle" = "Sent";
 
+/* loco:66c3345d68555c9cec08bd35 */
+"settingsCategoryAbout" = "About";
+
+/* loco:66c33433d8cdb0aeb6003082 */
+"settingsCategoryDefaultSettings" = "Default settings";
+
+/* loco:66c333f5222777ffd504e5f3 */
+"settingsCategoryGeneral" = "Général";
+
+/* loco:66c6e297bb7794739b0ec0d2 */
+"settingsDownloadsLimitTitle" = "Set a default download limit for your transfers";
+
+/* loco:66c6beb4953867da65029872 */
+"settingsEmailLanguageTitle" = "Set a default language for your email transfers";
+
+/* loco:66c6bfb72d51f3e429025a82 */
+"settingsEmailLanguageValueEnglish" = "English";
+
+/* loco:66c6bf06ba6306bc710887a2 */
+"settingsEmailLanguageValueFrench" = "French";
+
+/* loco:66c6bf698e116411a90d9052 */
+"settingsEmailLanguageValueGerman" = "German";
+
+/* loco:66c6bf3e4e4926d9600599f2 */
+"settingsEmailLanguageValueItalian" = "Italian";
+
+/* loco:66c6bf8d83619a4f090feb72 */
+"settingsEmailLanguageValueSpanish" = "Spanish";
+
+/* loco:66c57e1cac4c61d2dd0c8f12 */
+"settingsNotificationsTitle" = "Select a preference";
+
+/* loco:66c3355378e62c3f0d0a4672 */
+"settingsOptionDiscoverInfomaniak" = "Discover Infomaniak";
+
+/* loco:66c3351479627944d00efd83 */
+"settingsOptionDownloadLimit" = "Download limit";
+
+/* loco:66c3352f911ccd83de06b562 */
+"settingsOptionEmailLanguage" = "Email language";
+
+/* loco:66c336f6f7bdfdc4d900cd12 */
+"settingsOptionGiveFeedback" = "Give your opinion";
+
+/* loco:66c334b41bd6706567037508 */
+"settingsOptionNotifications" = "Notifications";
+
+/* loco:66c3356b79627944d00efd88 */
+"settingsOptionShareIdeas" = "Share your ideas";
+
+/* loco:66c3348f7990bb4f500f8864 */
+"settingsOptionTheme" = "Theme";
+
+/* loco:66c5767075065f6a6f0a55f2 */
+"settingsOptionThemeDark" = "Dark";
+
+/* loco:66c576623f6469240f064202 */
+"settingsOptionThemeLight" = "Light";
+
+/* loco:66c57650368985cbec0f7d42 */
+"settingsOptionThemeSystem" = "System";
+
+/* loco:66c334f8fe4641955405f122 */
+"settingsOptionValidityPeriod" = "Validity period";
+
+/* loco:66c342a1e87c8303b10b2372 */
+"settingsThemeTitle" = "Select a theme";
+
 /* loco:669f75c5d69668e460064082 */
 "settingsTitle" = "Settings";
+
+/* loco:66c587e4067064f587099c02 */
+"settingsValidityPeriodTitle" = "Set a default validity period for your transfers";
+
+/* loco:66c58d0c6d764a6df404ade2 */
+"settingsValidityPeriodValue" = "%d day";
+
+/* loco:66c58d32b754b5821b0b2c22 */
+"settingsValidityPeriodValue-plural" = "%d days";
 
 /* loco:669f79ffb8749b07fa0023d3 */
 "sharedFilesTitle" = "Shared files";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Transfer content:";
+
+/* loco:66c6d0936969c14fab0aec72 */
+"transferListSectionLastWeek" = "Last week";
+
+/* loco:66c6d0ade6247c4847026ec4 */
+"transferListSectionThisMonth" = "This month";
+
+/* loco:66c6d072ab48fd071b0db6c2 */
+"transferListSectionThisWeek" = "This week";
+
+/* loco:66c6d006e6247c4847026ec2 */
+"transferListSectionToday" = "Today";
+
+/* loco:66c6d050074f03cc770d2932 */
+"transferListSectionYesterday" = "Yesterday";
+
+/* loco:66c4aa7762a79eb6a60eaba2 */
+"transferTypeEmail" = "Email";
+
+/* loco:66c4aa6548c80af1df099483 */
+"transferTypeLink" = "Link";
+
+/* loco:66c4aaa49a27ecc26f0d67d3 */
+"transferTypeProximity" = "Proximity";
+
+/* loco:66c4aa8cf1945b5bd70ed563 */
+"transferTypeQrCode" = "QR Code";
+
+/* loco:66c5f77ed20c38c185010bd3 */
+"transferTypeScreenTitle" = "Transfer";
+
+/* loco:66c4a98a0aee7eb62404ec62 */
+"transferTypeTitle" = "Send your files by";
+
+/* loco:66c2f780c0a809339808e802 */
+"transferUploadSourceChoiceCamera" = "Camera";
+
+/* loco:66c2f7d6c0a809339808e804 */
+"transferUploadSourceChoiceFiles" = "Browse files";
+
+/* loco:66c2f7b4302dbac2e60ec512 */
+"transferUploadSourceChoiceGallery" = "Photo and video gallery";
+
+/* loco:66c2f735030026d03d0abe24 */
+"transferUploadSourceChoiceTitle" = "Upload from";
+
+/* loco:66c5ef9c409f7ef5ca058e34 */
+"urlAbout" = "https://www.infomaniak.com/en/about";
+
+/* loco:66c335b6cb643611950ea795 */
+"version" = "Version";

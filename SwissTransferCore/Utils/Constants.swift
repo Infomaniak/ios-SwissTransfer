@@ -16,33 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STMainView
-import STOnboardingView
-import SwiftUI
-import SwissTransferCoreUI
+import Foundation
 
-public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
-
-    public init() {}
-
-    public var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
-            case .preloading:
-                PreloadingView()
-            case .onboarding:
-                OnboardingView()
-            }
-        }
-        .environmentObject(rootViewState)
-    }
-}
-
-#Preview {
-    RootView()
+public enum Constants {
+    public static let numberOfSecondsInADay: TimeInterval = 86400
 }

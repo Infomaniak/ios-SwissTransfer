@@ -18,34 +18,22 @@
 
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
+import SwissTransferCore
 
-struct SentCellThumbnailsView: View {
-    let itemCount: Int
-
-    private var additionalItemsCount: Int {
-        if itemCount > 4 {
-            return itemCount - 3
+public struct ExpiringDateFormat: FormatStyle {
+    public func format(_ value: Int64) -> AttributedString {
+        let expiresIn = Date.expiresIn(timestamp: value)
+        if expiresIn > 0 {
+            return AttributedString(STResourcesStrings.Localizable.expiresIn(expiresIn))
         }
-        return 0
-    }
 
-    private var itemsToShow: Int {
-        return itemCount - additionalItemsCount
-    }
-
-    var body: some View {
-        HStack(spacing: 8) {
-            ForEach(1 ... itemsToShow, id: \.self) { _ in
-                SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
-            }
-            if additionalItemsCount > 0 {
-                SmallMoreItemsThumbnailView(count: additionalItemsCount)
-            }
-        }
+        let date = Date.expiresDate(timestamp: value).formatted(date: .numeric, time: .omitted)
+        var result = AttributedString(STResourcesStrings.Localizable.expiredThe(date))
+        result.foregroundColor = Color.ST.error
+        return result
     }
 }
 
-#Preview {
-    SentCellThumbnailsView(itemCount: 8)
+public extension FormatStyle where Self == ExpiringDateFormat {
+    static var expiring: ExpiringDateFormat { .init() }
 }

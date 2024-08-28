@@ -16,19 +16,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct HeaderView: View {
+    let transferSize: Int64
+    let expiringTimestamp: Int64
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Aujourd'hui")
-                .sectionHeader()
-                .padding(.bottom, value: .small)
-
             Label(
-                title: { Text("4 fichiers") },
+                title: { Text("4 fichiers · \(transferSize.formatted(.defaultByteCount))") },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -36,7 +37,7 @@ struct HeaderView: View {
             DividerView()
 
             Label(
-                title: { Text(STResourcesStrings.Localizable.expiresIn(30)) },
+                title: { Text(expiringTimestamp.formatted(.expiring)) },
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -53,5 +54,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView()
+    HeaderView(transferSize: 8561, expiringTimestamp: 0)
 }

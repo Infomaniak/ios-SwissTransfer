@@ -16,34 +16,41 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreUI
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
-struct MessageView: View {
-    let message: String?
+struct TransferCellThumbnailsView: View {
+    let files: [File]
+
+    private var additionalItemsCount: Int {
+        if files.count > 99 + 3 { // +3 visible
+            return 99
+        }
+        if files.count > 4 {
+            return files.count - 3
+        }
+        return 0
+    }
+
+    private var itemsToShow: [File] {
+        return Array(files.prefix(3))
+    }
 
     var body: some View {
-        if let message {
-            VStack(alignment: .leading, spacing: IKPadding.medium) {
-                Text(STResourcesStrings.Localizable.messageHeader)
-                    .sectionHeader()
-
-                Text(message)
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .padding(24)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.ST.cardBackground, in: .rect(cornerRadius: 16))
+        HStack(spacing: 8) {
+            ForEach(itemsToShow, id: \.uuid) { _ in
+                SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            if additionalItemsCount > 0 {
+                SmallMoreItemsThumbnailView(count: additionalItemsCount)
+            }
         }
     }
 }
 
 #Preview {
-    MessageView(
-        message: "Salut voici les images de la soirée chez Tanguy ! Hesite pas à me partager les tiennes dès que t'as un moment :)"
-    )
+    TransferCellThumbnailsView(files: [PreviewHelper.sampleFile, PreviewHelper.sampleFile, PreviewHelper.sampleFile])
 }

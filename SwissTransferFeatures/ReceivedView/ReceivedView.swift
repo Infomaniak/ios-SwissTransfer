@@ -16,13 +16,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
+import STTransferDetailsView
+import STTransferList
 import SwiftUI
+import SwissTransferCore
 
 public struct ReceivedView: View {
+    @StateObject private var viewRouter = ViewRouter()
+    @State private var transfers = [PreviewHelper.sampleTransfer]
+
     public init() {}
 
     public var body: some View {
-        Text("ReceivedView")
+        NavigationStack(path: $viewRouter.path) {
+            TransferList(transfers: transfers) { transfer in
+                viewRouter.navigate(to: transfer)
+            }
+            .navigationDestination(for: NavigableTransfer.self) { navTransfer in
+                TransferDetailsView(transfer: navTransfer.transfer)
+            }
+            .stNavigationBar()
+        }
+        .environmentObject(viewRouter)
     }
 }
 

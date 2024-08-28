@@ -4,6 +4,10 @@ import ProjectDescriptionHelpers
 
 // MARK: - Features
 
+// MARK: - Transfer List
+
+let transferList = Feature(name: "TransferList")
+
 // MARK: New Transfer
 
 let newTransferView = Feature(name: "NewTransferView")
@@ -15,8 +19,8 @@ let uploadProgressView = Feature(name: "UploadProgressView")
 // MARK: Root
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
-let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView])
-let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView])
+let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView, transferList])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList])
 
 let settingsView = Feature(name: "SettingsView")
 
@@ -35,7 +39,8 @@ let mainiOSAppFeatures = [
     settingsView,
     transferDetailsView,
     uploadProgressView,
-    newTransferView
+    newTransferView,
+    transferList
 ]
 
 // MARK: - Project

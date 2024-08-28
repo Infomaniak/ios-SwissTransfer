@@ -16,33 +16,26 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STMainView
-import STOnboardingView
-import SwiftUI
-import SwissTransferCoreUI
+import Foundation
 
-public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
+// MARK: - ByteCount
 
-    public init() {}
-
-    public var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
-            case .preloading:
-                PreloadingView()
-            case .onboarding:
-                OnboardingView()
-            }
-        }
-        .environmentObject(rootViewState)
+public extension FormatStyle where Self == ByteCountFormatStyle {
+    static var defaultByteCount: ByteCountFormatStyle {
+        return .byteCount(style: .binary)
     }
 }
 
-#Preview {
-    RootView()
+// MARK: - Date
+
+public struct PrettyDateFormat: FormatStyle {
+    public func format(_ value: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E. d MMMM"
+        return formatter.string(from: value)
+    }
+}
+
+public extension FormatStyle where Self == PrettyDateFormat {
+    static var prettyDate: PrettyDateFormat { .init() }
 }

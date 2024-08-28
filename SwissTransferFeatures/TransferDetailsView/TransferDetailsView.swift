@@ -16,31 +16,33 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import InfomaniakCoreUI
+import STCore
+import SwiftUI
+import SwissTransferCore
 
 public struct TransferDetailsView: View {
-    private let title: String
+    private let transfer: Transfer
 
-    public init(title: String) {
-        self.title = title
+    public init(transfer: Transfer) {
+        self.transfer = transfer
     }
 
     public var body: some View {
         ScrollView {
             VStack(spacing: IKPadding.large) {
-                HeaderView()
+                HeaderView(transferSize: transfer.castedContainer.sizeUploaded, expiringTimestamp: transfer.expiredDateTimestamp)
 
-                MessageView(recipient: "john.smith@ik.me", message: "Le contenu du message")
+                MessageView(message: transfer.castedContainer.message)
 
-                ContentView()
+                ContentView(files: transfer.castedContainer.files)
             }
             .padding(.vertical, value: .large)
             .padding(.horizontal, value: .medium)
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text(title)
+                Text(transfer.name)
                     .font(.ST.title2)
                     .foregroundStyle(.white)
             }
@@ -50,5 +52,5 @@ public struct TransferDetailsView: View {
 }
 
 #Preview {
-    TransferDetailsView(title: "Rapport d'oral - Master 2")
+    TransferDetailsView(transfer: PreviewHelper.sampleTransfer)
 }
