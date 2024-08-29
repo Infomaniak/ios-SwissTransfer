@@ -18,19 +18,14 @@
 
 import SwiftUI
 
-struct STNavigationBarStyleModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
-            .navigationTitle("")
-    }
-}
+public class SheetPresenter: ObservableObject {
+    @Binding private var isPresented: Bool
 
-public extension View {
-    /// Style the navigationBar
-    func stNavigationBarStyle() -> some View {
-        modifier(STNavigationBarStyleModifier())
+    public init(isPresented: Binding<Bool>) {
+        _isPresented = isPresented
+    }
+
+    public func dismiss() {
+        isPresented = false
     }
 }
