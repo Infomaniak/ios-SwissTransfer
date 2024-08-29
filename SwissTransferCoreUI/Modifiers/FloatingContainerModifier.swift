@@ -28,16 +28,16 @@ public struct FloatingContainerModifier<V: View>: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom) {
-                VStack(spacing: 0) {
-                    LinearGradient(colors: [.white, .clear], startPoint: .bottom, endPoint: .top)
-                        .frame(height: 24)
-
-                    view
-                        .padding(.top, value: .medium)
-                        .padding(.horizontal, value: .medium)
-                        .background { Color.white.ignoresSafeArea() }
-                        .font(.ST.headline)
-                }
+                view
+                    .padding(.vertical, value: .small)
+                    .padding(.horizontal, value: .medium)
+                    .background { Color.white.ignoresSafeArea() }
+                    .font(.ST.headline)
+                    .overlay(alignment: .top) {
+                        Rectangle()
+                            .fill(Color.ST.divider)
+                            .frame(height: 1)
+                    }
             }
     }
 }

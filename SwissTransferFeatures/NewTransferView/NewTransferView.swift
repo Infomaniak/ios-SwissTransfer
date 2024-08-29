@@ -19,12 +19,14 @@
 import InfomaniakCoreUI
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @Environment(\.dismiss) private var dismiss
+    @StateObject private var sheetPresenter: SheetPresenter
 
-    public init() {
+    public init(isPresented: Binding<Bool>) {
+        _sheetPresenter = StateObject(wrappedValue: SheetPresenter(isPresented: isPresented))
         files = ["file 1", "file 2", "file 3", "file 4", "file 5", "file 6", "file 7", "file 8"]
     }
 
@@ -72,7 +74,7 @@ public struct NewTransferView: View {
                     .buttonStyle(.ikBorderless)
 
                     NavigationLink {
-                        //
+                        NewTransferTypeView()
                     } label: {
                         Text(STResourcesStrings.Localizable.buttonNext)
                             .frame(maxWidth: .infinity)
@@ -82,26 +84,13 @@ public struct NewTransferView: View {
                 .ikButtonFullWidth(true)
                 .controlSize(.large)
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(STResourcesStrings.Localizable.importFilesScreenTitle)
-                        .font(.ST.title2)
-                        .foregroundStyle(.white)
-                }
-
-                ToolbarItem(placement: .destructiveAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                    }
-                }
-            }
+            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
         }
+        .environmentObject(sheetPresenter)
     }
 }
 
 #Preview {
-    NewTransferView()
+    NewTransferView(isPresented: .constant(true))
 }

@@ -16,21 +16,38 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
+import SwissTransferCore
 
-struct STNavigationBarStyleModifier: ViewModifier {
+struct STNavigationBarNewTransferModifier: ViewModifier {
+    @EnvironmentObject private var sheetPresenter: SheetPresenter
+
+    let title: String
+
     func body(content: Content) -> some View {
         content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
-            .navigationTitle("")
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(title)
+                        .font(.ST.title2)
+                        .foregroundStyle(.white)
+                }
+
+                ToolbarItem(placement: .destructiveAction) {
+                    Button {
+                        sheetPresenter.dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                }
+            }
     }
 }
 
 public extension View {
     /// Style the navigationBar
-    func stNavigationBarStyle() -> some View {
-        modifier(STNavigationBarStyleModifier())
+    func stNavigationBarNewTransfer(title: String = "Transfer") -> some View {
+        modifier(STNavigationBarNewTransferModifier(title: title))
     }
 }
