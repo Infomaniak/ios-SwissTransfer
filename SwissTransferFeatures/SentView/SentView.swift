@@ -49,7 +49,7 @@ public struct SentView: View {
         }
         .environmentObject(viewRouter)
         .fullScreenCover(isPresented: $showNewTransferSheet) {
-            NewTransferView()
+            NewTransferView(isPresented: $showNewTransferSheet)
         }
     }
 }
