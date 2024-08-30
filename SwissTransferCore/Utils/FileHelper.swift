@@ -21,10 +21,14 @@ import STResources
 import UniformTypeIdentifiers
 
 public struct FileHelper {
-    public var type: String
+    var type: String
 
     public var uti: UTType? {
         UTType(mimeType: type, conformingTo: .data)
+    }
+
+    public init(type: String) {
+        self.type = type
     }
 
     // TODO: - Fill with all uti and all icon
