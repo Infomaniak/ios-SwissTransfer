@@ -24,14 +24,17 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @StateObject private var sheetPresenter: SheetPresenter
+    @StateObject private var newTransferManager: NewTransferManager
 
     public init(isPresented: Binding<Bool>) {
         _sheetPresenter = StateObject(wrappedValue: SheetPresenter(isPresented: isPresented))
-        files = ["file 1", "file 2", "file 3", "file 4", "file 5", "file 6", "file 7", "file 8"]
+        _newTransferManager = StateObject(wrappedValue: NewTransferManager())
     }
 
-    private let files: [String] // File to upload
-    private let filesSize = 8561 // Size of files
+    private var filesSize: Int64 {
+        newTransferManager.uploadFiles.map { $0.size }.reduce(0, +)
+    }
+
     private let columns = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
@@ -41,7 +44,9 @@ public struct NewTransferView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))")
+                    Text(
+                        "\(STResourcesStrings.Localizable.filesCount(newTransferManager.uploadFiles.count)) · \(filesSize.formatted(.defaultByteCount))"
+                    )
 
                     LazyVGrid(
                         columns: columns,
@@ -49,11 +54,11 @@ public struct NewTransferView: View {
                         spacing: 16,
                         pinnedViews: []
                     ) {
-                        ForEach(files, id: \.self) { file in
+                        ForEach(newTransferManager.uploadFiles) { file in
                             LargeThumbnailView(
-                                fileName: file,
-                                fileSize: 8561,
-                                thumbnail: STResourcesAsset.Images.fileAdobe.swiftUIImage
+                                fileName: file.url.lastPathComponent,
+                                fileSize: file.size,
+                                thumbnail: file.preview
                             )
                         }
                     }
@@ -63,15 +68,7 @@ public struct NewTransferView: View {
             }
             .floatingContainer {
                 VStack(spacing: 0) {
-                    Button {
-                        // Import files
-                    } label: {
-                        Label(
-                            title: { Text(STResourcesStrings.Localizable.buttonAddFiles) },
-                            icon: { STResourcesAsset.Images.plus.swiftUIImage }
-                        )
-                    }
-                    .buttonStyle(.ikBorderless)
+                    AddFilesMenuView()
 
                     NavigationLink {
                         NewTransferTypeView()
@@ -88,6 +85,7 @@ public struct NewTransferView: View {
             .stNavigationBarStyle()
         }
         .environmentObject(sheetPresenter)
+        .environmentObject(newTransferManager)
     }
 }
 
