@@ -31,6 +31,10 @@ public struct FileHelper {
         self.type = type
     }
 
+    public init(type: String) {
+        self.type = type
+    }
+
     // TODO: - Fill with all uti and all icon
     public var icon: STResourcesImages {
         guard let uti else {
