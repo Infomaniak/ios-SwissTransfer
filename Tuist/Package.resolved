@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "301970aa5ee5197119fdbac7849e91935e2359ca",
-        "version" : "0.0.2"
+        "revision" : "28e03bb0745753100e67cb0ff9f73109c086a5e7",
+        "version" : "0.1.0"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
       "state" : {
-        "revision" : "60867846a0aca0c7da5e482282b293236f730216",
-        "version" : "14.11.0"
+        "revision" : "c2552e1d36867cb42b28130e894a81fc17081062",
+        "version" : "14.12.0"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift",
       "state" : {
-        "revision" : "13b12f8665f0c8173693a4d3f6e6d32b5a24d9a9",
-        "version" : "10.52.2"
+        "revision" : "9815e6c29d43cb5314add5dff8705c5476ab556c",
+        "version" : "10.53.0"
       }
     },
     {
@@ -113,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "5421f94cc859eb65f5ae3866165a053aa634431e",
-        "version" : "8.32.0"
+        "revision" : "5575af93efb776414f243e93d6af9f6258dc539a",
+        "version" : "8.36.0"
       }
     },
     {

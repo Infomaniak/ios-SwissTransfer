@@ -19,6 +19,7 @@
 import Foundation
 import InfomaniakDI
 import OSLog
+import STCore
 
 private let appIdentifierPrefix = Bundle.main.infoDictionary!["AppIdentifierPrefix"] as! String
 private let appGroupIdentifier = "group.com.infomaniak.swisstransfer"
@@ -45,6 +46,16 @@ open class TargetAssembly {
         return [
             Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
+            },
+            Factory(type: SwissTransferInjection.self) { _, _ in
+                SwissTransferInjection()
+            },
+            Factory(type: AppSettingsManager.self) { _, resolver in
+                let stInjection = try resolver.resolve(type: SwissTransferInjection.self,
+                                                       forCustomTypeIdentifier: nil,
+                                                       factoryParameters: nil,
+                                                       resolver: resolver)
+                return stInjection.appSettingsManager
             }
         ]
     }
