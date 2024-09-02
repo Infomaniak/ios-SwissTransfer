@@ -18,9 +18,12 @@
 
 import Foundation
 import InfomaniakCore
+import InfomaniakDI
 import STCore
 
 public actor AccountManager {
+    @LazyInjectService private var injection: SwissTransferInjection
+
     /// In case we later choose to support multi account / login we simulate an existing guest
     private static let guestUserId = -1
     public typealias UserId = Int
@@ -33,23 +36,24 @@ public actor AccountManager {
         UserDefaults.shared.currentUserId = AccountManager.guestUserId
     }
 
-    public func getManager(userId: UserId) -> TransferManager? {
+    public func getManager(userId: UserId) async -> TransferManager? {
         assert(userId == AccountManager.guestUserId, "Only guest user is supported")
         if let manager = managers[userId] {
             return manager
         } else {
-            managers[userId] = SwissTransferInjection().transferManager
+            try? await injection.loadDefaultAccount()
+            managers[userId] = injection.transferManager
             return managers[userId]
         }
     }
 
-    public func getCurrentManager() -> TransferManager? {
+    public func getCurrentManager() async -> TransferManager? {
         let currentUserId = UserDefaults.shared.currentUserId
         guard currentUserId != 0 else {
             return nil
         }
 
         assert(currentUserId == AccountManager.guestUserId, "Only guest user is supported")
-        return getManager(userId: currentUserId)
+        return await getManager(userId: currentUserId)
     }
 }
