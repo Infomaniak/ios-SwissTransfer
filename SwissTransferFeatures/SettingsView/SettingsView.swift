@@ -16,13 +16,35 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
+import STCore
 import SwiftUI
+import SwissTransferCore
 
 public struct SettingsView: View {
-    public init() {}
+    @LazyInjectService var settingsManager: AppSettingsManager
+
+    @StateObject var appSettings: FlowObserver<AppSettings>
+
+    public init() {
+        @InjectService var settingsManager: AppSettingsManager
+        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
+    }
 
     public var body: some View {
-        Text("SettingsView")
+        VStack {
+            Text("SettingsView")
+            if let appSettings = appSettings.value {
+                Text(appSettings.theme.name)
+            }
+            Button("Toggle") {
+                Task {
+                    if let appSettings = appSettings.value {
+                        try? await settingsManager.setTheme(theme: appSettings.theme == .dark ? .light : .dark)
+                    }
+                }
+            }
+        }
     }
 }
 
