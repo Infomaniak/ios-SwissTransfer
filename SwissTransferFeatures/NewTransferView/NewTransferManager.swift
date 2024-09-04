@@ -28,10 +28,15 @@ struct UploadFile: Identifiable {
 
     let url: URL
     let size: Int64
+    var path: String
 
-    init(url: URL, size: Int64) {
+    init?(url: URL) {
+        guard let resources = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey, .nameKey]),
+              let isDirectory = resources.isDirectory, !isDirectory else { return nil }
+
         self.url = url
-        self.size = size
+        path = resources.name ?? url.lastPathComponent
+        size = Int64(resources.fileSize ?? 0)
     }
 
     var mimeType: String {
@@ -50,16 +55,11 @@ class NewTransferManager: ObservableObject {
         do {
             let tmpUrls = moveToTmp(files: urls)
 
-            for tmpUrl in tmpUrls {
-                let attributes = try FileManager.default.attributesOfItem(atPath: tmpUrl.path())
-                let size = attributes[.size] as? Int64
+            try uploadFiles.append(contentsOf: flatten(urls: tmpUrls))
 
-                let uploadFile = UploadFile(
-                    url: tmpUrl,
-                    size: size ?? 0
-                )
-                uploadFiles.append(uploadFile)
-            }
+            print(uploadFiles)
+            // Create unflatten version
+
         } catch {
             print("Error: \(error.localizedDescription)")
         }
@@ -113,5 +113,41 @@ extension NewTransferManager {
         } catch {
             print("Error cleaning tmp directory: \(error.localizedDescription)")
         }
+    }
+}
+
+// MARK: - Flattening
+
+extension NewTransferManager {
+    /// Flatten folder + set path
+    private func flatten(urls: [URL]) throws -> [UploadFile] {
+        let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey]
+        var result = [UploadFile]()
+
+        for url in urls {
+            guard let resources = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey, .nameKey]),
+                  let isDirectory = resources.isDirectory else { continue }
+
+            if isDirectory {
+                let folderEnumerator = FileManager.default.enumerator(
+                    at: url,
+                    includingPropertiesForKeys: resourceKeys,
+                    options: .skipsHiddenFiles
+                )
+                while case let element as URL = folderEnumerator?.nextObject() {
+                    guard var uploadFile = UploadFile(url: element) else { continue }
+
+                    let newPath = uploadFile.url.path().trimmingPrefix(url.path())
+                    uploadFile.path = String(newPath)
+
+                    uploadFiles.append(uploadFile)
+                }
+            } else {
+                guard let uploadFile = UploadFile(url: url) else { continue }
+                result.append(uploadFile)
+            }
+        }
+
+        return result
     }
 }
