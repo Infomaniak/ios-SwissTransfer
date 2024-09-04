@@ -64,6 +64,15 @@ class NewTransferManager: ObservableObject {
             print("Error: \(error.localizedDescription)")
         }
     }
+
+    func remove(file: UploadFile) {
+        do {
+            try FileManager.default.removeItem(at: file.url)
+        } catch {
+            print("Error deleting file: \(error.localizedDescription)")
+        }
+        uploadFiles.removeAll { $0.id == file.id }
+    }
 }
 
 extension NewTransferManager {
