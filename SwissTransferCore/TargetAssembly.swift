@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCore
 import InfomaniakDI
 import OSLog
 
@@ -45,6 +46,16 @@ open class TargetAssembly {
         return [
             Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
+            },
+            Factory(type: AppGroupPathProvidable.self) { _, _ in
+                guard let provider = AppGroupPathProvider(
+                    realmRootPath: "",
+                    appGroupIdentifier: appGroupIdentifier
+                ) else {
+                    fatalError("could not safely init AppGroupPathProvider")
+                }
+
+                return provider
             }
         ]
     }
