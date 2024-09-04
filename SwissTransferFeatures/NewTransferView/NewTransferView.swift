@@ -31,61 +31,26 @@ public struct NewTransferView: View {
         _newTransferManager = StateObject(wrappedValue: NewTransferManager())
     }
 
-    private var filesSize: Int64 {
-        newTransferManager.uploadFiles.map { $0.size }.reduce(0, +)
-    }
-
-    private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
-
     public var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text(
-                        "\(STResourcesStrings.Localizable.filesCount(newTransferManager.uploadFiles.count)) · \(filesSize.formatted(.defaultByteCount))"
-                    )
+            FileListView(files: newTransferManager.uploadFiles)
+                .floatingContainer {
+                    VStack(spacing: 0) {
+                        AddFilesMenuView()
 
-                    LazyVGrid(
-                        columns: columns,
-                        alignment: .center,
-                        spacing: 16,
-                        pinnedViews: []
-                    ) {
-                        ForEach(newTransferManager.uploadFiles) { file in
-                            LargeThumbnailView(
-                                fileName: file.url.lastPathComponent,
-                                fileSize: file.size,
-                                url: file.url,
-                                mimeType: file.mimeType
-                            ) {
-                                newTransferManager.remove(file: file)
-                            }
+                        NavigationLink {
+                            NewTransferTypeView()
+                        } label: {
+                            Text(STResourcesStrings.Localizable.buttonNext)
+                                .frame(maxWidth: .infinity)
                         }
+                        .buttonStyle(.ikBorderedProminent)
                     }
-                    Spacer()
+                    .ikButtonFullWidth(true)
+                    .controlSize(.large)
                 }
-                .padding(value: .medium)
-            }
-            .floatingContainer {
-                VStack(spacing: 0) {
-                    AddFilesMenuView()
-
-                    NavigationLink {
-                        NewTransferTypeView()
-                    } label: {
-                        Text(STResourcesStrings.Localizable.buttonNext)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.ikBorderedProminent)
-                }
-                .ikButtonFullWidth(true)
-                .controlSize(.large)
-            }
-            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
-            .stNavigationBarStyle()
+                .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+                .stNavigationBarStyle()
         }
         .environmentObject(sheetPresenter)
         .environmentObject(newTransferManager)

@@ -69,6 +69,7 @@ let project = Project(
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
+            entitlements: "SwissTransferResources/SwissTransfer.entitlements",
             scripts: [Constants.swiftlintScript],
             dependencies: [
                 .target(name: "SwissTransferCore"),
