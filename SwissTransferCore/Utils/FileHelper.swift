@@ -24,7 +24,7 @@ public struct FileHelper {
     var type: String
 
     public var uti: UTType? {
-        UTType(mimeType: type, conformingTo: .data)
+        UTType(mimeType: type, conformingTo: .item)
     }
 
     public init(type: String) {

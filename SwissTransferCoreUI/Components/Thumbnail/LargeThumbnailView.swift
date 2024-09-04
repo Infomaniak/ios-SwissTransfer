@@ -25,18 +25,29 @@ import SwissTransferCore
 public struct LargeThumbnailView: View {
     private let fileName: String
     private let fileSize: Int64
-    private let thumbnail: Image
+    private let url: URL?
 
-    public init(fileName: String, fileSize: Int64, thumbnail: Image) {
+    private let icon: Image
+    @State private var largeThumbnail: Image?
+
+    public init(fileName: String, fileSize: Int64, url: URL?, mimeType: String) {
         self.fileName = fileName
         self.fileSize = fileSize
-        self.thumbnail = thumbnail
+        self.url = url
+
+        icon = FileHelper(type: mimeType).icon.swiftUIImage
     }
 
     public var body: some View {
         VStack(spacing: 0) {
             VStack {
-                FileIconView(icon: thumbnail, type: .big)
+                if let largeThumbnail {
+                    largeThumbnail
+                        .resizable()
+                        .scaledToFill()
+                } else {
+                    FileIconView(icon: icon, type: .big)
+                }
             }
             .frame(height: 96)
             .frame(maxWidth: .infinity)
@@ -44,6 +55,8 @@ public struct LargeThumbnailView: View {
             VStack(alignment: .leading) {
                 Text(fileName)
                     .foregroundStyle(Color.ST.textPrimary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                 Text(fileSize.formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
@@ -59,10 +72,13 @@ public struct LargeThumbnailView: View {
             RoundedRectangle(cornerRadius: IKRadius.medium)
                 .stroke(Color.ST.cardBorder)
         )
+        .onAppear {
+            ThumbnailGenerator.generate(for: url, isLarge: true) { largeThumbnail = $0 }
+        }
     }
 }
 
 #Preview {
-    LargeThumbnailView(fileName: "Titre", fileSize: 8561, thumbnail: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+    LargeThumbnailView(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
 }

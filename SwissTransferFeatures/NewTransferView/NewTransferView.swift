@@ -58,7 +58,8 @@ public struct NewTransferView: View {
                             LargeThumbnailView(
                                 fileName: file.url.lastPathComponent,
                                 fileSize: file.size,
-                                thumbnail: file.preview
+                                url: file.url,
+                                mimeType: file.mimeType
                             )
                         }
                     }

@@ -42,7 +42,12 @@ struct ContentView: View {
                 pinnedViews: []
             ) {
                 ForEach(files, id: \.uid) { file in
-                    LargeThumbnailView(fileName: file.fileName, fileSize: file.fileSize, thumbnail: file.thumbnail)
+                    LargeThumbnailView(
+                        fileName: file.fileName,
+                        fileSize: file.fileSize,
+                        url: file.localUrl,
+                        mimeType: file.mimeType ?? ""
+                    )
                 }
             }
         }

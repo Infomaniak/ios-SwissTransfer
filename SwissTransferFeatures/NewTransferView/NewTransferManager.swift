@@ -28,12 +28,14 @@ struct UploadFile: Identifiable {
 
     let url: URL
     let size: Int64
-    let preview: Image
 
-    init(url: URL, size: Int64, preview: Image) {
+    init(url: URL, size: Int64) {
         self.url = url
         self.size = size
-        self.preview = preview
+    }
+
+    var mimeType: String {
+        url.typeIdentifier ?? ""
     }
 }
 
@@ -51,12 +53,10 @@ class NewTransferManager: ObservableObject {
             for tmpUrl in tmpUrls {
                 let attributes = try FileManager.default.attributesOfItem(atPath: tmpUrl.path())
                 let size = attributes[.size] as? Int64
-                let typeIdentifier = tmpUrl.typeIdentifier ?? ""
 
                 let uploadFile = UploadFile(
                     url: tmpUrl,
-                    size: size ?? 0,
-                    preview: FileHelper(type: typeIdentifier).icon.swiftUIImage
+                    size: size ?? 0
                 )
                 uploadFiles.append(uploadFile)
             }
@@ -67,12 +67,15 @@ class NewTransferManager: ObservableObject {
 }
 
 extension NewTransferManager {
+//    private func moveToPermanent(containerUuid: String, files: [URL]) -> [URL] {
+//        for uploadFile in uploadFiles {}
+//    }
+
     private func moveToTmp(files: [URL]) -> [URL] {
         var urls = [URL]()
         let tmpDirectory = FileManager.default.temporaryDirectory
 
         do {
-            print(tmpDirectory)
             for file in files {
                 let destination = tmpDirectory.appending(path: file.lastPathComponent)
                 try FileManager.default.copyItem(at: file, to: destination)

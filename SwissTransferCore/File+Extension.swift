@@ -32,4 +32,24 @@ public extension FileUi {
 
         return FileHelper(type: mimeType).icon
     }
+
+    var localUrl: URL? {
+        var url: URL?
+        do {
+            url = try URL.fileStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+        return url
+    }
+
+    var previewUrl: URL? {
+        var url: URL?
+        do {
+            url = try URL.previewStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+        return url
+    }
 }
