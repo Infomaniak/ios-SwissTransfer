@@ -19,15 +19,18 @@
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
+import SwissTransferCore
 
-// TODO: - Manage real preview (not only fileType)
 public struct SmallThumbnailView: View {
     @ScaledMetric(relativeTo: .body) private var size = 48
 
-    let icon: Image
+    private let url: URL?
 
-    public init(icon: Image) {
-        self.icon = icon
+    @State private var icon: Image
+
+    public init(url: URL?, mimeType: String) {
+        self.url = url
+        icon = FileHelper(type: mimeType).icon.swiftUIImage
     }
 
     public var body: some View {
@@ -37,9 +40,12 @@ public struct SmallThumbnailView: View {
                 Color.white
                     .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
             )
+            .onAppear {
+                ThumbnailGenerator.generate(for: url, isLarge: false) { icon = $0 }
+            }
     }
 }
 
 #Preview {
-    SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+    SmallThumbnailView(url: URL(fileURLWithPath: ""), mimeType: "public.jpeg")
 }
