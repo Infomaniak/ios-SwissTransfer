@@ -60,7 +60,9 @@ public struct NewTransferView: View {
                                 fileSize: file.size,
                                 url: file.url,
                                 mimeType: file.mimeType
-                            )
+                            ) {
+                                newTransferManager.remove(file: file)
+                            }
                         }
                     }
                     Spacer()

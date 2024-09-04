@@ -27,13 +27,16 @@ public struct LargeThumbnailView: View {
     private let fileSize: Int64
     private let url: URL?
 
+    private let removeAction: (() -> Void)?
+
     private let icon: Image
     @State private var largeThumbnail: Image?
 
-    public init(fileName: String, fileSize: Int64, url: URL?, mimeType: String) {
+    public init(fileName: String, fileSize: Int64, url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
         self.fileName = fileName
         self.fileSize = fileSize
         self.url = url
+        self.removeAction = removeAction
 
         icon = FileHelper(type: mimeType).icon.swiftUIImage
     }
@@ -65,6 +68,20 @@ public struct LargeThumbnailView: View {
             .padding(value: .small)
             .background(Color.ST.background)
         }
+        .overlay {
+            if let removeAction {
+                Button {
+                    removeAction()
+                } label: {
+                    Image(systemName: "xmark")
+                        .foregroundStyle(.white)
+                }
+                .padding(value: .small)
+                .background(.black.opacity(0.5), in: .circle)
+                .padding(value: .small)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+        }
         .frame(maxWidth: .infinity)
         .background(Color.ST.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
@@ -79,6 +96,11 @@ public struct LargeThumbnailView: View {
 }
 
 #Preview {
-    LargeThumbnailView(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg")
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    VStack {
+        LargeThumbnailView(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+        LargeThumbnailView(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg") {}
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
 }
