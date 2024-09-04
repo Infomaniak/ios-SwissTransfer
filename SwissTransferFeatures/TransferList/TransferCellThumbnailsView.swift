@@ -41,8 +41,8 @@ struct TransferCellThumbnailsView: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(itemsToShow, id: \.uuid) { _ in
-                SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+            ForEach(itemsToShow, id: \.uuid) { file in
+                SmallThumbnailView(url: file.localUrl, mimeType: file.mimeType)
             }
             if additionalItemsCount > 0 {
                 SmallMoreItemsThumbnailView(count: additionalItemsCount)

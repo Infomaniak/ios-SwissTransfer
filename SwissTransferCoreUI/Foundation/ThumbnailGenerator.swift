@@ -16,27 +16,27 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
-import STCore
+import QuickLookThumbnailing
+import SwiftUI
 
-public extension File {
-    var localUrl: URL? {
-        var url: URL?
-        do {
-            url = try URL.fileStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
-        } catch {
-            print("Error: \(error.localizedDescription)")
-        }
-        return url
-    }
+public enum ThumbnailGenerator {
+    public static func generate(for url: URL?, isLarge: Bool, completion: @escaping (Image) -> Void) {
+        guard let url else { return }
 
-    var previewUrl: URL? {
-        var url: URL?
-        do {
-            url = try URL.previewStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
-        } catch {
-            print("Error: \(error.localizedDescription)")
+        let size = isLarge ? CGSize(width: 164, height: 96) : CGSize(width: 48, height: 48)
+
+        let request = QLThumbnailGenerator.Request(
+            fileAt: url,
+            size: size,
+            scale: 1,
+            representationTypes: .thumbnail
+        )
+
+        QLThumbnailGenerator.shared.generateBestRepresentation(
+            for: request
+        ) { thumbnail, _ in
+            guard let thumbnail else { return }
+            completion(Image(uiImage: thumbnail.uiImage))
         }
-        return url
     }
 }
