@@ -22,12 +22,24 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct FileListView: View {
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    var files = [UploadFile]()
+    private var files: [DisplayableFile] {
+        if let folder {
+            return folder.children
+        }
+        return newTransferManager.displayableFiles
+    }
+
+    private let folder: DisplayableFile?
+
+    init(parentFolder: DisplayableFile?) {
+        folder = parentFolder
+    }
 
     private var filesSize: Int64 {
-        newTransferManager.uploadFiles.map { $0.size }.reduce(0, +)
+        files.map { $0.computedSize }.reduce(0, +)
     }
 
     private let columns = [
@@ -39,7 +51,7 @@ struct FileListView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 Text(
-                    "\(STResourcesStrings.Localizable.filesCount(newTransferManager.uploadFiles.count)) · \(filesSize.formatted(.defaultByteCount))"
+                    "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
                 )
 
                 LazyVGrid(
@@ -49,13 +61,21 @@ struct FileListView: View {
                     pinnedViews: []
                 ) {
                     ForEach(files) { file in
-                        LargeThumbnailView(
-                            fileName: file.url.lastPathComponent,
-                            fileSize: file.size,
-                            url: file.url,
-                            mimeType: file.mimeType
-                        ) {
-                            newTransferManager.remove(file: file)
+                        if file.isFolder {
+                            NavigationLink(value: file) {
+                                LargeThumbnailView(folderName: file.name, folderSize: file.computedSize) {
+                                    newTransferManager.remove(file: file)
+                                }
+                            }
+                        } else {
+                            LargeThumbnailView(
+                                fileName: file.name,
+                                fileSize: file.computedSize,
+                                url: file.url,
+                                mimeType: file.mimeType
+                            ) {
+                                newTransferManager.remove(file: file)
+                            }
                         }
                     }
                 }
@@ -63,9 +83,14 @@ struct FileListView: View {
             }
             .padding(value: .medium)
         }
+        .onChange(of: files) { _ in
+            if files.isEmpty {
+                dismiss()
+            }
+        }
     }
 }
 
 #Preview {
-    FileListView()
+    FileListView(parentFolder: nil)
 }
