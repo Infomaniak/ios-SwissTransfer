@@ -41,6 +41,15 @@ public struct LargeThumbnailView: View {
         icon = FileHelper(type: mimeType).icon.swiftUIImage
     }
 
+    public init(folderName: String, folderSize: Int64, removeAction: (() -> Void)? = nil) {
+        fileName = folderName
+        fileSize = folderSize
+        url = nil
+        self.removeAction = removeAction
+
+        icon = STResourcesAsset.Images.folder.swiftUIImage
+    }
+
     public var body: some View {
         VStack(spacing: 0) {
             VStack {
