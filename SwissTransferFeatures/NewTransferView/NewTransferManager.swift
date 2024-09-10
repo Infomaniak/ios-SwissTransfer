@@ -21,6 +21,64 @@ import InfomaniakCore
 import SwiftUI
 import SwissTransferCore
 
+class DisplayableFile: Identifiable, Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: DisplayableFile, rhs: DisplayableFile) -> Bool {
+        lhs.id == rhs.id && lhs.children == rhs.children
+    }
+
+    let id: String
+
+    let name: String
+    let isFolder: Bool
+
+    var children = [DisplayableFile]()
+    var parent: DisplayableFile?
+
+    // Real Files property
+    var url: URL? = nil
+    private var size: Int64 = 0
+    var mimeType = ""
+
+    init(name: String, isFolder: Bool) {
+        id = UUID().uuidString
+        self.name = name
+        self.isFolder = isFolder
+    }
+
+    init(id: String, name: String, url: URL, size: Int64, mimeType: String) {
+        self.id = id
+        self.name = name
+        self.url = url
+        self.size = size
+        self.mimeType = mimeType
+        isFolder = false
+    }
+
+    var computedSize: Int64 {
+        if isFolder {
+            return children.map { $0.computedSize }.reduce(0, +)
+        }
+        return size
+    }
+
+    /// Return all file children in the tree (no folder)
+    var computedChildren: [DisplayableFile] {
+        var array = [DisplayableFile]()
+        if isFolder {
+            for element in children {
+                array.append(contentsOf: element.computedChildren)
+            }
+        } else {
+            array.append(self)
+        }
+        return array
+    }
+}
+
 struct UploadFile: Identifiable {
     var id: String {
         return url.absoluteString
@@ -44,8 +102,10 @@ struct UploadFile: Identifiable {
     }
 }
 
+@MainActor
 class NewTransferManager: ObservableObject {
     @Published var uploadFiles = [UploadFile]()
+    @Published var displayableFiles = [DisplayableFile]()
 
     init() {
         cleanTmpDir()
@@ -57,21 +117,27 @@ class NewTransferManager: ObservableObject {
 
             try uploadFiles.append(contentsOf: flatten(urls: tmpUrls))
 
-            print(uploadFiles)
-            // Create unflatten version
-
+            prepareForDisplay()
         } catch {
             print("Error: \(error.localizedDescription)")
         }
     }
 
-    func remove(file: UploadFile) {
-        do {
-            try FileManager.default.removeItem(at: file.url)
-        } catch {
-            print("Error deleting file: \(error.localizedDescription)")
+    func remove(file: DisplayableFile) {
+        let filesToRemove = file.computedChildren
+
+        for fileToRemove in filesToRemove {
+            uploadFiles.removeAll { $0.id == fileToRemove.id }
+            guard let url = fileToRemove.url else { continue }
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch {
+                print("Error deleting file: \(error.localizedDescription)")
+            }
         }
-        uploadFiles.removeAll { $0.id == file.id }
+
+        file.parent?.children.removeAll { $0.id == file.id }
+        cleanEmptyFolders(fromFile: file)
     }
 }
 
@@ -114,6 +180,24 @@ extension NewTransferManager {
             print("Error cleaning tmp directory: \(error.localizedDescription)")
         }
     }
+
+    private func cleanEmptyFolders(fromFile file: DisplayableFile) {
+        guard let parent = file.parent else {
+            displayableFiles.removeAll { $0.id == file.id }
+            return
+        }
+
+        var currentFile: DisplayableFile = parent
+        while currentFile.computedChildren.isEmpty {
+            guard let parent = currentFile.parent else {
+                // Base of the tree
+                displayableFiles.removeAll { $0.id == currentFile.id }
+                break
+            }
+            parent.children.removeAll { $0.id == currentFile.id }
+            currentFile = parent
+        }
+    }
 }
 
 // MARK: - Flattening
@@ -137,7 +221,8 @@ extension NewTransferManager {
                 while case let element as URL = folderEnumerator?.nextObject() {
                     guard var uploadFile = UploadFile(url: element) else { continue }
 
-                    let newPath = uploadFile.url.path().trimmingPrefix(url.path())
+                    let urlToTrim = url.deletingLastPathComponent()
+                    let newPath = uploadFile.url.path().trimmingPrefix(urlToTrim.path())
                     uploadFile.path = String(newPath)
 
                     uploadFiles.append(uploadFile)
@@ -149,5 +234,78 @@ extension NewTransferManager {
         }
 
         return result
+    }
+
+    private func prepareForDisplay() {
+        var tree = [DisplayableFile]()
+        for file in uploadFiles {
+            var pathComponents = file.path.components(separatedBy: "/")
+            let fileName = pathComponents.removeLast()
+
+            let displayableFile = DisplayableFile(
+                id: file.id,
+                name: fileName,
+                url: file.url,
+                size: file.size,
+                mimeType: file.mimeType
+            )
+
+            if let parent = findFolder(forPath: pathComponents, in: &tree) {
+                displayableFile.parent = parent
+                parent.children.append(displayableFile)
+            } else {
+                tree.append(displayableFile)
+            }
+        }
+
+        displayableFiles = tree
+    }
+
+    private func findFolder(forPath pathComponents: [String], in tree: inout [DisplayableFile]) -> DisplayableFile? {
+        guard !pathComponents.isEmpty else {
+            // For initial call
+            return nil
+        }
+
+        var result: DisplayableFile
+        var path = pathComponents
+        let currentName = path.removeFirst()
+
+        if let branch = tree.first(where: {
+            $0.name == currentName && $0.isFolder
+        }) {
+            result = branch
+        } else {
+            result = DisplayableFile(name: currentName, isFolder: true)
+            tree.append(result)
+        }
+
+        if !path.isEmpty {
+            return findFolderRecursively(forPath: path, in: result)
+        } else {
+            return result
+        }
+    }
+
+    private func findFolderRecursively(forPath pathComponents: [String], in parent: DisplayableFile) -> DisplayableFile? {
+        var result: DisplayableFile
+        var path = pathComponents
+        let currentName = path.removeFirst()
+
+        if let branch = parent.children.first(where: {
+            $0.name == currentName && $0.isFolder
+        }) {
+            result = branch
+        } else {
+            result = DisplayableFile(name: currentName, isFolder: true)
+            result.parent = parent
+            parent.children.append(result)
+        }
+
+        if !path.isEmpty {
+            return findFolderRecursively(forPath: path, in: result)
+        } else {
+            return result
+        }
     }
 }
