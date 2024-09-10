@@ -33,7 +33,7 @@ public struct NewTransferView: View {
 
     public var body: some View {
         NavigationStack {
-            FileListView(files: newTransferManager.uploadFiles)
+            FileListView(parentFolder: nil)
                 .floatingContainer {
                     VStack(spacing: 0) {
                         AddFilesMenuView()
@@ -51,6 +51,11 @@ public struct NewTransferView: View {
                 }
                 .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
                 .stNavigationBarStyle()
+                .navigationDestination(for: DisplayableFile.self) { file in
+                    FileListView(parentFolder: file)
+                        .stNavigationBarNewTransfer(title: file.name)
+                        .stNavigationBarStyle()
+                }
         }
         .environmentObject(sheetPresenter)
         .environmentObject(newTransferManager)
