@@ -36,7 +36,7 @@ struct SentEmptyView: View {
                     .multilineTextAlignment(.center)
             }
 
-            FirstTransferButton(style: .big) {
+            FirstTransferButton(style: .big) { _ in
                 // Transfer
             }
         }

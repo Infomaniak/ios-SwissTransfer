@@ -20,14 +20,20 @@ import InfomaniakCore
 import STResources
 import SwiftUI
 
-struct AddFilesMenuView: View {
-    @EnvironmentObject private var newTransferManager: NewTransferManager
-
+public struct AddFilesMenuView<Content: View>: View {
     @State private var showImportFile = false
     @State private var showCamera = false
     @State private var showGalery = false
 
-    var body: some View {
+    private let completion: ([URL]) -> Void
+    private let label: () -> Content
+
+    public init(completion: @escaping ([URL]) -> Void, @ViewBuilder label: @escaping () -> Content) {
+        self.completion = completion
+        self.label = label
+    }
+
+    public var body: some View {
         Menu {
             Button {
                 showImportFile = true
@@ -56,12 +62,8 @@ struct AddFilesMenuView: View {
                 )
             }
         } label: {
-            Label(
-                title: { Text(STResourcesStrings.Localizable.buttonAddFiles) },
-                icon: { STResourcesAsset.Images.plus.swiftUIImage }
-            )
+            label()
         }
-        .buttonStyle(.ikBorderless)
         .fileImporter(
             isPresented: $showImportFile,
             allowedContentTypes: [.item, .folder],
@@ -69,7 +71,7 @@ struct AddFilesMenuView: View {
             onCompletion: { result in
                 switch result {
                 case .success(let urls):
-                    newTransferManager.addFiles(urls: urls)
+                    completion(urls)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -79,5 +81,5 @@ struct AddFilesMenuView: View {
 }
 
 #Preview {
-    AddFilesMenuView()
+    AddFilesMenuView { _ in } label: { EmptyView() }
 }

@@ -122,7 +122,8 @@ let project = Project(
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
-                    .target(name: "SwissTransferCore")
+                    .target(name: "SwissTransferCore"),
+                    .external(name: "SwiftUIMacros")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",

@@ -27,8 +27,7 @@ import SwissTransferCoreUI
 
 public struct SentView: View {
     @EnvironmentObject private var transferManager: TransferManager
-
-    @State private var showNewTransferSheet = false
+    @State private var newTransferContainer: NewTransferContainer?
 
     public init() {}
 

@@ -21,7 +21,7 @@ import SwiftUI
 import SwissTransferCore
 
 struct STNavigationBarNewTransferModifier: ViewModifier {
-    @EnvironmentObject private var sheetPresenter: SheetPresenter
+    @Environment(\.dismissModal) private var dismissModal
 
     let title: String
 
@@ -36,7 +36,7 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
 
                 ToolbarItem(placement: .destructiveAction) {
                     Button {
-                        sheetPresenter.dismiss()
+                        dismissModal()
                     } label: {
                         Image(systemName: "xmark")
                     }
