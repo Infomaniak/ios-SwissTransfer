@@ -27,7 +27,7 @@ import SwissTransferCoreUI
 
 public struct SentView: View {
     @State private var transfers: [Transfer] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
-    @State private var showNewTransferSheet = false
+    @State private var newTransferContainer: NewTransferContainer?
 
     public init() {}
 
@@ -42,14 +42,14 @@ public struct SentView: View {
                             TransferDetailsView(transfer: transfer)
                         }
                     }
-                    .floatingActionButton(style: .newTransfer) {
-                        showNewTransferSheet = true
+                    .floatingActionButton(style: .newTransfer) { urls in
+                        newTransferContainer = NewTransferContainer(urls: urls)
                     }
             }
         }
         .environmentObject(viewRouter)
-        .fullScreenCover(isPresented: $showNewTransferSheet) {
-            NewTransferView(isPresented: $showNewTransferSheet)
+        .fullScreenCover(item: $newTransferContainer) { container in
+            NewTransferView(urls: container.urls)
         }
     }
 }

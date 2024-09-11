@@ -28,7 +28,7 @@ struct FloatingActionButtonModifier: ViewModifier {
     @Environment(\.isCompactWindow) private var isCompactWindow
 
     let style: FloatingActionButtonStyle
-    let action: () -> Void
+    let action: ([URL]) -> Void
 
     func body(content: Content) -> some View {
         content
@@ -49,7 +49,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 }
 
 public extension View {
-    func floatingActionButton(style: FloatingActionButtonStyle, perform action: @escaping () -> Void) -> some View {
+    func floatingActionButton(style: FloatingActionButtonStyle, perform action: @escaping ([URL]) -> Void) -> some View {
         modifier(FloatingActionButtonModifier(style: style, action: action))
     }
 }
