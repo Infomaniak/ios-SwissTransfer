@@ -35,6 +35,7 @@ class DisplayableFile: Identifiable, Hashable {
     let name: String
     let isFolder: Bool
 
+    // TODO: - Use SET ? To simplify all remove functions
     var children = [DisplayableFile]()
     var parent: DisplayableFile?
 
@@ -49,6 +50,7 @@ class DisplayableFile: Identifiable, Hashable {
         self.isFolder = isFolder
     }
 
+    // TODO: - Init from UploadFile
     init(id: String, name: String, url: URL, size: Int64, mimeType: String) {
         self.id = id
         self.name = name
@@ -117,12 +119,20 @@ class NewTransferManager: ObservableObject {
 
             try uploadFiles.append(contentsOf: flatten(urls: tmpUrls))
 
-            prepareForDisplay()
+            displayableFiles = prepareForDisplay()
         } catch {
             print("Error: \(error.localizedDescription)")
         }
     }
 
+    // TODO: - Error when deleting some files
+    // Sometimes the file to delete can't be found
+    // It shouldn't happen
+
+    /// Removes completely the given file and his children from :
+    /// - FileManager
+    /// - Upload list
+    /// - Displayable list
     func remove(file: DisplayableFile) {
         let filesToRemove = file.computedChildren
 
@@ -136,8 +146,7 @@ class NewTransferManager: ObservableObject {
             }
         }
 
-        file.parent?.children.removeAll { $0.id == file.id }
-        cleanEmptyFolders(fromFile: file)
+        removeFileAndCleanFolders(file: file)
     }
 }
 
@@ -146,6 +155,7 @@ extension NewTransferManager {
 //        for uploadFile in uploadFiles {}
 //    }
 
+    /// Move the imported files/folder in the temporary directory
     private func moveToTmp(files: [URL]) -> [URL] {
         var urls = [URL]()
         let tmpDirectory = FileManager.default.temporaryDirectory
@@ -163,6 +173,7 @@ extension NewTransferManager {
         return urls
     }
 
+    /// Empty the temporary directory
     private func cleanTmpDir() {
         do {
             let tmp = FileManager.default.temporaryDirectory
@@ -181,7 +192,11 @@ extension NewTransferManager {
         }
     }
 
-    private func cleanEmptyFolders(fromFile file: DisplayableFile) {
+    /// Remove the given file from his parent
+    /// Start from the file and remove all folders above him who doesn't contain any real file
+    private func removeFileAndCleanFolders(file: DisplayableFile) {
+        file.parent?.children.removeAll { $0.id == file.id }
+
         guard let parent = file.parent else {
             displayableFiles.removeAll { $0.id == file.id }
             return
@@ -200,16 +215,22 @@ extension NewTransferManager {
     }
 }
 
-// MARK: - Flattening
+// MARK: - Tools
 
 extension NewTransferManager {
     /// Flatten folder + set path
+    /// Take the list of the imported URLs
+    /// Flatten the folders of these URLs to get only the File inside them and create a short path for each file
+    /// Then return all the found Files to upload
+    /// - Parameters:
+    ///   - urls: List of imported URLs
+    /// - Returns: An array of file to Upload (no folder, only file)
     private func flatten(urls: [URL]) throws -> [UploadFile] {
         let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey]
         var result = [UploadFile]()
 
         for url in urls {
-            guard let resources = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey, .nameKey]),
+            guard let resources = try? url.resourceValues(forKeys: Set(resourceKeys)),
                   let isDirectory = resources.isDirectory else { continue }
 
             if isDirectory {
@@ -236,7 +257,9 @@ extension NewTransferManager {
         return result
     }
 
-    private func prepareForDisplay() {
+    /// Take the files in uploadFiles and create a tree using fake folders
+    /// - Returns: The created tree
+    private func prepareForDisplay() -> [DisplayableFile] {
         var tree = [DisplayableFile]()
         for file in uploadFiles {
             var pathComponents = file.path.components(separatedBy: "/")
@@ -258,54 +281,47 @@ extension NewTransferManager {
             }
         }
 
-        displayableFiles = tree
+        return tree
     }
 
+    /// Give the folder in which we need to put the file with the given path
+    /// - Parameters:
+    ///   - pathComponents: The path of the file (ex: ["parent", "child"]) without the fileName
+    ///   - tree: The tree in which we want to put the file (displayableFiles)
+    /// - Returns: Return the folder
     private func findFolder(forPath pathComponents: [String], in tree: inout [DisplayableFile]) -> DisplayableFile? {
-        guard !pathComponents.isEmpty else {
-            // For initial call
-            return nil
-        }
-
-        var result: DisplayableFile
         var path = pathComponents
-        let currentName = path.removeFirst()
+        var result: DisplayableFile?
 
-        if let branch = tree.first(where: {
-            $0.name == currentName && $0.isFolder
-        }) {
-            result = branch
-        } else {
-            result = DisplayableFile(name: currentName, isFolder: true)
-            tree.append(result)
+        // Used to simulate the base of the tree
+        let fakeFirstParent = DisplayableFile(name: "", isFolder: true)
+        fakeFirstParent.children = tree
+        var currentParent = fakeFirstParent
+
+        while !path.isEmpty {
+            let currentName = path.removeFirst()
+
+            // Look for the current component in the children of the current parent
+            if let branch = currentParent.children.first(where: {
+                $0.name == currentName && $0.isFolder
+            }) {
+                result = branch
+            } else {
+                // If not found, create a new folder with the current component name
+                let newFolder = DisplayableFile(name: currentName, isFolder: true)
+                newFolder.parent = currentParent
+                currentParent.children.append(newFolder)
+
+                result = newFolder
+            }
+
+            // Update the current parent to the folder we found/created
+            currentParent = result!
         }
 
-        if !path.isEmpty {
-            return findFolderRecursively(forPath: path, in: result)
-        } else {
-            return result
-        }
-    }
+        // Reassign the fakeParent to the base of the tree
+        tree = fakeFirstParent.children
 
-    private func findFolderRecursively(forPath pathComponents: [String], in parent: DisplayableFile) -> DisplayableFile? {
-        var result: DisplayableFile
-        var path = pathComponents
-        let currentName = path.removeFirst()
-
-        if let branch = parent.children.first(where: {
-            $0.name == currentName && $0.isFolder
-        }) {
-            result = branch
-        } else {
-            result = DisplayableFile(name: currentName, isFolder: true)
-            result.parent = parent
-            parent.children.append(result)
-        }
-
-        if !path.isEmpty {
-            return findFolderRecursively(forPath: path, in: result)
-        } else {
-            return result
-        }
+        return result
     }
 }
