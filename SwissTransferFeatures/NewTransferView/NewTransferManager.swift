@@ -35,7 +35,7 @@ class DisplayableFile: Identifiable, Hashable {
     let name: String
     let isFolder: Bool
 
-    // TODO: - Use SET ? To simplify all remove functions
+    // TODO: - Use  SET ? To simplify all remove functions
     var children = [DisplayableFile]()
     var parent: DisplayableFile?
 
@@ -50,13 +50,12 @@ class DisplayableFile: Identifiable, Hashable {
         self.isFolder = isFolder
     }
 
-    // TODO: - Init from UploadFile
-    init(id: String, name: String, url: URL, size: Int64, mimeType: String) {
-        self.id = id
-        self.name = name
-        self.url = url
-        self.size = size
-        self.mimeType = mimeType
+    init(uploadFile: UploadFile) {
+        id = uploadFile.id
+        name = uploadFile.url.lastPathComponent
+        url = uploadFile.url
+        size = uploadFile.size
+        mimeType = uploadFile.mimeType
         isFolder = false
     }
 
@@ -125,7 +124,7 @@ class NewTransferManager: ObservableObject {
         }
     }
 
-    // TODO: - Error when deleting some files
+    // TODO: -  Error when deleting some files
     // Sometimes the file to delete can't be found
     // It shouldn't happen
 
@@ -262,16 +261,8 @@ extension NewTransferManager {
     private func prepareForDisplay() -> [DisplayableFile] {
         var tree = [DisplayableFile]()
         for file in uploadFiles {
-            var pathComponents = file.path.components(separatedBy: "/")
-            let fileName = pathComponents.removeLast()
-
-            let displayableFile = DisplayableFile(
-                id: file.id,
-                name: fileName,
-                url: file.url,
-                size: file.size,
-                mimeType: file.mimeType
-            )
+            let displayableFile = DisplayableFile(uploadFile: file)
+            let pathComponents = file.path.components(separatedBy: "/")
 
             if let parent = findFolder(forPath: pathComponents, in: &tree) {
                 displayableFile.parent = parent
@@ -286,11 +277,12 @@ extension NewTransferManager {
 
     /// Give the folder in which we need to put the file with the given path
     /// - Parameters:
-    ///   - pathComponents: The path of the file (ex: ["parent", "child"]) without the fileName
-    ///   - tree: The tree in which we want to put the file (displayableFiles)
+    ///   - pathComponents: The path of the file (ex: ["parent", "child", "doc.txt"])
+    ///   - tree: The tree in which we want
+    /// to put the file (displayableFiles)
     /// - Returns: Return the folder
     private func findFolder(forPath pathComponents: [String], in tree: inout [DisplayableFile]) -> DisplayableFile? {
-        var path = pathComponents
+        var path = pathComponents.dropLast() // Remove the fileName from the path
         var result: DisplayableFile?
 
         // Used to simulate the base of the tree
