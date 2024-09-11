@@ -204,7 +204,7 @@ extension NewTransferManager {
         var result: DisplayableFile?
 
         // Used to simulate the base of the tree
-        let fakeFirstParent = DisplayableFile(name: "", isFolder: true)
+        let fakeFirstParent = DisplayableFile(folderName: "")
         fakeFirstParent.children = tree
         var currentParent = fakeFirstParent
 
@@ -218,7 +218,7 @@ extension NewTransferManager {
                 result = branch
             } else {
                 // If not found, create a new folder with the current component name
-                let newFolder = DisplayableFile(name: currentName, isFolder: true)
+                let newFolder = DisplayableFile(folderName: currentName)
                 newFolder.parent = currentParent
                 currentParent.children.append(newFolder)
 
