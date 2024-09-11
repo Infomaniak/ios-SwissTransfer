@@ -23,12 +23,11 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @StateObject private var sheetPresenter: SheetPresenter
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var newTransferManager: NewTransferManager
 
-    public init(isPresented: Binding<Bool>) {
-        _sheetPresenter = StateObject(wrappedValue: SheetPresenter(isPresented: isPresented))
-        _newTransferManager = StateObject(wrappedValue: NewTransferManager())
+    public init(urls: [URL]) {
+        _newTransferManager = StateObject(wrappedValue: NewTransferManager(urls: urls))
     }
 
     public var body: some View {
@@ -36,7 +35,13 @@ public struct NewTransferView: View {
             FileListView(parentFolder: nil)
                 .floatingContainer {
                     VStack(spacing: 0) {
-                        AddFilesMenuView()
+                        AddFilesMenuView { _ in } label: {
+                            Label(
+                                title: { Text(STResourcesStrings.Localizable.buttonAddFiles) },
+                                icon: { STResourcesAsset.Images.plus.swiftUIImage }
+                            )
+                        }
+                        .buttonStyle(.ikBorderless)
 
                         NavigationLink {
                             NewTransferTypeView()
@@ -57,11 +62,13 @@ public struct NewTransferView: View {
                         .stNavigationBarStyle()
                 }
         }
-        .environmentObject(sheetPresenter)
+        .environment(\.dismissModal) {
+            dismiss()
+        }
         .environmentObject(newTransferManager)
     }
 }
 
 #Preview {
-    NewTransferView(isPresented: .constant(true))
+    NewTransferView(urls: [])
 }

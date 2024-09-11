@@ -17,15 +17,11 @@
  */
 
 import SwiftUI
+import SwiftUIMacros
 
-public class SheetPresenter: ObservableObject {
-    @Binding private var isPresented: Bool
+public typealias DismissModalAction = () -> Void
 
-    public init(isPresented: Binding<Bool>) {
-        _isPresented = isPresented
-    }
-
-    public func dismiss() {
-        isPresented = false
-    }
+public extension EnvironmentValues {
+    @EnvironmentKey
+    var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
 }

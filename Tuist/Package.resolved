@@ -143,6 +143,24 @@
         "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
         "version" : "1.6.1"
       }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax",
+      "state" : {
+        "revision" : "2bc86522d115234d1f588efe2bcb4ce4be8f8b82",
+        "version" : "510.0.3"
+      }
+    },
+    {
+      "identity" : "swiftui-macros",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Wouter01/SwiftUI-Macros.git",
+      "state" : {
+        "revision" : "a7d9eeaec29c2d46fa1ada18f3a54a13ddf043b0",
+        "version" : "1.2.0"
+      }
     }
   ],
   "version" : 2

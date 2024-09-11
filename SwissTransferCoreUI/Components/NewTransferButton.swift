@@ -43,11 +43,16 @@ public enum NewTransferStyle {
 }
 
 struct NewTransferButton: View {
-    var style: NewTransferStyle = .small
-    let action: () -> Void
+    private let style: NewTransferStyle
+    private let action: ([URL]) -> Void
+
+    init(style: NewTransferStyle = .small, action: @escaping ([URL]) -> Void) {
+        self.style = style
+        self.action = action
+    }
 
     var body: some View {
-        Button(action: action) {
+        AddFilesMenuView(completion: action) {
             STResourcesAsset.Images.plus.swiftUIImage
                 .resizable()
                 .tint(.white)
@@ -63,7 +68,7 @@ struct NewTransferButton: View {
 
 #Preview {
     VStack {
-        NewTransferButton(style: .small) {}
-        NewTransferButton(style: .big) {}
+        NewTransferButton(style: .small) { _ in }
+        NewTransferButton(style: .big) { _ in }
     }
 }

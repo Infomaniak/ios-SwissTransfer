@@ -26,8 +26,10 @@ class NewTransferManager: ObservableObject {
     @Published var uploadFiles = [UploadFile]()
     @Published var displayableFiles = [DisplayableFile]()
 
-    init() {
+    init(urls: [URL]) {
         cleanTmpDir()
+
+        addFiles(urls: urls)
     }
 
     deinit {
