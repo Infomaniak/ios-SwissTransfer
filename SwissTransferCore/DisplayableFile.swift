@@ -28,16 +28,18 @@ public class DisplayableFile: Identifiable, Hashable {
     public var parent: DisplayableFile?
 
     // Real Files property
-    public var url: URL? = nil
+    public var url: URL?
     private var size: Int64 = 0
     public var mimeType = ""
 
-    public init(name: String, isFolder: Bool) {
+    /// Fake folder init
+    public init(folderName: String) {
         id = UUID().uuidString
-        self.name = name
-        self.isFolder = isFolder
+        name = folderName
+        isFolder = true
     }
 
+    /// UploadFile init
     public init(uploadFile: UploadFile) {
         id = uploadFile.id
         name = uploadFile.url.lastPathComponent
