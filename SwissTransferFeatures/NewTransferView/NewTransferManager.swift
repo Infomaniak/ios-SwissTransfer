@@ -21,94 +21,16 @@ import InfomaniakCore
 import SwiftUI
 import SwissTransferCore
 
-class DisplayableFile: Identifiable, Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    static func == (lhs: DisplayableFile, rhs: DisplayableFile) -> Bool {
-        lhs.id == rhs.id && lhs.children == rhs.children
-    }
-
-    let id: String
-
-    let name: String
-    let isFolder: Bool
-
-    // TODO: - Use  SET ? To simplify all remove functions
-    var children = [DisplayableFile]()
-    var parent: DisplayableFile?
-
-    // Real Files property
-    var url: URL? = nil
-    private var size: Int64 = 0
-    var mimeType = ""
-
-    init(name: String, isFolder: Bool) {
-        id = UUID().uuidString
-        self.name = name
-        self.isFolder = isFolder
-    }
-
-    init(uploadFile: UploadFile) {
-        id = uploadFile.id
-        name = uploadFile.url.lastPathComponent
-        url = uploadFile.url
-        size = uploadFile.size
-        mimeType = uploadFile.mimeType
-        isFolder = false
-    }
-
-    var computedSize: Int64 {
-        if isFolder {
-            return children.map { $0.computedSize }.reduce(0, +)
-        }
-        return size
-    }
-
-    /// Return all file children in the tree (no folder)
-    var computedChildren: [DisplayableFile] {
-        var array = [DisplayableFile]()
-        if isFolder {
-            for element in children {
-                array.append(contentsOf: element.computedChildren)
-            }
-        } else {
-            array.append(self)
-        }
-        return array
-    }
-}
-
-struct UploadFile: Identifiable {
-    var id: String {
-        return url.absoluteString
-    }
-
-    let url: URL
-    let size: Int64
-    var path: String
-
-    init?(url: URL) {
-        guard let resources = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey, .nameKey]),
-              let isDirectory = resources.isDirectory, !isDirectory else { return nil }
-
-        self.url = url
-        path = resources.name ?? url.lastPathComponent
-        size = Int64(resources.fileSize ?? 0)
-    }
-
-    var mimeType: String {
-        url.typeIdentifier ?? ""
-    }
-}
-
 @MainActor
 class NewTransferManager: ObservableObject {
     @Published var uploadFiles = [UploadFile]()
     @Published var displayableFiles = [DisplayableFile]()
 
     init() {
+        cleanTmpDir()
+    }
+
+    deinit {
         cleanTmpDir()
     }
 
@@ -123,10 +45,6 @@ class NewTransferManager: ObservableObject {
             print("Error: \(error.localizedDescription)")
         }
     }
-
-    // TODO: -  Error when deleting some files
-    // Sometimes the file to delete can't be found
-    // It shouldn't happen
 
     /// Removes completely the given file and his children from :
     /// - FileManager
@@ -173,7 +91,7 @@ extension NewTransferManager {
     }
 
     /// Empty the temporary directory
-    private func cleanTmpDir() {
+    private nonisolated func cleanTmpDir() {
         do {
             let tmp = FileManager.default.temporaryDirectory
 
@@ -311,8 +229,11 @@ extension NewTransferManager {
             currentParent = result!
         }
 
-        // Reassign the fakeParent to the base of the tree
+        // Reassign the fake parent children to the tree and remove the fake parent link from the elements of the tree base
         tree = fakeFirstParent.children
+        for baseChild in tree {
+            baseChild.parent = nil
+        }
 
         return result
     }
