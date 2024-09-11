@@ -35,7 +35,9 @@ public struct NewTransferView: View {
             FileListView(parentFolder: nil)
                 .floatingContainer {
                     VStack(spacing: 0) {
-                        AddFilesMenuView { _ in } label: {
+                        AddFilesMenuView { urls in
+                            newTransferManager.addFiles(urls: urls)
+                        } label: {
                             Label(
                                 title: { Text(STResourcesStrings.Localizable.buttonAddFiles) },
                                 icon: { STResourcesAsset.Images.plus.swiftUIImage }
