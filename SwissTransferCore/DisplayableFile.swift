@@ -23,7 +23,6 @@ public class DisplayableFile: Identifiable, Hashable {
     public let name: String
     public let isFolder: Bool
 
-    // TODO: - Use SET ? To simplify all remove functions
     public var children = [DisplayableFile]()
     public var parent: DisplayableFile?
 
