@@ -42,4 +42,18 @@ public extension URL {
         try FileManager.default.createDirectory(at: targetFolderURL, withIntermediateDirectories: true)
         return targetFolderURL
     }
+
+    static func tmpUploadDirectory() throws -> URL {
+        let tmpDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("upload", isDirectory: true)
+        try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
+        return tmpDirectory
+    }
+
+    static func tmpCacheDirectory() throws -> URL {
+        let tmpDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("cache", isDirectory: true)
+        try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
+        return tmpDirectory
+    }
 }
