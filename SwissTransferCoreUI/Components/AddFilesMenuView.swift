@@ -17,13 +17,16 @@
  */
 
 import InfomaniakCore
+import PhotosUI
 import STResources
 import SwiftUI
 
 public struct AddFilesMenuView<Content: View>: View {
     @State private var showImportFile = false
     @State private var showCamera = false
-    @State private var showGalery = false
+    @State private var showLibrary = false
+
+    @State private var selectedPhotos: [PhotosPickerItem] = []
 
     private let completion: ([URL]) -> Void
     private let label: () -> Content
@@ -44,7 +47,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 )
             }
             Button {
-                // TODO: - Open photos
+                showLibrary = true
             } label: {
                 Label(
                     title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
@@ -63,6 +66,27 @@ public struct AddFilesMenuView<Content: View>: View {
             }
         } label: {
             label()
+        }
+        .photosPicker(isPresented: $showLibrary, selection: $selectedPhotos, photoLibrary: .shared())
+        .onChange(of: selectedPhotos) { _ in
+            guard !selectedPhotos.isEmpty else { return }
+            Task {
+                var photoList = [LibraryItem]()
+                // Save photos
+                for photo in selectedPhotos {
+                    do {
+                        guard let newFile = try await photo.loadTransferable(type: LibraryItem.self) else { continue }
+                        photoList.append(newFile)
+                    } catch {
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+
+                let urls = photoList.map {
+                    $0.url
+                }
+                completion(urls)
+            }
         }
         .fileImporter(
             isPresented: $showImportFile,
