@@ -21,19 +21,25 @@ import InfomaniakCore
 import SwiftUI
 import SwissTransferCore
 
+private enum TmpDirType {
+    case all
+    case cache
+    case upload
+}
+
 @MainActor
 class NewTransferManager: ObservableObject {
     @Published var uploadFiles = [UploadFile]()
     @Published var displayableFiles = [DisplayableFile]()
 
     init(urls: [URL]) {
-        cleanTmpDir()
-
+        cleanTmpDir(type: .upload)
         addFiles(urls: urls)
+        cleanTmpDir(type: .cache)
     }
 
     deinit {
-        cleanTmpDir()
+        cleanTmpDir(type: .all)
     }
 
     func addFiles(urls: [URL]) {
@@ -77,9 +83,9 @@ extension NewTransferManager {
     /// Move the imported files/folder in the temporary directory
     private func moveToTmp(files: [URL]) -> [URL] {
         var urls = [URL]()
-        let tmpDirectory = FileManager.default.temporaryDirectory
 
         do {
+            let tmpDirectory = try URL.tmpUploadDirectory()
             for file in files {
                 let destination = tmpDirectory.appending(path: file.lastPathComponent)
                 try FileManager.default.copyItem(at: file, to: destination)
@@ -93,9 +99,17 @@ extension NewTransferManager {
     }
 
     /// Empty the temporary directory
-    private nonisolated func cleanTmpDir() {
+    private nonisolated func cleanTmpDir(type: TmpDirType) {
         do {
-            let tmp = FileManager.default.temporaryDirectory
+            let tmp: URL
+            switch type {
+            case .all:
+                tmp = FileManager.default.temporaryDirectory
+            case .cache:
+                tmp = try URL.tmpCacheDirectory()
+            case .upload:
+                tmp = try URL.tmpUploadDirectory()
+            }
 
             let childrens = try FileManager.default.contentsOfDirectory(
                 at: tmp,
