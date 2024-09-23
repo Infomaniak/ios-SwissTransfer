@@ -20,6 +20,7 @@ import InfomaniakCore
 import PhotosUI
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 public struct AddFilesMenuView<Content: View>: View {
     @State private var showImportFile = false
@@ -71,11 +72,11 @@ public struct AddFilesMenuView<Content: View>: View {
         .onChange(of: selectedPhotos) { _ in
             guard !selectedPhotos.isEmpty else { return }
             Task {
-                var photoList = [LibraryItem]()
+                var photoList = [LibraryContent]()
                 // Save photos
                 for photo in selectedPhotos {
                     do {
-                        guard let newFile = try await photo.loadTransferable(type: LibraryItem.self) else { continue }
+                        guard let newFile = try await photo.loadTransferable(type: LibraryContent.self) else { continue }
                         photoList.append(newFile)
                     } catch {
                         print("Error: \(error.localizedDescription)")
