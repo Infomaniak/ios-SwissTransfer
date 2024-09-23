@@ -18,8 +18,8 @@
 
 import SwiftUI
 
-public struct LibraryItem: Transferable {
-    let url: URL
+public struct LibraryContent: Transferable {
+    public let url: URL
 
     public static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(contentType: .movie) {
