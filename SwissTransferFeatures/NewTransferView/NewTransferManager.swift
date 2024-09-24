@@ -88,7 +88,9 @@ extension NewTransferManager {
             let tmpDirectory = try URL.tmpUploadDirectory()
             for file in files {
                 let destination = tmpDirectory.appending(path: file.lastPathComponent)
+                _ = file.startAccessingSecurityScopedResource()
                 try FileManager.default.copyItem(at: file, to: destination)
+                file.stopAccessingSecurityScopedResource()
                 urls.append(destination)
             }
         } catch {
