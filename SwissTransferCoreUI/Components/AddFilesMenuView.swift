@@ -25,8 +25,9 @@ import SwissTransferCore
 public struct AddFilesMenuView<Content: View>: View {
     @State private var showImportFile = false
     @State private var showCamera = false
-    @State private var showLibrary = false
 
+    // Library
+    @State private var showLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
 
     private let completion: ([URL]) -> Void
@@ -56,7 +57,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 )
             }
             Button {
-                // TODO: - Open Camera
+                showCamera = true
             } label: {
                 Label(
                     title: {
@@ -88,6 +89,19 @@ public struct AddFilesMenuView<Content: View>: View {
                 }
                 completion(urls)
             }
+        }
+        .fullScreenCover(isPresented: $showCamera) {
+            CameraPickerView { image in
+                do {
+                    let fileName = URL.defaultFileName()
+                    let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.png)
+                    try image.pngData()?.write(to: url)
+                    completion([url])
+                } catch {
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+            .ignoresSafeArea()
         }
         .fileImporter(
             isPresented: $showImportFile,
