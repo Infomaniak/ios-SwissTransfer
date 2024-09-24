@@ -17,11 +17,9 @@
  */
 
 import SwiftUI
-import SwiftUIMacros
 
 public typealias DismissModalAction = () -> Void
 
 public extension EnvironmentValues {
-    @EnvironmentKey
-    var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
+    @Entry var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
 }
