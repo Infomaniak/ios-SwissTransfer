@@ -9,38 +9,21 @@
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See them
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STReceivedView
-import STResources
-import STSentView
-import STSettingsView
 import SwiftUI
-import SwissTransferCoreUI
 
-public struct MainView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject private var mainViewState: MainViewState
-
-    public init() {}
-
-    public var body: some View {
-        Group {
-            if horizontalSizeClass == .compact {
-                STTabView()
-            } else {
-                STSplitView()
-            }
-        }
-        .environmentObject(mainViewState.transferManager)
+struct STSplitView: View {
+    var body: some View {
+        Text("Hello, World!")
     }
 }
 
 #Preview {
-    MainView()
+    STSplitView()
 }
