@@ -29,14 +29,11 @@ public struct ReceivedView: View {
     public init() {}
 
     public var body: some View {
-        NavigationStack(path: $viewRouter.path) {
-            TransferList(transfers: transfers) { transfer in
-                viewRouter.navigate(to: transfer)
-            }
-            .navigationDestination(for: NavigableTransfer.self) { navTransfer in
-                TransferDetailsView(transfer: navTransfer.transfer)
-            }
-            .stNavigationBar()
+        TransferList(transfers: transfers) { transfer in
+            viewRouter.navigate(to: transfer)
+        }
+        .navigationDestination(for: NavigableTransfer.self) { navTransfer in
+            TransferDetailsView(transfer: navTransfer.transfer)
         }
         .environmentObject(viewRouter)
     }
