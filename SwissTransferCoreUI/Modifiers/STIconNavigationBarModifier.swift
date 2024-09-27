@@ -19,7 +19,7 @@
 import STResources
 import SwiftUI
 
-struct STNavigationBarModifier: ViewModifier {
+struct STIconNavigationBarModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
@@ -36,7 +36,7 @@ struct STNavigationBarModifier: ViewModifier {
 
 public extension View {
     /// The navigationBar with correct styling and SwissTransfer logo in the center
-    func stNavigationBar() -> some View {
-        modifier(STNavigationBarModifier())
+    func stIconNavigationBar() -> some View {
+        modifier(STIconNavigationBarModifier())
     }
 }

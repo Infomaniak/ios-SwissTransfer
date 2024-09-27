@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import SwissTransferCoreUI
 import SwiftUI
 import STResources
 import STSentView
@@ -33,7 +34,7 @@ struct STSplitView: View {
                     tab.label
                 }
             }
-            .navigationSplitViewColumnWidth(ideal: 250)
+            .stIconNavigationBar()
         } content: {
             if let selectedTab {
                 ContentSplitView(tab: selectedTab)
