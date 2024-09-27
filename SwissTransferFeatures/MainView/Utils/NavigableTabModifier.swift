@@ -17,12 +17,13 @@
  */
 
 import SwiftUI
+import SwissTransferCoreUI
 
 struct NavigableTabModifier: ViewModifier {
     func body(content: Content) -> some View {
         NavigationStack {
             content
-                .stNavigationBar()
+                .stIconNavigationBar()
         }
     }
 }
