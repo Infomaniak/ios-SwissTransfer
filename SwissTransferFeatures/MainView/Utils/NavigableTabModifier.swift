@@ -16,26 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STReceivedView
-import STResources
-import STSentView
-import STSettingsView
 import SwiftUI
 
-struct STTabView: View {
-    var body: some View {
-        TabView {
-            SentView()
-                .navigableTab()
-                .tabItem { STTab.sentTransfers.label }
-
-            ReceivedView()
-                .navigableTab()
-                .tabItem { STTab.receivedTransfers.label }
-
-            SettingsView()
-                .navigableTab()
-                .tabItem { STTab.settings.label }
+struct NavigableTabModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        NavigationStack {
+            content
+                .stNavigationBar()
         }
+    }
+}
+
+extension View {
+    func navigableTab() -> some View {
+        modifier(NavigableTabModifier())
     }
 }

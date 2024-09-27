@@ -17,10 +17,63 @@
  */
 
 import SwiftUI
+import STResources
+import STSentView
+import STReceivedView
+import STSettingsView
 
 struct STSplitView: View {
+    @State private var selectedTab: STTab? = .sentTransfers
+    @State private var columnVisibility = NavigationSplitViewVisibility.all
+
     var body: some View {
-        Text("Hello, World!")
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            List(STTab.allCases, selection: $selectedTab) { tab in
+                NavigationLink(value: tab) {
+                    tab.label
+                }
+            }
+            .navigationSplitViewColumnWidth(ideal: 250)
+        } content: {
+            if let selectedTab {
+                ContentSplitView(tab: selectedTab)
+            }
+        } detail: {
+            if let selectedTab {
+                DetailSplitView(tab: selectedTab)
+            }
+        }
+        .navigationSplitViewStyle(.balanced)
+    }
+}
+
+private struct ContentSplitView: View {
+    let tab: STTab
+
+    var body: some View {
+        switch tab {
+        case .sentTransfers:
+            SentView()
+        case .receivedTransfers:
+            ReceivedView()
+        case .settings:
+            SettingsView()
+        }
+    }
+}
+
+private struct DetailSplitView: View {
+    let tab: STTab
+
+    var body: some View {
+        switch tab {
+        case .sentTransfers:
+            Text("No transfer selected")
+        case .receivedTransfers:
+            Text("No transfer selected")
+        case .settings:
+            Text("No item selected")
+        }
     }
 }
 
