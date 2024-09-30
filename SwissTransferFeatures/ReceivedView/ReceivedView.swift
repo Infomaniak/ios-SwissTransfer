@@ -23,19 +23,17 @@ import SwiftUI
 import SwissTransferCore
 
 public struct ReceivedView: View {
-    @StateObject private var viewRouter = ViewRouter()
     @State private var transfers = [PreviewHelper.sampleTransfer]
 
     public init() {}
 
     public var body: some View {
-        TransferList(transfers: transfers) { transfer in
-            viewRouter.navigate(to: transfer)
-        }
-        .navigationDestination(for: NavigableTransfer.self) { navTransfer in
-            TransferDetailsView(transfer: navTransfer.transfer)
-        }
-        .environmentObject(viewRouter)
+        TransferList(transfers: transfers)
+            .navigationDestination(for: STDestination.self) { destination in
+                if case let .transfer(transfer) = destination {
+                    TransferDetailsView(transfer: transfer)
+                }
+            }
     }
 }
 

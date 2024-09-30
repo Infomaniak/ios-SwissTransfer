@@ -16,19 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import STResources
+import SwiftUI
 
-enum STTab: String, CaseIterable, Identifiable {
+public enum STTab: String, CaseIterable, Identifiable {
     case sentTransfers
     case receivedTransfers
     case settings
 
-    var id: String {
+    public var id: String {
         rawValue
     }
 
-    var title: String {
+    public var title: String {
         switch self {
         case .sentTransfers:
             return STResourcesStrings.Localizable.sentTitle
@@ -39,7 +39,7 @@ enum STTab: String, CaseIterable, Identifiable {
         }
     }
 
-    var icon: Image {
+    public var icon: Image {
         switch self {
         case .sentTransfers:
             return STResourcesAsset.Images.arrowUpCircle.swiftUIImage
@@ -50,7 +50,7 @@ enum STTab: String, CaseIterable, Identifiable {
         }
     }
 
-    var label: Label<Text, Image> {
+    public var label: Label<Text, Image> {
         Label(title: { Text(title) }, icon: { icon })
     }
 }

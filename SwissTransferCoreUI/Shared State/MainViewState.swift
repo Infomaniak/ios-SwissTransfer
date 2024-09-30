@@ -16,13 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
 import STCore
+import SwiftUI
+import SwissTransferCore
 
 public final class MainViewState: ObservableObject {
+    @Published public var selectedTab: STTab? = .receivedTransfers
+    @Published public var paths = [STTab: [STDestination]]()
+
     public let transferManager: TransferManager
 
     public init(transferManager: TransferManager) {
         self.transferManager = transferManager
+    }
+
+    public func navigate(to transfer: Transfer) {
+        guard let selectedTab else { return }
+        paths[selectedTab, default: []].append(.transfer(transfer))
     }
 }

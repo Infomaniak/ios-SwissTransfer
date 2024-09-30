@@ -24,13 +24,12 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferList: View {
-    @StateObject var viewModel: TransferListViewModel
+    @EnvironmentObject private var mainViewState: MainViewState
 
-    let onSelect: (Transfer) -> Void
+    @StateObject private var viewModel: TransferListViewModel
 
-    public init(transfers: [Transfer], onSelect: @escaping (Transfer) -> Void) {
+    public init(transfers: [Transfer]) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(transfers: transfers))
-        self.onSelect = onSelect
     }
 
     public var body: some View {
@@ -48,7 +47,7 @@ public struct TransferList: View {
                     ForEach(section.transfers, id: \.linkUUID) { transfer in
                         TransferCell(transfer: transfer)
                             .onTapGesture {
-                                onSelect(transfer)
+                                mainViewState.navigate(to: transfer)
                             }
                     }
                 } header: {
@@ -73,5 +72,5 @@ public struct TransferList: View {
             PreviewHelper.sampleOldTransfer,
             PreviewHelper.sampleTransfer
         ]
-    ) { _ in }
+    )
 }

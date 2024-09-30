@@ -16,32 +16,35 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import SwissTransferCore
 import SwissTransferCoreUI
 import SwiftUI
 import STResources
 import STSentView
 import STReceivedView
 import STSettingsView
+import STTransferDetailsView
 
 struct STSplitView: View {
-    @State private var selectedTab: STTab? = .sentTransfers
+    @EnvironmentObject private var mainViewState: MainViewState
+
     @State private var columnVisibility = NavigationSplitViewVisibility.all
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            List(STTab.allCases, selection: $selectedTab) { tab in
+            List(STTab.allCases, selection: $mainViewState.selectedTab) { tab in
                 NavigationLink(value: tab) {
                     tab.label
                 }
             }
             .stIconNavigationBar()
         } content: {
-            if let selectedTab {
+            if let selectedTab = mainViewState.selectedTab {
                 ContentSplitView(tab: selectedTab)
             }
         } detail: {
-            if let selectedTab {
-                DetailSplitView(tab: selectedTab)
+            if let selectedTab = mainViewState.selectedTab {
+                DetailSplitView(tab: selectedTab, path: mainViewState.paths[selectedTab])
             }
         }
         .navigationSplitViewStyle(.balanced)
@@ -65,15 +68,18 @@ private struct ContentSplitView: View {
 
 private struct DetailSplitView: View {
     let tab: STTab
+    let path: [STDestination]?
 
     var body: some View {
-        switch tab {
-        case .sentTransfers:
-            Text("No transfer selected")
-        case .receivedTransfers:
-            Text("No transfer selected")
-        case .settings:
-            Text("No item selected")
+        if let lastDestination = path?.last {
+            switch lastDestination {
+            case .transfer(let transfer):
+                TransferDetailsView(transfer: transfer)
+            case .settings:
+                Text("Settings Option.")
+            }
+        } else {
+            Text("No Item Selected.")
         }
     }
 }

@@ -21,21 +21,28 @@ import STResources
 import STSentView
 import STSettingsView
 import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
 struct STTabView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
+
     var body: some View {
-        TabView {
+        TabView(selection: $mainViewState.selectedTab) {
             SentView()
-                .navigableTab()
+                .navigableTab(.sentTransfers)
                 .tabItem { STTab.sentTransfers.label }
+                .tag(STTab.sentTransfers)
 
             ReceivedView()
-                .navigableTab()
+                .navigableTab(.receivedTransfers)
                 .tabItem { STTab.receivedTransfers.label }
+                .tag(STTab.receivedTransfers)
 
             SettingsView()
-                .navigableTab()
+                .navigableTab(.settings)
                 .tabItem { STTab.settings.label }
+                .tag(STTab.settings)
         }
     }
 }

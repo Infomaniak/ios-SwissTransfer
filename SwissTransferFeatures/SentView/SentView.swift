@@ -25,7 +25,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @StateObject private var viewRouter = ViewRouter()
     @State private var transfers: [Transfer] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
 
     public init() {}
@@ -35,18 +34,17 @@ public struct SentView: View {
             if transfers.isEmpty {
                 SentEmptyView()
             } else {
-                TransferList(transfers: transfers) { transfer in
-                    viewRouter.navigate(to: transfer)
-                }
-                .navigationDestination(for: NavigableTransfer.self) { navTransfer in
-                    TransferDetailsView(transfer: navTransfer.transfer)
-                }
-                .floatingActionButton(style: .newTransfer) {
-                    // New transfer
-                }
+                TransferList(transfers: transfers)
+                    .navigationDestination(for: STDestination.self) { destination in
+                        if case let .transfer(transfer) = destination {
+                            TransferDetailsView(transfer: transfer)
+                        }
+                    }
+                    .floatingActionButton(style: .newTransfer) {
+                        // New transfer
+                    }
             }
         }
-        .environmentObject(viewRouter)
     }
 }
 
