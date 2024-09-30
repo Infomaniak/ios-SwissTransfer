@@ -17,19 +17,33 @@
  */
 
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NavigableTabModifier: ViewModifier {
+    @EnvironmentObject private var mainViewState: MainViewState
+
+    let tab: STTab
+
     func body(content: Content) -> some View {
-        NavigationStack {
+        NavigationStack(path: binding(for: tab)) {
             content
                 .stIconNavigationBar()
         }
     }
+
+    private func binding(for tab: STTab) -> Binding<[STDestination]> {
+        return Binding {
+            mainViewState.paths[tab, default: []]
+        } set: { newValue, _ in
+            mainViewState.paths[tab] = newValue
+        }
+
+    }
 }
 
 extension View {
-    func navigableTab() -> some View {
-        modifier(NavigableTabModifier())
+    func navigableTab(_ tab: STTab) -> some View {
+        modifier(NavigableTabModifier(tab: tab))
     }
 }

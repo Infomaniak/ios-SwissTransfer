@@ -17,17 +17,28 @@
  */
 
 import STCore
-import SwiftUI
 
-public class ViewRouter: ObservableObject {
-    @Published public var path: NavigationPath
+public enum STDestination: Hashable {
+    case transfer(Transfer)
+    case settings
 
-    public init(path: NavigationPath = NavigationPath()) {
-        self.path = path
+    static public func == (lhs: STDestination, rhs: STDestination) -> Bool {
+        switch (lhs, rhs) {
+        case (.transfer(let left), .transfer(let right)):
+            return left.linkUUID == right.linkUUID
+        case (.settings, .settings):
+            return true
+        default:
+            return false
+        }
     }
 
-    public func navigate(to transfer: Transfer) {
-        let navigableTransfer = NavigableTransfer(transfer: transfer)
-        path.append(navigableTransfer)
+    public func hash(into hasher: inout Hasher) {
+        switch self {
+        case .transfer(let transfer):
+            hasher.combine(transfer.linkUUID)
+        case .settings:
+            hasher.combine("settings")
+        }
     }
 }
