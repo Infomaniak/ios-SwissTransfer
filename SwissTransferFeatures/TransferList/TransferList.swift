@@ -28,13 +28,16 @@ public struct TransferList: View {
 
     @StateObject private var viewModel: TransferListViewModel
 
-    public init(transfers: [Transfer]) {
+    private let origin: TransferOrigin
+
+    public init(transfers: [Transfer], origin: TransferOrigin) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(transfers: transfers))
+        self.origin = origin
     }
 
     public var body: some View {
         List {
-            Text(STResourcesStrings.Localizable.sharedFilesTitle)
+            Text(origin.title)
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
                 .padding(.horizontal, value: .medium)
@@ -71,6 +74,7 @@ public struct TransferList: View {
             PreviewHelper.sampleTransfer,
             PreviewHelper.sampleOldTransfer,
             PreviewHelper.sampleTransfer
-        ]
+        ],
+        origin: .sent
     )
 }

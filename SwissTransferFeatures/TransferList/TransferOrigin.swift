@@ -16,27 +16,18 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STTransferDetailsView
-import STTransferList
-import SwiftUI
-import SwissTransferCore
+import STResources
 
-public struct ReceivedView: View {
-    @State private var transfers = [PreviewHelper.sampleTransfer]
+public enum TransferOrigin {
+    case sent
+    case received
 
-    public init() {}
-
-    public var body: some View {
-        TransferList(transfers: transfers, origin: .received)
-            .navigationDestination(for: STDestination.self) { destination in
-                if case let .transfer(transfer) = destination {
-                    TransferDetailsView(transfer: transfer)
-                }
-            }
+    var title: String {
+        switch self {
+        case .sent:
+            STResourcesStrings.Localizable.sentFilesTitle
+        case .received:
+            STResourcesStrings.Localizable.receivedFilesTitle
+        }
     }
-}
-
-#Preview {
-    ReceivedView()
 }
