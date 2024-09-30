@@ -16,23 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
-import SwissTransferCore
-
-extension View {
-    func stTab(_ tab: STTab) -> some View {
-        modifier(STTabModifier(tab: tab))
-    }
-}
-
-struct STTabModifier: ViewModifier {
-    let tab: STTab
-
-    func body(content: Content) -> some View {
-        content
-            .navigableTab(tab)
-            .tabItem { tab.label }
-            .tag(tab)
 import STCore
 
 public enum STDestination: Hashable {
