@@ -41,10 +41,12 @@ struct STSplitView: View {
         } content: {
             if let selectedTab = mainViewState.selectedTab {
                 ContentSplitView(tab: selectedTab)
+                    .stNavigationBarStyle()
             }
         } detail: {
             if let selectedTab = mainViewState.selectedTab {
                 DetailSplitView(tab: selectedTab, path: mainViewState.paths[selectedTab])
+                    .stNavigationBarStyle()
             }
         }
         .navigationSplitViewStyle(.balanced)

@@ -19,6 +19,7 @@
 import STRootView
 import SwiftUI
 import SwissTransferCore
+import InfomaniakCoreSwiftUI
 
 @main
 struct SwissTransferApp: App {
@@ -28,6 +29,7 @@ struct SwissTransferApp: App {
         WindowGroup {
             RootView()
                 .tint(.ST.primary)
+                .detectCompactWindow()
         }
     }
 }

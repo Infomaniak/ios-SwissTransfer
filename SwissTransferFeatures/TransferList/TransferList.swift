@@ -24,6 +24,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferList: View {
+    @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject private var viewModel: TransferListViewModel
@@ -37,13 +38,15 @@ public struct TransferList: View {
 
     public var body: some View {
         List {
-            Text(origin.title)
-                .font(.ST.title)
-                .foregroundStyle(Color.ST.textPrimary)
-                .padding(.horizontal, value: .medium)
-                .padding(.top, value: .medium)
-                .listRowInsets(EdgeInsets(.zero))
-                .listRowSeparator(.hidden)
+            if isCompactWindow {
+                Text(origin.title)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .padding(.horizontal, value: .medium)
+                    .padding(.top, value: .medium)
+                    .listRowInsets(EdgeInsets(.zero))
+                    .listRowSeparator(.hidden)
+            }
 
             ForEach(viewModel.sections ?? []) { section in
                 Section {
@@ -64,6 +67,16 @@ public struct TransferList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                if !isCompactWindow {
+                    Text(origin.title)
+                        .font(.ST.title2)
+                        .foregroundStyle(.white)
+
+                }
+            }
+        }
     }
 }
 
