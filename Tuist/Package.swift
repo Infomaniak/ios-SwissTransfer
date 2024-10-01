@@ -6,7 +6,8 @@ import ProjectDescription
 
 let packageSettings = PackageSettings(
     productTypes: [
-        "InfomaniakDI": .framework
+        "InfomaniakDI": .framework,
+        "InfomaniakCoreSwiftUI": .framework
     ]
 )
 #endif
