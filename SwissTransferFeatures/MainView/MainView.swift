@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STReceivedView
 import STResources
 import STSentView
@@ -24,14 +25,14 @@ import SwiftUI
 import SwissTransferCoreUI
 
 public struct MainView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var mainViewState: MainViewState
 
     public init() {}
 
     public var body: some View {
         Group {
-            if horizontalSizeClass == .compact {
+            if isCompactWindow {
                 STTabView()
             } else {
                 STSplitView()
