@@ -17,86 +17,44 @@
  */
 
 import SwiftUI
+import SwissTransferCoreUI
 
-struct SecurityCodeTextField: View {
-    @State private var fields: [String] = [
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-    ]
-    @FocusState private var focusedField: Int?
+struct VerifyMailView: View {
+    let mail: String
+    let fakeCode = "123456"
+
+    @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
 
     var body: some View {
-        HStack(spacing: 11) {
-            ForEach(fields.indices, id: \.self) { index in
-                let field = Binding {
-                    fields[index]
-                } set: { value in
-                    fields[index] = value
-                }
+        VStack(alignment: .leading, spacing: 24) {
+            Text("Vérifie ton mail")
+                .font(.ST.title)
+                .foregroundStyle(Color.ST.textPrimary)
 
-                let focus = Binding {
-                    focusedField == index
-                } set: { value in
-                    guard value else {
-                        focusedField = nil
-                        return
-                    }
-                    focusedField = index
-                }
+            Text("On a envoyé un code à \(mail). Saisie le ci-dessous pour faire vérifier ton adresse mail dans l'app: ")
+                .font(.ST.body)
+                .foregroundStyle(Color.ST.textSecondary)
 
-                SecurityCodeField(value: field, isFocused: focus) {
-                    guard index < fields.count - 1 else {
-                        focus.wrappedValue = false
-                        return
-                    }
-                    focusedField? += 1
+            SecurityCodeTextField(style: $codeFieldStyle) { code in
+                if code == fakeCode {
+                    print("Code correct")
+                } else {
+                    print("Code incorrect")
+                    codeFieldStyle = .error
                 }
-                .focused($focusedField, equals: index)
             }
+
+            Text("Pense à vérifier le dossier spam de ton adresse mail.")
+                .font(.ST.caption)
+                .foregroundStyle(Color.ST.textSecondary)
         }
-        .padding(32)
-        .font(.ST.body)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .stNavigationBarNewTransfer()
+        .stNavigationBarStyle()
+        .padding(16)
     }
 }
 
 #Preview {
-    SecurityCodeTextField()
-}
-
-private struct SecurityCodeField: View {
-    @Binding var value: String
-    @Binding var isFocused: Bool
-    let onComplete: () -> Void
-
-    var body: some View {
-        TextField("", text: $value)
-            .frame(width: 10)
-            .background {
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke()
-                    .foregroundStyle(Color.ST.cardBorder)
-                    .frame(width: 48, height: 48)
-                    .onTapGesture {
-                        isFocused = true
-                    }
-            }
-            .frame(width: 48, height: 48)
-            .onChange(of: isFocused) { focus in
-                guard focus else { return }
-                value = ""
-            }
-            .onChange(of: value) { value in
-                if value.count == 1 {
-                    onComplete()
-                }
-            }
-    }
-}
-
-#Preview {
-    SecurityCodeField(value: .constant(""), isFocused: .constant(true)) {}
+    VerifyMailView(mail: "john.smith@ik.me")
 }
