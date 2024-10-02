@@ -39,7 +39,9 @@ struct VerifyMailView: View {
                 if code == fakeCode {
                     // Code valide
                 } else {
-                    codeFieldStyle = .error
+                    withAnimation {
+                        codeFieldStyle = .error
+                    }
                 }
             }
 

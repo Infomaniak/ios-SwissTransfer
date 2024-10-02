@@ -57,17 +57,21 @@ struct SecurityCodeTextField: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 11) {
+            HStack {
                 ForEach(fields.indices, id: \.self) { index in
                     TextField("", text: $fields[index])
+                        .keyboardType(.numberPad)
                         .textFieldStyle(SecurityCodeTextFieldStyle(style: style))
+                        .frame(maxWidth: .infinity)
                         .onTapGesture {
                             focusedField = index
                         }
                         .focused($focusedField, equals: index)
                         .onChange(of: fields[index]) { value in
                             guard !value.isEmpty else { return }
-                            style = .normal
+                            withAnimation {
+                                style = .normal
+                            }
                             if value.count > 1 {
                                 let firstElement = String(Array(value)[0])
                                 fields[index] = firstElement
