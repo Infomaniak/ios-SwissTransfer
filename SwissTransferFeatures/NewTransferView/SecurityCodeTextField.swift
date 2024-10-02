@@ -23,13 +23,20 @@ public enum SecurityCodeFieldStyle {
     case normal
     case error
 
-    var borderColor: Color {
+    var color: Color {
         switch self {
         case .normal:
             return Color.ST.cardBorder
         case .error:
-            return .red
+            return Color.ST.error
         }
+    }
+
+    var label: String? {
+        if self == .error {
+            return "Le code saisie est incorrect"
+        }
+        return nil
     }
 }
 
@@ -49,36 +56,44 @@ struct SecurityCodeTextField: View {
     let completion: (String) -> Void
 
     var body: some View {
-        HStack(spacing: 11) {
-            ForEach(fields.indices, id: \.self) { index in
-                let field = Binding {
-                    fields[index]
-                } set: { value in
-                    fields[index] = value
-                }
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 11) {
+                ForEach(fields.indices, id: \.self) { index in
+                    TextField("", text: $fields[index])
+                        .textFieldStyle(SecurityCodeTextFieldStyle(style: style))
+                        .onTapGesture {
+                            focusedField = index
+                        }
+                        .focused($focusedField, equals: index)
+                        .onChange(of: fields[index]) { value in
+                            guard !value.isEmpty else { return }
+                            style = .normal
+                            if value.count > 1 {
+                                let firstElement = String(Array(value)[0])
+                                fields[index] = firstElement
+                            }
 
-                let focus = Binding {
-                    focusedField == index
-                } set: { value in
-                    guard value else {
-                        focusedField = nil
-                        return
-                    }
-                    focusedField = index
+                            guard index < fields.count - 1 else {
+                                focusedField = nil
+                                completion(fields.joined())
+                                return
+                            }
+                            focusedField? += 1
+                        }
                 }
+            }
+            .onChange(of: focusedField) { index in
+                guard let index else { return }
+                fields[index] = ""
+            }
+            .font(.ST.body)
 
-                SecurityCodeField(value: field, isFocused: focus, style: style) {
-                    guard index < fields.count - 1 else {
-                        focus.wrappedValue = false
-                        completion(fields.joined())
-                        return
-                    }
-                    focusedField? += 1
-                }
-                .focused($focusedField, equals: index)
+            if let label = style.label {
+                Text(label)
+                    .foregroundStyle(style.color)
+                    .font(.ST.caption)
             }
         }
-        .font(.ST.body)
     }
 }
 
@@ -86,41 +101,19 @@ struct SecurityCodeTextField: View {
     SecurityCodeTextField(style: .constant(.normal)) { _ in }
 }
 
-private struct SecurityCodeField: View {
-    @Binding var value: String
-    @Binding var isFocused: Bool
+struct SecurityCodeTextFieldStyle: TextFieldStyle {
     let style: SecurityCodeFieldStyle
-    let onComplete: () -> Void
 
-    var body: some View {
-        TextField("", text: $value)
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
             .frame(width: 10)
             .background {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke()
-                    .foregroundStyle(style.borderColor)
+                    .foregroundStyle(style.color)
                     .frame(width: 48, height: 48)
             }
             .frame(width: 48, height: 48)
             .contentShape(Rectangle())
-            .onTapGesture {
-                isFocused = true
-            }
-            .onChange(of: isFocused) { focus in
-                guard focus else { return }
-                value = ""
-            }
-            .onChange(of: value) { value in
-                guard !value.isEmpty else { return }
-                if value.count > 1 {
-                    let firstElement = String(Array(value)[0])
-                    self.value = firstElement
-                }
-                onComplete()
-            }
     }
-}
-
-#Preview {
-    SecurityCodeField(value: .constant(""), isFocused: .constant(true), style: .normal) {}
 }

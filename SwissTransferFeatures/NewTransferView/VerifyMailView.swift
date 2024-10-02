@@ -37,9 +37,8 @@ struct VerifyMailView: View {
 
             SecurityCodeTextField(style: $codeFieldStyle) { code in
                 if code == fakeCode {
-                    print("Code correct")
+                    // Code valide
                 } else {
-                    print("Code incorrect")
                     codeFieldStyle = .error
                 }
             }
