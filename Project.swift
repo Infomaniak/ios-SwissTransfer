@@ -53,6 +53,7 @@ let project = Project(
             destinations: Set<Destination>([.iPhone, .iPad]),
             product: .app,
             bundleId: Constants.baseIdentifier,
+            deploymentTargets: Constants.deploymentTarget,
             infoPlist: .extendingDefault(
                 with: [
                     "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
@@ -84,6 +85,7 @@ let project = Project(
             destinations: .iOS,
             product: .unitTests,
             bundleId: "\(Constants.baseIdentifier).SwissTransferTests",
+            deploymentTargets: Constants.deploymentTarget,
             infoPlist: .default,
             sources: "SwissTransferTests/**",
             resources: [],
