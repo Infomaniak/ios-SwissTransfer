@@ -44,10 +44,8 @@ struct STSplitView: View {
                     .stNavigationBarStyle()
             }
         } detail: {
-            if let selectedTab = mainViewState.selectedTab {
-                DetailSplitView(tab: selectedTab, path: mainViewState.paths[selectedTab])
-                    .stNavigationBarStyle()
-            }
+            DetailSplitView(destination: mainViewState.selectedDestination)
+                .stNavigationBarStyle()
         }
         .navigationSplitViewStyle(.balanced)
     }
@@ -69,12 +67,11 @@ private struct ContentSplitView: View {
 }
 
 private struct DetailSplitView: View {
-    let tab: STTab
-    let path: [STDestination]?
+    let destination: STDestination?
 
     var body: some View {
-        if let lastDestination = path?.last {
-            switch lastDestination {
+        if let destination {
+            switch destination {
             case .transfer(let transfer):
                 TransferDetailsView(transfer: transfer)
             case .settings:

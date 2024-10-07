@@ -21,8 +21,13 @@ import SwiftUI
 import SwissTransferCore
 
 public final class MainViewState: ObservableObject {
-    @Published public var selectedTab: STTab? = .receivedTransfers
+    @Published public var selectedTab: STTab? = .sentTransfers
     @Published public var paths = [STTab: [STDestination]]()
+
+    public var selectedDestination: STDestination? {
+        guard let selectedTab else { return nil }
+        return paths[selectedTab, default: []].last
+    }
 
     public let transferManager: TransferManager
 
