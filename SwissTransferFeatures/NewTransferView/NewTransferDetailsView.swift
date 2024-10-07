@@ -27,6 +27,8 @@ struct NewTransferDetailsView: View {
     @State private var mailDst = ""
     @State private var message = ""
 
+    @State private var navigateToVerifyMail = false
+
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -43,13 +45,16 @@ struct NewTransferDetailsView: View {
         .stNavigationBarStyle()
         .floatingContainer {
             Button {
-                // Send
+                navigateToVerifyMail = true
             } label: {
                 Text("Envoyer")
             }
             .buttonStyle(.ikBorderedProminent)
             .ikButtonFullWidth(true)
             .controlSize(.large)
+        }
+        .navigationDestination(isPresented: $navigateToVerifyMail) {
+            VerifyMailView(mail: "john.doe@example.com")
         }
     }
 }
