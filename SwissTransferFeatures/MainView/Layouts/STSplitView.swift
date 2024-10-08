@@ -16,14 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwissTransferCore
-import SwissTransferCoreUI
-import SwiftUI
+import InfomaniakCoreSwiftUI
+import STReceivedView
 import STResources
 import STSentView
-import STReceivedView
 import STSettingsView
 import STTransferDetailsView
+import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
 struct STSplitView: View {
     @EnvironmentObject private var mainViewState: MainViewState
@@ -38,6 +39,9 @@ struct STSplitView: View {
                 }
             }
             .stIconNavigationBar()
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: IKPadding.small)
+            }
         } content: {
             if let selectedTab = mainViewState.selectedTab {
                 ContentSplitView(tab: selectedTab)
