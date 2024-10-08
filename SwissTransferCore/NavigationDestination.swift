@@ -18,11 +18,11 @@
 
 import STCore
 
-public enum STDestination: Hashable {
+public enum NavigationDestination: Hashable {
     case transfer(Transfer)
     case settings
 
-    static public func == (lhs: STDestination, rhs: STDestination) -> Bool {
+    static public func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
         switch (lhs, rhs) {
         case (.transfer(let left), .transfer(let right)):
             return left.linkUUID == right.linkUUID

@@ -67,7 +67,7 @@ private struct ContentSplitView: View {
 }
 
 private struct DetailSplitView: View {
-    let destination: STDestination?
+    let destination: NavigationDestination?
 
     var body: some View {
         if let destination {
