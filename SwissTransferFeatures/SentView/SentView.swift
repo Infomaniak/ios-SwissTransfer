@@ -35,7 +35,7 @@ public struct SentView: View {
                 SentEmptyView()
             } else {
                 TransferList(transfers: transfers, origin: .sent)
-                    .navigationDestination(for: STDestination.self) { destination in
+                    .navigationDestination(for: NavigationDestination.self) { destination in
                         if case let .transfer(transfer) = destination {
                             TransferDetailsView(transfer: transfer)
                         }

@@ -30,19 +30,13 @@ struct STTabView: View {
     var body: some View {
         TabView(selection: $mainViewState.selectedTab) {
             SentView()
-                .navigableTab(.sentTransfers)
-                .tabItem { STTab.sentTransfers.label }
-                .tag(STTab.sentTransfers)
+                .stTab(.sentTransfers)
 
             ReceivedView()
-                .navigableTab(.receivedTransfers)
-                .tabItem { STTab.receivedTransfers.label }
-                .tag(STTab.receivedTransfers)
+                .stTab(.receivedTransfers)
 
             SettingsView()
-                .navigableTab(.settings)
-                .tabItem { STTab.settings.label }
-                .tag(STTab.settings)
+                .stTab(.settings)
         }
     }
 }

@@ -22,9 +22,9 @@ import SwissTransferCore
 
 public final class MainViewState: ObservableObject {
     @Published public var selectedTab: STTab? = .sentTransfers
-    @Published public var paths = [STTab: [STDestination]]()
+    @Published public var paths = [STTab: [NavigationDestination]]()
 
-    public var selectedDestination: STDestination? {
+    public var selectedDestination: NavigationDestination? {
         guard let selectedTab else { return nil }
         return paths[selectedTab, default: []].last
     }
