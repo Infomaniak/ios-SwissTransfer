@@ -39,9 +39,7 @@ struct STSplitView: View {
                 }
             }
             .stIconNavigationBar()
-            .safeAreaInset(edge: .top) {
-                Color.clear.frame(height: IKPadding.small)
-            }
+            .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.small)
         } content: {
             if let selectedTab = mainViewState.selectedTab {
                 ContentSplitView(tab: selectedTab)
