@@ -22,13 +22,13 @@ import SwiftUI
 
 public enum FileTypeIconSize {
     case small
-    case big
+    case large
 
     var size: CGFloat {
         switch self {
         case .small:
             return 16
-        case .big:
+        case .large:
             return 32
         }
     }
@@ -37,7 +37,7 @@ public enum FileTypeIconSize {
         switch self {
         case .small:
             return IKPadding.small
-        case .big:
+        case .large:
             return IKPadding.medium
         }
     }
@@ -46,7 +46,7 @@ public enum FileTypeIconSize {
         switch self {
         case .small:
             return .ST.cardBackground
-        case .big:
+        case .large:
             return .ST.background
         }
     }
@@ -55,7 +55,7 @@ public enum FileTypeIconSize {
         switch self {
         case .small:
             return true
-        case .big:
+        case .large:
             return false
         }
     }
@@ -99,7 +99,7 @@ public struct FileIconView: View {
 #Preview {
     VStack {
         FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
-        FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .big)
+        FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .large)
             .padding()
             .background {
                 Color.ST.cardBackground
