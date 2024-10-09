@@ -58,7 +58,7 @@ public struct LargeThumbnailView: View {
                         .resizable()
                         .scaledToFill()
                 } else {
-                    FileIconView(icon: icon, type: .big)
+                    FileIconView(icon: icon, type: .large)
                 }
             }
             .frame(height: 96)
@@ -83,10 +83,12 @@ public struct LargeThumbnailView: View {
                     removeAction()
                 } label: {
                     Image(systemName: "xmark")
+                        .resizable()
                         .foregroundStyle(.white)
+                        .frame(width: 8, height: 8)
+                        .padding(value: .small)
+                        .background(.black.opacity(0.5), in: .circle)
                 }
-                .padding(value: .small)
-                .background(.black.opacity(0.5), in: .circle)
                 .padding(value: .small)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
@@ -99,7 +101,7 @@ public struct LargeThumbnailView: View {
                 .stroke(Color.ST.cardBorder)
         )
         .onAppear {
-            ThumbnailGenerator.generate(for: url, isLarge: true) { largeThumbnail = $0 }
+            ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: 164, height: 96)) { largeThumbnail = $0 }
         }
     }
 }

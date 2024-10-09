@@ -24,47 +24,29 @@ import SwissTransferCore
 struct NewTransferTypeView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var navigateToDetails = false
-
-    private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
-
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 16) {
             Text(STResourcesStrings.Localizable.transferTypeTitle)
-                .font(.ST.title)
+                .font(.ST.callout)
+                .foregroundStyle(Color.ST.textPrimary)
+                .padding(.horizontal, 16)
 
-            LazyVGrid(columns: columns,
-                      alignment: .center,
-                      spacing: 16,
-                      pinnedViews: []) {
-                ForEach(TransferType.allCases, id: \.rawValue) { type in
-                    Button {
-                        newTransferManager.transferType = type
-                        navigateToDetails = true
-                    } label: {
-                        VStack(spacing: IKPadding.extraLarge) {
-                            Text(type.title)
-                                .padding(.top, 40)
-                            type.icon
-                        }
-                        .foregroundStyle(type.foregroundColor)
-                        .frame(maxWidth: .infinity)
-                        .background(type.backgroundColor, in: .rect(cornerRadius: 16))
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(TransferType.allCases, id: \.rawValue) { type in
+                        TransferTypeCell(type: type, isSelected: newTransferManager.transferType == type)
+                            .onTapGesture {
+                                withAnimation {
+                                    newTransferManager.transferType = type
+                                }
+                            }
                     }
                 }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 1)
             }
+            .scrollIndicators(.hidden)
         }
-        .navigationDestination(isPresented: $navigateToDetails) {
-            NewTransferDetailsView()
-        }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .padding(.top, 24)
-        .padding(.horizontal, 16)
-        .stNavigationBarNewTransfer()
-        .stNavigationBarStyle()
     }
 }
 

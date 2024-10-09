@@ -31,7 +31,7 @@ private enum TmpDirType {
 class NewTransferManager: ObservableObject {
     @Published var uploadFiles = [UploadFile]()
     @Published var displayableFiles = [DisplayableFile]()
-    var transferType: TransferType = .qrcode
+    @Published var transferType: TransferType = .qrcode
 
     init(urls: [URL]) {
         cleanTmpDir(type: .upload)

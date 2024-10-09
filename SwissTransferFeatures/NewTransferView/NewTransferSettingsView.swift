@@ -37,6 +37,8 @@ struct NewTransferSettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Paramètres avancées")
+                .font(.ST.callout)
+                .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: 32) {
                 Menu {
@@ -159,6 +161,7 @@ struct NewTransferSettingsView: View {
                 PasswordSettingView()
             }
         }
+        .padding(.horizontal, 16)
     }
 }
 

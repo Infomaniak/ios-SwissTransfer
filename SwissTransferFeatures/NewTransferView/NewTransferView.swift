@@ -32,37 +32,45 @@ public struct NewTransferView: View {
 
     public var body: some View {
         NavigationStack {
-            FileListView(parentFolder: nil)
-                .floatingContainer {
-                    VStack(spacing: 0) {
-                        AddFilesMenuView { urls in
-                            newTransferManager.addFiles(urls: urls)
-                        } label: {
-                            Label(
-                                title: { Text(STResourcesStrings.Localizable.buttonAddFiles) },
-                                icon: { STResourcesAsset.Images.plus.swiftUIImage }
-                            )
-                        }
-                        .buttonStyle(.ikBorderless)
+            ScrollView {
+                VStack(spacing: 16) {
+                    // FilesCell
+                    NewTransferFilesCellView()
 
-                        NavigationLink {
-                            NewTransferTypeView()
-                        } label: {
-                            Text(STResourcesStrings.Localizable.buttonNext)
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.ikBorderedProminent)
-                    }
-                    .ikButtonFullWidth(true)
-                    .controlSize(.large)
+                    // Title and message
+                    NewTransferDetailsView()
+
+                    // Type
+                    NewTransferTypeView()
+
+                    // Settings
+                    NewTransferSettingsView()
                 }
-                .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
-                .stNavigationBarStyle()
-                .navigationDestination(for: DisplayableFile.self) { file in
-                    FileListView(parentFolder: file)
-                        .stNavigationBarNewTransfer(title: file.name)
-                        .stNavigationBarStyle()
+                .padding(.vertical, 16)
+            }
+            .floatingContainer {
+                NavigationLink {
+                    // Start transfer
+                } label: {
+                    Text(STResourcesStrings.Localizable.buttonNext)
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.ikBorderedProminent)
+                .ikButtonFullWidth(true)
+                .controlSize(.large)
+            }
+            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+            .stNavigationBarStyle()
+            .navigationDestination(for: DisplayableFile.self) { file in
+                FileListView(parentFolder: file)
+                    .stNavigationBarNewTransfer(title: file.name)
+                    .stNavigationBarStyle()
+            }
+            .navigationDestination(for: DisplayableRootFolder.self) { _ in
+                FileListView(parentFolder: nil)
+                    .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+                    .stNavigationBarStyle()
+            }
         }
         .environment(\.dismissModal) {
             dismiss()

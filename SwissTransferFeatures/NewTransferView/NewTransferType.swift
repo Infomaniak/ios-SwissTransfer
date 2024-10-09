@@ -21,9 +21,9 @@ import SwiftUI
 
 enum TransferType: String, CaseIterable {
     case link
-    case mail
     case qrcode
     case proximity
+    case mail
 
     var title: String {
         switch self {
@@ -67,13 +67,13 @@ enum TransferType: String, CaseIterable {
     var icon: Image {
         switch self {
         case .link:
-            STResourcesAsset.Images.bigLink.swiftUIImage
+            STResourcesAsset.Images.hyperlink.swiftUIImage
         case .mail:
-            STResourcesAsset.Images.bigMail.swiftUIImage
+            STResourcesAsset.Images.envelope.swiftUIImage
         case .qrcode:
-            STResourcesAsset.Images.bigQrCode.swiftUIImage
+            STResourcesAsset.Images.qrCode.swiftUIImage
         case .proximity:
-            STResourcesAsset.Images.bigWifi.swiftUIImage
+            STResourcesAsset.Images.wifi.swiftUIImage
         }
     }
 }

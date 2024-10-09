@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -25,21 +24,70 @@ public struct SmallThumbnailView: View {
     @ScaledMetric(relativeTo: .body) private var size = 48
 
     private let url: URL?
+    private let removeAction: (() -> Void)?
 
     @State private var icon: Image
+    @State private var thumbnail: Image?
+    @State private var cornerRadius: CGFloat = 8
 
-    public init(url: URL?, mimeType: String) {
+    /// File init
+    public init(url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
         self.url = url
+        self.removeAction = removeAction
+
+        if removeAction != nil {
+            _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
+            cornerRadius = 16
+        }
+
         icon = FileHelper(type: mimeType).icon.swiftUIImage
     }
 
+    /// Folder init
+    public init(removeAction: (() -> Void)? = nil) {
+        url = nil
+        self.removeAction = removeAction
+
+        if removeAction != nil {
+            _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
+            cornerRadius = 16
+        }
+
+        icon = STResourcesAsset.Images.folder.swiftUIImage
+    }
+
     public var body: some View {
-        FileIconView(icon: icon, type: .small)
-            .frame(width: size, height: size)
-            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.medium))
-			.onAppear {
-                ThumbnailGenerator.generate(for: url, isLarge: false) { icon = $0 }
+        ZStack {
+            if let thumbnail {
+                thumbnail
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(.rect(cornerRadius: cornerRadius))
+            } else {
+                FileIconView(icon: icon, type: .small)
+                    .frame(width: size, height: size)
+                    .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.medium))
+                    .onAppear {
+                        ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size)) { thumbnail = $0 }
+                    }
             }
+
+            if let removeAction {
+                Button {
+                    removeAction()
+                } label: {
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .frame(width: 8, height: 8)
+                        .padding(value: .small)
+                        .background(.black.opacity(0.5), in: .circle)
+                }
+                .padding(value: .small)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+        }
     }
 }
 

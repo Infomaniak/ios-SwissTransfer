@@ -76,3 +76,9 @@ public class DisplayableFile: Identifiable, Hashable {
         lhs.id == rhs.id && lhs.children == rhs.children
     }
 }
+
+public struct DisplayableRootFolder: Identifiable, Hashable {
+    public let id = UUID()
+
+    public init() {}
+}
