@@ -34,7 +34,7 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
                         .foregroundStyle(.white)
                 }
 
-                ToolbarItem(placement: .destructiveAction) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button {
                         dismissModal()
                     } label: {
@@ -46,7 +46,6 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
 }
 
 public extension View {
-    /// Style the navigationBar
     func stNavigationBarNewTransfer(title: String = "Transfer") -> some View {
         modifier(STNavigationBarNewTransferModifier(title: title))
     }
