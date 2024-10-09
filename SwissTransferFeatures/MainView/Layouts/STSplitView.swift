@@ -40,6 +40,10 @@ struct STSplitView: View {
             }
             .stIconNavigationBar()
             .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.small)
+            .safeAreaInset(edge: .bottom) {
+                SidebarNewTransferButton {}
+                    .padding(value: .medium)
+            }
         } content: {
             if let selectedTab = mainViewState.selectedTab {
                 ContentSplitView(tab: selectedTab)
