@@ -26,8 +26,7 @@ public struct AddFilesMenuView<Content: View>: View {
     @State private var showImportFile = false
     @State private var showCamera = false
 
-    // PhotoLibrary
-    @State private var showPhotoLibrary = false
+    @State private var isShowingPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
 
     private let completion: ([URL]) -> Void
@@ -49,7 +48,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 )
             }
             Button {
-                showPhotoLibrary = true
+                isShowingPhotoLibrary = true
             } label: {
                 Label(
                     title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
@@ -69,7 +68,7 @@ public struct AddFilesMenuView<Content: View>: View {
         } label: {
             label()
         }
-        .photosPicker(isPresented: $showPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
+        .photosPicker(isPresented: $isShowingPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
         .onChange(of: selectedPhotos) { _ in
             guard !selectedPhotos.isEmpty else { return }
             Task {

@@ -25,10 +25,10 @@ import SwissTransferCoreUI
 struct PasswordSettingView: View {
     @State private var isOn = false
     @State private var password = ""
-    @State private var showPassword = false
+    @State private var isShowingPassword = false
 
-    @FocusState private var secureFieldFocus: Bool
-    @FocusState private var visibleFieldFocus: Bool
+    @FocusState private var isSecureFieldFocused: Bool
+    @FocusState private var isVisibleFieldFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -50,12 +50,12 @@ struct PasswordSettingView: View {
                 HStack {
                     ZStack {
                         TextField("Mot de passe", text: $password)
-                            .opacity(showPassword ? 1 : 0)
-                            .focused($visibleFieldFocus)
+                            .opacity(isShowingPassword ? 1 : 0)
+                            .focused($isVisibleFieldFocused)
 
                         SecureField("Mot de passe", text: $password)
-                            .opacity(showPassword ? 0 : 1)
-                            .focused($secureFieldFocus)
+                            .opacity(isShowingPassword ? 0 : 1)
+                            .focused($isSecureFieldFocused)
                     }
 
                     Button {
@@ -87,14 +87,14 @@ struct PasswordSettingView: View {
     }
 
     private func toggleShowPassword() {
-        showPassword.toggle()
+        isShowingPassword.toggle()
 
-        if showPassword && secureFieldFocus {
-            secureFieldFocus = false
-            visibleFieldFocus = true
-        } else if !showPassword && visibleFieldFocus {
-            visibleFieldFocus = false
-            secureFieldFocus = true
+        if isShowingPassword && isSecureFieldFocused {
+            isSecureFieldFocused = false
+            isVisibleFieldFocused = true
+        } else if !isShowingPassword && isVisibleFieldFocused {
+            isVisibleFieldFocused = false
+            isSecureFieldFocused = true
         }
     }
 }
