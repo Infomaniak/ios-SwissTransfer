@@ -21,7 +21,7 @@ import SwiftUI
 
 struct CameraPickerView: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss
-    var image: (UIImage) -> Void
+    let onImagePicked: (UIImage) -> Void
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let imagePicker = UIImagePickerController()
@@ -48,7 +48,7 @@ struct CameraPickerView: UIViewControllerRepresentable {
             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
         ) {
             if let image = info[.originalImage] as? UIImage {
-                parent.image(image)
+                parent.onImagePicked(image)
             }
             parent.dismiss()
         }

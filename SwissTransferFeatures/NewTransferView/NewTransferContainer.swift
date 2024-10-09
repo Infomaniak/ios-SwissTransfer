@@ -20,7 +20,7 @@ import Foundation
 
 public struct NewTransferContainer: Identifiable {
     public let id = UUID()
-    public var urls: [URL]
+    public let urls: [URL]
 
     public init(urls: [URL]) {
         self.urls = urls
