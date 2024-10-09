@@ -26,7 +26,7 @@ public final class MainViewState: ObservableObject {
 
     public var selectedDestination: NavigationDestination? {
         guard let selectedTab else { return nil }
-        return paths[selectedTab, default: []].last
+        return paths[selectedTab]?.last
     }
 
     public let transferManager: TransferManager
@@ -35,10 +35,10 @@ public final class MainViewState: ObservableObject {
         self.transferManager = transferManager
     }
 
-    public func navigate(to transfer: Transfer) {
-        guard let selectedTab else { return }
+    public func navigate(to transfer: Transfer, _ tab: STTab? = nil) {
+        guard let currentTab = tab ?? selectedTab else { return }
 
-        paths[selectedTab, default: []].popLast()
-        paths[selectedTab, default: []].append(.transfer(transfer))
+        _ = paths[currentTab]?.popLast()
+        paths[currentTab, default: []].append(.transfer(transfer))
     }
 }

@@ -73,7 +73,6 @@ public struct TransferList: View {
                     Text(origin.title)
                         .font(.ST.title2)
                         .foregroundStyle(.white)
-
                 }
             }
         }

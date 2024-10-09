@@ -16,10 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STRootView
 import SwiftUI
 import SwissTransferCore
-import InfomaniakCoreSwiftUI
 
 @main
 struct SwissTransferApp: App {
