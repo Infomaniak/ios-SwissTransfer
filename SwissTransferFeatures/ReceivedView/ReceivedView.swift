@@ -30,7 +30,7 @@ public struct ReceivedView: View {
     public var body: some View {
         TransferList(transfers: transfers, origin: .received)
             .navigationDestination(for: NavigationDestination.self) { destination in
-                if case let .transfer(transfer) = destination {
+                if case .transfer(let transfer) = destination {
                     TransferDetailsView(transfer: transfer)
                 }
             }

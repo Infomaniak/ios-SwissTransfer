@@ -38,7 +38,6 @@ struct NavigableTabModifier: ViewModifier {
         } set: { newValue, _ in
             mainViewState.paths[tab] = newValue
         }
-
     }
 }
 
