@@ -81,7 +81,7 @@ private struct DetailSplitView: View {
             case .transfer(let transfer):
                 TransferDetailsView(transfer: transfer)
             case .settings:
-                Text("Settings Option.")
+                Text("TODO: Settings Option.")
             }
         } else {
             Text("No Item Selected.")

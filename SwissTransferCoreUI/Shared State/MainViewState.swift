@@ -37,6 +37,8 @@ public final class MainViewState: ObservableObject {
 
     public func navigate(to transfer: Transfer) {
         guard let selectedTab else { return }
+
+        paths[selectedTab, default: []].popLast()
         paths[selectedTab, default: []].append(.transfer(transfer))
     }
 }
