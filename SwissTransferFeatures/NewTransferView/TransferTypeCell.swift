@@ -16,32 +16,36 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreUI
-import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-// TODO: - Traduction
-
-struct NewTransferDetailsView: View {
-    @EnvironmentObject private var newTransferManager: NewTransferManager
-
-    @State private var mailSrc = ""
-    @State private var mailDst = ""
-    @State private var message = ""
+struct TransferTypeCell: View {
+    let type: TransferType
+    let isSelected: Bool
 
     var body: some View {
-        VStack(spacing: 16) {
-            if newTransferManager.transferType == .mail {
-                CustomTextField(value: $message, placeholder: "Ton adresse mail*")
-                CustomTextField(value: $message, placeholder: "Envoyer les fichiers à*")
-            }
-            CustomTextField(value: $message, placeholder: "Un message à faire passer ?", height: 88)
+        Label {
+            Text(type.title)
+                .font(.ST.callout)
+                .foregroundStyle(isSelected ? Color.ST.primary : Color.ST.textSecondary)
+        } icon: {
+            type.icon
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundStyle(isSelected ? Color.ST.primary : Color.ST.textSecondary)
         }
-        .padding(.horizontal, 16)
+        .labelStyle(.horizontal)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(isSelected ? Color.ST.primary : Color.ST.cardBorder, lineWidth: 1)
+        )
     }
 }
 
 #Preview {
-    NewTransferDetailsView()
+    VStack {
+        TransferTypeCell(type: .link, isSelected: true)
+        TransferTypeCell(type: .link, isSelected: false)
+    }
 }
