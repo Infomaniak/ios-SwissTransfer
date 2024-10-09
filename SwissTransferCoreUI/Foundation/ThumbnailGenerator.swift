@@ -20,10 +20,10 @@ import QuickLookThumbnailing
 import SwiftUI
 
 public enum ThumbnailGenerator {
-    public static func generate(for url: URL?, isLarge: Bool, completion: @escaping (Image) -> Void) {
+    public static func generate(for url: URL?, cgSize: CGSize, completion: @escaping (Image) -> Void) {
         guard let url else { return }
 
-        let size = isLarge ? CGSize(width: 164, height: 96) : CGSize(width: 48, height: 48)
+        let size = cgSize
 
         let request = QLThumbnailGenerator.Request(
             fileAt: url,
