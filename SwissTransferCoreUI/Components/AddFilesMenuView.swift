@@ -26,8 +26,8 @@ public struct AddFilesMenuView<Content: View>: View {
     @State private var showImportFile = false
     @State private var showCamera = false
 
-    // Library
-    @State private var showLibrary = false
+    // PhotoLibrary
+    @State private var showPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
 
     private let completion: ([URL]) -> Void
@@ -49,7 +49,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 )
             }
             Button {
-                showLibrary = true
+                showPhotoLibrary = true
             } label: {
                 Label(
                     title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
@@ -69,15 +69,15 @@ public struct AddFilesMenuView<Content: View>: View {
         } label: {
             label()
         }
-        .photosPicker(isPresented: $showLibrary, selection: $selectedPhotos, photoLibrary: .shared())
+        .photosPicker(isPresented: $showPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
         .onChange(of: selectedPhotos) { _ in
             guard !selectedPhotos.isEmpty else { return }
             Task {
-                var photoList = [LibraryContent]()
+                var photoList = [PhotoLibraryContent]()
                 // Save photos
                 for photo in selectedPhotos {
                     do {
-                        guard let newFile = try await photo.loadTransferable(type: LibraryContent.self) else { continue }
+                        guard let newFile = try await photo.loadTransferable(type: PhotoLibraryContent.self) else { continue }
                         photoList.append(newFile)
                     } catch {
                         print("Error: \(error.localizedDescription)")

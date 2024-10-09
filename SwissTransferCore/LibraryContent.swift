@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-public struct LibraryContent: Transferable {
+public struct PhotoLibraryContent: Transferable {
     public let url: URL
 
     public static var transferRepresentation: some TransferRepresentation {
