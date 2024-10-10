@@ -28,11 +28,11 @@ public enum TransferLanguage: CaseIterable {
 
     public var title: String {
         switch self {
-        case .en: "Anglais"
-        case .fr: "Francais"
-        case .de: "Allemand"
-        case .it: "Italien"
-        case .es: "Espagnol"
+        case .en: STResourcesStrings.Localizable.settingsEmailLanguageValueEnglish
+        case .fr: STResourcesStrings.Localizable.settingsEmailLanguageValueFrench
+        case .de: STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
+        case .it: STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
+        case .es: STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
         }
     }
 
