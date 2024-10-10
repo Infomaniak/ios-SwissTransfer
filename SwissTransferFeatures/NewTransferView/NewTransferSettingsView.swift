@@ -59,8 +59,7 @@ struct NewTransferSettingsView: View {
                                 .frame(width: 16, height: 16)
                         }
                         .labelStyle(.horizontal)
-
-                        Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                         Text("\(duration) jours")
                             .font(.ST.callout)
@@ -86,8 +85,7 @@ struct NewTransferSettingsView: View {
                                 .frame(width: 16, height: 16)
                         }
                         .labelStyle(.horizontal)
-
-                        Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                         Text("\(limit)")
                             .font(.ST.callout)
@@ -109,8 +107,7 @@ struct NewTransferSettingsView: View {
                                 .frame(width: 16, height: 16)
                         }
                         .labelStyle(.horizontal)
-
-                        Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                         Text("Aucun")
                             .font(.ST.callout)
@@ -142,8 +139,7 @@ struct NewTransferSettingsView: View {
                                 .frame(width: 16, height: 16)
                         }
                         .labelStyle(.horizontal)
-
-                        Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
                         Text(language.title)
                             .font(.ST.callout)
