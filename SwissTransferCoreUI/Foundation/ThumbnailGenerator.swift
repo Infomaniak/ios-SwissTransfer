@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import OSLog
 import QuickLookThumbnailing
 import SwiftUI
 
@@ -36,7 +37,7 @@ public enum ThumbnailGenerator {
             let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
             return Image(uiImage: thumbnail.uiImage)
         } catch {
-            print("Error generating thumbnail: \(error.localizedDescription)")
+            Logger.general.error("An error occured while generating a thumbnail: \(error)")
         }
         return nil
     }

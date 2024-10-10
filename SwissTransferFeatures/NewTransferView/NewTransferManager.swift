@@ -18,10 +18,11 @@
 
 import Foundation
 import InfomaniakCore
+import OSLog
 import SwiftUI
 import SwissTransferCore
 
-private enum TmpDirType {
+private enum TmpDirType: String {
     case all
     case cache
     case upload
@@ -51,7 +52,7 @@ class NewTransferManager: ObservableObject {
 
             displayableFiles = prepareForDisplay()
         } catch {
-            print("Error: \(error.localizedDescription)")
+            Logger.general.error("An error occured while flattening files: \(error)")
         }
     }
 
@@ -68,7 +69,7 @@ class NewTransferManager: ObservableObject {
             do {
                 try FileManager.default.removeItem(at: url)
             } catch {
-                print("Error deleting file: \(error.localizedDescription)")
+                Logger.general.error("An error occured while removing file: \(error)")
             }
         }
 
@@ -77,10 +78,6 @@ class NewTransferManager: ObservableObject {
 }
 
 extension NewTransferManager {
-//    private func moveToPermanent(containerUuid: String, files: [URL]) -> [URL] {
-//        for uploadFile in uploadFiles {}
-//    }
-
     /// Move the imported files/folder in the temporary directory
     private func moveToTmp(files: [URL]) -> [URL] {
         var urls = [URL]()
@@ -95,7 +92,7 @@ extension NewTransferManager {
                 urls.append(destination)
             }
         } catch {
-            print("Error moving file: \(error.localizedDescription)")
+            Logger.general.error("An error occured while moving files to temporary directory: \(error)")
         }
 
         return urls
@@ -124,7 +121,7 @@ extension NewTransferManager {
                 try FileManager.default.removeItem(at: children)
             }
         } catch {
-            print("Error cleaning tmp directory: \(error.localizedDescription)")
+            Logger.general.error("An error occured while cleaning temporary directory: \(type.rawValue) \(error)")
         }
     }
 
