@@ -100,8 +100,8 @@ public struct LargeThumbnailView: View {
             RoundedRectangle(cornerRadius: IKRadius.medium)
                 .stroke(Color.ST.cardBorder)
         )
-        .onAppear {
-            ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: 164, height: 96)) { largeThumbnail = $0 }
+        .task {
+            largeThumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: 164, height: 96))
         }
     }
 }

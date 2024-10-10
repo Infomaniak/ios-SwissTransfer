@@ -67,9 +67,9 @@ public struct SmallThumbnailView: View {
             } else {
                 FileIconView(icon: icon, type: .small)
                     .frame(width: size, height: size)
-                    .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.medium))
-                    .onAppear {
-                        ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size)) { thumbnail = $0 }
+                    .background(Color.ST.background, in: .rect(cornerRadius: cornerRadius))
+                    .task {
+                        thumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size))
                     }
             }
 

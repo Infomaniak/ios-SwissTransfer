@@ -20,8 +20,8 @@ import QuickLookThumbnailing
 import SwiftUI
 
 public enum ThumbnailGenerator {
-    public static func generate(for url: URL?, cgSize: CGSize, completion: @escaping (Image) -> Void) {
-        guard let url else { return }
+    public static func generate(for url: URL?, cgSize: CGSize) async -> Image? {
+        guard let url else { return nil }
 
         let size = cgSize
 
@@ -32,11 +32,12 @@ public enum ThumbnailGenerator {
             representationTypes: .thumbnail
         )
 
-        QLThumbnailGenerator.shared.generateBestRepresentation(
-            for: request
-        ) { thumbnail, _ in
-            guard let thumbnail else { return }
-            completion(Image(uiImage: thumbnail.uiImage))
+        do {
+            let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
+            return Image(uiImage: thumbnail.uiImage)
+        } catch {
+            print("Error generating thumbnail: \(error.localizedDescription)")
         }
+        return nil
     }
 }
