@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import OSLog
 import STCore
 import STResources
 import SwiftUI
@@ -38,7 +39,7 @@ public extension FileUi {
         do {
             url = try URL.fileStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
         } catch {
-            print("Error: \(error.localizedDescription)")
+            Logger.general.error("Could not get local url: \(error)")
         }
         return url
     }
@@ -48,7 +49,7 @@ public extension FileUi {
         do {
             url = try URL.previewStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
         } catch {
-            print("Error: \(error.localizedDescription)")
+            Logger.general.error("Could not get preview url: \(error)")
         }
         return url
     }
