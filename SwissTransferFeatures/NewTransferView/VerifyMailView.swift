@@ -20,6 +20,7 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
+import STResources
 
 struct VerifyMailView: View {
     let mail: String
