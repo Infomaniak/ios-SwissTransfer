@@ -80,7 +80,7 @@ struct FileListView: View {
                         }
                     }
                 }
-                Spacer()
+                .frame(maxHeight: .infinity, alignment: .top)
             }
             .padding(value: .medium)
         }
