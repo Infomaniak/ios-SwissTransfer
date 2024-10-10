@@ -72,7 +72,7 @@ struct PasswordSettingView: View {
                 )
             }
         }
-        .padding(16)
+        .padding(value: .medium)
         .frame(maxHeight: .infinity, alignment: .top)
         .floatingContainer {
             Button {

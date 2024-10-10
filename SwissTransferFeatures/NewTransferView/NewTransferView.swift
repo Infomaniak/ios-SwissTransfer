@@ -46,7 +46,7 @@ public struct NewTransferView: View {
                     // Settings
                     NewTransferSettingsView()
                 }
-                .padding(.vertical, 16)
+                .padding(.vertical, value: .medium)
             }
             .floatingContainer {
                 NavigationLink {
