@@ -52,7 +52,7 @@ struct VerifyMailView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .stNavigationBarNewTransfer()
         .stNavigationBarStyle()
-        .padding(16)
+        .padding(value: .medium)
     }
 }
 

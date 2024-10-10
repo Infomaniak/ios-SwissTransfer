@@ -49,7 +49,7 @@ struct NewTransferFilesCellView: View {
                             .resizable()
                             .frame(width: 16, height: 16)
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, value: .medium)
                     .foregroundStyle(Color.ST.textSecondary)
                 }
 
@@ -80,15 +80,15 @@ struct NewTransferFilesCellView: View {
                             }
                         }
                     }
-                    .padding(.bottom, 8)
-                    .padding(.horizontal, 16)
+                    .padding(.bottom, value: .small)
+                    .padding(.horizontal, value: .medium)
                 }
             }
-            .padding(.top, 16)
-            .padding(.bottom, 8)
+            .padding(.top, value: .medium)
+            .padding(.bottom, value: .small)
             .background(Color.ST.cardBackground, in: .rect(cornerRadius: 16))
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, value: .medium)
     }
 }
 

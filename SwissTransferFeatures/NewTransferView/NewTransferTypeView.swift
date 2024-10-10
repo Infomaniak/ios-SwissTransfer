@@ -29,7 +29,7 @@ struct NewTransferTypeView: View {
             Text(STResourcesStrings.Localizable.transferTypeTitle)
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, value: .medium)
 
             ScrollView(.horizontal) {
                 HStack {
@@ -42,7 +42,7 @@ struct NewTransferTypeView: View {
                             }
                     }
                 }
-                .padding(.horizontal, 16)
+                .padding(.horizontal, value: .medium)
                 .padding(.vertical, 1)
             }
             .scrollIndicators(.hidden)

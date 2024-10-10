@@ -38,7 +38,7 @@ struct NewTransferDetailsView: View {
             }
             CustomTextField(value: $message, placeholder: "Un message à faire passer ?", height: 88)
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, value: .medium)
     }
 }
 
