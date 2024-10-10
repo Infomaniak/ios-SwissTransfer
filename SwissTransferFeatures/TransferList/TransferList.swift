@@ -37,7 +37,7 @@ public struct TransferList: View {
     }
 
     public var body: some View {
-        List {
+        List(selection: $mainViewState.selectedDestination) {
             if isCompactWindow {
                 Text(origin.title)
                     .font(.ST.title)
@@ -52,9 +52,7 @@ public struct TransferList: View {
                 Section {
                     ForEach(section.transfers, id: \.linkUUID) { transfer in
                         TransferCell(transfer: transfer)
-                            .onTapGesture {
-                                mainViewState.selectedTransfer = transfer
-                            }
+                            .tag(NavigationDestination.transfer(transfer))
                     }
                 } header: {
                     Text(section.title)
