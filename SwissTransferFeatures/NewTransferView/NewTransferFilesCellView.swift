@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -31,12 +32,12 @@ struct NewTransferFilesCellView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text("Mes fichiers")
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: IKPadding.medium) {
                 NavigationLink(value: DisplayableRootFolder()) {
                     HStack {
                         Text(

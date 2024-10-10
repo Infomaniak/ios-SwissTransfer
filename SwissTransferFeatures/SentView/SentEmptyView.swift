@@ -27,7 +27,7 @@ struct SentEmptyView: View {
 
     var body: some View {
         VStack(spacing: 40) {
-            VStack(spacing: 16) {
+            VStack(spacing: IKPadding.medium) {
                 Text(STResourcesStrings.Localizable.sentEmptyTitle)
                     .font(.ST.specificLargeTitleMedium)
                     .foregroundStyle(Color.ST.textPrimary)
