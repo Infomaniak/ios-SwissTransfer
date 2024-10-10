@@ -31,7 +31,7 @@ struct NewTransferDetailsView: View {
     @State private var message = ""
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: IKPadding.medium) {
             if newTransferManager.transferType == .mail {
                 CustomTextField(value: $message, placeholder: "Ton adresse mail*")
                 CustomTextField(value: $message, placeholder: "Envoyer les fichiers à*")

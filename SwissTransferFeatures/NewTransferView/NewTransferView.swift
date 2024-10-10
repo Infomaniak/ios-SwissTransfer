@@ -33,7 +33,7 @@ public struct NewTransferView: View {
     public var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: IKPadding.medium) {
                     // FilesCell
                     NewTransferFilesCellView()
 

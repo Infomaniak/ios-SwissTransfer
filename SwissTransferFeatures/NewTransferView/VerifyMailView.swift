@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -26,7 +27,7 @@ struct VerifyMailView: View {
     @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: IKPadding.large) {
             Text("Vérifie ton mail")
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)

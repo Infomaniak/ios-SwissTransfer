@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -43,13 +44,13 @@ struct FileListView: View {
     }
 
     private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: IKPadding.medium),
+        GridItem(.flexible(), spacing: IKPadding.medium)
     ]
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: IKPadding.medium) {
                 Text(
                     "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
                 )
@@ -57,7 +58,7 @@ struct FileListView: View {
                 LazyVGrid(
                     columns: columns,
                     alignment: .center,
-                    spacing: 16,
+                    spacing: IKPadding.medium,
                     pinnedViews: []
                 ) {
                     ForEach(files) { file in

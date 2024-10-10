@@ -31,7 +31,7 @@ struct PasswordSettingView: View {
     @FocusState private var isVisibleFieldFocused: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: IKPadding.large) {
             Text("Protèges ton transfert avec un mot de passe")
                 .font(.ST.title2)
                 .foregroundStyle(Color.ST.textPrimary)
