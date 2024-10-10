@@ -34,7 +34,7 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
                         .foregroundStyle(.white)
                 }
 
-                ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .destructiveAction) {
                     Button {
                         dismissModal()
                     } label: {
