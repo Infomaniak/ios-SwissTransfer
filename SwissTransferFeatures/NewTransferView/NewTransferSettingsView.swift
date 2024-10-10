@@ -36,21 +36,21 @@ struct NewTransferSettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
-            Text("Paramètres avancées")
+            Text(STResourcesStrings.Localizable.advancedSettingsTitle)
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: 32) {
                 Menu {
                     ForEach(durations, id: \.self) { value in
-                        Button("\(value) jours") {
+                        Button(STResourcesStrings.Localizable.settingsValidityPeriodValue(value)) {
                             duration = value
                         }
                     }
                 } label: {
                     HStack {
                         Label {
-                            Text("Durée de validité")
+                            Text(STResourcesStrings.Localizable.settingsOptionValidityPeriod)
                                 .font(.ST.calloutMedium)
                                 .foregroundStyle(Color.ST.primary)
                         } icon: {
@@ -61,7 +61,7 @@ struct NewTransferSettingsView: View {
                         .labelStyle(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text("\(duration) jours")
+                        Text(STResourcesStrings.Localizable.settingsValidityPeriodValue(duration))
                             .font(.ST.callout)
                             .foregroundStyle(Color.ST.textSecondary)
                     }
@@ -76,7 +76,7 @@ struct NewTransferSettingsView: View {
                 } label: {
                     HStack {
                         Label {
-                            Text("Limite de téléchargements")
+                            Text(STResourcesStrings.Localizable.settingsOptionDownloadLimit)
                                 .font(.ST.calloutMedium)
                                 .foregroundStyle(Color.ST.primary)
                         } icon: {
@@ -98,7 +98,7 @@ struct NewTransferSettingsView: View {
                 } label: {
                     HStack {
                         Label {
-                            Text("Mot de passe")
+                            Text(STResourcesStrings.Localizable.settingsOptionPassword)
                                 .font(.ST.calloutMedium)
                                 .foregroundStyle(Color.ST.primary)
                         } icon: {
@@ -109,7 +109,7 @@ struct NewTransferSettingsView: View {
                         .labelStyle(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Text("Aucun")
+                        Text(STResourcesStrings.Localizable.settingsOptionNone)
                             .font(.ST.callout)
                             .foregroundStyle(Color.ST.textSecondary)
                     }
@@ -130,7 +130,7 @@ struct NewTransferSettingsView: View {
                 } label: {
                     HStack {
                         Label {
-                            Text("Langue du mail")
+                            Text(STResourcesStrings.Localizable.settingsOptionEmailLanguage)
                                 .font(.ST.calloutMedium)
                                 .foregroundStyle(Color.ST.primary)
                         } icon: {

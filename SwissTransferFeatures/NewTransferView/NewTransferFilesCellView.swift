@@ -33,7 +33,7 @@ struct NewTransferFilesCellView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
-            Text("Mes fichiers")
+            Text(STResourcesStrings.Localizable.myFilesTitle)
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
 

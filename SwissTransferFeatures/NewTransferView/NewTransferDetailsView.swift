@@ -33,10 +33,10 @@ struct NewTransferDetailsView: View {
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if newTransferManager.transferType == .mail {
-                CustomTextField(value: $message, placeholder: "Ton adresse mail*")
-                CustomTextField(value: $message, placeholder: "Envoyer les fichiers à*")
+                CustomTextField(value: $message, placeholder: STResourcesStrings.Localizable.recipientMailAddressPlaceholder)
+                CustomTextField(value: $message, placeholder: STResourcesStrings.Localizable.senderMailAddressPlaceholder)
             }
-            CustomTextField(value: $message, placeholder: "Un message à faire passer ?", height: 88)
+            CustomTextField(value: $message, placeholder: STResourcesStrings.Localizable.messagePlaceholder, height: 88)
         }
         .padding(.horizontal, value: .medium)
     }

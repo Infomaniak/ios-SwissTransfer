@@ -32,16 +32,16 @@ struct PasswordSettingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.large) {
-            Text("Protèges ton transfert avec un mot de passe")
+            Text(STResourcesStrings.Localizable.settingsPasswordTitle)
                 .font(.ST.title2)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            Text("Tes destinataires devront saisir le mot de passe pour télécharger les fichiers.")
+            Text(STResourcesStrings.Localizable.settingsPasswordDescription)
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
 
             Toggle(isOn: $isOn) {
-                Text("Activer la protection")
+                Text(STResourcesStrings.Localizable.settingsPasswordToggleDescription)
                     .font(.ST.calloutMedium)
                     .foregroundStyle(Color.ST.textPrimary)
             }
@@ -49,11 +49,11 @@ struct PasswordSettingView: View {
             if isOn {
                 HStack {
                     ZStack {
-                        TextField("Mot de passe", text: $password)
+                        TextField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
                             .opacity(isShowingPassword ? 1 : 0)
                             .focused($isVisibleFieldFocused)
 
-                        SecureField("Mot de passe", text: $password)
+                        SecureField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
                             .opacity(isShowingPassword ? 0 : 1)
                             .focused($isSecureFieldFocused)
                     }
@@ -78,7 +78,7 @@ struct PasswordSettingView: View {
             Button {
                 // Confirm
             } label: {
-                Text("Confirmer")
+                Text(STResourcesStrings.Localizable.buttonConfirm)
             }
             .buttonStyle(.ikBorderedProminent)
             .ikButtonFullWidth(true)

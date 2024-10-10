@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreUI
+import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -35,7 +36,7 @@ public enum SecurityCodeFieldStyle {
 
     var label: String? {
         if self == .error {
-            return "Le code saisie est incorrect"
+            return STResourcesStrings.Localizable.validateMailCodeIncorrectError
         }
         return nil
     }
