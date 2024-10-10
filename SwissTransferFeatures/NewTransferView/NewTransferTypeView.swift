@@ -25,7 +25,7 @@ struct NewTransferTypeView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.transferTypeTitle)
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
