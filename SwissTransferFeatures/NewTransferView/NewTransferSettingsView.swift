@@ -35,7 +35,7 @@ struct NewTransferSettingsView: View {
     @State private var language: TransferLanguage = .fr
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text("Paramètres avancées")
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)

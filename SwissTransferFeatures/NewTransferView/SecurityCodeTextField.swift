@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -56,7 +57,7 @@ struct SecurityCodeTextField: View {
     let completion: (String) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: IKPadding.extraSmall) {
             HStack {
                 ForEach(fields.indices, id: \.self) { index in
                     TextField("", text: $fields[index])

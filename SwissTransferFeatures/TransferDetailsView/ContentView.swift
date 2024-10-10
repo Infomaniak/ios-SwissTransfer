@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STCore
 import STResources
 import SwiftUI
@@ -25,19 +26,19 @@ import SwissTransferCoreUI
 struct ContentView: View {
     let files: [File]
     private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: IKPadding.medium),
+        GridItem(.flexible(), spacing: IKPadding.medium)
     ]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.transferContentHeader)
                 .sectionHeader()
 
             LazyVGrid(
                 columns: columns,
                 alignment: .center,
-                spacing: 16,
+                spacing: IKPadding.medium,
                 pinnedViews: []
             ) {
                 ForEach(files, id: \.uuid) { file in

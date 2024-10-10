@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUI
 import STCore
 import STResources
 import SwiftUI
@@ -40,7 +41,7 @@ struct TransferCellThumbnailsView: View {
     }
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: IKPadding.small) {
             ForEach(itemsToShow, id: \.uuid) { file in
                 SmallThumbnailView(url: file.localUrl, mimeType: file.mimeType)
             }
