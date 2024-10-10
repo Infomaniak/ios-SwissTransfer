@@ -53,7 +53,7 @@ public struct TransferList: View {
                     ForEach(section.transfers, id: \.linkUUID) { transfer in
                         TransferCell(transfer: transfer)
                             .onTapGesture {
-                                mainViewState.navigate(to: transfer)
+                                mainViewState.selectedTransfer = transfer
                             }
                     }
                 } header: {
