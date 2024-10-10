@@ -70,35 +70,11 @@ public struct AddFilesMenuView<Content: View>: View {
         }
         .photosPicker(isPresented: $isShowingPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
         .onChange(of: selectedPhotos) { _ in
-            guard !selectedPhotos.isEmpty else { return }
-            Task {
-                var photoList = [PhotoLibraryContent]()
-                // Save photos
-                for photo in selectedPhotos {
-                    do {
-                        guard let newFile = try await photo.loadTransferable(type: PhotoLibraryContent.self) else { continue }
-                        photoList.append(newFile)
-                    } catch {
-                        print("Error: \(error.localizedDescription)")
-                    }
-                }
-
-                let urls = photoList.map {
-                    $0.url
-                }
-                completion(urls)
-            }
+            didSelectFromPhotoLibrary()
         }
         .fullScreenCover(isPresented: $showCamera) {
             CameraPickerView { image in
-                do {
-                    let fileName = URL.defaultFileName()
-                    let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.png)
-                    try image.pngData()?.write(to: url)
-                    completion([url])
-                } catch {
-                    print("Error: \(error.localizedDescription)")
-                }
+                didTakePicture(uiImage: image)
             }
             .ignoresSafeArea()
         }
@@ -115,6 +91,38 @@ public struct AddFilesMenuView<Content: View>: View {
                 }
             }
         )
+    }
+
+    private func didTakePicture(uiImage: UIImage) {
+        do {
+            let fileName = URL.defaultFileName()
+            let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.png)
+            try uiImage.pngData()?.write(to: url)
+            completion([url])
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+    }
+
+    private func didSelectFromPhotoLibrary() {
+        guard !selectedPhotos.isEmpty else { return }
+        Task {
+            var photoList = [PhotoLibraryContent]()
+            // Save photos
+            for photo in selectedPhotos {
+                do {
+                    guard let newFile = try await photo.loadTransferable(type: PhotoLibraryContent.self) else { continue }
+                    photoList.append(newFile)
+                } catch {
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+
+            let urls = photoList.map {
+                $0.url
+            }
+            completion(urls)
+        }
     }
 }
 
