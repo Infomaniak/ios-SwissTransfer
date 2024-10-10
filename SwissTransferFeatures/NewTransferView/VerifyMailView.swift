@@ -19,6 +19,7 @@
 import InfomaniakCoreUI
 import SwiftUI
 import SwissTransferCoreUI
+import STResources
 
 struct VerifyMailView: View {
     let mail: String
@@ -28,11 +29,11 @@ struct VerifyMailView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.large) {
-            Text("Vérifie ton mail")
+            Text(STResourcesStrings.Localizable.validateMailTitle)
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            Text("On a envoyé un code à \(mail). Saisie le ci-dessous pour faire vérifier ton adresse mail dans l'app: ")
+            Text(STResourcesStrings.Localizable.validateMailDescription(mail))
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
 
@@ -46,7 +47,7 @@ struct VerifyMailView: View {
                 }
             }
 
-            Text("Pense à vérifier le dossier spam de ton adresse mail.")
+            Text(STResourcesStrings.Localizable.validateMailInfo)
                 .font(.ST.caption)
                 .foregroundStyle(Color.ST.textSecondary)
         }

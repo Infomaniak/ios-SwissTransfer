@@ -35,7 +35,7 @@ public struct TransferList: View {
 
     public var body: some View {
         List {
-            Text(STResourcesStrings.Localizable.sharedFilesTitle)
+            Text(STResourcesStrings.Localizable.sentFilesTitle)
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
                 .padding(.horizontal, value: .medium)
