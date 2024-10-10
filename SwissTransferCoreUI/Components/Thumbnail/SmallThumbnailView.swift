@@ -71,8 +71,8 @@ public struct SmallThumbnailView: View {
                         Color.white
                             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                     )
-                    .onAppear {
-                        ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size)) { thumbnail = $0 }
+                    .task {
+                        thumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size))
                     }
             }
 
