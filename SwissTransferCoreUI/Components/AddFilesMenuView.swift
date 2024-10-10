@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import OSLog
 import PhotosUI
 import STResources
 import SwiftUI
@@ -87,7 +88,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 case .success(let urls):
                     completion(urls)
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    Logger.general.error("An error occured while importing files: \(error)")
                 }
             }
         )
@@ -100,7 +101,7 @@ public struct AddFilesMenuView<Content: View>: View {
             try uiImage.pngData()?.write(to: url)
             completion([url])
         } catch {
-            print("Error: \(error.localizedDescription)")
+            Logger.general.error("An error occured while saving picture: \(error)")
         }
     }
 
@@ -114,7 +115,7 @@ public struct AddFilesMenuView<Content: View>: View {
                     guard let newFile = try await photo.loadTransferable(type: PhotoLibraryContent.self) else { continue }
                     photoList.append(newFile)
                 } catch {
-                    print("Error: \(error.localizedDescription)")
+                    Logger.general.error("An error occured while saving photo: \(error)")
                 }
             }
 

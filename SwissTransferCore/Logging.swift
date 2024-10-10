@@ -21,6 +21,7 @@ import OSLog
 
 extension Logger {
     static let view = Logger(category: "View")
+    public static let general = Logger(category: "general")
 
     init(category: String) {
         self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
