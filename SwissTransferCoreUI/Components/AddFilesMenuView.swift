@@ -31,11 +31,11 @@ public struct AddFilesMenuView<Content: View>: View {
     @State private var selectedPhotos: [PhotosPickerItem] = []
 
     private let completion: ([URL]) -> Void
-    private let label: () -> Content
+    private let label: Content
 
     public init(completion: @escaping ([URL]) -> Void, @ViewBuilder label: @escaping () -> Content) {
         self.completion = completion
-        self.label = label
+        self.label = label()
     }
 
     public var body: some View {
@@ -67,7 +67,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 )
             }
         } label: {
-            label()
+            label
         }
         .photosPicker(isPresented: $isShowingPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
         .onChange(of: selectedPhotos) { _ in
