@@ -24,8 +24,8 @@ import SwiftUI
 import SwissTransferCore
 
 public struct AddFilesMenuView<Content: View>: View {
-    @State private var showImportFile = false
-    @State private var showCamera = false
+    @State private var isShowingImportFile = false
+    @State private var isShowingCamera = false
 
     @State private var isShowingPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
@@ -41,7 +41,7 @@ public struct AddFilesMenuView<Content: View>: View {
     public var body: some View {
         Menu {
             Button {
-                showImportFile = true
+                isShowingImportFile = true
             } label: {
                 Label(
                     title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
@@ -57,7 +57,7 @@ public struct AddFilesMenuView<Content: View>: View {
                 )
             }
             Button {
-                showCamera = true
+                isShowingCamera = true
             } label: {
                 Label(
                     title: {
@@ -73,14 +73,14 @@ public struct AddFilesMenuView<Content: View>: View {
         .onChange(of: selectedPhotos) { _ in
             didSelectFromPhotoLibrary()
         }
-        .fullScreenCover(isPresented: $showCamera) {
+        .fullScreenCover(isPresented: $isShowingCamera) {
             CameraPickerView { image in
                 didTakePicture(uiImage: image)
             }
             .ignoresSafeArea()
         }
         .fileImporter(
-            isPresented: $showImportFile,
+            isPresented: $isShowingImportFile,
             allowedContentTypes: [.item, .folder],
             allowsMultipleSelection: true,
             onCompletion: { result in
