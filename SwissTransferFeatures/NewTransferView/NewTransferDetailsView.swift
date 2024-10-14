@@ -21,8 +21,6 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-// TODO: - Traduction
-
 struct NewTransferDetailsView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
@@ -33,10 +31,13 @@ struct NewTransferDetailsView: View {
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if newTransferManager.transferType == .mail {
-                CustomTextField(value: $message, placeholder: STResourcesStrings.Localizable.recipientMailAddressPlaceholder)
-                CustomTextField(value: $message, placeholder: STResourcesStrings.Localizable.senderMailAddressPlaceholder)
+                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $mailSrc)
+                    .textFieldStyle(NewTransferTextFieldStyle())
+                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $mailDst)
+                    .textFieldStyle(NewTransferTextFieldStyle())
             }
-            CustomTextField(value: $message, placeholder: STResourcesStrings.Localizable.messagePlaceholder, height: 88)
+            TextField(STResourcesStrings.Localizable.messagePlaceholder, text: $message)
+                .textFieldStyle(NewTransferTextFieldStyle(height: 88))
         }
         .padding(.horizontal, value: .medium)
     }

@@ -20,15 +20,13 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct CustomTextField: View {
+struct NewTransferTextFieldStyle: TextFieldStyle {
     @FocusState private var isMessageFocused: Bool
-    @Binding var value: String
 
-    let placeholder: String
     var height: CGFloat?
 
-    var body: some View {
-        TextField(placeholder, text: $value, axis: .vertical)
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
             .focused($isMessageFocused)
             .frame(minHeight: height, alignment: .top)
             .padding(value: .intermediate)
@@ -43,6 +41,3 @@ struct CustomTextField: View {
     }
 }
 
-#Preview {
-    CustomTextField(value: .constant(""), placeholder: "placeholder")
-}
