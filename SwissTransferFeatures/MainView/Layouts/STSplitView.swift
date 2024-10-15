@@ -29,7 +29,7 @@ import SwissTransferCoreUI
 struct STSplitView: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @State private var columnVisibility = NavigationSplitViewVisibility.automatic
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -53,7 +53,6 @@ struct STSplitView: View {
             DetailSplitView(destination: mainViewState.selectedDestination)
                 .stNavigationBarStyle()
         }
-        .navigationSplitViewStyle(.balanced)
     }
 }
 
