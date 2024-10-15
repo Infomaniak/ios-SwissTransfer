@@ -47,8 +47,7 @@ struct NewTransferFilesCellView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                         STResourcesAsset.Images.chevronRight.swiftUIImage
-                            .resizable()
-                            .frame(width: 16, height: 16)
+                            .iconSize(.medium)
                     }
                     .padding(.horizontal, value: .medium)
                     .foregroundStyle(Color.ST.textSecondary)
@@ -60,8 +59,7 @@ struct NewTransferFilesCellView: View {
                             newTransferManager.addFiles(urls: urls)
                         } label: {
                             STResourcesAsset.Images.plus.swiftUIImage
-                                .resizable()
-                                .frame(width: 24, height: 24)
+                                .iconSize(.large)
                                 .foregroundStyle(Color.ST.primary)
                                 .frame(width: 80, height: 80)
                                 .background(.white, in: .rect(cornerRadius: 16))

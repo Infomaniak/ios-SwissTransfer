@@ -28,7 +28,7 @@ public struct SmallThumbnailView: View {
 
     @State private var icon: Image
     @State private var thumbnail: Image?
-    @State private var cornerRadius: CGFloat = 8
+    private var cornerRadius: CGFloat = 8
 
     /// File init
     public init(url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
@@ -74,17 +74,15 @@ public struct SmallThumbnailView: View {
             }
 
             if let removeAction {
-                Button {
-                    removeAction()
-                } label: {
+                Button(action: removeAction) {
                     Image(systemName: "xmark")
                         .resizable()
                         .foregroundStyle(.white)
                         .frame(width: 8, height: 8)
                         .padding(value: .small)
                         .background(.black.opacity(0.5), in: .circle)
+                        .padding(value: .small)
                 }
-                .padding(value: .small)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
         }

@@ -38,32 +38,6 @@ enum TransferType: String, CaseIterable {
         }
     }
 
-    var foregroundColor: Color {
-        switch self {
-        case .link:
-            Color.ST.primary
-        case .mail:
-            Color.ST.secondary
-        case .qrcode:
-            Color.ST.primary
-        case .proximity:
-            STResourcesAsset.Colors.specific4.swiftUIColor
-        }
-    }
-
-    var backgroundColor: Color {
-        switch self {
-        case .link:
-            STResourcesAsset.Colors.specific1.swiftUIColor
-        case .mail:
-            STResourcesAsset.Colors.specific2.swiftUIColor
-        case .qrcode:
-            STResourcesAsset.Colors.greenSecondary.swiftUIColor
-        case .proximity:
-            STResourcesAsset.Colors.specific3.swiftUIColor
-        }
-    }
-
     var icon: Image {
         switch self {
         case .link:

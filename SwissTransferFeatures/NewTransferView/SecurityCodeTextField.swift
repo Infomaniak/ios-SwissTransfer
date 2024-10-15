@@ -62,7 +62,6 @@ struct SecurityCodeTextField: View {
             HStack {
                 ForEach(fields.indices, id: \.self) { index in
                     TextField("", text: $fields[index])
-                        .keyboardType(.numberPad)
                         .textFieldStyle(SecurityCodeTextFieldStyle(style: style))
                         .frame(maxWidth: .infinity)
                         .onTapGesture {
@@ -112,8 +111,9 @@ struct SecurityCodeTextFieldStyle: TextFieldStyle {
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .frame(width: 10)
-            .background {
+            .keyboardType(.numberPad)
+            .multilineTextAlignment(.center)
+            .overlay {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke()
                     .foregroundStyle(style.color)
