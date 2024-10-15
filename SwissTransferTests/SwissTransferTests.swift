@@ -19,6 +19,4 @@
 import Foundation
 import XCTest
 
-final class SwissTransferTests: XCTestCase {
-
-}
+final class SwissTransferTests: XCTestCase {}

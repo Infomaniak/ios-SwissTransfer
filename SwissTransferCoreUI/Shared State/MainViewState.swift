@@ -21,7 +21,7 @@ import STCore
 
 public final class MainViewState: ObservableObject {
     public let transferManager: TransferManager
-    
+
     public init(transferManager: TransferManager) {
         self.transferManager = transferManager
     }
