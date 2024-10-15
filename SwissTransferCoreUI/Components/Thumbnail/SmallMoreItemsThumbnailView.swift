@@ -38,7 +38,7 @@ public struct SmallMoreItemsThumbnailView: View {
             .frame(width: size, height: size)
             .background(
                 Color.ST.secondary
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
             )
     }
 }

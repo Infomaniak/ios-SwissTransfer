@@ -25,10 +25,7 @@ struct RoundedLabelModifier: ViewModifier {
             .foregroundStyle(Color.ST.secondary)
             .padding(.vertical, 2)
             .padding(.horizontal, value: .small)
-            .background {
-                RoundedRectangle(cornerRadius: 30)
-                    .foregroundStyle(Color.ST.recipientLabelBackground)
-            }
+            .background(Color.ST.recipientLabelBackground, in: .capsule)
     }
 }
 
@@ -36,4 +33,9 @@ public extension View {
     func roundedLabel() -> some View {
         modifier(RoundedLabelModifier())
     }
+}
+
+#Preview {
+    Text("My Label")
+        .roundedLabel()
 }

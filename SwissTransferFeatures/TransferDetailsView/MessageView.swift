@@ -35,7 +35,7 @@ struct MessageView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .padding(24)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.ST.cardBackground, in: .rect(cornerRadius: 16))
+                    .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

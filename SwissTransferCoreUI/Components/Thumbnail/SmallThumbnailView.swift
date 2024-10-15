@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
@@ -34,7 +35,7 @@ public struct SmallThumbnailView: View {
             .frame(width: size, height: size)
             .background(
                 Color.white
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
             )
     }
 }
