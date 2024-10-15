@@ -33,29 +33,5 @@ struct STTabModifier: ViewModifier {
             .navigableTab(tab)
             .tabItem { tab.label }
             .tag(tab)
-import STCore
-
-public enum STDestination: Hashable {
-    case transfer(Transfer)
-    case settings
-
-    static public func == (lhs: STDestination, rhs: STDestination) -> Bool {
-        switch (lhs, rhs) {
-        case (.transfer(let left), .transfer(let right)):
-            return left.linkUUID == right.linkUUID
-        case (.settings, .settings):
-            return true
-        default:
-            return false
-        }
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        switch self {
-        case .transfer(let transfer):
-            hasher.combine(transfer.linkUUID)
-        case .settings:
-            hasher.combine("settings")
-        }
     }
 }

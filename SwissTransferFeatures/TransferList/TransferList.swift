@@ -65,6 +65,7 @@ public struct TransferList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .background(Color.ST.background)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if !isCompactWindow {

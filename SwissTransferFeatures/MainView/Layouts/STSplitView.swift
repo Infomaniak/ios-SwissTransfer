@@ -53,7 +53,6 @@ struct STSplitView: View {
             DetailSplitView(destination: mainViewState.selectedDestination)
                 .stNavigationBarStyle()
         }
-        .navigationSplitViewStyle(.balanced)
     }
 }
 

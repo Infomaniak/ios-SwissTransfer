@@ -21,9 +21,16 @@ import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 struct TransferCell: View {
+    @EnvironmentObject private var mainViewState: MainViewState
+
     let transfer: Transfer
+
+    private var isSelected: Bool {
+        mainViewState.selectedTransfer?.linkUUID == transfer.linkUUID
+    }
 
     var body: some View {
         HStack {
@@ -48,10 +55,13 @@ struct TransferCell: View {
                 .foregroundStyle(Color.ST.textPrimary)
         }
         .padding(value: .medium)
-        .background(
-            Color.ST.cardBackground
-                .clipShape(RoundedRectangle(cornerRadius: IKRadius.large))
-        )
+        .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
+        .overlay {
+            if isSelected {
+                RoundedRectangle(cornerRadius: IKRadius.large)
+                    .stroke(Color.ST.onRecipientLabelBackground, lineWidth: 1)
+            }
+        }
         .padding(.horizontal, value: .medium)
         .padding(.vertical, value: .extraSmall)
         .background(Color.ST.background)
