@@ -16,12 +16,11 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreUI
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
-
 
 struct NewTransferSettingsView: View {
     @State private var duration = 30
