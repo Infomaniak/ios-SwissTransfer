@@ -111,14 +111,14 @@ extension NewTransferManager {
                 tmp = try URL.tmpUploadDirectory()
             }
 
-            let childrens = try FileManager.default.contentsOfDirectory(
+            let children = try FileManager.default.contentsOfDirectory(
                 at: tmp,
                 includingPropertiesForKeys: nil,
                 options: .skipsSubdirectoryDescendants
             )
 
-            for children in childrens {
-                try FileManager.default.removeItem(at: children)
+            for child in children {
+                try FileManager.default.removeItem(at: child)
             }
         } catch {
             Logger.general.error("An error occured while cleaning temporary directory: \(type.rawValue) \(error)")
