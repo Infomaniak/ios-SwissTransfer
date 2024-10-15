@@ -68,7 +68,7 @@ public struct LargeThumbnailView: View {
                 Text(fileName)
                     .foregroundStyle(Color.ST.textPrimary)
                     .lineLimit(1)
-                    .truncationMode(.tail)
+                    .truncationMode(.middle)
                 Text(fileSize.formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
@@ -88,8 +88,8 @@ public struct LargeThumbnailView: View {
                         .frame(width: 8, height: 8)
                         .padding(value: .small)
                         .background(.black.opacity(0.5), in: .circle)
+                        .padding(value: .small)
                 }
-                .padding(value: .small)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
         }
