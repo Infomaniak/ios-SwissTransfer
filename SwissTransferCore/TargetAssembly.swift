@@ -57,7 +57,7 @@ open class TargetAssembly {
                                                        factoryParameters: nil,
                                                        resolver: resolver)
                 return stInjection.appSettingsManager
-},
+            },
             Factory(type: AppGroupPathProvidable.self) { _, _ in
                 guard let provider = AppGroupPathProvider(
                     realmRootPath: "",
@@ -67,6 +67,9 @@ open class TargetAssembly {
                 }
 
                 return provider
+            },
+            Factory(type: PlatformDetectable.self) { _, _ in
+                PlatformDetector()
             }
         ]
     }

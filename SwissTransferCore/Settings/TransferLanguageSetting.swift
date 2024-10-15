@@ -19,7 +19,7 @@
 import STResources
 import SwiftUI
 
-public enum TransferLanguage: CaseIterable {
+public enum TransferLanguageSetting: SettingSelectable {
     case en
     case fr
     case de
@@ -36,7 +36,7 @@ public enum TransferLanguage: CaseIterable {
         }
     }
 
-    public var flag: Image {
+    public var icon: Image? {
         switch self {
         case .en: STResourcesAsset.Images.flagEn.swiftUIImage
         case .fr: STResourcesAsset.Images.flagFr.swiftUIImage

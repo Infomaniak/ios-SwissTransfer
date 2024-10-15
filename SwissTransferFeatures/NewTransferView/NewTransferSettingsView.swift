@@ -23,15 +23,14 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
-    @State private var duration = 30
-    let durations: [Int] = [30, 15, 7, 1]
-
-    @State private var limit = 250
-    let limits: [Int] = [250, 100, 20, 1]
+    @State private var duration = ValiditySetting.day30
+    @State private var limit = DownloadLimitSetting.limit250
+    @State private var language: TransferLanguageSetting = .fr
 
     @State private var showPasswordSetting = false
-
-    @State private var language: TransferLanguage = .fr
+    @State private var isShowingValiditySetting = false
+    @State private var isShowingDownloadLimitSetting = false
+    @State private var isShowingLanguageSetting = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -40,109 +39,60 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: 32) {
-                Menu {
-                    ForEach(durations, id: \.self) { value in
-                        Button(STResourcesStrings.Localizable.settingsValidityPeriodValue(value)) {
-                            duration = value
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Label {
-                            Text(STResourcesStrings.Localizable.settingsOptionValidityPeriod)
-                                .font(.ST.calloutMedium)
-                                .foregroundStyle(Color.ST.primary)
-                        } icon: {
-                            STResourcesAsset.Images.clock.swiftUIImage
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                        }
-                        .labelStyle(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                        Text(STResourcesStrings.Localizable.settingsValidityPeriodValue(duration))
-                            .font(.ST.callout)
-                            .foregroundStyle(Color.ST.textSecondary)
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                    icon: STResourcesAsset.Images.clock.swiftUIImage,
+                    value: duration.title
+                ) {
+                    isShowingValiditySetting = true
+                }
+                .floatingPanel(
+                    isPresented: $isShowingValiditySetting,
+                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod
+                ) {
+                    SettingSelectableList(ValiditySetting.self, selected: duration) {
+                        duration = $0
                     }
                 }
 
-                Menu {
-                    ForEach(limits, id: \.self) { value in
-                        Button("\(value)") {
-                            limit = value
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Label {
-                            Text(STResourcesStrings.Localizable.settingsOptionDownloadLimit)
-                                .font(.ST.calloutMedium)
-                                .foregroundStyle(Color.ST.primary)
-                        } icon: {
-                            STResourcesAsset.Images.fileDownload.swiftUIImage
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                        }
-                        .labelStyle(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                        Text("\(limit)")
-                            .font(.ST.callout)
-                            .foregroundStyle(Color.ST.textSecondary)
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                    icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
+                    value: limit.title
+                ) {
+                    isShowingDownloadLimitSetting = true
+                }
+                .floatingPanel(
+                    isPresented: $isShowingDownloadLimitSetting,
+                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit
+                ) {
+                    SettingSelectableList(DownloadLimitSetting.self, selected: limit) {
+                        limit = $0
                     }
                 }
 
-                Button {
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionPassword,
+                    icon: STResourcesAsset.Images.password.swiftUIImage,
+                    value: STResourcesStrings.Localizable.settingsOptionNone
+                ) {
                     showPasswordSetting = true
-                } label: {
-                    HStack {
-                        Label {
-                            Text(STResourcesStrings.Localizable.settingsOptionPassword)
-                                .font(.ST.calloutMedium)
-                                .foregroundStyle(Color.ST.primary)
-                        } icon: {
-                            STResourcesAsset.Images.password.swiftUIImage
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                        }
-                        .labelStyle(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                        Text(STResourcesStrings.Localizable.settingsOptionNone)
-                            .font(.ST.callout)
-                            .foregroundStyle(Color.ST.textSecondary)
-                    }
                 }
 
-                Menu {
-                    ForEach(TransferLanguage.allCases, id: \.self) { value in
-                        Button {
-                            language = value
-                        } label: {
-                            Label {
-                                Text(value.title)
-                            } icon: {
-                                value.flag
-                            }
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Label {
-                            Text(STResourcesStrings.Localizable.settingsOptionEmailLanguage)
-                                .font(.ST.calloutMedium)
-                                .foregroundStyle(Color.ST.primary)
-                        } icon: {
-                            STResourcesAsset.Images.language.swiftUIImage
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                        }
-                        .labelStyle(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                    icon: STResourcesAsset.Images.language.swiftUIImage,
+                    value: language.title
+                ) {
+                    isShowingLanguageSetting = true
+                }
 
-                        Text(language.title)
-                            .font(.ST.callout)
-                            .foregroundStyle(Color.ST.textSecondary)
+                .floatingPanel(
+                    isPresented: $isShowingLanguageSetting,
+                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
+                ) {
+                    SettingSelectableList(TransferLanguageSetting.self, selected: language) {
+                        language = $0
                     }
                 }
             }
