@@ -49,7 +49,7 @@ struct TransferCell: View {
         .padding(value: .medium)
         .background(
             Color.ST.cardBackground
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .clipShape(RoundedRectangle(cornerRadius: IKRadius.large))
         )
         .padding(.horizontal, value: .medium)
         .padding(.vertical, value: .extraSmall)
