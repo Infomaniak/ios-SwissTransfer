@@ -38,7 +38,7 @@ struct NewTransferSettingsView: View {
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            VStack(alignment: .leading, spacing: 32) {
+            VStack(alignment: .leading, spacing: IKPadding.medium) {
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                     icon: STResourcesAsset.Images.clock.swiftUIImage,
@@ -96,7 +96,8 @@ struct NewTransferSettingsView: View {
                     }
                 }
             }
-            .padding(value: .large)
+            .padding(.vertical, value: .medium)
+            .padding(.horizontal, value: .large)
             .frame(maxWidth: .infinity)
             .background(
                 Color.ST.cardBackground

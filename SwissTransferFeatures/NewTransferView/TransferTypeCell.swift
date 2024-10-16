@@ -30,13 +30,12 @@ struct TransferTypeCell: View {
                 .foregroundStyle(isSelected ? Color.ST.primary : Color.ST.textSecondary)
         } icon: {
             type.icon
-                .resizable()
-                .frame(width: 24, height: 24)
+                .iconSize(.large)
                 .foregroundStyle(isSelected ? Color.ST.primary : Color.ST.textSecondary)
         }
         .labelStyle(.horizontal)
         .padding(value: .medium)
-        .background(
+        .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(isSelected ? Color.ST.primary : Color.ST.cardBorder, lineWidth: 1)
         )

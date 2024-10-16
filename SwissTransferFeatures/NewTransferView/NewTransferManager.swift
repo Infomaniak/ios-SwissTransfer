@@ -26,6 +26,19 @@ private enum TmpDirType: String {
     case all
     case cache
     case upload
+
+    var directory: URL {
+        get throws {
+            switch self {
+            case .all:
+                return FileManager.default.temporaryDirectory
+            case .cache:
+                return try URL.tmpCacheDirectory()
+            case .upload:
+                return try URL.tmpUploadDirectory()
+            }
+        }
+    }
 }
 
 @MainActor
@@ -101,16 +114,7 @@ extension NewTransferManager {
     /// Empty the temporary directory
     private nonisolated func cleanTmpDir(type: TmpDirType) {
         do {
-            let tmp: URL
-            switch type {
-            case .all:
-                tmp = FileManager.default.temporaryDirectory
-            case .cache:
-                tmp = try URL.tmpCacheDirectory()
-            case .upload:
-                tmp = try URL.tmpUploadDirectory()
-            }
-
+            let tmp = try type.directory
             let children = try FileManager.default.contentsOfDirectory(
                 at: tmp,
                 includingPropertiesForKeys: nil,
@@ -121,7 +125,7 @@ extension NewTransferManager {
                 try FileManager.default.removeItem(at: child)
             }
         } catch {
-            Logger.general.error("An error occured while cleaning temporary directory: \(type.rawValue) \(error)")
+            Logger.general.error("An error occurred while cleaning temporary directory: \(type.rawValue) \(error)")
         }
     }
 
