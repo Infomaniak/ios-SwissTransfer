@@ -38,7 +38,7 @@ struct NewTransferDetailsView: View {
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
             }
-            TextField(STResourcesStrings.Localizable.messagePlaceholder, text: $message)
+            TextField(STResourcesStrings.Localizable.messagePlaceholder, text: $message, axis: .vertical)
                 .textFieldStyle(NewTransferTextFieldStyle(height: 88))
         }
         .padding(.horizontal, value: .medium)
