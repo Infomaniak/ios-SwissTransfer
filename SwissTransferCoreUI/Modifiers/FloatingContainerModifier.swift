@@ -29,15 +29,9 @@ public struct FloatingContainerModifier<V: View>: ViewModifier {
         content
             .safeAreaInset(edge: .bottom) {
                 view
-                    .padding(.vertical, value: .small)
+                    .padding(.bottom, value: .small)
                     .padding(.horizontal, value: .medium)
-                    .background { Color.ST.background.ignoresSafeArea() }
                     .font(.ST.headline)
-                    .overlay(alignment: .top) {
-                        Rectangle()
-                            .fill(Color.ST.divider)
-                            .frame(height: 1)
-                    }
             }
     }
 }
