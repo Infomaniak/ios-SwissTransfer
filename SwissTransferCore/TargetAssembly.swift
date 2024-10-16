@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCore
 import InfomaniakDI
 import OSLog
 import STCore
@@ -56,6 +57,19 @@ open class TargetAssembly {
                                                        factoryParameters: nil,
                                                        resolver: resolver)
                 return stInjection.appSettingsManager
+            },
+            Factory(type: AppGroupPathProvidable.self) { _, _ in
+                guard let provider = AppGroupPathProvider(
+                    realmRootPath: "",
+                    appGroupIdentifier: appGroupIdentifier
+                ) else {
+                    fatalError("could not safely init AppGroupPathProvider")
+                }
+
+                return provider
+            },
+            Factory(type: PlatformDetectable.self) { _, _ in
+                PlatformDetector()
             }
         ]
     }

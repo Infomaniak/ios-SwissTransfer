@@ -16,16 +16,70 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
+import STResources
 import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    public init() {}
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var newTransferManager: NewTransferManager
+
+    public init(urls: [URL]) {
+        _newTransferManager = StateObject(wrappedValue: NewTransferManager(urls: urls))
+    }
 
     public var body: some View {
-        Text("NewTransferView")
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: IKPadding.medium) {
+                    // FilesCell
+                    NewTransferFilesCellView()
+
+                    // Title and message
+                    NewTransferDetailsView()
+
+                    // Type
+                    NewTransferTypeView()
+
+                    // Settings
+                    NewTransferSettingsView()
+                }
+                .padding(.vertical, value: .medium)
+            }
+            .floatingContainer {
+                NavigationLink {
+                    // Start transfer
+                } label: {
+                    Text(STResourcesStrings.Localizable.buttonNext)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.ikBorderedProminent)
+                .ikButtonFullWidth(true)
+                .controlSize(.large)
+            }
+            .scrollDismissesKeyboard(.immediately)
+            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+            .stNavigationBarStyle()
+            .navigationDestination(for: DisplayableFile.self) { file in
+                FileListView(parentFolder: file)
+                    .stNavigationBarNewTransfer(title: file.name)
+                    .stNavigationBarStyle()
+            }
+            .navigationDestination(for: DisplayableRootFolder.self) { _ in
+                FileListView(parentFolder: nil)
+                    .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+                    .stNavigationBarStyle()
+            }
+        }
+        .environment(\.dismissModal) {
+            dismiss()
+        }
+        .environmentObject(newTransferManager)
     }
 }
 
 #Preview {
-    NewTransferView()
+    NewTransferView(urls: [])
 }

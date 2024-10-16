@@ -24,6 +24,7 @@ struct STNavigationBarStyleModifier: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbarBackground(Color.ST.secondary, for: .navigationBar)
+            .navigationTitle("")
     }
 }
 
