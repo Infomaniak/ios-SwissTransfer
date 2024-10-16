@@ -45,6 +45,7 @@ struct TransferCell: View {
 
             STResourcesAsset.Images.chevronRight.swiftUIImage
                 .iconSize(.medium)
+                .foregroundStyle(Color.ST.textPrimary)
         }
         .padding(value: .medium)
         .background(
@@ -53,6 +54,7 @@ struct TransferCell: View {
         )
         .padding(.horizontal, value: .medium)
         .padding(.vertical, value: .extraSmall)
+        .background(Color.ST.background)
     }
 }
 
