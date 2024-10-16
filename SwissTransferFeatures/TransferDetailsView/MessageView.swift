@@ -37,7 +37,6 @@ struct MessageView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

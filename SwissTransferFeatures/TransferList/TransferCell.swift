@@ -64,7 +64,7 @@ struct TransferCell: View {
         }
         .padding(.horizontal, value: .medium)
         .padding(.vertical, value: .extraSmall)
-        .background(Color.ST.background)
+        .appBackground()
     }
 }
 
