@@ -73,7 +73,7 @@ struct NewTransferSettingsView: View {
 
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionPassword,
-                    icon: STResourcesAsset.Images.password.swiftUIImage,
+                    icon: STResourcesAsset.Images.textfieldLock.swiftUIImage,
                     value: STResourcesStrings.Localizable.settingsOptionNone
                 ) {
                     showPasswordSetting = true
@@ -81,7 +81,7 @@ struct NewTransferSettingsView: View {
 
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                    icon: STResourcesAsset.Images.language.swiftUIImage,
+                    icon: STResourcesAsset.Images.message.swiftUIImage,
                     value: language.title
                 ) {
                     isShowingLanguageSetting = true
