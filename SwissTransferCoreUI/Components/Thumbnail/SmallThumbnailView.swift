@@ -81,8 +81,8 @@ public struct SmallThumbnailView: View {
                         .frame(width: 8, height: 8)
                         .padding(value: .small)
                         .background(.black.opacity(0.5), in: .circle)
-                        .padding(value: .small)
                 }
+                .padding(value: .small)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
         }
