@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -31,7 +32,7 @@ struct NewTransferTextFieldStyle: TextFieldStyle {
             .frame(minHeight: height, alignment: .top)
             .padding(value: .intermediate)
             .overlay(
-                RoundedRectangle(cornerRadius: 4)
+                RoundedRectangle(cornerRadius: IKRadius.small)
                     .strokeBorder(Color.ST.textFieldBorder)
             )
             .contentShape(.rect)
