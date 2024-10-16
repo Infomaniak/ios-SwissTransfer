@@ -31,7 +31,7 @@ public struct FloatingContainerModifier<V: View>: ViewModifier {
                 view
                     .padding(.vertical, value: .small)
                     .padding(.horizontal, value: .medium)
-                    .background { Color.white.ignoresSafeArea() }
+                    .background { Color.ST.background.ignoresSafeArea() }
                     .font(.ST.headline)
                     .overlay(alignment: .top) {
                         Rectangle()
