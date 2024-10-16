@@ -38,7 +38,6 @@ public class DisplayableFile: Identifiable, Hashable {
         isFolder = true
     }
 
-    /// UploadFile init
     public init(uploadFile: UploadFile) {
         id = uploadFile.id
         name = uploadFile.url.lastPathComponent

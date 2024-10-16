@@ -51,10 +51,16 @@ struct NewTransferSettingCell: View {
                 .labelStyle(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text(value)
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textSecondary)
+                HStack(spacing: 8) {
+                    Text(value)
+                        .font(.ST.callout)
+
+                    STResourcesAsset.Images.chevronRight.swiftUIImage
+                        .iconSize(.medium)
+                }
+                .foregroundStyle(Color.ST.textSecondary)
             }
+            .padding(.vertical, 8)
         }
     }
 }
