@@ -25,22 +25,25 @@ public enum FloatingActionButtonStyle {
 }
 
 struct FloatingActionButtonModifier: ViewModifier {
+    @Environment(\.isCompactWindow) private var isCompactWindow
+
     let style: FloatingActionButtonStyle
     let action: () -> Void
 
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom, alignment: .trailing) {
-                Group {
-                    switch style {
-                    case .newTransfer:
-                        NewTransferButton(action: action)
-
-                    case .firstTransfer:
-                        FirstTransferButton(style: .small, action: action)
+                if isCompactWindow {
+                    Group {
+                        switch style {
+                        case .newTransfer:
+                            NewTransferButton(action: action)
+                        case .firstTransfer:
+                            FirstTransferButton(style: .small, action: action)
+                        }
                     }
+                    .padding([.trailing, .bottom], value: .medium)
                 }
-                .padding([.trailing, .bottom], value: .medium)
             }
     }
 }

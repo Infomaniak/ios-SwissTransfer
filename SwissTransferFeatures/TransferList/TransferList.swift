@@ -24,31 +24,36 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferList: View {
-    @StateObject var viewModel: TransferListViewModel
+    @Environment(\.isCompactWindow) private var isCompactWindow
+    @EnvironmentObject private var mainViewState: MainViewState
 
-    let onSelect: (Transfer) -> Void
+    @StateObject private var viewModel: TransferListViewModel
 
-    public init(transfers: [Transfer], onSelect: @escaping (Transfer) -> Void) {
+    private let origin: TransferOrigin
+
+    public init(transfers: [Transfer], origin: TransferOrigin) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(transfers: transfers))
-        self.onSelect = onSelect
+        self.origin = origin
     }
 
     public var body: some View {
         List {
-            Text(STResourcesStrings.Localizable.sharedFilesTitle)
-                .font(.ST.title)
-                .foregroundStyle(Color.ST.textPrimary)
-                .padding(.horizontal, value: .medium)
-                .padding(.top, value: .medium)
-                .listRowInsets(EdgeInsets(.zero))
-                .listRowSeparator(.hidden)
+            if isCompactWindow {
+                Text(origin.title)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .padding(.horizontal, value: .medium)
+                    .padding(.top, value: .medium)
+                    .listRowInsets(EdgeInsets(.zero))
+                    .listRowSeparator(.hidden)
+            }
 
             ForEach(viewModel.sections ?? []) { section in
                 Section {
                     ForEach(section.transfers, id: \.linkUUID) { transfer in
                         TransferCell(transfer: transfer)
                             .onTapGesture {
-                                onSelect(transfer)
+                                mainViewState.navigate(to: transfer)
                             }
                     }
                 } header: {
@@ -62,6 +67,15 @@ public struct TransferList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                if !isCompactWindow {
+                    Text(origin.title)
+                        .font(.ST.title2)
+                        .foregroundStyle(.white)
+                }
+            }
+        }
     }
 }
 
@@ -72,6 +86,7 @@ public struct TransferList: View {
             PreviewHelper.sampleTransfer,
             PreviewHelper.sampleOldTransfer,
             PreviewHelper.sampleTransfer
-        ]
-    ) { _ in }
+        ],
+        origin: .sent
+    )
 }

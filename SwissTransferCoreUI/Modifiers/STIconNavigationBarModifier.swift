@@ -16,18 +16,27 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
+import STResources
 import SwiftUI
 
-public class ViewRouter: ObservableObject {
-    @Published public var path: NavigationPath
-
-    public init(path: NavigationPath = NavigationPath()) {
-        self.path = path
+struct STIconNavigationBarModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    STResourcesAsset.Images.logo.swiftUIImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 24)
+                }
+            }
+            .stNavigationBarStyle()
     }
+}
 
-    public func navigate(to transfer: Transfer) {
-        let navigableTransfer = NavigableTransfer(transfer: transfer)
-        path.append(navigableTransfer)
+public extension View {
+    /// The navigationBar with correct styling and SwissTransfer logo in the center
+    func stIconNavigationBar() -> some View {
+        modifier(STIconNavigationBarModifier())
     }
 }
