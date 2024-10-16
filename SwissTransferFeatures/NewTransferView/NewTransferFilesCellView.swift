@@ -62,7 +62,7 @@ struct NewTransferFilesCellView: View {
                                 .iconSize(.large)
                                 .foregroundStyle(Color.ST.primary)
                                 .frame(width: 80, height: 80)
-                                .background(Color.ST.background, in: .rect(cornerRadius: 16))
+                                .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
 
                         ForEach(newTransferManager.displayableFiles) { file in
@@ -89,7 +89,7 @@ struct NewTransferFilesCellView: View {
             }
             .padding(.top, value: .medium)
             .padding(.bottom, value: .small)
-            .background(Color.ST.cardBackground, in: .rect(cornerRadius: 16))
+            .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
         .padding(.horizontal, value: .medium)
     }

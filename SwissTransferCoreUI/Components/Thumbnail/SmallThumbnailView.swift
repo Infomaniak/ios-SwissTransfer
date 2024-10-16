@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -28,7 +29,7 @@ public struct SmallThumbnailView: View {
 
     @State private var icon: Image
     @State private var thumbnail: Image?
-    private var cornerRadius: CGFloat = 8
+    private var cornerRadius: CGFloat = IKRadius.medium
 
     /// File init
     public init(url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
@@ -37,7 +38,7 @@ public struct SmallThumbnailView: View {
 
         if removeAction != nil {
             _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
-            cornerRadius = 16
+            cornerRadius = IKRadius.large
         }
 
         icon = FileHelper(type: mimeType).icon.swiftUIImage
@@ -50,7 +51,7 @@ public struct SmallThumbnailView: View {
 
         if removeAction != nil {
             _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
-            cornerRadius = 16
+            cornerRadius = IKRadius.large
         }
 
         icon = STResourcesAsset.Images.folder.swiftUIImage

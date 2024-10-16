@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -36,7 +37,7 @@ struct TransferTypeCell: View {
         .labelStyle(.horizontal)
         .padding(value: .medium)
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: IKRadius.medium)
                 .strokeBorder(isSelected ? Color.ST.primary : Color.ST.cardBorder, lineWidth: 1)
         )
     }

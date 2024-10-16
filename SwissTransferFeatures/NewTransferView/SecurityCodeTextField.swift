@@ -114,7 +114,7 @@ struct SecurityCodeTextFieldStyle: TextFieldStyle {
             .keyboardType(.numberPad)
             .multilineTextAlignment(.center)
             .overlay {
-                RoundedRectangle(cornerRadius: 4)
+                RoundedRectangle(cornerRadius: IKRadius.small)
                     .stroke()
                     .foregroundStyle(style.color)
                     .frame(width: 48, height: 48)
