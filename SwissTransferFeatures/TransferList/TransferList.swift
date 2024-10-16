@@ -62,6 +62,7 @@ public struct TransferList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .appBackground()
     }
 }
 
