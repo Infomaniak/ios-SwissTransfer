@@ -86,6 +86,7 @@ struct NewTransferFilesCellView: View {
                     .padding(.bottom, value: .small)
                     .padding(.horizontal, value: .medium)
                 }
+                .scrollIndicators(.hidden)
             }
             .padding(.top, value: .medium)
             .padding(.bottom, value: .small)
