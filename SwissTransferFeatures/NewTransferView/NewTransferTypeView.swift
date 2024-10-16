@@ -36,7 +36,7 @@ struct NewTransferTypeView: View {
                     ForEach(TransferType.allCases, id: \.rawValue) { type in
                         TransferTypeCell(type: type, isSelected: newTransferManager.transferType == type)
                             .onTapGesture {
-                                withAnimation {
+                                withAnimation(.easeIn(duration: 0.1)) {
                                     newTransferManager.transferType = type
                                 }
                             }
@@ -52,4 +52,5 @@ struct NewTransferTypeView: View {
 
 #Preview {
     NewTransferTypeView()
+        .environmentObject(NewTransferManager(urls: []))
 }
