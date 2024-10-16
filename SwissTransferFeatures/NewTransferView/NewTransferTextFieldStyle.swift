@@ -22,22 +22,22 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferTextFieldStyle: TextFieldStyle {
-    @FocusState private var isMessageFocused: Bool
+    @FocusState private var isFocused: Bool
 
     var height: CGFloat?
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .focused($isMessageFocused)
+            .focused($isFocused)
             .frame(minHeight: height, alignment: .top)
             .padding(value: .intermediate)
             .overlay(
                 RoundedRectangle(cornerRadius: IKRadius.small)
-                    .strokeBorder(Color.ST.textFieldBorder)
+                    .strokeBorder(isFocused ? Color.ST.primary : Color.ST.textFieldBorder)
             )
             .contentShape(.rect)
             .onTapGesture {
-                isMessageFocused = true
+                isFocused = true
             }
     }
 }
