@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STCore
 import STResources
 import SwiftUI
@@ -27,7 +28,7 @@ struct HeaderView: View {
     let expiringTimestamp: Int64
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: IKPadding.medium) {
             Label(
                 title: { Text("4 fichiers · \(transferSize.formatted(.defaultByteCount))") },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }

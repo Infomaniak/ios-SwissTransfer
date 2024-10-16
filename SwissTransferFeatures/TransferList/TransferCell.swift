@@ -21,6 +21,7 @@ import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 struct TransferCell: View {
     let transfer: Transfer
@@ -53,6 +54,7 @@ struct TransferCell: View {
         )
         .padding(.horizontal, value: .medium)
         .padding(.vertical, value: .extraSmall)
+        .appBackground()
     }
 }
 
