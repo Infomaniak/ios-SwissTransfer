@@ -33,10 +33,7 @@ public struct SmallThumbnailView: View {
     public var body: some View {
         FileIconView(icon: icon, type: .small)
             .frame(width: size, height: size)
-            .background(
-                Color.white
-                    .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
-            )
+            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.medium))
     }
 }
 
