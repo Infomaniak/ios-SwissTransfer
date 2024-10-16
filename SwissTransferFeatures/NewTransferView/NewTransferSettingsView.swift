@@ -101,7 +101,7 @@ struct NewTransferSettingsView: View {
             .frame(maxWidth: .infinity)
             .background(
                 Color.ST.cardBackground
-                    .clipShape(.rect(cornerRadius: 16))
+                    .clipShape(.rect(cornerRadius: IKRadius.large))
             )
             .sheet(isPresented: $showPasswordSetting) {
                 PasswordSettingView()

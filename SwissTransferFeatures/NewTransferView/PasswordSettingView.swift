@@ -66,7 +66,7 @@ struct PasswordSettingView: View {
                 }
                 .padding(value: .intermediate)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 4)
+                    RoundedRectangle(cornerRadius: IKRadius.small)
                         .strokeBorder(Color.ST.textFieldBorder)
                 )
             }
