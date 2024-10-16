@@ -22,7 +22,7 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-public struct LargeThumbnailView: View {
+public struct LargeFileCell: View {
     private let fileName: String
     private let fileSize: Int64
     private let url: URL?
@@ -108,10 +108,10 @@ public struct LargeThumbnailView: View {
 
 #Preview {
     VStack {
-        LargeThumbnailView(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg")
+        LargeFileCell(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-        LargeThumbnailView(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg") {}
+        LargeFileCell(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg") {}
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

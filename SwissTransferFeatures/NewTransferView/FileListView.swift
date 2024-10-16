@@ -64,12 +64,12 @@ struct FileListView: View {
                     ForEach(files) { file in
                         if file.isFolder {
                             NavigationLink(value: file) {
-                                LargeThumbnailView(folderName: file.name, folderSize: file.computedSize) {
+                                LargeFileCell(folderName: file.name, folderSize: file.computedSize) {
                                     newTransferManager.remove(file: file)
                                 }
                             }
                         } else {
-                            LargeThumbnailView(
+                            LargeFileCell(
                                 fileName: file.name,
                                 fileSize: file.computedSize,
                                 url: file.url,
