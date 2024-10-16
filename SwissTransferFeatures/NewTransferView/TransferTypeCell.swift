@@ -37,7 +37,7 @@ struct TransferTypeCell: View {
         .padding(value: .medium)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(isSelected ? Color.ST.primary : Color.ST.cardBorder, lineWidth: 1)
+                .strokeBorder(isSelected ? Color.ST.primary : Color.ST.cardBorder, lineWidth: 1)
         )
     }
 }
