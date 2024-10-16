@@ -33,8 +33,10 @@ struct NewTransferDetailsView: View {
             if newTransferManager.transferType == .mail {
                 TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $mailSrc)
                     .textFieldStyle(NewTransferTextFieldStyle())
+                    .keyboardType(.emailAddress)
                 TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $mailDst)
                     .textFieldStyle(NewTransferTextFieldStyle())
+                    .keyboardType(.emailAddress)
             }
             TextField(STResourcesStrings.Localizable.messagePlaceholder, text: $message)
                 .textFieldStyle(NewTransferTextFieldStyle(height: 88))
