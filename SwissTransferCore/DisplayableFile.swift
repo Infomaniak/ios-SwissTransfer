@@ -55,11 +55,11 @@ public class DisplayableFile: Identifiable, Hashable {
     }
 
     /// Return all file children in the tree (no folder)
-    public var computedChildren: [DisplayableFile] {
+    public func computedChildren() async -> [DisplayableFile] {
         var array = [DisplayableFile]()
         if isFolder {
             for element in children {
-                array.append(contentsOf: element.computedChildren)
+                await array.append(contentsOf: element.computedChildren())
             }
         } else {
             array.append(self)

@@ -73,8 +73,8 @@ class NewTransferManager: ObservableObject {
     /// - FileManager
     /// - Upload list
     /// - Displayable list
-    func remove(file: DisplayableFile) {
-        let filesToRemove = file.computedChildren
+    func remove(file: DisplayableFile) async {
+        let filesToRemove = await file.computedChildren()
 
         for fileToRemove in filesToRemove {
             uploadFiles.removeAll { $0.id == fileToRemove.id }
@@ -86,7 +86,7 @@ class NewTransferManager: ObservableObject {
             }
         }
 
-        removeFileAndCleanFolders(file: file)
+        await removeFileAndCleanFolders(file: file)
     }
 }
 
@@ -131,7 +131,7 @@ extension NewTransferManager {
 
     /// Remove the given file from his parent
     /// Start from the file and remove all folders above him who doesn't contain any real file
-    private func removeFileAndCleanFolders(file: DisplayableFile) {
+    private func removeFileAndCleanFolders(file: DisplayableFile) async {
         file.parent?.children.removeAll { $0.id == file.id }
 
         guard let parent = file.parent else {
@@ -140,7 +140,7 @@ extension NewTransferManager {
         }
 
         var currentFile: DisplayableFile = parent
-        while currentFile.computedChildren.isEmpty {
+        while await currentFile.computedChildren().isEmpty {
             guard let parent = currentFile.parent else {
                 // Base of the tree
                 displayableFiles.removeAll { $0.id == currentFile.id }
