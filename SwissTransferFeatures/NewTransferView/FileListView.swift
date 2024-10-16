@@ -65,7 +65,9 @@ struct FileListView: View {
                         if file.isFolder {
                             NavigationLink(value: file) {
                                 LargeFileCell(folderName: file.name, folderSize: file.computedSize) {
-                                    newTransferManager.remove(file: file)
+                                    Task {
+                                        await newTransferManager.remove(file: file)
+                                    }
                                 }
                             }
                         } else {
@@ -75,7 +77,9 @@ struct FileListView: View {
                                 url: file.url,
                                 mimeType: file.mimeType
                             ) {
-                                newTransferManager.remove(file: file)
+                                Task {
+                                    await newTransferManager.remove(file: file)
+                                }
                             }
                         }
                     }

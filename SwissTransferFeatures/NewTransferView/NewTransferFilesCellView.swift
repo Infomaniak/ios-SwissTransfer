@@ -69,12 +69,16 @@ struct NewTransferFilesCellView: View {
                             if file.isFolder {
                                 NavigationLink(value: file) {
                                     SmallThumbnailView {
-                                        newTransferManager.remove(file: file)
+                                        Task {
+                                            await newTransferManager.remove(file: file)
+                                        }
                                     }
                                 }
                             } else {
                                 SmallThumbnailView(url: file.url, mimeType: file.mimeType) {
-                                    newTransferManager.remove(file: file)
+                                    Task {
+                                        await newTransferManager.remove(file: file)
+                                    }
                                 }
                             }
                         }
