@@ -59,6 +59,7 @@ public struct NewTransferView: View {
                 .ikButtonFullWidth(true)
                 .controlSize(.large)
             }
+            .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: DisplayableFile.self) { file in
