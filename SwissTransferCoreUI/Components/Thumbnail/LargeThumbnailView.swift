@@ -46,12 +46,10 @@ public struct LargeThumbnailView: View {
             .font(.ST.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(value: .small)
-            .background(.white)
+            .background(Color.ST.background)
         }
         .frame(maxWidth: .infinity)
-        .background {
-            Color.ST.cardBackground
-        }
+        .background(Color.ST.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
         .overlay(
             RoundedRectangle(cornerRadius: IKRadius.medium)

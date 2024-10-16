@@ -42,6 +42,7 @@ public struct TransferList: View {
                 .padding(.top, value: .medium)
                 .listRowInsets(EdgeInsets(.zero))
                 .listRowSeparator(.hidden)
+                .listRowBackground(Color.ST.background)
 
             ForEach(viewModel.sections ?? []) { section in
                 Section {
@@ -62,6 +63,7 @@ public struct TransferList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .appBackground()
     }
 }
 

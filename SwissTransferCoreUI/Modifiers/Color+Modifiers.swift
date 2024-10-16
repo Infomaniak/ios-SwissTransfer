@@ -16,27 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
-import STResources
 import SwiftUI
 
-// TODO: - Manage real preview (not only fileType)
-public struct SmallThumbnailView: View {
-    @ScaledMetric(relativeTo: .body) private var size = 48
-
-    let icon: Image
-
-    public init(icon: Image) {
-        self.icon = icon
+public extension View {
+    func appBackground() -> some View {
+        background(Color.ST.background)
     }
-
-    public var body: some View {
-        FileIconView(icon: icon, type: .small)
-            .frame(width: size, height: size)
-            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.medium))
-    }
-}
-
-#Preview {
-    SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
 }
