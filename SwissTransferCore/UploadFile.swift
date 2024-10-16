@@ -26,21 +26,18 @@ public struct UploadFile: Identifiable {
     public let url: URL
     public let size: Int64
     public var path: String
+    public let mimeType: String
 
     public init?(url: URL) {
         guard let resources = try? url.resourceValues(forKeys: [
             .fileSizeKey,
             .isDirectoryKey,
             .nameKey
-        ]),
-            let isDirectory = resources.isDirectory, !isDirectory else { return nil }
+        ]), resources.isDirectory == false else { return nil }
 
         self.url = url
         path = resources.name ?? url.lastPathComponent
         size = Int64(resources.fileSize ?? 0)
-    }
-
-    var mimeType: String {
-        url.typeIdentifier ?? ""
+        mimeType = url.typeIdentifier ?? ""
     }
 }
