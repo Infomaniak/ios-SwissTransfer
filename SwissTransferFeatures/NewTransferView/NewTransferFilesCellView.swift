@@ -62,7 +62,7 @@ struct NewTransferFilesCellView: View {
                                 .iconSize(.large)
                                 .foregroundStyle(Color.ST.primary)
                                 .frame(width: 80, height: 80)
-                                .background(.white, in: .rect(cornerRadius: 16))
+                                .background(Color.ST.background, in: .rect(cornerRadius: 16))
                         }
 
                         ForEach(newTransferManager.displayableFiles) { file in
