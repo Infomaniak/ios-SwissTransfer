@@ -16,14 +16,41 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
+import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 struct SuccessfulMailTransferView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let email: String
+
     var body: some View {
-        Text("")
+        VStack(spacing: IKPadding.medium) {
+            LargeEmptyStateView(
+                image: STResourcesAsset.Images.beersHands.swiftUIImage,
+                title: STResourcesStrings.Localizable.uploadSuccessEmailTitle,
+                subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription,
+                imageHorizontalPadding: 0
+            )
+
+            Text(email)
+                .roundedLabel()
+        }
+        .frame(maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom) {
+            Button(action: dismiss.callAsFunction) {
+                Text(STResourcesStrings.Localizable.buttonFinished)
+            }
+            .buttonStyle(.ikBorderedProminent)
+            .ikButtonFullWidth(true)
+            .controlSize(.large)
+            .padding(value: .medium)
+        }
     }
 }
 
 #Preview {
-    SuccessfulMailTransferView()
+    SuccessfulMailTransferView(email: "john.smith@ik.me")
 }
