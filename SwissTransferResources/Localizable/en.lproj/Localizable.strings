@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: en, English
  * Tagged: ios
- * Exported by: Ambroise Decouttere
- * Exported at: Thu, 10 Oct 2024 18:02:12 +0200
+ * Exported by: Valentin Perignon
+ * Exported at: Thu, 17 Oct 2024 08:43:01 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -16,8 +16,17 @@
 /* loco:6707f83845c44bad7f0d7805 */
 "buttonConfirm" = "Confirm";
 
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Copy link";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Finish";
+
 /* loco:66bf171580717241110432a2 */
 "buttonNext" = "Next";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Share";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Back";
@@ -110,7 +119,7 @@
 "settingsCategoryDefaultSettings" = "Default settings";
 
 /* loco:66c333f5222777ffd504e5f3 */
-"settingsCategoryGeneral" = "Général";
+"settingsCategoryGeneral" = "General";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Set a default download limit for your transfers";
@@ -253,6 +262,21 @@
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Photo and video gallery";
 
+/* loco:670f50568faef3642e0316d2 */
+"uploadSuccessEmailDescription" = "The download link has been sent to the following recipient:";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "It’s sent!";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Scan this QR code around you to share your files, or copy the link below.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Your transfer is ready!";
+
+/* loco:670f6b6c056567b8060089e2 */
+"uploadSuccessQrTitle" = "Your QR code is ready!";
+
 /* loco:66c5ef9c409f7ef5ca058e34 */
 "urlAbout" = "https://www.infomaniak.com/en/about";
 
@@ -260,10 +284,10 @@
 "validateMailCodeIncorrectError" = "The code entered is incorrect";
 
 /* loco:6707f975b37970cb7704b0c2 */
-"validateMailDescription" = "We've sent a code to %@. Enter it below to have your e-mail address verified in the app:";
+"validateMailDescription" = "We’ve sent a code to %@. Enter it below to have your email address verified in the app:";
 
 /* loco:6707f9d6c8a673d44f0035f2 */
-"validateMailInfo" = "Remember to check the spam folder of your e-mail address.";
+"validateMailInfo" = "Remember to check the spam folder of your email address.";
 
 /* loco:6707f9ac045804ab200b44f2 */
 "validateMailTitle" = "Check your mail";
