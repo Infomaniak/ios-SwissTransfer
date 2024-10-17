@@ -26,7 +26,7 @@ struct SuccessfulTransferView: View {
         case .link, .qrcode, .proximity:
             SuccesfulLinkTransferView()
         case .mail:
-            SuccessfulMailTransferView()
+            SuccessfulMailTransferView(email: "")
         }
     }
 }
