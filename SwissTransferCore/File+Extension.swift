@@ -21,7 +21,7 @@ import OSLog
 import STCore
 
 public extension File {
-    var localUrl: URL? {
+    var localURL: URL? {
         var url: URL?
         do {
             url = try URL.fileStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
@@ -31,7 +31,7 @@ public extension File {
         return url
     }
 
-    var previewUrl: URL? {
+    var previewURL: URL? {
         var url: URL?
         do {
             url = try URL.previewStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)

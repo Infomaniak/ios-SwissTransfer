@@ -45,7 +45,7 @@ struct ContentView: View {
                     LargeFileCell(
                         fileName: file.fileName,
                         fileSize: file.fileSizeInBytes,
-                        url: file.localUrl,
+                        url: file.localURL,
                         mimeType: file.mimeType
                     )
                 }
