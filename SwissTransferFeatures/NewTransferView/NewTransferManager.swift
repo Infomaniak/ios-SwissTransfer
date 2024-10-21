@@ -43,7 +43,7 @@ private enum TmpDirType: String {
 
 @MainActor
 class NewTransferManager: ObservableObject {
-    @Published var uploadFiles = [UploadFile]()
+    private var uploadFiles = [UploadFile]()
     @Published var displayableFiles = [DisplayableFile]()
     @Published var transferType: TransferType = .qrcode
 
@@ -149,6 +149,8 @@ extension NewTransferManager {
             parent.children.removeAll { $0.id == currentFile.id }
             currentFile = parent
         }
+
+        objectWillChange.send()
     }
 }
 
