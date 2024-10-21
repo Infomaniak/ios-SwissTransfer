@@ -69,6 +69,10 @@ public class DisplayableFile: Identifiable, Hashable {
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+
+        _ = children.map {
+            hasher.combine($0.hashValue)
+        }
     }
 
     public static func == (lhs: DisplayableFile, rhs: DisplayableFile) -> Bool {
