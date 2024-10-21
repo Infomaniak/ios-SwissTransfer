@@ -26,7 +26,7 @@ struct SuccessfulTransferView: View {
     var body: some View {
         switch type {
         case .link, .qrcode, .proximity:
-            SuccesfulLinkTransferView(type: type)
+            SuccesfulLinkTransferView(type: type, dismiss: dismiss)
         case .mail:
             SuccessfulMailTransferView(email: email, dismiss: dismiss)
         }
