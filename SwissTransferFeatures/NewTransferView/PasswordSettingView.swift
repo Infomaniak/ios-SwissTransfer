@@ -60,7 +60,11 @@ struct PasswordSettingView: View {
                     Button {
                         toggleShowPassword()
                     } label: {
-                        STResourcesAsset.Images.eye.swiftUIImage
+                        if isShowingPassword {
+                            STResourcesAsset.Images.eye.swiftUIImage
+                        } else {
+                            STResourcesAsset.Images.eyeCrossed.swiftUIImage
+                        }
                     }
                     .foregroundStyle(Color.ST.textSecondary)
                 }
