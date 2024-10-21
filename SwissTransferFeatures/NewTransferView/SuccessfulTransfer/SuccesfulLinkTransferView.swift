@@ -16,41 +16,69 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
-
-extension TransferType {
-
-}
+import SwissTransferCoreUI
 
 struct SuccesfulLinkTransferView: View {
     let type: TransferType
+    let dismiss: () -> Void
 
     var body: some View {
-        VStack(spacing: 32) {
-            STResourcesAsset.Images.beers.swiftUIImage
+        ScrollView {
+            VStack(spacing: 32) {
+                STResourcesAsset.Images.beers.swiftUIImage
 
-            Text(STResourcesStrings.Localizable.uploadSuccessQrTitle)
-                .font(.ST.title)
-                .foregroundStyle(Color.ST.textPrimary)
+                Text(STResourcesStrings.Localizable.uploadSuccessQrTitle)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
 
-            // TODO: QR Code
-            Rectangle()
-                .fill(Color.black)
-                .frame(width: 160, height: 160)
+                // TODO: QR Code
+                Rectangle()
+                    .fill(Color.black)
+                    .frame(width: 160, height: 160)
 
-            Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
-                .font(.ST.body)
-                .foregroundStyle(Color.ST.textSecondary)
+                if type == .link {
+                    Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
+                        .font(.ST.body)
+                        .foregroundStyle(Color.ST.textSecondary)
+                        .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
+                }
+            }
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, value: .medium)
+            .padding(.vertical, value: .large)
         }
-        .multilineTextAlignment(.center)
+        .safeAreaInset(edge: .bottom) {
+            VStack(spacing: IKPadding.medium) {
+                Button(action: {}) {
+                    Label { Text(STResourcesStrings.Localizable.buttonShare) } icon: {}
+                }
+                .buttonStyle(.ikBorderedProminent)
+
+                Button(action: {}) {
+                    Label { Text(STResourcesStrings.Localizable.buttonCopyLink) } icon: {}
+                }
+                .buttonStyle(.ikBorderless)
+
+                Button(action: dismiss) {
+                    Text(STResourcesStrings.Localizable.buttonFinished)
+                }
+                .buttonStyle(.ikBorderless)
+            }
+            .ikButtonFullWidth(true)
+            .controlSize(.large)
+            .padding(value: .medium)
+            .background(Color.ST.background)
+        }
     }
 }
 
 #Preview("QR Code") {
-    SuccesfulLinkTransferView(type: .qrcode)
+    SuccesfulLinkTransferView(type: .qrcode, dismiss: {})
 }
 
 #Preview("Link") {
-    SuccesfulLinkTransferView(type: .link)
+    SuccesfulLinkTransferView(type: .link, dismiss: {})
 }

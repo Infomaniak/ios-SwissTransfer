@@ -21,6 +21,8 @@ import STResources
 import SwiftUI
 
 public struct LargeEmptyStateView: View {
+    public static let textMaxWidth: CGFloat = 300
+
     let image: Image
     let title: String
     let subtitle: String
@@ -49,7 +51,7 @@ public struct LargeEmptyStateView: View {
                 Text(subtitle)
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
-                    .frame(maxWidth: 300)
+                    .frame(maxWidth: Self.textMaxWidth)
             }
             .padding(.horizontal, value: .medium)
         }
