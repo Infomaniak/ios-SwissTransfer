@@ -24,9 +24,9 @@ public struct LargeEmptyStateView: View {
     let image: Image
     let title: String
     let subtitle: String
-    let imageHorizontalPadding: CGFloat?
+    let imageHorizontalPadding: CGFloat
 
-    public init(image: Image, title: String, subtitle: String, imageHorizontalPadding: CGFloat? = IKPadding.medium) {
+    public init(image: Image, title: String, subtitle: String, imageHorizontalPadding: CGFloat = IKPadding.medium) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
@@ -38,7 +38,7 @@ public struct LargeEmptyStateView: View {
             image
                 .resizable()
                 .scaledToFit()
-                .padding(.horizontal, imageHorizontalPadding ?? 0)
+                .padding(.horizontal, imageHorizontalPadding)
                 .frame(maxWidth: 400)
 
             VStack(spacing: IKPadding.medium) {
@@ -51,6 +51,7 @@ public struct LargeEmptyStateView: View {
                     .foregroundStyle(Color.ST.textSecondary)
                     .frame(maxWidth: 300)
             }
+            .padding(.horizontal, value: .medium)
         }
         .multilineTextAlignment(.center)
     }
