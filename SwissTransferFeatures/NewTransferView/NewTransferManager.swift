@@ -61,7 +61,7 @@ class NewTransferManager: ObservableObject {
         do {
             let tmpUrls = moveToTmp(files: urls)
 
-            try uploadFiles.append(contentsOf: flatten(urls: tmpUrls))
+            try uploadFiles.insert(contentsOf: flatten(urls: tmpUrls), at: 0)
 
             displayableFiles = prepareForDisplay()
         } catch {
