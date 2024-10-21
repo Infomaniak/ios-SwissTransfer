@@ -23,6 +23,7 @@ struct RoundedLabelModifier: ViewModifier {
         content
             .font(.ST.body)
             .foregroundStyle(Color.ST.secondary)
+            .lineLimit(1)
             .padding(.vertical, 2)
             .padding(.horizontal, value: .small)
             .background(Color.ST.recipientLabelBackground, in: .capsule)

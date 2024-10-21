@@ -16,14 +16,41 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
 
+extension TransferType {
+
+}
+
 struct SuccesfulLinkTransferView: View {
+    let type: TransferType
+
     var body: some View {
-        Text("Hello, World!")
+        VStack(spacing: 32) {
+            STResourcesAsset.Images.beers.swiftUIImage
+
+            Text(STResourcesStrings.Localizable.uploadSuccessQrTitle)
+                .font(.ST.title)
+                .foregroundStyle(Color.ST.textPrimary)
+
+            // TODO: QR Code
+            Rectangle()
+                .fill(Color.black)
+                .frame(width: 160, height: 160)
+
+            Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
+                .font(.ST.body)
+                .foregroundStyle(Color.ST.textSecondary)
+        }
+        .multilineTextAlignment(.center)
     }
 }
 
-#Preview {
-    SuccesfulLinkTransferView()
+#Preview("QR Code") {
+    SuccesfulLinkTransferView(type: .qrcode)
+}
+
+#Preview("Link") {
+    SuccesfulLinkTransferView(type: .link)
 }

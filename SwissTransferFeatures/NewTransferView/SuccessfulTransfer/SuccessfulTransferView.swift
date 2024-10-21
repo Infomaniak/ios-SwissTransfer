@@ -20,17 +20,19 @@ import SwiftUI
 
 struct SuccessfulTransferView: View {
     let type: TransferType
+    let email: String? = nil
+    let dismiss: () -> Void
 
     var body: some View {
         switch type {
         case .link, .qrcode, .proximity:
-            SuccesfulLinkTransferView()
+            SuccesfulLinkTransferView(type: type)
         case .mail:
-            SuccessfulMailTransferView(email: "")
+            SuccessfulMailTransferView(email: email, dismiss: dismiss)
         }
     }
 }
 
 #Preview {
-    SuccessfulTransferView(type: .mail)
+    SuccessfulTransferView(type: .mail) {}
 }

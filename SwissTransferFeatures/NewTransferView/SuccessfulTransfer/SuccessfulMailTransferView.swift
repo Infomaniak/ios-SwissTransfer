@@ -22,9 +22,8 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct SuccessfulMailTransferView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    let email: String
+    let email: String?
+    let dismiss: () -> Void
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
@@ -35,12 +34,14 @@ struct SuccessfulMailTransferView: View {
                 imageHorizontalPadding: 0
             )
 
-            Text(email)
-                .roundedLabel()
+            if let email {
+                Text(email)
+                    .roundedLabel()
+            }
         }
         .frame(maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
-            Button(action: dismiss.callAsFunction) {
+            Button(action: dismiss) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
@@ -52,5 +53,5 @@ struct SuccessfulMailTransferView: View {
 }
 
 #Preview {
-    SuccessfulMailTransferView(email: "john.smith@ik.me")
+    SuccessfulMailTransferView(email: "john.smith@ik.me") {}
 }
