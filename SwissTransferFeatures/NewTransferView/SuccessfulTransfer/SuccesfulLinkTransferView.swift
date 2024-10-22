@@ -23,6 +23,7 @@ import SwissTransferCoreUI
 
 struct SuccesfulLinkTransferView: View {
     let type: TransferType
+    let url: URL
     let dismiss: () -> Void
 
     var body: some View {
@@ -52,7 +53,7 @@ struct SuccesfulLinkTransferView: View {
         }
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: IKPadding.medium) {
-                Button(action: shareLink) {
+                ShareLink(item: url) {
                     Label {
                         Text(STResourcesStrings.Localizable.buttonShare)
                     } icon: {
@@ -82,19 +83,15 @@ struct SuccesfulLinkTransferView: View {
         }
     }
 
-    private func shareLink() {
-
-    }
-
     private func copyLinkToClipboard() {
-
+        UIPasteboard.general.string = url.absoluteString
     }
 }
 
 #Preview("QR Code") {
-    SuccesfulLinkTransferView(type: .qrcode) {}
+    SuccesfulLinkTransferView(type: .qrcode, url: URL(string: "https://www.infomaniak.com")!) {}
 }
 
 #Preview("Link") {
-    SuccesfulLinkTransferView(type: .link) {}
+    SuccesfulLinkTransferView(type: .link, url: URL(string: "https://www.infomaniak.com")!) {}
 }
