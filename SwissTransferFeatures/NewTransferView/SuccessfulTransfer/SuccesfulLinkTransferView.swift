@@ -52,13 +52,21 @@ struct SuccesfulLinkTransferView: View {
         }
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: IKPadding.medium) {
-                Button(action: {}) {
-                    Label { Text(STResourcesStrings.Localizable.buttonShare) } icon: {}
+                Button(action: shareLink) {
+                    Label {
+                        Text(STResourcesStrings.Localizable.buttonShare)
+                    } icon: {
+                        STResourcesAsset.Images.personBadgeShare.swiftUIImage
+                    }
                 }
                 .buttonStyle(.ikBorderedProminent)
 
-                Button(action: {}) {
-                    Label { Text(STResourcesStrings.Localizable.buttonCopyLink) } icon: {}
+                Button(action: copyLinkToClipboard) {
+                    Label {
+                        Text(STResourcesStrings.Localizable.buttonCopyLink)
+                    } icon: {
+                        STResourcesAsset.Images.documentOnDocument.swiftUIImage
+                    }
                 }
                 .buttonStyle(.ikBorderless)
 
@@ -73,12 +81,20 @@ struct SuccesfulLinkTransferView: View {
             .background(Color.ST.background)
         }
     }
+
+    private func shareLink() {
+
+    }
+
+    private func copyLinkToClipboard() {
+
+    }
 }
 
 #Preview("QR Code") {
-    SuccesfulLinkTransferView(type: .qrcode, dismiss: {})
+    SuccesfulLinkTransferView(type: .qrcode) {}
 }
 
 #Preview("Link") {
-    SuccesfulLinkTransferView(type: .link, dismiss: {})
+    SuccesfulLinkTransferView(type: .link) {}
 }
