@@ -54,7 +54,7 @@ struct NewTransferFilesCellView: View {
                 }
 
                 ScrollView(.horizontal) {
-                    HStack {
+                    HStack(spacing: IKPadding.medium) {
                         AddFilesMenuView { urls in
                             newTransferManager.addFiles(urls: urls)
                         } label: {
