@@ -22,22 +22,29 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct SuccessfulMailTransferView: View {
-    let email: String?
+    let recipients: [String]
     let dismiss: () -> Void
 
     var body: some View {
-        VStack(spacing: IKPadding.medium) {
-            LargeEmptyStateView(
-                image: STResourcesAsset.Images.beersHands.swiftUIImage,
-                title: STResourcesStrings.Localizable.uploadSuccessEmailTitle,
-                subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription,
-                imageHorizontalPadding: 0
-            )
+        VStack {
+            ScrollView {
+                VStack(spacing: IKPadding.medium) {
+                    LargeEmptyStateView(
+                        image: STResourcesAsset.Images.beersHands.swiftUIImage,
+                        title: STResourcesStrings.Localizable.uploadSuccessEmailTitle,
+                        subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription,
+                        imageHorizontalPadding: 0
+                    )
 
-            if let email {
-                Text(email)
-                    .roundedLabel()
+                    if let email = recipients.first {
+                        Text(email)
+                            .roundedLabel()
+                    }
+                }
+                .frame(maxWidth: .infinity)
             }
+            .fixedSize(horizontal: false, vertical: true)
+            .scrollBounceBehavior(.basedOnSize)
         }
         .frame(maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
@@ -52,6 +59,13 @@ struct SuccessfulMailTransferView: View {
     }
 }
 
-#Preview {
-    SuccessfulMailTransferView(email: "john.smith@ik.me") {}
+#Preview("One Recipient") {
+    SuccessfulMailTransferView(recipients: ["john.smith@ik.me"]) {}
+}
+
+#Preview("Many Recipient") {
+    let recipients = Array(repeating: "short@ik.me", count: 5)
+        + Array(repeating: "long-email@infomaniak.com", count: 5)
+        + Array(repeating: "middle@infomaniak.com", count: 5)
+    SuccessfulMailTransferView(recipients: recipients.shuffled()) {}
 }
