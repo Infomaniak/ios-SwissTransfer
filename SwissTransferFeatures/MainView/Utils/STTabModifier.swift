@@ -16,20 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
-import STRootView
 import SwiftUI
 import SwissTransferCore
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
+extension View {
+    func stTab(_ tab: STTab) -> some View {
+        modifier(STTabModifier(tab: tab))
+    }
+}
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-                .detectCompactWindow()
-        }
+struct STTabModifier: ViewModifier {
+    let tab: STTab
+
+    func body(content: Content) -> some View {
+        content
+            .navigableTab(tab)
+            .tabItem { tab.label }
+            .tag(tab)
     }
 }

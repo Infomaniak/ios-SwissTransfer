@@ -16,20 +16,27 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
-import STRootView
+import STReceivedView
+import STResources
+import STSentView
+import STSettingsView
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
+struct STTabView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-                .detectCompactWindow()
+    var body: some View {
+        TabView(selection: $mainViewState.selectedTab) {
+            SentView()
+                .stTab(.sentTransfers)
+
+            ReceivedView()
+                .stTab(.receivedTransfers)
+
+            SettingsView()
+                .stTab(.settings)
         }
     }
 }

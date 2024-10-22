@@ -16,27 +16,33 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
-struct STNavigationBarModifier: ViewModifier {
+struct NavigableTabModifier: ViewModifier {
+    @EnvironmentObject private var mainViewState: MainViewState
+
+    let tab: STTab
+
     func body(content: Content) -> some View {
-        content
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    STResourcesAsset.Images.logo.swiftUIImage
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 24)
-                }
-            }
-            .stNavigationBarStyle()
+        NavigationStack(path: binding(for: tab)) {
+            content
+                .stIconNavigationBar()
+        }
+    }
+
+    private func binding(for tab: STTab) -> Binding<[NavigationDestination]> {
+        return Binding {
+            mainViewState.paths[tab, default: []]
+        } set: { newValue, _ in
+            mainViewState.paths[tab] = newValue
+        }
     }
 }
 
-public extension View {
-    /// The navigationBar with correct styling and SwissTransfer logo in the center
-    func stNavigationBar() -> some View {
-        modifier(STNavigationBarModifier())
+extension View {
+    func navigableTab(_ tab: STTab) -> some View {
+        modifier(NavigableTabModifier(tab: tab))
     }
 }

@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
@@ -58,6 +59,27 @@ struct NewTransferButton: View {
                 }
                 .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
         }
+    }
+}
+
+public struct SidebarNewTransferButton: View {
+    let action: () -> Void
+
+    public init(action: @escaping () -> Void) {
+        self.action = action
+    }
+
+    public var body: some View {
+        Button(action: action) {
+            Label {
+                Text(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
+            } icon: {
+                STResourcesAsset.Images.plus.swiftUIImage
+            }
+        }
+        .buttonStyle(.ikBorderedProminent)
+        .ikButtonFullWidth(true)
+        .controlSize(.large)
     }
 }
 

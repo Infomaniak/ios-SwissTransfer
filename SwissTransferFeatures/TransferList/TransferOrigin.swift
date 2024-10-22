@@ -16,20 +16,18 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
-import STRootView
-import SwiftUI
-import SwissTransferCore
+import STResources
 
-@main
-struct SwissTransferApp: App {
-    private let dependencyInjectionHook = TargetAssembly()
+public enum TransferOrigin {
+    case sent
+    case received
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-                .detectCompactWindow()
+    var title: String {
+        switch self {
+        case .sent:
+            STResourcesStrings.Localizable.sentFilesTitle
+        case .received:
+            STResourcesStrings.Localizable.receivedFilesTitle
         }
     }
 }
