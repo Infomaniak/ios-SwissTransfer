@@ -27,30 +27,35 @@ struct SuccesfulLinkTransferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 32) {
-                STResourcesAsset.Images.beers.swiftUIImage
+        VStack {
+            ScrollView {
+                VStack(spacing: 32) {
+                    STResourcesAsset.Images.beers.swiftUIImage
 
-                Text(STResourcesStrings.Localizable.uploadSuccessQrTitle)
-                    .font(.ST.title)
-                    .foregroundStyle(Color.ST.textPrimary)
+                    Text(STResourcesStrings.Localizable.uploadSuccessQrTitle)
+                        .font(.ST.title)
+                        .foregroundStyle(Color.ST.textPrimary)
 
-                // TODO: QR Code
-                Rectangle()
-                    .fill(Color.black)
-                    .frame(width: 160, height: 160)
+                    // TODO: QR Code
+                    Rectangle()
+                        .fill(Color.black)
+                        .frame(width: 160, height: 160)
 
-                if type == .link {
-                    Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
-                        .font(.ST.body)
-                        .foregroundStyle(Color.ST.textSecondary)
-                        .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
+                    if type == .link {
+                        Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
+                            .font(.ST.body)
+                            .foregroundStyle(Color.ST.textSecondary)
+                            .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
+                    }
                 }
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, value: .medium)
+                .padding(.vertical, value: .large)
             }
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, value: .medium)
-            .padding(.vertical, value: .large)
+            .fixedSize(horizontal: false, vertical: true)
+            .scrollBounceBehavior(.basedOnSize)
         }
+        .frame(maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: IKPadding.medium) {
                 ShareLink(item: url) {
@@ -62,14 +67,7 @@ struct SuccesfulLinkTransferView: View {
                 }
                 .buttonStyle(.ikBorderedProminent)
 
-                Button(action: copyLinkToClipboard) {
-                    Label {
-                        Text(STResourcesStrings.Localizable.buttonCopyLink)
-                    } icon: {
-                        STResourcesAsset.Images.documentOnDocument.swiftUIImage
-                    }
-                }
-                .buttonStyle(.ikBorderless)
+                CopyToClipboardButton(url: url)
 
                 Button(action: dismiss) {
                     Text(STResourcesStrings.Localizable.buttonFinished)
