@@ -18,7 +18,7 @@
 
 import Foundation
 
-public struct UploadFile: Identifiable {
+public class UploadFile: Identifiable {
     public var id: String {
         return url.absoluteString
     }
