@@ -17,17 +17,27 @@
  */
 
 import Foundation
+import OSLog
 import STCore
-import STResources
-import SwiftUI
 
 public extension File {
-    var thumbnail: Image {
-        // If doesn't have a thumbnail: Show file icon
-        return icon.swiftUIImage
+    var localURL: URL? {
+        var url: URL?
+        do {
+            url = try URL.fileStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
+        } catch {
+            Logger.general.error("Could not get local url: \(error)")
+        }
+        return url
     }
 
-    var icon: STResourcesImages {
-        return FileHelper(type: mimeType).icon
+    var previewURL: URL? {
+        var url: URL?
+        do {
+            url = try URL.previewStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
+        } catch {
+            Logger.general.error("Could not get preview url: \(error)")
+        }
+        return url
     }
 }
