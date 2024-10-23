@@ -27,7 +27,7 @@ struct SuccesfulLinkTransferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        VStack {
+        GeometryReader { proxy in
             ScrollView {
                 VStack(spacing: 32) {
                     STResourcesAsset.Images.beers.swiftUIImage
@@ -49,13 +49,13 @@ struct SuccesfulLinkTransferView: View {
                     }
                 }
                 .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
                 .padding(.horizontal, value: .medium)
                 .padding(.vertical, value: .large)
+                .frame(minHeight: proxy.size.height)
             }
-            .fixedSize(horizontal: false, vertical: true)
             .scrollBounceBehavior(.basedOnSize)
         }
-        .frame(maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: IKPadding.medium) {
                 ShareLink(item: url) {

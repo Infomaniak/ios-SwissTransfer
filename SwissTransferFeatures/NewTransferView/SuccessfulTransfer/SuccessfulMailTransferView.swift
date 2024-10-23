@@ -26,7 +26,7 @@ struct SuccessfulMailTransferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        VStack {
+        GeometryReader { proxy in
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     LargeEmptyStateView(
@@ -42,11 +42,10 @@ struct SuccessfulMailTransferView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+                .frame(minHeight: proxy.size.height)
             }
-            .fixedSize(horizontal: false, vertical: true)
             .scrollBounceBehavior(.basedOnSize)
         }
-        .frame(maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
             Button(action: dismiss) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
