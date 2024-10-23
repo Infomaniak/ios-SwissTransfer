@@ -40,9 +40,6 @@ public struct SentView: View {
                 TransferDetailsView(transfer: transfer)
             }
         }
-        .floatingActionButton(style: .newTransfer) {
-            showNewTransferSheet = true
-        }
         .fullScreenCover(item: $newTransferContainer) { container in
             NewTransferView(urls: container.urls)
         }
