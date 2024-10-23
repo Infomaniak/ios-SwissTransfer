@@ -26,7 +26,7 @@ public class UploadFile: Identifiable {
 
     public let url: URL
     public let size: Int64
-    public var path: String
+    public var path: String?
     public let mimeType: String
 
     public init?(url: URL) {
@@ -42,7 +42,17 @@ public class UploadFile: Identifiable {
 
         do {
             let baseURL = try URL.tmpUploadDirectory()
-            path = String(url.path().trimmingPrefix(baseURL.path()))
+            var newPath = url.deletingLastPathComponent().path().trimmingPrefix(baseURL.path())
+            if newPath.hasSuffix("/") {
+                _ = newPath.removeLast()
+            }
+
+            if newPath.isEmpty {
+                path = nil
+            } else {
+                path = String(newPath)
+            }
+
         } catch {
             Logger.general.error("Error while constructing file path: \(url) \(error.localizedDescription)")
             return nil
