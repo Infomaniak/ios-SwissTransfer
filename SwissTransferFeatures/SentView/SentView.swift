@@ -47,7 +47,6 @@ public struct SentView: View {
                     }
             }
         }
-        .environmentObject(viewRouter)
         .fullScreenCover(item: $newTransferContainer) { container in
             NewTransferView(urls: container.urls)
         }
