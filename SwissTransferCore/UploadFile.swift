@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import OSLog
 
 public class UploadFile: Identifiable {
     public var id: String {
@@ -36,8 +37,15 @@ public class UploadFile: Identifiable {
         ]), resources.isDirectory == false else { return nil }
 
         self.url = url
-        path = resources.name ?? url.lastPathComponent
         size = Int64(resources.fileSize ?? 0)
         mimeType = url.typeIdentifier ?? ""
+
+        do {
+            let baseURL = try URL.tmpUploadDirectory()
+            path = String(url.path().trimmingPrefix(baseURL.path()))
+        } catch {
+            Logger.general.error("Error while constructing file path: \(url) \(error.localizedDescription)")
+            return nil
+        }
     }
 }
