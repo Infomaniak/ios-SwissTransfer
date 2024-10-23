@@ -26,12 +26,7 @@ struct FileListView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    private var files: [DisplayableFile] {
-        if let folder {
-            return folder.children
-        }
-        return newTransferManager.displayableFiles
-    }
+    @State private var files = [DisplayableFile]()
 
     private let folder: DisplayableFile?
 
@@ -40,7 +35,7 @@ struct FileListView: View {
     }
 
     private var filesSize: Int64 {
-        files.map { $0.computedSize }.reduce(0, +)
+        files.map { $0.size }.reduce(0, +)
     }
 
     private let columns = [
@@ -64,21 +59,21 @@ struct FileListView: View {
                     ForEach(files) { file in
                         if file.isFolder {
                             NavigationLink(value: file) {
-                                LargeFileCell(folderName: file.name, folderSize: file.computedSize) {
-                                    Task {
-                                        await newTransferManager.remove(file: file)
+                                LargeFileCell(folderName: file.name, folderSize: file.size) {
+                                    newTransferManager.remove(file: file) {
+                                        files = newTransferManager.filesAt(folderURL: folder?.url)
                                     }
                                 }
                             }
                         } else {
                             LargeFileCell(
                                 fileName: file.name,
-                                fileSize: file.computedSize,
+                                fileSize: file.size,
                                 url: file.url,
                                 mimeType: file.mimeType
                             ) {
-                                Task {
-                                    await newTransferManager.remove(file: file)
+                                newTransferManager.remove(file: file) {
+                                    files = newTransferManager.filesAt(folderURL: folder?.url)
                                 }
                             }
                         }
@@ -87,6 +82,9 @@ struct FileListView: View {
                 .frame(maxHeight: .infinity, alignment: .top)
             }
             .padding(value: .medium)
+        }
+        .onAppear {
+            files = newTransferManager.filesAt(folderURL: folder?.url)
         }
         .onChange(of: files) { _ in
             if files.isEmpty {

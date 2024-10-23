@@ -26,9 +26,10 @@ struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
     @State private var isShowingFileList = false
+    @State private var files = [DisplayableFile]()
 
     private var filesSize: Int64 {
-        newTransferManager.displayableFiles.map { $0.computedSize }.reduce(0, +)
+        files.map { $0.size }.reduce(0, +)
     }
 
     var body: some View {
@@ -41,7 +42,7 @@ struct NewTransferFilesCellView: View {
                 NavigationLink(value: DisplayableRootFolder()) {
                     HStack {
                         Text(
-                            "\(STResourcesStrings.Localizable.filesCount(newTransferManager.displayableFiles.count)) · \(filesSize.formatted(.defaultByteCount))"
+                            "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
                         )
                         .font(.ST.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -56,7 +57,7 @@ struct NewTransferFilesCellView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: IKPadding.medium) {
                         AddFilesMenuView { urls in
-                            newTransferManager.addFiles(urls: urls)
+                            files = newTransferManager.addFiles(urls: urls)
                         } label: {
                             STResourcesAsset.Images.plus.swiftUIImage
                                 .iconSize(.large)
@@ -65,19 +66,19 @@ struct NewTransferFilesCellView: View {
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
 
-                        ForEach(newTransferManager.displayableFiles) { file in
+                        ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
                                     SmallThumbnailView {
-                                        Task {
-                                            await newTransferManager.remove(file: file)
+                                        newTransferManager.remove(file: file) {
+                                            files = newTransferManager.filesAt(folderURL: nil)
                                         }
                                     }
                                 }
                             } else {
                                 SmallThumbnailView(url: file.url, mimeType: file.mimeType) {
-                                    Task {
-                                        await newTransferManager.remove(file: file)
+                                    newTransferManager.remove(file: file) {
+                                        files = newTransferManager.filesAt(folderURL: nil)
                                     }
                                 }
                             }
@@ -93,6 +94,9 @@ struct NewTransferFilesCellView: View {
             .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
         .padding(.horizontal, value: .medium)
+        .onAppear {
+            files = newTransferManager.filesAt(folderURL: nil)
+        }
     }
 }
 

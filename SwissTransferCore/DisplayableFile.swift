@@ -19,64 +19,36 @@
 import Foundation
 
 public class DisplayableFile: Identifiable, Hashable {
-    public let id: String
+    public var id: String {
+        url.path()
+    }
+
     public let name: String
     public let isFolder: Bool
 
-    public var children = [DisplayableFile]()
-    public var parent: DisplayableFile?
-
-    // Real Files property
-    public var url: URL?
-    private var size: Int64 = 0
+    public var url: URL
+    public var size: Int64 = 0
     public var mimeType = ""
 
-    /// Fake folder init
-    public init(folderName: String) {
-        id = UUID().uuidString
-        name = folderName
-        isFolder = true
-    }
+    public init?(url: URL) {
+        guard let resources = try? url.resourceValues(forKeys: [
+            .isDirectoryKey,
+            .nameKey
+        ]) else { return nil }
 
-    public init(uploadFile: UploadFile) {
-        id = uploadFile.id
-        name = uploadFile.url.lastPathComponent
-        url = uploadFile.url
-        size = uploadFile.size
-        mimeType = uploadFile.mimeType
-        isFolder = false
-    }
-
-    public var computedSize: Int64 {
-        if isFolder {
-            return children.map { $0.computedSize }.reduce(0, +)
-        }
-        return size
-    }
-
-    /// Return all file children in the tree (no folder)
-    public func computedChildren() async -> [DisplayableFile] {
-        var array = [DisplayableFile]()
-        if isFolder {
-            for element in children {
-                await array.append(contentsOf: element.computedChildren())
-            }
-        } else {
-            array.append(self)
-        }
-        return array
+        self.url = url
+        name = url.lastPathComponent
+        isFolder = resources.isDirectory ?? false
+        size = Int64(url.size())
+        mimeType = url.typeIdentifier ?? ""
     }
 
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-
-        _ = children.map {
-            hasher.combine($0.hashValue)
-        }
     }
 
     public static func == (lhs: DisplayableFile, rhs: DisplayableFile) -> Bool {
-        lhs.id == rhs.id && lhs.children == rhs.children
+        lhs.id == rhs.id
     }
 }
 
