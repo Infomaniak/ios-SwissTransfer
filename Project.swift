@@ -8,13 +8,17 @@ import ProjectDescriptionHelpers
 
 let transferList = Feature(name: "TransferList")
 
-// MARK: New Transfer
-
-let newTransferView = Feature(name: "NewTransferView")
-
 // MARK: New Upload
 
 let uploadProgressView = Feature(name: "UploadProgressView")
+
+// MARK: New Transfer
+
+let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
+    uploadProgressView,
+    TargetDependency.external(name: "RecaptchaEnterprise"),
+    TargetDependency.external(name: "InfomaniakCore")
+])
 
 // MARK: Root
 
