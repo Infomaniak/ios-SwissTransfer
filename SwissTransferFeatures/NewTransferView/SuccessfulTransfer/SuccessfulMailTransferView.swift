@@ -36,10 +36,14 @@ struct SuccessfulMailTransferView: View {
                         imageHorizontalPadding: 0
                     )
 
-                    if let email = recipients.first {
-                        Text(email)
-                            .roundedLabel()
+                    FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
+                        ForEach(recipients, id: \.self) { recipient in
+                            Text(recipient)
+                                .roundedLabel()
+                        }
                     }
+                    .padding(.horizontal, value: .medium)
+                    .frame(maxWidth: 800)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: proxy.size.height)
@@ -62,9 +66,9 @@ struct SuccessfulMailTransferView: View {
     SuccessfulMailTransferView(recipients: ["john.smith@ik.me"]) {}
 }
 
-#Preview("Many Recipient") {
-    let recipients = Array(repeating: "short@ik.me", count: 5)
-        + Array(repeating: "long-email@infomaniak.com", count: 5)
-        + Array(repeating: "middle@infomaniak.com", count: 5)
+#Preview("Many Recipients") {
+    let recipients = Array(repeating: "short@ik.me", count: 2)
+        + Array(repeating: "long-email@infomaniak.com", count: 2)
+        + Array(repeating: "middle@infomaniak.com", count: 3)
     SuccessfulMailTransferView(recipients: recipients.shuffled()) {}
 }
