@@ -31,7 +31,7 @@ struct SuccessfulMailTransferView: View {
                 VStack(spacing: IKPadding.medium) {
                     LargeEmptyStateView(
                         image: STResourcesAsset.Images.beersHands.swiftUIImage,
-                        title: STResourcesStrings.Localizable.uploadSuccessEmailTitle,
+                        title: TransferType.mail.successTitle,
                         subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription,
                         imageHorizontalPadding: 0
                     )

@@ -16,7 +16,21 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
+
+extension TransferType {
+    var successTitle: String {
+        switch self {
+        case .link:
+            return STResourcesStrings.Localizable.uploadSuccessLinkTitle
+        case .qrcode, .proximity:
+            return STResourcesStrings.Localizable.uploadSuccessQrTitle
+        case .mail:
+            return STResourcesStrings.Localizable.uploadSuccessEmailTitle
+        }
+    }
+}
 
 struct SuccessfulTransferView: View {
     let type: TransferType

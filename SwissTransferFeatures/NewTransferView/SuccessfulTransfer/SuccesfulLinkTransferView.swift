@@ -32,7 +32,7 @@ struct SuccesfulLinkTransferView: View {
                 VStack(spacing: 32) {
                     STResourcesAsset.Images.beers.swiftUIImage
 
-                    Text(STResourcesStrings.Localizable.uploadSuccessQrTitle)
+                    Text(type.successTitle)
                         .font(.ST.title)
                         .foregroundStyle(Color.ST.textPrimary)
 
