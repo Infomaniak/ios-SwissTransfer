@@ -20,13 +20,13 @@ import STCore
 
 // TODO: Will be updated with the Settings item
 public enum NavigationDestination: Hashable {
-    case transfer(Transfer)
+    case transfer(TransferUi)
     case settings
 
     public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
         switch (lhs, rhs) {
         case (.transfer(let leftTransfer), .transfer(let rightTransfer)):
-            return leftTransfer.linkUUID == rightTransfer.linkUUID
+            return leftTransfer.uuid == rightTransfer.uuid
         case (.settings, .settings):
             return true
         default:
@@ -37,7 +37,7 @@ public enum NavigationDestination: Hashable {
     public func hash(into hasher: inout Hasher) {
         switch self {
         case .transfer(let transfer):
-            hasher.combine(transfer.linkUUID)
+            hasher.combine(transfer.uuid)
         case .settings:
             hasher.combine("settingsItem")
         }

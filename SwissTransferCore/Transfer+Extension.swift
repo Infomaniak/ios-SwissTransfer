@@ -20,13 +20,9 @@ import Foundation
 import STCore
 import STResources
 
-public extension Transfer {
+public extension TransferUi {
     var name: String {
         return date.formatted(.prettyDate)
-    }
-
-    var castedContainer: Container {
-        return container as! Container
     }
 
     var date: Date {

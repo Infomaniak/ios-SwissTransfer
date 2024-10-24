@@ -23,7 +23,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct TransferCellThumbnailsView: View {
-    let files: [File]
+    let files: [FileUi]
 
     private var additionalItemsCount: Int {
         if files.count > 99 + 3 { // +3 visible
@@ -35,13 +35,13 @@ struct TransferCellThumbnailsView: View {
         return 0
     }
 
-    private var itemsToShow: [File] {
+    private var itemsToShow: [FileUi] {
         return Array(files.prefix(3))
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(itemsToShow, id: \.uuid) { _ in
+            ForEach(itemsToShow, id: \.uid) { _ in
                 SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
             }
             if additionalItemsCount > 0 {
