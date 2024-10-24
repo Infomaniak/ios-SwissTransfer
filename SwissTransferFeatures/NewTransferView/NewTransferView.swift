@@ -17,7 +17,9 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
+import STUploadProgressView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -55,7 +57,16 @@ public struct NewTransferView: View {
             }
             .floatingContainer {
                 NavigationLink {
-                    // Start transfer
+                    UploadProgressView(uploadSession: NewUploadSession(
+                        duration: "30",
+                        authorEmail: "",
+                        password: "",
+                        message: "",
+                        numberOfDownload: 250,
+                        language: .english,
+                        recipientsEmails: [],
+                        files: newTransferManager.uploadFiles
+                    ))
                 } label: {
                     Text(STResourcesStrings.Localizable.buttonNext)
                         .frame(maxWidth: .infinity)

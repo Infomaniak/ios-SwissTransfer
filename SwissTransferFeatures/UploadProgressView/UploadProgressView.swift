@@ -16,16 +16,41 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
+import STNetwork
 import SwiftUI
+import SwissTransferCore
 
 public struct UploadProgressView: View {
-    public init() {}
+    @EnvironmentObject private var transferManager: TransferManager
+
+    let uploadSession: NewUploadSession
+
+    public init(uploadSession: NewUploadSession) {
+        self.uploadSession = uploadSession
+    }
 
     public var body: some View {
         Text("UploadProgressView")
+            .onAppear {
+                Task {
+                    let session = TransferSessionManager(transferManager: transferManager)
+
+                    await session.startUpload(uploadSession: uploadSession)
+                }
+            }
     }
 }
 
 #Preview {
-    UploadProgressView()
+    UploadProgressView(uploadSession: NewUploadSession(
+        duration: "30",
+        authorEmail: "",
+        password: "",
+        message: "Coucou",
+        numberOfDownload: 250,
+        language: .english,
+        recipientsEmails: [],
+        files: []
+    ))
 }
