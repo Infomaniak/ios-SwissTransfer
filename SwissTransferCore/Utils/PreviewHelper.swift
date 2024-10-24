@@ -20,60 +20,34 @@ import Foundation
 import STCore
 
 public enum PreviewHelper {
-    public static let sampleFile: File = PreviewFile(
-        containerUUID: "containerUUID",
-        createdDateTimestamp: 0,
-        deletedDate: nil,
-        downloadCounter: 0,
-        eVirus: "",
-        expiredDateTimestamp: 0,
-        fileName: "Nom du fichier",
-        fileSizeInBytes: 8561,
-        mimeType: "image/jpeg",
-        path: nil,
-        receivedSizeInBytes: 8561,
-        uuid: "uuid"
+    public static let sampleFile = FileUi(
+        uid: "fileUUID",
+        fileName: "File name",
+        fileSize: 8561,
+        mimeType: "imge/jpeg",
+        localPath: nil
     )
 
-    public static let sampleContainer: Container = PreviewContainer(
-        createdDateTimestamp: 0,
-        deletedDateTimestamp: 0,
-        downloadLimit: 0,
-        duration: 0,
-        expiredDateTimestamp: 0,
-        files: [sampleFile],
-        lang: "fr",
-        message: "Rapport d'oral - Master 2",
-        needPassword: 0,
-        numberOfFile: 1,
-        sizeUploaded: 8561,
-        source: "",
-        swiftVersion: 0,
-        uuid: "uuid"
-    )
-
-    public static let sampleTransfer: Transfer = PreviewTransfer(
-        container: sampleContainer,
-        containerUUID: sampleContainer.uuid,
+    public static let sampleTransfer = TransferUi(
+        uuid: "transferUUID",
         createdDateTimestamp: 1_723_960_169,
-        downloadCounterCredit: 0,
-        downloadHost: "",
-        expiredDateTimestamp: expireTimeStamp(expired: false),
-        isDownloadOnetime: 0,
-        isMailSent: true,
-        linkUUID: "linkUUID"
+        expirationDateTimestamp: expireTimeStamp(expired: false),
+        sizeUploaded: 8123,
+        downloadLimit: 250,
+        downloadLeft: 249,
+        message: "Some message",
+        files: [sampleFile]
     )
 
-    public static let sampleOldTransfer: Transfer = PreviewTransfer(
-        container: sampleContainer,
-        containerUUID: sampleContainer.uuid,
+    public static let sampleOldTransfer = TransferUi(
+        uuid: "oldTransferUUID",
         createdDateTimestamp: 1_714_160_797,
-        downloadCounterCredit: 0,
-        downloadHost: "",
-        expiredDateTimestamp: expireTimeStamp(expired: true),
-        isDownloadOnetime: 0,
-        isMailSent: true,
-        linkUUID: "linkUUIDOld"
+        expirationDateTimestamp: expireTimeStamp(expired: true),
+        sizeUploaded: 8123,
+        downloadLimit: 250,
+        downloadLeft: 249,
+        message: "Some message",
+        files: [sampleFile]
     )
 
     private static func expireTimeStamp(expired: Bool) -> Int64 {
@@ -82,131 +56,5 @@ public enum PreviewHelper {
         let days = expired ? -4 : 4
         let expireDate = calendar.date(byAdding: DateComponents(calendar: calendar, day: days), to: date)
         return Int64(expireDate?.timeIntervalSince1970 ?? 0)
-    }
-}
-
-private class PreviewFile: File {
-    var containerUUID: String
-    var createdDateTimestamp: Int64
-    var deletedDate: String?
-    var downloadCounter: Int64
-    var eVirus: String
-    var expiredDateTimestamp: Int64
-    var fileName: String
-    var fileSizeInBytes: Int64
-    var mimeType: String
-    var path: String?
-    var receivedSizeInBytes: Int64
-    var uuid: String
-
-    init(
-        containerUUID: String,
-        createdDateTimestamp: Int64,
-        deletedDate: String? = nil,
-        downloadCounter: Int64,
-        eVirus: String,
-        expiredDateTimestamp: Int64,
-        fileName: String,
-        fileSizeInBytes: Int64,
-        mimeType: String,
-        path: String? = nil,
-        receivedSizeInBytes: Int64,
-        uuid: String
-    ) {
-        self.containerUUID = containerUUID
-        self.createdDateTimestamp = createdDateTimestamp
-        self.deletedDate = deletedDate
-        self.downloadCounter = downloadCounter
-        self.eVirus = eVirus
-        self.expiredDateTimestamp = expiredDateTimestamp
-        self.fileName = fileName
-        self.fileSizeInBytes = fileSizeInBytes
-        self.mimeType = mimeType
-        self.path = path
-        self.receivedSizeInBytes = receivedSizeInBytes
-        self.uuid = uuid
-    }
-}
-
-private class PreviewContainer: Container {
-    var createdDateTimestamp: Int64
-    var deletedDateTimestamp: KotlinLong?
-    var downloadLimit: Int64
-    var duration: Int64
-    var expiredDateTimestamp: Int64
-    var files: [any File]
-    var lang: String
-    var message: String?
-    var needPassword: Int64
-    var numberOfFile: Int64
-    var sizeUploaded: Int64
-    var source: String
-    var swiftVersion: Int64
-    var uuid: String
-
-    init(
-        createdDateTimestamp: Int64,
-        deletedDateTimestamp: KotlinLong? = nil,
-        downloadLimit: Int64,
-        duration: Int64,
-        expiredDateTimestamp: Int64,
-        files: [any File],
-        lang: String,
-        message: String? = nil,
-        needPassword: Int64,
-        numberOfFile: Int64,
-        sizeUploaded: Int64,
-        source: String,
-        swiftVersion: Int64,
-        uuid: String
-    ) {
-        self.createdDateTimestamp = createdDateTimestamp
-        self.deletedDateTimestamp = deletedDateTimestamp
-        self.downloadLimit = downloadLimit
-        self.duration = duration
-        self.expiredDateTimestamp = expiredDateTimestamp
-        self.files = files
-        self.lang = lang
-        self.message = message
-        self.needPassword = needPassword
-        self.numberOfFile = numberOfFile
-        self.sizeUploaded = sizeUploaded
-        self.source = source
-        self.swiftVersion = swiftVersion
-        self.uuid = uuid
-    }
-}
-
-private class PreviewTransfer: Transfer {
-    var container: Any?
-    var containerUUID: String
-    var createdDateTimestamp: Int64
-    var downloadCounterCredit: Int64
-    var downloadHost: String
-    var expiredDateTimestamp: Int64
-    var isDownloadOnetime: Int64
-    var isMailSent: Bool
-    var linkUUID: String
-
-    init(
-        container: Any? = nil,
-        containerUUID: String,
-        createdDateTimestamp: Int64,
-        downloadCounterCredit: Int64,
-        downloadHost: String,
-        expiredDateTimestamp: Int64,
-        isDownloadOnetime: Int64,
-        isMailSent: Bool,
-        linkUUID: String
-    ) {
-        self.container = container
-        self.containerUUID = containerUUID
-        self.createdDateTimestamp = createdDateTimestamp
-        self.downloadCounterCredit = downloadCounterCredit
-        self.downloadHost = downloadHost
-        self.expiredDateTimestamp = expiredDateTimestamp
-        self.isDownloadOnetime = isDownloadOnetime
-        self.isMailSent = isMailSent
-        self.linkUUID = linkUUID
     }
 }

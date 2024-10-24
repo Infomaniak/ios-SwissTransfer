@@ -31,7 +31,7 @@ public struct TransferList: View {
 
     private let origin: TransferOrigin
 
-    public init(transfers: [Transfer], origin: TransferOrigin) {
+    public init(transfers: [TransferUi], origin: TransferOrigin) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(transfers: transfers))
         self.origin = origin
     }
@@ -50,7 +50,7 @@ public struct TransferList: View {
 
             ForEach(viewModel.sections ?? []) { section in
                 Section {
-                    ForEach(section.transfers, id: \.linkUUID) { transfer in
+                    ForEach(section.transfers, id: \.uuid) { transfer in
                         TransferCell(transfer: transfer)
                             .tag(NavigationDestination.transfer(transfer))
                     }

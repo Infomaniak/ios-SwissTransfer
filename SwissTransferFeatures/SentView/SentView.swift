@@ -25,7 +25,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @State private var transfers: [Transfer] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
+    @State private var transfers: [TransferUi] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
 
     public init() {}
 

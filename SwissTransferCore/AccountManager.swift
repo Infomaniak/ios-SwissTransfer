@@ -37,11 +37,12 @@ public actor AccountManager {
     }
 
     public func getManager(userId: UserId) async -> TransferManager? {
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         assert(userId == AccountManager.guestUserId, "Only guest user is supported")
         if let manager = managers[userId] {
             return manager
         } else {
-            try? await injection.loadDefaultAccount()
+            try? await injection.accountManager.loadUser(userId: Int32(userId))
             managers[userId] = injection.transferManager
             return managers[userId]
         }

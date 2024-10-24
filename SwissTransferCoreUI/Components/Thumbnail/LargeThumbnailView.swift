@@ -23,9 +23,9 @@ import SwiftUI
 import SwissTransferCore
 
 public struct LargeThumbnailView: View {
-    private let file: File
+    private let file: FileUi
 
-    public init(file: File) {
+    public init(file: FileUi) {
         self.file = file
     }
 
@@ -40,7 +40,7 @@ public struct LargeThumbnailView: View {
             VStack(alignment: .leading) {
                 Text(file.fileName)
                     .foregroundStyle(Color.ST.textPrimary)
-                Text(file.fileSizeInBytes.formatted(.defaultByteCount))
+                Text(file.fileSize.formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)

@@ -26,10 +26,10 @@ import SwissTransferCoreUI
 struct TransferCell: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
-    let transfer: Transfer
+    let transfer: TransferUi
 
     private var isSelected: Bool {
-        mainViewState.selectedTransfer?.linkUUID == transfer.linkUUID
+        mainViewState.selectedTransfer?.uuid == transfer.uuid
     }
 
     var body: some View {
@@ -40,13 +40,13 @@ struct TransferCell: View {
                     .foregroundStyle(Color.ST.textPrimary)
 
                 HStack(spacing: 0) {
-                    Text("\(transfer.castedContainer.sizeUploaded.formatted(.defaultByteCount)) · ")
-                    Text(transfer.expiredDateTimestamp.formatted(.expiring))
+                    Text("\(transfer.sizeUploaded.formatted(.defaultByteCount)) · ")
+                    Text(transfer.expirationDateTimestamp.formatted(.expiring))
                 }
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textSecondary)
 
-                TransferCellThumbnailsView(files: transfer.castedContainer.files)
+                TransferCellThumbnailsView(files: transfer.files)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

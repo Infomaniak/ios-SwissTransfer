@@ -39,7 +39,7 @@ public final class MainViewState: ObservableObject {
         }
     }
 
-    public var selectedTransfer: Transfer? {
+    public var selectedTransfer: TransferUi? {
         get {
             guard case .transfer(let transfer) = selectedDestination else { return nil }
             return transfer
