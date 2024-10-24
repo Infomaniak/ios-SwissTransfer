@@ -18,25 +18,28 @@
 
 import SwiftUI
 
-struct RoundedLabelModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .font(.ST.body)
-            .foregroundStyle(Color.ST.secondary)
-            .lineLimit(1)
-            .padding(.vertical, 2)
-            .padding(.horizontal, value: .small)
-            .background(Color.ST.recipientLabelBackground, in: .capsule)
+struct SuccessfulTransferView: View {
+    let type: TransferType
+    let dismiss: () -> Void
+
+    var body: some View {
+        switch type {
+        case .link, .qrcode, .proximity:
+            SuccesfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
+        case .mail:
+            SuccessfulMailTransferView(recipients: [], dismiss: dismiss)
+        }
     }
 }
 
-public extension View {
-    func roundedLabel() -> some View {
-        modifier(RoundedLabelModifier())
-    }
+#Preview("Mail") {
+    SuccessfulTransferView(type: .mail) {}
 }
 
-#Preview {
-    Text("My Label")
-        .roundedLabel()
+#Preview("QR Code") {
+    SuccessfulTransferView(type: .qrcode) {}
+}
+
+#Preview("Link") {
+    SuccessfulTransferView(type: .link) {}
 }

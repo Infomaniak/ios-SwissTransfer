@@ -50,7 +50,7 @@ public struct NewTransferView: View {
             }
             .floatingContainer {
                 NavigationLink {
-                    // Start transfer
+                    SuccessfulTransferView(type: .qrcode, dismiss: dismiss.callAsFunction)
                 } label: {
                     Text(STResourcesStrings.Localizable.buttonNext)
                         .frame(maxWidth: .infinity)
