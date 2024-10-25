@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
 import Foundation
 import InfomaniakCore
 import InfomaniakDI
@@ -25,13 +26,36 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
+final class UploadTaskDelegate: NSObject, URLSessionTaskDelegate {
+    let taskProgress: Progress
+
+    init(totalBytesExpectedToSend: Int) {
+        taskProgress = Progress(totalUnitCount: Int64(totalBytesExpectedToSend))
+    }
+
+    func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        didSendBodyData bytesSent: Int64,
+        totalBytesSent: Int64,
+        totalBytesExpectedToSend: Int64
+    ) {
+        taskProgress.completedUnitCount = totalBytesSent
+    }
+}
+
 class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
 
-    let transferManager: TransferManager
-    let uploadUrlSession = URLSession.shared
+    @Published var percentCompleted: Double = 0
 
-    let rangeProviderConfig = RangeProvider.Config(
+    private let uploadUrlSession = URLSession.shared
+
+    private var overhaulProgress: Progress?
+
+    private var cancellables: Set<AnyCancellable> = []
+
+    private static let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
         chunkMaxSizeClient: 50 * 1024 * 1024,
         chunkMaxSizeServer: 50 * 1024 * 1024,
@@ -40,12 +64,17 @@ class TransferSessionManager: ObservableObject {
         minTotalChunks: 1
     )
 
-    init(transferManager: TransferManager) {
-        self.transferManager = transferManager
-    }
-
     func startUpload(uploadSession: NewUploadSession) async {
         do {
+            overhaulProgress = Progress(totalUnitCount: Int64(uploadSession.files.count))
+            overhaulProgress?
+                .publisher(for: \.fractionCompleted)
+                .receive(on: RunLoop.main)
+                .sink { [weak self] fractionCompleted in
+                    self?.percentCompleted = fractionCompleted
+                }
+                .store(in: &cancellables)
+
             let uploadManager = injection.uploadManager
 
             _ = try await uploadManager.createUpload(newUploadSession: uploadSession)
@@ -67,11 +96,9 @@ class TransferSessionManager: ObservableObject {
             assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "Cast should always success")
 
             for (index, remoteUploadFile) in remoteUploadFiles.enumerated() {
-                guard let localFile = uploadWithRemoteContainer.files[index] as? UploadFile else {
-                    fatalError("Cast should always success")
-                }
+                let localFile = uploadWithRemoteContainer.files[index]
 
-                try await uploadFile(atPath: localFile.url, toRemoteFile: remoteUploadFile, uploadUUID: upload.uuid)
+                try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: upload.uuid)
             }
 
             Logger.general.info("Found container: \(container.uuid)")
@@ -84,13 +111,21 @@ class TransferSessionManager: ObservableObject {
         }
     }
 
-    private func uploadFile(atPath: URL, toRemoteFile: any RemoteUploadFile, uploadUUID: String) async throws {
-        let rangeProvider = RangeProvider(fileURL: atPath, config: rangeProviderConfig)
+    private func uploadFile(atPath: String, toRemoteFile: any RemoteUploadFile, uploadUUID: String) async throws {
+        guard let fileURL = URL(string: atPath) else {
+            fatalError("Wrong path")
+        }
+
+        let rangeProvider = RangeProvider(fileURL: fileURL, config: TransferSessionManager.rangeProviderConfig)
 
         let ranges = try rangeProvider.allRanges
-        guard let chunkProvider = ChunkProvider(fileURL: atPath, ranges: ranges) else {
+        guard let chunkProvider = ChunkProvider(fileURL: fileURL, ranges: ranges) else {
             fatalError("Couldn't compute ranges")
         }
+
+        let rangeCount = ranges.count
+        let fileProgress = Progress(totalUnitCount: Int64(rangeCount))
+        overhaulProgress?.addChild(fileProgress, withPendingUnitCount: 1)
 
         var index: Int32 = 0
         while let chunk = chunkProvider.next() {
@@ -98,13 +133,15 @@ class TransferSessionManager: ObservableObject {
                 uploadUUID: uploadUUID,
                 fileUUID: toRemoteFile.uuid,
                 chunkIndex: index,
-                isLastChunk: index == ranges.count - 1
+                isLastChunk: index == rangeCount - 1
             )!
 
             var uploadRequest = URLRequest(url: URL(string: chunkURL)!)
             uploadRequest.httpMethod = "POST"
 
-            try await uploadUrlSession.upload(for: uploadRequest, from: chunk)
+            let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
+            fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: 1)
+            try await uploadUrlSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
 
             index += 1
         }

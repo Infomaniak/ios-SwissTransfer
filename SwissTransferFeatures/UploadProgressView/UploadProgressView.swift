@@ -22,7 +22,7 @@ import SwiftUI
 import SwissTransferCore
 
 public struct UploadProgressView: View {
-    @EnvironmentObject private var transferManager: TransferManager
+    @StateObject private var transferSessionManager = TransferSessionManager()
 
     let uploadSession: NewUploadSession
 
@@ -31,14 +31,14 @@ public struct UploadProgressView: View {
     }
 
     public var body: some View {
-        Text("UploadProgressView")
-            .onAppear {
-                Task {
-                    let session = TransferSessionManager(transferManager: transferManager)
-
-                    await session.startUpload(uploadSession: uploadSession)
-                }
+        VStack {
+            ProgressView(value: transferSessionManager.percentCompleted)
+        }
+        .onAppear {
+            Task {
+                await transferSessionManager.startUpload(uploadSession: uploadSession)
             }
+        }
     }
 }
 
