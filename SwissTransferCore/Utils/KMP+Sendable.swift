@@ -18,18 +18,7 @@
 
 import Foundation
 import STCore
-import STResources
-import SwiftUI
 
-public extension FileUi {
-    var thumbnail: Image {
-        // If doesn't have a thumbnail: Show file icon
-        return icon.swiftUIImage
-    }
-
-    var icon: STResourcesImages {
-        guard let mimeType else { return STResourcesAsset.Images.fileAdobe }
-
-        return FileHelper(type: mimeType).icon
-    }
-}
+// The following objects should be Sendable as discussed with the KMP team.
+extension TransferUi: @retroactive @unchecked Sendable {}
+extension FileUi: @retroactive @unchecked Sendable {}

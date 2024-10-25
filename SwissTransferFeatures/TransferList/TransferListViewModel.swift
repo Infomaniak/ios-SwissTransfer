@@ -28,9 +28,9 @@ struct DateSection: Identifiable, Equatable {
 
     let id: String
     let title: String
-    let transfers: [Transfer]
+    let transfers: [TransferUi]
 
-    init(sectionKey: String, transfers: [Transfer]) {
+    init(sectionKey: String, transfers: [TransferUi]) {
         id = sectionKey
         title = ReferenceDate.titleFromRawSectionKey(sectionKey)
         self.transfers = transfers
@@ -40,14 +40,14 @@ struct DateSection: Identifiable, Equatable {
 @MainActor
 final class TransferListViewModel: ObservableObject {
     @Published var sections: [DateSection]?
-    private var transfers: [Transfer]
+    private var transfers: [TransferUi]
 
-    init(transfers: [Transfer]) {
+    init(transfers: [TransferUi]) {
         self.transfers = transfers
         mapSection(results: transfers)
     }
 
-    private func mapSection(results: [Transfer]) {
+    private func mapSection(results: [TransferUi]) {
         Task {
             let results = Dictionary(grouping: results) { $0.sectionDate }
                 .sorted {

@@ -22,20 +22,20 @@ import SwiftUI
 import SwissTransferCore
 
 public struct TransferDetailsView: View {
-    private let transfer: Transfer
+    private let transfer: TransferUi
 
-    public init(transfer: Transfer) {
+    public init(transfer: TransferUi) {
         self.transfer = transfer
     }
 
     public var body: some View {
         ScrollView {
             VStack(spacing: IKPadding.large) {
-                HeaderView(transferSize: transfer.castedContainer.sizeUploaded, expiringTimestamp: transfer.expiredDateTimestamp)
+                HeaderView(transferSize: transfer.sizeUploaded, expiringTimestamp: transfer.expirationDateTimestamp)
 
-                MessageView(message: transfer.castedContainer.message)
+                MessageView(message: transfer.message)
 
-                ContentView(files: transfer.castedContainer.files)
+                ContentView(files: transfer.files)
             }
             .padding(.vertical, value: .large)
             .padding(.horizontal, value: .medium)
