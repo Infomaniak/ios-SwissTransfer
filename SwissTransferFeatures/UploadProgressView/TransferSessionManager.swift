@@ -64,9 +64,16 @@ class TransferSessionManager: ObservableObject {
         minTotalChunks: 1
     )
 
-    func startUpload(uploadSession: NewUploadSession) async {
+    enum ErrorDomain: Error {
+        case remoteContainerNotFound
+        case invalidURL(rawURL: String)
+        case invalidUploadChunkURL
+        case invalidRangeCompute
+    }
+
+    func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
         do {
-            overhaulProgress = Progress(totalUnitCount: Int64(uploadSession.files.count))
+            overhaulProgress = Progress(totalUnitCount: Int64(newUploadSession.files.count))
             overhaulProgress?
                 .publisher(for: \.fractionCompleted)
                 .receive(on: RunLoop.main)
@@ -77,50 +84,51 @@ class TransferSessionManager: ObservableObject {
 
             let uploadManager = injection.uploadManager
 
-            _ = try await uploadManager.createUpload(newUploadSession: uploadSession)
+            let uploadSession = try await uploadManager.createUpload(newUploadSession: newUploadSession)
 
-            guard let upload = try await uploadManager.getLastUpload() else {
-                Logger.general.error("No remote container found")
-                return
-            }
+            let uploadWithRemoteContainer = try await uploadManager.doInitUploadSession(
+                uuid: uploadSession.uuid,
+                recaptcha: "aabb"
+            )
 
-            try await uploadManager.doInitUploadSession(uuid: upload.uuid, recaptcha: "aabb")
-
-            guard let uploadWithRemoteContainer = try await uploadManager.getLastUpload(),
+            guard let uploadWithRemoteContainer,
                   let container = uploadWithRemoteContainer.remoteContainer else {
-                Logger.general.error("No remote container found")
-                return
+                throw ErrorDomain.remoteContainerNotFound
             }
 
             let remoteUploadFiles = uploadWithRemoteContainer.files.compactMap { $0.remoteUploadFile }
-            assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "Cast should always success")
+            assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "All files should have a remote upload file")
 
             for (index, remoteUploadFile) in remoteUploadFiles.enumerated() {
                 let localFile = uploadWithRemoteContainer.files[index]
 
-                try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: upload.uuid)
+                try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: uploadSession.uuid)
             }
 
             Logger.general.info("Found container: \(container.uuid)")
 
-            try await uploadManager.finishUploadSession(uuid: upload.uuid)
+            let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
+
+            return transferUUID
         } catch let error as RecaptchaError {
             Logger.general.error("Recaptcha client error: \(error.errorMessage ?? "")")
+            fatalError("Implement error handling")
         } catch {
             Logger.general.error("Error trying to start upload: \(error)")
+            fatalError("Implement error handling")
         }
     }
 
     private func uploadFile(atPath: String, toRemoteFile: any RemoteUploadFile, uploadUUID: String) async throws {
         guard let fileURL = URL(string: atPath) else {
-            fatalError("Wrong path")
+            throw ErrorDomain.invalidURL(rawURL: atPath)
         }
 
         let rangeProvider = RangeProvider(fileURL: fileURL, config: TransferSessionManager.rangeProviderConfig)
 
         let ranges = try rangeProvider.allRanges
         guard let chunkProvider = ChunkProvider(fileURL: fileURL, ranges: ranges) else {
-            fatalError("Couldn't compute ranges")
+            throw ErrorDomain.invalidRangeCompute
         }
 
         let rangeCount = ranges.count
@@ -129,14 +137,20 @@ class TransferSessionManager: ObservableObject {
 
         var index: Int32 = 0
         while let chunk = chunkProvider.next() {
-            let chunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
+            guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
                 uploadUUID: uploadUUID,
                 fileUUID: toRemoteFile.uuid,
                 chunkIndex: index,
                 isLastChunk: index == rangeCount - 1
-            )!
+            ) else {
+                throw ErrorDomain.invalidUploadChunkURL
+            }
 
-            var uploadRequest = URLRequest(url: URL(string: chunkURL)!)
+            guard let chunkURL = URL(string: rawChunkURL) else {
+                throw ErrorDomain.invalidURL(rawURL: rawChunkURL)
+            }
+
+            var uploadRequest = URLRequest(url: chunkURL)
             uploadRequest.httpMethod = "POST"
 
             let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)

@@ -22,7 +22,11 @@ import SwiftUI
 import SwissTransferCore
 
 public struct UploadProgressView: View {
+    @EnvironmentObject private var transferManager: TransferManager
+
     @StateObject private var transferSessionManager = TransferSessionManager()
+
+    @State private var error: Error?
 
     let uploadSession: NewUploadSession
 
@@ -36,7 +40,16 @@ public struct UploadProgressView: View {
         }
         .onAppear {
             Task {
-                await transferSessionManager.startUpload(uploadSession: uploadSession)
+                do {
+                    let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+                    guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
+                        fatalError("Couldn't find transfer")
+                    }
+
+                    // TODO: Navigate to transfer
+                } catch {
+                    self.error = error
+                }
             }
         }
     }
