@@ -40,30 +40,40 @@ struct DateSection: Identifiable, Equatable {
 @MainActor
 final class TransferListViewModel: ObservableObject {
     @Published var sections: [DateSection]?
-    private var transfers: [TransferUi]
 
-    init(transfers: [TransferUi]) {
-        self.transfers = transfers
-        mapSection(results: transfers)
+    private let transferManager: TransferManager
+    private let transferDirection: TransferDirection
+
+    init(transferManager: TransferManager, transferOrigin: TransferOrigin) {
+        self.transferManager = transferManager
+        transferDirection = transferOrigin.direction
+        observeTransfers()
     }
 
-    private func mapSection(results: [TransferUi]) {
+    private func observeTransfers() {
         Task {
-            let results = Dictionary(grouping: results) { $0.sectionDate }
-                .sorted {
-                    guard let firstDate = $0.value.first?.date,
-                          let secondDate = $1.value.first?.date else { return false }
-                    return firstDate > secondDate
-                }
+            let transfersFlow = try transferManager.getTransfers(transferDirection: transferDirection)
+            for await transfers in transfersFlow {
+                await mapSections(from: transfers)
+            }
+        }
+    }
 
-            let mappedSections = results.map {
-                let sectionTransfers = Array($0.value)
-                return DateSection(sectionKey: $0.key, transfers: sectionTransfers)
+    private func mapSections(from transfers: [TransferUi]) async {
+        let results = Dictionary(grouping: transfers) { $0.sectionDate }
+            .sorted {
+                guard let firstDate = $0.value.first?.date,
+                      let secondDate = $1.value.first?.date else { return false }
+                return firstDate > secondDate
             }
 
-            withAnimation {
-                self.sections = mappedSections
-            }
+        let mappedSections = results.map {
+            let sectionTransfers = Array($0.value)
+            return DateSection(sectionKey: $0.key, transfers: sectionTransfers)
+        }
+
+        withAnimation {
+            self.sections = mappedSections
         }
     }
 }

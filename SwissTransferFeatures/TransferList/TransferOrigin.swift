@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 
 public enum TransferOrigin {
@@ -29,5 +30,9 @@ public enum TransferOrigin {
         case .received:
             STResourcesStrings.Localizable.receivedFilesTitle
         }
+    }
+
+    var direction: TransferDirection {
+        self == .sent ? .sent : .received
     }
 }
