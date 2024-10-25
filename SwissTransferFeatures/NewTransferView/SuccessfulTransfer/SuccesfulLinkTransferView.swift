@@ -31,6 +31,9 @@ struct SuccesfulLinkTransferView: View {
             ScrollView {
                 VStack(spacing: 32) {
                     STResourcesAsset.Images.beers.swiftUIImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 160)
 
                     Text(type.successTitle)
                         .font(.ST.title)

@@ -18,6 +18,7 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 extension TransferType {
     var successTitle: String {
@@ -45,6 +46,7 @@ struct SuccessfulTransferView: View {
                 SuccessfulMailTransferView(recipients: [], dismiss: dismiss)
             }
         }
+        .stIconNavigationBar()
         .background(Color.ST.background)
     }
 }

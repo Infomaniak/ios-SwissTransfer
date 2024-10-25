@@ -21,6 +21,7 @@ import STResources
 import SwiftUI
 
 public struct LargeEmptyStateView: View {
+    public static let imageMaxWidth: CGFloat = 400
     public static let textMaxWidth: CGFloat = 300
 
     let image: Image
@@ -41,7 +42,7 @@ public struct LargeEmptyStateView: View {
                 .resizable()
                 .scaledToFit()
                 .padding(.horizontal, imageHorizontalPadding)
-                .frame(maxWidth: 400)
+                .frame(maxWidth: Self.imageMaxWidth)
 
             VStack(spacing: IKPadding.medium) {
                 Text(title)

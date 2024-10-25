@@ -16,9 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import QRCode
 import STResources
 import SwiftUI
-import QRCode
 
 struct QRCodeView: View {
     @Environment(\.colorScheme) private var colorScheme
