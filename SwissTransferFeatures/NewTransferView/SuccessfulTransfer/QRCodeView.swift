@@ -20,35 +20,10 @@ import STResources
 import SwiftUI
 import QRCode
 
-extension UIColor {
-    static var qrCode: UIColor {
-        return UIColor { traitCollection in
-            switch traitCollection.userInterfaceStyle {
-            case .light, .unspecified:
-                return STResourcesAsset.Colors.greenDark.color
-            case .dark:
-                return STResourcesAsset.Colors.white.color
-            @unknown default:
-                fatalError()
-            }
-        }
-    }
-}
-
 struct QRCodeView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let url: URL
-
-    private var qrCode: CGImage? {
-        try? QRCode.build
-            .url(url)
-            .foregroundColor(STResourcesAsset.Colors.greenDark.color.cgColor)
-            .logo(STResourcesAsset.Images.logoK.image.cgImage!, position: .squareCenter(inset: 8))
-            .logo(image: STResourcesAsset.Images.logoK.image.cgImage!, unitRect: CGRect(x: 0.375, y: 0.375, width: 0.25, height: 0.25), inset: 8)
-            .generate
-            .image(dimension: 320)
-    }
 
     @State private var document: QRCode.Document?
     @State private var isShowingError = false
@@ -57,6 +32,10 @@ struct QRCodeView: View {
         VStack {
             if let document {
                 QRCodeDocumentUIView(document: document)
+            } else if isShowingError {
+                Text("Error")
+            } else {
+                ProgressView()
             }
         }
         .onAppear {
@@ -69,15 +48,22 @@ struct QRCodeView: View {
 
     private func computeQRCode(_ colorScheme: ColorScheme? = nil) {
         do {
-            let generatedDocument = try QRCode.Document(utf8String: url.absoluteString)
-            generatedDocument.design.foregroundColor(getQRCodeColor(colorScheme))
-            generatedDocument.design.backgroundColor(nil)
+            var documentBuilder = try QRCode.build
+                .url(url)
+                .errorCorrection(.high)
+                .foregroundColor(getQRCodeColor(colorScheme))
+                .backgroundColor(getBackgroundColor(colorScheme))
 
             if let logo = STResourcesAsset.Images.logoK.image.cgImage {
-                generatedDocument.logoTemplate = .SquareCenter(image: logo)
+                let template = QRCode.LogoTemplate(
+                    image: logo,
+                    path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil),
+                    inset: 2
+                )
+                documentBuilder = documentBuilder.logo(template)
             }
 
-            document = generatedDocument
+            document = documentBuilder.document
         } catch {
             isShowingError = true
         }
@@ -86,6 +72,13 @@ struct QRCodeView: View {
     private func getQRCodeColor(_ newColorScheme: ColorScheme?) -> CGColor {
         let preferredColorScheme = newColorScheme ?? colorScheme
         let color = preferredColorScheme == .light ? STResourcesAsset.Colors.greenDark : STResourcesAsset.Colors.white
+
+        return color.color.cgColor
+    }
+
+    private func getBackgroundColor(_ newColorScheme: ColorScheme?) -> CGColor {
+        let preferredColorScheme = newColorScheme ?? colorScheme
+        let color = preferredColorScheme == .light ? STResourcesAsset.Colors.white : STResourcesAsset.Colors.dark0
 
         return color.color.cgColor
     }

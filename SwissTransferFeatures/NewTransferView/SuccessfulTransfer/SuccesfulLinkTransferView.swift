@@ -39,7 +39,7 @@ struct SuccesfulLinkTransferView: View {
                     QRCodeView(url: url)
                         .frame(width: 160, height: 160)
 
-                    if type == .link {
+                    if type != .qrcode {
                         Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
                             .font(.ST.body)
                             .foregroundStyle(Color.ST.textSecondary)

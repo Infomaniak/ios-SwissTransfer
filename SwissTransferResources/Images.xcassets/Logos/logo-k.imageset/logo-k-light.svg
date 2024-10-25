@@ -1,4 +1,10 @@
-<svg width="42" height="45" viewBox="0 0 42 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M37.1191 0.412109H4.41948C2.16204 0.412109 0.332031 2.37419 0.332031 4.79454V39.854C0.332031 42.2743 2.16204 44.2364 4.41948 44.2364H37.1191C39.3765 44.2364 41.2065 42.2743 41.2065 39.854V4.79454C41.2065 2.37419 39.3765 0.412109 37.1191 0.412109Z" fill="#014958"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M9.05273 37.0492H17.5546V31.0891L20.6581 27.8807L25.0755 37.0492H34.4767L26.1859 22.2048L33.9862 14.2604H23.7675L17.5546 21.7982V0.412109H9.05273V37.0492Z" fill="white"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="44.0pt" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 44 44" width="44.0pt" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs/>
+<g id="Sans-titre">
+<path d="M38.3498 0.0878545L5.65021 0.0878545C3.39277 0.0878545 1.56277 2.04994 1.56277 4.47029L1.56277 39.5297C1.56277 41.95 3.39277 43.9121 5.65021 43.9121L38.3498 43.9121C40.6072 43.9121 42.4372 41.95 42.4372 39.5297L42.4372 4.47029C42.4372 2.04994 40.6072 0.0878545 38.3498 0.0878545Z" fill="#014958" fill-rule="nonzero" opacity="1" stroke="none"/>
+<path d="M10.2835 36.7249L18.7853 36.7249L18.7853 30.7648L21.8888 27.5564L26.3062 36.7249L35.7074 36.7249L27.4166 21.8805L35.2169 13.9361L24.9982 13.9361L18.7853 21.4739L18.7853 0L10.2859 0L10.2835 36.7249Z" fill="#ffffff" fill-rule="evenodd" opacity="1" stroke="none"/>
+</g>
 </svg>
