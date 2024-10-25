@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OSLog
 import STCore
 import STResources
 import STUploadProgressView
@@ -28,6 +29,9 @@ public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var newTransferManager: NewTransferManager
 
+    @State private var isLoadingFileToUpload = false
+    @State private var navigationPath = NavigationPath()
+
     public init(urls: [URL]) {
         let transferManager = NewTransferManager()
         _ = transferManager.addFiles(urls: urls)
@@ -35,7 +39,7 @@ public struct NewTransferView: View {
     }
 
     public var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     // FilesCell
@@ -55,24 +59,41 @@ public struct NewTransferView: View {
                 }
                 .padding(.vertical, value: .medium)
             }
+            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
+                UploadProgressView(uploadSession: newUploadSession)
+            }
             .floatingContainer {
-                NavigationLink {
-                    UploadProgressView(uploadSession: NewUploadSession(
-                        duration: "30",
-                        authorEmail: "",
-                        password: "",
-                        message: "",
-                        numberOfDownload: 250,
-                        language: .english,
-                        recipientsEmails: [],
-                        files: newTransferManager.uploadFiles
-                    ))
+                Button {
+                    Task {
+                        isLoadingFileToUpload = true
+
+                        do {
+                            let filesToUpload = try newTransferManager.filesToUpload()
+                            let newUploadSession = NewUploadSession(
+                                duration: "30",
+                                authorEmail: "",
+                                password: "",
+                                message: "",
+                                numberOfDownload: 250,
+                                language: .english,
+                                recipientsEmails: [],
+                                files: filesToUpload
+                            )
+                            navigationPath.append(newUploadSession)
+                        } catch {
+                            Logger.general.error("Error getting files to upload \(error.localizedDescription)")
+                        }
+
+                        isLoadingFileToUpload = false
+                    }
+
                 } label: {
                     Text(STResourcesStrings.Localizable.buttonNext)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.ikBorderedProminent)
                 .ikButtonFullWidth(true)
+                .ikButtonLoading(isLoadingFileToUpload)
                 .controlSize(.large)
             }
             .scrollDismissesKeyboard(.immediately)
