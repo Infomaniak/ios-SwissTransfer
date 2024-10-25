@@ -37,12 +37,15 @@ struct SuccessfulTransferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        switch type {
-        case .link, .qrcode, .proximity:
-            SuccesfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
-        case .mail:
-            SuccessfulMailTransferView(recipients: [], dismiss: dismiss)
+        Group {
+            switch type {
+            case .link, .qrcode, .proximity:
+                SuccesfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
+            case .mail:
+                SuccessfulMailTransferView(recipients: [], dismiss: dismiss)
+            }
         }
+        .background(Color.ST.background)
     }
 }
 

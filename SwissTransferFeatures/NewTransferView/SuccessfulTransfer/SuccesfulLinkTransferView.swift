@@ -36,9 +36,7 @@ struct SuccesfulLinkTransferView: View {
                         .font(.ST.title)
                         .foregroundStyle(Color.ST.textPrimary)
 
-                    // TODO: QR Code
-                    Rectangle()
-                        .fill(Color.black)
+                    QRCodeView(url: url)
                         .frame(width: 160, height: 160)
 
                     if type == .link {
