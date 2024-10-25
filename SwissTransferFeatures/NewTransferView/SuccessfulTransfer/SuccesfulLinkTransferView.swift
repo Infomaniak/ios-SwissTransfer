@@ -66,13 +66,14 @@ struct SuccesfulLinkTransferView: View {
                         } icon: {
                             STResourcesAsset.Images.personBadgeShare.swiftUIImage
                         }
-                        .labelStyle(.vertical)
+                        .labelStyle(.verticalButton)
                     }
 
                     CopyToClipboardButton(url: url)
                 }
                 .buttonStyle(.ikBordered)
                 .ikButtonFullWidth(true)
+                .frame(maxWidth: IKButtonConstants.maxWidth)
 
                 Button(action: dismiss) {
                     Text(STResourcesStrings.Localizable.buttonFinished)

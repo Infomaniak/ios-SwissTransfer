@@ -19,7 +19,7 @@
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
-public struct VerticalLabelStyle: LabelStyle {
+public struct VerticalButtonLabelStyle: LabelStyle {
     public func makeBody(configuration: Configuration) -> some View {
         VStack(spacing: IKPadding.small) {
             configuration.icon
@@ -28,6 +28,6 @@ public struct VerticalLabelStyle: LabelStyle {
     }
 }
 
-public extension LabelStyle where Self == VerticalLabelStyle {
-    static var vertical: VerticalLabelStyle { .init() }
+public extension LabelStyle where Self == VerticalButtonLabelStyle {
+    static var verticalButton: VerticalButtonLabelStyle { .init() }
 }

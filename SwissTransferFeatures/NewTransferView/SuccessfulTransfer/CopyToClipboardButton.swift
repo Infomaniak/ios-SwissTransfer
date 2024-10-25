@@ -23,6 +23,8 @@ import SwiftUI
 struct CopyToClipboardButton: View {
     @State private var isCopying = false
 
+    private let animation = Animation.default.speed(1.5)
+
     let url: URL
 
     var body: some View {
@@ -39,7 +41,7 @@ struct CopyToClipboardButton: View {
                 }
                 .transition(.scale)
             }
-            .labelStyle(.vertical)
+            .labelStyle(.verticalButton)
         }
     }
 
@@ -50,12 +52,12 @@ struct CopyToClipboardButton: View {
         feedback.prepare()
         feedback.notificationOccurred(.success)
 
-        withAnimation {
+        withAnimation(animation) {
             isCopying = true
         }
         Task {
             try? await Task.sleep(for: .milliseconds(400))
-            withAnimation {
+            withAnimation(animation) {
                 isCopying = false
             }
         }
