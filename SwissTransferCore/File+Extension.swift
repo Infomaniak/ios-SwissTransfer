@@ -37,7 +37,7 @@ public extension FileUi {
     var localURL: URL? {
         var url: URL?
         do {
-            url = try URL.fileStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
+            url = try URL.fileStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
         } catch {
             Logger.general.error("Could not get local url: \(error)")
         }
@@ -47,7 +47,7 @@ public extension FileUi {
     var previewURL: URL? {
         var url: URL?
         do {
-            url = try URL.previewStorageFolder(containerUuid: containerUUID).appendingPathComponent(uuid, conformingTo: .item)
+            url = try URL.previewStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
         } catch {
             Logger.general.error("Could not get preview url: \(error)")
         }

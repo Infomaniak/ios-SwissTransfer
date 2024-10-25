@@ -23,22 +23,22 @@ import InfomaniakDI
 public extension URL {
     /// URL to store files
     /// Files are stored in the cache directory so they can be removed by the system if it need more storage
-    static func fileStorageFolder(containerUuid: String) throws -> URL {
+    static func fileStorageFolder(fileUUID: String) throws -> URL {
         @InjectService var pathProvider: AppGroupPathProvidable
         let targetFolderURL = pathProvider.cacheDirectoryURL
             .appendingPathComponent("files", isDirectory: true)
-            .appendingPathComponent(containerUuid, isDirectory: true)
+            .appendingPathComponent(fileUUID, isDirectory: true)
         try FileManager.default.createDirectory(at: targetFolderURL, withIntermediateDirectories: true)
         return targetFolderURL
     }
 
     /// URL to store previews
     /// Previews are stored in the group directory
-    static func previewStorageFolder(containerUuid: String) throws -> URL {
+    static func previewStorageFolder(fileUUID: String) throws -> URL {
         @InjectService var pathProvider: AppGroupPathProvidable
         let targetFolderURL = pathProvider.groupDirectoryURL
             .appendingPathComponent("previews", isDirectory: true)
-            .appendingPathComponent(containerUuid, isDirectory: true)
+            .appendingPathComponent(fileUUID, isDirectory: true)
         try FileManager.default.createDirectory(at: targetFolderURL, withIntermediateDirectories: true)
         return targetFolderURL
     }
