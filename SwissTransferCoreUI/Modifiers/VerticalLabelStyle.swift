@@ -17,21 +17,17 @@
  */
 
 import InfomaniakCoreSwiftUI
-import STRootView
 import SwiftUI
-import SwissTransferCore
 
-@main
-struct SwissTransferApp: App {
-    private let sentryService = SentryService()
-    private let dependencyInjectionHook = TargetAssembly()
-
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-                .ikButtonTheme(.swissTransfer)
-                .detectCompactWindow()
+public struct VerticalLabelStyle: LabelStyle {
+    public func makeBody(configuration: Configuration) -> some View {
+        VStack(spacing: IKPadding.small) {
+            configuration.icon
+            configuration.title
         }
     }
+}
+
+public extension LabelStyle where Self == VerticalLabelStyle {
+    static var vertical: VerticalLabelStyle { .init() }
 }

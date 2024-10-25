@@ -39,10 +39,8 @@ struct CopyToClipboardButton: View {
                 }
                 .transition(.scale)
             }
+            .labelStyle(.vertical)
         }
-        .buttonStyle(.ikBorderless)
-        .ikButtonFullWidth(true)
-        .controlSize(.large)
     }
 
     private func copyLinkToClipboard() {

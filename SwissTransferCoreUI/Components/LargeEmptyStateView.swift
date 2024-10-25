@@ -62,7 +62,7 @@ public struct LargeEmptyStateView: View {
 
 #Preview {
     LargeEmptyStateView(
-        image: STResourcesAsset.Images.beersHands.swiftUIImage,
+        image: STResourcesAsset.Images.beers.swiftUIImage,
         title: "Empty State Title",
         subtitle: "Consequat magna cupidatat aute fugiat quis dolore ea labore nisi velit. Culpa deserunt adipisicing velit consequat.",
         imageHorizontalPadding: 0

@@ -16,22 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
-import STRootView
 import SwiftUI
-import SwissTransferCore
+import STResources
+import InfomaniakCoreSwiftUI
 
-@main
-struct SwissTransferApp: App {
-    private let sentryService = SentryService()
-    private let dependencyInjectionHook = TargetAssembly()
-
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-                .ikButtonTheme(.swissTransfer)
-                .detectCompactWindow()
-        }
-    }
+public extension IKButtonTheme {
+    static let swissTransfer = IKButtonTheme(
+        primary: TintShapeStyle.tint,
+        secondary: Color.ST.onPrimary,
+        tertiary: Color.ST.tertiary,
+        disabledPrimary: Color.ST.disabled,
+        disabledSecondary: Color.ST.onDisabled,
+        error: Color.ST.error,
+        smallFont: Font.ST.callout,
+        mediumFont: Font.ST.headline
+    )
 }

@@ -59,21 +59,25 @@ struct SuccesfulLinkTransferView: View {
         }
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: IKPadding.medium) {
-                ShareLink(item: url) {
-                    Label {
-                        Text(STResourcesStrings.Localizable.buttonShare)
-                    } icon: {
-                        STResourcesAsset.Images.personBadgeShare.swiftUIImage
+                HStack(spacing: IKPadding.medium) {
+                    ShareLink(item: url) {
+                        Label {
+                            Text(STResourcesStrings.Localizable.buttonShare)
+                        } icon: {
+                            STResourcesAsset.Images.personBadgeShare.swiftUIImage
+                        }
+                        .labelStyle(.vertical)
                     }
-                }
-                .buttonStyle(.ikBorderedProminent)
 
-                CopyToClipboardButton(url: url)
+                    CopyToClipboardButton(url: url)
+                }
+                .buttonStyle(.ikBordered)
+                .ikButtonFullWidth(true)
 
                 Button(action: dismiss) {
                     Text(STResourcesStrings.Localizable.buttonFinished)
                 }
-                .buttonStyle(.ikBorderless)
+                .buttonStyle(.ikBorderedProminent)
             }
             .ikButtonFullWidth(true)
             .controlSize(.large)
