@@ -24,17 +24,17 @@ import SwissTransferCoreUI
 struct NewTransferDetailsView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var mailSrc = ""
-    @State private var mailDst = ""
+    @State private var sender = ""
+    @State private var recipient = ""
     @State private var message = ""
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if newTransferManager.transferType == .mail {
-                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $mailSrc)
+                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $sender)
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
-                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $mailDst)
+                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipient)
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
             }
