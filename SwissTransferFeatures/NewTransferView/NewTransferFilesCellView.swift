@@ -93,7 +93,6 @@ struct NewTransferFilesCellView: View {
             .padding(.bottom, value: .small)
             .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
-        .padding(.horizontal, value: .medium)
         .onAppear {
             files = newTransferManager.filesAt(folderURL: nil)
         }

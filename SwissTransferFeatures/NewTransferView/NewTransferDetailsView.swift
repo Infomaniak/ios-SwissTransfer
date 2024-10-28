@@ -41,7 +41,6 @@ struct NewTransferDetailsView: View {
             TextField(STResourcesStrings.Localizable.messagePlaceholder, text: $message, axis: .vertical)
                 .textFieldStyle(NewTransferTextFieldStyle(height: 88))
         }
-        .padding(.horizontal, value: .medium)
     }
 }
 

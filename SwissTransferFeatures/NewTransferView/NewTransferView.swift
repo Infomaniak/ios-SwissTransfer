@@ -36,15 +36,18 @@ public struct NewTransferView: View {
                 VStack(spacing: IKPadding.medium) {
                     // FilesCell
                     NewTransferFilesCellView()
+                        .padding(.horizontal, value: .medium)
 
                     // Title and message
                     NewTransferDetailsView()
+                        .padding(.horizontal, value: .medium)
 
                     // Type
                     NewTransferTypeView()
 
                     // Settings
                     NewTransferSettingsView()
+                        .padding(.horizontal, value: .medium)
                 }
                 .padding(.vertical, value: .medium)
             }

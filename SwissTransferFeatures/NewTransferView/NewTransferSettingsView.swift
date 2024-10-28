@@ -107,7 +107,6 @@ struct NewTransferSettingsView: View {
                 PasswordSettingView()
             }
         }
-        .padding(.horizontal, value: .medium)
     }
 }
 
