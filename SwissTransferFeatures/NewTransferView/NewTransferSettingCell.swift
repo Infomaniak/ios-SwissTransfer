@@ -45,8 +45,7 @@ struct NewTransferSettingCell: View {
                         .foregroundStyle(Color.ST.primary)
                 } icon: {
                     icon
-                        .resizable()
-                        .frame(width: 16, height: 16)
+                        .iconSize(.medium)
                 }
                 .labelStyle(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
