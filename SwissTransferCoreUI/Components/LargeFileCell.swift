@@ -64,7 +64,7 @@ public struct LargeFileCell: View {
             .frame(height: 96)
             .frame(maxWidth: .infinity)
 
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(fileName)
                     .foregroundStyle(Color.ST.textPrimary)
                     .lineLimit(1)
