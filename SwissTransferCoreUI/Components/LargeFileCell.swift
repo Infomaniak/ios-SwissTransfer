@@ -77,7 +77,7 @@ public struct LargeFileCell: View {
             .padding(value: .small)
             .background(Color.ST.background)
         }
-        .overlay {
+        .overlay(alignment: .topTrailing) {
             if let removeAction {
                 Button {
                     removeAction()
@@ -90,7 +90,6 @@ public struct LargeFileCell: View {
                         .background(.black.opacity(0.5), in: .circle)
                         .padding(value: .small)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
         }
         .frame(maxWidth: .infinity)
