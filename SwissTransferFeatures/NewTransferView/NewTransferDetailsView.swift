@@ -28,6 +28,8 @@ struct NewTransferDetailsView: View {
     @State private var recipient = ""
     @State private var message = ""
 
+    @FocusState private var isMessageFieldFocused
+
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if newTransferManager.transferType == .mail {
@@ -38,12 +40,19 @@ struct NewTransferDetailsView: View {
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
             }
-            TextField(STResourcesStrings.Localizable.messagePlaceholder, text: $message, axis: .vertical)
-                .textFieldStyle(NewTransferTextFieldStyle(height: 88))
+            TextEditor(text: $message)
+                .focused($isMessageFieldFocused)
+                .frame(minHeight: 88, alignment: .top)
+                .padding(value: .intermediate)
+                .overlay(
+                    RoundedRectangle(cornerRadius: IKRadius.small)
+                        .strokeBorder(isMessageFieldFocused ? Color.ST.primary : Color.ST.textFieldBorder)
+                )
         }
     }
 }
 
 #Preview {
     NewTransferDetailsView()
+        .environmentObject(NewTransferManager(urls: []))
 }

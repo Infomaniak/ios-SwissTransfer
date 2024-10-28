@@ -35,9 +35,5 @@ struct NewTransferTextFieldStyle: TextFieldStyle {
                 RoundedRectangle(cornerRadius: IKRadius.small)
                     .strokeBorder(isFocused ? Color.ST.primary : Color.ST.textFieldBorder)
             )
-            .contentShape(.rect)
-            .onTapGesture {
-                isFocused = true
-            }
     }
 }
