@@ -41,7 +41,7 @@ struct SuccessfulTransferView: View {
         Group {
             switch type {
             case .link, .qrcode, .proximity:
-                SuccesfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
+                SuccessfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
             case .mail:
                 SuccessfulMailTransferView(recipients: [], dismiss: dismiss)
             }

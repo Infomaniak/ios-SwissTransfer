@@ -20,15 +20,19 @@ import QRCode
 import STResources
 import SwiftUI
 
-struct QRCodeView: View {
+public struct QRCodeView: View {
     @Environment(\.colorScheme) private var colorScheme
-
-    let url: URL
 
     @State private var generatedDocument: QRCode.Document?
     @State private var isShowingError = false
 
-    var body: some View {
+    private let url: URL
+
+    public init(url: URL) {
+        self.url = url
+    }
+
+    public var body: some View {
         VStack {
             if let generatedDocument {
                 QRCodeDocumentUIView(document: generatedDocument)
@@ -65,7 +69,7 @@ struct QRCodeView: View {
                 let template = QRCode.LogoTemplate(
                     image: logo,
                     path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil),
-                    inset: 4
+                    inset: 2
                 )
                 documentBuilder = documentBuilder.logo(template)
             }

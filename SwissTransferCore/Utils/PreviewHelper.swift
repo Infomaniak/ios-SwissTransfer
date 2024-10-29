@@ -55,6 +55,6 @@ public enum PreviewHelper {
         let calendar = Calendar(identifier: .gregorian)
         let days = expired ? -4 : 4
         let expireDate = calendar.date(byAdding: DateComponents(calendar: calendar, day: days), to: date)
-        return Int64(Date.init(timeIntervalSinceNow: 120).timeIntervalSince1970 ?? 0)
+        return Int64(expireDate?.timeIntervalSince1970 ?? 0)
     }
 }

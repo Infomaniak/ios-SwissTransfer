@@ -24,9 +24,9 @@ public extension IKButtonTheme {
     static let swissTransfer = IKButtonTheme(
         primary: TintShapeStyle.tint,
         secondary: Color.ST.onPrimary,
-        tertiary: Color.ST.tertiary,
-        disabledPrimary: Color.ST.disabled,
-        disabledSecondary: Color.ST.onDisabled,
+        tertiary: Color.ST.tertiaryButton,
+        disabledPrimary: Color.ST.disabledState,
+        disabledSecondary: Color.ST.onDisabledState,
         error: Color.ST.error,
         smallFont: Font.ST.callout,
         mediumFont: Font.ST.headline

@@ -21,7 +21,9 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct SuccesfulLinkTransferView: View {
+struct SuccessfulLinkTransferView: View {
+    private static let qrCodeSize: CGFloat = 160
+
     let type: TransferType
     let url: URL
     let dismiss: () -> Void
@@ -33,14 +35,14 @@ struct SuccesfulLinkTransferView: View {
                     STResourcesAsset.Images.beers.swiftUIImage
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 160)
+                        .frame(maxWidth: Self.qrCodeSize)
 
                     Text(type.successTitle)
                         .font(.ST.title)
                         .foregroundStyle(Color.ST.textPrimary)
 
                     QRCodeView(url: url)
-                        .frame(width: 160, height: 160)
+                        .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
 
                     if type != .qrcode {
                         Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
@@ -93,9 +95,9 @@ struct SuccesfulLinkTransferView: View {
 }
 
 #Preview("QR Code") {
-    SuccesfulLinkTransferView(type: .qrcode, url: URL(string: "https://www.infomaniak.com")!) {}
+    SuccessfulLinkTransferView(type: .qrcode, url: URL(string: "https://www.infomaniak.com")!) {}
 }
 
 #Preview("Link") {
-    SuccesfulLinkTransferView(type: .link, url: URL(string: "https://www.infomaniak.com")!) {}
+    SuccessfulLinkTransferView(type: .link, url: URL(string: "https://www.infomaniak.com")!) {}
 }

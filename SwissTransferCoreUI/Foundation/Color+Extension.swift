@@ -74,17 +74,17 @@ public extension Color {
         // MARK: - Buttons
 
         /// light: greyRabbit / dark: dark1
-        public static let tertiary = Color(
+        public static let tertiaryButton = Color(
             light: STResourcesAsset.Colors.greyRabbit,
             dark: STResourcesAsset.Colors.dark1
         )
 
         /// light: greyShark / dark: greyElephant
-        public static let disabled = Color(
+        public static let disabledState = Color(
             light: STResourcesAsset.Colors.greyShark,
             dark: STResourcesAsset.Colors.greyElephant
         )
-        public static let onDisabled = Color(
+        public static let onDisabledState = Color(
             light: STResourcesAsset.Colors.white,
             dark: STResourcesAsset.Colors.dark0
         )
