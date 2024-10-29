@@ -18,11 +18,12 @@
 
 import Foundation
 
-public struct NewTransferContainer: Identifiable {
-    public let id = UUID()
+public struct NewTransferContainer: Identifiable, Equatable {
+    public let id: Int
     public let urls: [URL]
 
     public init(urls: [URL]) {
+        id = urls.hashValue
         self.urls = urls
     }
 }
