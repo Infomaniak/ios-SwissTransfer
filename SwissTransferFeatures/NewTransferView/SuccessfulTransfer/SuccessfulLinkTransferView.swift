@@ -29,37 +29,31 @@ struct SuccessfulLinkTransferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
-                VStack(spacing: 32) {
-                    STResourcesAsset.Images.beers.swiftUIImage
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: Self.qrCodeSize)
+        VStack(spacing: 32) {
+            STResourcesAsset.Images.beers.swiftUIImage
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: Self.qrCodeSize)
 
-                    Text(type.successTitle)
-                        .font(.ST.title)
-                        .foregroundStyle(Color.ST.textPrimary)
+            Text(type.successTitle)
+                .font(.ST.title)
+                .foregroundStyle(Color.ST.textPrimary)
 
-                    QRCodeView(url: url)
-                        .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
+            QRCodeView(url: url)
+                .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
 
-                    if type != .qrcode {
-                        Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
-                            .font(.ST.body)
-                            .foregroundStyle(Color.ST.textSecondary)
-                            .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
-                    }
-                }
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, value: .medium)
-                .padding(.vertical, value: .large)
-                .frame(minHeight: proxy.size.height)
+            if type != .qrcode {
+                Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
+                    .font(.ST.body)
+                    .foregroundStyle(Color.ST.textSecondary)
+                    .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
             }
-            .scrollBounceBehavior(.basedOnSize)
         }
-        .safeAreaInset(edge: .bottom) {
+        .multilineTextAlignment(.center)
+        .padding(.horizontal, value: .medium)
+        .padding(.vertical, value: .large)
+        .scrollableEmptyState()
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             VStack(spacing: IKPadding.medium) {
                 HStack(spacing: IKPadding.medium) {
                     ShareLink(item: url) {

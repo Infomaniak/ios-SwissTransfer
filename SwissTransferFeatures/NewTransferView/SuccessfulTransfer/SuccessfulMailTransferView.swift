@@ -26,30 +26,24 @@ struct SuccessfulMailTransferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
-                VStack(spacing: IKPadding.medium) {
-                    LargeEmptyStateView(
-                        image: STResourcesAsset.Images.beers.swiftUIImage,
-                        title: TransferType.mail.successTitle,
-                        subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription,
-                        imageHorizontalPadding: 0
-                    )
+        VStack(spacing: IKPadding.medium) {
+            LargeEmptyStateView(
+                image: STResourcesAsset.Images.beers.swiftUIImage,
+                title: TransferType.mail.successTitle,
+                subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription,
+                imageHorizontalPadding: 0
+            )
 
-                    FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
-                        ForEach(recipients, id: \.self) { recipient in
-                            Text(recipient)
-                                .roundedLabel()
-                        }
-                    }
-                    .padding(.horizontal, value: .medium)
-                    .frame(maxWidth: 800)
+            FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
+                ForEach(recipients, id: \.self) { recipient in
+                    Text(recipient)
+                        .roundedLabel()
                 }
-                .frame(maxWidth: .infinity)
-                .frame(minHeight: proxy.size.height)
             }
-            .scrollBounceBehavior(.basedOnSize)
+            .padding(.horizontal, value: .medium)
+            .frame(maxWidth: 800)
         }
+        .scrollableEmptyState()
         .safeAreaInset(edge: .bottom) {
             Button(action: dismiss) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
