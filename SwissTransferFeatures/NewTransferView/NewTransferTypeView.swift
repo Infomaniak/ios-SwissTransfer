@@ -52,5 +52,5 @@ struct NewTransferTypeView: View {
 
 #Preview {
     NewTransferTypeView()
-        .environmentObject(NewTransferManager(urls: []))
+        .environmentObject(NewTransferManager())
 }

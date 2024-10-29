@@ -45,10 +45,8 @@ private enum TmpDirType: String {
 class NewTransferManager: ObservableObject {
     @Published var transferType: TransferType = .qrcode
 
-    init(urls: [URL]) {
+    init() {
         cleanTmpDir(type: .upload)
-        _ = addFiles(urls: urls)
-        cleanTmpDir(type: .cache)
     }
 
     deinit {
@@ -59,6 +57,7 @@ class NewTransferManager: ObservableObject {
     /// Return the content of the folder
     func addFiles(urls: [URL]) -> [DisplayableFile] {
         moveToTmp(files: urls)
+        cleanTmpDir(type: .cache)
         return filesAt(folderURL: nil)
     }
 
@@ -83,9 +82,13 @@ extension NewTransferManager {
         do {
             let tmpDirectory = try URL.tmpUploadDirectory()
             for file in files {
-                let destination = tmpDirectory.appending(path: file.lastPathComponent)
-                _ = file.startAccessingSecurityScopedResource()
-                try FileManager.default.copyItem(at: file, to: destination)
+                do {
+                    let destination = tmpDirectory.appending(path: file.lastPathComponent)
+                    _ = file.startAccessingSecurityScopedResource()
+                    try FileManager.default.copyItem(at: file, to: destination)
+                } catch {
+                    Logger.general.error("An error occured while copying files: \(error)")
+                }
                 file.stopAccessingSecurityScopedResource()
             }
         } catch {
@@ -96,16 +99,7 @@ extension NewTransferManager {
     /// Empty the temporary directory
     private nonisolated func cleanTmpDir(type: TmpDirType) {
         do {
-            let tmp = try type.directory
-            let children = try FileManager.default.contentsOfDirectory(
-                at: tmp,
-                includingPropertiesForKeys: nil,
-                options: .skipsSubdirectoryDescendants
-            )
-
-            for child in children {
-                try FileManager.default.removeItem(at: child)
-            }
+            try FileManager.default.removeItem(at: type.directory)
         } catch {
             Logger.general.error("An error occurred while cleaning temporary directory: \(type.rawValue) \(error)")
         }

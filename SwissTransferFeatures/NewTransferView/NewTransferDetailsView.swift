@@ -54,5 +54,5 @@ struct NewTransferDetailsView: View {
 
 #Preview {
     NewTransferDetailsView()
-        .environmentObject(NewTransferManager(urls: []))
+        .environmentObject(NewTransferManager())
 }
