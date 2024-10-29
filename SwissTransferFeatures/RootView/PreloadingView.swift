@@ -32,14 +32,7 @@ extension VerticalAlignment {
         }
     }
 
-    enum SplashScreenInfomaniakAlignment: AlignmentID {
-        static func defaultValue(in context: ViewDimensions) -> CGFloat {
-            return context[VerticalAlignment.bottom]
-        }
-    }
-
     static let splashScreenIconAlignment = VerticalAlignment(SplashScreenIconAlignment.self)
-    static let splashScreenInfomaniakAlignment = VerticalAlignment(SplashScreenInfomaniakAlignment.self)
 }
 
 struct PreloadingView: View {
