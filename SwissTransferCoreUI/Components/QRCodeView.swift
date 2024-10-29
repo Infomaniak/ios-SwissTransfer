@@ -25,15 +25,21 @@ struct QRCodeView: View {
 
     let url: URL
 
-    @State private var document: QRCode.Document?
+    @State private var generatedDocument: QRCode.Document?
     @State private var isShowingError = false
 
     var body: some View {
         VStack {
-            if let document {
-                QRCodeDocumentUIView(document: document)
+            if let generatedDocument {
+                QRCodeDocumentUIView(document: generatedDocument)
             } else if isShowingError {
-                Text("Error")
+                VStack {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.ST.title)
+                    Text(STResourcesStrings.Localizable.errorGeneratingQRCode)
+                        .font(.ST.headline)
+                }
+                .foregroundStyle(Color.ST.error)
             } else {
                 ProgressView()
             }
@@ -46,8 +52,9 @@ struct QRCodeView: View {
         }
     }
 
-    private func computeQRCode(_ colorScheme: ColorScheme? = nil) {
+    private func computeQRCode(_ newColorScheme: ColorScheme? = nil) {
         do {
+            let colorScheme = newColorScheme ?? colorScheme
             var documentBuilder = try QRCode.build
                 .url(url)
                 .errorCorrection(.high)
@@ -58,29 +65,25 @@ struct QRCodeView: View {
                 let template = QRCode.LogoTemplate(
                     image: logo,
                     path: CGPath(rect: CGRect(x: 0.35, y: 0.35, width: 0.3, height: 0.3), transform: nil),
-                    inset: 2
+                    inset: 4
                 )
                 documentBuilder = documentBuilder.logo(template)
             }
 
-            document = documentBuilder.document
+            generatedDocument = documentBuilder.document
         } catch {
             isShowingError = true
         }
     }
 
-    private func getQRCodeColor(_ newColorScheme: ColorScheme?) -> CGColor {
-        let preferredColorScheme = newColorScheme ?? colorScheme
-        let color = preferredColorScheme == .light ? STResourcesAsset.Colors.greenDark : STResourcesAsset.Colors.white
-
-        return color.color.cgColor
+    private func getQRCodeColor(_ newColorScheme: ColorScheme) -> CGColor {
+        let qrCodeColor = newColorScheme == .light ? STResourcesAsset.Colors.greenDark : STResourcesAsset.Colors.white
+        return qrCodeColor.color.cgColor
     }
 
-    private func getBackgroundColor(_ newColorScheme: ColorScheme?) -> CGColor {
-        let preferredColorScheme = newColorScheme ?? colorScheme
-        let color = preferredColorScheme == .light ? STResourcesAsset.Colors.white : STResourcesAsset.Colors.dark0
-
-        return color.color.cgColor
+    private func getBackgroundColor(_ newColorScheme: ColorScheme) -> CGColor {
+        let backgroundColor = newColorScheme == .light ? STResourcesAsset.Colors.white : STResourcesAsset.Colors.dark0
+        return backgroundColor.color.cgColor
     }
 }
 

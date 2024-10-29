@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Ambroise Decouttere
- * Exported at: Wed, 23 Oct 2024 13:55:56 +0200
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 29 Oct 2024 15:10:40 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -42,6 +42,9 @@
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Heruntergeladene Übertragung : %d/%d";
+
+/* loco:6720ec444fa469071a050ee2 */
+"errorGeneratingQRCode" = "Unmöglich, den QR-Code zu generieren";
 
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Abgelaufen am %@";
