@@ -16,10 +16,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
+import InfomaniakCoreCommonUI
+import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+
+extension VerticalAlignment {
+    enum SplashScreenIconAlignment: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            return context[VerticalAlignment.center]
+        }
+    }
+
+    enum SplashScreenInfomaniakAlignment: AlignmentID {
+        static func defaultValue(in context: ViewDimensions) -> CGFloat {
+            return context[VerticalAlignment.bottom]
+        }
+    }
+
+    static let splashScreenIconAlignment = VerticalAlignment(SplashScreenIconAlignment.self)
+    static let splashScreenInfomaniakAlignment = VerticalAlignment(SplashScreenInfomaniakAlignment.self)
+}
 
 struct PreloadingView: View {
     @LazyInjectService private var accountManager: AccountManager
@@ -27,14 +48,32 @@ struct PreloadingView: View {
     @EnvironmentObject private var rootViewState: RootViewState
 
     var body: some View {
-        ProgressView()
-            .task {
-                if let currentManager = await accountManager.getCurrentManager() {
-                    rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
-                } else {
-                    rootViewState.state = .onboarding
-                }
+        ZStack(alignment: Alignment(horizontal: .center, vertical: .splashScreenIconAlignment)) {
+            Color.green.edgesIgnoringSafeArea(.all)
+
+            VStack(spacing: IKPadding.large) {
+                STRootViewAsset.splashscreenSwisstransfer.swiftUIImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 156)
+                    .alignmentGuide(.splashScreenIconAlignment) { d in d[VerticalAlignment.center] }
+
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .tint(STResourcesAsset.Colors.white.swiftUIColor)
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            STRootViewAsset.splashscreenInfomaniak.swiftUIImage
+                .padding(.bottom, value: .medium)
+        }
+        .task {
+            if let currentManager = await accountManager.getCurrentManager() {
+                rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+            } else {
+                rootViewState.state = .onboarding
+            }
+        }
     }
 }
 
