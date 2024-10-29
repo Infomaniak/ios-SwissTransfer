@@ -53,33 +53,26 @@ struct SuccessfulLinkTransferView: View {
         .padding(.horizontal, value: .medium)
         .padding(.vertical, value: .large)
         .scrollableEmptyState()
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            VStack(spacing: IKPadding.medium) {
-                HStack(spacing: IKPadding.medium) {
-                    ShareLink(item: url) {
-                        Label {
-                            Text(STResourcesStrings.Localizable.buttonShare)
-                        } icon: {
-                            STResourcesAsset.Images.personBadgeShare.swiftUIImage
-                        }
-                        .labelStyle(.verticalButton)
+        .safeAreaButtons {
+            HStack(spacing: IKPadding.medium) {
+                ShareLink(item: url) {
+                    Label {
+                        Text(STResourcesStrings.Localizable.buttonShare)
+                    } icon: {
+                        STResourcesAsset.Images.personBadgeShare.swiftUIImage
                     }
-
-                    CopyToClipboardButton(url: url)
+                    .labelStyle(.verticalButton)
                 }
-                .buttonStyle(.ikBordered)
-                .ikButtonFullWidth(true)
-                .frame(maxWidth: IKButtonConstants.maxWidth)
 
-                Button(action: dismiss) {
-                    Text(STResourcesStrings.Localizable.buttonFinished)
-                }
-                .buttonStyle(.ikBorderedProminent)
+                CopyToClipboardButton(url: url)
             }
-            .ikButtonFullWidth(true)
-            .controlSize(.large)
-            .padding(value: .medium)
-            .background(Color.ST.background)
+            .buttonStyle(.ikBordered)
+            .frame(maxWidth: IKButtonConstants.maxWidth)
+
+            Button(action: dismiss) {
+                Text(STResourcesStrings.Localizable.buttonFinished)
+            }
+            .buttonStyle(.ikBorderedProminent)
         }
     }
 

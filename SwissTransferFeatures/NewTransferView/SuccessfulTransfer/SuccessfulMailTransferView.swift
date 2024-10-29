@@ -44,14 +44,11 @@ struct SuccessfulMailTransferView: View {
             .frame(maxWidth: 800)
         }
         .scrollableEmptyState()
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaButtons {
             Button(action: dismiss) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
-            .ikButtonFullWidth(true)
-            .controlSize(.large)
-            .padding(value: .medium)
         }
     }
 }
