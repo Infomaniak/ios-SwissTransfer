@@ -16,21 +16,25 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
-import STRootView
-import SwiftUI
-import SwissTransferCore
+import Sentry
 
-@main
-struct SwissTransferApp: App {
-    private let sentryService = SentryService()
-    private let dependencyInjectionHook = TargetAssembly()
+/// Init this structure to startup SentrySDK
+public struct SentryService {
+    public init() {
+        initSentry()
+    }
 
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .tint(.ST.primary)
-                .detectCompactWindow()
+    private func initSentry() {
+        SentrySDK.start { options in
+            options.dsn = "https://200ddb73d9c67f455b0e2d190016715b@sentry-mobile.infomaniak.com/20"
+            options.beforeSend = { event in
+                // if the application is in debug mode discard the events
+                #if DEBUG
+                return nil
+                #else
+                return event
+                #endif
+            }
         }
     }
 }
