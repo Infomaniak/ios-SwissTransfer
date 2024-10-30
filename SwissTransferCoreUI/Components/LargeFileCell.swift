@@ -23,14 +23,13 @@ import SwiftUI
 import SwissTransferCore
 
 public struct LargeFileCell: View {
+    @State private var largeThumbnail: Image?
+
     private let fileName: String
     private let fileSize: Int64
     private let url: URL?
-
     private let removeAction: (() -> Void)?
-
     private let icon: Image
-    @State private var largeThumbnail: Image?
 
     public init(fileName: String, fileSize: Int64, url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
         self.fileName = fileName

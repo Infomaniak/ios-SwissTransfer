@@ -33,7 +33,7 @@ public struct AddFilesMenuView<Content: View>: View {
     private let completion: ([URL]) -> Void
     private let label: Content
 
-    public init(completion: @escaping ([URL]) -> Void, @ViewBuilder label: @escaping () -> Content) {
+    public init(completion: @escaping ([URL]) -> Void, @ViewBuilder label: () -> Content) {
         self.completion = completion
         self.label = label()
     }
