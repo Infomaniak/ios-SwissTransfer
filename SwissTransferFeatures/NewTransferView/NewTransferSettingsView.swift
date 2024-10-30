@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -24,7 +25,7 @@ import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
     @State private var duration = ValiditySetting.day30
-    @State private var limit = DownloadLimitSetting.limit250
+    @State private var limit = DownloadLimit.twoHundredFifty
     @State private var language: TransferLanguageSetting = .fr
 
     @State private var showPasswordSetting = false
@@ -58,7 +59,7 @@ struct NewTransferSettingsView: View {
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                     icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
-                    value: limit.title
+                    value: limit.value
                 ) {
                     isShowingDownloadLimitSetting = true
                 }
@@ -66,7 +67,7 @@ struct NewTransferSettingsView: View {
                     isPresented: $isShowingDownloadLimitSetting,
                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit
                 ) {
-                    SettingSelectableList(DownloadLimitSetting.self, selected: limit) {
+                    SettingSelectableList(DownloadLimit.self, selected: limit) {
                         limit = $0
                     }
                 }

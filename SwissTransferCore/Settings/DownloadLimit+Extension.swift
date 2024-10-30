@@ -16,27 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
 
-public enum DownloadLimitSetting: SettingSelectable {
-    case limit1
-    case limit20
-    case limit100
-    case limit250
-
+extension DownloadLimit: SettingSelectable {
     public var title: String {
-        switch self {
-        case .limit1:
-            return "1"
-        case .limit20:
-            return "20"
-        case .limit100:
-            return "100"
-        case .limit250:
-            return "250"
-        }
+        return value
     }
 
-    public var icon: Image? { nil }
+    public var icon: Image? {
+        return nil
+    }
 }
