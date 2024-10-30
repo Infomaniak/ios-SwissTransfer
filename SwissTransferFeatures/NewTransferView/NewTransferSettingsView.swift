@@ -26,7 +26,7 @@ import SwissTransferCoreUI
 struct NewTransferSettingsView: View {
     @State private var duration = ValiditySetting.day30
     @State private var limit = DownloadLimit.twoHundredFifty
-    @State private var language: TransferLanguageSetting = .fr
+    @State private var language = EmailLanguage.french
 
     @State private var showPasswordSetting = false
     @State private var isShowingValiditySetting = false
@@ -92,7 +92,7 @@ struct NewTransferSettingsView: View {
                     isPresented: $isShowingLanguageSetting,
                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
                 ) {
-                    SettingSelectableList(TransferLanguageSetting.self, selected: language) {
+                    SettingSelectableList(EmailLanguage.self, selected: language) {
                         language = $0
                     }
                 }

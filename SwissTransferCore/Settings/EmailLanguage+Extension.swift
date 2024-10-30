@@ -16,33 +16,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
 
-public enum TransferLanguageSetting: SettingSelectable {
-    case en
-    case fr
-    case de
-    case it
-    case es
-
+extension EmailLanguage: SettingSelectable {
     public var title: String {
         switch self {
-        case .en: STResourcesStrings.Localizable.settingsEmailLanguageValueEnglish
-        case .fr: STResourcesStrings.Localizable.settingsEmailLanguageValueFrench
-        case .de: STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
-        case .it: STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
-        case .es: STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
+        case .english: STResourcesStrings.Localizable.settingsEmailLanguageValueEnglish
+        case .french: STResourcesStrings.Localizable.settingsEmailLanguageValueFrench
+        case .german: STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
+        case .italian: STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
+        case .spanish: STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
         }
     }
 
     public var icon: Image? {
         switch self {
-        case .en: STResourcesAsset.Images.flagEn.swiftUIImage
-        case .fr: STResourcesAsset.Images.flagFr.swiftUIImage
-        case .de: STResourcesAsset.Images.flagDe.swiftUIImage
-        case .it: STResourcesAsset.Images.flagIt.swiftUIImage
-        case .es: STResourcesAsset.Images.flagEs.swiftUIImage
+        case .english: STResourcesAsset.Images.flagEn.swiftUIImage
+        case .french: STResourcesAsset.Images.flagFr.swiftUIImage
+        case .german: STResourcesAsset.Images.flagDe.swiftUIImage
+        case .italian: STResourcesAsset.Images.flagIt.swiftUIImage
+        case .spanish: STResourcesAsset.Images.flagEs.swiftUIImage
         }
     }
 }
