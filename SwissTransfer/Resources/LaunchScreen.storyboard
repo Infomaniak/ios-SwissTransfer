@@ -4,8 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,39 +16,61 @@
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen-swisstransfer" translatesAutoresizingMaskIntoConstraints="NO" id="Ucg-dU-BSJ" userLabel="splashscreen-swisstransfer">
-                                <rect key="frame" x="142" y="400" width="156" height="156"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen-background" translatesAutoresizingMaskIntoConstraints="NO" id="2qQ-y8-J85">
+                                <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tDd-7D-iHq">
+                                <rect key="frame" x="0.0" y="62" width="440" height="764"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen-swisstransfer" translatesAutoresizingMaskIntoConstraints="NO" id="Ucg-dU-BSJ" userLabel="splashscreen-swisstransfer">
+                                        <rect key="frame" x="142" y="304" width="156" height="156"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="156" id="chP-kl-Bs2"/>
+                                            <constraint firstAttribute="width" secondItem="Ucg-dU-BSJ" secondAttribute="height" multiplier="1:1" id="dRk-wI-D0e"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <viewLayoutGuide key="safeArea" id="yfw-te-FVu"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="156" id="1io-wo-Xov"/>
-                                    <constraint firstAttribute="width" secondItem="Ucg-dU-BSJ" secondAttribute="height" multiplier="1:1" id="Tll-3n-mL2"/>
+                                    <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerY" secondItem="yfw-te-FVu" secondAttribute="centerY" id="LuA-R8-wQ9"/>
+                                    <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerX" secondItem="yfw-te-FVu" secondAttribute="centerX" id="Up8-Jw-Vcb"/>
+                                    <constraint firstItem="yfw-te-FVu" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ucg-dU-BSJ" secondAttribute="bottom" constant="16" id="gBp-EI-Sy8"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen-infomaniak" translatesAutoresizingMaskIntoConstraints="NO" id="Owd-z3-cKR" userLabel="splashscreen-infomaniak">
+                                <rect key="frame" x="120" y="826" width="200" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="h41-vP-6BO"/>
                                 </constraints>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen-infomaniak" translatesAutoresizingMaskIntoConstraints="NO" id="Owd-z3-cKR" userLabel="splashscreen-infomaniak">
-                                <rect key="frame" x="119.66666666666669" y="826" width="201" height="80"/>
-                            </imageView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                        <viewLayoutGuide key="safeArea" id="AnS-21-ChX"/>
+                        <color key="backgroundColor" name="White"/>
                         <constraints>
-                            <constraint firstItem="Owd-z3-cKR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Ucg-dU-BSJ" secondAttribute="bottom" constant="16" id="D3e-MJ-LnD"/>
-                            <constraint firstItem="Owd-z3-cKR" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="PlV-rO-Smm"/>
-                            <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="VgO-LS-y3b"/>
-                            <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="dNN-lp-9sV"/>
-                            <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="h1h-FV-VeB"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Owd-z3-cKR" secondAttribute="bottom" constant="16" id="zpk-wO-N4Y"/>
+                            <constraint firstItem="AnS-21-ChX" firstAttribute="trailing" secondItem="tDd-7D-iHq" secondAttribute="trailing" id="2h2-bj-Qiu"/>
+                            <constraint firstItem="Owd-z3-cKR" firstAttribute="centerX" secondItem="tDd-7D-iHq" secondAttribute="centerX" id="EXR-NL-ATa"/>
+                            <constraint firstItem="AnS-21-ChX" firstAttribute="top" secondItem="tDd-7D-iHq" secondAttribute="top" id="Pc2-K5-Y3z"/>
+                            <constraint firstAttribute="trailing" secondItem="2qQ-y8-J85" secondAttribute="trailing" id="Pii-jG-8zh"/>
+                            <constraint firstItem="tDd-7D-iHq" firstAttribute="leading" secondItem="AnS-21-ChX" secondAttribute="leading" id="VD3-cJ-jSm"/>
+                            <constraint firstItem="Owd-z3-cKR" firstAttribute="top" secondItem="tDd-7D-iHq" secondAttribute="bottom" id="Xlm-xm-bcG"/>
+                            <constraint firstItem="2qQ-y8-J85" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="lep-GI-plE"/>
+                            <constraint firstItem="2qQ-y8-J85" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="pvT-ur-2vA"/>
+                            <constraint firstItem="AnS-21-ChX" firstAttribute="bottom" secondItem="Owd-z3-cKR" secondAttribute="bottom" constant="16" id="rod-bg-pmv"/>
+                            <constraint firstAttribute="top" secondItem="2qQ-y8-J85" secondAttribute="top" id="yqc-yA-YUL"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.45454545454546" y="373.43096234309627"/>
+            <point key="canvasLocation" x="47.727272727272734" y="372.80334728033472"/>
         </scene>
     </scenes>
     <resources>
+        <image name="splashscreen-background" width="375" height="832"/>
         <image name="splashscreen-infomaniak" width="201" height="80"/>
         <image name="splashscreen-swisstransfer" width="157" height="156"/>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <namedColor name="White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

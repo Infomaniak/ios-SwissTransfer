@@ -42,7 +42,10 @@ struct PreloadingView: View {
 
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .splashScreenIconAlignment)) {
-            Color.green.edgesIgnoringSafeArea(.all)
+            STRootViewAsset.splashscreenBackground.swiftUIImage
+                .resizable()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
 
             VStack(spacing: IKPadding.large) {
                 STRootViewAsset.splashscreenSwisstransfer.swiftUIImage
@@ -56,7 +59,7 @@ struct PreloadingView: View {
                     .tint(STResourcesAsset.Colors.white.swiftUIColor)
             }
         }
-        .safeAreaInset(edge: .bottom) {
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             STRootViewAsset.splashscreenInfomaniak.swiftUIImage
                 .padding(.bottom, value: .medium)
         }
