@@ -37,31 +37,31 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
     public var body: some View {
         VStack(spacing: IKPadding.medium) {
             ForEach(items, id: \.self) { item in
-                VStack(spacing: IKPadding.medium) {
-                    HStack(spacing: IKPadding.medium) {
-                        Label {
-                            Text(item.title)
-                                .font(.ST.body)
-                                .foregroundStyle(Color.ST.textPrimary)
-                        } icon: {
-                            item.icon
+                Button {
+                    onSelection(item)
+                    dismiss()
+                } label: {
+                    VStack(spacing: IKPadding.medium) {
+                        HStack(spacing: IKPadding.medium) {
+                            Label {
+                                Text(item.title)
+                                    .font(.ST.body)
+                                    .foregroundStyle(Color.ST.textPrimary)
+                            } icon: {
+                                item.icon
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                            if selected == item {
+                                STResourcesAsset.Images.check.swiftUIImage
+                                    .foregroundStyle(Color.ST.primary)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                        if selected == item {
-                            STResourcesAsset.Images.check.swiftUIImage
-                                .foregroundStyle(Color.ST.primary)
+                        if item != items.last {
+                            DividerView()
                         }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(.rect)
-                    .onTapGesture {
-                        onSelection(item)
-                        dismiss()
-                    }
-
-                    if item != items.last {
-                        DividerView()
                     }
                 }
             }
