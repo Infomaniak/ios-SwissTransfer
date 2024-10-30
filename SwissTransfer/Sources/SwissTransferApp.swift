@@ -17,9 +17,11 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STRootView
 import SwiftUI
 import SwissTransferCore
+import OSLog
 
 @main
 struct SwissTransferApp: App {
@@ -31,6 +33,18 @@ struct SwissTransferApp: App {
             RootView()
                 .tint(.ST.primary)
                 .detectCompactWindow()
+                .onOpenURL(perform: handleURL)
+        }
+    }
+
+    func handleURL(_ url: URL) {
+        Task {
+            do {
+                try await UniversalLinkHandler().handleURL(url)
+            } catch {
+                Logger.view.error("Error while handling URL: \(error)")
+                // TODO: Maybe display snackbar ?
+            }
         }
     }
 }

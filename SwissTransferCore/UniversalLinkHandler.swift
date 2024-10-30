@@ -17,13 +17,20 @@
  */
 
 import Foundation
+import InfomaniakDI
 import OSLog
+import STCore
 
-extension Logger {
-    public static let view = Logger(category: "View")
-    public static let general = Logger(category: "general")
+public struct UniversalLinkHandler {
+    public init() {}
 
-    init(category: String) {
-        self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
+    public func handleURL(_ url: URL) async throws {
+        @InjectService var accountManager: AccountManager
+
+        guard let defaultTransferManager = await accountManager.getCurrentManager() else {
+            return
+        }
+
+        try await defaultTransferManager.addTransferByUrl(url: url.path)
     }
 }
