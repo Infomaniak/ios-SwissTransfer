@@ -109,7 +109,8 @@ let project = Project(
                     .external(name: "InfomaniakCoreUIKit"),
                     .external(name: "STCore"),
                     .external(name: "STNetwork"),
-                    .external(name: "STDatabase")
+                    .external(name: "STDatabase"),
+                    .external(name: "Sentry")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
