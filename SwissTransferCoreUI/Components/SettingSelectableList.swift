@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -71,5 +72,5 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 }
 
 #Preview {
-    SettingSelectableList(ValiditySetting.self, selected: .day1) { _ in }
+    SettingSelectableList(ValidityPeriod.self, selected: ValidityPeriod.one) { _ in }
 }

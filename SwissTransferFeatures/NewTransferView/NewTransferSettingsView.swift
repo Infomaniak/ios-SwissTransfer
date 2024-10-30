@@ -24,7 +24,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
-    @State private var duration = ValiditySetting.day30
+    @State private var duration = ValidityPeriod.thirty
     @State private var limit = DownloadLimit.twoHundredFifty
     @State private var language = EmailLanguage.french
 
@@ -51,7 +51,7 @@ struct NewTransferSettingsView: View {
                     isPresented: $isShowingValiditySetting,
                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod
                 ) {
-                    SettingSelectableList(ValiditySetting.self, selected: duration) {
+                    SettingSelectableList(ValidityPeriod.self, selected: duration) {
                         duration = $0
                     }
                 }

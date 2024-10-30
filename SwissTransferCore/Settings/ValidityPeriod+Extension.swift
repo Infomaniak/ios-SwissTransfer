@@ -17,24 +17,20 @@
  */
 
 import Foundation
+import STCore
 import STResources
 import SwiftUI
 
-public enum ValiditySetting: SettingSelectable {
-    case day1
-    case day7
-    case day15
-    case day30
-
+extension ValidityPeriod: SettingSelectable {
     public var title: String {
         switch self {
-        case .day1:
+        case .one:
             return STResourcesStrings.Localizable.settingsValidityPeriodValue(1)
-        case .day7:
+        case .seven:
             return STResourcesStrings.Localizable.settingsValidityPeriodValue(7)
-        case .day15:
+        case .fifteen:
             return STResourcesStrings.Localizable.settingsValidityPeriodValue(15)
-        case .day30:
+        case .thirty:
             return STResourcesStrings.Localizable.settingsValidityPeriodValue(30)
         }
     }
