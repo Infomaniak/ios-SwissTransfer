@@ -20,6 +20,7 @@ import InfomaniakCoreSwiftUI
 import STCore
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct TransferDetailsView: View {
     private let transfer: TransferUi
@@ -40,6 +41,7 @@ public struct TransferDetailsView: View {
             .padding(.vertical, value: .large)
             .padding(.horizontal, value: .medium)
         }
+        .appBackground()
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(transfer.name)

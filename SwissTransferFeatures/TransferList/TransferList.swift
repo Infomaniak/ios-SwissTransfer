@@ -46,6 +46,7 @@ public struct TransferList: View {
                     .padding(.top, value: .medium)
                     .listRowInsets(EdgeInsets(.zero))
                     .listRowSeparator(.hidden)
+                    .listRowBackground(Color.ST.background)
             }
 
             ForEach(viewModel.sections ?? []) { section in
@@ -65,7 +66,7 @@ public struct TransferList: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .background(Color.ST.background)
+        .appBackground()
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if !isCompactWindow {
