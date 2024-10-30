@@ -34,16 +34,16 @@ struct NewTransferTypeView: View {
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(TransferType.allCases, id: \.rawValue) { type in
-                        TransferTypeCell(type: type, isSelected: newTransferManager.transferType == type)
-                            .onTapGesture {
-                                withAnimation(.easeIn(duration: 0.1)) {
-                                    newTransferManager.transferType = type
-                                }
+                        Button {
+                            withAnimation(.easeIn(duration: 0.1)) {
+                                newTransferManager.transferType = type
                             }
+                        } label: {
+                            TransferTypeCell(type: type, isSelected: newTransferManager.transferType == type)
+                        }
                     }
                 }
                 .padding(.horizontal, value: .medium)
-                .padding(.vertical, 1)
             }
             .scrollIndicators(.hidden)
         }

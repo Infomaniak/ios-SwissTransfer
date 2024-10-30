@@ -79,7 +79,6 @@ struct FileListView: View {
                         }
                     }
                 }
-                .frame(maxHeight: .infinity, alignment: .top)
             }
             .padding(value: .medium)
         }
