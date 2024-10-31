@@ -2,10 +2,19 @@ retain_objc_accessible: true
 schemes:
 - SwissTransfer
 targets:
+- STMainView
+- STNewTransferView
+- STOnboardingView
+- STReceivedView
+- STResources
+- STRootView
+- STSentView
+- STSettingsView
+- STTransferDetailsView
+- STTransferList
+- STUploadProgressView
 - SwissTransfer
 - SwissTransferCore
 - SwissTransferCoreUI
-- SwissTransferResources
 - SwissTransferTests
-- SwissTransfer_SwissTransferResources
 workspace: SwissTransfer.xcworkspace
