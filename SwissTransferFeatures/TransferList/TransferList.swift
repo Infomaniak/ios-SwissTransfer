@@ -87,16 +87,3 @@ public struct TransferList<EmptyView: View>: View {
         }
     }
 }
-
-/*
- #Preview {
-     TransferList(
-         transfers: [
-             PreviewHelper.sampleTransfer,
-             PreviewHelper.sampleTransfer,
-             PreviewHelper.sampleOldTransfer,
-             PreviewHelper.sampleTransfer
-         ],
-         origin: .sent
-     )
- }*/
