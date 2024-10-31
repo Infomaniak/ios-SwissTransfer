@@ -18,6 +18,7 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 extension TransferType {

@@ -19,13 +19,13 @@
 import STResources
 import SwiftUI
 
-enum TransferType: String, CaseIterable {
+public enum TransferType: String, CaseIterable {
     case link
     case qrcode
     case proximity
     case mail
 
-    var title: String {
+    public var title: String {
         switch self {
         case .link:
             STResourcesStrings.Localizable.transferTypeLink
@@ -38,7 +38,7 @@ enum TransferType: String, CaseIterable {
         }
     }
 
-    var icon: Image {
+    public var icon: Image {
         switch self {
         case .link:
             STResourcesAsset.Images.hyperlink.swiftUIImage
