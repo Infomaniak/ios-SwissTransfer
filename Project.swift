@@ -28,7 +28,7 @@ let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, 
 
 let onboardingView = Feature(name: "OnboardingView")
 
-let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView])
+let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView], resources: ["SwissTransfer/Resources/Assets.xcassets"])
 
 let mainiOSAppFeatures = [
     rootView,
@@ -66,7 +66,7 @@ let project = Project(
             sources: "SwissTransfer/Sources/**",
             resources: [
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
-                "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon
+                "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon and LaunchScreen
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
             entitlements: "SwissTransferResources/SwissTransfer.entitlements",
