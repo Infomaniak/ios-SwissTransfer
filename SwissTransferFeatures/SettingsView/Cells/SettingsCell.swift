@@ -27,27 +27,26 @@ struct SettingsCell: View {
     let subtitle: String
     let leftIconAsset: STResourcesImages
     let rightIconAsset: STResourcesImages
-    let action: () -> Void // remove
 
     var body: some View {
-        Button(action: action) {
-            HStack(spacing: IKPadding.small) {
-                Image(asset: leftIconAsset)
-                    .iconSize(.large)
+        HStack(spacing: IKPadding.small) {
+            Image(asset: leftIconAsset)
+                .iconSize(.large)
 
-                VStack(alignment: .leading) {
-                    Text(title)
-                        .foregroundStyle(Color.ST.textPrimary)
-                        .font(.ST.headline)
-                    Text(subtitle)
-                        .foregroundStyle(Color.ST.textSecondary)
-                        .font(.ST.callout)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Image(asset: rightIconAsset)
-                    .iconSize(.large)
+            VStack(alignment: .leading) {
+                Text(title)
+                    .lineLimit(1)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .font(.ST.headline)
+                Text(subtitle)
+                    .lineLimit(1)
+                    .foregroundStyle(Color.ST.textSecondary)
+                    .font(.ST.callout)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(asset: rightIconAsset)
+                .iconSize(.large)
         }
     }
 }
@@ -55,20 +54,18 @@ struct SettingsCell: View {
 struct SingleLabelSettingsCell: View {
     let title: String
     let rightIconAsset: STResourcesImages
-    let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            HStack {
-                Text(title)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .font(.ST.headline)
+        HStack(spacing: IKPadding.small) {
+            Text(title)
+                .lineLimit(1)
+                .foregroundStyle(Color.ST.textPrimary)
+                .font(.ST.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer()
-                Image(asset: rightIconAsset)
-                    .iconSize(.large)
-                    .padding(.trailing, value: .small)
-            }
+            Image(asset: rightIconAsset)
+                .iconSize(.large)
+                .padding(.trailing, value: .small)
         }
     }
 }
@@ -76,19 +73,16 @@ struct SingleLabelSettingsCell: View {
 struct AboutSettingsCell: View {
     let title: String
     let subtitle: String
-    let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(title)
-                        .foregroundStyle(Color.ST.textPrimary)
-                        .font(.ST.headline)
-                    Text(subtitle)
-                        .foregroundStyle(Color.ST.textSecondary)
-                        .font(.ST.callout)
-                }
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .font(.ST.headline)
+                Text(subtitle)
+                    .foregroundStyle(Color.ST.textSecondary)
+                    .font(.ST.callout)
             }
         }
     }

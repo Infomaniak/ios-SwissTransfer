@@ -34,67 +34,52 @@ public struct SettingsView: View {
     }
 
     public var body: some View {
-        // no DividerView() for now …
         List {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
-                SettingsCell(title: "Thème",
-                             subtitle: "clear",
+                SettingsCell(title: STResourcesStrings.Localizable.settingsThemeTitle,
+                             subtitle: STResourcesStrings.Localizable.settingsOptionThemeLight,
                              leftIconAsset: STResourcesAsset.Images.brush,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
-                    print("coucou")
-                }
-                SettingsCell(title: "Notifications",
+                             rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+                SettingsCell(title: STResourcesStrings.Localizable.settingsNotificationsTitle,
                              subtitle: "Tout recevoir",
                              leftIconAsset: STResourcesAsset.Images.bell,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
-                    print("coucou")
-                }
+                             rightIconAsset: STResourcesAsset.Images.chevronRight)
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
-                SettingsCell(title: "Durée de validité",
+                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                              subtitle: "30 jours",
                              leftIconAsset: STResourcesAsset.Images.clock,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
-                    print("coucou")
-                }
-                SettingsCell(title: "Limite de téléchargements",
+                             rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+                SettingsCell(title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
                              subtitle: "250",
                              leftIconAsset: STResourcesAsset.Images.fileDownload,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
-                    print("coucou")
-                }
-                SettingsCell(title: "Language du mail",
-                             subtitle: "French saucisse",
+                             rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+                SettingsCell(title: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
+                             subtitle: "Frouze",
                              leftIconAsset: STResourcesAsset.Images.bubble,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
-                    print("coucou")
-                }
+                             rightIconAsset: STResourcesAsset.Images.chevronRight)
             }
 
-            Section(header: Text("Gestion des données")) {
-                SingleLabelSettingsCell(title: "Gestion des données",
-                                        rightIconAsset: STResourcesAsset.Images.chevronRight) {
-                    print("coucou")
-                }
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
+                                        rightIconAsset: STResourcesAsset.Images.chevronRight)
             }
 
-            Section(header: Text("A propos")) {
-                SingleLabelSettingsCell(title: "Decouverte infomaniak",
-                                        rightIconAsset: STResourcesAsset.Images.export) {
-                    print("coucou")
-                }
-                SingleLabelSettingsCell(title: "Partage test idées",
-                                        rightIconAsset: STResourcesAsset.Images.export) {
-                    print("coucou")
-                }
-                SingleLabelSettingsCell(title: "Donne ton avis",
-                                        rightIconAsset: STResourcesAsset.Images.export) {
-                    print("coucou")
-                }
-                AboutSettingsCell(title: "Version", subtitle: "4.20") {
-                    print("coucou")
-                }
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
+                                        rightIconAsset: STResourcesAsset.Images.export)
+
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
+                                        rightIconAsset: STResourcesAsset.Images.export)
+
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                        rightIconAsset: STResourcesAsset.Images.export)
+
+                AboutSettingsCell(title: STResourcesStrings.Localizable.version, subtitle: "4.20")
             }
 
             Section(header: Text("demo")) {
