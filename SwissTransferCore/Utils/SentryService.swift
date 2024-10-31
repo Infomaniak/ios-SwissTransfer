@@ -18,7 +18,6 @@
 
 import Sentry
 
-/// Init this structure to startup SentrySDK
 public struct SentryService {
     public init() {
         initSentry()
