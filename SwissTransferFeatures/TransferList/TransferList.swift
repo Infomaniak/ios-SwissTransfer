@@ -23,7 +23,7 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-public struct TransferList: View {
+public struct TransferList<EmptyView: View>: View {
     @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var mainViewState: MainViewState
 
@@ -31,9 +31,12 @@ public struct TransferList: View {
 
     private let origin: TransferOrigin
 
-    public init(transfers: [TransferUi], origin: TransferOrigin) {
-        _viewModel = StateObject(wrappedValue: TransferListViewModel(transfers: transfers))
+    public let emptyView: EmptyView?
+
+    public init(transferManager: TransferManager, origin: TransferOrigin, @ViewBuilder emptyView: () -> EmptyView) {
+        _viewModel = StateObject(wrappedValue: TransferListViewModel(transferManager: transferManager, transferOrigin: origin))
         self.origin = origin
+        self.emptyView = emptyView()
     }
 
     public var body: some View {
@@ -76,17 +79,11 @@ public struct TransferList: View {
                 }
             }
         }
+        .overlay {
+            if viewModel.sections?.isEmpty == true,
+               let emptyView {
+                emptyView
+            }
+        }
     }
-}
-
-#Preview {
-    TransferList(
-        transfers: [
-            PreviewHelper.sampleTransfer,
-            PreviewHelper.sampleTransfer,
-            PreviewHelper.sampleOldTransfer,
-            PreviewHelper.sampleTransfer
-        ],
-        origin: .sent
-    )
 }
