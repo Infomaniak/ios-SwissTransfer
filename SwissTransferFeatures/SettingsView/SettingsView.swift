@@ -18,8 +18,10 @@
 
 import InfomaniakDI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct SettingsView: View {
     @LazyInjectService var settingsManager: AppSettingsManager
@@ -32,19 +34,84 @@ public struct SettingsView: View {
     }
 
     public var body: some View {
-        VStack {
-            Text("SettingsView")
-            if let appSettings = appSettings.value {
-                Text(appSettings.theme.name)
+        // no DividerView() for now …
+        List {
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
+                SettingsCell(title: "Thème",
+                             subtitle: "clear",
+                             leftIconAsset: STResourcesAsset.Images.brush,
+                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
+                    print("coucou")
+                }
+                SettingsCell(title: "Notifications",
+                             subtitle: "Tout recevoir",
+                             leftIconAsset: STResourcesAsset.Images.bell,
+                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
+                    print("coucou")
+                }
             }
-            Button("Toggle") {
-                Task {
-                    if let appSettings = appSettings.value {
-                        try? await settingsManager.setTheme(theme: appSettings.theme == .dark ? .light : .dark)
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
+                SettingsCell(title: "Durée de validité",
+                             subtitle: "30 jours",
+                             leftIconAsset: STResourcesAsset.Images.clock,
+                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
+                    print("coucou")
+                }
+                SettingsCell(title: "Limite de téléchargements",
+                             subtitle: "250",
+                             leftIconAsset: STResourcesAsset.Images.fileDownload,
+                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
+                    print("coucou")
+                }
+                SettingsCell(title: "Language du mail",
+                             subtitle: "French saucisse",
+                             leftIconAsset: STResourcesAsset.Images.bubble,
+                             rightIconAsset: STResourcesAsset.Images.chevronRight) {
+                    print("coucou")
+                }
+            }
+
+            Section(header: Text("Gestion des données")) {
+                SingleLabelSettingsCell(title: "Gestion des données",
+                                        rightIconAsset: STResourcesAsset.Images.chevronRight) {
+                    print("coucou")
+                }
+            }
+
+            Section(header: Text("A propos")) {
+                SingleLabelSettingsCell(title: "Decouverte infomaniak",
+                                        rightIconAsset: STResourcesAsset.Images.export) {
+                    print("coucou")
+                }
+                SingleLabelSettingsCell(title: "Partage test idées",
+                                        rightIconAsset: STResourcesAsset.Images.export) {
+                    print("coucou")
+                }
+                SingleLabelSettingsCell(title: "Donne ton avis",
+                                        rightIconAsset: STResourcesAsset.Images.export) {
+                    print("coucou")
+                }
+                AboutSettingsCell(title: "Version", subtitle: "4.20") {
+                    print("coucou")
+                }
+            }
+
+            Section(header: Text("demo")) {
+                Text("SettingsView")
+                if let appSettings = appSettings.value {
+                    Text(appSettings.theme.name)
+                }
+                Button("Toggle") {
+                    Task {
+                        if let appSettings = appSettings.value {
+                            try? await settingsManager.setTheme(theme: appSettings.theme == .dark ? .light : .dark)
+                        }
                     }
                 }
             }
         }
+        .listStyle(.insetGrouped)
     }
 }
 
