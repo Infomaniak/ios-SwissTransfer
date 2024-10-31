@@ -3,9 +3,12 @@
  * Project: SwissTransfer
  * Locale: it, Italian
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Mon, 30 Sep 2024 15:10:04 +0200
+ * Exported by: Adrien Coye
+ * Exported at: Thu, 31 Oct 2024 11:21:00 +0100
  */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Impostazioni avanzate";
 
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Aggiunta di file";
@@ -64,14 +67,26 @@
 /* loco:669f755c502e59a518017423 */
 "sentTitle" = "Inviato a";
 
+/* loco:670e22c9e91567b93601c852 */
+"settingsAuthorizeTracking" = "Autorizza il tracciamento";
+
 /* loco:66c3345d68555c9cec08bd35 */
 "settingsCategoryAbout" = "Chi siamo";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Dati e privacy";
 
 /* loco:66c33433d8cdb0aeb6003082 */
 "settingsCategoryDefaultSettings" = "Impostazioni predefinite";
 
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "Generale";
+
+/* loco:6708e556a393fdf47d05e272 */
+"settingsDataManagementDescription" = "È possibile personalizzare i dati di utilizzo e operativi che Infomaniak recupera per correggere i bug e migliorare l’applicazione. Entrambi gli strumenti sono ospitati e gestiti esclusivamente da noi.\n\nInfomaniak rispetta la vostra privacy: il codice sorgente di questa applicazione può essere verificato, le informazioni raccolte sono anonime e i vostri dati personali rimangono strettamente confidenziali e non vengono mai condivisi con terze parti.";
+
+/* loco:6708fc46d154f71d5501a3d5 */
+"settingsDataManagementSourceCode" = "Vedi il codice sorgente";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Impostare un limite di download predefinito per i trasferimenti";
@@ -94,8 +109,17 @@
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Spagnolo";
 
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Matomo è uno strumento di analisi ospitato e gestito esclusivamente da Infomaniak per capire come viene utilizzata l’applicazione.\n\nStudiando questi dati, il nostro team è in grado di migliorare continuamente l’interfaccia dell’applicazione.";
+
 /* loco:66c57e1cac4c61d2dd0c8f12 */
 "settingsNotificationsTitle" = "Seleziona una preferenza";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Attivato";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Gestione dei dati";
 
 /* loco:66c3355378e62c3f0d0a4672 */
 "settingsOptionDiscoverInfomaniak" = "Scopri Infomaniak";
@@ -107,10 +131,16 @@
 "settingsOptionEmailLanguage" = "Lingua della posta elettronica";
 
 /* loco:66c336f6f7bdfdc4d900cd12 */
-"settingsOptionGiveFeedback" = "Di' la tua";
+"settingsOptionGiveFeedback" = "Di’ la tua";
+
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Nessuno";
 
 /* loco:66c334b41bd6706567037508 */
 "settingsOptionNotifications" = "Notifiche";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Password";
 
 /* loco:66c3356b79627944d00efd88 */
 "settingsOptionShareIdeas" = "Condividi le tue idee";
@@ -129,6 +159,18 @@
 
 /* loco:66c334f8fe4641955405f122 */
 "settingsOptionValidityPeriod" = "Periodo di validità";
+
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "I destinatari dovranno inserire la password per scaricare i file.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Proteggere il trasferimento con una password";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Attivare la protezione";
+
+/* loco:670e0d7654540016f4096dc2 */
+"settingsSentryDescription" = "Sentry è uno strumento ospitato e gestito esclusivamente da Infomaniak per monitorare la stabilità dell’applicazione in tempo reale e segnalare automaticamente eventuali errori tecnici ai nostri sviluppatori.\n\nQuesti dati consentono al nostro team di correggere e ottimizzare rapidamente l’applicazione, migliorando l’esperienza dell’utente.";
 
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Seleziona un tema";

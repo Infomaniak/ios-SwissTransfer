@@ -3,12 +3,18 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Mon, 30 Sep 2024 15:10:04 +0200
+ * Exported by: Adrien Coye
+ * Exported at: Thu, 31 Oct 2024 11:21:00 +0100
  */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Erweiterte Einstellungen";
 
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Dateien hinzufügen";
+
+/* loco:67220015101b3de12b0f1f82 */
+"buttonDownload" = "Download";
 
 /* loco:66bf171580717241110432a2 */
 "buttonNext" = "Weiter zu";
@@ -64,14 +70,26 @@
 /* loco:669f755c502e59a518017423 */
 "sentTitle" = "Gesendet";
 
+/* loco:670e22c9e91567b93601c852 */
+"settingsAuthorizeTracking" = "Verfolgung genehmigen";
+
 /* loco:66c3345d68555c9cec08bd35 */
 "settingsCategoryAbout" = "Über";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Daten & Datenschutz";
 
 /* loco:66c33433d8cdb0aeb6003082 */
 "settingsCategoryDefaultSettings" = "Standardeinstellungen";
 
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "General";
+
+/* loco:6708e556a393fdf47d05e272 */
+"settingsDataManagementDescription" = "Sie können die Nutzungs- und Betriebsdaten, die Infomaniak abruft, individuell anpassen, um Fehler zu beheben und die Anwendung zu verbessern. Beide Tools werden ausschliesslich von uns gehostet und verwaltet.\n\nInfomaniak respektiert Ihre Privatsphäre: Der Quellcode dieser Anwendung kann überprüft werden, die gesammelten Informationen sind anonym und Ihre persönlichen Daten werden streng vertraulich behandelt und niemals an Dritte weitergegeben.";
+
+/* loco:6708fc46d154f71d5501a3d5 */
+"settingsDataManagementSourceCode" = "Siehe Quellcode";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Lege ein Standardlimit für deine Uploads fest";
@@ -94,8 +112,17 @@
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Spanisch";
 
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Matomo ist ein Analysetool, das ausschliesslich von Infomaniak gehostet und verwaltet wird, um zu verstehen, wie die Anwendung genutzt wird.\n\nDurch die Untersuchung dieser Daten kann unser Team die Schnittstelle der Anwendung kontinuierlich verbessern.";
+
 /* loco:66c57e1cac4c61d2dd0c8f12 */
 "settingsNotificationsTitle" = "Wählt eine Präferenz aus";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Aktiviert";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Verwaltung der Daten";
 
 /* loco:66c3355378e62c3f0d0a4672 */
 "settingsOptionDiscoverInfomaniak" = "Entdecke Infomaniak";
@@ -109,8 +136,14 @@
 /* loco:66c336f6f7bdfdc4d900cd12 */
 "settingsOptionGiveFeedback" = "Gib deine Meinung ab";
 
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Keine";
+
 /* loco:66c334b41bd6706567037508 */
 "settingsOptionNotifications" = "Benachrichtigungen";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Passwort";
 
 /* loco:66c3356b79627944d00efd88 */
 "settingsOptionShareIdeas" = "Teile deine Ideen";
@@ -129,6 +162,18 @@
 
 /* loco:66c334f8fe4641955405f122 */
 "settingsOptionValidityPeriod" = "Dauer der Gültigkeit";
+
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "Deine Empfänger müssen das Passwort eingeben, um die Dateien herunterzuladen.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Schütze deine Übertragung mit einem Passwort";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Schutz aktivieren";
+
+/* loco:670e0d7654540016f4096dc2 */
+"settingsSentryDescription" = "Sentry ist ein Tool, das ausschliesslich von Infomaniak gehostet und verwaltet wird, um die Stabilität der Anwendung in Echtzeit zu überwachen und unseren Entwicklern automatisch alle technischen Fehler zu melden.\n\nAnhand dieser Daten kann unser Team die Anwendung schnell korrigieren und optimieren, was zu einem besseren Nutzererlebnis für Sie führt.";
 
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Wähle ein Thema aus";
