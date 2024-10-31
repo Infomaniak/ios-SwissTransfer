@@ -67,8 +67,8 @@
     </scenes>
     <resources>
         <image name="splashscreen-background" width="375" height="832"/>
-        <image name="splashscreen-infomaniak" width="201" height="80"/>
-        <image name="splashscreen-swisstransfer" width="157" height="156"/>
+        <image name="splashscreen-infomaniak" width="200" height="80"/>
+        <image name="splashscreen-swisstransfer" width="156" height="156"/>
         <namedColor name="White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
