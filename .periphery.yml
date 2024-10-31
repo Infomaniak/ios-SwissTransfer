@@ -12,7 +12,6 @@ targets:
 - STSettingsView
 - STTransferDetailsView
 - STTransferList
-- STUploadProgressView
 - SwissTransfer
 - SwissTransferCore
 - SwissTransferCoreUI
