@@ -17,20 +17,26 @@
  */
 
 import Foundation
-import InfomaniakDI
-import OSLog
-import STCore
 
-public struct UniversalLinkHandler {
-    public init() {}
+public struct UserFacingError: LocalizedError {
+    public let errorDescription: String?
+    public let failureReason: String?
+    public let helpAnchor: String?
+    public let recoverySuggestion: String?
 
-    public func handlePossibleTransferURL(_ url: URL) async throws {
-        @InjectService var accountManager: AccountManager
-
-        guard let defaultTransferManager = await accountManager.getCurrentManager() else {
-            return
-        }
-
-        try await defaultTransferManager.addTransferByUrl(url: url.path)
+    public init(
+        errorDescription: String?,
+        failureReason: String? = nil,
+        helpAnchor: String? = nil,
+        recoverySuggestion: String? = nil
+    ) {
+        self.errorDescription = errorDescription
+        self.failureReason = failureReason
+        self.helpAnchor = helpAnchor
+        self.recoverySuggestion = recoverySuggestion
     }
+}
+
+public extension UserFacingError {
+    static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
 }
