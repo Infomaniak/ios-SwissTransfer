@@ -42,6 +42,11 @@ public struct UploadProgressView: View {
             Task {
                 do {
                     let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+
+                    // FIXME: Remove next two lines waiting for virus check
+                    try await Task.sleep(for: .seconds(2))
+                    try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+
                     guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
                         fatalError("Couldn't find transfer")
                     }
