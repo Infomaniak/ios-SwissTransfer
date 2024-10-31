@@ -20,7 +20,7 @@ let uploadProgressView = Feature(name: "UploadProgressView")
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView, transferList])
-let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList, newTransferView])
 
 let settingsView = Feature(name: "SettingsView")
 
@@ -69,6 +69,7 @@ let project = Project(
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
+            entitlements: "SwissTransferResources/SwissTransfer.entitlements",
             scripts: [Constants.swiftlintScript],
             dependencies: [
                 .target(name: "SwissTransferCore"),

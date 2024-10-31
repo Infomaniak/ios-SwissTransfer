@@ -3,21 +3,39 @@
  * Project: SwissTransfer
  * Locale: fr, French
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Mon, 30 Sep 2024 15:10:04 +0200
+ * Exported by: Ambroise Decouttere
+ * Exported at: Wed, 23 Oct 2024 13:55:56 +0200
  */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Paramètres avancés";
 
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Ajouter des fichiers";
 
+/* loco:6707f83845c44bad7f0d7805 */
+"buttonConfirm" = "Confirmer";
+
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Copier le lien";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Terminer";
+
 /* loco:66bf171580717241110432a2 */
 "buttonNext" = "Suivant";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Partager";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Retour";
 
 /* loco:66c5b8e29f9df1eb920ef483 */
 "contentDescriptionButtonClose" = "Fermer";
+
+/* loco:66ed1facfdf04647c80a0482 */
+"contentDescriptionButtonRemove" = "Supprimer le fichier";
 
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Nouveau transfert";
@@ -31,6 +49,15 @@
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expire dans %d jours";
 
+/* loco:66cecf7d39d10277c00c3102 */
+"filesCount" = "%d fichier";
+
+/* loco:6707db753b5b9ca70b07ef42 */
+"filesCount-plural" = "%d fichiers";
+
+/* loco:67120291a1c637c0cc0d0242 */
+"filesCount-plural-many" = "% de fichiers";
+
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Fais ton premier transfert !";
 
@@ -40,8 +67,32 @@
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Fichiers à transférer";
 
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"importScreenTransferMessage" = "Un message à faire passer ? ";
+
+/* loco:6718e05f447ba2f97f0539f2 */
+"importScreenTransferTitle" = "Donnes un titre à ton transfert";
+
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Message :";
+
+/* loco:6707f351b85d3276c70621e2 */
+"messagePlaceholder" = "Un message à faire passer ?";
+
+/* loco:6707f41e004c1612f407fae2 */
+"myFilesTitle" = "Mes fichiers";
+
+/* loco:66e980bf4e282a19d208a9b2 */
+"noFileDescription" = "Ajoute jusqu’à 50 Go de fichiers";
+
+/* loco:66e980b10ccf751d4a0910a1 */
+"noFileTitle" = "Pas de fichier, pas de transfert !";
+
+/* loco:66d00a919c37e358f5081dd2 */
+"noTransferReceivedDescription" = "Tous les transferts que tu recevras sur les 30 derniers jours apparaitront ici.";
+
+/* loco:66d009adae0a00bb3c011352 */
+"noTransferReceivedTitle" = "Aucun transfert reçu";
 
 /* loco:66fa5ce7eb184f21290154a2 */
 "receivedFilesTitle" = "Fichiers reçus";
@@ -55,6 +106,12 @@
 /* loco:66a765a7ec41ffa0250df2d3 */
 "recipientHeader-plural" = "Destinataires :";
 
+/* loco:6707f2a5535a86d2220b6ea2 */
+"recipientMailAddressPlaceholder" = "Envoyer les fichiers à";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"senderMailAddressPlaceholder" = "Ton adresse mail";
+
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "Notre histoire commence ici";
 
@@ -64,14 +121,26 @@
 /* loco:669f755c502e59a518017423 */
 "sentTitle" = "Envoyé";
 
+/* loco:670e22c9e91567b93601c852 */
+"settingsAuthorizeTracking" = "Autoriser le suivi";
+
 /* loco:66c3345d68555c9cec08bd35 */
 "settingsCategoryAbout" = "A propos";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Données & Confidentialité";
 
 /* loco:66c33433d8cdb0aeb6003082 */
 "settingsCategoryDefaultSettings" = "Paramètres par défaut";
 
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "Général";
+
+/* loco:6708e556a393fdf47d05e272 */
+"settingsDataManagementDescription" = "Vous pouvez personnaliser les données d’utilisation et opérationnelles qui sont récupérées par Infomaniak pour corriger des bugs et faire évoluer l’application. Les deux outils utilisés sont hébergés et gérés exclusivement chez nous.\n\nInfomaniak respecte votre vie privée : le code source de cette application peut être vérifié, les informations récoltées sont anonymes et vos informations personnelles restent strictement confidentielles et ne sont jamais partagées avec des tiers.";
+
+/* loco:6708fc46d154f71d5501a3d5 */
+"settingsDataManagementSourceCode" = "Voir le code source";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Défini une limite de téléchargements par défaut pour tes transferts";
@@ -94,8 +163,17 @@
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Espagnol";
 
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Matomo est un outil d’analyse hébergé et géré exclusivement par Infomaniak pour comprendre comment l’application est utilisée.\n\nL’étude de ces données permet à notre équipe d’améliorer en continue l’interface de l’application.";
+
 /* loco:66c57e1cac4c61d2dd0c8f12 */
 "settingsNotificationsTitle" = "Sélectionne une préférence";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Activé";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Gestion des données";
 
 /* loco:66c3355378e62c3f0d0a4672 */
 "settingsOptionDiscoverInfomaniak" = "Découvre Infomaniak";
@@ -109,8 +187,14 @@
 /* loco:66c336f6f7bdfdc4d900cd12 */
 "settingsOptionGiveFeedback" = "Donne ton avis";
 
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Aucun";
+
 /* loco:66c334b41bd6706567037508 */
 "settingsOptionNotifications" = "Notifications";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Mot de passe";
 
 /* loco:66c3356b79627944d00efd88 */
 "settingsOptionShareIdeas" = "Partage tes idées";
@@ -130,6 +214,18 @@
 /* loco:66c334f8fe4641955405f122 */
 "settingsOptionValidityPeriod" = "Durée de validité";
 
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "Tes destinataires devront saisir le mot de passe pour télécharger les fichiers.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Protèges ton transfert avec un mot de passe";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Activer la protection";
+
+/* loco:670e0d7654540016f4096dc2 */
+"settingsSentryDescription" = "Sentry est un outil hébergé et géré exclusivement par Infomaniak pour surveiller en temps réel la stabilité de l’application et signaler automatiquement d’éventuelles erreurs techniques à nos développeurs.\n\nCes données permettent à notre équipe de rapidement corriger et optimiser l’application, ce qui se traduit par une meilleure expérience d’utilisation pour vous.";
+
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Sélectionne un thème";
 
@@ -144,6 +240,9 @@
 
 /* loco:66c58d32b754b5821b0b2c22 */
 "settingsValidityPeriodValue-plural" = "%d jours";
+
+/* loco:6718df9028c2ea33b001c522 */
+"textFieldOptional" = "(Facultatif)";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenu du transfert :";
@@ -162,6 +261,18 @@
 
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Hier";
+
+/* loco:6707d903f6f42e03b90b8632 */
+"transferSendButton" = "Envoyer";
+
+/* loco:6707e02b8a6e1328f2054d62 */
+"transferSpaceLeft" = "%@ restant";
+
+/* loco:6707e09639f0b3f32007d2e2 */
+"transferSpaceLeft-plural" = "%@ restants";
+
+/* loco:6712085058c0880751095f72 */
+"transferSpaceLeft-plural-many" = "%@ restant";
 
 /* loco:66c4aa7762a79eb6a60eaba2 */
 "transferTypeEmail" = "E-mail";
@@ -190,11 +301,38 @@
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galerie photos et vidéos";
 
-/* loco:66c2f735030026d03d0abe24 */
-"transferUploadSourceChoiceTitle" = "Télécharger à partir de";
+/* loco:670f50568faef3642e0316d2 */
+"uploadSuccessEmailDescription" = "Le lien de téléchargement a bien été envoyé au destinataire suivant :";
+
+/* loco:6718bd5a1e9716eeff066f12 */
+"uploadSuccessEmailDescription-plural" = "Le lien de téléchargement a été envoyé aux destinataires suivants :";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "Hop c’est envoyé !";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Fais scanner ce QR code autour de toi pour partager tes fichiers ou copie le lien ci-dessous.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Ton transfert est prêt !";
+
+/* loco:670f6b6c056567b8060089e2 */
+"uploadSuccessQrTitle" = "Ton QR code est prêt !";
 
 /* loco:66c5ef9c409f7ef5ca058e34 */
 "urlAbout" = "https://www.infomaniak.com/fr/a-propos";
+
+/* loco:6707f8d793cc933d520740f4 */
+"validateMailCodeIncorrectError" = "Le code saisie est incorrect";
+
+/* loco:6707f975b37970cb7704b0c2 */
+"validateMailDescription" = "On a envoyé un code à %@. Saisi le ci-dessous pour faire vérifier ton adresse mail dans l’app :";
+
+/* loco:6707f9d6c8a673d44f0035f2 */
+"validateMailInfo" = "Pense à vérifier le dossier spam de ton adresse mail.";
+
+/* loco:6707f9ac045804ab200b44f2 */
+"validateMailTitle" = "Vérifie ton e-mail";
 
 /* loco:66c335b6cb643611950ea795 */
 "version" = "Version";

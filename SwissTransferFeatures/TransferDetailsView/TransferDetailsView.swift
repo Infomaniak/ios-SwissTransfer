@@ -32,7 +32,11 @@ public struct TransferDetailsView: View {
     public var body: some View {
         ScrollView {
             VStack(spacing: IKPadding.large) {
-                HeaderView(transferSize: transfer.sizeUploaded, expiringTimestamp: transfer.expirationDateTimestamp)
+                HeaderView(
+                    filesCount: transfer.files.count,
+                    transferSize: transfer.sizeUploaded,
+                    expiringTimestamp: transfer.expirationDateTimestamp
+                )
 
                 MessageView(message: transfer.message)
 

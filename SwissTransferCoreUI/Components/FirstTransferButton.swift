@@ -21,7 +21,7 @@ import SwiftUI
 
 public struct FirstTransferButton: View {
     private let style: NewTransferStyle
-    private let action: () -> Void
+    private let action: ([URL]) -> Void
 
     private var offset: CGSize {
         switch style {
@@ -32,7 +32,7 @@ public struct FirstTransferButton: View {
         }
     }
 
-    public init(style: NewTransferStyle, action: @escaping () -> Void) {
+    public init(style: NewTransferStyle, action: @escaping ([URL]) -> Void) {
         self.style = style
         self.action = action
     }
@@ -68,7 +68,7 @@ public struct FirstTransferButton: View {
 
 #Preview {
     VStack {
-        FirstTransferButton(style: .small) {}
-        FirstTransferButton(style: .big) {}
+        FirstTransferButton(style: .small) { _ in }
+        FirstTransferButton(style: .big) { _ in }
     }
 }

@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import OSLog
 import STCore
 import STResources
 import SwiftUI
@@ -31,5 +32,25 @@ public extension FileUi {
         guard let mimeType else { return STResourcesAsset.Images.fileAdobe }
 
         return FileHelper(type: mimeType).icon
+    }
+
+    var localURL: URL? {
+        var url: URL?
+        do {
+            url = try URL.fileStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
+        } catch {
+            Logger.general.error("Could not get local url: \(error)")
+        }
+        return url
+    }
+
+    var previewURL: URL? {
+        var url: URL?
+        do {
+            url = try URL.previewStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
+        } catch {
+            Logger.general.error("Could not get preview url: \(error)")
+        }
+        return url
     }
 }
