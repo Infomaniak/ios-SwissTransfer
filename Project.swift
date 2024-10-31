@@ -16,7 +16,6 @@ let uploadProgressView = Feature(name: "UploadProgressView")
 
 let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
     uploadProgressView,
-    TargetDependency.external(name: "RecaptchaEnterprise"),
     TargetDependency.external(name: "InfomaniakCore")
 ])
 

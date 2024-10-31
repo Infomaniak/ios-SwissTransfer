@@ -21,7 +21,6 @@ import Foundation
 import InfomaniakCore
 import InfomaniakDI
 import OSLog
-import RecaptchaEnterprise
 import STCore
 import STNetwork
 import SwissTransferCore
@@ -110,9 +109,6 @@ class TransferSessionManager: ObservableObject {
             let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
             return transferUUID
-        } catch let error as RecaptchaError {
-            Logger.general.error("Recaptcha client error: \(error.errorMessage ?? "")")
-            fatalError("Implement error handling")
         } catch {
             Logger.general.error("Error trying to start upload: \(error)")
             fatalError("Implement error handling")
