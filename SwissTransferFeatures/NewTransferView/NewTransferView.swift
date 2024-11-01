@@ -63,31 +63,7 @@ public struct NewTransferView: View {
                 UploadProgressView(uploadSession: newUploadSession)
             }
             .floatingContainer {
-                Button {
-                    Task {
-                        isLoadingFileToUpload = true
-
-                        do {
-                            let filesToUpload = try newTransferManager.filesToUpload()
-                            let newUploadSession = NewUploadSession(
-                                duration: "30",
-                                authorEmail: "",
-                                password: "",
-                                message: "",
-                                numberOfDownload: 250,
-                                language: .english,
-                                recipientsEmails: [],
-                                files: filesToUpload
-                            )
-                            navigationPath.append(newUploadSession)
-                        } catch {
-                            Logger.general.error("Error getting files to upload \(error.localizedDescription)")
-                        }
-
-                        isLoadingFileToUpload = false
-                    }
-
-                } label: {
+                Button(action: startUpload) {
                     Text(STResourcesStrings.Localizable.buttonNext)
                         .frame(maxWidth: .infinity)
                 }
@@ -114,6 +90,31 @@ public struct NewTransferView: View {
             dismiss()
         }
         .environmentObject(newTransferManager)
+    }
+
+    func startUpload() {
+        Task {
+            isLoadingFileToUpload = true
+
+            do {
+                let filesToUpload = try newTransferManager.filesToUpload()
+                let newUploadSession = NewUploadSession(
+                    duration: "30",
+                    authorEmail: "",
+                    password: "",
+                    message: "",
+                    numberOfDownload: 250,
+                    language: .english,
+                    recipientsEmails: [],
+                    files: filesToUpload
+                )
+                navigationPath.append(newUploadSession)
+            } catch {
+                Logger.general.error("Error getting files to upload \(error.localizedDescription)")
+            }
+
+            isLoadingFileToUpload = false
+        }
     }
 }
 
