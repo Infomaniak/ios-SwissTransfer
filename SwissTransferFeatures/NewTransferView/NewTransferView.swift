@@ -60,7 +60,7 @@ public struct NewTransferView: View {
                 .padding(.vertical, value: .medium)
             }
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                UploadProgressView(uploadSession: newUploadSession)
+                UploadProgressView(uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
             }
             .floatingContainer {
                 Button(action: startUpload) {

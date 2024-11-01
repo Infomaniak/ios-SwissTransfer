@@ -18,44 +18,79 @@
 
 import STCore
 import STNetwork
+import STResources
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
     @EnvironmentObject private var transferManager: TransferManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
+    @State private var uploadAd = UploadProgressAd.getRandomElement()
+    @State private var isShowingSuccessfulTransfer = false
     @State private var error: Error?
 
-    let uploadSession: NewUploadSession
+    private let uploadSession: NewUploadSession
+    private let dismiss: () -> Void
 
-    public init(uploadSession: NewUploadSession) {
+    public init(uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
         self.uploadSession = uploadSession
+        self.dismiss = dismiss
     }
 
     public var body: some View {
         VStack {
-            ProgressView(value: transferSessionManager.percentCompleted)
-        }
-        .onAppear {
-            Task {
-                do {
-                    let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+            VStack(spacing: 32) {
+                Text(STResourcesStrings.Localizable.uploadProgressTitle)
+                    .font(.ST.headline)
 
-                    // FIXME: Remove next two lines waiting for virus check
-                    try await Task.sleep(for: .seconds(2))
-                    try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
-
-                    guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
-                        fatalError("Couldn't find transfer")
-                    }
-
-                    // TODO: Navigate to transfer
-                } catch {
-                    self.error = error
-                }
+                Text(uploadAd.attributedString)
+                    .font(.ST.title2)
+                    .multilineTextAlignment(.center)
             }
+
+            uploadAd.image
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: .infinity)
+        }
+        .padding(.vertical, value: .medium)
+        .padding(.top, value: .large)
+        .safeAreaButtons(spacing: 32) {
+            VStack {
+                Text(STResourcesStrings.Localizable.uploadProgressIndication)
+                    .font(.ST.headline)
+
+                ProgressView(value: transferSessionManager.percentCompleted)
+            }
+
+            Button(STResourcesStrings.Localizable.buttonCancel) {}
+                .buttonStyle(.borderedProminent)
+                .ikButtonFullWidth(true)
+        }
+        .stIconNavigationBar()
+        .navigationBarBackButtonHidden()
+        .task {
+            do {
+                let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+
+                // FIXME: Remove next two lines waiting for virus check
+                try await Task.sleep(for: .seconds(2))
+                try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+
+                guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
+                    fatalError("Couldn't find transfer")
+                }
+
+                isShowingSuccessfulTransfer = true
+            } catch {
+                self.error = error
+            }
+        }
+        .navigationDestination(isPresented: $isShowingSuccessfulTransfer) {
+            SuccessfulTransferView(type: .qrcode, dismiss: dismiss)
         }
     }
 }
@@ -70,5 +105,5 @@ public struct UploadProgressView: View {
         language: .english,
         recipientsEmails: [],
         files: []
-    ))
+    )) {}
 }

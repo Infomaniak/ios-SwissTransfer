@@ -54,6 +54,7 @@ public struct SuccessfulTransferView: View {
         }
         .stIconNavigationBar()
         .background(Color.ST.background)
+        .navigationBarBackButtonHidden()
     }
 }
 
