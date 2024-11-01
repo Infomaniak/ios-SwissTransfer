@@ -23,6 +23,105 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+enum SettingItemIdentifier: Hashable {
+    case theme
+    case notifications
+    case validity
+    case timeLimit
+    case emailLanguage
+    case dataManagement
+    case discoverCorpo
+    case shareIdeas
+    case feedback
+    case version
+
+    var cell: some View {
+        switch self {
+        case .theme:
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsThemeTitle,
+                                subtitle: STResourcesStrings.Localizable.settingsOptionThemeLight,
+                                leftIconAsset: STResourcesAsset.Images.brush,
+                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+        case .notifications:
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsNotificationsTitle,
+                                subtitle: "Tout recevoir",
+                                leftIconAsset: STResourcesAsset.Images.bell,
+                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+        case .validity:
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                                subtitle: "30 jours",
+                                leftIconAsset: STResourcesAsset.Images.clock,
+                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+        case .timeLimit:
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
+                                subtitle: "250",
+                                leftIconAsset: STResourcesAsset.Images.fileDownload,
+                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+        case .emailLanguage:
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
+                                subtitle: "Frouze",
+                                leftIconAsset: STResourcesAsset.Images.bubble,
+                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+        case .dataManagement:
+            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
+                                           rightIconAsset: STResourcesAsset.Images.chevronRight)
+
+        case .discoverCorpo:
+            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
+                                           rightIconAsset: STResourcesAsset.Images.export)
+
+        case .shareIdeas:
+            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
+                                           rightIconAsset: STResourcesAsset.Images.export)
+
+        case .feedback:
+            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                           rightIconAsset: STResourcesAsset.Images.export)
+
+        case .version:
+            return AboutSettingsCell(title: STResourcesStrings.Localizable.version, subtitle: "4.20")
+        }
+    }
+}
+
+enum SettingSections: CaseIterable {
+    case general
+    case defaultSettings
+    case dataManagement
+    case about
+
+    var title: String {
+        switch self {
+        case .general:
+            STResourcesStrings.Localizable.settingsCategoryGeneral
+        case .defaultSettings:
+            STResourcesStrings.Localizable.settingsCategoryDefaultSettings
+        case .dataManagement:
+            STResourcesStrings.Localizable.settingsCategoryDataManagement
+        case .about:
+            STResourcesStrings.Localizable.settingsCategoryAbout
+        }
+    }
+
+    var items: [SettingItemIdentifier] {
+        switch self {
+        case .general:
+            [.theme, .notifications]
+        case .defaultSettings:
+            [.validity, .timeLimit, .emailLanguage]
+        case .dataManagement:
+            [.dataManagement]
+        case .about:
+            [.discoverCorpo, .shareIdeas, .feedback, .version]
+        }
+    }
+}
+
 public struct SettingsView: View {
     @LazyInjectService var settingsManager: AppSettingsManager
 
@@ -35,51 +134,12 @@ public struct SettingsView: View {
 
     public var body: some View {
         List {
-            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
-                SettingsCell(title: STResourcesStrings.Localizable.settingsThemeTitle,
-                             subtitle: STResourcesStrings.Localizable.settingsOptionThemeLight,
-                             leftIconAsset: STResourcesAsset.Images.brush,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight)
-
-                SettingsCell(title: STResourcesStrings.Localizable.settingsNotificationsTitle,
-                             subtitle: "Tout recevoir",
-                             leftIconAsset: STResourcesAsset.Images.bell,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight)
-            }
-
-            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
-                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                             subtitle: "30 jours",
-                             leftIconAsset: STResourcesAsset.Images.clock,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight)
-
-                SettingsCell(title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                             subtitle: "250",
-                             leftIconAsset: STResourcesAsset.Images.fileDownload,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight)
-
-                SettingsCell(title: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
-                             subtitle: "Frouze",
-                             leftIconAsset: STResourcesAsset.Images.bubble,
-                             rightIconAsset: STResourcesAsset.Images.chevronRight)
-            }
-
-            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
-                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
-                                        rightIconAsset: STResourcesAsset.Images.chevronRight)
-            }
-
-            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
-                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
-                                        rightIconAsset: STResourcesAsset.Images.export)
-
-                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
-                                        rightIconAsset: STResourcesAsset.Images.export)
-
-                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                        rightIconAsset: STResourcesAsset.Images.export)
-
-                AboutSettingsCell(title: STResourcesStrings.Localizable.version, subtitle: "4.20")
+            ForEach(SettingSections.allCases, id: \.self) { section in
+                Section(header: Text(section.title)) {
+                    ForEach(section.items, id: \.self) { item in
+                        item.cell
+                    }
+                }
             }
 
             Section(header: Text("demo")) {
