@@ -16,29 +16,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
+import InfomaniakCoreSwiftUI
+import STResources
+import SwiftUI
 
-public enum NavigationDestination: Hashable {
-    case transfer(TransferUi)
-    case settings(SettingDetailUi)
+struct EditSettingsView: View {
+    let leftIconAsset: STResourcesImages?
+    let label: String
+    let action: () -> Void
 
-    public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
-        switch (lhs, rhs) {
-        case (.transfer(let leftTransfer), .transfer(let rightTransfer)):
-            return leftTransfer.uuid == rightTransfer.uuid
-        case (.settings, .settings):
-            return true
-        default:
-            return false
-        }
-    }
+    var body: some View {
+        Button(action: action) {
+            if let leftIconAsset {
+                Image(asset: leftIconAsset)
+                    .iconSize(.large)
+            }
 
-    public func hash(into hasher: inout Hasher) {
-        switch self {
-        case .transfer(let transfer):
-            hasher.combine(transfer.uuid)
-        case .settings:
-            hasher.combine("settingsItem")
+            Text(label)
+                .lineLimit(1)
+                .foregroundStyle(Color.ST.textPrimary)
+                .font(.ST.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
+
+// #Preview {
+//    EditSettingsView(leftIconAsset: nil, label: "coucou")
+// }

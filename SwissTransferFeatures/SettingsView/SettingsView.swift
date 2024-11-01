@@ -26,8 +26,8 @@ import SwissTransferCoreUI
 enum SettingItemIdentifier: Hashable {
     case theme
     case notifications
-    case validity
-    case timeLimit
+    case validityPeriod
+    case downloadLimit
     case emailLanguage
     case dataManagement
     case discoverCorpo
@@ -35,41 +35,45 @@ enum SettingItemIdentifier: Hashable {
     case feedback
     case version
 
-    var cell: some View {
+    func cell(appSettings: AppSettings?) -> some View {
         switch self {
         case .theme:
-            return SettingsCell(title: STResourcesStrings.Localizable.settingsThemeTitle,
-                                subtitle: STResourcesStrings.Localizable.settingsOptionThemeLight,
-                                leftIconAsset: STResourcesAsset.Images.brush,
-                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+            let themeName = appSettings?.theme.localized ?? ""
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionTheme,
+                                subtitle: themeName,
+                                leftIconAsset: STResourcesAsset.Images.brush)
+                .tag(NavigationDestination.settings(.theme))
 
         case .notifications:
-            return SettingsCell(title: STResourcesStrings.Localizable.settingsNotificationsTitle,
-                                subtitle: "Tout recevoir",
-                                leftIconAsset: STResourcesAsset.Images.bell,
-                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionNotifications,
+                                subtitle: "TODO",
+                                leftIconAsset: STResourcesAsset.Images.bell)
+                .tag(NavigationDestination.settings(.notifications))
 
-        case .validity:
+        case .validityPeriod:
+            let validityPeriod = appSettings?.validityPeriod.value ?? ""
             return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                                subtitle: "30 jours",
-                                leftIconAsset: STResourcesAsset.Images.clock,
-                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+                                subtitle: validityPeriod,
+                                leftIconAsset: STResourcesAsset.Images.clock)
+                .tag(NavigationDestination.settings(.validityPeriod))
 
-        case .timeLimit:
-            return SettingsCell(title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                                subtitle: "250",
-                                leftIconAsset: STResourcesAsset.Images.fileDownload,
-                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+        case .downloadLimit:
+            let downloadLimit = appSettings?.downloadLimit.value ?? ""
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                                subtitle: downloadLimit,
+                                leftIconAsset: STResourcesAsset.Images.fileDownload)
+                .tag(NavigationDestination.settings(.downloadLimit))
 
         case .emailLanguage:
-            return SettingsCell(title: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
-                                subtitle: "Frouze",
-                                leftIconAsset: STResourcesAsset.Images.bubble,
-                                rightIconAsset: STResourcesAsset.Images.chevronRight)
+            let emailLanguage = appSettings?.emailLanguage.value ?? ""
+            return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                                subtitle: emailLanguage,
+                                leftIconAsset: STResourcesAsset.Images.bubble)
+                .tag(NavigationDestination.settings(.emailLanguage))
 
         case .dataManagement:
-            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
-                                           rightIconAsset: STResourcesAsset.Images.chevronRight)
+            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+                .tag(NavigationDestination.settings(.dataManagement))
 
         case .discoverCorpo:
             return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
@@ -113,7 +117,7 @@ enum SettingSections: CaseIterable {
         case .general:
             [.theme, .notifications]
         case .defaultSettings:
-            [.validity, .timeLimit, .emailLanguage]
+            [.validityPeriod, .downloadLimit, .emailLanguage]
         case .dataManagement:
             [.dataManagement]
         case .about:
@@ -123,7 +127,9 @@ enum SettingSections: CaseIterable {
 }
 
 public struct SettingsView: View {
-    @LazyInjectService var settingsManager: AppSettingsManager
+    @LazyInjectService private var settingsManager: AppSettingsManager
+
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject var appSettings: FlowObserver<AppSettings>
 
@@ -133,26 +139,26 @@ public struct SettingsView: View {
     }
 
     public var body: some View {
-        List {
+        List(selection: $mainViewState.selectedDestination) {
             ForEach(SettingSections.allCases, id: \.self) { section in
                 Section(header: Text(section.title)) {
                     ForEach(section.items, id: \.self) { item in
-                        item.cell
+                        item.cell(appSettings: appSettings.value)
                     }
                 }
             }
+        }
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            if case .settings(let screen) = destination {
+                switch screen {
+                case .theme, .validityPeriod, .downloadLimit, .emailLanguage:
+                    EditSettingView(source: screen)
 
-            Section(header: Text("demo")) {
-                Text("SettingsView")
-                if let appSettings = appSettings.value {
-                    Text(appSettings.theme.name)
-                }
-                Button("Toggle") {
-                    Task {
-                        if let appSettings = appSettings.value {
-                            try? await settingsManager.setTheme(theme: appSettings.theme == .dark ? .light : .dark)
-                        }
-                    }
+                case .notifications:
+                    Text("TODO notifications")
+
+                case .dataManagement:
+                    Text("TODO dataManagement")
                 }
             }
         }

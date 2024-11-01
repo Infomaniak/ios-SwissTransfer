@@ -1,4 +1,3 @@
-//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2024 Infomaniak Network SA
@@ -17,16 +16,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
-import InfomaniakCoreSwiftUI
 
 // TODO: Navigation link
 struct SettingsCell: View {
     let title: String
     let subtitle: String
     let leftIconAsset: STResourcesImages
-    let rightIconAsset: STResourcesImages
+    let rightIconAsset: STResourcesImages?
+
+    init(title: String, subtitle: String, leftIconAsset: STResourcesImages, rightIconAsset: STResourcesImages? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.leftIconAsset = leftIconAsset
+        self.rightIconAsset = rightIconAsset
+    }
 
     var body: some View {
         HStack(spacing: IKPadding.small) {
@@ -45,16 +51,23 @@ struct SettingsCell: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(asset: rightIconAsset)
-                .iconSize(.large)
+            if let rightIconAsset {
+                Image(asset: rightIconAsset)
+                    .iconSize(.large)
+            }
         }
     }
 }
 
 struct SingleLabelSettingsCell: View {
     let title: String
-    let rightIconAsset: STResourcesImages
+    let rightIconAsset: STResourcesImages?
 
+    init(title: String, rightIconAsset: STResourcesImages? = nil) {
+        self.title = title
+        self.rightIconAsset = rightIconAsset
+    }
+    
     var body: some View {
         HStack(spacing: IKPadding.small) {
             Text(title)
@@ -63,9 +76,10 @@ struct SingleLabelSettingsCell: View {
                 .font(.ST.headline)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(asset: rightIconAsset)
-                .iconSize(.large)
-                .padding(.trailing, value: .small)
+            if let rightIconAsset {
+                Image(asset: rightIconAsset)
+                    .iconSize(.large)
+            }
         }
     }
 }
@@ -88,6 +102,9 @@ struct AboutSettingsCell: View {
     }
 }
 
-// #Preview {
-//    SettingsCell()
-// }
+#Preview {
+    SettingsCell(title: "coucou",
+                 subtitle: "coucou",
+                 leftIconAsset: STResourcesAsset.Images.clock,
+                 rightIconAsset: STResourcesAsset.Images.clock)
+}

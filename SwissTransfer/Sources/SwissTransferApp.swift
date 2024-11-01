@@ -17,19 +17,43 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
+import STResources
 import STRootView
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 @main
 struct SwissTransferApp: App {
     private let dependencyInjectionHook = TargetAssembly()
+
+    @LazyInjectService private var settingsManager: AppSettingsManager
+
+    @StateObject var appSettings: FlowObserver<AppSettings>
+    @Environment(\.colorScheme) var colorScheme
+
+    var savedScheme: ColorScheme? {
+        guard let appSettings = appSettings.value,
+              let storedColorScheme = ColorScheme.from(appSettings.theme) else {
+            return colorScheme
+        }
+
+        return storedColorScheme
+    }
+
+    public init() {
+        @InjectService var settingsManager: AppSettingsManager
+        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
+    }
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .tint(.ST.primary)
                 .detectCompactWindow()
+                .preferredColorScheme(savedScheme)
         }
     }
 }
