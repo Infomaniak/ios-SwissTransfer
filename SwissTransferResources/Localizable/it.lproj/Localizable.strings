@@ -4,7 +4,7 @@
  * Locale: it, Italian
  * Tagged: ios
  * Exported by: Valentin Perignon
- * Exported at: Tue, 29 Oct 2024 15:10:40 +0100
+ * Exported at: Fri, 01 Nov 2024 12:42:50 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -12,6 +12,9 @@
 
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Aggiunta di file";
+
+/* loco:671f9576e0d073bd6b0ccfa2 */
+"buttonCancel" = "Annulla";
 
 /* loco:6707f83845c44bad7f0d7805 */
 "buttonConfirm" = "Confermare";
@@ -303,6 +306,30 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galleria di foto e video";
+
+/* loco:6720a3367f6276e49d0d9902 */
+"uploadInProgressDescriptionArgumentConfidentiality" = "un Internet che rispetta la riservatezza e la privacy.";
+
+/* loco:671facb7f1fe8e23eb02e732 */
+"uploadInProgressDescriptionArgumentEnergy" = "i nostri data center, senza aria condizionata";
+
+/* loco:671fab15def78345b802d5c2 */
+"uploadInProgressDescriptionArgumentIndependence" = "l’indipendenza tecnologica in Europa.";
+
+/* loco:6720a2f98e276b472c007252 */
+"uploadInProgressDescriptionTemplateConfidentiality" = "Siamo indipendenti e contribuiamo a %@";
+
+/* loco:671faca64009477847056262 */
+"uploadInProgressDescriptionTemplateEnergy" = "Progettiamo %@, per superare gli standard di efficienza energetica del mercato.";
+
+/* loco:671faa8cec286426400c01c2 */
+"uploadInProgressDescriptionTemplateIndependence" = "Stiamo sviluppando %@ Senza compromettere l’ecologia, la privacy e le persone.";
+
+/* loco:6720d40108caba4c6a0dddb3 */
+"uploadInProgressIndication" = "Trasferimento in corso…";
+
+/* loco:671f96c0560f1de88c0f7e02 */
+"uploadInProgressTitle" = "Cosa ci differenzia?";
 
 /* loco:670f50568faef3642e0316d2 */
 "uploadSuccessEmailDescription" = "Il link per il download è stato inviato al seguente destinatario:";
