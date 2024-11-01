@@ -19,11 +19,11 @@
 import Foundation
 import OSLog
 
-extension Logger {
-    public static let view = Logger(category: "View")
-    public static let general = Logger(category: "general")
+public extension Logger {
+    static let view = Logger(category: "View")
+    static let general = Logger(category: "general")
 
-    init(category: String) {
+    internal init(category: String) {
         self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
     }
 }
