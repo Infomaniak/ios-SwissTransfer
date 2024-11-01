@@ -308,28 +308,28 @@
 "transferUploadSourceChoiceGallery" = "Photo and video gallery";
 
 /* loco:6720a3367f6276e49d0d9902 */
-"uploadInProgressDescriptionArgumentConfidentiality" = "Internet that respects confidentiality and privacy.";
+"uploadProgressDescriptionArgumentConfidentiality" = "Internet that respects confidentiality and privacy.";
 
 /* loco:671facb7f1fe8e23eb02e732 */
-"uploadInProgressDescriptionArgumentEnergy" = "our own data centers, without air conditioning";
+"uploadProgressDescriptionArgumentEnergy" = "our own data centers, without air conditioning";
 
 /* loco:671fab15def78345b802d5c2 */
-"uploadInProgressDescriptionArgumentIndependence" = "technological independence in Europe.";
+"uploadProgressDescriptionArgumentIndependence" = "technological independence in Europe.";
 
 /* loco:6720a2f98e276b472c007252 */
-"uploadInProgressDescriptionTemplateConfidentiality" = "We’re independent and contribute to an %@";
+"uploadProgressDescriptionTemplateConfidentiality" = "We’re independent and contribute to an %@";
 
 /* loco:671faca64009477847056262 */
-"uploadInProgressDescriptionTemplateEnergy" = "We design %@, to exceed market standards for energy efficiency.";
+"uploadProgressDescriptionTemplateEnergy" = "We design %@, to exceed market standards for energy efficiency.";
 
 /* loco:671faa8cec286426400c01c2 */
-"uploadInProgressDescriptionTemplateIndependence" = "We develop %@ Without compromising on ecology, privacy and people.";
+"uploadProgressDescriptionTemplateIndependence" = "We develop %@ Without compromising on ecology, privacy and people.";
 
 /* loco:6720d40108caba4c6a0dddb3 */
-"uploadInProgressIndication" = "Transfer in progress…";
+"uploadProgressIndication" = "Transfer in progress…";
 
 /* loco:671f96c0560f1de88c0f7e02 */
-"uploadInProgressTitle" = "What sets us apart?";
+"uploadProgressTitle" = "What sets us apart?";
 
 /* loco:670f50568faef3642e0316d2 */
 "uploadSuccessEmailDescription" = "The download link has been sent to the following recipient:";

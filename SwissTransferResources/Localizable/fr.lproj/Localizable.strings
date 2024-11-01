@@ -308,28 +308,28 @@
 "transferUploadSourceChoiceGallery" = "Galerie photos et vidéos";
 
 /* loco:6720a3367f6276e49d0d9902 */
-"uploadInProgressDescriptionArgumentConfidentiality" = "un Internet qui respecte la confidentialité et la vie privée.";
+"uploadProgressDescriptionArgumentConfidentiality" = "un Internet qui respecte la confidentialité et la vie privée.";
 
 /* loco:671facb7f1fe8e23eb02e732 */
-"uploadInProgressDescriptionArgumentEnergy" = "nos propres data centers, sans climatisation";
+"uploadProgressDescriptionArgumentEnergy" = "nos propres data centers, sans climatisation";
 
 /* loco:671fab15def78345b802d5c2 */
-"uploadInProgressDescriptionArgumentIndependence" = "l’indépendance technologique en Europe.";
+"uploadProgressDescriptionArgumentIndependence" = "l’indépendance technologique en Europe.";
 
 /* loco:6720a2f98e276b472c007252 */
-"uploadInProgressDescriptionTemplateConfidentiality" = "Nous sommes indépendants et contribuons à %@";
+"uploadProgressDescriptionTemplateConfidentiality" = "Nous sommes indépendants et contribuons à %@";
 
 /* loco:671faca64009477847056262 */
-"uploadInProgressDescriptionTemplateEnergy" = "Nous concevons %@, pour dépasser les standards d’efficacité énergétique du marché.";
+"uploadProgressDescriptionTemplateEnergy" = "Nous concevons %@, pour dépasser les standards d’efficacité énergétique du marché.";
 
 /* loco:671faa8cec286426400c01c2 */
-"uploadInProgressDescriptionTemplateIndependence" = "Nous développons %@ Sans compromis sur l’écologie, la vie privée et l’humain.";
+"uploadProgressDescriptionTemplateIndependence" = "Nous développons %@ Sans compromis sur l’écologie, la vie privée et l’humain.";
 
 /* loco:6720d40108caba4c6a0dddb3 */
-"uploadInProgressIndication" = "Transfert en cours…";
+"uploadProgressIndication" = "Transfert en cours…";
 
 /* loco:671f96c0560f1de88c0f7e02 */
-"uploadInProgressTitle" = "Ce qui nous rend différent ?";
+"uploadProgressTitle" = "Ce qui nous rend différent ?";
 
 /* loco:670f50568faef3642e0316d2 */
 "uploadSuccessEmailDescription" = "Le lien de téléchargement a bien été envoyé au destinataire suivant :";

@@ -308,28 +308,28 @@
 "transferUploadSourceChoiceGallery" = "Foto- und Videogalerie";
 
 /* loco:6720a3367f6276e49d0d9902 */
-"uploadInProgressDescriptionArgumentConfidentiality" = "einem Internet bei, das den Datenschutz und die Privatsphäre respektiert.";
+"uploadProgressDescriptionArgumentConfidentiality" = "einem Internet bei, das den Datenschutz und die Privatsphäre respektiert.";
 
 /* loco:671facb7f1fe8e23eb02e732 */
-"uploadInProgressDescriptionArgumentEnergy" = "unsere eigenen Rechenzentren ohne Klimaanlagen";
+"uploadProgressDescriptionArgumentEnergy" = "unsere eigenen Rechenzentren ohne Klimaanlagen";
 
 /* loco:671fab15def78345b802d5c2 */
-"uploadInProgressDescriptionArgumentIndependence" = "die technologische Unabhängigkeit in Europa.";
+"uploadProgressDescriptionArgumentIndependence" = "die technologische Unabhängigkeit in Europa.";
 
 /* loco:6720a2f98e276b472c007252 */
-"uploadInProgressDescriptionTemplateConfidentiality" = "Wir sind unabhängig und tragen zu %@";
+"uploadProgressDescriptionTemplateConfidentiality" = "Wir sind unabhängig und tragen zu %@";
 
 /* loco:671faca64009477847056262 */
-"uploadInProgressDescriptionTemplateEnergy" = "Wir entwerfen %@, um die Energieeffizienzstandards der Branche zu übertreffen.";
+"uploadProgressDescriptionTemplateEnergy" = "Wir entwerfen %@, um die Energieeffizienzstandards der Branche zu übertreffen.";
 
 /* loco:671faa8cec286426400c01c2 */
-"uploadInProgressDescriptionTemplateIndependence" = "Wir entwickeln %@ Ohne Kompromisse bei Ökologie, Privatsphäre und Menschen.";
+"uploadProgressDescriptionTemplateIndependence" = "Wir entwickeln %@ Ohne Kompromisse bei Ökologie, Privatsphäre und Menschen.";
 
 /* loco:6720d40108caba4c6a0dddb3 */
-"uploadInProgressIndication" = "Transfer wird durchgeführt…";
+"uploadProgressIndication" = "Transfer wird durchgeführt…";
 
 /* loco:671f96c0560f1de88c0f7e02 */
-"uploadInProgressTitle" = "Was zeichnet uns aus?";
+"uploadProgressTitle" = "Was zeichnet uns aus?";
 
 /* loco:670f50568faef3642e0316d2 */
 "uploadSuccessEmailDescription" = "Der Download-Link wurde erfolgreich an den folgenden Empfänger gesendet:";
