@@ -18,6 +18,7 @@
 
 import Foundation
 import OSLog
+import STCore
 
 public class UploadFile: Identifiable {
     public var id: String {
@@ -57,5 +58,19 @@ public class UploadFile: Identifiable {
             Logger.general.error("Error while constructing file path: \(url) \(error.localizedDescription)")
             return nil
         }
+    }
+}
+
+extension UploadFile: UploadFileSession {
+    public var localPath: String {
+        url.absoluteString
+    }
+
+    public var name: String {
+        url.lastPathComponent
+    }
+
+    public var remoteUploadFile: (any RemoteUploadFile)? {
+        nil
     }
 }

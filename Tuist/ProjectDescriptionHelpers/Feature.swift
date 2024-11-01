@@ -21,7 +21,7 @@ public extension [Feature] {
     }
 }
 
-public struct Feature: Dependable {
+@frozen public struct Feature: Dependable {
     let name: String
     var targetName: String {
         "ST\(name)"
