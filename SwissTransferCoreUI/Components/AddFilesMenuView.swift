@@ -82,16 +82,15 @@ public struct AddFilesMenuView<Content: View>: View {
         .fileImporter(
             isPresented: $isShowingImportFile,
             allowedContentTypes: [.item, .folder],
-            allowsMultipleSelection: true,
-            onCompletion: { result in
-                switch result {
-                case .success(let urls):
-                    completion(urls)
-                case .failure(let error):
-                    Logger.general.error("An error occured while importing files: \(error)")
-                }
+            allowsMultipleSelection: true
+        ) { result in
+            switch result {
+            case .success(let urls):
+                completion(urls)
+            case .failure(let error):
+                Logger.general.error("An error occurred while importing files: \(error)")
             }
-        )
+        }
     }
 
     private func didTakePicture(uiImage: UIImage) {
@@ -101,7 +100,7 @@ public struct AddFilesMenuView<Content: View>: View {
             try uiImage.pngData()?.write(to: url)
             completion([url])
         } catch {
-            Logger.general.error("An error occured while saving picture: \(error)")
+            Logger.general.error("An error occurred while saving picture: \(error)")
         }
     }
 
@@ -115,7 +114,7 @@ public struct AddFilesMenuView<Content: View>: View {
                     guard let newFile = try await photo.loadTransferable(type: PhotoLibraryContent.self) else { continue }
                     photoList.append(newFile)
                 } catch {
-                    Logger.general.error("An error occured while saving photo: \(error)")
+                    Logger.general.error("An error occurred while saving photo: \(error)")
                 }
             }
 
