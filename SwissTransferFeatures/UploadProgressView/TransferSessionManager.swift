@@ -48,9 +48,9 @@ class TransferSessionManager: ObservableObject {
 
     @Published var percentCompleted: Double = 0
 
-    private let uploadUrlSession = URLSession.shared
+    private let uploadURLSession = URLSession.shared
 
-    private var overhaulProgress: Progress?
+    private var overallProgress: Progress?
 
     private var cancellables: Set<AnyCancellable> = []
 
@@ -72,8 +72,8 @@ class TransferSessionManager: ObservableObject {
 
     func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
         do {
-            overhaulProgress = Progress(totalUnitCount: Int64(newUploadSession.files.count))
-            overhaulProgress?
+            overallProgress = Progress(totalUnitCount: Int64(newUploadSession.files.count))
+            overallProgress?
                 .publisher(for: \.fractionCompleted)
                 .receive(on: RunLoop.main)
                 .sink { [weak self] fractionCompleted in
@@ -129,7 +129,7 @@ class TransferSessionManager: ObservableObject {
 
         let rangeCount = ranges.count
         let fileProgress = Progress(totalUnitCount: Int64(rangeCount))
-        overhaulProgress?.addChild(fileProgress, withPendingUnitCount: 1)
+        overallProgress?.addChild(fileProgress, withPendingUnitCount: 1)
 
         var index: Int32 = 0
         while let chunk = chunkProvider.next() {
@@ -151,7 +151,7 @@ class TransferSessionManager: ObservableObject {
 
             let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
             fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: 1)
-            try await uploadUrlSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
+            try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
 
             index += 1
         }
