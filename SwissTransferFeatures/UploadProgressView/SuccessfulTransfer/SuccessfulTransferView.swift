@@ -34,11 +34,16 @@ extension TransferType {
     }
 }
 
-struct SuccessfulTransferView: View {
-    let type: TransferType
-    let dismiss: () -> Void
+public struct SuccessfulTransferView: View {
+    private let type: TransferType
+    private let dismiss: () -> Void
 
-    var body: some View {
+    public init(type: TransferType, dismiss: @escaping () -> Void) {
+        self.type = type
+        self.dismiss = dismiss
+    }
+
+    public var body: some View {
         Group {
             switch type {
             case .link, .qrcode, .proximity:

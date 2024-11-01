@@ -48,7 +48,7 @@ public struct QRCodeView: View {
                 ProgressView()
             }
         }
-        .onAppear {
+        .task {
             computeQRCode()
         }
         .onChange(of: colorScheme) { newColorScheme in
