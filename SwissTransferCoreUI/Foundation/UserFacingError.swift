@@ -17,13 +17,26 @@
  */
 
 import Foundation
-import OSLog
 
-public extension Logger {
-    static let view = Logger(category: "View")
-    static let general = Logger(category: "general")
+public struct UserFacingError: LocalizedError {
+    public let errorDescription: String?
+    public let failureReason: String?
+    public let helpAnchor: String?
+    public let recoverySuggestion: String?
 
-    internal init(category: String) {
-        self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
+    public init(
+        errorDescription: String?,
+        failureReason: String? = nil,
+        helpAnchor: String? = nil,
+        recoverySuggestion: String? = nil
+    ) {
+        self.errorDescription = errorDescription
+        self.failureReason = failureReason
+        self.helpAnchor = helpAnchor
+        self.recoverySuggestion = recoverySuggestion
     }
+}
+
+public extension UserFacingError {
+    static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
 }

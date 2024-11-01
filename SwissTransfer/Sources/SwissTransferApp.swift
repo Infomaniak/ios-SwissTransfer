@@ -17,9 +17,12 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import OSLog
 import STRootView
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 @main
 struct SwissTransferApp: App {
@@ -31,6 +34,19 @@ struct SwissTransferApp: App {
             RootView()
                 .tint(.ST.primary)
                 .detectCompactWindow()
+                .onOpenURL(perform: handleURL)
+        }
+    }
+
+    func handleURL(_ url: URL) {
+        Task {
+            do {
+                try await UniversalLinkHandler().handlePossibleTransferURL(url)
+            } catch {
+                Logger.view.error("Error while handling URL: \(error.localizedDescription)")
+                throw UserFacingError.badTransferURL
+                // TODO: Maybe have something like tryOrDisplayError in Mail to display snackbar
+            }
         }
     }
 }
