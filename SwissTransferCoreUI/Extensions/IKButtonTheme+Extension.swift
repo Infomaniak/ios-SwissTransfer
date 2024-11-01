@@ -16,27 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
+import STResources
 import SwiftUI
 
-struct RoundedLabelModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .font(.ST.body)
-            .foregroundStyle(Color.ST.secondary)
-            .lineLimit(1)
-            .padding(.vertical, 2)
-            .padding(.horizontal, value: .small)
-            .background(Color.ST.recipientLabelBackground, in: .capsule)
-    }
-}
-
-public extension View {
-    func roundedLabel() -> some View {
-        modifier(RoundedLabelModifier())
-    }
-}
-
-#Preview {
-    Text("My Label")
-        .roundedLabel()
+public extension IKButtonTheme {
+    static let swissTransfer = IKButtonTheme(
+        primary: TintShapeStyle.tint,
+        secondary: Color.ST.onPrimary,
+        tertiary: Color.ST.tertiaryButton,
+        disabledPrimary: Color.ST.disabledState,
+        disabledSecondary: Color.ST.onDisabledState,
+        error: Color.ST.error,
+        smallFont: Font.ST.callout,
+        mediumFont: Font.ST.headline
+    )
 }

@@ -18,6 +18,7 @@
 
 import InfomaniakCoreSwiftUI
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct TransferTypeCell: View {

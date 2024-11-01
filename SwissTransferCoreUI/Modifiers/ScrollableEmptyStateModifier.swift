@@ -18,25 +18,21 @@
 
 import SwiftUI
 
-struct RoundedLabelModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .font(.ST.body)
-            .foregroundStyle(Color.ST.secondary)
-            .lineLimit(1)
-            .padding(.vertical, 2)
-            .padding(.horizontal, value: .small)
-            .background(Color.ST.recipientLabelBackground, in: .capsule)
-    }
-}
-
 public extension View {
-    func roundedLabel() -> some View {
-        modifier(RoundedLabelModifier())
+    func scrollableEmptyState() -> some View {
+        modifier(ScrollableEmptyStateModifier())
     }
 }
 
-#Preview {
-    Text("My Label")
-        .roundedLabel()
+struct ScrollableEmptyStateModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        GeometryReader { proxy in
+            ScrollView {
+                content
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: proxy.size.height)
+            }
+            .scrollBounceBehavior(.basedOnSize)
+        }
+    }
 }

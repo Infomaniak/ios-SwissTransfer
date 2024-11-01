@@ -125,7 +125,8 @@ let project = Project(
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
-                    .target(name: "SwissTransferCore")
+                    .target(name: "SwissTransferCore"),
+                    .external(name: "QRCode")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",

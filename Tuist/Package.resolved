@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "e0afbab522df72496b92042ee65c20f8d593a3f7",
-        "version" : "13.4.0"
+        "revision" : "95265cad8e0fcb09268573c22e0098eac8ce7451",
+        "version" : "14.0.0"
       }
     },
     {
@@ -91,6 +91,15 @@
       }
     },
     {
+      "identity" : "qrcode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/QRCode",
+      "state" : {
+        "revision" : "64ddc71970bdfbc0df61072f87180bd32922d4fc",
+        "version" : "22.0.0"
+      }
+    },
+    {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
@@ -145,12 +154,30 @@
       }
     },
     {
+      "identity" : "swift-qrcode-generator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/swift-qrcode-generator",
+      "state" : {
+        "revision" : "2b1980b825f08a81ccc762b0c4d17fcde9d5e953",
+        "version" : "2.0.2"
+      }
+    },
+    {
       "identity" : "swiftbackports",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shaps80/SwiftBackports",
       "state" : {
         "revision" : "ddca6a237c1ba2291d5a3cc47ec8480ce6e9f805",
         "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "swiftimagereadwrite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/SwiftImageReadWrite",
+      "state" : {
+        "revision" : "42ace2412279f18bc264bc306e96b51c36e12a33",
+        "version" : "1.9.2"
       }
     },
     {

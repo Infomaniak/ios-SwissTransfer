@@ -33,6 +33,7 @@ struct SwissTransferApp: App {
         WindowGroup {
             RootView()
                 .tint(.ST.primary)
+                .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
                 .onOpenURL(perform: handleURL)
         }
