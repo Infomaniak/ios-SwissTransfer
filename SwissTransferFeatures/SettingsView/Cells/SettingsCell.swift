@@ -20,7 +20,6 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-// TODO: Navigation link
 struct SettingsCell: View {
     let title: String
     let subtitle: String
@@ -67,7 +66,7 @@ struct SingleLabelSettingsCell: View {
         self.title = title
         self.rightIconAsset = rightIconAsset
     }
-    
+
     var body: some View {
         HStack(spacing: IKPadding.small) {
             Text(title)
@@ -103,8 +102,8 @@ struct AboutSettingsCell: View {
 }
 
 #Preview {
-    SettingsCell(title: "coucou",
-                 subtitle: "coucou",
+    SettingsCell(title: "Time",
+                 subtitle: "Clock",
                  leftIconAsset: STResourcesAsset.Images.clock,
                  rightIconAsset: STResourcesAsset.Images.clock)
 }

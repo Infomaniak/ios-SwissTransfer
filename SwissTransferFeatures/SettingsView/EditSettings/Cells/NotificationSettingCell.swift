@@ -20,27 +20,18 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-struct EditSettingsView: View {
-    let leftIconAsset: STResourcesImages?
+struct NotificationSettingCell: View {
     let label: String
-    let action: () -> Void
+
+    @Binding var enabled: Bool
 
     var body: some View {
-        Button(action: action) {
-            if let leftIconAsset {
-                Image(asset: leftIconAsset)
-                    .iconSize(.large)
-            }
-
-            Text(label)
-                .lineLimit(1)
-                .foregroundStyle(Color.ST.textPrimary)
-                .font(.ST.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
+        HStack(spacing: IKPadding.small) {
+            Toggle(label, isOn: $enabled)
         }
     }
 }
 
-// #Preview {
-//    EditSettingsView(leftIconAsset: nil, label: "coucou")
-// }
+//#Preview {
+//    NotificationSettingCell(label: "NotificationSettingCell")
+//}

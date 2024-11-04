@@ -35,7 +35,7 @@ enum SettingItemIdentifier: Hashable {
     case feedback
     case version
 
-    func cell(appSettings: AppSettings?) -> some View {
+    @MainActor func cell(appSettings: AppSettings?) -> some View {
         switch self {
         case .theme:
             let themeName = appSettings?.theme.localized ?? ""
@@ -151,12 +151,16 @@ public struct SettingsView: View {
         .navigationDestination(for: NavigationDestination.self) { destination in
             if case .settings(let screen) = destination {
                 switch screen {
-                case .theme, .validityPeriod, .downloadLimit, .emailLanguage:
-                    EditSettingView(source: screen)
-
+                case .theme:
+                    EditSettingView(datasource: EditThemeDatasource())
+                case .validityPeriod:
+                    EditSettingView(datasource: EditValidityPeriodDatasource())
+                case .downloadLimit:
+                    EditSettingView(datasource: EditDownloadLimitDatasource())
+                case .emailLanguage:
+                    EditSettingView(datasource: EditEmailLanguageDatasource())
                 case .notifications:
-                    Text("TODO notifications")
-
+                    NotificationsSettings()
                 case .dataManagement:
                     Text("TODO dataManagement")
                 }
