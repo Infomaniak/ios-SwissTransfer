@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STCore
 import STNetwork
 import STResources
@@ -28,14 +29,16 @@ public struct UploadProgressView: View {
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
-    @State private var uploadAd = UploadProgressAd.getRandomElement()
-    @State private var isShowingSuccessfulTransfer = false
+    @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
+    @State private var successfulTransfer: TransferUi?
     @State private var error: Error?
 
+    private let transferType: TransferType
     private let uploadSession: NewUploadSession
     private let dismiss: () -> Void
 
-    public init(uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
+    public init(transferType: TransferType, uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
+        self.transferType = transferType
         self.uploadSession = uploadSession
         self.dismiss = dismiss
     }
@@ -46,12 +49,12 @@ public struct UploadProgressView: View {
                 Text(STResourcesStrings.Localizable.uploadProgressTitle)
                     .font(.ST.headline)
 
-                Text(uploadAd.attributedString)
+                Text(uploadProgressAd.attributedString)
                     .font(.ST.title2)
                     .multilineTextAlignment(.center)
             }
 
-            uploadAd.image
+            uploadProgressAd.image
                 .resizable()
                 .scaledToFit()
                 .frame(maxHeight: .infinity)
@@ -59,7 +62,7 @@ public struct UploadProgressView: View {
         .padding(.vertical, value: .medium)
         .padding(.top, value: .large)
         .safeAreaButtons(spacing: 32) {
-            VStack {
+            VStack(spacing: IKPadding.small) {
                 Text(STResourcesStrings.Localizable.uploadProgressIndication)
                     .font(.ST.headline)
 
@@ -83,27 +86,29 @@ public struct UploadProgressView: View {
                 guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
                     fatalError("Couldn't find transfer")
                 }
-
-                isShowingSuccessfulTransfer = true
+                successfulTransfer = transfer
             } catch {
                 self.error = error
             }
         }
-        .navigationDestination(isPresented: $isShowingSuccessfulTransfer) {
-            SuccessfulTransferView(type: .qrcode, dismiss: dismiss)
+        .navigationDestination(for: TransferUi.self) { navigableTransfer in
+            SuccessfulTransferView(type: transferType, dismiss: dismiss)
         }
     }
 }
 
 #Preview {
-    UploadProgressView(uploadSession: NewUploadSession(
-        duration: "30",
-        authorEmail: "",
-        password: "",
-        message: "Coucou",
-        numberOfDownload: 250,
-        language: .english,
-        recipientsEmails: [],
-        files: []
-    )) {}
+    UploadProgressView(
+        transferType: .qrcode,
+        uploadSession: NewUploadSession(
+            duration: "30",
+            authorEmail: "",
+            password: "",
+            message: "Coucou",
+            numberOfDownload: 250,
+            language: .english,
+            recipientsEmails: [],
+            files: []
+        )
+    ) {}
 }
