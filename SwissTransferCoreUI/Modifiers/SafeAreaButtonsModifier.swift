@@ -37,13 +37,13 @@ struct SafeAreaButtonsModifier<Buttons: View>: ViewModifier {
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                VStack(spacing: IKPadding.medium) {
+                VStack(spacing: spacing) {
                     buttons
                 }
                 .ikButtonFullWidth(true)
                 .controlSize(.large)
                 .padding(value: .medium)
-                .background(Color.ST.background)
+                .background(background)
             }
     }
 }

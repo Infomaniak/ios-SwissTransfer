@@ -33,10 +33,9 @@ enum UploadProgressAd: CaseIterable {
         var result = AttributedString(template(argument))
         result.font = .ST.specificTitle2Light
 
-        guard let argumentRange = result.range(of: argument) else {
-            return result
+        if let argumentRange = result.range(of: argument) {
+            result[argumentRange].font = .ST.title2
         }
-        result[argumentRange].font = .ST.title2
 
         return result
     }

@@ -37,18 +37,6 @@ public struct UploadProgressView: View {
     private let uploadSession: NewUploadSession
     private let dismiss: () -> Void
 
-    private var title: AttributedString {
-        var result = AttributedString(STResourcesStrings.Localizable.uploadProgressTitleTemplate(
-            STResourcesStrings.Localizable.uploadProgressTitleArgument
-        ))
-
-        if let highlightedRange = result.range(of: STResourcesStrings.Localizable.uploadProgressTitleArgument) {
-            result[highlightedRange].backgroundColor = .ST.highlighted
-        }
-
-        return result
-    }
-
     public init(transferType: TransferType, uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
         self.transferType = transferType
         self.uploadSession = uploadSession
@@ -57,15 +45,8 @@ public struct UploadProgressView: View {
 
     public var body: some View {
         VStack(spacing: IKPadding.medium) {
-            VStack(spacing: 32) {
-                Text(title)
-                    .font(.ST.headline)
-
-                Text(uploadProgressAd.description)
-                    .multilineTextAlignment(.center)
-            }
-            .foregroundStyle(Color.ST.textPrimary)
-            .frame(maxWidth: LargeEmptyStateView.imageMaxWidth)
+            UploadProgressHeaderView(subtitle: uploadProgressAd.description)
+                .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
 
             uploadProgressAd.image
                 .resizable()
@@ -76,39 +57,38 @@ public struct UploadProgressView: View {
         .padding(.top, value: .large)
         .scrollableEmptyState()
         .safeAreaButtons(spacing: 32) {
-            VStack(spacing: IKPadding.small) {
-                Text(STResourcesStrings.Localizable.uploadProgressIndication)
-                    .font(.ST.headline)
-                    .foregroundStyle(Color.ST.textPrimary)
+            UploadProgressIndicationView(
+                completedBytes: transferSessionManager.completedBytes,
+                totalBytes: transferSessionManager.totalBytes
+            )
 
-                HStack {
-                    Text(transferSessionManager.percentCompleted, format: .percent.precision(.fractionLength(0)))
-                }
-                .font(.ST.caption)
-                .foregroundStyle(Color.ST.textSecondary)
-            }
-
-            Button(STResourcesStrings.Localizable.buttonCancel) {}
+            Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
                 .buttonStyle(.ikBorderedProminent)
         }
         .stIconNavigationBar()
         .navigationBarBackButtonHidden()
-        .task {
-            do {
-                let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+        .task(startUpload)
+    }
 
-                // FIXME: Remove next two lines waiting for virus check
-                try await Task.sleep(for: .seconds(2))
-                try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+    @Sendable private func startUpload() async {
+        do {
+            let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
 
-                guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
-                    fatalError("Couldn't find transfer")
-                }
-                successfulTransfer = transfer
-            } catch {
-                self.error = error
+            // FIXME: Remove next two lines waiting for virus check
+            try await Task.sleep(for: .seconds(2))
+            try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+
+            guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
+                fatalError("Couldn't find transfer")
             }
+            successfulTransfer = transfer
+        } catch {
+            self.error = error
         }
+    }
+
+    private func cancelTransfer() {
+        // TODO: Cancel Transfer
     }
 }
 
