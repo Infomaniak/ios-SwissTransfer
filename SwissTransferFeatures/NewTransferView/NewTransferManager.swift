@@ -79,21 +79,34 @@ class NewTransferManager: ObservableObject {
 extension NewTransferManager {
     /// Move the imported files/folder in the temporary directory
     private func moveToTmp(files: [URL]) {
-        do {
-            let tmpDirectory = try URL.tmpUploadDirectory()
-            for file in files {
-                do {
-                    let destination = tmpDirectory.appending(path: file.lastPathComponent)
-                    _ = file.startAccessingSecurityScopedResource()
-                    try FileManager.default.copyItem(at: file, to: destination)
-                } catch {
-                    Logger.general.error("An error occured while copying files: \(error)")
-                }
-                file.stopAccessingSecurityScopedResource()
+        for file in files {
+            do {
+                let destination = try destinationURLFor(source: file)
+                _ = file.startAccessingSecurityScopedResource()
+                try FileManager.default.copyItem(at: file, to: destination)
+            } catch {
+                Logger.general.error("An error occured while copying files: \(error)")
             }
-        } catch {
-            Logger.general.error("An error occured while moving files to temporary directory: \(error)")
+            file.stopAccessingSecurityScopedResource()
         }
+    }
+
+    /// Find a valid name if a file/folder already exist with the same name
+    private func destinationURLFor(source: URL) throws -> URL {
+        let allFiles = try FileManager.default.contentsOfDirectory(at: URL.tmpUploadDirectory(), includingPropertiesForKeys: nil)
+            .map(\.lastPathComponent)
+
+        let shortName = source.deletingPathExtension().lastPathComponent
+        var increment = 0
+        var testName = source.lastPathComponent
+        while allFiles.contains(where: { $0 == testName }) {
+            increment += 1
+            testName = shortName.appending("(\(increment))")
+            if !source.pathExtension.isEmpty {
+                testName.append(".\(source.pathExtension)")
+            }
+        }
+        return try URL.tmpUploadDirectory().appending(path: testName)
     }
 
     /// Empty the temporary directory
