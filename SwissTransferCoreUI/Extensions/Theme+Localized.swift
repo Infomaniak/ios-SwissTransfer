@@ -1,3 +1,4 @@
+//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2024 Infomaniak Network SA
@@ -18,18 +19,16 @@
 
 import STCore
 import STResources
-import SwiftUI
 
-public extension ColorScheme {
-    /// STCore `Theme` to SwiftUI `ColorScheme` bridge
-    static func from(_ theme: Theme) -> ColorScheme? {
-        switch theme {
-        case .system:
-            return nil
-        case .light:
-            return .light
+public extension Theme {
+    var localized: String {
+        switch self {
         case .dark:
-            return .dark
+            return STResourcesStrings.Localizable.settingsOptionThemeDark
+        case .light:
+            return STResourcesStrings.Localizable.settingsOptionThemeLight
+        case .system:
+            return STResourcesStrings.Localizable.settingsOptionThemeSystem
         }
     }
 }

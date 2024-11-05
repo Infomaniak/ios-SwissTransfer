@@ -34,11 +34,16 @@ struct EditCellDatom: EditCellModel, Hashable, Equatable {
     let label: String
     let action: () -> Void
     let leftIconAsset: STResourcesImages?
+    let rightIconAsset: STResourcesImages?
 
-    init(label: String, action: @escaping () -> Void, leftIconAsset: STResourcesImages? = nil) {
+    init(label: String,
+         action: @escaping () -> Void,
+         leftIconAsset: STResourcesImages? = nil,
+         rightIconAsset: STResourcesImages? = nil) {
         self.label = label
         self.action = action
         self.leftIconAsset = leftIconAsset
+        self.rightIconAsset = rightIconAsset
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -57,23 +62,6 @@ protocol EditSettingsModel {
 }
 
 struct EditThemeDatasource: EditSettingsModel {
-    enum Setting {
-        case system
-        case light
-        case dark
-
-        var theme: STCore.Theme {
-            switch self {
-            case .system:
-                return .system
-            case .light:
-                return .light
-            case .dark:
-                return .dark
-            }
-        }
-    }
-
     let source = SettingDetailUi.theme
     let title = STResourcesStrings.Localizable.settingsThemeTitle
     var cellsModel = [EditCellDatom]()
@@ -86,11 +74,11 @@ struct EditThemeDatasource: EditSettingsModel {
         ]
     }
 
-    private func action(forSetting setting: Setting) -> () -> Void {
+    private func action(forSetting setting: Theme) -> () -> Void {
         let lambda: () -> Void = {
             Task {
                 @InjectService var settingsManager: AppSettingsManager
-                _ = try? await settingsManager.setTheme(theme: setting.theme)
+                _ = try? await settingsManager.setTheme(theme: setting)
             }
         }
         return lambda
@@ -98,42 +86,21 @@ struct EditThemeDatasource: EditSettingsModel {
 }
 
 struct EditValidityPeriodDatasource: EditSettingsModel {
-    // TODO: i18n
-    enum Setting: String, CaseIterable {
-        case thirtyDays = "30 days"
-        case fifteenDays = "15 days"
-        case sevenDays = "7 days"
-        case oneDay = "1 day"
-
-        var validityPeriod: ValidityPeriod {
-            switch self {
-            case .thirtyDays:
-                ValidityPeriod.thirty
-            case .fifteenDays:
-                ValidityPeriod.fifteen
-            case .sevenDays:
-                ValidityPeriod.seven
-            case .oneDay:
-                ValidityPeriod.one
-            }
-        }
-    }
-
     let source = SettingDetailUi.validityPeriod
     let title = STResourcesStrings.Localizable.settingsValidityPeriodTitle
     var cellsModel = [EditCellDatom]()
 
     init() {
-        cellsModel = Setting.allCases.map { setting in
-            EditCellDatom(label: setting.rawValue, action: action(forSetting: setting))
+        cellsModel = ValidityPeriod.allCases.map { setting in
+            EditCellDatom(label: setting.localized, action: action(forSetting: setting))
         }
     }
 
-    private func action(forSetting setting: Setting) -> () -> Void {
+    private func action(forSetting setting: ValidityPeriod) -> () -> Void {
         let lambda: () -> Void = {
             Task {
                 @InjectService var settingsManager: AppSettingsManager
-                _ = try? await settingsManager.setValidityPeriod(validityPeriod: setting.validityPeriod)
+                _ = try? await settingsManager.setValidityPeriod(validityPeriod: setting)
             }
         }
         return lambda
@@ -141,42 +108,21 @@ struct EditValidityPeriodDatasource: EditSettingsModel {
 }
 
 struct EditDownloadLimitDatasource: EditSettingsModel {
-    // TODO: i18n
-    enum Setting: String, CaseIterable {
-        case twoHundredFifty = "250"
-        case oneHundred = "100"
-        case twenty = "20"
-        case one = "1"
-
-        var downloadLimit: STCore.DownloadLimit {
-            switch self {
-            case .twoHundredFifty:
-                .twoHundredFifty
-            case .oneHundred:
-                .oneHundred
-            case .twenty:
-                .twenty
-            case .one:
-                .one
-            }
-        }
-    }
-
     let source = SettingDetailUi.downloadLimit
     let title = STResourcesStrings.Localizable.settingsDownloadsLimitTitle
     var cellsModel = [EditCellDatom]()
 
     init() {
-        cellsModel = Setting.allCases.map { setting in
-            EditCellDatom(label: setting.rawValue, action: action(forSetting: setting))
+        cellsModel = DownloadLimit.allCases.map { setting in
+            EditCellDatom(label: setting.localized, action: action(forSetting: setting))
         }
     }
 
-    private func action(forSetting setting: Setting) -> () -> Void {
+    private func action(forSetting setting: DownloadLimit) -> () -> Void {
         let lambda: () -> Void = {
             Task {
                 @InjectService var settingsManager: AppSettingsManager
-                _ = try? await settingsManager.setDownloadLimit(downloadLimit: setting.downloadLimit)
+                _ = try? await settingsManager.setDownloadLimit(downloadLimit: setting)
             }
         }
         return lambda
@@ -184,74 +130,21 @@ struct EditDownloadLimitDatasource: EditSettingsModel {
 }
 
 struct EditEmailLanguageDatasource: EditSettingsModel {
-    enum Setting: CaseIterable {
-        case english
-        case french
-        case german
-        case italian
-        case spanish
-
-        var emailLanguage: EmailLanguage {
-            switch self {
-            case .french:
-                .french
-            case .german:
-                .german
-            case .italian:
-                .italian
-            case .spanish:
-                .spanish
-            case .english:
-                .english
-            }
-        }
-
-        var localized: String {
-            switch self {
-            case .english:
-                return STResourcesStrings.Localizable.settingsEmailLanguageValueEnglish
-            case .french:
-                return STResourcesStrings.Localizable.settingsEmailLanguageValueFrench
-            case .german:
-                return STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
-            case .italian:
-                return STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
-            case .spanish:
-                return STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
-            }
-        }
-
-        var leftIcon: STResourcesImages {
-            switch self {
-            case .english:
-                return STResourcesAsset.Images.flagUk
-            case .french:
-                return STResourcesAsset.Images.flagFr
-            case .german:
-                return STResourcesAsset.Images.flagDe
-            case .italian:
-                return STResourcesAsset.Images.flagIt
-            case .spanish:
-                return STResourcesAsset.Images.flagEs
-            }
-        }
-    }
-
     let source = SettingDetailUi.emailLanguage
     let title = STResourcesStrings.Localizable.settingsEmailLanguageTitle
     var cellsModel = [EditCellDatom]()
 
     init() {
-        cellsModel = Setting.allCases.map { setting in
+        cellsModel = EmailLanguage.allCases.map { setting in
             EditCellDatom(label: setting.localized, action: action(forSetting: setting), leftIconAsset: setting.leftIcon)
         }
     }
 
-    private func action(forSetting setting: Setting) -> () -> Void {
+    private func action(forSetting setting: EmailLanguage) -> () -> Void {
         let lambda: () -> Void = {
             Task {
                 @InjectService var settingsManager: AppSettingsManager
-                _ = try? await settingsManager.setEmailLanguage(emailLanguage: setting.emailLanguage)
+                _ = try? await settingsManager.setEmailLanguage(emailLanguage: setting)
             }
         }
         return lambda

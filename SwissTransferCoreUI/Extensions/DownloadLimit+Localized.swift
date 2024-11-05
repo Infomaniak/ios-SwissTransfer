@@ -18,18 +18,18 @@
 
 import STCore
 import STResources
-import SwiftUI
 
-public extension ColorScheme {
-    /// STCore `Theme` to SwiftUI `ColorScheme` bridge
-    static func from(_ theme: Theme) -> ColorScheme? {
-        switch theme {
-        case .system:
-            return nil
-        case .light:
-            return .light
-        case .dark:
-            return .dark
+public extension DownloadLimit {
+    var localized: String {
+        switch self {
+        case .twoHundredFifty:
+            return "250"
+        case .oneHundred:
+            return "100"
+        case .twenty:
+            return "20"
+        case .one:
+            return "1"
         }
     }
 }

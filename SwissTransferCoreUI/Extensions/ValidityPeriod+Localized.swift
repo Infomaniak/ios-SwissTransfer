@@ -18,18 +18,19 @@
 
 import STCore
 import STResources
-import SwiftUI
 
-public extension ColorScheme {
-    /// STCore `Theme` to SwiftUI `ColorScheme` bridge
-    static func from(_ theme: Theme) -> ColorScheme? {
-        switch theme {
-        case .system:
-            return nil
-        case .light:
-            return .light
-        case .dark:
-            return .dark
+// TODO: i18n
+public extension ValidityPeriod {
+    var localized: String {
+        switch self {
+        case .thirty:
+            return "30 days"
+        case .fifteen:
+            return "15 days"
+        case .seven:
+            return "7 days"
+        case .one:
+            return "1 day"
         }
     }
 }
