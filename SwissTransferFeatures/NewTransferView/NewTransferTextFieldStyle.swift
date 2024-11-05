@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
