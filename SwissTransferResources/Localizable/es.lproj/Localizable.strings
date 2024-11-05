@@ -328,8 +328,11 @@
 /* loco:6720d40108caba4c6a0dddb3 */
 "uploadProgressIndication" = "Transferencia en curso…";
 
+/* loco:6729e09ab18f3f7a5803b282 */
+"uploadProgressTitleArgument" = "diferencia";
+
 /* loco:671f96c0560f1de88c0f7e02 */
-"uploadProgressTitle" = "¿Qué nos diferencia?";
+"uploadProgressTitleTemplate" = "¿Qué nos %@?";
 
 /* loco:670f50568faef3642e0316d2 */
 "uploadSuccessEmailDescription" = "El enlace de descarga se ha enviado al siguiente destinatario:";
