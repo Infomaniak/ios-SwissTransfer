@@ -72,7 +72,9 @@ class TransferSessionManager: ObservableObject {
 
     func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
         do {
-            overallProgress = Progress(totalUnitCount: Int64(newUploadSession.files.count))
+            let filesSize = newUploadSession.files.reduce(0) { $0 + $1.size }
+
+            overallProgress = Progress(totalUnitCount: filesSize)
             overallProgress?
                 .publisher(for: \.fractionCompleted)
                 .receive(on: RunLoop.main)
@@ -127,9 +129,9 @@ class TransferSessionManager: ObservableObject {
             throw ErrorDomain.invalidRangeCompute
         }
 
-        let rangeCount = ranges.count
+        let rangeCount = ranges.reduce(0) { $0 + $1.count }
         let fileProgress = Progress(totalUnitCount: Int64(rangeCount))
-        overallProgress?.addChild(fileProgress, withPendingUnitCount: 1)
+        overallProgress?.addChild(fileProgress, withPendingUnitCount: Int64(rangeCount))
 
         var index: Int32 = 0
         while let chunk = chunkProvider.next() {
@@ -150,7 +152,7 @@ class TransferSessionManager: ObservableObject {
             uploadRequest.httpMethod = "POST"
 
             let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
-            fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: 1)
+            fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
             try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
 
             index += 1
