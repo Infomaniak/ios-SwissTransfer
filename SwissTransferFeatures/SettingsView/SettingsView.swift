@@ -58,21 +58,21 @@ enum SettingItemIdentifier: Hashable {
                 .tag(NavigationDestination.settings(.notifications))
 
         case .validityPeriod:
-            let validityPeriod = appSettings?.validityPeriod.value ?? ""
+            let validityPeriod = appSettings?.validityPeriod.localized ?? ""
             return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                                 subtitle: validityPeriod,
                                 leftIconAsset: STResourcesAsset.Images.clock)
                 .tag(NavigationDestination.settings(.validityPeriod))
 
         case .downloadLimit:
-            let downloadLimit = appSettings?.downloadLimit.value ?? ""
+            let downloadLimit = appSettings?.downloadLimit.localized ?? ""
             return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                                 subtitle: downloadLimit,
                                 leftIconAsset: STResourcesAsset.Images.fileDownload)
                 .tag(NavigationDestination.settings(.downloadLimit))
 
         case .emailLanguage:
-            let emailLanguage = appSettings?.emailLanguage.value ?? ""
+            let emailLanguage = appSettings?.emailLanguage.localized ?? ""
             return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                                 subtitle: emailLanguage,
                                 leftIconAsset: STResourcesAsset.Images.bubble)
