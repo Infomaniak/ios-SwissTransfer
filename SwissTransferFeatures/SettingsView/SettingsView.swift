@@ -17,6 +17,7 @@
  */
 
 import InfomaniakDI
+import InfomaniakCore
 import STCore
 import StoreKit
 import STResources
@@ -103,7 +104,8 @@ enum SettingItemIdentifier: Hashable {
             }
 
         case .version:
-            return AboutSettingsCell(title: STResourcesStrings.Localizable.version, subtitle: "4.20")
+            return AboutSettingsCell(title: STResourcesStrings.Localizable.version,
+                                     subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
         }
     }
 }
