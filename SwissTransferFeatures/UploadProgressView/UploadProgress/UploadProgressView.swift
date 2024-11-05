@@ -67,6 +67,9 @@ public struct UploadProgressView: View {
         }
         .stIconNavigationBar()
         .navigationBarBackButtonHidden()
+        .navigationDestination(isPresented: .constant(false)) {
+            SuccessfulTransferView(type: transferType, recipientsEmails: uploadSession.recipientsEmails, dismiss: dismiss)
+        }
         .task(startUpload)
     }
 

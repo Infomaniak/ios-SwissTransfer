@@ -35,21 +35,16 @@ extension TransferType {
 }
 
 public struct SuccessfulTransferView: View {
-    private let type: TransferType
-    private let recipientsEmails: [String]
-    private let dismiss: () -> Void
-
-    public init(type: TransferType, recipientsEmails: [String], dismiss: @escaping () -> Void) {
-        self.type = type
-        self.recipientsEmails = recipientsEmails
-        self.dismiss = dismiss
-    }
+    let type: TransferType
+    let transferUUID: String
+    let recipientsEmails: [String]
+    let dismiss: () -> Void
 
     public var body: some View {
         Group {
             switch type {
             case .link, .qrcode, .proximity:
-                SuccessfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
+                SuccessfulLinkTransferView(type: type, transferUUID: transferUUID, dismiss: dismiss)
             case .mail:
                 SuccessfulMailTransferView(recipients: recipientsEmails, dismiss: dismiss)
             }
@@ -61,11 +56,11 @@ public struct SuccessfulTransferView: View {
 }
 
 #Preview("Mail") {
-    SuccessfulTransferView(type: .mail, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .mail, transferUUID: "", recipientsEmails: []) {}
 }
 
 #Preview("QR Code") {
-    SuccessfulTransferView(type: .qrcode, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .qrcode, transferUUID: "", recipientsEmails: []) {}
 }
 
 #Preview("Link") {
