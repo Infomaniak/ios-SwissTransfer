@@ -36,10 +36,12 @@ extension TransferType {
 
 public struct SuccessfulTransferView: View {
     private let type: TransferType
+    private let recipientsEmails: [String]
     private let dismiss: () -> Void
 
-    public init(type: TransferType, dismiss: @escaping () -> Void) {
+    public init(type: TransferType, recipientsEmails: [String], dismiss: @escaping () -> Void) {
         self.type = type
+        self.recipientsEmails = recipientsEmails
         self.dismiss = dismiss
     }
 
@@ -49,7 +51,7 @@ public struct SuccessfulTransferView: View {
             case .link, .qrcode, .proximity:
                 SuccessfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
             case .mail:
-                SuccessfulMailTransferView(recipients: [], dismiss: dismiss)
+                SuccessfulMailTransferView(recipients: recipientsEmails, dismiss: dismiss)
             }
         }
         .stIconNavigationBar()
@@ -59,13 +61,13 @@ public struct SuccessfulTransferView: View {
 }
 
 #Preview("Mail") {
-    SuccessfulTransferView(type: .mail) {}
+    SuccessfulTransferView(type: .mail, recipientsEmails: []) {}
 }
 
 #Preview("QR Code") {
-    SuccessfulTransferView(type: .qrcode) {}
+    SuccessfulTransferView(type: .qrcode, recipientsEmails: []) {}
 }
 
 #Preview("Link") {
-    SuccessfulTransferView(type: .link) {}
+    SuccessfulTransferView(type: .link, recipientsEmails: []) {}
 }

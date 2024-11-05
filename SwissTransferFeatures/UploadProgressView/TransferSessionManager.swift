@@ -139,7 +139,7 @@ class TransferSessionManager: ObservableObject {
                 uploadUUID: uploadUUID,
                 fileUUID: toRemoteFile.uuid,
                 chunkIndex: index,
-                isLastChunk: index == rangeCount - 1
+                isLastChunk: index == ranges.count - 1
             ) else {
                 throw ErrorDomain.invalidUploadChunkURL
             }

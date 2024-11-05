@@ -29,9 +29,16 @@ enum UploadProgressAd: CaseIterable {
         return allCases.randomElement() ?? .confidentiality
     }
 
-    var attributedString: AttributedString {
-        let string = AttributedString(template(argument))
-        return string
+    var description: AttributedString {
+        var result = AttributedString(template(argument))
+        result.font = .ST.specificTitle2Light
+
+        guard let argumentRange = result.range(of: argument) else {
+            return result
+        }
+        result[argumentRange].font = .ST.title2
+
+        return result
     }
 
     var image: Image {

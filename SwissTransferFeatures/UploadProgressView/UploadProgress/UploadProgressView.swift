@@ -37,6 +37,18 @@ public struct UploadProgressView: View {
     private let uploadSession: NewUploadSession
     private let dismiss: () -> Void
 
+    private var title: AttributedString {
+        var result = AttributedString(STResourcesStrings.Localizable.uploadProgressTitleTemplate(
+            STResourcesStrings.Localizable.uploadProgressTitleArgument
+        ))
+
+        if let highlightedRange = result.range(of: STResourcesStrings.Localizable.uploadProgressTitleArgument) {
+            result[highlightedRange].backgroundColor = .ST.highlighted
+        }
+
+        return result
+    }
+
     public init(transferType: TransferType, uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
         self.transferType = transferType
         self.uploadSession = uploadSession
@@ -44,34 +56,40 @@ public struct UploadProgressView: View {
     }
 
     public var body: some View {
-        VStack {
+        VStack(spacing: IKPadding.medium) {
             VStack(spacing: 32) {
-                Text(STResourcesStrings.Localizable.uploadProgressTitle)
+                Text(title)
                     .font(.ST.headline)
 
-                Text(uploadProgressAd.attributedString)
-                    .font(.ST.title2)
+                Text(uploadProgressAd.description)
                     .multilineTextAlignment(.center)
             }
+            .foregroundStyle(Color.ST.textPrimary)
+            .frame(maxWidth: LargeEmptyStateView.imageMaxWidth)
 
             uploadProgressAd.image
                 .resizable()
                 .scaledToFit()
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: LargeEmptyStateView.imageMaxWidth, maxHeight: .infinity)
         }
-        .padding(.vertical, value: .medium)
+        .padding(.horizontal, value: .medium)
         .padding(.top, value: .large)
+        .scrollableEmptyState()
         .safeAreaButtons(spacing: 32) {
             VStack(spacing: IKPadding.small) {
                 Text(STResourcesStrings.Localizable.uploadProgressIndication)
                     .font(.ST.headline)
+                    .foregroundStyle(Color.ST.textPrimary)
 
-                ProgressView(value: transferSessionManager.percentCompleted)
+                HStack {
+                    Text(transferSessionManager.percentCompleted, format: .percent.precision(.fractionLength(0)))
+                }
+                .font(.ST.caption)
+                .foregroundStyle(Color.ST.textSecondary)
             }
 
             Button(STResourcesStrings.Localizable.buttonCancel) {}
-                .buttonStyle(.borderedProminent)
-                .ikButtonFullWidth(true)
+                .buttonStyle(.ikBorderedProminent)
         }
         .stIconNavigationBar()
         .navigationBarBackButtonHidden()
@@ -90,9 +108,6 @@ public struct UploadProgressView: View {
             } catch {
                 self.error = error
             }
-        }
-        .navigationDestination(for: TransferUi.self) { navigableTransfer in
-            SuccessfulTransferView(type: transferType, dismiss: dismiss)
         }
     }
 }
