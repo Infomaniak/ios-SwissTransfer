@@ -51,6 +51,7 @@ struct EditSettingView: View {
                 }
             }
         }
+        .stNavigationBarStyle()
     }
 }
 

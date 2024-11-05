@@ -58,6 +58,7 @@ struct NotificationsSettings: View {
                 }
             }
         }
+        .stNavigationBarStyle()
     }
 }
 
