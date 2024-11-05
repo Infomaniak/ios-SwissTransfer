@@ -18,10 +18,17 @@
 
 import InfomaniakDI
 import STCore
+import StoreKit
 import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+
+enum SettingLinks {
+    static let discoverInfomaniak = URL(string: "https://www.infomaniak.com/en/about")!
+    static let shareYourIdeas =
+        URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
+}
 
 enum SettingItemIdentifier: Hashable {
     case theme
@@ -30,7 +37,7 @@ enum SettingItemIdentifier: Hashable {
     case downloadLimit
     case emailLanguage
     case dataManagement
-    case discoverCorpo
+    case discoverIk
     case shareIdeas
     case feedback
     case version
@@ -75,17 +82,25 @@ enum SettingItemIdentifier: Hashable {
             return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
                 .tag(NavigationDestination.settings(.dataManagement))
 
-        case .discoverCorpo:
-            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
-                                           rightIconAsset: STResourcesAsset.Images.export)
+        case .discoverIk:
+            return Link(destination: SettingLinks.discoverInfomaniak) {
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
+                                        rightIconAsset: STResourcesAsset.Images.export)
+            }
 
         case .shareIdeas:
-            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
-                                           rightIconAsset: STResourcesAsset.Images.export)
+            return Link(destination: SettingLinks.shareYourIdeas) {
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
+                                        rightIconAsset: STResourcesAsset.Images.export)
+            }
 
         case .feedback:
-            return SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                           rightIconAsset: STResourcesAsset.Images.export)
+            return Button {
+                SKStoreReviewController.requestReview()
+            } label: {
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                        rightIconAsset: STResourcesAsset.Images.export)
+            }
 
         case .version:
             return AboutSettingsCell(title: STResourcesStrings.Localizable.version, subtitle: "4.20")
@@ -121,7 +136,7 @@ enum SettingSections: CaseIterable {
         case .dataManagement:
             [.dataManagement]
         case .about:
-            [.discoverCorpo, .shareIdeas, .feedback, .version]
+            [.discoverIk, .shareIdeas, .feedback, .version]
         }
     }
 }
