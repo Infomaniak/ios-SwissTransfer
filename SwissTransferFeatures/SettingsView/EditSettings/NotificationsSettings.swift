@@ -38,30 +38,102 @@ enum NotificationsSettingsModel: Hashable, CaseIterable {
     }
 }
 
+public enum DefaultPreferences {
+    public static let notificationsNewTransfers = true
+    public static let notificationsDownloadInProgress = true
+    public static let notificationsFinishedTransfers = true
+    public static let notificationsDownloadTransfers = true
+    public static let notificationsFailedTransfers = true
+    public static let notificationsExpiredTransfers = true
+}
+
 struct NotificationsSettings: View {
-    @EnvironmentObject private var mainViewState: MainViewState
+    @AppStorage(UserDefaults.shared.key(.notificationsNewTransfers))
+    private var newTransfers = DefaultPreferences.notificationsNewTransfers
 
-    @StateObject var appSettings: FlowObserver<AppSettings>
+    @AppStorage(UserDefaults.shared.key(.notificationsDownloadInProgress))
+    private var downloadInProgress = DefaultPreferences.notificationsDownloadInProgress
 
-    @State var enabled = true
+    @AppStorage(UserDefaults.shared.key(.notificationsFinishedTransfers))
+    private var finishedTransfers = DefaultPreferences.notificationsFinishedTransfers
 
-    public init() {
-        @InjectService var settingsManager: AppSettingsManager
-        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
+    @AppStorage(UserDefaults.shared.key(.notificationsDownloadTransfers))
+    private var downloadTransfers = DefaultPreferences.notificationsDownloadTransfers
+
+    @AppStorage(UserDefaults.shared.key(.notificationsFailedTransfers))
+    private var failedTransfers = DefaultPreferences.notificationsFailedTransfers
+
+    @AppStorage(UserDefaults.shared.key(.notificationsExpiredTransfers))
+    private var expiredTransfers = DefaultPreferences.notificationsExpiredTransfers
+
+    @State private var allNotificationsEnabled = true
+
+    init() {
+        allNotificationsEnabled = computeAllNotificationsEnabled()
     }
 
     var body: some View {
         List {
             Section(header: Text(STResourcesStrings.Localizable.settingsNotificationsTitle)) {
-                ForEach(NotificationsSettingsModel.allCases, id: \.self) { item in
-                    NotificationSettingCell(label: item.title, enabled: $enabled)
+                ForEach(NotificationsSettingsModel.allCases, id: \.self) { setting in
+                    let binding = toggleBinding(for: setting)
+                    NotificationSettingCell(label: setting.title, enabled: binding)
                 }
+            }
+        }
+        .onChange(of: [newTransfers,
+                       downloadInProgress,
+                       finishedTransfers,
+                       downloadTransfers,
+                       failedTransfers,
+                       expiredTransfers]) { newValue in
+            // Any sub setting is disabled, we disable the first toggle
+            allNotificationsEnabled = newValue.allSatisfy { $0 }
+        }
+        .onChange(of: allNotificationsEnabled) { newValue in
+            if newValue {
+                newTransfers = newValue
+                downloadInProgress = newValue
+                finishedTransfers = newValue
+                downloadTransfers = newValue
+                failedTransfers = newValue
+                expiredTransfers = newValue
             }
         }
         .stNavigationBarStyle()
     }
-}
 
-#Preview {
-    NotificationsSettings()
+    private func computeAllNotificationsEnabled() -> Bool {
+        for setting in NotificationsSettingsModel.allCases {
+            guard setting != .allNotifications else {
+                continue
+            }
+
+            let binding = toggleBinding(for: setting)
+            guard binding.wrappedValue else {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    private func toggleBinding(for setting: NotificationsSettingsModel) -> Binding<Bool> {
+        switch setting {
+        case .allNotifications:
+            return $allNotificationsEnabled
+        case .newTransfers:
+            return $newTransfers
+        case .downloadsInProgress:
+            return $downloadInProgress
+        case .finishedTransfers:
+            return $finishedTransfers
+        case .downloadTransfers:
+            return $downloadTransfers
+        case .failedTransfers:
+            return $failedTransfers
+        case .expiredTransfers:
+            return $expiredTransfers
+        }
+    }
 }
