@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "82fa2c1f0fc4b6d0f520697bb073a7acddd52833",
-        "version" : "12.5.0"
+        "revision" : "830b0d383b443196b2e9ad1dcec2089a694523e0",
+        "version" : "12.5.1"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "0b8ba88f5fd70062887d55f87a970c59b1ceebcf",
-        "version" : "8.39.0"
+        "revision" : "0ffc3c6287461962cb2a81e57fc0ee0335d8d56a",
+        "version" : "8.40.1"
       }
     },
     {
