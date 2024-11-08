@@ -64,14 +64,23 @@ protocol EditSettingsModel {
 struct EditThemeDatasource: EditSettingsModel {
     let source = SettingDetailUi.theme
     let title = STResourcesStrings.Localizable.settingsThemeTitle
+    let selectedTheme: Theme?
     var cellsModel = [EditCellDatom]()
 
-    init() {
-        cellsModel = [
-            EditCellDatom(label: Theme.system.localized, action: action(forSetting: .system)),
-            EditCellDatom(label: Theme.light.localized, action: action(forSetting: .light)),
-            EditCellDatom(label: Theme.dark.localized, action: action(forSetting: .dark))
-        ]
+    init(appSettings: AppSettings?) {
+        selectedTheme = appSettings?.theme
+        cellsModel = Theme.allCases.map { setting in
+            EditCellDatom(
+                label: setting.localized,
+                action: action(forSetting: setting),
+                rightIconAsset: rightIconAsset(forSetting: setting)
+            )
+        }
+    }
+
+    private func rightIconAsset(forSetting setting: Theme) -> STResourcesImages? {
+        guard setting == selectedTheme else { return nil }
+        return STResourcesAsset.Images.check
     }
 
     private func action(forSetting setting: Theme) -> () -> Void {
@@ -88,12 +97,21 @@ struct EditThemeDatasource: EditSettingsModel {
 struct EditValidityPeriodDatasource: EditSettingsModel {
     let source = SettingDetailUi.validityPeriod
     let title = STResourcesStrings.Localizable.settingsValidityPeriodTitle
+    let selectedValidity: ValidityPeriod?
     var cellsModel = [EditCellDatom]()
 
-    init() {
+    init(appSettings: AppSettings?) {
+        selectedValidity = appSettings?.validityPeriod
         cellsModel = ValidityPeriod.allCases.map { setting in
-            EditCellDatom(label: setting.localized, action: action(forSetting: setting))
+            EditCellDatom(label: setting.localized,
+                          action: action(forSetting: setting),
+                          rightIconAsset: rightIconAsset(forSetting: setting))
         }
+    }
+
+    private func rightIconAsset(forSetting setting: ValidityPeriod) -> STResourcesImages? {
+        guard setting == selectedValidity else { return nil }
+        return STResourcesAsset.Images.check
     }
 
     private func action(forSetting setting: ValidityPeriod) -> () -> Void {
@@ -110,12 +128,21 @@ struct EditValidityPeriodDatasource: EditSettingsModel {
 struct EditDownloadLimitDatasource: EditSettingsModel {
     let source = SettingDetailUi.downloadLimit
     let title = STResourcesStrings.Localizable.settingsDownloadsLimitTitle
+    let selectedDownloadLimit: DownloadLimit?
     var cellsModel = [EditCellDatom]()
 
-    init() {
+    init(appSettings: AppSettings?) {
+        selectedDownloadLimit = appSettings?.downloadLimit
         cellsModel = DownloadLimit.allCases.map { setting in
-            EditCellDatom(label: setting.localized, action: action(forSetting: setting))
+            EditCellDatom(label: setting.localized,
+                          action: action(forSetting: setting),
+                          rightIconAsset: rightIconAsset(forSetting: setting))
         }
+    }
+
+    private func rightIconAsset(forSetting setting: DownloadLimit) -> STResourcesImages? {
+        guard setting == selectedDownloadLimit else { return nil }
+        return STResourcesAsset.Images.check
     }
 
     private func action(forSetting setting: DownloadLimit) -> () -> Void {
@@ -132,12 +159,22 @@ struct EditDownloadLimitDatasource: EditSettingsModel {
 struct EditEmailLanguageDatasource: EditSettingsModel {
     let source = SettingDetailUi.emailLanguage
     let title = STResourcesStrings.Localizable.settingsEmailLanguageTitle
+    let selectedEmailLanguage: EmailLanguage?
     var cellsModel = [EditCellDatom]()
 
-    init() {
+    init(appSettings: AppSettings?) {
+        selectedEmailLanguage = appSettings?.emailLanguage
         cellsModel = EmailLanguage.allCases.map { setting in
-            EditCellDatom(label: setting.localized, action: action(forSetting: setting), leftIconAsset: setting.leftIcon)
+            EditCellDatom(label: setting.localized,
+                          action: action(forSetting: setting),
+                          leftIconAsset: setting.leftIcon,
+                          rightIconAsset: rightIconAsset(forSetting: setting))
         }
+    }
+
+    private func rightIconAsset(forSetting setting: EmailLanguage) -> STResourcesImages? {
+        guard setting == selectedEmailLanguage else { return nil }
+        return STResourcesAsset.Images.check
     }
 
     private func action(forSetting setting: EmailLanguage) -> () -> Void {

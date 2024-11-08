@@ -44,7 +44,7 @@ struct EditSettingView: View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(datasource.title)) {
                 ForEach(datasource.cellsModel, id: \.self) { item in
-                    EditSettingsView(leftIconAsset: item.leftIconAsset, label: item.label) {
+                    EditSettingsView(leftIconAsset: item.leftIconAsset, rightIconAsset: item.rightIconAsset, label: item.label) {
                         presentationMode.wrappedValue.dismiss()
                         item.action()
                     }

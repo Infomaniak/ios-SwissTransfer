@@ -22,8 +22,19 @@ import SwiftUI
 
 struct EditSettingsView: View {
     let leftIconAsset: STResourcesImages?
+    let rightIconAsset: STResourcesImages?
     let label: String
     let action: () -> Void
+
+    init(leftIconAsset: STResourcesImages? = nil,
+         rightIconAsset: STResourcesImages? = nil,
+         label: String,
+         action: @escaping () -> Void) {
+        self.leftIconAsset = leftIconAsset
+        self.rightIconAsset = rightIconAsset
+        self.label = label
+        self.action = action
+    }
 
     var body: some View {
         Button(action: action) {
@@ -38,6 +49,11 @@ struct EditSettingsView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .font(.ST.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
+
+                if let rightIconAsset {
+                    Image(asset: rightIconAsset)
+                        .iconSize(.large)
+                }
             }
         }
     }

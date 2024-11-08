@@ -169,13 +169,13 @@ public struct SettingsView: View {
             if case .settings(let screen) = destination {
                 switch screen {
                 case .theme:
-                    EditSettingView(datasource: EditThemeDatasource())
+                    EditSettingView(datasource: EditThemeDatasource(appSettings: appSettings.value))
                 case .validityPeriod:
-                    EditSettingView(datasource: EditValidityPeriodDatasource())
+                    EditSettingView(datasource: EditValidityPeriodDatasource(appSettings: appSettings.value))
                 case .downloadLimit:
-                    EditSettingView(datasource: EditDownloadLimitDatasource())
+                    EditSettingView(datasource: EditDownloadLimitDatasource(appSettings: appSettings.value))
                 case .emailLanguage:
-                    EditSettingView(datasource: EditEmailLanguageDatasource())
+                    EditSettingView(datasource: EditEmailLanguageDatasource(appSettings: appSettings.value))
                 case .notifications:
                     NotificationsSettings()
                 case .dataManagement:
