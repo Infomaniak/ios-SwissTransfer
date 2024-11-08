@@ -24,8 +24,13 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+public struct SuccessfulTransfer: Hashable {
+    public let transferUUID: String
+    public let recipientsEmail: [String]
+}
+
 public struct UploadProgressView: View {
-    @EnvironmentObject private var transferManager: TransferManager
+    @EnvironmentObject private var transferRouter: LocalRouter
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
@@ -56,6 +61,7 @@ public struct UploadProgressView: View {
         .padding(.horizontal, value: .medium)
         .padding(.top, value: .large)
         .scrollableEmptyState()
+        .background(Color.ST.background)
         .safeAreaButtons(spacing: 32) {
             UploadProgressIndicationView(
                 completedBytes: transferSessionManager.completedBytes,
@@ -67,8 +73,13 @@ public struct UploadProgressView: View {
         }
         .stIconNavigationBar()
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: .constant(false)) {
-            SuccessfulTransferView(type: transferType, recipientsEmails: uploadSession.recipientsEmails, dismiss: dismiss)
+        .navigationDestination(for: SuccessfulTransfer.self) { successfulTransfer in
+            SuccessfulTransferView(
+                type: transferType,
+                transferUUID: successfulTransfer.transferUUID,
+                recipientsEmails: successfulTransfer.recipientsEmail,
+                dismiss: dismiss
+            )
         }
         .task(startUpload)
     }
@@ -77,14 +88,8 @@ public struct UploadProgressView: View {
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
 
-            // FIXME: Remove next two lines waiting for virus check
-            try await Task.sleep(for: .seconds(2))
-            try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
-
-            guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
-                fatalError("Couldn't find transfer")
-            }
-            successfulTransfer = transfer
+            let finishedTransfer = SuccessfulTransfer(transferUUID: transferUUID, recipientsEmail: uploadSession.recipientsEmails)
+            transferRouter.path.append(finishedTransfer)
         } catch {
             self.error = error
         }
@@ -98,15 +103,7 @@ public struct UploadProgressView: View {
 #Preview {
     UploadProgressView(
         transferType: .qrcode,
-        uploadSession: NewUploadSession(
-            duration: "30",
-            authorEmail: "",
-            password: "",
-            message: "Coucou",
-            numberOfDownload: 250,
-            language: .english,
-            recipientsEmails: [],
-            files: []
-        )
+        uploadSession: PreviewHelper.sampleNewUploadSession
     ) {}
+        .environmentObject(LocalRouter())
 }

@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -35,6 +36,8 @@ extension TransferType {
 }
 
 public struct SuccessfulTransferView: View {
+    @EnvironmentObject private var transferManager: TransferManager
+
     let type: TransferType
     let transferUUID: String
     let recipientsEmails: [String]
@@ -52,17 +55,22 @@ public struct SuccessfulTransferView: View {
         .stIconNavigationBar()
         .background(Color.ST.background)
         .navigationBarBackButtonHidden()
+        .onDisappear {
+            Task {
+                try? await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+            }
+        }
     }
 }
 
 #Preview("Mail") {
-    SuccessfulTransferView(type: .mail, transferUUID: "", recipientsEmails: []) {}
+    SuccessfulTransferView(type: .mail, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: []) {}
 }
 
 #Preview("QR Code") {
-    SuccessfulTransferView(type: .qrcode, transferUUID: "", recipientsEmails: []) {}
+    SuccessfulTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: []) {}
 }
 
 #Preview("Link") {
-    SuccessfulTransferView(type: .link, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: []) {}
 }

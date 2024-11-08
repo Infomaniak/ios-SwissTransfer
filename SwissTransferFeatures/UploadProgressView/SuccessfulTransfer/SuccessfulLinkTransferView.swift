@@ -77,6 +77,7 @@ struct SuccessfulLinkTransferView: View {
                         }
                         .labelStyle(.verticalButton)
                     }
+
                     CopyToClipboardButton(url: transferURL)
                 }
                 .buttonStyle(.ikBordered)
@@ -91,14 +92,15 @@ struct SuccessfulLinkTransferView: View {
     }
 
     private func copyLinkToClipboard() {
-        UIPasteboard.general.string = url.absoluteString
+        guard let transferURL else { return }
+        UIPasteboard.general.string = transferURL.absoluteString
     }
 }
 
 #Preview("QR Code") {
-    SuccessfulLinkTransferView(type: .qrcode, url: URL(string: "https://www.infomaniak.com")!) {}
+    SuccessfulLinkTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid) {}
 }
 
 #Preview("Link") {
-    SuccessfulLinkTransferView(type: .link, url: URL(string: "https://www.infomaniak.com")!) {}
+    SuccessfulLinkTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid) {}
 }

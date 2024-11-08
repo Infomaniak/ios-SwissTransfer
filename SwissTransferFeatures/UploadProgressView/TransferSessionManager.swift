@@ -90,7 +90,7 @@ class TransferSessionManager: ObservableObject {
 
             let uploadManager = injection.uploadManager
 
-            let uploadSession = try await uploadManager.createAnGetUpload(newUploadSession: newUploadSession)
+            let uploadSession = try await uploadManager.createAndGetUpload(newUploadSession: newUploadSession)
 
             let uploadWithRemoteContainer = try await uploadManager.doInitUploadSession(
                 uuid: uploadSession.uuid,

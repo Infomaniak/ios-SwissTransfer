@@ -27,10 +27,11 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
+
+    @StateObject private var transferRouter = LocalRouter()
     @StateObject private var newTransferManager: NewTransferManager
 
     @State private var isLoadingFileToUpload = false
-    @State private var navigationPath = NavigationPath()
 
     public init(urls: [URL]) {
         let transferManager = NewTransferManager()
@@ -39,7 +40,7 @@ public struct NewTransferView: View {
     }
 
     public var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $transferRouter.path) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     // FilesCell
@@ -59,9 +60,6 @@ public struct NewTransferView: View {
                 }
                 .padding(.vertical, value: .medium)
             }
-            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                UploadProgressView(transferType: .qrcode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
-            }
             .floatingContainer {
                 Button(action: startUpload) {
                     Text(STResourcesStrings.Localizable.buttonNext)
@@ -75,6 +73,9 @@ public struct NewTransferView: View {
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
+            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
+                UploadProgressView(transferType: .qrcode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
+            }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
                     .stNavigationBarNewTransfer(title: file.name)
@@ -90,6 +91,7 @@ public struct NewTransferView: View {
             dismiss()
         }
         .environmentObject(newTransferManager)
+        .environmentObject(transferRouter)
     }
 
     func startUpload() {
@@ -108,7 +110,7 @@ public struct NewTransferView: View {
                     recipientsEmails: [],
                     files: filesToUpload
                 )
-                navigationPath.append(newUploadSession)
+                transferRouter.path.append(newUploadSession)
             } catch {
                 Logger.general.error("Error getting files to upload \(error.localizedDescription)")
             }
