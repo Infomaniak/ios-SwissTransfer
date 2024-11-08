@@ -43,32 +43,25 @@ public struct NewTransferView: View {
         NavigationStack(path: $navigationPath) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
-                    // FilesCell
                     NewTransferFilesCellView()
                         .padding(.horizontal, value: .medium)
 
-                    // Title and message
                     NewTransferDetailsView()
                         .padding(.horizontal, value: .medium)
 
-                    // Type
                     NewTransferTypeView()
 
-                    // Settings
                     NewTransferSettingsView()
                         .padding(.horizontal, value: .medium)
                 }
                 .padding(.vertical, value: .medium)
             }
-            .floatingContainer {
+            .safeAreaButtons {
                 Button(action: startUpload) {
                     Text(STResourcesStrings.Localizable.buttonNext)
-                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.ikBorderedProminent)
-                .ikButtonFullWidth(true)
                 .ikButtonLoading(isLoadingFileToUpload)
-                .controlSize(.large)
             }
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)

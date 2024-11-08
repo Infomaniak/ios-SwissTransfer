@@ -77,15 +77,13 @@ struct PasswordSettingView: View {
         }
         .padding(value: .medium)
         .frame(maxHeight: .infinity, alignment: .top)
-        .floatingContainer {
+        .safeAreaButtons {
             Button {
                 // Confirm
             } label: {
                 Text(STResourcesStrings.Localizable.buttonConfirm)
             }
             .buttonStyle(.ikBorderedProminent)
-            .ikButtonFullWidth(true)
-            .controlSize(.large)
         }
     }
 
