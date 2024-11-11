@@ -24,31 +24,21 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-public struct SuccessfulTransfer: Hashable {
-    public let transferUUID: String
-    public let recipientsEmail: [String]
-}
-
-public struct UploadProgressView: View {
-    @EnvironmentObject private var transferRouter: LocalRouter
+struct UploadProgressView: View {
+    @Environment(\.dismissModal) private var dismissModal
+    @EnvironmentObject private var transferManager: TransferManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
-    @State private var successfulTransfer: TransferUi?
-    @State private var error: Error?
 
-    private let transferType: TransferType
-    private let uploadSession: NewUploadSession
-    private let dismiss: () -> Void
+    @Binding var transferUUID: String?
+    @Binding var error: Error?
 
-    public init(transferType: TransferType, uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
-        self.transferType = transferType
-        self.uploadSession = uploadSession
-        self.dismiss = dismiss
-    }
+    let transferType: TransferType
+    let uploadSession: NewUploadSession
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: IKPadding.medium) {
             UploadProgressHeaderView(subtitle: uploadProgressAd.description)
                 .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
@@ -73,14 +63,6 @@ public struct UploadProgressView: View {
         }
         .stIconNavigationBar()
         .navigationBarBackButtonHidden()
-        .navigationDestination(for: SuccessfulTransfer.self) { successfulTransfer in
-            SuccessfulTransferView(
-                type: transferType,
-                transferUUID: successfulTransfer.transferUUID,
-                recipientsEmails: successfulTransfer.recipientsEmail,
-                dismiss: dismiss
-            )
-        }
         .task(startUpload)
     }
 
@@ -88,22 +70,31 @@ public struct UploadProgressView: View {
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
 
-            let finishedTransfer = SuccessfulTransfer(transferUUID: transferUUID, recipientsEmail: uploadSession.recipientsEmails)
-            transferRouter.path.append(finishedTransfer)
+            // FIXME: Remove next two lines waiting for virus check
+            try await Task.sleep(for: .seconds(2))
+            try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+
+            withAnimation {
+                self.transferUUID = transferUUID
+            }
         } catch {
-            self.error = error
+            withAnimation {
+                self.error = error
+            }
         }
     }
 
     private func cancelTransfer() {
         // TODO: Cancel Transfer
+        dismissModal()
     }
 }
 
 #Preview {
     UploadProgressView(
+        transferUUID: .constant(nil),
+        error: .constant(nil),
         transferType: .qrcode,
         uploadSession: PreviewHelper.sampleNewUploadSession
-    ) {}
-        .environmentObject(LocalRouter())
+    )
 }

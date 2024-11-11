@@ -36,41 +36,33 @@ extension TransferType {
 }
 
 public struct SuccessfulTransferView: View {
-    @EnvironmentObject private var transferManager: TransferManager
-
     let type: TransferType
     let transferUUID: String
     let recipientsEmails: [String]
-    let dismiss: () -> Void
 
     public var body: some View {
         Group {
             switch type {
             case .link, .qrcode, .proximity:
-                SuccessfulLinkTransferView(type: type, transferUUID: transferUUID, dismiss: dismiss)
+                SuccessfulLinkTransferView(type: type, transferUUID: transferUUID)
             case .mail:
-                SuccessfulMailTransferView(recipients: recipientsEmails, dismiss: dismiss)
+                SuccessfulMailTransferView(recipients: recipientsEmails)
             }
         }
         .stIconNavigationBar()
         .background(Color.ST.background)
         .navigationBarBackButtonHidden()
-        .onDisappear {
-            Task {
-                try? await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
-            }
-        }
     }
 }
 
 #Preview("Mail") {
-    SuccessfulTransferView(type: .mail, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .mail, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }
 
 #Preview("QR Code") {
-    SuccessfulTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }
 
 #Preview("Link") {
-    SuccessfulTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }

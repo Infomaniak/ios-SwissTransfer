@@ -27,11 +27,12 @@ import SwissTransferCoreUI
 struct SuccessfulLinkTransferView: View {
     private static let qrCodeSize: CGFloat = 160
 
+    @Environment(\.dismissModal) private var dismissModal
+
     @LazyInjectService private var injection: SwissTransferInjection
 
     let type: TransferType
     let transferUUID: String
-    let dismiss: () -> Void
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -84,7 +85,7 @@ struct SuccessfulLinkTransferView: View {
                 .frame(maxWidth: IKButtonConstants.maxWidth)
             }
 
-            Button(action: dismiss) {
+            Button(action: dismissModal) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
@@ -98,9 +99,9 @@ struct SuccessfulLinkTransferView: View {
 }
 
 #Preview("QR Code") {
-    SuccessfulLinkTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid) {}
+    SuccessfulLinkTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
 
 #Preview("Link") {
-    SuccessfulLinkTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid) {}
+    SuccessfulLinkTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }

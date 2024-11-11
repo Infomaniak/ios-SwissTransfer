@@ -28,10 +28,10 @@ import SwissTransferCoreUI
 public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @StateObject private var transferRouter = LocalRouter()
     @StateObject private var newTransferManager: NewTransferManager
 
     @State private var isLoadingFileToUpload = false
+    @State private var navigationPath = NavigationPath()
 
     public init(urls: [URL]) {
         let transferManager = NewTransferManager()
@@ -40,7 +40,7 @@ public struct NewTransferView: View {
     }
 
     public var body: some View {
-        NavigationStack(path: $transferRouter.path) {
+        NavigationStack(path: $navigationPath) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     // FilesCell
@@ -74,7 +74,7 @@ public struct NewTransferView: View {
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                UploadProgressView(transferType: .qrcode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
+                RootUploadProgressView(transferType: .qrcode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
             }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
@@ -91,7 +91,6 @@ public struct NewTransferView: View {
             dismiss()
         }
         .environmentObject(newTransferManager)
-        .environmentObject(transferRouter)
     }
 
     func startUpload() {
@@ -110,7 +109,7 @@ public struct NewTransferView: View {
                     recipientsEmails: [],
                     files: filesToUpload
                 )
-                transferRouter.path.append(newUploadSession)
+                navigationPath.append(newUploadSession)
             } catch {
                 Logger.general.error("Error getting files to upload \(error.localizedDescription)")
             }
