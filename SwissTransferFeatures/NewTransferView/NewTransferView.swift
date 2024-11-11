@@ -16,16 +16,108 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
+import OSLog
+import STCore
+import STResources
+import STUploadProgressView
 import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    public init() {}
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var newTransferManager: NewTransferManager
+
+    @State private var isLoadingFileToUpload = false
+    @State private var navigationPath = NavigationPath()
+
+    public init(urls: [URL]) {
+        let transferManager = NewTransferManager()
+        _ = transferManager.addFiles(urls: urls)
+        _newTransferManager = StateObject(wrappedValue: transferManager)
+    }
 
     public var body: some View {
-        Text("NewTransferView")
+        NavigationStack(path: $navigationPath) {
+            ScrollView {
+                VStack(spacing: IKPadding.medium) {
+                    // FilesCell
+                    NewTransferFilesCellView()
+                        .padding(.horizontal, value: .medium)
+
+                    // Title and message
+                    NewTransferDetailsView()
+                        .padding(.horizontal, value: .medium)
+
+                    // Type
+                    NewTransferTypeView()
+
+                    // Settings
+                    NewTransferSettingsView()
+                        .padding(.horizontal, value: .medium)
+                }
+                .padding(.vertical, value: .medium)
+            }
+            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
+                UploadProgressView(uploadSession: newUploadSession)
+            }
+            .floatingContainer {
+                Button(action: startUpload) {
+                    Text(STResourcesStrings.Localizable.buttonNext)
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.ikBorderedProminent)
+                .ikButtonFullWidth(true)
+                .ikButtonLoading(isLoadingFileToUpload)
+                .controlSize(.large)
+            }
+            .scrollDismissesKeyboard(.immediately)
+            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+            .stNavigationBarStyle()
+            .navigationDestination(for: DisplayableFile.self) { file in
+                FileListView(parentFolder: file)
+                    .stNavigationBarNewTransfer(title: file.name)
+                    .stNavigationBarStyle()
+            }
+            .navigationDestination(for: DisplayableRootFolder.self) { _ in
+                FileListView(parentFolder: nil)
+                    .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+                    .stNavigationBarStyle()
+            }
+        }
+        .environment(\.dismissModal) {
+            dismiss()
+        }
+        .environmentObject(newTransferManager)
+    }
+
+    func startUpload() {
+        Task {
+            isLoadingFileToUpload = true
+
+            do {
+                let filesToUpload = try newTransferManager.filesToUpload()
+                let newUploadSession = NewUploadSession(
+                    duration: "30",
+                    authorEmail: "",
+                    password: "",
+                    message: "",
+                    numberOfDownload: 250,
+                    language: .english,
+                    recipientsEmails: [],
+                    files: filesToUpload
+                )
+                navigationPath.append(newUploadSession)
+            } catch {
+                Logger.general.error("Error getting files to upload \(error.localizedDescription)")
+            }
+
+            isLoadingFileToUpload = false
+        }
     }
 }
 
 #Preview {
-    NewTransferView()
+    NewTransferView(urls: [])
 }

@@ -71,6 +71,24 @@ public extension Color {
             dark: STResourcesAsset.Colors.dark2
         )
 
+        // MARK: - Buttons
+
+        /// light: greyRabbit / dark: dark1
+        public static let tertiaryButton = Color(
+            light: STResourcesAsset.Colors.greyRabbit,
+            dark: STResourcesAsset.Colors.dark1
+        )
+
+        /// light: greyShark / dark: greyElephant
+        public static let disabledState = Color(
+            light: STResourcesAsset.Colors.greyShark,
+            dark: STResourcesAsset.Colors.greyElephant
+        )
+        public static let onDisabledState = Color(
+            light: STResourcesAsset.Colors.white,
+            dark: STResourcesAsset.Colors.dark0
+        )
+
         // MARK: - Recipient Labels
 
         /// light: greenContrast / dark: greenDark

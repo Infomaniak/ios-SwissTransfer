@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "6f1503beb2e2944e3dce82dca4a235add2200647",
-        "version" : "12.4.0"
+        "revision" : "830b0d383b443196b2e9ad1dcec2089a694523e0",
+        "version" : "12.5.1"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "f60ed1cdf7e0e08650aca013f2ab64ea2b895832",
-        "version" : "13.3.0"
+        "revision" : "95265cad8e0fcb09268573c22e0098eac8ce7451",
+        "version" : "14.0.0"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "cbc6af9aea2f374f07c5816f7c1b5166c576e466",
-        "version" : "0.4.0"
+        "revision" : "026ce2192ddcf3174528d17a0989bc35fe67d92d",
+        "version" : "0.6.0"
       }
     },
     {
@@ -88,6 +88,15 @@
       "state" : {
         "revision" : "54fd6673923ef5966268918152235b0e15ed057c",
         "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "qrcode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/QRCode",
+      "state" : {
+        "revision" : "64ddc71970bdfbc0df61072f87180bd32922d4fc",
+        "version" : "22.0.0"
       }
     },
     {
@@ -113,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "54cc2e3e4fcbf9d4c7708ce00d3b6eee29aecbb1",
-        "version" : "8.38.0"
+        "revision" : "0ffc3c6287461962cb2a81e57fc0ee0335d8d56a",
+        "version" : "8.40.1"
       }
     },
     {
@@ -145,12 +154,30 @@
       }
     },
     {
+      "identity" : "swift-qrcode-generator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/swift-qrcode-generator",
+      "state" : {
+        "revision" : "2b1980b825f08a81ccc762b0c4d17fcde9d5e953",
+        "version" : "2.0.2"
+      }
+    },
+    {
       "identity" : "swiftbackports",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shaps80/SwiftBackports",
       "state" : {
         "revision" : "ddca6a237c1ba2291d5a3cc47ec8480ce6e9f805",
         "version" : "1.0.3"
+      }
+    },
+    {
+      "identity" : "swiftimagereadwrite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dagronf/SwiftImageReadWrite",
+      "state" : {
+        "revision" : "42ace2412279f18bc264bc306e96b51c36e12a33",
+        "version" : "1.9.2"
       }
     },
     {

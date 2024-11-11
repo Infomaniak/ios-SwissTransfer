@@ -18,6 +18,7 @@
 
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import OSLog
 import STCore
 import STResources
 import STRootView
@@ -27,6 +28,7 @@ import SwissTransferCoreUI
 
 @main
 struct SwissTransferApp: App {
+    private let sentryService = SentryService()
     private let dependencyInjectionHook = TargetAssembly()
 
     @LazyInjectService private var settingsManager: AppSettingsManager
@@ -52,8 +54,22 @@ struct SwissTransferApp: App {
         WindowGroup {
             RootView()
                 .tint(.ST.primary)
+                .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
                 .preferredColorScheme(savedScheme)
+                .onOpenURL(perform: handleURL)
+        }
+    }
+
+    func handleURL(_ url: URL) {
+        Task {
+            do {
+                try await UniversalLinkHandler().handlePossibleTransferURL(url)
+            } catch {
+                Logger.view.error("Error while handling URL: \(error.localizedDescription)")
+                throw UserFacingError.badTransferURL
+                // TODO: Maybe have something like tryOrDisplayError in Mail to display snackbar
+            }
         }
     }
 }

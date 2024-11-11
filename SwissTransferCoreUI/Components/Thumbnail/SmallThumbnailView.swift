@@ -19,24 +19,77 @@
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
+import SwissTransferCore
 
-// TODO: - Manage real preview (not only fileType)
 public struct SmallThumbnailView: View {
     @ScaledMetric(relativeTo: .body) private var size = 48
 
-    let icon: Image
+    private let url: URL?
+    private let removeAction: (() -> Void)?
 
-    public init(icon: Image) {
-        self.icon = icon
+    @State private var icon: Image
+    @State private var thumbnail: Image?
+    private var cornerRadius: CGFloat = IKRadius.medium
+
+    /// File init
+    public init(url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
+        self.url = url
+        self.removeAction = removeAction
+
+        if removeAction != nil {
+            _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
+            cornerRadius = IKRadius.large
+        }
+
+        icon = FileHelper(type: mimeType).icon.swiftUIImage
+    }
+
+    /// Folder init
+    public init(removeAction: (() -> Void)? = nil) {
+        url = nil
+        self.removeAction = removeAction
+
+        if removeAction != nil {
+            _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
+            cornerRadius = IKRadius.large
+        }
+
+        icon = STResourcesAsset.Images.folder.swiftUIImage
     }
 
     public var body: some View {
-        FileIconView(icon: icon, type: .small)
-            .frame(width: size, height: size)
-            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.medium))
+        ZStack {
+            if let thumbnail {
+                thumbnail
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(.rect(cornerRadius: cornerRadius))
+            } else {
+                FileIconView(icon: icon, type: .small)
+                    .frame(width: size, height: size)
+                    .background(Color.ST.background, in: .rect(cornerRadius: cornerRadius))
+                    .task {
+                        thumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size))
+                    }
+            }
+
+            if let removeAction {
+                Button(action: removeAction) {
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .frame(width: 8, height: 8)
+                        .padding(value: .small)
+                        .background(.black.opacity(0.5), in: .circle)
+                }
+                .padding(value: .small)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+        }
     }
 }
 
 #Preview {
-    SmallThumbnailView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage)
+    SmallThumbnailView(url: URL(fileURLWithPath: ""), mimeType: "public.jpeg")
 }

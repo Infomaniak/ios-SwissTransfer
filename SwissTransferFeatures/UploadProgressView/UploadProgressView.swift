@@ -16,16 +16,59 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
+import STNetwork
 import SwiftUI
+import SwissTransferCore
 
 public struct UploadProgressView: View {
-    public init() {}
+    @EnvironmentObject private var transferManager: TransferManager
+
+    @StateObject private var transferSessionManager = TransferSessionManager()
+
+    @State private var error: Error?
+
+    let uploadSession: NewUploadSession
+
+    public init(uploadSession: NewUploadSession) {
+        self.uploadSession = uploadSession
+    }
 
     public var body: some View {
-        Text("UploadProgressView")
+        VStack {
+            ProgressView(value: transferSessionManager.percentCompleted)
+        }
+        .onAppear {
+            Task {
+                do {
+                    let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+
+                    // FIXME: Remove next two lines waiting for virus check
+                    try await Task.sleep(for: .seconds(2))
+                    try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
+
+                    guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
+                        fatalError("Couldn't find transfer")
+                    }
+
+                    // TODO: Navigate to transfer
+                } catch {
+                    self.error = error
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    UploadProgressView()
+    UploadProgressView(uploadSession: NewUploadSession(
+        duration: "30",
+        authorEmail: "",
+        password: "",
+        message: "Coucou",
+        numberOfDownload: 250,
+        language: .english,
+        recipientsEmails: [],
+        files: []
+    ))
 }

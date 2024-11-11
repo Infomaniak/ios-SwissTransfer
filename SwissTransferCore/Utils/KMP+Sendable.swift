@@ -22,3 +22,4 @@ import STCore
 // The following objects should be Sendable as discussed with the KMP team.
 extension TransferUi: @retroactive @unchecked Sendable {}
 extension FileUi: @retroactive @unchecked Sendable {}
+extension NewUploadSession: @retroactive @unchecked Sendable {}

@@ -17,6 +17,7 @@
  */
 
 import STCore
+import STNewTransferView
 import STResources
 import STTransferDetailsView
 import STTransferList
@@ -25,25 +26,25 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @State private var transfers: [TransferUi] = [PreviewHelper.sampleTransfer, PreviewHelper.sampleOldTransfer]
+    @EnvironmentObject private var transferManager: TransferManager
+    @State private var newTransferContainer: NewTransferContainer?
 
     public init() {}
 
     public var body: some View {
-        Group {
-            if transfers.isEmpty {
-                SentEmptyView()
-            } else {
-                TransferList(transfers: transfers, origin: .sent)
-                    .navigationDestination(for: NavigationDestination.self) { destination in
-                        if case .transfer(let transfer) = destination {
-                            TransferDetailsView(transfer: transfer)
-                        }
-                    }
-                    .floatingActionButton(style: .newTransfer) {
-                        // New transfer
-                    }
+        TransferList(transferManager: transferManager, origin: .sent) {
+            SentEmptyView()
+        }
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            if case .transfer(let transfer) = destination {
+                TransferDetailsView(transfer: transfer)
             }
+        }
+        .floatingActionButton(style: .newTransfer) { urls in
+            newTransferContainer = NewTransferContainer(urls: urls)
+        }
+        .fullScreenCover(item: $newTransferContainer) { container in
+            NewTransferView(urls: container.urls)
         }
     }
 }

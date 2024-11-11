@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: es, Spanish
  * Tagged: ios
- * Exported by: Adrien Coye
- * Exported at: Thu, 31 Oct 2024 11:21:00 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 29 Oct 2024 15:10:40 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -13,8 +13,20 @@
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Añadir archivos";
 
+/* loco:6707f83845c44bad7f0d7805 */
+"buttonConfirm" = "Confirme";
+
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Copiar enlace";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Acabado";
+
 /* loco:66bf171580717241110432a2 */
 "buttonNext" = "Siguiente";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Compartir";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Volver";
@@ -22,17 +34,32 @@
 /* loco:66c5b8e29f9df1eb920ef483 */
 "contentDescriptionButtonClose" = "Cerrar";
 
+/* loco:66ed1facfdf04647c80a0482 */
+"contentDescriptionButtonRemove" = "Eliminar archivo";
+
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Nueva transferencia";
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Transferencia descargada : %d/%d";
 
+/* loco:6720ec444fa469071a050ee2 */
+"errorGeneratingQRCode" = "Imposible generar el código QR";
+
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Expirado el %@";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Caduca en %d días";
+
+/* loco:66cecf7d39d10277c00c3102 */
+"filesCount" = "%d archivo";
+
+/* loco:6707db753b5b9ca70b07ef42 */
+"filesCount-plural" = "%d archivos";
+
+/* loco:67120291a1c637c0cc0d0242 */
+"filesCount-plural-many" = "";
 
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Realice su primera transferencia";
@@ -43,8 +70,32 @@
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Archivos para transferir";
 
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"importScreenTransferMessage" = "¿Algún mensaje que quiera transmitir? ";
+
+/* loco:6718e05f447ba2f97f0539f2 */
+"importScreenTransferTitle" = "Dé un título a su transferencia";
+
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Mensaje:";
+
+/* loco:6707f351b85d3276c70621e2 */
+"messagePlaceholder" = "Su mensaje";
+
+/* loco:6707f41e004c1612f407fae2 */
+"myFilesTitle" = "Mis archivos";
+
+/* loco:66e980bf4e282a19d208a9b2 */
+"noFileDescription" = "Añade hasta 50 GB de archivos";
+
+/* loco:66e980b10ccf751d4a0910a1 */
+"noFileTitle" = "Si no hay archivo, no hay transferencia.";
+
+/* loco:66d00a919c37e358f5081dd2 */
+"noTransferReceivedDescription" = "Aquí aparecerán todas las transferencias recibidas en los últimos 30 días.";
+
+/* loco:66d009adae0a00bb3c011352 */
+"noTransferReceivedTitle" = "No se han recibido transferencias";
 
 /* loco:66fa5ce7eb184f21290154a2 */
 "receivedFilesTitle" = "Archivos recibidos";
@@ -57,6 +108,12 @@
 
 /* loco:66a765a7ec41ffa0250df2d3 */
 "recipientHeader-plural" = "Para :";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"recipientMailAddressPlaceholder" = "Envíe los archivos a";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"senderMailAddressPlaceholder" = "Su dirección de correo electrónico";
 
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "Nuestra historia comienza aquí";
@@ -214,6 +271,9 @@
 /* loco:66c58d32b754b5821b0b2c22 */
 "settingsValidityPeriodValue-plural" = "%d días";
 
+/* loco:6718df9028c2ea33b001c522 */
+"textFieldOptional" = "(Opcional)";
+
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenido de la transferencia :";
 
@@ -231,6 +291,18 @@
 
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Ayer";
+
+/* loco:6707d903f6f42e03b90b8632 */
+"transferSendButton" = "Enviar";
+
+/* loco:6707e02b8a6e1328f2054d62 */
+"transferSpaceLeft" = "Queda %@";
+
+/* loco:6707e09639f0b3f32007d2e2 */
+"transferSpaceLeft-plural" = "Quedan %@";
+
+/* loco:6712085058c0880751095f72 */
+"transferSpaceLeft-plural-many" = "";
 
 /* loco:66c4aa7762a79eb6a60eaba2 */
 "transferTypeEmail" = "Correo electrónico";
@@ -259,11 +331,38 @@
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galería de fotos y vídeos";
 
-/* loco:66c2f735030026d03d0abe24 */
-"transferUploadSourceChoiceTitle" = "Descargar desde";
+/* loco:670f50568faef3642e0316d2 */
+"uploadSuccessEmailDescription" = "El enlace de descarga se ha enviado al siguiente destinatario:";
+
+/* loco:6718bd5a1e9716eeff066f12 */
+"uploadSuccessEmailDescription-plural" = "El enlace de descarga se ha enviado a los siguientes destinatarios:";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "¡Y ya está!";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Escanea este código QR a tu alrededor para compartir tus archivos o copia el enlace que aparece a continuación.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Su transferencia está lista";
+
+/* loco:670f6b6c056567b8060089e2 */
+"uploadSuccessQrTitle" = "Su código QR está listo";
 
 /* loco:66c5ef9c409f7ef5ca058e34 */
 "urlAbout" = "https://www.infomaniak.com/es/about";
+
+/* loco:6707f8d793cc933d520740f4 */
+"validateMailCodeIncorrectError" = "El código introducido es incorrecto";
+
+/* loco:6707f975b37970cb7704b0c2 */
+"validateMailDescription" = "Hemos enviado un código a %@. Introdúcelo a continuación para verificar tu dirección de correo electrónico en la aplicación:";
+
+/* loco:6707f9d6c8a673d44f0035f2 */
+"validateMailInfo" = "Recuerde comprobar la carpeta de correo no deseado de su dirección de correo electrónico.";
+
+/* loco:6707f9ac045804ab200b44f2 */
+"validateMailTitle" = "Compruebe su correo electrónico";
 
 /* loco:66c335b6cb643611950ea795 */
 "version" = "Versión";

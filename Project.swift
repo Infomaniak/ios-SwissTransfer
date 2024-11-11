@@ -8,19 +8,22 @@ import ProjectDescriptionHelpers
 
 let transferList = Feature(name: "TransferList")
 
-// MARK: New Transfer
-
-let newTransferView = Feature(name: "NewTransferView")
-
 // MARK: New Upload
 
 let uploadProgressView = Feature(name: "UploadProgressView")
+
+// MARK: New Transfer
+
+let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
+    uploadProgressView,
+    TargetDependency.external(name: "InfomaniakCore")
+])
 
 // MARK: Root
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView, transferList])
-let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList, newTransferView])
 
 let settingsView = Feature(name: "SettingsView")
 
@@ -28,7 +31,7 @@ let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, 
 
 let onboardingView = Feature(name: "OnboardingView")
 
-let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView])
+let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView], resources: ["SwissTransfer/Resources/Assets.xcassets"])
 
 let mainiOSAppFeatures = [
     rootView,
@@ -66,9 +69,10 @@ let project = Project(
             sources: "SwissTransfer/Sources/**",
             resources: [
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
-                "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon
+                "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon and LaunchScreen
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy"
             ],
+            entitlements: "SwissTransfer/Resources/SwissTransfer.entitlements",
             scripts: [Constants.swiftlintScript],
             dependencies: [
                 .target(name: "SwissTransferCore"),
@@ -109,7 +113,8 @@ let project = Project(
                     .external(name: "InfomaniakCoreUIKit"),
                     .external(name: "STCore"),
                     .external(name: "STNetwork"),
-                    .external(name: "STDatabase")
+                    .external(name: "STDatabase"),
+                    .external(name: "Sentry")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
@@ -120,7 +125,8 @@ let project = Project(
                 infoPlist: .default,
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
-                    .target(name: "SwissTransferCore")
+                    .target(name: "SwissTransferCore"),
+                    .external(name: "QRCode")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",

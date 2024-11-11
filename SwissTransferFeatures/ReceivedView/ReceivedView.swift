@@ -23,12 +23,12 @@ import SwiftUI
 import SwissTransferCore
 
 public struct ReceivedView: View {
-    @State private var transfers = [PreviewHelper.sampleTransfer]
+    @EnvironmentObject private var transferManager: TransferManager
 
     public init() {}
 
     public var body: some View {
-        TransferList(transfers: transfers, origin: .received)
+        TransferList(transferManager: transferManager, origin: .received) {}
             .navigationDestination(for: NavigationDestination.self) { destination in
                 if case .transfer(let transfer) = destination {
                     TransferDetailsView(transfer: transfer)
