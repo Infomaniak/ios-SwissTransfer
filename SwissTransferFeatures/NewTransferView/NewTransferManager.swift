@@ -92,7 +92,7 @@ extension NewTransferManager {
     }
 
     /// Find a valid name if a file/folder already exist with the same name
-    private func destinationURLFor(source: URL) throws -> URL {
+    func destinationURLFor(source: URL) throws -> URL {
         let allFiles = try FileManager.default.contentsOfDirectory(at: URL.tmpUploadDirectory(), includingPropertiesForKeys: nil)
             .map(\.lastPathComponent)
 
@@ -137,7 +137,7 @@ extension NewTransferManager {
     /// Flatten the upload folder
     /// Then return all the found Files to upload
     /// - Returns: An array of file to Upload (no folder, only file)
-    public func filesToUpload() throws -> [UploadFile] {
+    func filesToUpload() throws -> [UploadFile] {
         let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey]
         var result = [UploadFile]()
 
@@ -154,7 +154,7 @@ extension NewTransferManager {
         return result
     }
 
-    public func filesAt(folderURL: URL?) -> [DisplayableFile] {
+    func filesAt(folderURL: URL?) -> [DisplayableFile] {
         let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey]
 
         do {
