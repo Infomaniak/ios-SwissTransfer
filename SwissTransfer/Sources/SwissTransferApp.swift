@@ -46,8 +46,8 @@ struct SwissTransferApp: App {
     }
 
     public init() {
-        @InjectService var settingsManager: AppSettingsManager
-        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
+        @InjectService var settings: AppSettingsManager
+        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
     }
 
     var body: some Scene {
