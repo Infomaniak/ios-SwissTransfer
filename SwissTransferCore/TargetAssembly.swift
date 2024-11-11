@@ -18,6 +18,7 @@
 
 import Foundation
 import InfomaniakDI
+import InfomaniakCore
 import OSLog
 import STCore
 
@@ -56,6 +57,9 @@ open class TargetAssembly {
                                                        factoryParameters: nil,
                                                        resolver: resolver)
                 return stInjection.appSettingsManager
+            },
+            Factory(type: ReviewManageable.self) { _, _ in
+                ReviewManager(userDefaults: UserDefaults.shared)
             }
         ]
     }

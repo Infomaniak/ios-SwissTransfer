@@ -16,8 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakDI
 import InfomaniakCore
+import InfomaniakDI
 import STCore
 import StoreKit
 import STResources
@@ -97,7 +97,8 @@ enum SettingItemIdentifier: Hashable {
 
         case .feedback:
             return Button {
-                SKStoreReviewController.requestReview()
+                @InjectService var reviewManager: ReviewManageable
+                reviewManager.requestReview()
             } label: {
                 SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
                                         rightIconAsset: STResourcesAsset.Images.export)
