@@ -33,8 +33,23 @@ enum NotificationsSettingsModel: Hashable, CaseIterable {
     case failedTransfers
     case expiredTransfers
 
-    var title: String {
-        return "\(self)"
+    var localized: String {
+        switch self {
+        case .allNotifications:
+            STResourcesStrings.Localizable.settingsAllNotifications
+        case .newTransfers:
+            STResourcesStrings.Localizable.settingsNotificationsTransferInProgress
+        case .downloadsInProgress:
+            STResourcesStrings.Localizable.settingsNotificationsDownloadInProgress
+        case .finishedTransfers:
+            STResourcesStrings.Localizable.settingsNotificationsTransferFinished
+        case .downloadTransfers:
+            STResourcesStrings.Localizable.settingsNotificationsDownloadTransfer
+        case .failedTransfers:
+            STResourcesStrings.Localizable.settingsNotificationsTransferNotDownloaded
+        case .expiredTransfers:
+            STResourcesStrings.Localizable.settingsNotificationsLinkExpired
+        }
     }
 }
 
@@ -77,7 +92,7 @@ struct NotificationsSettings: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsNotificationsTitle)) {
                 ForEach(NotificationsSettingsModel.allCases, id: \.self) { setting in
                     let binding = toggleBinding(for: setting)
-                    NotificationSettingCell(label: setting.title, enabled: binding)
+                    NotificationSettingCell(label: setting.localized, enabled: binding)
                 }
             }
         }

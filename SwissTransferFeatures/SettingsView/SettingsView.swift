@@ -54,7 +54,7 @@ enum SettingItemIdentifier: Hashable {
 
         case .notifications:
             return SettingsCell(title: STResourcesStrings.Localizable.settingsOptionNotifications,
-                                subtitle: "TODO",
+                                subtitle: "",
                                 leftIconAsset: STResourcesAsset.Images.bell)
                 .tag(NavigationDestination.settings(.notifications))
 

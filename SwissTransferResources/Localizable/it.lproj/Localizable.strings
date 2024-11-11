@@ -67,6 +67,10 @@
 /* loco:669f755c502e59a518017423 */
 "sentTitle" = "Inviato a";
 
+/* loco:67319f67ca1b48e5d00b77e2
+ * Notifications settings */
+"settingsAllNotifications" = "Tutte le notifiche";
+
 /* loco:670e22c9e91567b93601c852 */
 "settingsAuthorizeTracking" = "Autorizza il tracciamento";
 
@@ -112,8 +116,31 @@
 /* loco:670e0d2650d301395000ead2 */
 "settingsMatomoDescription" = "Matomo è uno strumento di analisi ospitato e gestito esclusivamente da Infomaniak per capire come viene utilizzata l’applicazione.\n\nStudiando questi dati, il nostro team è in grado di migliorare continuamente l’interfaccia dell’applicazione.";
 
+/* loco:6731a0b0ee0948aac509e672
+ * Notifications settings */
+"settingsNotificationsDownloadInProgress" = "Download in corso";
+
+/* loco:6731a15af505e237120fb292
+ * Notifications settings */
+"settingsNotificationsDownloadTransfer" = "Scaricare un trasferimento";
+
+/* loco:6731a4f786feae2e5707c952 */
+"settingsNotificationsLinkExpired" = "Link scaduto";
+
 /* loco:66c57e1cac4c61d2dd0c8f12 */
 "settingsNotificationsTitle" = "Seleziona una preferenza";
+
+/* loco:6731a1221ff67f956202a482
+ * Notifications settings */
+"settingsNotificationsTransferFinished" = "Trasferimento completato";
+
+/* loco:6731a079a36f5786980eff62
+ * Notifications settings */
+"settingsNotificationsTransferInProgress" = "Trasferimento in corso";
+
+/* loco:6731a18f7f9ab820b6015712
+ * Notifications settings */
+"settingsNotificationsTransferNotDownloaded" = "Trasferimento non scaricato";
 
 /* loco:67176dcf314971e1f604b9c2 */
 "settingsOptionActivated" = "Attivato";
