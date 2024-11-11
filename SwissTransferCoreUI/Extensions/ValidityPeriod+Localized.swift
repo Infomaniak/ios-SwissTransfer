@@ -19,18 +19,17 @@
 import STCore
 import STResources
 
-// TODO: i18n
 public extension ValidityPeriod {
     var localized: String {
         switch self {
         case .thirty:
-            return "30 days"
+            return STResourcesStrings.Localizable.expiresIn(30)
         case .fifteen:
-            return "15 days"
+            return STResourcesStrings.Localizable.expiresIn(15)
         case .seven:
-            return "7 days"
+            return STResourcesStrings.Localizable.expiresIn(7)
         case .one:
-            return "1 day"
+            return STResourcesStrings.Localizable.expiresIn(1)
         }
     }
 }
