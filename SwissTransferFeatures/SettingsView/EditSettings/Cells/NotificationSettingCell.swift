@@ -32,6 +32,6 @@ struct NotificationSettingCell: View {
     }
 }
 
-//#Preview {
-//    NotificationSettingCell(label: "NotificationSettingCell")
-//}
+#Preview {
+    NotificationSettingCell(label: "Some setting", enabled: .constant(true))
+}

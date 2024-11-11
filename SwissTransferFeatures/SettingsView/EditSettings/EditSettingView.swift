@@ -55,6 +55,7 @@ struct EditSettingView: View {
     }
 }
 
-// #Preview {
-//    EditSettingView(source: .theme)
-// }
+#Preview {
+    let model = EditThemeDatasource(appSettings: nil)
+    EditSettingView(datasource: model)
+}
