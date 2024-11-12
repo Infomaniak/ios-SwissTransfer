@@ -63,7 +63,7 @@ struct PasswordSettingView: View {
                         if isShowingPassword {
                             STResourcesAsset.Images.eye.swiftUIImage
                         } else {
-                            STResourcesAsset.Images.eyeCrossed.swiftUIImage
+                            STResourcesAsset.Images.eyeSlash.swiftUIImage
                         }
                     }
                     .foregroundStyle(Color.ST.textSecondary)

@@ -43,10 +43,12 @@ final class UploadTaskDelegate: NSObject, URLSessionTaskDelegate {
     }
 }
 
+@MainActor
 class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
 
-    @Published var percentCompleted: Double = 0
+    @Published var completedBytes: Int64 = 0
+    @Published var totalBytes: Int64 = 0
 
     private let uploadURLSession = URLSession.shared
 
@@ -72,18 +74,23 @@ class TransferSessionManager: ObservableObject {
 
     func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
         do {
-            overallProgress = Progress(totalUnitCount: Int64(newUploadSession.files.count))
+            let filesSize = newUploadSession.files.reduce(0) { $0 + $1.size }
+            Task { @MainActor in
+                totalBytes = filesSize
+            }
+
+            overallProgress = Progress(totalUnitCount: filesSize)
             overallProgress?
-                .publisher(for: \.fractionCompleted)
+                .publisher(for: \.completedUnitCount)
                 .receive(on: RunLoop.main)
-                .sink { [weak self] fractionCompleted in
-                    self?.percentCompleted = fractionCompleted
+                .sink { [weak self] completedUnitCount in
+                    self?.completedBytes = completedUnitCount
                 }
                 .store(in: &cancellables)
 
             let uploadManager = injection.uploadManager
 
-            let uploadSession = try await uploadManager.createAnGetUpload(newUploadSession: newUploadSession)
+            let uploadSession = try await uploadManager.createAndGetUpload(newUploadSession: newUploadSession)
 
             let uploadWithRemoteContainer = try await uploadManager.doInitUploadSession(
                 uuid: uploadSession.uuid,
@@ -127,9 +134,9 @@ class TransferSessionManager: ObservableObject {
             throw ErrorDomain.invalidRangeCompute
         }
 
-        let rangeCount = ranges.count
+        let rangeCount = ranges.reduce(0) { $0 + $1.count }
         let fileProgress = Progress(totalUnitCount: Int64(rangeCount))
-        overallProgress?.addChild(fileProgress, withPendingUnitCount: 1)
+        overallProgress?.addChild(fileProgress, withPendingUnitCount: Int64(rangeCount))
 
         var index: Int32 = 0
         while let chunk = chunkProvider.next() {
@@ -137,7 +144,7 @@ class TransferSessionManager: ObservableObject {
                 uploadUUID: uploadUUID,
                 fileUUID: toRemoteFile.uuid,
                 chunkIndex: index,
-                isLastChunk: index == rangeCount - 1
+                isLastChunk: index == ranges.count - 1
             ) else {
                 throw ErrorDomain.invalidUploadChunkURL
             }
@@ -150,7 +157,7 @@ class TransferSessionManager: ObservableObject {
             uploadRequest.httpMethod = "POST"
 
             let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
-            fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: 1)
+            fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
             try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
 
             index += 1

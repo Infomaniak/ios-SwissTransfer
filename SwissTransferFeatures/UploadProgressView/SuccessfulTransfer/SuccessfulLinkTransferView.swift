@@ -17,6 +17,8 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -25,9 +27,18 @@ import SwissTransferCoreUI
 struct SuccessfulLinkTransferView: View {
     private static let qrCodeSize: CGFloat = 160
 
+    @Environment(\.dismissModal) private var dismissModal
+
+    @LazyInjectService private var injection: SwissTransferInjection
+
     let type: TransferType
-    let url: URL
-    let dismiss: () -> Void
+    let transferUUID: String
+
+    private var transferURL: URL? {
+        let apiURLCreator = injection.sharedApiUrlCreator
+        let url = apiURLCreator.shareTransferUrl(transferUUID: transferUUID)
+        return URL(string: url)
+    }
 
     var body: some View {
         VStack(spacing: 32) {
@@ -40,8 +51,10 @@ struct SuccessfulLinkTransferView: View {
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            QRCodeView(url: url)
-                .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
+            if let transferURL {
+                QRCodeView(url: transferURL)
+                    .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
+            }
 
             if type != .qrcode {
                 Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
@@ -55,22 +68,24 @@ struct SuccessfulLinkTransferView: View {
         .padding(.vertical, value: .large)
         .scrollableEmptyState()
         .safeAreaButtons {
-            HStack(spacing: IKPadding.medium) {
-                ShareLink(item: url) {
-                    Label {
-                        Text(STResourcesStrings.Localizable.buttonShare)
-                    } icon: {
-                        STResourcesAsset.Images.personBadgeShare.swiftUIImage
+            if let transferURL {
+                HStack(spacing: IKPadding.medium) {
+                    ShareLink(item: transferURL) {
+                        Label {
+                            Text(STResourcesStrings.Localizable.buttonShare)
+                        } icon: {
+                            STResourcesAsset.Images.personBadgeShare.swiftUIImage
+                        }
+                        .labelStyle(.verticalButton)
                     }
-                    .labelStyle(.verticalButton)
+
+                    CopyToClipboardButton(url: transferURL)
                 }
-
-                CopyToClipboardButton(url: url)
+                .buttonStyle(.ikBordered)
+                .frame(maxWidth: IKButtonConstants.maxWidth)
             }
-            .buttonStyle(.ikBordered)
-            .frame(maxWidth: IKButtonConstants.maxWidth)
 
-            Button(action: dismiss) {
+            Button(action: dismissModal) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
@@ -78,14 +93,15 @@ struct SuccessfulLinkTransferView: View {
     }
 
     private func copyLinkToClipboard() {
-        UIPasteboard.general.string = url.absoluteString
+        guard let transferURL else { return }
+        UIPasteboard.general.string = transferURL.absoluteString
     }
 }
 
 #Preview("QR Code") {
-    SuccessfulLinkTransferView(type: .qrcode, url: URL(string: "https://www.infomaniak.com")!) {}
+    SuccessfulLinkTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
 
 #Preview("Link") {
-    SuccessfulLinkTransferView(type: .link, url: URL(string: "https://www.infomaniak.com")!) {}
+    SuccessfulLinkTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }

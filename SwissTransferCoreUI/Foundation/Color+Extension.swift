@@ -70,6 +70,11 @@ public extension Color {
             light: STResourcesAsset.Colors.greyMouse,
             dark: STResourcesAsset.Colors.dark2
         )
+        /// light: greenSecondary / dark: greenDark
+        public static let highlighted = Color(
+            light: STResourcesAsset.Colors.greenSecondary,
+            dark: STResourcesAsset.Colors.greenDark
+        )
 
         // MARK: - Buttons
 
