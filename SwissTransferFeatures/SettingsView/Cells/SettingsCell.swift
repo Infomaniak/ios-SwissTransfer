@@ -23,13 +23,15 @@ import SwiftUI
 struct SettingsCell: View {
     let title: String
     let subtitle: String
-    let leftIconAsset: STResourcesImages
+    var leftIconAsset: STResourcesImages?
     var rightIconAsset: STResourcesImages?
 
     var body: some View {
         HStack(spacing: IKPadding.small) {
-            Image(asset: leftIconAsset)
-                .iconSize(.large)
+            if let leftIconAsset {
+                Image(asset: leftIconAsset)
+                    .iconSize(.large)
+            }
 
             VStack(alignment: .leading) {
                 Text(title)

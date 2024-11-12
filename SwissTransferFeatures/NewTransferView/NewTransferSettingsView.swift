@@ -23,6 +23,7 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+
 struct NewTransferSettingsView: View {
     @State private var duration = ValidityPeriod.thirty
     @State private var limit = DownloadLimit.twoHundredFifty
