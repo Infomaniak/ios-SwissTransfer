@@ -24,14 +24,7 @@ struct SettingsCell: View {
     let title: String
     let subtitle: String
     let leftIconAsset: STResourcesImages
-    let rightIconAsset: STResourcesImages?
-
-    init(title: String, subtitle: String, leftIconAsset: STResourcesImages, rightIconAsset: STResourcesImages? = nil) {
-        self.title = title
-        self.subtitle = subtitle
-        self.leftIconAsset = leftIconAsset
-        self.rightIconAsset = rightIconAsset
-    }
+    var rightIconAsset: STResourcesImages?
 
     var body: some View {
         HStack(spacing: IKPadding.small) {
@@ -60,12 +53,7 @@ struct SettingsCell: View {
 
 struct SingleLabelSettingsCell: View {
     let title: String
-    let rightIconAsset: STResourcesImages?
-
-    init(title: String, rightIconAsset: STResourcesImages? = nil) {
-        self.title = title
-        self.rightIconAsset = rightIconAsset
-    }
+    var rightIconAsset: STResourcesImages?
 
     var body: some View {
         HStack(spacing: IKPadding.small) {

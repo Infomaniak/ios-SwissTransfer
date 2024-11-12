@@ -106,14 +106,16 @@ struct NotificationsSettings: View {
             allNotificationsEnabled = newValue.allSatisfy { $0 }
         }
         .onChange(of: allNotificationsEnabled) { newValue in
-            if newValue {
-                newTransfers = newValue
-                downloadInProgress = newValue
-                finishedTransfers = newValue
-                downloadTransfers = newValue
-                failedTransfers = newValue
-                expiredTransfers = newValue
+            guard newValue else {
+                return
             }
+
+            newTransfers = newValue
+            downloadInProgress = newValue
+            finishedTransfers = newValue
+            downloadTransfers = newValue
+            failedTransfers = newValue
+            expiredTransfers = newValue
         }
         .stNavigationBarStyle()
     }

@@ -33,7 +33,8 @@ struct SwissTransferApp: App {
 
     @LazyInjectService private var settingsManager: AppSettingsManager
 
-    @StateObject var appSettings: FlowObserver<AppSettings>
+    @StateObject private var appSettings: FlowObserver<AppSettings>
+
     @Environment(\.colorScheme) var colorScheme
 
     var savedScheme: ColorScheme? {

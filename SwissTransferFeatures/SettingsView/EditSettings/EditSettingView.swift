@@ -27,11 +27,11 @@ struct EditSettingView: View {
     @EnvironmentObject private var mainViewState: MainViewState
     @Environment(\.presentationMode) private var presentationMode
 
-    @LazyInjectService var settingsManager: AppSettingsManager
+    @LazyInjectService private var settingsManager: AppSettingsManager
 
-    @StateObject var appSettings: FlowObserver<AppSettings>
+    @StateObject private var appSettings: FlowObserver<AppSettings>
 
-    let datasource: EditSettingsModel
+    private let datasource: EditSettingsModel
 
     public init(datasource: EditSettingsModel) {
         self.datasource = datasource

@@ -21,20 +21,10 @@ import STResources
 import SwiftUI
 
 struct EditSettingsView: View {
-    let leftIconAsset: STResourcesImages?
-    let rightIconAsset: STResourcesImages?
+    var leftIconAsset: STResourcesImages?
+    var rightIconAsset: STResourcesImages?
     let label: String
     let action: () -> Void
-
-    init(leftIconAsset: STResourcesImages? = nil,
-         rightIconAsset: STResourcesImages? = nil,
-         label: String,
-         action: @escaping () -> Void) {
-        self.leftIconAsset = leftIconAsset
-        self.rightIconAsset = rightIconAsset
-        self.label = label
-        self.action = action
-    }
 
     var body: some View {
         Button(action: action) {

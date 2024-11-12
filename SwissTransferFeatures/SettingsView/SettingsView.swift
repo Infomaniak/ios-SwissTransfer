@@ -149,7 +149,7 @@ public struct SettingsView: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @StateObject var appSettings: FlowObserver<AppSettings>
+    @StateObject private var appSettings: FlowObserver<AppSettings>
 
     public init() {
         @InjectService var settingsManager: AppSettingsManager
