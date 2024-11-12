@@ -71,7 +71,7 @@ struct EditThemeDatasource: EditSettingsModel {
         selectedTheme = appSettings?.theme
         cellsModel = Theme.allCases.map { setting in
             EditCellDatom(
-                label: setting.localized,
+                label: setting.title,
                 action: action(forSetting: setting),
                 rightIconAsset: rightIconAsset(forSetting: setting)
             )
@@ -103,7 +103,7 @@ struct EditValidityPeriodDatasource: EditSettingsModel {
     init(appSettings: AppSettings?) {
         selectedValidity = appSettings?.validityPeriod
         cellsModel = ValidityPeriod.allCases.map { setting in
-            EditCellDatom(label: setting.localized,
+            EditCellDatom(label: setting.title,
                           action: action(forSetting: setting),
                           rightIconAsset: rightIconAsset(forSetting: setting))
         }
@@ -134,7 +134,7 @@ struct EditDownloadLimitDatasource: EditSettingsModel {
     init(appSettings: AppSettings?) {
         selectedDownloadLimit = appSettings?.downloadLimit
         cellsModel = DownloadLimit.allCases.map { setting in
-            EditCellDatom(label: setting.localized,
+            EditCellDatom(label: setting.title,
                           action: action(forSetting: setting),
                           rightIconAsset: rightIconAsset(forSetting: setting))
         }
@@ -165,7 +165,7 @@ struct EditEmailLanguageDatasource: EditSettingsModel {
     init(appSettings: AppSettings?) {
         selectedEmailLanguage = appSettings?.emailLanguage
         cellsModel = EmailLanguage.allCases.map { setting in
-            EditCellDatom(label: setting.localized,
+            EditCellDatom(label: setting.title,
                           action: action(forSetting: setting),
                           leftIconAsset: setting.leftIcon,
                           rightIconAsset: rightIconAsset(forSetting: setting))

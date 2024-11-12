@@ -17,14 +17,16 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-
 struct NewTransferSettingsView: View {
+    @StateObject private var appSettings: FlowObserver<AppSettings>
+
     @State private var duration = ValidityPeriod.thirty
     @State private var limit = DownloadLimit.twoHundredFifty
     @State private var language = EmailLanguage.french
@@ -34,6 +36,11 @@ struct NewTransferSettingsView: View {
     @State private var isShowingDownloadLimitSetting = false
     @State private var isShowingLanguageSetting = false
 
+    public init() {
+        @InjectService var settingsManager: AppSettingsManager
+        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.advancedSettingsTitle)
@@ -41,10 +48,11 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
+                let validityItem = settingItem(setting: .validityPeriod)
                 NewTransferSettingCell(
-                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                    icon: STResourcesAsset.Images.clock.swiftUIImage,
-                    value: duration.title
+                    title: validityItem.title,
+                    icon: validityItem.leftIconAsset?.swiftUIImage,
+                    value: validityItem.subtitle ?? ""
                 ) {
                     isShowingValiditySetting = true
                 }
@@ -57,10 +65,11 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
+                let downloadLimitItem = settingItem(setting: .downloadLimit)
                 NewTransferSettingCell(
-                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
-                    icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
-                    value: limit.value
+                    title: downloadLimitItem.title,
+                    icon: downloadLimitItem.leftIconAsset?.swiftUIImage,
+                    value: downloadLimitItem.subtitle ?? ""
                 ) {
                     isShowingDownloadLimitSetting = true
                 }
@@ -73,18 +82,20 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
+                let passwordItem = settingItem(setting: .password)
                 NewTransferSettingCell(
-                    title: STResourcesStrings.Localizable.settingsOptionPassword,
-                    icon: STResourcesAsset.Images.textfieldLock.swiftUIImage,
-                    value: STResourcesStrings.Localizable.settingsOptionNone
+                    title: passwordItem.title,
+                    icon: passwordItem.leftIconAsset?.swiftUIImage,
+                    value: passwordItem.subtitle ?? ""
                 ) {
                     showPasswordSetting = true
                 }
 
+                let emailItem = settingItem(setting: .emailLanguage)
                 NewTransferSettingCell(
-                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                    icon: STResourcesAsset.Images.message.swiftUIImage,
-                    value: language.title
+                    title: emailItem.title,
+                    icon: emailItem.leftIconAsset?.swiftUIImage,
+                    value: emailItem.subtitle ?? ""
                 ) {
                     isShowingLanguageSetting = true
                 }
@@ -109,6 +120,11 @@ struct NewTransferSettingsView: View {
                 PasswordSettingView()
             }
         }
+    }
+
+    private func settingItem(setting: SettingItemIdentifier) -> SettingItem {
+        let appSettings: AppSettings? = self.appSettings.value
+        return setting.item(for: appSettings)
     }
 }
 

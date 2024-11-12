@@ -24,16 +24,9 @@ import SwissTransferCoreUI
 
 struct NewTransferSettingCell: View {
     let title: String
-    let icon: Image
+    var icon: Image?
     let value: String
     let onTap: () -> Void
-
-    init(title: String, icon: Image, value: String, onTap: @escaping () -> Void) {
-        self.title = title
-        self.icon = icon
-        self.value = value
-        self.onTap = onTap
-    }
 
     var body: some View {
         Button {
@@ -45,8 +38,10 @@ struct NewTransferSettingCell: View {
                         .font(.ST.calloutMedium)
                         .foregroundStyle(Color.ST.primary)
                 } icon: {
-                    icon
-                        .iconSize(.medium)
+                    if let icon {
+                        icon
+                            .iconSize(.medium)
+                    }
                 }
                 .labelStyle(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)

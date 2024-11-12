@@ -18,18 +18,19 @@
 
 import STCore
 import STResources
+import SwiftUI
 
-public extension ValidityPeriod {
-    var localized: String {
+extension Theme: SettingSelectable {
+    public var title: String {
         switch self {
-        case .thirty:
-            return STResourcesStrings.Localizable.expiresIn(30)
-        case .fifteen:
-            return STResourcesStrings.Localizable.expiresIn(15)
-        case .seven:
-            return STResourcesStrings.Localizable.expiresIn(7)
-        case .one:
-            return STResourcesStrings.Localizable.expiresIn(1)
+        case .dark:
+            return STResourcesStrings.Localizable.settingsOptionThemeDark
+        case .light:
+            return STResourcesStrings.Localizable.settingsOptionThemeLight
+        case .system:
+            return STResourcesStrings.Localizable.settingsOptionThemeSystem
         }
     }
+
+    public var icon: Image? { nil }
 }

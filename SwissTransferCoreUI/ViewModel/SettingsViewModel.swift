@@ -15,21 +15,3 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-import STCore
-import STResources
-
-public extension DownloadLimit {
-    var localized: String {
-        switch self {
-        case .twoHundredFifty:
-            return "250"
-        case .oneHundred:
-            return "100"
-        case .twenty:
-            return "20"
-        case .one:
-            return "1"
-        }
-    }
-}

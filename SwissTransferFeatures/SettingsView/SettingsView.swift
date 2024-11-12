@@ -31,100 +31,6 @@ enum SettingLinks {
         URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
 }
 
-/// Holds all what is necessary to display _any_ root level setting cell
-struct SettingItem {
-    let title: String
-    var subtitle: String?
-    var leftIconAsset: STResourcesImages?
-    var rightIconAsset: STResourcesImages?
-}
-
-/// The identifier of any setting
-enum SettingItemIdentifier: Hashable {
-    case theme
-    case notifications
-    case validityPeriod
-    case downloadLimit
-    case emailLanguage
-    case dataManagement
-    case discoverIk
-    case shareIdeas
-    case feedback
-    case version
-
-    var tag: SettingDetailUi? {
-        switch self {
-        case .theme:
-            return .theme
-        case .notifications:
-            return .notifications
-        case .validityPeriod:
-            return .validityPeriod
-        case .downloadLimit:
-            return .downloadLimit
-        case .emailLanguage:
-            return .emailLanguage
-        case .dataManagement:
-            return .dataManagement
-        default:
-            return nil
-        }
-    }
-
-    func item(for appSettings: AppSettings?) -> SettingItem {
-        switch self {
-        case .theme:
-            let themeName = appSettings?.theme.localized ?? ""
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionTheme,
-                               subtitle: themeName,
-                               leftIconAsset: STResourcesAsset.Images.brush,
-                               rightIconAsset: nil)
-
-        case .notifications:
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionNotifications,
-                               subtitle: "",
-                               leftIconAsset: STResourcesAsset.Images.bell)
-
-        case .validityPeriod:
-            let validityPeriod = appSettings?.validityPeriod.localized ?? ""
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                               subtitle: validityPeriod,
-                               leftIconAsset: STResourcesAsset.Images.clock)
-
-        case .downloadLimit:
-            let downloadLimit = appSettings?.downloadLimit.localized ?? ""
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
-                               subtitle: downloadLimit,
-                               leftIconAsset: STResourcesAsset.Images.fileDownload)
-
-        case .emailLanguage:
-            let emailLanguage = appSettings?.emailLanguage.localized ?? ""
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                               subtitle: emailLanguage,
-                               leftIconAsset: STResourcesAsset.Images.bubble)
-
-        case .dataManagement:
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
-
-        case .discoverIk:
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
-                               rightIconAsset: STResourcesAsset.Images.export)
-
-        case .shareIdeas:
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
-                               rightIconAsset: STResourcesAsset.Images.export)
-
-        case .feedback:
-            return SettingItem(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                               rightIconAsset: STResourcesAsset.Images.export)
-
-        case .version:
-            return SettingItem(title: STResourcesStrings.Localizable.version,
-                               subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
-        }
-    }
-}
-
 enum SettingSections: CaseIterable {
     case general
     case defaultSettings
@@ -245,6 +151,9 @@ public struct SettingsView: View {
         case .version:
             return AboutSettingsCell(title: datasource.title,
                                      subtitle: datasource.subtitle ?? "")
+
+        case .password:
+            EmptyView() // unsupported on the main settings view.
         }
     }
 }
