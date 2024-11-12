@@ -24,26 +24,21 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-public struct UploadProgressView: View {
+struct UploadProgressView: View {
+    @Environment(\.dismissModal) private var dismissModal
     @EnvironmentObject private var transferManager: TransferManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
-    @State private var successfulTransfer: TransferUi?
-    @State private var error: Error?
 
-    private let transferType: TransferType
-    private let uploadSession: NewUploadSession
-    private let dismiss: () -> Void
+    @Binding var transferUUID: String?
+    @Binding var error: Error?
 
-    public init(transferType: TransferType, uploadSession: NewUploadSession, dismiss: @escaping () -> Void) {
-        self.transferType = transferType
-        self.uploadSession = uploadSession
-        self.dismiss = dismiss
-    }
+    let transferType: TransferType
+    let uploadSession: NewUploadSession
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: IKPadding.medium) {
             UploadProgressHeaderView(subtitle: uploadProgressAd.description)
                 .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
@@ -56,6 +51,7 @@ public struct UploadProgressView: View {
         .padding(.horizontal, value: .medium)
         .padding(.top, value: .large)
         .scrollableEmptyState()
+        .background(Color.ST.background)
         .safeAreaButtons(spacing: 32) {
             UploadProgressIndicationView(
                 completedBytes: transferSessionManager.completedBytes,
@@ -78,32 +74,27 @@ public struct UploadProgressView: View {
             try await Task.sleep(for: .seconds(2))
             try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
 
-            guard let transfer = transferManager.getTransferByUUID(transferUUID: transferUUID) else {
-                fatalError("Couldn't find transfer")
+            withAnimation {
+                self.transferUUID = transferUUID
             }
-            successfulTransfer = transfer
         } catch {
-            self.error = error
+            withAnimation {
+                self.error = error
+            }
         }
     }
 
     private func cancelTransfer() {
         // TODO: Cancel Transfer
+        dismissModal()
     }
 }
 
 #Preview {
     UploadProgressView(
+        transferUUID: .constant(nil),
+        error: .constant(nil),
         transferType: .qrcode,
-        uploadSession: NewUploadSession(
-            duration: "30",
-            authorEmail: "",
-            password: "",
-            message: "Coucou",
-            numberOfDownload: 250,
-            language: .english,
-            recipientsEmails: [],
-            files: []
-        )
-    ) {}
+        uploadSession: PreviewHelper.sampleNewUploadSession
+    )
 }

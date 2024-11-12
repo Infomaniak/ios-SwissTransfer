@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -35,23 +36,17 @@ extension TransferType {
 }
 
 public struct SuccessfulTransferView: View {
-    private let type: TransferType
-    private let recipientsEmails: [String]
-    private let dismiss: () -> Void
-
-    public init(type: TransferType, recipientsEmails: [String], dismiss: @escaping () -> Void) {
-        self.type = type
-        self.recipientsEmails = recipientsEmails
-        self.dismiss = dismiss
-    }
+    let type: TransferType
+    let transferUUID: String
+    let recipientsEmails: [String]
 
     public var body: some View {
         Group {
             switch type {
             case .link, .qrcode, .proximity:
-                SuccessfulLinkTransferView(type: type, url: URL(string: "https://www.infomaniak.com")!, dismiss: dismiss)
+                SuccessfulLinkTransferView(type: type, transferUUID: transferUUID)
             case .mail:
-                SuccessfulMailTransferView(recipients: recipientsEmails, dismiss: dismiss)
+                SuccessfulMailTransferView(recipients: recipientsEmails)
             }
         }
         .stIconNavigationBar()
@@ -61,13 +56,13 @@ public struct SuccessfulTransferView: View {
 }
 
 #Preview("Mail") {
-    SuccessfulTransferView(type: .mail, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .mail, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }
 
 #Preview("QR Code") {
-    SuccessfulTransferView(type: .qrcode, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }
 
 #Preview("Link") {
-    SuccessfulTransferView(type: .link, recipientsEmails: []) {}
+    SuccessfulTransferView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }

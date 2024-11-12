@@ -50,6 +50,17 @@ public enum PreviewHelper {
         files: [sampleFile]
     )
 
+    public static let sampleNewUploadSession = NewUploadSession(
+        duration: "30",
+        authorEmail: "",
+        password: "",
+        message: "Coucou",
+        numberOfDownload: 250,
+        language: .english,
+        recipientsEmails: [],
+        files: []
+    )
+
     private static func expireTimeStamp(expired: Bool) -> Int64 {
         let date = Date()
         let calendar = Calendar(identifier: .gregorian)
