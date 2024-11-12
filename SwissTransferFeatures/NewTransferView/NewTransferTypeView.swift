@@ -22,7 +22,7 @@ import STResources
 import SwiftUI
 
 struct NewTransferTypeView: View {
-    @EnvironmentObject private var newTransferManager: NewTransferManager
+    @Binding var transferType: TransferType
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -35,11 +35,11 @@ struct NewTransferTypeView: View {
                 HStack {
                     ForEach(TransferType.allCases, id: \.name) { type in
                         Button {
-                            withAnimation(.easeIn(duration: 0.1)) {
-                                newTransferManager.transferType = type
+                            withAnimation {
+                                transferType = type
                             }
                         } label: {
-                            TransferTypeCell(type: type, isSelected: newTransferManager.transferType == type)
+                            TransferTypeCell(type: type, isSelected: transferType == type)
                         }
                     }
                 }
@@ -51,6 +51,5 @@ struct NewTransferTypeView: View {
 }
 
 #Preview {
-    NewTransferTypeView()
-        .environmentObject(NewTransferManager())
+    NewTransferTypeView(transferType: .constant(.qrcode))
 }

@@ -22,12 +22,15 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct PasswordSettingView: View {
+    @Environment(\.dismiss) private var dismiss
+
     @State private var isOn = false
-    @State private var password = ""
     @State private var isShowingPassword = false
 
     @FocusState private var isSecureFieldFocused: Bool
     @FocusState private var isVisibleFieldFocused: Bool
+
+    @Binding var password: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.large) {
@@ -44,6 +47,11 @@ struct PasswordSettingView: View {
                     .font(.ST.calloutMedium)
                     .foregroundStyle(Color.ST.textPrimary)
             }
+            .onChange(of: isOn) { newValue in
+                if !newValue {
+                    password = ""
+                }
+            }
 
             if isOn {
                 HStack {
@@ -57,9 +65,7 @@ struct PasswordSettingView: View {
                             .focused($isSecureFieldFocused)
                     }
 
-                    Button {
-                        toggleShowPassword()
-                    } label: {
+                    Button(action: toggleShowPassword) {
                         if isShowingPassword {
                             STResourcesAsset.Images.eye.swiftUIImage
                         } else {
@@ -77,10 +83,9 @@ struct PasswordSettingView: View {
         }
         .padding(value: .medium)
         .frame(maxHeight: .infinity, alignment: .top)
+        .background(Color.ST.background)
         .safeAreaButtons {
-            Button {
-                // Confirm
-            } label: {
+            Button(action: dismiss.callAsFunction) {
                 Text(STResourcesStrings.Localizable.buttonConfirm)
             }
             .buttonStyle(.ikBorderedProminent)
@@ -101,5 +106,5 @@ struct PasswordSettingView: View {
 }
 
 #Preview {
-    PasswordSettingView()
+    PasswordSettingView(password: .constant(""))
 }

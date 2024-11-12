@@ -33,6 +33,18 @@ public struct NewTransferView: View {
     @State private var isLoadingFileToUpload = false
     @State private var navigationPath = NavigationPath()
 
+    @AppStorage(UserDefaults.shared.key(.lastTransferType))
+    private var transferType = DefaultPreferences.lastTransferType
+    @AppStorage(UserDefaults.shared.key(.lastEmailAuthor))
+    private var authorEmail = DefaultPreferences.lastEmailAuthor
+
+    @State private var recipientEmail = ""
+    @State private var message = ""
+    @State private var password = ""
+    @State private var duration = ValidityPeriod.thirty
+    @State private var downloadLimit = DownloadLimit.twoHundredFifty
+    @State private var language = EmailLanguage.french
+
     public init(urls: [URL]) {
         let transferManager = NewTransferManager()
         _ = transferManager.addFiles(urls: urls)
@@ -46,12 +58,17 @@ public struct NewTransferView: View {
                     NewTransferFilesCellView()
                         .padding(.horizontal, value: .medium)
 
-                    NewTransferDetailsView()
-                        .padding(.horizontal, value: .medium)
+                    NewTransferDetailsView(
+                        authorEmail: $authorEmail,
+                        recipientEmail: $recipientEmail,
+                        message: $message,
+                        transferType: transferType
+                    )
+                    .padding(.horizontal, value: .medium)
 
-                    NewTransferTypeView()
+                    NewTransferTypeView(transferType: $transferType)
 
-                    NewTransferSettingsView()
+                    NewTransferSettingsView(duration: $duration, limit: $downloadLimit, language: $language, password: $password)
                         .padding(.horizontal, value: .medium)
                 }
                 .padding(.vertical, value: .medium)
@@ -66,8 +83,8 @@ public struct NewTransferView: View {
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                RootUploadProgressView(transferType: .qrCode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
+            .navigationDestination(for: NewUploadSession.self) { uploadSession in
+                RootUploadProgressView(transferType: transferType, uploadSession: uploadSession, dismiss: dismiss.callAsFunction)
             }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
@@ -86,20 +103,27 @@ public struct NewTransferView: View {
         .environmentObject(newTransferManager)
     }
 
-    func startUpload() {
+    private func startUpload() {
         Task {
             isLoadingFileToUpload = true
+
+            let recipientsEmail = [String]()
+            if transferType == .mail && recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                recipientEmail.append(recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
+            }
+
+            let numberOfDownload = Int32(downloadLimit.value) ?? 250
 
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: ValidityPeriod.thirty,
-                    authorEmail: "",
-                    password: "",
-                    message: "",
-                    numberOfDownload: DownloadLimit.twoHundredFifty,
-                    language: .english,
-                    recipientsEmails: [],
+                    duration: duration.value,
+                    authorEmail: authorEmail,
+                    password: password,
+                    message: message,
+                    numberOfDownload: numberOfDownload,
+                    language: language,
+                    recipientsEmails: recipientsEmail,
                     files: filesToUpload
                 )
                 navigationPath.append(newUploadSession)
