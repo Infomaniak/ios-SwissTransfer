@@ -18,27 +18,22 @@
 
 import SwiftUI
 
-// Define the TagModifier that accepts an optional tag and includeOptional flag
+// Define the TagModifier that accepts an optional tag
 public struct OptionalTagModifier<V: Hashable>: ViewModifier {
     var tag: V?
-    var includeOptional: Bool
 
     public func body(content: Content) -> some View {
-        Group {
-            if let tag = tag {
-                content.tag(tag)
-            } else if includeOptional {
-                content
-            } else {
-                EmptyView()
-            }
+        if let tag = tag {
+            content.tag(tag)
+        } else {
+            content
         }
     }
 }
 
 // Extension to easily apply the modifier
 public extension View {
-    func optionalTag<V>(_ tag: V?, includeOptional: Bool = true) -> some View where V: Hashable {
-        modifier(OptionalTagModifier(tag: tag, includeOptional: includeOptional))
+    func optionalTag<V>(_ tag: V?) -> some View where V: Hashable {
+        modifier(OptionalTagModifier(tag: tag))
     }
 }
