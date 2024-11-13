@@ -17,9 +17,9 @@
  */
 
 import Foundation
+import STCore
 import STResources
 import SwissTransferCore
-import STCore
 
 extension SettingDetailUi {
     // The data needed to display an `EditSetting` view, inferred from `SettingDetailUi`
