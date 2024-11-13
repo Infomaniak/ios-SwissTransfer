@@ -18,11 +18,25 @@
 
 import Foundation
 
+// MARK: - Percent
+
+public extension FormatStyle where Self == FloatingPointFormatStyle<Double>.Percent {
+    static var defaultPercent: FloatingPointFormatStyle<Double>.Percent {
+        return .percent.precision(.fractionLength(0))
+    }
+}
+
 // MARK: - ByteCount
 
 public extension FormatStyle where Self == ByteCountFormatStyle {
     static var defaultByteCount: ByteCountFormatStyle {
         return .byteCount(style: .binary)
+    }
+
+    static var progressByteCount: ByteCountFormatStyle {
+        var base = ByteCountFormatStyle.defaultByteCount
+        base.spellsOutZero = false
+        return base
     }
 }
 

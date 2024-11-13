@@ -23,8 +23,9 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct SuccessfulMailTransferView: View {
+    @Environment(\.dismissModal) private var dismissModal
+
     let recipients: [String]
-    let dismiss: () -> Void
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
@@ -45,7 +46,7 @@ struct SuccessfulMailTransferView: View {
         }
         .scrollableEmptyState()
         .safeAreaButtons {
-            Button(action: dismiss) {
+            Button(action: dismissModal) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
@@ -54,12 +55,12 @@ struct SuccessfulMailTransferView: View {
 }
 
 #Preview("One Recipient") {
-    SuccessfulMailTransferView(recipients: ["john.smith@ik.me"]) {}
+    SuccessfulMailTransferView(recipients: ["john.smith@ik.me"])
 }
 
 #Preview("Many Recipients") {
     let recipients = Array(repeating: "short@ik.me", count: 2)
         + Array(repeating: "long-email@infomaniak.com", count: 2)
         + Array(repeating: "middle@infomaniak.com", count: 3)
-    SuccessfulMailTransferView(recipients: recipients.shuffled()) {}
+    SuccessfulMailTransferView(recipients: recipients.shuffled())
 }
