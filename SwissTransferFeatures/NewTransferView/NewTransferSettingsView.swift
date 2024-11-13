@@ -49,6 +49,7 @@ struct NewTransferSettingsView: View {
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 NewTransferSettingCell(identifier: .validityPeriod,
+                                       value: duration.title,
                                        appSettings: self.appSettings.value) {
                     isShowingValiditySetting = true
                 }
@@ -62,6 +63,7 @@ struct NewTransferSettingsView: View {
                 }
 
                 NewTransferSettingCell(identifier: .downloadLimit,
+                                       value: limit.title,
                                        appSettings: self.appSettings.value) {
                     isShowingDownloadLimitSetting = true
                 }
@@ -75,11 +77,13 @@ struct NewTransferSettingsView: View {
                 }
 
                 NewTransferSettingCell(identifier: .password,
+                                       value: STResourcesStrings.Localizable.settingsOptionNone,
                                        appSettings: self.appSettings.value) {
                     showPasswordSetting = true
                 }
 
                 NewTransferSettingCell(identifier: .emailLanguage,
+                                       value: language.title,
                                        appSettings: self.appSettings.value) {
                     isShowingLanguageSetting = true
                 }

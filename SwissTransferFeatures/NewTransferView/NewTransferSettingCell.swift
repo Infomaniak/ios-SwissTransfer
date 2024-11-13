@@ -29,11 +29,11 @@ struct NewTransferSettingCell: View {
     let value: String
     let onTap: () -> Void
 
-    init(identifier: SettingItemIdentifier, appSettings: AppSettings?, onTap: @escaping () -> Void) {
+    init(identifier: SettingItemIdentifier, value: String, appSettings: AppSettings?, onTap: @escaping () -> Void) {
         let setting = identifier.item(for: appSettings)
         title = setting.title
         icon = setting.leftIconAsset?.swiftUIImage
-        value = setting.subtitle ?? ""
+        self.value = value
         self.onTap = onTap
     }
 
