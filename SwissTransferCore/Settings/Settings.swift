@@ -51,7 +51,15 @@ public enum SettingItemIdentifier: Hashable, Sendable {
     case version
     case password
 
-    public var tag: SettingDetailUi? {
+    public var navigationDestination: NavigationDestination? {
+        guard let settingDetailUi else {
+            return nil
+        }
+
+        return NavigationDestination.settings(settingDetailUi)
+    }
+
+    public var settingDetailUi: SettingDetailUi? {
         switch self {
         case .theme:
             return .theme

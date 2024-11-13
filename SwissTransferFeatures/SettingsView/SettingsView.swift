@@ -108,24 +108,19 @@ public struct SettingsView: View {
     }
 
     @MainActor func settingCellView(setting: SettingItemIdentifier) -> some View {
-        let appSettings: AppSettings? = self.appSettings.value
-        let datasource = setting.item(for: appSettings)
+        let datasource = setting.item(for: appSettings.value)
 
         switch setting {
         case .theme, .notifications, .validityPeriod, .downloadLimit, .emailLanguage:
-            var cell: any View = SettingsCell(title: datasource.title,
-                                              subtitle: datasource.subtitle ?? "",
-                                              leftIconAsset: datasource.leftIconAsset,
-                                              rightIconAsset: datasource.rightIconAsset)
-            if let tag = setting.tag {
-                cell = cell.tag(NavigationDestination.settings(tag))
-            }
-
-            return cell
+            return SettingsCell(title: datasource.title,
+                                subtitle: datasource.subtitle ?? "",
+                                leftIconAsset: datasource.leftIconAsset,
+                                rightIconAsset: datasource.rightIconAsset)
+                .optionalTag(setting.navigationDestination)
 
         case .dataManagement:
             return SingleLabelSettingsCell(title: datasource.title)
-                .tag(NavigationDestination.settings(.dataManagement))
+                .optionalTag(setting.navigationDestination)
 
         case .discoverIk:
             return Link(destination: SettingLinks.discoverInfomaniak) {
