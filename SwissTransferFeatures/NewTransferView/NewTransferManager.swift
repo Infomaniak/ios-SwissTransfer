@@ -22,7 +22,7 @@ import OSLog
 import SwiftUI
 import SwissTransferCore
 
-private enum TmpDirType: String {
+enum TmpDirType: String {
     case all
     case cache
     case upload
@@ -110,7 +110,7 @@ extension NewTransferManager {
     }
 
     /// Empty the temporary directory
-    private nonisolated func cleanTmpDir(type: TmpDirType) {
+    nonisolated func cleanTmpDir(type: TmpDirType) {
         do {
             try FileManager.default.removeItem(at: type.directory)
         } catch {

@@ -22,6 +22,11 @@ import XCTest
 
 @MainActor
 final class SwissTransferTests: XCTestCase {
+    override func tearDown() async throws {
+        let newTransferManager = NewTransferManager()
+        newTransferManager.cleanTmpDir(type: .all)
+    }
+
     func testDestinationURL() {
         do {
             // GIVEN
@@ -36,7 +41,7 @@ final class SwissTransferTests: XCTestCase {
             // THEN
             XCTAssertEqual(result, expectedResult)
         } catch {
-            XCTAssert(false, "Error creating destination URL")
+            XCTFail("Error creating destination URL")
         }
     }
 
@@ -56,7 +61,7 @@ final class SwissTransferTests: XCTestCase {
             // THEN
             XCTAssertEqual(result, expectedResult)
         } catch {
-            XCTAssert(false, "Error creating destination URL")
+            XCTFail("Error creating destination URL")
         }
     }
 }
