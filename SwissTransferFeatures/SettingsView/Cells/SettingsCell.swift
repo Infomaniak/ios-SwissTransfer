@@ -67,7 +67,7 @@ struct SingleLabelSettingsCell: View {
 
             if let rightIconAsset {
                 Image(asset: rightIconAsset)
-                    .iconSize(.large)
+                    .iconSize(.medium)
             }
         }
     }

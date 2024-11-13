@@ -143,6 +143,9 @@
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "General";
 
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Customized";
+
 /* loco:6708e556a393fdf47d05e272 */
 "settingsDataManagementDescription" = "You can customize the usage and operational data that Infomaniak retrieves to correct bugs and enhance the application. Both tools are hosted and managed exclusively by us.\n\nInfomaniak respects your privacy: the source code of this application can be verified, the information collected is anonymous and your personal information remains strictly confidential and is never shared with third parties.";
 

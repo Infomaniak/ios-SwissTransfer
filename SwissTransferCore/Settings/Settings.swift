@@ -81,7 +81,7 @@ public enum SettingItemIdentifier: Hashable, Sendable {
 
         case .notifications:
             return SettingItem(title: STResourcesStrings.Localizable.settingsOptionNotifications,
-                               subtitle: "",
+                               subtitle: NotificationSettings().enabledNotificationLabel,
                                leftIconAsset: STResourcesAsset.Images.bell)
 
         case .validityPeriod:

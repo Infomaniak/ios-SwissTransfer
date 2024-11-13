@@ -19,7 +19,6 @@
 import Foundation
 import InfomaniakCore
 import InfomaniakDI
-import InfomaniakCore
 import OSLog
 import STCore
 

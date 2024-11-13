@@ -143,6 +143,9 @@
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "General";
 
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Personalizado";
+
 /* loco:6708e556a393fdf47d05e272 */
 "settingsDataManagementDescription" = "Puede personalizar los datos de uso y funcionamiento que Infomaniak recupera para corregir errores y mejorar la aplicación. Ambas herramientas están alojadas y gestionadas exclusivamente por nosotros.\n\nInfomaniak respeta su privacidad: el código fuente de esta aplicación puede verificarse, la información recopilada es anónima y sus datos personales permanecen estrictamente confidenciales y nunca se comparten con terceros.";
 
