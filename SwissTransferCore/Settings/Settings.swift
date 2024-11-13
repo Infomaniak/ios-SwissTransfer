@@ -81,9 +81,8 @@ public enum SettingItemIdentifier: Hashable, Sendable {
     public func item(for appSettings: AppSettings?) -> SettingItem {
         switch self {
         case .theme:
-            let themeName = appSettings?.theme.title ?? ""
             return SettingItem(title: STResourcesStrings.Localizable.settingsOptionTheme,
-                               subtitle: themeName,
+                               subtitle: appSettings?.theme.title ?? "",
                                leftIconAsset: STResourcesAsset.Images.brush,
                                rightIconAsset: nil)
 
@@ -93,21 +92,18 @@ public enum SettingItemIdentifier: Hashable, Sendable {
                                leftIconAsset: STResourcesAsset.Images.bell)
 
         case .validityPeriod:
-            let validityPeriod = appSettings?.validityPeriod.title ?? ""
             return SettingItem(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                               subtitle: validityPeriod,
+                               subtitle: appSettings?.validityPeriod.title ?? "",
                                leftIconAsset: STResourcesAsset.Images.clock)
 
         case .downloadLimit:
-            let downloadLimit = appSettings?.downloadLimit.title ?? ""
             return SettingItem(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
-                               subtitle: downloadLimit,
+                               subtitle: appSettings?.downloadLimit.title ?? "",
                                leftIconAsset: STResourcesAsset.Images.fileDownload)
 
         case .emailLanguage:
-            let emailLanguage = appSettings?.emailLanguage.title ?? ""
             return SettingItem(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                               subtitle: emailLanguage,
+                               subtitle: appSettings?.emailLanguage.title ?? "",
                                leftIconAsset: STResourcesAsset.Images.bubble)
 
         case .dataManagement:
