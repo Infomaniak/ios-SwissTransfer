@@ -18,7 +18,6 @@
 
 import Foundation
 import STResources
-import SwissTransferCore
 
 /// Something that can read the Notifications user settings outside of a view
 final class NotificationSettings {

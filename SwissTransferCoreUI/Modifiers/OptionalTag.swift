@@ -16,18 +16,24 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STResources
+import SwiftUI
 
-public extension Theme {
-    var localized: String {
-        switch self {
-        case .dark:
-            return STResourcesStrings.Localizable.settingsOptionThemeDark
-        case .light:
-            return STResourcesStrings.Localizable.settingsOptionThemeLight
-        case .system:
-            return STResourcesStrings.Localizable.settingsOptionThemeSystem
+// Define the TagModifier that accepts an optional tag
+public struct OptionalTagModifier<V: Hashable>: ViewModifier {
+    var tag: V?
+
+    public func body(content: Content) -> some View {
+        if let tag = tag {
+            content.tag(tag)
+        } else {
+            content
         }
+    }
+}
+
+// Extension to easily apply the modifier
+public extension View {
+    func optionalTag<V>(_ tag: V?) -> some View where V: Hashable {
+        modifier(OptionalTagModifier(tag: tag))
     }
 }

@@ -18,23 +18,25 @@
 
 import STCore
 import STResources
+import SwiftUI
 
-public extension EmailLanguage {
-    var localized: String {
+extension EmailLanguage: SettingSelectable {
+    public var title: String {
         switch self {
-        case .english:
-            return STResourcesStrings.Localizable.settingsEmailLanguageValueEnglish
-        case .french:
-            return STResourcesStrings.Localizable.settingsEmailLanguageValueFrench
-        case .german:
-            return STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
-        case .italian:
-            return STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
-        case .spanish:
-            return STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
+        case .english: STResourcesStrings.Localizable.settingsEmailLanguageValueEnglish
+        case .french: STResourcesStrings.Localizable.settingsEmailLanguageValueFrench
+        case .german: STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
+        case .italian: STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
+        case .spanish: STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
         }
     }
 
+    public var icon: Image? {
+        leftIcon.swiftUIImage
+    }
+}
+
+public extension EmailLanguage {
     var leftIcon: STResourcesImages {
         switch self {
         case .english:
