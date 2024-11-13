@@ -29,7 +29,7 @@ public struct SettingItem {
     public var rightIconAsset: STResourcesImages?
 }
 
-/// The identifier of any setting
+/// The identifier of any specific arbitrary setting view
 public enum SettingItemIdentifier: Hashable, Sendable {
     /// All settings in the `New Transfer` view
     public static let newTransferSettings: [SettingItemIdentifier] = [

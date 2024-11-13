@@ -24,13 +24,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 /// Something used to populate a `EditSettingsView`
-protocol EditCellModelable {
-    var label: String { get }
-    var action: () -> Void { get }
-    var leftIconAsset: STResourcesImages? { get }
-}
-
-struct EditCellModel: EditCellModelable, Hashable, Equatable {
+struct EditCellModel: Hashable, Equatable {
     let label: String
     let action: () -> Void
     let leftIconAsset: STResourcesImages?
@@ -61,7 +55,9 @@ protocol EditSettingsModel {
     var cellsModel: [EditCellModel] { get }
 }
 
-struct EditThemeDatasource: EditSettingsModel {
+// TODO: A generic version of a single `EditSettingsModel` can be produced
+
+struct EditThemeSettingsModel: EditSettingsModel {
     let source = SettingDetailUi.theme
     let title = STResourcesStrings.Localizable.settingsThemeTitle
     let selectedTheme: Theme?
@@ -94,7 +90,7 @@ struct EditThemeDatasource: EditSettingsModel {
     }
 }
 
-struct EditValidityPeriodDatasource: EditSettingsModel {
+struct EditValidityPeriodModel: EditSettingsModel {
     let source = SettingDetailUi.validityPeriod
     let title = STResourcesStrings.Localizable.settingsValidityPeriodTitle
     let selectedValidity: ValidityPeriod?
@@ -125,7 +121,7 @@ struct EditValidityPeriodDatasource: EditSettingsModel {
     }
 }
 
-struct EditDownloadLimitDatasource: EditSettingsModel {
+struct EditDownloadLimitModel: EditSettingsModel {
     let source = SettingDetailUi.downloadLimit
     let title = STResourcesStrings.Localizable.settingsDownloadsLimitTitle
     let selectedDownloadLimit: DownloadLimit?
@@ -156,7 +152,7 @@ struct EditDownloadLimitDatasource: EditSettingsModel {
     }
 }
 
-struct EditEmailLanguageDatasource: EditSettingsModel {
+struct EditEmailLanguageModel: EditSettingsModel {
     let source = SettingDetailUi.emailLanguage
     let title = STResourcesStrings.Localizable.settingsEmailLanguageTitle
     let selectedEmailLanguage: EmailLanguage?

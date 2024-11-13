@@ -19,50 +19,9 @@
 import InfomaniakCore
 import InfomaniakDI
 import STCore
-import StoreKit
-import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
-
-enum SettingLinks {
-    static let discoverInfomaniak = URL(string: "https://www.infomaniak.com/en/about")!
-    static let shareYourIdeas =
-        URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
-}
-
-enum SettingSections: CaseIterable {
-    case general
-    case defaultSettings
-    case dataManagement
-    case about
-
-    var title: String {
-        switch self {
-        case .general:
-            STResourcesStrings.Localizable.settingsCategoryGeneral
-        case .defaultSettings:
-            STResourcesStrings.Localizable.settingsCategoryDefaultSettings
-        case .dataManagement:
-            STResourcesStrings.Localizable.settingsCategoryDataManagement
-        case .about:
-            STResourcesStrings.Localizable.settingsCategoryAbout
-        }
-    }
-
-    var items: [SettingItemIdentifier] {
-        switch self {
-        case .general:
-            [.theme, .notifications]
-        case .defaultSettings:
-            [.validityPeriod, .downloadLimit, .emailLanguage]
-        case .dataManagement:
-            [.dataManagement]
-        case .about:
-            [.discoverIk, .shareIdeas, .feedback, .version]
-        }
-    }
-}
 
 public struct SettingsView: View {
     @LazyInjectService private var settingsManager: AppSettingsManager
@@ -89,16 +48,12 @@ public struct SettingsView: View {
         .navigationDestination(for: NavigationDestination.self) { destination in
             if case .settings(let screen) = destination {
                 switch screen {
-                case .theme:
-                    EditSettingView(datasource: EditThemeDatasource(appSettings: appSettings.value))
-                case .validityPeriod:
-                    EditSettingView(datasource: EditValidityPeriodDatasource(appSettings: appSettings.value))
-                case .downloadLimit:
-                    EditSettingView(datasource: EditDownloadLimitDatasource(appSettings: appSettings.value))
-                case .emailLanguage:
-                    EditSettingView(datasource: EditEmailLanguageDatasource(appSettings: appSettings.value))
+                case .theme, .validityPeriod, .downloadLimit, .emailLanguage:
+                    EditSettingView(model: screen.model(with: appSettings.value))
+
                 case .notifications:
                     NotificationsSettings()
+
                 case .dataManagement:
                     Text("TODO dataManagement")
                 }

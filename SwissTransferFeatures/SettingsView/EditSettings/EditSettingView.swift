@@ -31,10 +31,14 @@ struct EditSettingView: View {
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
 
-    private let datasource: EditSettingsModel
+    private let model: EditSettingsModel
 
-    public init(datasource: EditSettingsModel) {
-        self.datasource = datasource
+    public init?(model: EditSettingsModel?) {
+        guard let model else {
+            return nil
+        }
+
+        self.model = model
 
         @InjectService var settingsManager: AppSettingsManager
         _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
@@ -42,8 +46,8 @@ struct EditSettingView: View {
 
     var body: some View {
         List(selection: $mainViewState.selectedDestination) {
-            Section(header: Text(datasource.title)) {
-                ForEach(datasource.cellsModel, id: \.self) { item in
+            Section(header: Text(model.title)) {
+                ForEach(model.cellsModel, id: \.self) { item in
                     EditSettingsView(leftIconAsset: item.leftIconAsset, rightIconAsset: item.rightIconAsset, label: item.label) {
                         dismiss()
                         item.action()
@@ -56,6 +60,6 @@ struct EditSettingView: View {
 }
 
 #Preview {
-    let model = EditThemeDatasource(appSettings: nil)
-    EditSettingView(datasource: model)
+    let model = EditThemeSettingsModel(appSettings: nil)
+    EditSettingView(model: model)
 }
