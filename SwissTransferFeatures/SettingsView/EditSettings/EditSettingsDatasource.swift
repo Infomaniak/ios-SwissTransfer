@@ -24,13 +24,13 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 /// Something used to populate a `EditSettingsView`
-protocol EditCellModel {
+protocol EditCellModelable {
     var label: String { get }
     var action: () -> Void { get }
     var leftIconAsset: STResourcesImages? { get }
 }
 
-struct EditCellDatom: EditCellModel, Hashable, Equatable {
+struct EditCellModel: EditCellModelable, Hashable, Equatable {
     let label: String
     let action: () -> Void
     let leftIconAsset: STResourcesImages?
@@ -58,19 +58,19 @@ struct EditCellDatom: EditCellModel, Hashable, Equatable {
 protocol EditSettingsModel {
     var source: SettingDetailUi { get }
     var title: String { get }
-    var cellsModel: [EditCellDatom] { get }
+    var cellsModel: [EditCellModel] { get }
 }
 
 struct EditThemeDatasource: EditSettingsModel {
     let source = SettingDetailUi.theme
     let title = STResourcesStrings.Localizable.settingsThemeTitle
     let selectedTheme: Theme?
-    var cellsModel = [EditCellDatom]()
+    var cellsModel = [EditCellModel]()
 
     init(appSettings: AppSettings?) {
         selectedTheme = appSettings?.theme
         cellsModel = Theme.allCases.map { setting in
-            EditCellDatom(
+            EditCellModel(
                 label: setting.localized,
                 action: action(forSetting: setting),
                 rightIconAsset: rightIconAsset(forSetting: setting)
@@ -98,12 +98,12 @@ struct EditValidityPeriodDatasource: EditSettingsModel {
     let source = SettingDetailUi.validityPeriod
     let title = STResourcesStrings.Localizable.settingsValidityPeriodTitle
     let selectedValidity: ValidityPeriod?
-    var cellsModel = [EditCellDatom]()
+    var cellsModel = [EditCellModel]()
 
     init(appSettings: AppSettings?) {
         selectedValidity = appSettings?.validityPeriod
         cellsModel = ValidityPeriod.allCases.map { setting in
-            EditCellDatom(label: setting.localized,
+            EditCellModel(label: setting.localized,
                           action: action(forSetting: setting),
                           rightIconAsset: rightIconAsset(forSetting: setting))
         }
@@ -129,12 +129,12 @@ struct EditDownloadLimitDatasource: EditSettingsModel {
     let source = SettingDetailUi.downloadLimit
     let title = STResourcesStrings.Localizable.settingsDownloadsLimitTitle
     let selectedDownloadLimit: DownloadLimit?
-    var cellsModel = [EditCellDatom]()
+    var cellsModel = [EditCellModel]()
 
     init(appSettings: AppSettings?) {
         selectedDownloadLimit = appSettings?.downloadLimit
         cellsModel = DownloadLimit.allCases.map { setting in
-            EditCellDatom(label: setting.localized,
+            EditCellModel(label: setting.localized,
                           action: action(forSetting: setting),
                           rightIconAsset: rightIconAsset(forSetting: setting))
         }
@@ -160,12 +160,12 @@ struct EditEmailLanguageDatasource: EditSettingsModel {
     let source = SettingDetailUi.emailLanguage
     let title = STResourcesStrings.Localizable.settingsEmailLanguageTitle
     let selectedEmailLanguage: EmailLanguage?
-    var cellsModel = [EditCellDatom]()
+    var cellsModel = [EditCellModel]()
 
     init(appSettings: AppSettings?) {
         selectedEmailLanguage = appSettings?.emailLanguage
         cellsModel = EmailLanguage.allCases.map { setting in
-            EditCellDatom(label: setting.localized,
+            EditCellModel(label: setting.localized,
                           action: action(forSetting: setting),
                           leftIconAsset: setting.leftIcon,
                           rightIconAsset: rightIconAsset(forSetting: setting))

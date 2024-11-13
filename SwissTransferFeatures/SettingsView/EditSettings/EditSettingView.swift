@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 
 struct EditSettingView: View {
     @EnvironmentObject private var mainViewState: MainViewState
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) private var dismiss
 
     @LazyInjectService private var settingsManager: AppSettingsManager
 
@@ -45,7 +45,7 @@ struct EditSettingView: View {
             Section(header: Text(datasource.title)) {
                 ForEach(datasource.cellsModel, id: \.self) { item in
                     EditSettingsView(leftIconAsset: item.leftIconAsset, rightIconAsset: item.rightIconAsset, label: item.label) {
-                        presentationMode.wrappedValue.dismiss()
+                        dismiss()
                         item.action()
                     }
                 }
