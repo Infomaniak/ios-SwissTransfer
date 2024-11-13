@@ -48,12 +48,8 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                let validityItem = settingItem(setting: .validityPeriod)
-                NewTransferSettingCell(
-                    title: validityItem.title,
-                    icon: validityItem.leftIconAsset?.swiftUIImage,
-                    value: validityItem.subtitle ?? ""
-                ) {
+                NewTransferSettingCell(identifier: .validityPeriod,
+                                       appSettings: self.appSettings.value) {
                     isShowingValiditySetting = true
                 }
                 .floatingPanel(
@@ -65,12 +61,8 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
-                let downloadLimitItem = settingItem(setting: .downloadLimit)
-                NewTransferSettingCell(
-                    title: downloadLimitItem.title,
-                    icon: downloadLimitItem.leftIconAsset?.swiftUIImage,
-                    value: downloadLimitItem.subtitle ?? ""
-                ) {
+                NewTransferSettingCell(identifier: .downloadLimit,
+                                       appSettings: self.appSettings.value) {
                     isShowingDownloadLimitSetting = true
                 }
                 .floatingPanel(
@@ -82,21 +74,13 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
-                let passwordItem = settingItem(setting: .password)
-                NewTransferSettingCell(
-                    title: passwordItem.title,
-                    icon: passwordItem.leftIconAsset?.swiftUIImage,
-                    value: passwordItem.subtitle ?? ""
-                ) {
+                NewTransferSettingCell(identifier: .password,
+                                       appSettings: self.appSettings.value) {
                     showPasswordSetting = true
                 }
 
-                let emailItem = settingItem(setting: .emailLanguage)
-                NewTransferSettingCell(
-                    title: emailItem.title,
-                    icon: emailItem.leftIconAsset?.swiftUIImage,
-                    value: emailItem.subtitle ?? ""
-                ) {
+                NewTransferSettingCell(identifier: .emailLanguage,
+                                       appSettings: self.appSettings.value) {
                     isShowingLanguageSetting = true
                 }
 
@@ -120,11 +104,6 @@ struct NewTransferSettingsView: View {
                 PasswordSettingView()
             }
         }
-    }
-
-    private func settingItem(setting: SettingItemIdentifier) -> SettingItem {
-        let appSettings: AppSettings? = self.appSettings.value
-        return setting.item(for: appSettings)
     }
 }
 

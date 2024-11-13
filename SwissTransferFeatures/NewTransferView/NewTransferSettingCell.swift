@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -27,6 +28,21 @@ struct NewTransferSettingCell: View {
     var icon: Image?
     let value: String
     let onTap: () -> Void
+
+    init(identifier: SettingItemIdentifier, appSettings: AppSettings?, onTap: @escaping () -> Void) {
+        let setting = identifier.item(for: appSettings)
+        title = setting.title
+        icon = setting.leftIconAsset?.swiftUIImage
+        value = setting.subtitle ?? ""
+        self.onTap = onTap
+    }
+
+    init(title: String, icon: Image?, value: String, onTap: @escaping () -> Void) {
+        self.title = title
+        self.icon = icon
+        self.value = value
+        self.onTap = onTap
+    }
 
     var body: some View {
         Button {

@@ -153,7 +153,7 @@ public struct SettingsView: View {
                                      subtitle: datasource.subtitle ?? "")
 
         case .password:
-            EmptyView() // unsupported on the main settings view.
+            return EmptyView() // unsupported on the main settings view.
         }
     }
 }
