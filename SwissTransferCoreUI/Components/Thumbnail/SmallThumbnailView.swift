@@ -27,7 +27,8 @@ public struct SmallThumbnailView: View {
     private let url: URL?
     private let removeAction: (() -> Void)?
 
-    @State private var name: String?
+    private var name: String?
+
     @State private var icon: Image
     @State private var thumbnail: Image?
     private var cornerRadius: CGFloat = IKRadius.medium
