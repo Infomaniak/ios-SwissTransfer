@@ -36,8 +36,8 @@ struct SafeAreaButtonsModifier<Buttons: View>: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .safeAreaInset(edge: .bottom, spacing: spacing) {
-                VStack(spacing: IKPadding.medium) {
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                VStack(spacing: spacing) {
                     buttons
                 }
                 .ikButtonFullWidth(true)
