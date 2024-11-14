@@ -69,7 +69,7 @@ struct NewTransferFilesCellView: View {
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
-                                    SmallThumbnailView {
+                                    SmallThumbnailView(name: file.name) {
                                         newTransferManager.remove(file: file) {
                                             files = newTransferManager.filesAt(folderURL: nil)
                                         }

@@ -27,6 +27,7 @@ public struct SmallThumbnailView: View {
     private let url: URL?
     private let removeAction: (() -> Void)?
 
+    @State private var name: String?
     @State private var icon: Image
     @State private var thumbnail: Image?
     private var cornerRadius: CGFloat = IKRadius.medium
@@ -37,6 +38,7 @@ public struct SmallThumbnailView: View {
         self.removeAction = removeAction
 
         if removeAction != nil {
+            name = url?.lastPathComponent
             _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
             cornerRadius = IKRadius.large
         }
@@ -45,11 +47,12 @@ public struct SmallThumbnailView: View {
     }
 
     /// Folder init
-    public init(removeAction: (() -> Void)? = nil) {
+    public init(name: String? = nil, removeAction: (() -> Void)? = nil) {
         url = nil
         self.removeAction = removeAction
 
         if removeAction != nil {
+            self.name = name
             _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
             cornerRadius = IKRadius.large
         }
@@ -66,12 +69,23 @@ public struct SmallThumbnailView: View {
                     .frame(width: size, height: size)
                     .clipShape(.rect(cornerRadius: cornerRadius))
             } else {
-                FileIconView(icon: icon, type: .small)
-                    .frame(width: size, height: size)
-                    .background(Color.ST.background, in: .rect(cornerRadius: cornerRadius))
-                    .task {
-                        thumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size))
+                VStack(spacing: IKPadding.small) {
+                    FileIconView(icon: icon, type: .small)
+
+                    if let name {
+                        Text(name)
+                            .font(.ST.caption)
+                            .foregroundStyle(Color.ST.textSecondary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                     }
+                }
+                .padding(value: .small)
+                .frame(width: size, height: size)
+                .background(Color.ST.background, in: .rect(cornerRadius: cornerRadius))
+                .task {
+                    thumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size))
+                }
             }
 
             if let removeAction {
