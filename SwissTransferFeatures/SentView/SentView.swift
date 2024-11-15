@@ -18,7 +18,6 @@
 
 import STCore
 import STNewTransferView
-import STResources
 import STTransferDetailsView
 import STTransferList
 import SwiftUI

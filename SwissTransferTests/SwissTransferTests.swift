@@ -17,6 +17,51 @@
  */
 
 import Foundation
+@testable import STNewTransferView
 import XCTest
 
-final class SwissTransferTests: XCTestCase {}
+@MainActor
+final class SwissTransferTests: XCTestCase {
+    override func tearDown() async throws {
+        let newTransferManager = NewTransferManager()
+        newTransferManager.cleanTmpDir(type: .all)
+    }
+
+    func testDestinationURL() {
+        do {
+            // GIVEN
+            let newTransferManager = NewTransferManager()
+            let fileName = "my-file.txt"
+            let sourcePath = URL(string: "http://my-url.com/\(fileName)")!
+            let expectedResult = try URL.tmpUploadDirectory().appendingPathComponent(fileName)
+
+            // WHEN
+            let result = try newTransferManager.destinationURLFor(source: sourcePath)
+
+            // THEN
+            XCTAssertEqual(result, expectedResult)
+        } catch {
+            XCTFail("Error creating destination URL")
+        }
+    }
+
+    func testRenameDestinationURL() {
+        do {
+            // GIVEN
+            let newTransferManager = NewTransferManager()
+            let sourcePath = URL(string: "http://my-url.com/my-file.txt")!
+            let tmpDirectory = try URL.tmpUploadDirectory()
+            let expectedResult = tmpDirectory.appendingPathComponent("my-file(1).txt")
+            let firstURL = tmpDirectory.appendingPathComponent("my-file.txt", conformingTo: .text)
+            FileManager.default.createFile(atPath: firstURL.path(), contents: nil)
+
+            // WHEN
+            let result = try newTransferManager.destinationURLFor(source: sourcePath)
+
+            // THEN
+            XCTAssertEqual(result, expectedResult)
+        } catch {
+            XCTFail("Error creating destination URL")
+        }
+    }
+}

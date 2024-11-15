@@ -18,7 +18,6 @@
 
 import Foundation
 import STCore
-import STResources
 
 public extension TransferUi {
     var name: String {

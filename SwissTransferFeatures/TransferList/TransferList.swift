@@ -18,7 +18,6 @@
 
 import STCore
 import STDatabase
-import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI

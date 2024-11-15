@@ -25,7 +25,6 @@ import SwissTransferCoreUI
 struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var isShowingFileList = false
     @State private var files = [DisplayableFile]()
 
     private var filesSize: Int64 {

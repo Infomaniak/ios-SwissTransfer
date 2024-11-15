@@ -16,9 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
-import SwissTransferCore
 
 struct STNavigationBarNewTransferModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismissModal
