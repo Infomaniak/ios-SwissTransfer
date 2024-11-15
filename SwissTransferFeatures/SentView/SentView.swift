@@ -34,6 +34,9 @@ public struct SentView: View {
         TransferList(transferManager: transferManager, origin: .sent) {
             SentEmptyView()
         }
+        .task {
+            try? await transferManager.fetchWaitingTransfers()
+        }
         .navigationDestination(for: NavigationDestination.self) { destination in
             if case .transfer(let transfer) = destination {
                 TransferDetailsView(transfer: transfer)
