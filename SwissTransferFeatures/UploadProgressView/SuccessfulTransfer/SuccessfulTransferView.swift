@@ -27,7 +27,7 @@ extension TransferType {
         switch self {
         case .link:
             return STResourcesStrings.Localizable.uploadSuccessLinkTitle
-        case .qrcode, .proximity:
+        case .qrCode, .proximity:
             return STResourcesStrings.Localizable.uploadSuccessQrTitle
         case .mail:
             return STResourcesStrings.Localizable.uploadSuccessEmailTitle
@@ -43,7 +43,7 @@ public struct SuccessfulTransferView: View {
     public var body: some View {
         Group {
             switch type {
-            case .link, .qrcode, .proximity:
+            case .link, .qrCode, .proximity:
                 SuccessfulLinkTransferView(type: type, transferUUID: transferUUID)
             case .mail:
                 SuccessfulMailTransferView(recipients: recipientsEmails)
@@ -60,7 +60,7 @@ public struct SuccessfulTransferView: View {
 }
 
 #Preview("QR Code") {
-    SuccessfulTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
+    SuccessfulTransferView(type: .qrCode, transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
 }
 
 #Preview("Link") {

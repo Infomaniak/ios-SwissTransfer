@@ -16,35 +16,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
 
-public enum TransferType: String, CaseIterable {
-    case link
-    case qrcode
-    case proximity
-    case mail
-
-    public var title: String {
+public extension TransferType {
+    var title: String {
         switch self {
         case .link:
             STResourcesStrings.Localizable.transferTypeLink
         case .mail:
             STResourcesStrings.Localizable.transferTypeEmail
-        case .qrcode:
+        case .qrCode:
             STResourcesStrings.Localizable.transferTypeQrCode
         case .proximity:
             STResourcesStrings.Localizable.transferTypeProximity
         }
     }
 
-    public var icon: Image {
+    var icon: Image {
         switch self {
         case .link:
             STResourcesAsset.Images.hyperlink.swiftUIImage
         case .mail:
             STResourcesAsset.Images.envelope.swiftUIImage
-        case .qrcode:
+        case .qrCode:
             STResourcesAsset.Images.qrCode.swiftUIImage
         case .proximity:
             STResourcesAsset.Images.wifi.swiftUIImage

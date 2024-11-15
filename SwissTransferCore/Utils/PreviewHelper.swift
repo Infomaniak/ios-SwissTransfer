@@ -51,11 +51,11 @@ public enum PreviewHelper {
     )
 
     public static let sampleNewUploadSession = NewUploadSession(
-        duration: "30",
+        duration: ValidityPeriod.thirty,
         authorEmail: "",
         password: "",
         message: "Coucou",
-        numberOfDownload: 250,
+        numberOfDownload: DownloadLimit.twoHundredFifty,
         language: .english,
         recipientsEmails: [],
         files: []

@@ -17,9 +17,9 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct SuccessfulMailTransferView: View {

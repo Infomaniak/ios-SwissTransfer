@@ -60,17 +60,5 @@ public struct RootUploadProgressView: View {
 }
 
 #Preview {
-    RootUploadProgressView(
-        transferType: .qrcode,
-        uploadSession: NewUploadSession(
-            duration: "30",
-            authorEmail: "",
-            password: "",
-            message: "Coucou",
-            numberOfDownload: 250,
-            language: .english,
-            recipientsEmails: [],
-            files: []
-        )
-    ) {}
+    RootUploadProgressView(transferType: .qrCode, uploadSession: PreviewHelper.sampleNewUploadSession) {}
 }

@@ -23,7 +23,7 @@ import SwissTransferCore
 
 struct DateSection: Identifiable, Equatable {
     static func == (lhs: DateSection, rhs: DateSection) -> Bool {
-        lhs.id == rhs.id && lhs.title == rhs.title // && lhs.transfers == rhs.transfers
+        lhs.id == rhs.id && lhs.title == rhs.title && lhs.transfers == rhs.transfers
     }
 
     let id: String

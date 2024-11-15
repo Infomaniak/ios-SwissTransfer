@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "830b0d383b443196b2e9ad1dcec2089a694523e0",
-        "version" : "12.5.1"
+        "revision" : "57997b754ed76d1ec912d44d21014da64ceb19f5",
+        "version" : "12.5.2"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "95265cad8e0fcb09268573c22e0098eac8ce7451",
-        "version" : "14.0.0"
+        "revision" : "ebb347ef1ea69e595179ba7162da6be925dbea98",
+        "version" : "14.0.1"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "bd4bf654bff4162b2832576ddc9fc9d652fcbf07",
-        "version" : "0.7.0"
+        "revision" : "1696a30f91a2b7e60620a3596cfdc11548e46003",
+        "version" : "0.8.2"
       }
     },
     {
