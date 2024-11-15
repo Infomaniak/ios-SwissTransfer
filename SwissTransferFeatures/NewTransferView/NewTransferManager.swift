@@ -19,6 +19,7 @@
 import Foundation
 import InfomaniakCore
 import OSLog
+import STCore
 import SwiftUI
 import SwissTransferCore
 
@@ -43,7 +44,7 @@ enum TmpDirType: String {
 
 @MainActor
 class NewTransferManager: ObservableObject {
-    @Published var transferType: TransferType = .qrcode
+    @Published var transferType: TransferType = .qrCode
 
     init() {
         cleanTmpDir(type: .upload)

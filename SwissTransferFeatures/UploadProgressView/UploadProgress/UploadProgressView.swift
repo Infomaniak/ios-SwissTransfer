@@ -69,11 +69,6 @@ struct UploadProgressView: View {
     @Sendable private func startUpload() async {
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
-
-            // FIXME: Remove next two lines waiting for virus check
-            try await Task.sleep(for: .seconds(2))
-            try await transferManager.addTransferByLinkUUID(linkUUID: transferUUID)
-
             withAnimation {
                 self.transferUUID = transferUUID
             }
@@ -94,7 +89,7 @@ struct UploadProgressView: View {
     UploadProgressView(
         transferUUID: .constant(nil),
         error: .constant(nil),
-        transferType: .qrcode,
+        transferType: .qrCode,
         uploadSession: PreviewHelper.sampleNewUploadSession
     )
 }

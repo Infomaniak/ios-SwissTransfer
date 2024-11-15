@@ -74,7 +74,7 @@ public struct NewTransferView: View {
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                RootUploadProgressView(transferType: .qrcode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
+                RootUploadProgressView(transferType: .qrCode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
             }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
@@ -100,11 +100,11 @@ public struct NewTransferView: View {
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: "30",
+                    duration: ValidityPeriod.thirty,
                     authorEmail: "",
                     password: "",
                     message: "",
-                    numberOfDownload: 250,
+                    numberOfDownload: DownloadLimit.twoHundredFifty,
                     language: .english,
                     recipientsEmails: [],
                     files: filesToUpload

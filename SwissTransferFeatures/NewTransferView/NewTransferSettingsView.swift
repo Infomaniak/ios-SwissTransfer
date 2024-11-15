@@ -59,7 +59,7 @@ struct NewTransferSettingsView: View {
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                     icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
-                    value: limit.value
+                    value: limit.title
                 ) {
                     isShowingDownloadLimitSetting = true
                 }
