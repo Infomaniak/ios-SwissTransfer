@@ -17,6 +17,7 @@
  */
 
 import STCore
+import STResources
 import SwiftUI
 
 extension DownloadLimit: SettingSelectable {
@@ -24,7 +25,7 @@ extension DownloadLimit: SettingSelectable {
         return "\(value)"
     }
 
-    public var icon: Image? {
-        return nil
+    public var leftAsset: STResources.STResourcesImages? {
+        nil
     }
 }

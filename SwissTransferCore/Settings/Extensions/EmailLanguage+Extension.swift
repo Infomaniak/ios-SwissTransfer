@@ -31,13 +31,7 @@ extension EmailLanguage: SettingSelectable {
         }
     }
 
-    public var icon: Image? {
-        leftIcon.swiftUIImage
-    }
-}
-
-public extension EmailLanguage {
-    var leftIcon: STResourcesImages {
+    public var leftAsset: STResources.STResourcesImages? {
         switch self {
         case .english:
             return STResourcesAsset.Images.flagUk

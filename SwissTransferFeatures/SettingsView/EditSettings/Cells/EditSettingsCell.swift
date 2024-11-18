@@ -22,7 +22,7 @@ import SwiftUI
 
 struct EditSettingsView: View {
     var leftIconAsset: STResourcesImages?
-    var rightIconAsset: STResourcesImages?
+    let selected: Bool
     let label: String
     let action: () -> Void
 
@@ -40,8 +40,8 @@ struct EditSettingsView: View {
                     .font(.ST.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                if let rightIconAsset {
-                    Image(asset: rightIconAsset)
+                if selected {
+                    Image(asset: STResourcesAsset.Images.check)
                         .iconSize(.large)
                 }
             }
@@ -50,7 +50,7 @@ struct EditSettingsView: View {
 }
 
 #Preview {
-    EditSettingsView(leftIconAsset: nil, label: "EditSettingsView") {
+    EditSettingsView(leftIconAsset: nil, selected: true, label: "EditSettingsView") {
         print("action")
     }
 }

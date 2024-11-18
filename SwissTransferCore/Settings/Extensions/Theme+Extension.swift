@@ -32,5 +32,7 @@ extension Theme: SettingSelectable {
         }
     }
 
-    public var icon: Image? { nil }
+    public var leftAsset: STResources.STResourcesImages? {
+        nil
+    }
 }

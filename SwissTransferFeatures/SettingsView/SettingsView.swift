@@ -24,6 +24,13 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+/// Links used in the settings view
+enum SettingLinks {
+    static let discoverInfomaniak = URL(string: "https://www.infomaniak.com/en/about")!
+    static let shareYourIdeas =
+        URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
+}
+
 public struct SettingsView: View {
     @LazyInjectService private var settingsManager: AppSettingsManager
 
@@ -42,7 +49,12 @@ public struct SettingsView: View {
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionTheme,
                              subtitle: appSettings.value?.theme.title ?? "",
                              leftIconAsset: STResourcesAsset.Images.brush) {
-                    EditSettingView(model: EditThemeSettingsModel(appSettings: appSettings.value))
+                    EditSettingView(Theme.self,
+                                    selected: appSettings.value?.theme ?? .system,
+                                    title: STResourcesStrings.Localizable.settingsThemeTitle) { theme in
+                        @InjectService var settingsManager: AppSettingsManager
+                        _ = try? await settingsManager.setTheme(theme: theme)
+                    }
                 }
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionNotifications,
@@ -56,19 +68,34 @@ public struct SettingsView: View {
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                              subtitle: appSettings.value?.validityPeriod.title ?? "",
                              leftIconAsset: STResourcesAsset.Images.clock) {
-                    EditSettingView(model: EditValidityPeriodModel(appSettings: appSettings.value))
+                    EditSettingView(ValidityPeriod.self,
+                                    selected: appSettings.value?.validityPeriod ?? .thirty,
+                                    title: STResourcesStrings.Localizable.settingsValidityPeriodTitle) { validity in
+                        @InjectService var settingsManager: AppSettingsManager
+                        _ = try? await settingsManager.setValidityPeriod(validityPeriod: validity)
+                    }
                 }
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                              subtitle: appSettings.value?.downloadLimit.title ?? "",
                              leftIconAsset: STResourcesAsset.Images.fileDownload) {
-                    EditSettingView(model: EditDownloadLimitModel(appSettings: appSettings.value))
+                    EditSettingView(DownloadLimit.self,
+                                    selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
+                                    title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle) { downloadLimit in
+                        @InjectService var settingsManager: AppSettingsManager
+                        _ = try? await settingsManager.setDownloadLimit(downloadLimit: downloadLimit)
+                    }
                 }
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                              subtitle: appSettings.value?.emailLanguage.title ?? "",
                              leftIconAsset: STResourcesAsset.Images.bubble) {
-                    EditSettingView(model: EditEmailLanguageModel(appSettings: appSettings.value))
+                    EditSettingView(EmailLanguage.self,
+                                    selected: appSettings.value?.emailLanguage ?? .french,
+                                    title: STResourcesStrings.Localizable.settingsEmailLanguageTitle) { emailLanguage in
+                        @InjectService var settingsManager: AppSettingsManager
+                        _ = try? await settingsManager.setEmailLanguage(emailLanguage: emailLanguage)
+                    }
                 }
             }
 

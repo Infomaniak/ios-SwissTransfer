@@ -23,34 +23,35 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-struct EditSettingView: View {
+/// A view to display and select one item within a collection with a native iOS look and feel
+struct EditSettingView<T: SettingSelectable>: View {
     @EnvironmentObject private var mainViewState: MainViewState
+
     @Environment(\.dismiss) private var dismiss
 
-    @LazyInjectService private var settingsManager: AppSettingsManager
+    let title: String
+    let items: [T]
+    let selected: T
+    let onSelection: (T) async -> Void
 
-    @StateObject private var appSettings: FlowObserver<AppSettings>
-
-    private let model: EditSettingsModel
-
-    public init?(model: EditSettingsModel?) {
-        guard let model else {
-            return nil
-        }
-
-        self.model = model
-
-        @InjectService var settingsManager: AppSettingsManager
-        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
+    public init(_ type: T.Type, selected: T, title: String, onSelection: @escaping (T) async -> Void) {
+        items = Array(type.allCases)
+        self.selected = selected
+        self.title = title
+        self.onSelection = onSelection
     }
 
     var body: some View {
         List(selection: $mainViewState.selectedDestination) {
-            Section(header: Text(model.title)) {
-                ForEach(model.cellsModel, id: \.self) { item in
-                    EditSettingsView(leftIconAsset: item.leftIconAsset, rightIconAsset: item.rightIconAsset, label: item.label) {
+            Section(header: Text(title)) {
+                ForEach(items, id: \.self) { item in
+                    EditSettingsView(leftIconAsset: item.leftAsset,
+                                     selected: item == selected,
+                                     label: item.title) {
                         dismiss()
-                        item.action()
+                        Task {
+                            await onSelection(item)
+                        }
                     }
                 }
             }
@@ -60,6 +61,7 @@ struct EditSettingView: View {
 }
 
 #Preview {
-    let model = EditThemeSettingsModel(appSettings: nil)
-    EditSettingView(model: model)
+    EditSettingView(Theme.self, selected: .dark, title: "UIKit") { theme in
+        print("selected \(theme)")
+    }
 }
