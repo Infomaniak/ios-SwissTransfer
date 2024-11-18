@@ -25,7 +25,6 @@ import SwissTransferCoreUI
 struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var isShowingFileList = false
     @State private var files = [DisplayableFile]()
 
     private var filesSize: Int64 {
@@ -69,7 +68,7 @@ struct NewTransferFilesCellView: View {
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
-                                    SmallThumbnailView {
+                                    SmallThumbnailView(name: file.name) {
                                         newTransferManager.remove(file: file) {
                                             files = newTransferManager.filesAt(folderURL: nil)
                                         }

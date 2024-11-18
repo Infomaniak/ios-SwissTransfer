@@ -17,12 +17,11 @@
  */
 
 import STCore
-import STResources
 import SwiftUI
 
 extension DownloadLimit: SettingSelectable {
     public var title: String {
-        return value
+        return "\(value)"
     }
 
     public var icon: Image? {

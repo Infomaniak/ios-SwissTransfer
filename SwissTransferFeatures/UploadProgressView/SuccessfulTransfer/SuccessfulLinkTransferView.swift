@@ -56,7 +56,7 @@ struct SuccessfulLinkTransferView: View {
                     .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
             }
 
-            if type != .qrcode {
+            if type != .qrCode {
                 Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
@@ -99,7 +99,7 @@ struct SuccessfulLinkTransferView: View {
 }
 
 #Preview("QR Code") {
-    SuccessfulLinkTransferView(type: .qrcode, transferUUID: PreviewHelper.sampleTransfer.uuid)
+    SuccessfulLinkTransferView(type: .qrCode, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
 
 #Preview("Link") {

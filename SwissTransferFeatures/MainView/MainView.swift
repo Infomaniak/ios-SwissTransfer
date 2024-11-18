@@ -17,10 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import STReceivedView
-import STResources
-import STSentView
-import STSettingsView
 import SwiftUI
 import SwissTransferCoreUI
 

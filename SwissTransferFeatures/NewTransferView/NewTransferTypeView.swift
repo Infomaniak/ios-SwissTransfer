@@ -17,9 +17,9 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
-import SwissTransferCore
 
 struct NewTransferTypeView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
@@ -33,7 +33,7 @@ struct NewTransferTypeView: View {
 
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(TransferType.allCases, id: \.rawValue) { type in
+                    ForEach(TransferType.allCases, id: \.name) { type in
                         Button {
                             withAnimation(.easeIn(duration: 0.1)) {
                                 newTransferManager.transferType = type

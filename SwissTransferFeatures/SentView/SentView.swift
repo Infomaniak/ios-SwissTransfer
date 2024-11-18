@@ -18,7 +18,6 @@
 
 import STCore
 import STNewTransferView
-import STResources
 import STTransferDetailsView
 import STTransferList
 import SwiftUI
@@ -34,6 +33,9 @@ public struct SentView: View {
     public var body: some View {
         TransferList(transferManager: transferManager, origin: .sent) {
             SentEmptyView()
+        }
+        .task {
+            try? await transferManager.fetchWaitingTransfers()
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
             if case .transfer(let transfer) = destination {
