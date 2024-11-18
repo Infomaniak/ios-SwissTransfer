@@ -19,6 +19,7 @@
 import InfomaniakCore
 import InfomaniakDI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -37,12 +38,61 @@ public struct SettingsView: View {
 
     public var body: some View {
         List(selection: $mainViewState.selectedDestination) {
-            ForEach(SettingSections.allCases, id: \.self) { section in
-                Section(header: Text(section.title)) {
-                    ForEach(section.items, id: \.self) { item in
-                        settingCellView(setting: item)
-                    }
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
+                let theme = SettingItemIdentifier.theme.item(for: appSettings.value)
+                SettingsCell(setting: theme)
+                    .tag(SettingItemIdentifier.theme.navigationDestination)
+
+                let notifications = SettingItemIdentifier.notifications.item(for: appSettings.value)
+                SettingsCell(setting: notifications)
+                    .tag(SettingItemIdentifier.notifications.navigationDestination)
+            }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
+                let validityPeriod = SettingItemIdentifier.validityPeriod.item(for: appSettings.value)
+                SettingsCell(setting: validityPeriod)
+                    .tag(SettingItemIdentifier.validityPeriod.navigationDestination)
+
+                let downloadLimit = SettingItemIdentifier.downloadLimit.item(for: appSettings.value)
+                SettingsCell(setting: downloadLimit)
+                    .tag(SettingItemIdentifier.downloadLimit.navigationDestination)
+
+                let emailLanguage = SettingItemIdentifier.emailLanguage.item(for: appSettings.value)
+                SettingsCell(setting: emailLanguage)
+                    .tag(SettingItemIdentifier.emailLanguage.navigationDestination)
+            }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
+                let dataManagement = SettingItemIdentifier.dataManagement.item(for: appSettings.value)
+                SingleLabelSettingsCell(title: dataManagement.title)
+                    .tag(SettingItemIdentifier.dataManagement.navigationDestination)
+            }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
+                let discoverIk = SettingItemIdentifier.discoverIk.item(for: appSettings.value)
+                Link(destination: SettingLinks.discoverInfomaniak) {
+                    SingleLabelSettingsCell(title: discoverIk.title,
+                                            rightIconAsset: discoverIk.rightIconAsset)
                 }
+
+                let shareIdeas = SettingItemIdentifier.shareIdeas.item(for: appSettings.value)
+                Link(destination: SettingLinks.shareYourIdeas) {
+                    SingleLabelSettingsCell(title: shareIdeas.title,
+                                            rightIconAsset: shareIdeas.rightIconAsset)
+                }
+
+                Button {
+                    @InjectService var reviewManager: ReviewManageable
+                    reviewManager.requestReview()
+                } label: {
+                    let feedback = SettingItemIdentifier.feedback.item(for: appSettings.value)
+                    SingleLabelSettingsCell(title: feedback.title,
+                                            rightIconAsset: feedback.rightIconAsset)
+                }
+
+                let version = SettingItemIdentifier.version.item(for: appSettings.value)
+                AboutSettingsCell(title: version.title,
+                                  subtitle: version.subtitle ?? "")
             }
         }
         .navigationDestination(for: NavigationDestination.self) { destination in
@@ -60,51 +110,6 @@ public struct SettingsView: View {
             }
         }
         .listStyle(.insetGrouped)
-    }
-
-    @MainActor func settingCellView(setting: SettingItemIdentifier) -> some View {
-        let datasource = setting.item(for: appSettings.value)
-
-        switch setting {
-        case .theme, .notifications, .validityPeriod, .downloadLimit, .emailLanguage:
-            return SettingsCell(title: datasource.title,
-                                subtitle: datasource.subtitle ?? "",
-                                leftIconAsset: datasource.leftIconAsset,
-                                rightIconAsset: datasource.rightIconAsset)
-                .optionalTag(setting.navigationDestination)
-
-        case .dataManagement:
-            return SingleLabelSettingsCell(title: datasource.title)
-                .optionalTag(setting.navigationDestination)
-
-        case .discoverIk:
-            return Link(destination: SettingLinks.discoverInfomaniak) {
-                SingleLabelSettingsCell(title: datasource.title,
-                                        rightIconAsset: datasource.rightIconAsset)
-            }
-
-        case .shareIdeas:
-            return Link(destination: SettingLinks.shareYourIdeas) {
-                SingleLabelSettingsCell(title: datasource.title,
-                                        rightIconAsset: datasource.rightIconAsset)
-            }
-
-        case .feedback:
-            return Button {
-                @InjectService var reviewManager: ReviewManageable
-                reviewManager.requestReview()
-            } label: {
-                SingleLabelSettingsCell(title: datasource.title,
-                                        rightIconAsset: datasource.rightIconAsset)
-            }
-
-        case .version:
-            return AboutSettingsCell(title: datasource.title,
-                                     subtitle: datasource.subtitle ?? "")
-
-        case .password:
-            return EmptyView() // unsupported on the main settings view.
-        }
     }
 }
 

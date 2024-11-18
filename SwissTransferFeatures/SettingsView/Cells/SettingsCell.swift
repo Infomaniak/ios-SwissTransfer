@@ -19,12 +19,27 @@
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 struct SettingsCell: View {
     let title: String
     let subtitle: String
     var leftIconAsset: STResourcesImages?
     var rightIconAsset: STResourcesImages?
+
+    init(title: String, subtitle: String, leftIconAsset: STResourcesImages? = nil, rightIconAsset: STResourcesImages? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.leftIconAsset = leftIconAsset
+        self.rightIconAsset = rightIconAsset
+    }
+
+    init(setting: SettingItem) {
+        title = setting.title
+        subtitle = setting.subtitle ?? ""
+        leftIconAsset = setting.leftIconAsset
+        rightIconAsset = setting.rightIconAsset
+    }
 
     var body: some View {
         HStack(spacing: IKPadding.small) {
