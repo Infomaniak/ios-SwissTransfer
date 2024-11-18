@@ -40,9 +40,11 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                                       icon: STResourcesAsset.Images.clock.swiftUIImage,
-                                       value: duration.title) {
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                    icon: STResourcesAsset.Images.clock.swiftUIImage,
+                    value: duration.title
+                ) {
                     isShowingValiditySetting = true
                 }
                 .floatingPanel(
@@ -54,9 +56,11 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
-                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
-                                       icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
-                                       value: limit.title) {
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                    icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
+                    value: limit.title
+                ) {
                     isShowingDownloadLimitSetting = true
                 }
                 .floatingPanel(
@@ -68,15 +72,19 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
-                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionPassword,
-                                       icon: STResourcesAsset.Images.textfieldLock.swiftUIImage,
-                                       value: STResourcesStrings.Localizable.settingsOptionNone) {
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionPassword,
+                    icon: STResourcesAsset.Images.textfieldLock.swiftUIImage,
+                    value: STResourcesStrings.Localizable.settingsOptionNone
+                ) {
                     showPasswordSetting = true
                 }
 
-                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                                       icon: STResourcesAsset.Images.bubble.swiftUIImage,
-                                       value: language.title) {
+                NewTransferSettingCell(
+                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                    icon: STResourcesAsset.Images.message.swiftUIImage,
+                    value: language.title
+                ) {
                     isShowingLanguageSetting = true
                 }
 

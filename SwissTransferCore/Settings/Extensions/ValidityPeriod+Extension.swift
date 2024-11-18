@@ -38,5 +38,4 @@ extension ValidityPeriod: SettingSelectable {
     public var leftAsset: STResources.STResourcesImages? {
         nil
     }
-
 }
