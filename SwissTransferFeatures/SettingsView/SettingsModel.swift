@@ -45,38 +45,3 @@ enum SettingLinks {
     static let shareYourIdeas =
         URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
 }
-
-/// The root data structure from which the entire `SettingsView` is rendered
-enum SettingSections: CaseIterable {
-    case general
-    case defaultSettings
-    case dataManagement
-    case about
-
-    var title: String {
-        switch self {
-        case .general:
-            STResourcesStrings.Localizable.settingsCategoryGeneral
-        case .defaultSettings:
-            STResourcesStrings.Localizable.settingsCategoryDefaultSettings
-        case .dataManagement:
-            STResourcesStrings.Localizable.settingsCategoryDataManagement
-        case .about:
-            STResourcesStrings.Localizable.settingsCategoryAbout
-        }
-    }
-
-    /// The layout of all the settings in the `SettingsView`
-    var items: [SettingItemIdentifier] {
-        switch self {
-        case .general:
-            [.theme, .notifications]
-        case .defaultSettings:
-            [.validityPeriod, .downloadLimit, .emailLanguage]
-        case .dataManagement:
-            [.dataManagement]
-        case .about:
-            [.discoverIk, .shareIdeas, .feedback, .version]
-        }
-    }
-}

@@ -21,48 +21,37 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-struct SettingsCell: View {
+struct SettingsCell<Content: View>: View {
     let title: String
     let subtitle: String
     var leftIconAsset: STResourcesImages?
     var rightIconAsset: STResourcesImages?
-
-    init(title: String, subtitle: String, leftIconAsset: STResourcesImages? = nil, rightIconAsset: STResourcesImages? = nil) {
-        self.title = title
-        self.subtitle = subtitle
-        self.leftIconAsset = leftIconAsset
-        self.rightIconAsset = rightIconAsset
-    }
-
-    init(setting: SettingItem) {
-        title = setting.title
-        subtitle = setting.subtitle ?? ""
-        leftIconAsset = setting.leftIconAsset
-        rightIconAsset = setting.rightIconAsset
-    }
+    @ViewBuilder var destination: () -> Content
 
     var body: some View {
-        HStack(spacing: IKPadding.small) {
-            if let leftIconAsset {
-                Image(asset: leftIconAsset)
-                    .iconSize(.large)
-            }
+        NavigationLink(destination: destination) {
+            HStack(spacing: IKPadding.small) {
+                if let leftIconAsset {
+                    Image(asset: leftIconAsset)
+                        .iconSize(.large)
+                }
 
-            VStack(alignment: .leading) {
-                Text(title)
-                    .lineLimit(1)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .font(.ST.headline)
-                Text(subtitle)
-                    .lineLimit(1)
-                    .foregroundStyle(Color.ST.textSecondary)
-                    .font(.ST.callout)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading) {
+                    Text(title)
+                        .lineLimit(1)
+                        .foregroundStyle(Color.ST.textPrimary)
+                        .font(.ST.headline)
+                    Text(subtitle)
+                        .lineLimit(1)
+                        .foregroundStyle(Color.ST.textSecondary)
+                        .font(.ST.callout)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let rightIconAsset {
-                Image(asset: rightIconAsset)
-                    .iconSize(.large)
+                if let rightIconAsset {
+                    Image(asset: rightIconAsset)
+                        .iconSize(.large)
+                }
             }
         }
     }
@@ -110,5 +99,5 @@ struct AboutSettingsCell: View {
     SettingsCell(title: "Time",
                  subtitle: "Clock",
                  leftIconAsset: STResourcesAsset.Images.clock,
-                 rightIconAsset: STResourcesAsset.Images.clock)
+                 rightIconAsset: STResourcesAsset.Images.clock) {}
 }

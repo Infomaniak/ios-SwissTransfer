@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -25,8 +24,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
-    @StateObject private var appSettings: FlowObserver<AppSettings>
-
     @State private var duration = ValidityPeriod.thirty
     @State private var limit = DownloadLimit.twoHundredFifty
     @State private var language = EmailLanguage.french
@@ -36,11 +33,6 @@ struct NewTransferSettingsView: View {
     @State private var isShowingDownloadLimitSetting = false
     @State private var isShowingLanguageSetting = false
 
-    public init() {
-        @InjectService var settingsManager: AppSettingsManager
-        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settingsManager.appSettings))
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.advancedSettingsTitle)
@@ -48,9 +40,9 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                NewTransferSettingCell(identifier: .validityPeriod,
-                                       value: duration.title,
-                                       appSettings: self.appSettings.value) {
+                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                                       icon: STResourcesAsset.Images.clock.swiftUIImage,
+                                       value: duration.title) {
                     isShowingValiditySetting = true
                 }
                 .floatingPanel(
@@ -62,9 +54,9 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
-                NewTransferSettingCell(identifier: .downloadLimit,
-                                       value: limit.title,
-                                       appSettings: self.appSettings.value) {
+                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                                       icon: STResourcesAsset.Images.fileDownload.swiftUIImage,
+                                       value: limit.value) {
                     isShowingDownloadLimitSetting = true
                 }
                 .floatingPanel(
@@ -76,15 +68,15 @@ struct NewTransferSettingsView: View {
                     }
                 }
 
-                NewTransferSettingCell(identifier: .password,
-                                       value: STResourcesStrings.Localizable.settingsOptionNone,
-                                       appSettings: self.appSettings.value) {
+                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionPassword,
+                                       icon: STResourcesAsset.Images.textfieldLock.swiftUIImage,
+                                       value: STResourcesStrings.Localizable.settingsOptionNone) {
                     showPasswordSetting = true
                 }
 
-                NewTransferSettingCell(identifier: .emailLanguage,
-                                       value: language.title,
-                                       appSettings: self.appSettings.value) {
+                NewTransferSettingCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                                       icon: STResourcesAsset.Images.bubble.swiftUIImage,
+                                       value: language.title) {
                     isShowingLanguageSetting = true
                 }
 

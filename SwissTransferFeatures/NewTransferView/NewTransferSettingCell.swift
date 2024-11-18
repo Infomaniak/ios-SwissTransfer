@@ -25,24 +25,9 @@ import SwissTransferCoreUI
 
 struct NewTransferSettingCell: View {
     let title: String
-    var icon: Image?
+    let icon: Image
     let value: String
     let onTap: () -> Void
-
-    init(identifier: SettingItemIdentifier, value: String, appSettings: AppSettings?, onTap: @escaping () -> Void) {
-        let setting = identifier.item(for: appSettings)
-        title = setting.title
-        icon = setting.leftIconAsset?.swiftUIImage
-        self.value = value
-        self.onTap = onTap
-    }
-
-    init(title: String, icon: Image?, value: String, onTap: @escaping () -> Void) {
-        self.title = title
-        self.icon = icon
-        self.value = value
-        self.onTap = onTap
-    }
 
     var body: some View {
         Button {
@@ -54,10 +39,8 @@ struct NewTransferSettingCell: View {
                         .font(.ST.calloutMedium)
                         .foregroundStyle(Color.ST.primary)
                 } icon: {
-                    if let icon {
-                        icon
-                            .iconSize(.medium)
-                    }
+                    icon
+                        .iconSize(.medium)
                 }
                 .labelStyle(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)

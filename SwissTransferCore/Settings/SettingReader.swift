@@ -20,7 +20,9 @@ import Foundation
 import STResources
 
 /// Something that can read the Notifications user settings outside of a view
-final class NotificationSettings {
+public final class NotificationSettings {
+    public init() {}
+
     let keys = [
         UserDefaults.shared.key(.notificationsNewTransfers),
         UserDefaults.shared.key(.notificationsDownloadInProgress),
@@ -30,14 +32,14 @@ final class NotificationSettings {
         UserDefaults.shared.key(.notificationsExpiredTransfers)
     ]
 
-    var allEnabled: Bool {
+    public var allEnabled: Bool {
         let oneValueIsFalse = keys.contains { key in
             return !UserDefaults.standard.bool(forKey: key)
         }
         return !oneValueIsFalse
     }
 
-    var enabledNotificationLabel: String {
+    public var enabledNotificationLabel: String {
         if allEnabled {
             STResourcesStrings.Localizable.settingsAllNotifications
         } else {
