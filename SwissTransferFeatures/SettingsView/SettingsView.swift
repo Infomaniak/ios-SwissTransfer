@@ -52,8 +52,7 @@ public struct SettingsView: View {
                     EditSettingView(Theme.self,
                                     selected: appSettings.value?.theme ?? .system,
                                     title: STResourcesStrings.Localizable.settingsThemeTitle) { theme in
-                        @InjectService var settingsManager: AppSettingsManager
-                        _ = try? await settingsManager.setTheme(theme: theme)
+                        await theme.setSelected()
                     }
                 }
 
@@ -69,8 +68,7 @@ public struct SettingsView: View {
                     EditSettingView(ValidityPeriod.self,
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
                                     title: STResourcesStrings.Localizable.settingsValidityPeriodTitle) { validity in
-                        @InjectService var settingsManager: AppSettingsManager
-                        _ = try? await settingsManager.setValidityPeriod(validityPeriod: validity)
+                        await validity.setSelected()
                     }
                 }
 
@@ -80,8 +78,7 @@ public struct SettingsView: View {
                     EditSettingView(DownloadLimit.self,
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle) { downloadLimit in
-                        @InjectService var settingsManager: AppSettingsManager
-                        _ = try? await settingsManager.setDownloadLimit(downloadLimit: downloadLimit)
+                        await downloadLimit.setSelected()
                     }
                 }
 
@@ -91,8 +88,7 @@ public struct SettingsView: View {
                     EditSettingView(EmailLanguage.self,
                                     selected: appSettings.value?.emailLanguage ?? .french,
                                     title: STResourcesStrings.Localizable.settingsEmailLanguageTitle) { emailLanguage in
-                        @InjectService var settingsManager: AppSettingsManager
-                        _ = try? await settingsManager.setEmailLanguage(emailLanguage: emailLanguage)
+                        await emailLanguage.setSelected()
                     }
                 }
             }

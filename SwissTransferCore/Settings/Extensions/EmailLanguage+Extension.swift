@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -44,5 +45,10 @@ extension EmailLanguage: SettingSelectable {
         case .spanish:
             return STResourcesAsset.Images.flagEs
         }
+    }
+
+    public func setSelected() async {
+        @InjectService var settingsManager: AppSettingsManager
+        _ = try? await settingsManager.setEmailLanguage(emailLanguage: self)
     }
 }

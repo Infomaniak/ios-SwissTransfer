@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -37,5 +38,10 @@ extension ValidityPeriod: SettingSelectable {
 
     public var leftAsset: STResources.STResourcesImages? {
         nil
+    }
+
+    public func setSelected() async {
+        @InjectService var settingsManager: AppSettingsManager
+        _ = try? await settingsManager.setValidityPeriod(validityPeriod: self)
     }
 }
