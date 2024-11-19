@@ -61,7 +61,7 @@ public enum DefaultPreferences {
     public static let notificationsExpiredTransfers = true
 }
 
-struct NotificationsSettings: View {
+struct NotificationsSettingsView: View {
     @AppStorage(UserDefaults.shared.key(.notificationsNewTransfers))
     private var newTransfers = DefaultPreferences.notificationsNewTransfers
 

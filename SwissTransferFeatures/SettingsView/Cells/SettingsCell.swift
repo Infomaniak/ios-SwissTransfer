@@ -57,6 +57,69 @@ struct SettingsCell<Content: View>: View {
     }
 }
 
+/// A view that tracks the notifications settings
+struct NotificationsSettingsCell<Content: View>: View {
+    @AppStorage(UserDefaults.shared.key(.notificationsNewTransfers))
+    private var newTransfers = DefaultPreferences.notificationsNewTransfers
+
+    @AppStorage(UserDefaults.shared.key(.notificationsDownloadInProgress))
+    private var downloadInProgress = DefaultPreferences.notificationsDownloadInProgress
+
+    @AppStorage(UserDefaults.shared.key(.notificationsFinishedTransfers))
+    private var finishedTransfers = DefaultPreferences.notificationsFinishedTransfers
+
+    @AppStorage(UserDefaults.shared.key(.notificationsDownloadTransfers))
+    private var downloadTransfers = DefaultPreferences.notificationsDownloadTransfers
+
+    @AppStorage(UserDefaults.shared.key(.notificationsFailedTransfers))
+    private var failedTransfers = DefaultPreferences.notificationsFailedTransfers
+
+    @AppStorage(UserDefaults.shared.key(.notificationsExpiredTransfers))
+    private var expiredTransfers = DefaultPreferences.notificationsExpiredTransfers
+
+    @State private var subtitle: String = NotificationSettings().enabledNotificationLabel
+
+    private let leftIconAsset = STResourcesAsset.Images.bell
+
+    private let title: String = STResourcesStrings.Localizable.settingsOptionNotifications
+
+    @ViewBuilder var destination: () -> Content
+
+    var body: some View {
+        NavigationLink(destination: destination) {
+            HStack(spacing: IKPadding.small) {
+                Image(asset: leftIconAsset)
+                    .iconSize(.large)
+
+                VStack(alignment: .leading) {
+                    Text(title)
+                        .lineLimit(1)
+                        .foregroundStyle(Color.ST.textPrimary)
+                        .font(.ST.headline)
+                    Text(subtitle)
+                        .lineLimit(1)
+                        .foregroundStyle(Color.ST.textSecondary)
+                        .font(.ST.callout)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .onChange(of: [newTransfers,
+                               downloadInProgress,
+                               finishedTransfers,
+                               downloadTransfers,
+                               failedTransfers,
+                               expiredTransfers]) { newValue in
+                    let allEnabled = newValue.allSatisfy { $0 }
+                    if allEnabled {
+                        self.subtitle = STResourcesStrings.Localizable.settingsAllNotifications
+                    } else {
+                        self.subtitle = STResourcesStrings.Localizable.settingsCustomizedNotifications
+                    }
+                }
+            }
+        }
+    }
+}
+
 struct SingleLabelSettingsCell: View {
     let title: String
     var rightIconAsset: STResourcesImages?

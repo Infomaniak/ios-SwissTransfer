@@ -57,10 +57,8 @@ public struct SettingsView: View {
                     }
                 }
 
-                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionNotifications,
-                             subtitle: NotificationSettings().enabledNotificationLabel,
-                             leftIconAsset: STResourcesAsset.Images.bell) {
-                    NotificationsSettings()
+                NotificationsSettingsCell {
+                    NotificationsSettingsView()
                 }
             }
 
