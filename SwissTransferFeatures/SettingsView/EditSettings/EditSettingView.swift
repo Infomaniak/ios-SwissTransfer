@@ -27,8 +27,6 @@ import SwissTransferCoreUI
 struct EditSettingView<T: SettingSelectable>: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @Environment(\.dismiss) private var dismiss
-
     let title: String
     let items: [T]
     let selected: T
@@ -48,7 +46,6 @@ struct EditSettingView<T: SettingSelectable>: View {
                     EditSettingsView(leftIconAsset: item.leftAsset,
                                      selected: item == selected,
                                      label: item.title) {
-                        dismiss()
                         Task {
                             await onSelection(item)
                         }

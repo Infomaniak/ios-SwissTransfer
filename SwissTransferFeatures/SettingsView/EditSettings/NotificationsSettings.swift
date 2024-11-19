@@ -90,8 +90,7 @@ struct NotificationsSettingsView: View {
         List {
             Section(header: Text(STResourcesStrings.Localizable.settingsNotificationsTitle)) {
                 ForEach(NotificationsSettingsModel.allCases, id: \.self) { setting in
-                    let binding = toggleBinding(for: setting)
-                    NotificationSettingCell(label: setting.localized, enabled: binding)
+                    NotificationSettingCell(label: setting.localized, enabled: toggleBinding(for: setting))
                 }
             }
         }

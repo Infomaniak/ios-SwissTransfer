@@ -31,13 +31,11 @@ struct SwissTransferApp: App {
     private let sentryService = SentryService()
     private let dependencyInjectionHook = TargetAssembly()
 
-    @LazyInjectService private var settingsManager: AppSettingsManager
-
     @StateObject private var appSettings: FlowObserver<AppSettings>
 
     @Environment(\.colorScheme) var colorScheme
 
-    var savedScheme: ColorScheme? {
+    private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
               let storedColorScheme = ColorScheme.from(appSettings.theme) else {
             return colorScheme
@@ -57,7 +55,7 @@ struct SwissTransferApp: App {
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
-                .preferredColorScheme(savedScheme)
+                .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
         }
     }
