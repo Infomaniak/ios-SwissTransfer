@@ -34,7 +34,7 @@ extension EmailLanguage: SettingSelectable {
     public var leftAsset: STResources.STResourcesImages? {
         switch self {
         case .english:
-            return STResourcesAsset.Images.flagUk
+            return STResourcesAsset.Images.flagEn
         case .french:
             return STResourcesAsset.Images.flagFr
         case .german:
