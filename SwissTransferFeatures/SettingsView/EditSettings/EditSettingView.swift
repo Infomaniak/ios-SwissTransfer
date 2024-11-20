@@ -28,20 +28,22 @@ struct EditSettingView<T: SettingSelectable>: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
     let title: String
+    let section: String
     let items: [T]
     let selected: T
     let onSelection: (T) async -> Void
 
-    public init(_ type: T.Type, selected: T, title: String, onSelection: @escaping (T) async -> Void) {
+    public init(_ type: T.Type, selected: T, title: String, section: String, onSelection: @escaping (T) async -> Void) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
+        self.section = section
         self.onSelection = onSelection
     }
 
     var body: some View {
         List(selection: $mainViewState.selectedDestination) {
-            Section(header: Text(title)) {
+            Section(header: Text(section)) {
                 ForEach(items, id: \.self) { item in
                     EditSettingsView(leftImage: item.leftImage,
                                      selected: item == selected,
@@ -54,11 +56,12 @@ struct EditSettingView<T: SettingSelectable>: View {
             }
         }
         .stNavigationBarStyle()
+        .stNavigationBar(title: title)
     }
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "Title") { theme in
+    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section") { theme in
         print("selected \(theme)")
     }
 }

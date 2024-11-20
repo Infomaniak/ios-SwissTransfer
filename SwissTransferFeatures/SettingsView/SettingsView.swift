@@ -52,7 +52,8 @@ public struct SettingsView: View {
                              leftIconAsset: STResourcesAsset.Images.brush) {
                     EditSettingView(Theme.self,
                                     selected: appSettings.value?.theme ?? .system,
-                                    title: STResourcesStrings.Localizable.settingsThemeTitle) { theme in
+                                    title: STResourcesStrings.Localizable.settingsOptionTheme,
+                                    section: STResourcesStrings.Localizable.settingsThemeTitle) { theme in
                         await theme.setSelected()
                     }
                 }
@@ -68,7 +69,8 @@ public struct SettingsView: View {
                              leftIconAsset: STResourcesAsset.Images.clock) {
                     EditSettingView(ValidityPeriod.self,
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
-                                    title: STResourcesStrings.Localizable.settingsValidityPeriodTitle) { validity in
+                                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                                    section: STResourcesStrings.Localizable.settingsValidityPeriodTitle) { validity in
                         await validity.setSelected()
                     }
                 }
@@ -78,7 +80,8 @@ public struct SettingsView: View {
                              leftIconAsset: STResourcesAsset.Images.fileDownload) {
                     EditSettingView(DownloadLimit.self,
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
-                                    title: STResourcesStrings.Localizable.settingsDownloadsLimitTitle) { downloadLimit in
+                                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                                    section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle) { downloadLimit in
                         await downloadLimit.setSelected()
                     }
                 }
@@ -88,7 +91,8 @@ public struct SettingsView: View {
                              leftIconAsset: STResourcesAsset.Images.bubble) {
                     EditSettingView(EmailLanguage.self,
                                     selected: appSettings.value?.emailLanguage ?? .french,
-                                    title: STResourcesStrings.Localizable.settingsEmailLanguageTitle) { emailLanguage in
+                                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                                    section: STResourcesStrings.Localizable.settingsEmailLanguageTitle) { emailLanguage in
                         await emailLanguage.setSelected()
                     }
                 }
