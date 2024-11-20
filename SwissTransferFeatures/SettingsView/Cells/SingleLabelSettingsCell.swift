@@ -30,7 +30,7 @@ struct SingleLabelSettingsCell: View {
             Text(title)
                 .lineLimit(1)
                 .foregroundStyle(Color.ST.textPrimary)
-                .font(.ST.headline)
+                .font(.ST.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             if let rightIconAsset {

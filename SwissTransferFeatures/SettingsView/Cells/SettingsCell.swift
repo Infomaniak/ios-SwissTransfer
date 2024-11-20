@@ -41,7 +41,7 @@ struct SettingsCell<Content: View>: View {
                     Text(title)
                         .lineLimit(1)
                         .foregroundStyle(Color.ST.textPrimary)
-                        .font(.ST.headline)
+                        .font(.ST.body)
                     Text(subtitle)
                         .lineLimit(1)
                         .foregroundStyle(Color.ST.textSecondary)

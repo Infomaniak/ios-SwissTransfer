@@ -43,7 +43,7 @@ struct EditSettingView<T: SettingSelectable>: View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(title)) {
                 ForEach(items, id: \.self) { item in
-                    EditSettingsView(leftIconAsset: item.leftAsset,
+                    EditSettingsView(leftImage: item.leftImage,
                                      selected: item == selected,
                                      label: item.title) {
                         Task {
@@ -58,7 +58,7 @@ struct EditSettingView<T: SettingSelectable>: View {
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "UIKit") { theme in
+    EditSettingView(Theme.self, selected: .dark, title: "Title") { theme in
         print("selected \(theme)")
     }
 }

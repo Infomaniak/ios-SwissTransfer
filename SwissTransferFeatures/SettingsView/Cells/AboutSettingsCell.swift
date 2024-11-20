@@ -30,7 +30,7 @@ struct AboutSettingsCell: View {
             VStack(alignment: .leading) {
                 Text(title)
                     .foregroundStyle(Color.ST.textPrimary)
-                    .font(.ST.headline)
+                    .font(.ST.body)
                 Text(subtitle)
                     .foregroundStyle(Color.ST.textSecondary)
                     .font(.ST.callout)

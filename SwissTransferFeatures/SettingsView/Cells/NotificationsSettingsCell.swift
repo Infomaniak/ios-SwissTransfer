@@ -59,7 +59,7 @@ struct NotificationsSettingsCell<Content: View>: View {
                     Text(title)
                         .lineLimit(1)
                         .foregroundStyle(Color.ST.textPrimary)
-                        .font(.ST.headline)
+                        .font(.ST.body)
                     Text(subtitle)
                         .lineLimit(1)
                         .foregroundStyle(Color.ST.textSecondary)
@@ -86,6 +86,6 @@ struct NotificationsSettingsCell<Content: View>: View {
 
 #Preview {
     NotificationsSettingsCell {
-        Text("coucou")
+        Text("NotificationsSettingsCell action")
     }
 }

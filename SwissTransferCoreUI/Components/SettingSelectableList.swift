@@ -49,7 +49,7 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
                                     .font(.ST.body)
                                     .foregroundStyle(Color.ST.textPrimary)
                             } icon: {
-                                item.leftAsset?.swiftUIImage
+                                item.leftImage
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
 

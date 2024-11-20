@@ -21,7 +21,7 @@ import STResources
 import SwiftUI
 
 struct EditSettingsView: View {
-    var leftIconAsset: STResourcesImages?
+    var leftImage: Image?
     let selected: Bool
     let label: String
     let action: () -> Void
@@ -29,20 +29,20 @@ struct EditSettingsView: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: IKPadding.small) {
-                if let leftIconAsset {
-                    Image(asset: leftIconAsset)
+                if let leftImage {
+                    leftImage
                         .iconSize(.large)
                 }
 
                 Text(label)
                     .lineLimit(1)
                     .foregroundStyle(Color.ST.textPrimary)
-                    .font(.ST.headline)
+                    .font(.ST.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if selected {
                     Image(asset: STResourcesAsset.Images.check)
-                        .iconSize(.large)
+                        .iconSize(.medium)
                 }
             }
         }
@@ -50,7 +50,7 @@ struct EditSettingsView: View {
 }
 
 #Preview {
-    EditSettingsView(leftIconAsset: nil, selected: true, label: "EditSettingsView") {
-        print("action")
+    EditSettingsView(leftImage: nil, selected: true, label: "EditSettingsView") {
+        print("EditSettingsView action")
     }
 }

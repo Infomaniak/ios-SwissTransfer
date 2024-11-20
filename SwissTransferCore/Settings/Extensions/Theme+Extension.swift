@@ -33,7 +33,7 @@ extension Theme: SettingSelectable {
         }
     }
 
-    public var leftAsset: STResources.STResourcesImages? {
+    public var leftImage: Image? {
         nil
     }
 

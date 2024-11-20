@@ -26,7 +26,7 @@ extension DownloadLimit: SettingSelectable {
         return "\(value)"
     }
 
-    public var leftAsset: STResources.STResourcesImages? {
+    public var leftImage: Image? {
         nil
     }
 
