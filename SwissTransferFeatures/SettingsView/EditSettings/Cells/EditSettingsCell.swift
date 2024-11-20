@@ -21,10 +21,10 @@ import STResources
 import SwiftUI
 
 struct EditSettingsView: View {
-    var leftImage: Image?
     let selected: Bool
     let label: String
     let action: () -> Void
+    var leftImage: Image?
 
     var body: some View {
         Button(action: action) {

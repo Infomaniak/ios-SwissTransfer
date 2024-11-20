@@ -43,11 +43,11 @@ struct NotificationsSettingsCell<Content: View>: View {
 
     @State private var subtitle: String = NotificationSettings().enabledNotificationLabel
 
+    @ViewBuilder var destination: () -> Content
+
     private let leftIconAsset = STResourcesAsset.Images.bell
 
     private let title: String = STResourcesStrings.Localizable.settingsOptionNotifications
-
-    @ViewBuilder var destination: () -> Content
 
     var body: some View {
         NavigationLink(destination: destination) {
@@ -71,7 +71,8 @@ struct NotificationsSettingsCell<Content: View>: View {
                                finishedTransfers,
                                downloadTransfers,
                                failedTransfers,
-                               expiredTransfers]) { newValue in
+                               expiredTransfers])
+                { newValue in
                     let allEnabled = newValue.allSatisfy { $0 }
                     if allEnabled {
                         self.subtitle = STResourcesStrings.Localizable.settingsAllNotifications

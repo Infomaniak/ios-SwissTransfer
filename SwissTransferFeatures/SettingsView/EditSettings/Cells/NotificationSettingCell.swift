@@ -21,9 +21,9 @@ import STResources
 import SwiftUI
 
 struct NotificationSettingCell: View {
-    let label: String
-
     @Binding var enabled: Bool
+
+    let label: String
 
     var body: some View {
         HStack(spacing: IKPadding.small) {
