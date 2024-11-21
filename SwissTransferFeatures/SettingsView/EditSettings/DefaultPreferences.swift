@@ -18,11 +18,11 @@
 
 import Foundation
 
-public enum SettingDetailUI: Hashable {
-    case theme
-    case notifications
-    case validityPeriod
-    case downloadLimit
-    case emailLanguage
-    case dataManagement
+public enum DefaultPreferences {
+    public static let notificationsNewTransfers = true
+    public static let notificationsDownloadInProgress = true
+    public static let notificationsFinishedTransfers = true
+    public static let notificationsDownloadTransfers = true
+    public static let notificationsFailedTransfers = true
+    public static let notificationsExpiredTransfers = true
 }

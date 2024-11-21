@@ -21,7 +21,6 @@ import STResources
 import SwiftUI
 
 public extension ColorScheme {
-    /// STCore `Theme` to SwiftUI `ColorScheme` bridge
     static func from(_ theme: Theme) -> ColorScheme? {
         switch theme {
         case .system:

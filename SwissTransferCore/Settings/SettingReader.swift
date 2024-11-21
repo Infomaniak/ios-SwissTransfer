@@ -19,7 +19,6 @@
 import Foundation
 import STResources
 
-/// Something that can read the Notifications user settings outside of a view
 public final class NotificationSettings {
     public init() {}
 

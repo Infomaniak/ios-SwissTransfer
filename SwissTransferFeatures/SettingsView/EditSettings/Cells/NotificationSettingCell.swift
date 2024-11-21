@@ -26,9 +26,7 @@ struct NotificationSettingCell: View {
     let label: String
 
     var body: some View {
-        HStack(spacing: IKPadding.small) {
-            Toggle(label, isOn: $enabled)
-        }
+        Toggle(label, isOn: $enabled)
     }
 }
 

@@ -20,7 +20,7 @@ import STCore
 
 public enum NavigationDestination: Hashable {
     case transfer(TransferUi)
-    case settings(SettingDetailUi)
+    case settings(SettingDetailUI)
 
     public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
         switch (lhs, rhs) {

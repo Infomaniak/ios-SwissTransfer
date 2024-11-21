@@ -23,7 +23,6 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-/// A view to display and select one item within a collection with a native iOS look and feel
 struct EditSettingView<T: SettingSelectable>: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
@@ -48,15 +47,19 @@ struct EditSettingView<T: SettingSelectable>: View {
                     EditSettingsView(selected: item == selected,
                                      label: item.title,
                                      leftImage: item.leftImage) {
-                        Task {
-                            await onSelection(item)
-                        }
+                        action(item)
                     }
                 }
             }
         }
         .stNavigationBarStyle()
         .stNavigationBar(title: title)
+    }
+
+    private func action(_ item: T) {
+        Task {
+            await onSelection(item)
+        }
     }
 }
 
