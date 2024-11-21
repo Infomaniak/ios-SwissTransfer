@@ -23,12 +23,11 @@ import SwissTransferCore
 
 /// A generic Setting cell that works well with enums from STCore
 struct SettingsCell<Content: View>: View {
-    @ViewBuilder var destination: () -> Content
-
     let title: String
     let subtitle: String
     var leftIconAsset: STResourcesImages?
     var rightIconAsset: STResourcesImages?
+    @ViewBuilder var destination: () -> Content
 
     var body: some View {
         NavigationLink(destination: destination) {

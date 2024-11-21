@@ -23,8 +23,8 @@ import SwiftUI
 struct EditSettingsView: View {
     let selected: Bool
     let label: String
-    let action: () -> Void
     var leftImage: Image?
+    let action: () -> Void
 
     var body: some View {
         Button(action: action) {
@@ -50,7 +50,7 @@ struct EditSettingsView: View {
 }
 
 #Preview {
-    EditSettingsView(leftImage: nil, selected: true, label: "EditSettingsView") {
+    EditSettingsView(selected: true, label: "EditSettingsView") {
         print("EditSettingsView action")
     }
 }

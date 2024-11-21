@@ -45,9 +45,9 @@ struct EditSettingView<T: SettingSelectable>: View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(section)) {
                 ForEach(items, id: \.self) { item in
-                    EditSettingsView(leftImage: item.leftImage,
-                                     selected: item == selected,
-                                     label: item.title) {
+                    EditSettingsView(selected: item == selected,
+                                     label: item.title,
+                                     leftImage: item.leftImage) {
                         Task {
                             await onSelection(item)
                         }

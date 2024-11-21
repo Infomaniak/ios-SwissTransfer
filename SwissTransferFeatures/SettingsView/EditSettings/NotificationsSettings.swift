@@ -80,7 +80,9 @@ struct NotificationsSettingsView: View {
     @AppStorage(UserDefaults.shared.key(.notificationsExpiredTransfers))
     private var expiredTransfers = DefaultPreferences.notificationsExpiredTransfers
 
-    @State private var allNotificationsEnabled = true
+    @State private var allNotificationsEnabled = NotificationSettings().allEnabled
+
+    @State private var mutationFromCode = false
 
     init() {
         allNotificationsEnabled = computeAllNotificationsEnabled()
@@ -90,7 +92,7 @@ struct NotificationsSettingsView: View {
         List {
             Section(header: Text(STResourcesStrings.Localizable.settingsNotificationsTitle)) {
                 ForEach(NotificationsSettingsModel.allCases, id: \.self) { setting in
-                    NotificationSettingCell(label: setting.localized, enabled: toggleBinding(for: setting))
+                    NotificationSettingCell(enabled: toggleBinding(for: setting), label: setting.localized)
                 }
             }
         }
@@ -100,11 +102,17 @@ struct NotificationsSettingsView: View {
                        downloadTransfers,
                        failedTransfers,
                        expiredTransfers]) { newValue in
-            // Any sub setting is disabled, we disable the first toggle
-            allNotificationsEnabled = newValue.allSatisfy { $0 }
+            let allNotifications = newValue.allSatisfy { $0 }
+            guard allNotificationsEnabled != allNotifications else {
+                return
+            }
+
+            mutationFromCode = true
+            allNotificationsEnabled = allNotifications
         }
         .onChange(of: allNotificationsEnabled) { newValue in
-            guard newValue else {
+            guard mutationFromCode == false else {
+                mutationFromCode = false
                 return
             }
 
