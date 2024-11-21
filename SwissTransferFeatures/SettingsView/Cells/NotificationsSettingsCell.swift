@@ -54,6 +54,7 @@ struct NotificationsSettingsCell<Content: View>: View {
             HStack(spacing: IKPadding.small) {
                 Image(asset: leftIconAsset)
                     .iconSize(.large)
+                    .foregroundColor(Color.ST.primary)
 
                 VStack(alignment: .leading) {
                     Text(title)

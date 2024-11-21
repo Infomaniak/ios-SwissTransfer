@@ -35,6 +35,7 @@ struct SettingsCell<Content: View>: View {
                 if let leftIconAsset {
                     Image(asset: leftIconAsset)
                         .iconSize(.large)
+                        .foregroundColor(Color.ST.primary)
                 }
 
                 VStack(alignment: .leading) {

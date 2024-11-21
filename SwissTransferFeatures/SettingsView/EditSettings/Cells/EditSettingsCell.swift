@@ -43,6 +43,7 @@ struct EditSettingsView: View {
                 if selected {
                     Image(asset: STResourcesAsset.Images.check)
                         .iconSize(.medium)
+                        .foregroundColor(Color.ST.primary)
                 }
             }
         }
