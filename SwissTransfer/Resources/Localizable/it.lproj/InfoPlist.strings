@@ -1,8 +1,2 @@
-/*
- * Loco ios export: iOS InfoPlist.strings
- * Project: SwissTransfer
- * Locale: en, English
- * Tagged: ios-info-plist
- * Exported by: Ambroise Decouttere
- * Exported at: Wed, 24 Jul 2024 08:51:19 +0200
- */
+/* loco:673c893e9562320bbd0bf572 */
+"NSCameraUsageDescription" = "Sarà possibile trasferire le foto e video ripresi con la fotocamera.";

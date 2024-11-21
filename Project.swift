@@ -57,15 +57,7 @@ let project = Project(
             product: .app,
             bundleId: Constants.baseIdentifier,
             deploymentTargets: Constants.deploymentTarget,
-            infoPlist: .extendingDefault(
-                with: [
-                    "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
-                    "CFBundleDisplayName": "$(PRODUCT_NAME)",
-                    "CFBundleShortVersionString": "$(MARKETING_VERSION)",
-                    "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
-                    "UILaunchStoryboardName": "LaunchScreen.storyboard"
-                ]
-            ),
+            infoPlist: "SwissTransfer/Resources/Info.plist",
             sources: "SwissTransfer/Sources/**",
             resources: [
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
