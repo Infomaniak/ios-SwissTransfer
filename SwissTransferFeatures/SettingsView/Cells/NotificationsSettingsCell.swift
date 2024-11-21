@@ -67,13 +67,14 @@ struct NotificationsSettingsCell<Content: View>: View {
                         .font(.ST.callout)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .onChange(of: [newTransfers,
-                               downloadInProgress,
-                               finishedTransfers,
-                               downloadTransfers,
-                               failedTransfers,
-                               expiredTransfers])
-                { newValue in
+                .onChange(of: [
+                    newTransfers,
+                    downloadInProgress,
+                    finishedTransfers,
+                    downloadTransfers,
+                    failedTransfers,
+                    expiredTransfers
+                ]) { newValue in
                     let allEnabled = newValue.allSatisfy { $0 }
                     if allEnabled {
                         self.subtitle = STResourcesStrings.Localizable.settingsAllNotifications
