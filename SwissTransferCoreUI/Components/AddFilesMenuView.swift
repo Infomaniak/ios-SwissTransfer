@@ -117,6 +117,7 @@ public struct AddFilesMenuView<Content: View>: View {
                     Logger.general.error("An error occurred while saving photo: \(error)")
                 }
             }
+            selectedPhotos = []
 
             let urls = photoList.map {
                 $0.url
