@@ -111,7 +111,7 @@ struct NotificationsSettingsView: View {
             allNotificationsEnabled = allNotifications
         }
         .onChange(of: allNotificationsEnabled) { newValue in
-            guard mutationFromCode == false else {
+            guard !mutationFromCode else {
                 mutationFromCode = false
                 return
             }
