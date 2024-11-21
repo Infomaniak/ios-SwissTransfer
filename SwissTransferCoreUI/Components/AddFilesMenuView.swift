@@ -74,23 +74,15 @@ public struct AddFilesMenuView<Content: View>: View {
             didSelectFromPhotoLibrary()
         }
         .fullScreenCover(isPresented: $isShowingCamera) {
-            CameraPickerView { image in
-                didTakePicture(uiImage: image)
-            }
-            .ignoresSafeArea()
+            CameraPickerView(onImagePicked: didTakePicture)
+                .ignoresSafeArea()
         }
         .fileImporter(
             isPresented: $isShowingImportFile,
             allowedContentTypes: [.item, .folder],
-            allowsMultipleSelection: true
-        ) { result in
-            switch result {
-            case .success(let urls):
-                completion(urls)
-            case .failure(let error):
-                Logger.general.error("An error occurred while importing files: \(error)")
-            }
-        }
+            allowsMultipleSelection: true,
+            onCompletion: didSelectFromFileSystem
+        )
     }
 
     private func didTakePicture(uiImage: UIImage) {
@@ -123,6 +115,15 @@ public struct AddFilesMenuView<Content: View>: View {
                 $0.url
             }
             completion(urls)
+        }
+    }
+
+    private func didSelectFromFileSystem(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            completion(urls)
+        case .failure(let error):
+            Logger.general.error("An error occurred while importing files: \(error)")
         }
     }
 }
