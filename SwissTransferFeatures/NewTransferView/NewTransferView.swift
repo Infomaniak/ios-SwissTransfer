@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import OSLog
 import STCore
 import STResources
@@ -33,11 +34,8 @@ public struct NewTransferView: View {
     @State private var isLoadingFileToUpload = false
     @State private var navigationPath = NavigationPath()
 
-    @AppStorage(UserDefaults.shared.key(.lastTransferType))
-    private var transferType = DefaultPreferences.lastTransferType
-    @AppStorage(UserDefaults.shared.key(.lastEmailAuthor))
-    private var authorEmail = DefaultPreferences.lastEmailAuthor
-
+    @State private var transferType = TransferType.qrCode
+    @State private var authorEmail = ""
     @State private var recipientEmail = ""
     @State private var message = ""
     @State private var password = ""
@@ -97,10 +95,23 @@ public struct NewTransferView: View {
                     .stNavigationBarStyle()
             }
         }
+        .onAppear(perform: initializeValuesFromSettings)
         .environment(\.dismissModal) {
             dismiss()
         }
         .environmentObject(newTransferManager)
+    }
+
+    private func initializeValuesFromSettings() {
+        @InjectService var settingsManager: AppSettingsManager
+        guard let appSettings = settingsManager.getAppSettings() else { return }
+
+        transferType = appSettings.lastTransferType
+        authorEmail = appSettings.lastAuthorEmail ?? ""
+
+        duration = appSettings.validityPeriod
+        downloadLimit = appSettings.downloadLimit
+        language = appSettings.emailLanguage
     }
 
     private func startUpload() {
@@ -108,20 +119,24 @@ public struct NewTransferView: View {
             isLoadingFileToUpload = true
 
             let recipientsEmail = [String]()
-            if transferType == .mail && recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+            if transferType == .mail,
+               recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
                 recipientEmail.append(recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
             }
 
-            let numberOfDownload = Int32(downloadLimit.value) ?? 250
+            var authorTrimmedEmail = ""
+            if transferType == .mail {
+                authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
 
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: duration.value,
-                    authorEmail: authorEmail,
+                    duration: duration,
+                    authorEmail: authorTrimmedEmail,
                     password: password,
-                    message: message,
-                    numberOfDownload: numberOfDownload,
+                    message: message.trimmingCharacters(in: .whitespacesAndNewlines),
+                    numberOfDownload: downloadLimit,
                     language: language,
                     recipientsEmails: recipientsEmail,
                     files: filesToUpload

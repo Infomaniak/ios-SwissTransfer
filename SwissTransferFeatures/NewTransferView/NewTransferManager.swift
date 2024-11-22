@@ -44,8 +44,6 @@ enum TmpDirType: String {
 
 @MainActor
 class NewTransferManager: ObservableObject {
-    @Published var transferType: TransferType = .qrCode
-
     init() {
         cleanTmpDir(type: .upload)
     }

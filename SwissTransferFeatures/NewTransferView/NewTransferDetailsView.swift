@@ -17,10 +17,12 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+import InfomaniakDI
 
 struct NewTransferDetailsView: View {
     @FocusState private var isMessageFieldFocused
@@ -37,6 +39,13 @@ struct NewTransferDetailsView: View {
                 TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail)
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
+                    .onSubmit {
+                        print("On Submit")
+                        Task {
+                            @InjectService var settingsManager: AppSettingsManager
+                            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
+                        }
+                    }
 
                 TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
                     .textFieldStyle(NewTransferTextFieldStyle())

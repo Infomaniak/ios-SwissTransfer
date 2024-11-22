@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -35,9 +36,7 @@ struct NewTransferTypeView: View {
                 HStack {
                     ForEach(TransferType.allCases, id: \.name) { type in
                         Button {
-                            withAnimation {
-                                transferType = type
-                            }
+                            selectType(type)
                         } label: {
                             TransferTypeCell(type: type, isSelected: transferType == type)
                         }
@@ -48,8 +47,19 @@ struct NewTransferTypeView: View {
             .scrollIndicators(.hidden)
         }
     }
+
+    private func selectType(_ type: TransferType) {
+        withAnimation {
+            transferType = type
+        }
+
+        Task {
+            @InjectService var settingsManager: AppSettingsManager
+            try? await settingsManager.setLastTransferType(transferType: type)
+        }
+    }
 }
 
 #Preview {
-    NewTransferTypeView(transferType: .constant(.qrcode))
+    NewTransferTypeView(transferType: .constant(.qrCode))
 }
