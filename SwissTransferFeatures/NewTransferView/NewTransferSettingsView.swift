@@ -24,14 +24,15 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
-    @State private var duration = ValidityPeriod.thirty
-    @State private var limit = DownloadLimit.twoHundredFifty
-    @State private var language = EmailLanguage.french
-
     @State private var showPasswordSetting = false
     @State private var isShowingValiditySetting = false
     @State private var isShowingDownloadLimitSetting = false
     @State private var isShowingLanguageSetting = false
+
+    @Binding var duration: ValidityPeriod
+    @Binding var limit: DownloadLimit
+    @Binding var language: EmailLanguage
+    @Binding var password: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -105,12 +106,17 @@ struct NewTransferSettingsView: View {
                     .clipShape(.rect(cornerRadius: IKRadius.large))
             )
             .sheet(isPresented: $showPasswordSetting) {
-                PasswordSettingView()
+                PasswordSettingView(password: $password)
             }
         }
     }
 }
 
 #Preview {
-    NewTransferSettingsView()
+    NewTransferSettingsView(
+        duration: .constant(.one),
+        limit: .constant(.oneHundred),
+        language: .constant(.french),
+        password: .constant("")
+    )
 }

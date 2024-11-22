@@ -17,29 +17,36 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
-    @EnvironmentObject private var newTransferManager: NewTransferManager
-
-    @State private var sender = ""
-    @State private var recipient = ""
-    @State private var message = ""
-
     @FocusState private var isMessageFieldFocused
+
+    @Binding var authorEmail: String
+    @Binding var recipientEmail: String
+    @Binding var message: String
+
+    let transferType: TransferType
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
-            if newTransferManager.transferType == .mail {
-                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $sender)
-                    .textFieldStyle(NewTransferTextFieldStyle())
-                    .keyboardType(.emailAddress)
-                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipient)
+            if transferType == .mail {
+                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail) { _ in
+                    saveAuthorMailAddress()
+                }
+                .textFieldStyle(NewTransferTextFieldStyle())
+                .keyboardType(.emailAddress)
+
+                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
             }
+
             TextEditor(text: $message)
                 .focused($isMessageFieldFocused)
                 .frame(minHeight: 88, alignment: .top)
@@ -50,9 +57,15 @@ struct NewTransferDetailsView: View {
                 )
         }
     }
+
+    private func saveAuthorMailAddress() {
+        Task {
+            @InjectService var settingsManager: AppSettingsManager
+            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
+        }
+    }
 }
 
 #Preview {
-    NewTransferDetailsView()
-        .environmentObject(NewTransferManager())
+    NewTransferDetailsView(authorEmail: .constant(""), recipientEmail: .constant(""), message: .constant(""), transferType: .link)
 }

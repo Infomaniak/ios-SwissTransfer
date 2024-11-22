@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import OSLog
 import STCore
 import STResources
@@ -33,6 +34,15 @@ public struct NewTransferView: View {
     @State private var isLoadingFileToUpload = false
     @State private var navigationPath = NavigationPath()
 
+    @State private var transferType = TransferType.qrCode
+    @State private var authorEmail = ""
+    @State private var recipientEmail = ""
+    @State private var message = ""
+    @State private var password = ""
+    @State private var validityPeriod = ValidityPeriod.thirty
+    @State private var downloadLimit = DownloadLimit.twoHundredFifty
+    @State private var emailLanguage = EmailLanguage.french
+
     public init(urls: [URL]) {
         let transferManager = NewTransferManager()
         _ = transferManager.addFiles(urls: urls)
@@ -43,38 +53,41 @@ public struct NewTransferView: View {
         NavigationStack(path: $navigationPath) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
-                    // FilesCell
                     NewTransferFilesCellView()
                         .padding(.horizontal, value: .medium)
 
-                    // Title and message
-                    NewTransferDetailsView()
-                        .padding(.horizontal, value: .medium)
+                    NewTransferDetailsView(
+                        authorEmail: $authorEmail,
+                        recipientEmail: $recipientEmail,
+                        message: $message,
+                        transferType: transferType
+                    )
+                    .padding(.horizontal, value: .medium)
 
-                    // Type
-                    NewTransferTypeView()
+                    NewTransferTypeView(transferType: $transferType)
 
-                    // Settings
-                    NewTransferSettingsView()
-                        .padding(.horizontal, value: .medium)
+                    NewTransferSettingsView(
+                        duration: $validityPeriod,
+                        limit: $downloadLimit,
+                        language: $emailLanguage,
+                        password: $password
+                    )
+                    .padding(.horizontal, value: .medium)
                 }
                 .padding(.vertical, value: .medium)
             }
-            .floatingContainer {
+            .safeAreaButtons {
                 Button(action: startUpload) {
                     Text(STResourcesStrings.Localizable.buttonNext)
-                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.ikBorderedProminent)
-                .ikButtonFullWidth(true)
                 .ikButtonLoading(isLoadingFileToUpload)
-                .controlSize(.large)
             }
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                RootUploadProgressView(transferType: .qrCode, uploadSession: newUploadSession, dismiss: dismiss.callAsFunction)
+            .navigationDestination(for: NewUploadSession.self) { uploadSession in
+                RootUploadProgressView(transferType: transferType, uploadSession: uploadSession, dismiss: dismiss.callAsFunction)
             }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
@@ -87,26 +100,50 @@ public struct NewTransferView: View {
                     .stNavigationBarStyle()
             }
         }
+        .onAppear(perform: initializeValuesFromSettings)
         .environment(\.dismissModal) {
             dismiss()
         }
         .environmentObject(newTransferManager)
     }
 
-    func startUpload() {
+    private func initializeValuesFromSettings() {
+        @InjectService var settingsManager: AppSettingsManager
+        guard let appSettings = settingsManager.getAppSettings() else { return }
+
+        transferType = appSettings.lastTransferType
+        authorEmail = appSettings.lastAuthorEmail ?? ""
+
+        validityPeriod = appSettings.validityPeriod
+        downloadLimit = appSettings.downloadLimit
+        emailLanguage = appSettings.emailLanguage
+    }
+
+    private func startUpload() {
         Task {
             isLoadingFileToUpload = true
+
+            let recipientsEmail = [String]()
+            if transferType == .mail,
+               recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                recipientEmail.append(recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
+            }
+
+            var authorTrimmedEmail = ""
+            if transferType == .mail {
+                authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
 
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: ValidityPeriod.thirty,
-                    authorEmail: "",
-                    password: "",
-                    message: "",
-                    numberOfDownload: DownloadLimit.twoHundredFifty,
-                    language: .english,
-                    recipientsEmails: [],
+                    duration: validityPeriod,
+                    authorEmail: authorTrimmedEmail,
+                    password: password,
+                    message: message.trimmingCharacters(in: .whitespacesAndNewlines),
+                    numberOfDownload: downloadLimit,
+                    language: emailLanguage,
+                    recipientsEmails: recipientsEmail,
                     files: filesToUpload
                 )
                 navigationPath.append(newUploadSession)
