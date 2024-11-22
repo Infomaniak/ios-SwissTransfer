@@ -26,6 +26,7 @@ struct SettingsCell<Content: View>: View {
     let title: String
     let subtitle: String
     var leftIconAsset: STResourcesImages?
+    var rightIconAsset: STResourcesImages?
     @ViewBuilder var destination: () -> Content
 
     var body: some View {
@@ -48,6 +49,11 @@ struct SettingsCell<Content: View>: View {
                         .font(.ST.callout)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+                if let rightIconAsset {
+                    Image(asset: rightIconAsset)
+                        .iconSize(.large)
+                }
             }
         }
     }
@@ -56,5 +62,6 @@ struct SettingsCell<Content: View>: View {
 #Preview {
     SettingsCell(title: "Time",
                  subtitle: "Clock",
-                 leftIconAsset: STResourcesAsset.Images.clock) {}
+                 leftIconAsset: STResourcesAsset.Images.clock,
+                 rightIconAsset: STResourcesAsset.Images.clock) {}
 }

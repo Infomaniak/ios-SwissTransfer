@@ -26,13 +26,15 @@ struct AboutSettingsCell: View {
     let subtitle: String
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-                .foregroundStyle(Color.ST.textPrimary)
-                .font(.ST.body)
-            Text(subtitle)
-                .foregroundStyle(Color.ST.textSecondary)
-                .font(.ST.callout)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(title)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .font(.ST.body)
+                Text(subtitle)
+                    .foregroundStyle(Color.ST.textSecondary)
+                    .font(.ST.callout)
+            }
         }
     }
 }

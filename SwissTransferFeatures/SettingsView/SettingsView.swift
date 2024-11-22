@@ -53,7 +53,9 @@ public struct SettingsView: View {
                     EditSettingView(Theme.self,
                                     selected: appSettings.value?.theme ?? .system,
                                     title: STResourcesStrings.Localizable.settingsOptionTheme,
-                                    section: STResourcesStrings.Localizable.settingsThemeTitle)
+                                    section: STResourcesStrings.Localizable.settingsThemeTitle) { theme in
+                        await theme.setSelected()
+                    }
                 }
 
                 NotificationsSettingsCell {
@@ -68,7 +70,9 @@ public struct SettingsView: View {
                     EditSettingView(ValidityPeriod.self,
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
                                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                                    section: STResourcesStrings.Localizable.settingsValidityPeriodTitle)
+                                    section: STResourcesStrings.Localizable.settingsValidityPeriodTitle) { validity in
+                        await validity.setSelected()
+                    }
                 }
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
@@ -77,7 +81,9 @@ public struct SettingsView: View {
                     EditSettingView(DownloadLimit.self,
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
-                                    section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle)
+                                    section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle) { downloadLimit in
+                        await downloadLimit.setSelected()
+                    }
                 }
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
@@ -86,7 +92,9 @@ public struct SettingsView: View {
                     EditSettingView(EmailLanguage.self,
                                     selected: appSettings.value?.emailLanguage ?? .french,
                                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                                    section: STResourcesStrings.Localizable.settingsEmailLanguageTitle)
+                                    section: STResourcesStrings.Localizable.settingsEmailLanguageTitle) { emailLanguage in
+                        await emailLanguage.setSelected()
+                    }
                 }
             }
 

@@ -115,7 +115,7 @@ struct NotificationsSettingsView: View {
             expiredTransfers = newValue
         }
         .stNavigationBarStyle()
-        .stNavigationTitle(STResourcesStrings.Localizable.settingsOptionNotifications)
+        .stNavigationBar(title: STResourcesStrings.Localizable.settingsOptionNotifications)
     }
 
     private func computeAllNotificationsEnabled() -> Bool {
