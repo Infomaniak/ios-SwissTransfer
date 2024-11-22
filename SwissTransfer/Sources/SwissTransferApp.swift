@@ -31,14 +31,12 @@ struct SwissTransferApp: App {
     private let sentryService = SentryService()
     private let dependencyInjectionHook = TargetAssembly()
 
-    @Environment(\.colorScheme) private var colorScheme
-
     @StateObject private var appSettings: FlowObserver<AppSettings>
 
     private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
               let storedColorScheme = ColorScheme.from(appSettings.theme) else {
-            return colorScheme
+            return nil
         }
 
         return storedColorScheme
