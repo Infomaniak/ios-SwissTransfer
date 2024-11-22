@@ -36,6 +36,7 @@ struct SingleLabelSettingsCell: View {
             if let rightIconAsset {
                 Image(asset: rightIconAsset)
                     .iconSize(.medium)
+                    .foregroundStyle(Color.ST.textSecondary)
             }
         }
     }
