@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-struct STNavigationBarNewTransferModifier: ViewModifier {
+struct STNavigationTitleModifierNewTransferModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismissModal
 
     let title: String
@@ -45,6 +45,6 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
 
 public extension View {
     func stNavigationBarNewTransfer(title: String = "Transfer") -> some View {
-        modifier(STNavigationBarNewTransferModifier(title: title))
+        modifier(STNavigationTitleModifierNewTransferModifier(title: title))
     }
 }

@@ -20,7 +20,7 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-struct EditSettingsView: View {
+struct EditSettingCell: View {
     let selected: Bool
     let label: String
     var leftImage: Image?
@@ -51,7 +51,7 @@ struct EditSettingsView: View {
 }
 
 #Preview {
-    EditSettingsView(selected: true, label: "EditSettingsView") {
+    EditSettingCell(selected: true, label: "EditSettingsView", leftImage: nil) {
         print("EditSettingsView action")
     }
 }

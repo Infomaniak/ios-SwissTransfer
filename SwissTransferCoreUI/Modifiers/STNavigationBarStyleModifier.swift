@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-struct STNavigationBarStyleModifier: ViewModifier {
+struct STNavigationTitleModifierStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .navigationBarTitleDisplayMode(.inline)
@@ -31,6 +31,6 @@ struct STNavigationBarStyleModifier: ViewModifier {
 public extension View {
     /// Style the navigationBar
     func stNavigationBarStyle() -> some View {
-        modifier(STNavigationBarStyleModifier())
+        modifier(STNavigationTitleModifierStyleModifier())
     }
 }
