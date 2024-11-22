@@ -43,8 +43,8 @@ struct EditSettingView<T: SettingSelectable>: View {
             Section(header: Text(section)) {
                 ForEach(items, id: \.self) { item in
                     EditSettingCell(selected: item == selected,
-                                     label: item.title,
-                                     leftImage: item.leftImage) {
+                                    label: item.title,
+                                    leftImage: item.leftImage) {
                         action(item)
                     }
                 }
