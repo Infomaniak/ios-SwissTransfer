@@ -16,13 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
-import SwiftUI
+import Foundation
 
-public protocol SettingSelectable: CaseIterable, Hashable {
-    var title: String { get }
-    var leftImage: Image? { get }
-
-    /// Call this function on a conforming type to serialise a setting
-    func setSelected() async
+public enum SettingDetailUI: Hashable {
+    case theme
+    case notifications
+    case validityPeriod
+    case downloadLimit
+    case emailLanguage
+    case dataManagement
 }

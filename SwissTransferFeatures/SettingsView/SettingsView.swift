@@ -16,15 +16,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakDI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
+
+// TODO: i18n needed for links. A ticket was created.
+/// Links used in the settings view
+enum SettingLinks {
+    static let discoverInfomaniak = URL(string: "https://www.infomaniak.com/en/about")!
+    static let shareYourIdeas =
+        URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
+}
 
 public struct SettingsView: View {
-    @LazyInjectService var settingsManager: AppSettingsManager
+    @LazyInjectService private var settingsManager: AppSettingsManager
 
-    @StateObject var appSettings: FlowObserver<AppSettings>
+    @EnvironmentObject private var mainViewState: MainViewState
+
+    @StateObject private var appSettings: FlowObserver<AppSettings>
 
     public init() {
         @InjectService var settingsManager: AppSettingsManager
@@ -32,19 +45,79 @@ public struct SettingsView: View {
     }
 
     public var body: some View {
-        VStack {
-            Text("SettingsView")
-            if let appSettings = appSettings.value {
-                Text(appSettings.theme.name)
-            }
-            Button("Toggle") {
-                Task {
-                    if let appSettings = appSettings.value {
-                        try? await settingsManager.setTheme(theme: appSettings.theme == .dark ? .light : .dark)
-                    }
+        List(selection: $mainViewState.selectedDestination) {
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
+                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionTheme,
+                             subtitle: appSettings.value?.theme.title ?? "",
+                             leftIconAsset: STResourcesAsset.Images.brush) {
+                    EditSettingView(Theme.self,
+                                    selected: appSettings.value?.theme ?? .system,
+                                    title: STResourcesStrings.Localizable.settingsOptionTheme,
+                                    section: STResourcesStrings.Localizable.settingsThemeTitle)
+                }
+
+                NotificationsSettingsCell {
+                    NotificationsSettingsView()
                 }
             }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
+                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                             subtitle: appSettings.value?.validityPeriod.title ?? "",
+                             leftIconAsset: STResourcesAsset.Images.clock) {
+                    EditSettingView(ValidityPeriod.self,
+                                    selected: appSettings.value?.validityPeriod ?? .thirty,
+                                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
+                                    section: STResourcesStrings.Localizable.settingsValidityPeriodTitle)
+                }
+
+                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                             subtitle: appSettings.value?.downloadLimit.title ?? "",
+                             leftIconAsset: STResourcesAsset.Images.fileDownload) {
+                    EditSettingView(DownloadLimit.self,
+                                    selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
+                                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
+                                    section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle)
+                }
+
+                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                             subtitle: appSettings.value?.emailLanguage.title ?? "",
+                             leftIconAsset: STResourcesAsset.Images.bubble) {
+                    EditSettingView(EmailLanguage.self,
+                                    selected: appSettings.value?.emailLanguage ?? .french,
+                                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                                    section: STResourcesStrings.Localizable.settingsEmailLanguageTitle)
+                }
+            }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
+                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+            }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
+                Link(destination: SettingLinks.discoverInfomaniak) {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
+                                            rightIconAsset: STResourcesAsset.Images.export)
+                }
+
+                Link(destination: SettingLinks.shareYourIdeas) {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
+                                            rightIconAsset: STResourcesAsset.Images.export)
+                }
+
+                Button {
+                    @InjectService var reviewManager: ReviewManageable
+                    reviewManager.requestReview()
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                            rightIconAsset: STResourcesAsset.Images.export)
+                }
+
+                AboutSettingsCell(title: STResourcesStrings.Localizable.version,
+                                  subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
+            }
         }
+        .listStyle(.insetGrouped)
     }
 }
 

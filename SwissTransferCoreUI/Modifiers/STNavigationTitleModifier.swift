@@ -16,29 +16,25 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
+import SwiftUI
 
-public enum NavigationDestination: Hashable {
-    case transfer(TransferUi)
-    case settings(SettingDetailUI)
+public struct STNavigationTitleModifier: ViewModifier {
+    public let title: String
 
-    public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
-        switch (lhs, rhs) {
-        case (.transfer(let leftTransfer), .transfer(let rightTransfer)):
-            return leftTransfer.uuid == rightTransfer.uuid
-        case (.settings, .settings):
-            return true
-        default:
-            return false
-        }
+    public func body(content: Content) -> some View {
+        content
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(title)
+                        .font(.ST.title2)
+                        .foregroundStyle(.white)
+                }
+            }
     }
+}
 
-    public func hash(into hasher: inout Hasher) {
-        switch self {
-        case .transfer(let transfer):
-            hasher.combine(transfer.uuid)
-        case .settings:
-            hasher.combine("settingsItem")
-        }
+public extension View {
+    func stNavigationTitle(_ title: String) -> some View {
+        modifier(STNavigationTitleModifier(title: title))
     }
 }

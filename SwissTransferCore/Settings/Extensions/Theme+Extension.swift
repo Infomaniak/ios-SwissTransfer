@@ -16,24 +16,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
 
-extension ValidityPeriod: SettingSelectable {
+extension Theme: SettingSelectable {
     public var title: String {
         switch self {
-        case .one:
-            return STResourcesStrings.Localizable.settingsValidityPeriodValue(1)
-        case .seven:
-            return STResourcesStrings.Localizable.settingsValidityPeriodValue(7)
-        case .fifteen:
-            return STResourcesStrings.Localizable.settingsValidityPeriodValue(15)
-        case .thirty:
-            return STResourcesStrings.Localizable.settingsValidityPeriodValue(30)
+        case .dark:
+            return STResourcesStrings.Localizable.settingsOptionThemeDark
+        case .light:
+            return STResourcesStrings.Localizable.settingsOptionThemeLight
+        case .system:
+            return STResourcesStrings.Localizable.settingsOptionThemeSystem
         }
     }
 
-    public var icon: Image? { nil }
+    public var leftImage: Image? {
+        nil
+    }
+
+    public func setSelected() async {
+        @InjectService var settingsManager: AppSettingsManager
+        _ = try? await settingsManager.setTheme(theme: self)
+    }
 }

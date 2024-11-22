@@ -17,28 +17,18 @@
  */
 
 import STCore
+import STResources
+import SwiftUI
 
-public enum NavigationDestination: Hashable {
-    case transfer(TransferUi)
-    case settings(SettingDetailUI)
-
-    public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
-        switch (lhs, rhs) {
-        case (.transfer(let leftTransfer), .transfer(let rightTransfer)):
-            return leftTransfer.uuid == rightTransfer.uuid
-        case (.settings, .settings):
-            return true
-        default:
-            return false
-        }
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        switch self {
-        case .transfer(let transfer):
-            hasher.combine(transfer.uuid)
-        case .settings:
-            hasher.combine("settingsItem")
+public extension ColorScheme {
+    static func from(_ theme: Theme) -> ColorScheme? {
+        switch theme {
+        case .system:
+            return nil
+        case .light:
+            return .light
+        case .dark:
+            return .dark
         }
     }
 }

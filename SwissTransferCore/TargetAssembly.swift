@@ -59,6 +59,9 @@ open class TargetAssembly {
                                                        resolver: resolver)
                 return stInjection.appSettingsManager
             },
+            Factory(type: ReviewManageable.self) { _, _ in
+                ReviewManager(userDefaults: UserDefaults.shared)
+            },
             Factory(type: AppGroupPathProvidable.self) { _, _ in
                 guard let provider = AppGroupPathProvider(
                     realmRootPath: "",

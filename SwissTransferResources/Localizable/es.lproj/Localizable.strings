@@ -127,6 +127,10 @@
 /* loco:669f755c502e59a518017423 */
 "sentTitle" = "Enviado a";
 
+/* loco:67319f67ca1b48e5d00b77e2
+ * Notifications settings */
+"settingsAllNotifications" = "Todas las notificaciones";
+
 /* loco:670e22c9e91567b93601c852 */
 "settingsAuthorizeTracking" = "Autorizar el seguimiento";
 
@@ -141,6 +145,9 @@
 
 /* loco:66c333f5222777ffd504e5f3 */
 "settingsCategoryGeneral" = "General";
+
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Personalizado";
 
 /* loco:6708e556a393fdf47d05e272 */
 "settingsDataManagementDescription" = "Puede personalizar los datos de uso y funcionamiento que Infomaniak recupera para corregir errores y mejorar la aplicación. Ambas herramientas están alojadas y gestionadas exclusivamente por nosotros.\n\nInfomaniak respeta su privacidad: el código fuente de esta aplicación puede verificarse, la información recopilada es anónima y sus datos personales permanecen estrictamente confidenciales y nunca se comparten con terceros.";
@@ -172,8 +179,31 @@
 /* loco:670e0d2650d301395000ead2 */
 "settingsMatomoDescription" = "Matomo es una herramienta de análisis alojada y gestionada exclusivamente por Infomaniak para comprender cómo se utiliza la aplicación.\n\nEl estudio de estos datos permite a nuestro equipo mejorar continuamente la interfaz de la aplicación.";
 
+/* loco:6731a0b0ee0948aac509e672
+ * Notifications settings */
+"settingsNotificationsDownloadInProgress" = "Descarga en curso";
+
+/* loco:6731a15af505e237120fb292
+ * Notifications settings */
+"settingsNotificationsDownloadTransfer" = "Descargar una transferencia";
+
+/* loco:6731a4f786feae2e5707c952 */
+"settingsNotificationsLinkExpired" = "Enlace caducado";
+
 /* loco:66c57e1cac4c61d2dd0c8f12 */
 "settingsNotificationsTitle" = "Seleccione una preferencia";
+
+/* loco:6731a1221ff67f956202a482
+ * Notifications settings */
+"settingsNotificationsTransferFinished" = "Transferencia completada";
+
+/* loco:6731a079a36f5786980eff62
+ * Notifications settings */
+"settingsNotificationsTransferInProgress" = "Transferencia en curso";
+
+/* loco:6731a18f7f9ab820b6015712
+ * Notifications settings */
+"settingsNotificationsTransferNotDownloaded" = "Transferencia no descargada";
 
 /* loco:67176dcf314971e1f604b9c2 */
 "settingsOptionActivated" = "Activado";

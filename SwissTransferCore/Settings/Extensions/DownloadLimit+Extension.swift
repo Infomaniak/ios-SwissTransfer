@@ -16,29 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import STCore
+import STResources
+import SwiftUI
 
-public enum NavigationDestination: Hashable {
-    case transfer(TransferUi)
-    case settings(SettingDetailUI)
-
-    public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
-        switch (lhs, rhs) {
-        case (.transfer(let leftTransfer), .transfer(let rightTransfer)):
-            return leftTransfer.uuid == rightTransfer.uuid
-        case (.settings, .settings):
-            return true
-        default:
-            return false
-        }
+extension DownloadLimit: SettingSelectable {
+    public var title: String {
+        return "\(value)"
     }
 
-    public func hash(into hasher: inout Hasher) {
-        switch self {
-        case .transfer(let transfer):
-            hasher.combine(transfer.uuid)
-        case .settings:
-            hasher.combine("settingsItem")
-        }
+    public var leftImage: Image? {
+        nil
+    }
+
+    public func setSelected() async {
+        @InjectService var settingsManager: AppSettingsManager
+        _ = try? await settingsManager.setDownloadLimit(downloadLimit: self)
     }
 }

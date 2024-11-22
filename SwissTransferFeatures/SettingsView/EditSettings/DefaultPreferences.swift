@@ -16,15 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import SwiftUI
+import Foundation
 
-extension DownloadLimit: SettingSelectable {
-    public var title: String {
-        return "\(value)"
-    }
-
-    public var icon: Image? {
-        return nil
-    }
+public enum DefaultPreferences {
+    public static let notificationsNewTransfers = true
+    public static let notificationsDownloadInProgress = true
+    public static let notificationsFinishedTransfers = true
+    public static let notificationsDownloadTransfers = true
+    public static let notificationsFailedTransfers = true
+    public static let notificationsExpiredTransfers = true
 }

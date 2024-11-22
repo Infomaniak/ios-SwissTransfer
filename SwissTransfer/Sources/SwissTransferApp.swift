@@ -19,6 +19,8 @@
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
+import STCore
+import STResources
 import STRootView
 import SwiftUI
 import SwissTransferCore
@@ -29,12 +31,29 @@ struct SwissTransferApp: App {
     private let sentryService = SentryService()
     private let dependencyInjectionHook = TargetAssembly()
 
+    @StateObject private var appSettings: FlowObserver<AppSettings>
+
+    private var savedColorScheme: ColorScheme? {
+        guard let appSettings = appSettings.value,
+              let storedColorScheme = ColorScheme.from(appSettings.theme) else {
+            return nil
+        }
+
+        return storedColorScheme
+    }
+
+    public init() {
+        @InjectService var settings: AppSettingsManager
+        _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
+                .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
         }
     }

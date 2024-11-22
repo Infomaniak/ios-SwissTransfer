@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -26,13 +27,6 @@ struct NewTransferSettingCell: View {
     let icon: Image
     let value: String
     let onTap: () -> Void
-
-    init(title: String, icon: Image, value: String, onTap: @escaping () -> Void) {
-        self.title = title
-        self.icon = icon
-        self.value = value
-        self.onTap = onTap
-    }
 
     var body: some View {
         Button {

@@ -16,13 +16,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
+import InfomaniakCore
 import SwiftUI
 
-public protocol SettingSelectable: CaseIterable, Hashable {
-    var title: String { get }
-    var leftImage: Image? { get }
-
-    /// Call this function on a conforming type to serialise a setting
-    func setSelected() async
+public extension UserDefaults.Keys {
+    static let notificationsNewTransfers = UserDefaults.Keys(rawValue: "notificationsNewTransfers")
+    static let notificationsDownloadInProgress = UserDefaults.Keys(rawValue: "notificationsDownloadInProgress")
+    static let notificationsFinishedTransfers = UserDefaults.Keys(rawValue: "notificationsFinishedTransfers")
+    static let notificationsDownloadTransfers = UserDefaults.Keys(rawValue: "notificationsDownloadTransfers")
+    static let notificationsFailedTransfers = UserDefaults.Keys(rawValue: "notificationsFailedTransfers")
+    static let notificationsExpiredTransfers = UserDefaults.Keys(rawValue: "notificationsExpiredTransfers")
 }

@@ -16,13 +16,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-public protocol SettingSelectable: CaseIterable, Hashable {
-    var title: String { get }
-    var leftImage: Image? { get }
+struct NotificationSettingCell: View {
+    @Binding var enabled: Bool
 
-    /// Call this function on a conforming type to serialise a setting
-    func setSelected() async
+    let label: String
+
+    var body: some View {
+        Toggle(label, isOn: $enabled)
+    }
+}
+
+#Preview {
+    NotificationSettingCell(enabled: .constant(true), label: "Some setting")
 }
