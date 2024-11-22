@@ -1,4 +1,3 @@
-//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2024 Infomaniak Network SA
@@ -19,7 +18,7 @@
 
 import SwiftUI
 
-public struct STNavigationBar: ViewModifier {
+public struct STNavigationTitleModifier: ViewModifier {
     public let title: String
 
     public func body(content: Content) -> some View {
@@ -35,7 +34,7 @@ public struct STNavigationBar: ViewModifier {
 }
 
 public extension View {
-    func stNavigationBar(title: String) -> some View {
-        modifier(STNavigationBar(title: title))
+    func stNavigationTitle(_ title: String) -> some View {
+        modifier(STNavigationTitleModifier(title: title))
     }
 }

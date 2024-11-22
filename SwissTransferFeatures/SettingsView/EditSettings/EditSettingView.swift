@@ -30,14 +30,12 @@ struct EditSettingView<T: SettingSelectable>: View {
     let section: String
     let items: [T]
     let selected: T
-    let onSelection: (T) async -> Void
 
-    public init(_ type: T.Type, selected: T, title: String, section: String, onSelection: @escaping (T) async -> Void) {
+    public init(_ type: T.Type, selected: T, title: String, section: String) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
         self.section = section
-        self.onSelection = onSelection
     }
 
     var body: some View {
@@ -53,18 +51,16 @@ struct EditSettingView<T: SettingSelectable>: View {
             }
         }
         .stNavigationBarStyle()
-        .stNavigationBar(title: title)
+        .stNavigationTitle(title)
     }
 
     private func action(_ item: T) {
         Task {
-            await onSelection(item)
+            await item.setSelected()
         }
     }
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section") { theme in
-        print("selected \(theme)")
-    }
+    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section")
 }
