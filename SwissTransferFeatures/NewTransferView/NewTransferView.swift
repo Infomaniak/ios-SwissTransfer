@@ -39,9 +39,9 @@ public struct NewTransferView: View {
     @State private var recipientEmail = ""
     @State private var message = ""
     @State private var password = ""
-    @State private var duration = ValidityPeriod.thirty
+    @State private var validityPeriod = ValidityPeriod.thirty
     @State private var downloadLimit = DownloadLimit.twoHundredFifty
-    @State private var language = EmailLanguage.french
+    @State private var emailLanguage = EmailLanguage.french
 
     public init(urls: [URL]) {
         let transferManager = NewTransferManager()
@@ -66,8 +66,13 @@ public struct NewTransferView: View {
 
                     NewTransferTypeView(transferType: $transferType)
 
-                    NewTransferSettingsView(duration: $duration, limit: $downloadLimit, language: $language, password: $password)
-                        .padding(.horizontal, value: .medium)
+                    NewTransferSettingsView(
+                        duration: $validityPeriod,
+                        limit: $downloadLimit,
+                        language: $emailLanguage,
+                        password: $password
+                    )
+                    .padding(.horizontal, value: .medium)
                 }
                 .padding(.vertical, value: .medium)
             }
@@ -109,9 +114,9 @@ public struct NewTransferView: View {
         transferType = appSettings.lastTransferType
         authorEmail = appSettings.lastAuthorEmail ?? ""
 
-        duration = appSettings.validityPeriod
+        validityPeriod = appSettings.validityPeriod
         downloadLimit = appSettings.downloadLimit
-        language = appSettings.emailLanguage
+        emailLanguage = appSettings.emailLanguage
     }
 
     private func startUpload() {
@@ -132,12 +137,12 @@ public struct NewTransferView: View {
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: duration,
+                    duration: validityPeriod,
                     authorEmail: authorTrimmedEmail,
                     password: password,
                     message: message.trimmingCharacters(in: .whitespacesAndNewlines),
                     numberOfDownload: downloadLimit,
-                    language: language,
+                    language: emailLanguage,
                     recipientsEmails: recipientsEmail,
                     files: filesToUpload
                 )

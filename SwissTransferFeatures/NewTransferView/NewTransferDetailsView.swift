@@ -17,12 +17,12 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
-import InfomaniakDI
 
 struct NewTransferDetailsView: View {
     @FocusState private var isMessageFieldFocused
@@ -36,16 +36,11 @@ struct NewTransferDetailsView: View {
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if transferType == .mail {
-                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail)
-                    .textFieldStyle(NewTransferTextFieldStyle())
-                    .keyboardType(.emailAddress)
-                    .onSubmit {
-                        print("On Submit")
-                        Task {
-                            @InjectService var settingsManager: AppSettingsManager
-                            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
-                        }
-                    }
+                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail) { _ in
+                    saveAuthorMailAddress()
+                }
+                .textFieldStyle(NewTransferTextFieldStyle())
+                .keyboardType(.emailAddress)
 
                 TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
                     .textFieldStyle(NewTransferTextFieldStyle())
@@ -60,6 +55,13 @@ struct NewTransferDetailsView: View {
                     RoundedRectangle(cornerRadius: IKRadius.small)
                         .strokeBorder(isMessageFieldFocused ? Color.ST.primary : Color.ST.textFieldBorder)
                 )
+        }
+    }
+
+    private func saveAuthorMailAddress() {
+        Task {
+            @InjectService var settingsManager: AppSettingsManager
+            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
         }
     }
 }
