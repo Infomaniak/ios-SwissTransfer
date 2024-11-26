@@ -29,6 +29,7 @@ struct UploadErrorView: View {
             subtitle: STResourcesStrings.Localizable.uploadErrorDescription,
             style: .emptyState
         )
+        .padding(value: .medium)
         .scrollableEmptyState()
         .safeAreaButtons {
             Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
@@ -36,6 +37,8 @@ struct UploadErrorView: View {
             Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                 .buttonStyle(.ikBordered)
         }
+        .navigationBarBackButtonHidden()
+        .stIconNavigationBar()
     }
 
     private func retryTransfer() {}
