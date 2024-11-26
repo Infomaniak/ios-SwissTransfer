@@ -20,20 +20,43 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-public struct LargeEmptyStateView: View {
-    public static let imageMaxWidth: CGFloat = 400
-    public static let textMaxWidth: CGFloat = 300
+public extension IllustrationAndTextView {
+    enum Style {
+        case largeEmptyState
+        case emptyState
+        case bottomSheet
 
+        public var imageMaxWidth: CGFloat {
+            switch self {
+            case .largeEmptyState:
+                return 400
+            case .emptyState, .bottomSheet:
+                return 300
+            }
+        }
+
+        public var textMaxWidth: CGFloat? {
+            switch self {
+            case .largeEmptyState, .emptyState:
+                return 300
+            case .bottomSheet:
+                return nil
+            }
+        }
+    }
+}
+
+public struct IllustrationAndTextView: View {
     let image: Image
     let title: String
-    let subtitle: String
-    let imageHorizontalPadding: CGFloat
+    let subtitle: String?
+    let style: Style
 
-    public init(image: Image, title: String, subtitle: String, imageHorizontalPadding: CGFloat = IKPadding.medium) {
+    public init(image: Image, title: String, subtitle: String? = nil, style: Style) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
-        self.imageHorizontalPadding = imageHorizontalPadding
+        self.style = style
     }
 
     public var body: some View {
@@ -41,30 +64,30 @@ public struct LargeEmptyStateView: View {
             image
                 .resizable()
                 .scaledToFit()
-                .padding(.horizontal, imageHorizontalPadding)
-                .frame(maxWidth: Self.imageMaxWidth)
+                .frame(maxWidth: style.imageMaxWidth)
 
             VStack(spacing: IKPadding.medium) {
                 Text(title)
                     .font(.ST.title)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text(subtitle)
-                    .font(.ST.body)
-                    .foregroundStyle(Color.ST.textSecondary)
-                    .frame(maxWidth: Self.textMaxWidth)
+                if let subtitle {
+                    Text(subtitle)
+                        .font(.ST.body)
+                        .foregroundStyle(Color.ST.textSecondary)
+                }
             }
-            .padding(.horizontal, value: .medium)
+            .frame(maxWidth: style.textMaxWidth)
         }
         .multilineTextAlignment(.center)
     }
 }
 
 #Preview {
-    LargeEmptyStateView(
+    IllustrationAndTextView(
         image: STResourcesAsset.Images.beers.swiftUIImage,
         title: "Empty State Title",
         subtitle: "Consequat magna cupidatat aute fugiat quis dolore ea labore nisi velit. Culpa deserunt adipisicing velit consequat.",
-        imageHorizontalPadding: 0
+        style: .emptyState
     )
 }

@@ -38,15 +38,17 @@ struct UploadProgressView: View {
     let transferType: TransferType
     let uploadSession: NewUploadSession
 
+    private let emptyStateStyle = IllustrationAndTextView.Style.largeEmptyState
+
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             UploadProgressHeaderView(subtitle: uploadProgressAd.description)
-                .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
+                .frame(maxWidth: emptyStateStyle.textMaxWidth)
 
             uploadProgressAd.image
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: LargeEmptyStateView.imageMaxWidth, maxHeight: .infinity)
+                .frame(maxWidth: emptyStateStyle.imageMaxWidth)
         }
         .padding(.horizontal, value: .medium)
         .padding(.top, value: .large)

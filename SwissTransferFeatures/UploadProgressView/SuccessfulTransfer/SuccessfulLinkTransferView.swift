@@ -60,7 +60,7 @@ struct SuccessfulLinkTransferView: View {
                 Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
-                    .frame(maxWidth: LargeEmptyStateView.textMaxWidth)
+                    .frame(maxWidth: IllustrationAndTextView.Style.emptyState.textMaxWidth)
             }
         }
         .multilineTextAlignment(.center)
