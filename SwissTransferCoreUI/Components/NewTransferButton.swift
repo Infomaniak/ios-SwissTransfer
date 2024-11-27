@@ -44,20 +44,21 @@ public enum NewTransferStyle {
 }
 
 struct NewTransferButton: View {
-    private let style: NewTransferStyle
-    private let action: ([URL]) -> Void
+    @Binding var selection: [URL]
 
-    init(style: NewTransferStyle = .small, action: @escaping ([URL]) -> Void) {
+    private let style: NewTransferStyle
+
+    init(selection: Binding<[URL]>, style: NewTransferStyle = .small) {
+        _selection = selection
         self.style = style
-        self.action = action
     }
 
     var body: some View {
-        AddFilesMenuView(completion: action) {
+        AddFilesMenuView(selection: $selection) {
             STResourcesAsset.Images.plus.swiftUIImage
                 .resizable()
-                .tint(.white)
                 .frame(width: style.size, height: style.size)
+                .tint(.white)
                 .frame(width: style.buttonSize, height: style.buttonSize)
                 .background {
                     RoundedRectangle(cornerRadius: style.size)
@@ -68,14 +69,14 @@ struct NewTransferButton: View {
 }
 
 public struct SidebarNewTransferButton: View {
-    let action: () -> Void
+    @Binding var selection: [URL]
 
-    public init(action: @escaping () -> Void) {
-        self.action = action
+    init(selection: Binding<[URL]>) {
+        _selection = selection
     }
 
     public var body: some View {
-        Button(action: action) {
+        AddFilesMenuView(selection: $selection) {
             Label {
                 Text(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
             } icon: {
@@ -88,9 +89,14 @@ public struct SidebarNewTransferButton: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
+    @Previewable @State var selection = [URL]()
+
     VStack {
-        NewTransferButton(style: .small) { _ in }
-        NewTransferButton(style: .big) { _ in }
+        NewTransferButton(selection: $selection, style: .small)
+        NewTransferButton(selection: $selection, style: .big)
+
+        SidebarNewTransferButton(selection: $selection)
     }
 }
