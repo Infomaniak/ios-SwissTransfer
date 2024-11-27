@@ -20,8 +20,9 @@ import STResources
 import SwiftUI
 
 public struct FirstTransferButton: View {
+    @Binding var selection: [URL]
+
     private let style: NewTransferStyle
-    private let action: ([URL]) -> Void
 
     private var offset: CGSize {
         switch style {
@@ -32,9 +33,9 @@ public struct FirstTransferButton: View {
         }
     }
 
-    public init(style: NewTransferStyle, action: @escaping ([URL]) -> Void) {
+    public init(selection: Binding<[URL]>, style: NewTransferStyle) {
+        _selection = selection
         self.style = style
-        self.action = action
     }
 
     public var body: some View {
@@ -51,11 +52,12 @@ public struct FirstTransferButton: View {
                         .rotationEffect(Angle(degrees: -30))
                 }
                 .offset(offset)
-                NewTransferButton(style: style, action: action)
+
+                NewTransferButton(selection: $selection, style: style)
             }
         } else {
             ZStack {
-                NewTransferButton(style: style, action: action)
+                NewTransferButton(selection: $selection, style: style)
 
                 STResourcesAsset.Images.arrow.swiftUIImage
                     .resizable()
@@ -66,9 +68,11 @@ public struct FirstTransferButton: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
+    @Previewable @State var selection = [URL]()
     VStack {
-        FirstTransferButton(style: .small) { _ in }
-        FirstTransferButton(style: .big) { _ in }
+        FirstTransferButton(selection: $selection, style: .small)
+        FirstTransferButton(selection: $selection, style: .big)
     }
 }
