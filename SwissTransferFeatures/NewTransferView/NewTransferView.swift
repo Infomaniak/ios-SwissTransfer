@@ -30,19 +30,11 @@ public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
     @State private var isLoadingFileToUpload = false
     @State private var navigationPath = NavigationPath()
-
-    @State private var transferType = TransferType.qrCode
-    @State private var authorEmail = ""
-    @State private var recipientEmail = ""
-    @State private var message = ""
-    @State private var password = ""
-    @State private var validityPeriod = ValidityPeriod.thirty
-    @State private var downloadLimit = DownloadLimit.twoHundredFifty
-    @State private var emailLanguage = EmailLanguage.french
 
     public init() {}
 
@@ -54,20 +46,20 @@ public struct NewTransferView: View {
                         .padding(.horizontal, value: .medium)
 
                     NewTransferDetailsView(
-                        authorEmail: $authorEmail,
-                        recipientEmail: $recipientEmail,
-                        message: $message,
-                        transferType: transferType
+                        authorEmail: $viewModel.authorEmail,
+                        recipientEmail: $viewModel.recipientEmail,
+                        message: $viewModel.message,
+                        transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
 
-                    NewTransferTypeView(transferType: $transferType)
+                    NewTransferTypeView(transferType: $viewModel.transferType)
 
                     NewTransferSettingsView(
-                        duration: $validityPeriod,
-                        limit: $downloadLimit,
-                        language: $emailLanguage,
-                        password: $password
+                        duration: $viewModel.validityPeriod,
+                        limit: $viewModel.downloadLimit,
+                        language: $viewModel.emailLanguage,
+                        password: $viewModel.password
                     )
                     .padding(.horizontal, value: .medium)
                 }
@@ -102,12 +94,12 @@ public struct NewTransferView: View {
         @InjectService var settingsManager: AppSettingsManager
         guard let appSettings = settingsManager.getAppSettings() else { return }
 
-        transferType = appSettings.lastTransferType
-        authorEmail = appSettings.lastAuthorEmail ?? ""
+        viewModel.transferType = appSettings.lastTransferType
+        viewModel.authorEmail = appSettings.lastAuthorEmail ?? ""
 
-        validityPeriod = appSettings.validityPeriod
-        downloadLimit = appSettings.downloadLimit
-        emailLanguage = appSettings.emailLanguage
+        viewModel.validityPeriod = appSettings.validityPeriod
+        viewModel.downloadLimit = appSettings.downloadLimit
+        viewModel.emailLanguage = appSettings.emailLanguage
     }
 
     private func startUpload() {
@@ -115,25 +107,25 @@ public struct NewTransferView: View {
             isLoadingFileToUpload = true
 
             let recipientsEmail = [String]()
-            if transferType == .mail,
-               recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
-                recipientEmail.append(recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
+            if viewModel.transferType == .mail,
+               viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                viewModel.recipientEmail.append(viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
             }
 
             var authorTrimmedEmail = ""
-            if transferType == .mail {
-                authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            if viewModel.transferType == .mail {
+                authorTrimmedEmail = viewModel.authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
             }
 
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: validityPeriod,
+                    duration: viewModel.validityPeriod,
                     authorEmail: authorTrimmedEmail,
-                    password: password,
-                    message: message.trimmingCharacters(in: .whitespacesAndNewlines),
-                    numberOfDownload: downloadLimit,
-                    language: emailLanguage,
+                    password: viewModel.password,
+                    message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
+                    numberOfDownload: viewModel.downloadLimit,
+                    language: viewModel.emailLanguage,
                     recipientsEmails: recipientsEmail,
                     files: filesToUpload
                 )

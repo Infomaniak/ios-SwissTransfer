@@ -23,13 +23,24 @@ public enum RootTransferViewType {
     case newTransfer
     case uploadProgress(NewUploadSession)
     case error
-    case success(String, [String])
+    case success(String)
 }
 
 public final class RootTransferViewState: ObservableObject {
     @Published public var state = RootTransferViewType.newTransfer
 
+    public init() {}
+}
+
+public final class RootTransferViewModel: ObservableObject {
     @Published public var transferType = TransferType.qrCode
+    @Published public var authorEmail = ""
+    @Published public var recipientEmail = ""
+    @Published public var message = ""
+    @Published public var password = ""
+    @Published public var validityPeriod = ValidityPeriod.thirty
+    @Published public var downloadLimit = DownloadLimit.twoHundredFifty
+    @Published public var emailLanguage = EmailLanguage.french
 
     public init() {}
 }

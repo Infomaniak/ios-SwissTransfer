@@ -80,7 +80,7 @@ public struct UploadProgressView: View {
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
             withAnimation {
-                rootTransferViewState.state = .success(transferUUID, uploadSession.recipientsEmails)
+                rootTransferViewState.state = .success(transferUUID)
             }
         } catch {
             Logger.general.error("Error trying to start upload: \(error)")

@@ -37,23 +37,22 @@ extension TransferType {
 
 public struct UploadSuccessView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var viewModel: RootTransferViewModel
 
     let transferUUID: String
-    let recipientsEmails: [String]
 
-    public init(transferUUID: String, recipientsEmails: [String]) {
+    public init(transferUUID: String) {
         self.transferUUID = transferUUID
-        self.recipientsEmails = recipientsEmails
     }
 
     public var body: some View {
         NavigationStack {
             Group {
-                switch rootTransferViewState.transferType {
+                switch viewModel.transferType {
                 case .link, .qrCode, .proximity:
-                    UploadSuccessQRCodeView(type: rootTransferViewState.transferType, transferUUID: transferUUID)
+                    UploadSuccessQRCodeView(type: viewModel.transferType, transferUUID: transferUUID)
                 case .mail:
-                    UploadSuccessMailView(recipients: recipientsEmails)
+                    UploadSuccessMailView(recipients: [viewModel.recipientEmail])
                 }
             }
             .stIconNavigationBar()
@@ -64,13 +63,13 @@ public struct UploadSuccessView: View {
 }
 
 #Preview("Mail") {
-    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
+    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
 
 #Preview("QR Code") {
-    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
+    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
 
 #Preview("Link") {
-    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid, recipientsEmails: [])
+    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid)
 }

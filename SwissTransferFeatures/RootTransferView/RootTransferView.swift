@@ -21,17 +21,12 @@ import STUploadProgressView
 import SwiftUI
 import SwissTransferCoreUI
 
-import SwissTransferCore
-
 public struct RootTransferView: View {
     @StateObject private var viewState = RootTransferViewState()
+    @StateObject private var viewModel = RootTransferViewModel()
     @StateObject private var newTransferManager: NewTransferManager
 
-    private let initialFiles: [URL]
-
     public init(initialFiles: [URL]) {
-        self.initialFiles = initialFiles
-
         _newTransferManager = StateObject(wrappedValue: {
             let newTransferManager = NewTransferManager()
             _ = newTransferManager.addFiles(urls: initialFiles)
@@ -49,11 +44,12 @@ public struct RootTransferView: View {
                 UploadProgressView(uploadSession: newUploadSession)
             case .error:
                 Text("Error")
-            case .success(let transferUUID, let recipientsEmails):
-                UploadSuccessView(transferUUID: transferUUID, recipientsEmails: recipientsEmails)
+            case .success(let transferUUID):
+                UploadSuccessView(transferUUID: transferUUID)
             }
         }
         .environmentObject(viewState)
+        .environmentObject(viewModel)
     }
 }
 
