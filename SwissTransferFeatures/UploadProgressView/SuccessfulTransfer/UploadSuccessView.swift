@@ -47,17 +47,19 @@ public struct UploadSuccessView: View {
     }
 
     public var body: some View {
-        Group {
-            switch rootTransferViewState.transferType {
-            case .link, .qrCode, .proximity:
-                UploadSuccessQRCodeView(type: rootTransferViewState.transferType, transferUUID: transferUUID)
-            case .mail:
-                UploadSuccessMailView(recipients: recipientsEmails)
+        NavigationStack {
+            Group {
+                switch rootTransferViewState.transferType {
+                case .link, .qrCode, .proximity:
+                    UploadSuccessQRCodeView(type: rootTransferViewState.transferType, transferUUID: transferUUID)
+                case .mail:
+                    UploadSuccessMailView(recipients: recipientsEmails)
+                }
             }
+            .stIconNavigationBar()
+            .background(Color.ST.background)
+            .navigationBarBackButtonHidden()
         }
-        .stIconNavigationBar()
-        .background(Color.ST.background)
-        .navigationBarBackButtonHidden()
     }
 }
 

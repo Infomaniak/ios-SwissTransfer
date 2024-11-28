@@ -47,31 +47,33 @@ public struct UploadProgressView: View {
     }
 
     public var body: some View {
-        VStack(spacing: IKPadding.medium) {
-            UploadProgressHeaderView(subtitle: uploadProgressAd.description)
-                .frame(maxWidth: emptyStateStyle.textMaxWidth)
+        NavigationStack {
+            VStack(spacing: IKPadding.medium) {
+                UploadProgressHeaderView(subtitle: uploadProgressAd.description)
+                    .frame(maxWidth: emptyStateStyle.textMaxWidth)
 
-            uploadProgressAd.image
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: emptyStateStyle.imageMaxWidth)
-        }
-        .padding(.horizontal, value: .medium)
-        .padding(.top, value: .large)
-        .scrollableEmptyState()
-        .background(Color.ST.background)
-        .safeAreaButtons(spacing: 32) {
-            UploadProgressIndicationView(
-                completedBytes: transferSessionManager.completedBytes,
-                totalBytes: transferSessionManager.totalBytes
-            )
+                uploadProgressAd.image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: emptyStateStyle.imageMaxWidth)
+            }
+            .padding(.horizontal, value: .medium)
+            .padding(.top, value: .large)
+            .scrollableEmptyState()
+            .background(Color.ST.background)
+            .safeAreaButtons(spacing: 32) {
+                UploadProgressIndicationView(
+                    completedBytes: transferSessionManager.completedBytes,
+                    totalBytes: transferSessionManager.totalBytes
+                )
 
-            Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
-                .buttonStyle(.ikBorderedProminent)
+                Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
+                    .buttonStyle(.ikBorderedProminent)
+            }
+            .stIconNavigationBar()
+            .navigationBarBackButtonHidden()
+            .task(startUpload)
         }
-        .stIconNavigationBar()
-        .navigationBarBackButtonHidden()
-        .task(startUpload)
     }
 
     @Sendable private func startUpload() async {
