@@ -26,6 +26,8 @@ import SwissTransferCoreUI
 
 public struct SentView: View {
     @EnvironmentObject private var transferManager: TransferManager
+
+    @State private var newSelectedItems = [URL]()
     @State private var newTransferContainer: NewTransferContainer?
 
     public init() {}
@@ -42,8 +44,9 @@ public struct SentView: View {
                 TransferDetailsView(transfer: transfer)
             }
         }
-        .floatingActionButton(style: .newTransfer) { urls in
-            newTransferContainer = NewTransferContainer(urls: urls)
+        .floatingActionButton(selection: $newSelectedItems, style: .newTransfer)
+        .onChange(of: newSelectedItems) { selectedItems in
+            newTransferContainer = NewTransferContainer(urls: selectedItems)
         }
         .fullScreenCover(item: $newTransferContainer) { container in
             NewTransferView(urls: container.urls)

@@ -23,6 +23,7 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct SentEmptyView: View {
+    @State private var newSelectedItems = [URL]()
     @State private var newTransferContainer: NewTransferContainer?
 
     var body: some View {
@@ -39,9 +40,10 @@ struct SentEmptyView: View {
                     .multilineTextAlignment(.center)
             }
 
-            FirstTransferButton(style: .big) { urls in
-                newTransferContainer = NewTransferContainer(urls: urls)
-            }
+            FirstTransferButton(selection: $newSelectedItems, style: .big)
+                .onChange(of: newSelectedItems) { selectedItems in
+                    newTransferContainer = NewTransferContainer(urls: selectedItems)
+                }
         }
         .padding(value: .medium)
         .fullScreenCover(item: $newTransferContainer) { container in

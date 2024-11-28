@@ -71,7 +71,7 @@ struct NewTransferButton: View {
 public struct SidebarNewTransferButton: View {
     @Binding var selection: [URL]
 
-    init(selection: Binding<[URL]>) {
+    public init(selection: Binding<[URL]>) {
         _selection = selection
     }
 
