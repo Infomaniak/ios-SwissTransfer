@@ -56,7 +56,7 @@ struct NewTransferFilesCellView: View {
 
                 ScrollView(.horizontal) {
                     HStack(spacing: IKPadding.medium) {
-                        AddFilesMenuView(selection: $newSelectedItems) {
+                        AddFilesMenu(selection: $newSelectedItems) {
                             STResourcesAsset.Images.plus.swiftUIImage
                                 .iconSize(.large)
                                 .foregroundStyle(Color.ST.primary)

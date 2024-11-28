@@ -54,7 +54,7 @@ struct NewTransferButton: View {
     }
 
     var body: some View {
-        AddFilesMenuView(selection: $selection) {
+        AddFilesMenu(selection: $selection) {
             STResourcesAsset.Images.plus.swiftUIImage
                 .resizable()
                 .frame(width: style.size, height: style.size)
@@ -76,7 +76,7 @@ public struct SidebarNewTransferButton: View {
     }
 
     public var body: some View {
-        AddFilesMenuView(selection: $selection) {
+        AddFilesMenu(selection: $selection) {
             Label {
                 Text(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
             } icon: {

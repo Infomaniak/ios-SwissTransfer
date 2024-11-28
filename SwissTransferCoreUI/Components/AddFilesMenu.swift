@@ -23,7 +23,7 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-public struct AddFilesMenuView<Content: View>: View {
+public struct AddFilesMenu<Content: View>: View {
     @State private var isShowingImportFile = false
     @State private var isShowingCamera = false
     @State private var isShowingPhotoLibrary = false
@@ -130,5 +130,5 @@ public struct AddFilesMenuView<Content: View>: View {
 }
 
 #Preview {
-    AddFilesMenuView(selection: .constant([])) {}
+    AddFilesMenu(selection: .constant([])) {}
 }
