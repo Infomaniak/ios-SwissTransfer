@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STNewTransferView
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -27,7 +28,7 @@ public struct MainView: View {
     public init() {}
 
     public var body: some View {
-        Group {
+        ZStack {
             if isCompactWindow {
                 STTabView()
             } else {
@@ -35,6 +36,9 @@ public struct MainView: View {
             }
         }
         .environmentObject(mainViewState.transferManager)
+        .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
+            NewTransferView(urls: container.urls)
+        }
     }
 }
 

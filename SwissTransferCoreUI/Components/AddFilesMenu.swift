@@ -129,6 +129,8 @@ public struct AddFilesMenu<Content: View>: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
-    AddFilesMenu(selection: .constant([])) {}
+    @Previewable @State var selection = [URL]()
+    AddFilesMenu(selection: $selection) {}
 }

@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var newSelectedItems = [URL]()
+    @State private var selectedItems = [URL]()
     @State private var files = [DisplayableFile]()
 
     private var filesSize: Int64 {
@@ -56,15 +56,15 @@ struct NewTransferFilesCellView: View {
 
                 ScrollView(.horizontal) {
                     HStack(spacing: IKPadding.medium) {
-                        AddFilesMenu(selection: $newSelectedItems) {
+                        AddFilesMenu(selection: $selectedItems) {
                             STResourcesAsset.Images.plus.swiftUIImage
                                 .iconSize(.large)
                                 .foregroundStyle(Color.ST.primary)
                                 .frame(width: 80, height: 80)
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
-                        .onChange(of: newSelectedItems) { selectedItems in
-                            files = newTransferManager.addFiles(urls: selectedItems)
+                        .onChange(of: selectedItems) { newSelectedItems in
+                            files = newTransferManager.addFiles(urls: newSelectedItems)
                         }
 
                         ForEach(files) { file in

@@ -43,6 +43,9 @@ struct STSplitView: View {
             .safeAreaInset(edge: .bottom) {
                 SidebarNewTransferButton(selection: $selectedItems)
                     .padding(value: .medium)
+                    .onChange(of: selectedItems) { newSelectedItems in
+                        mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+                    }
             }
         } content: {
             if let selectedTab = mainViewState.selectedTab {

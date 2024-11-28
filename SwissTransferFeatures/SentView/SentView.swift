@@ -17,7 +17,6 @@
  */
 
 import STCore
-import STNewTransferView
 import STTransferDetailsView
 import STTransferList
 import SwiftUI
@@ -25,10 +24,10 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var transferManager: TransferManager
 
-    @State private var newSelectedItems = [URL]()
-    @State private var newTransferContainer: NewTransferContainer?
+    @State private var selectedItems = [URL]()
 
     public init() {}
 
@@ -44,12 +43,9 @@ public struct SentView: View {
                 TransferDetailsView(transfer: transfer)
             }
         }
-        .floatingActionButton(selection: $newSelectedItems, style: .newTransfer)
-        .onChange(of: newSelectedItems) { selectedItems in
-            newTransferContainer = NewTransferContainer(urls: selectedItems)
-        }
-        .fullScreenCover(item: $newTransferContainer) { container in
-            NewTransferView(urls: container.urls)
+        .floatingActionButton(selection: $selectedItems, style: .newTransfer)
+        .onChange(of: selectedItems) { newSelectedItems in
+            mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
         }
     }
 }
