@@ -27,8 +27,9 @@ public enum FloatingActionButtonStyle {
 struct FloatingActionButtonModifier: ViewModifier {
     @Environment(\.isCompactWindow) private var isCompactWindow
 
+    @Binding var selection: [URL]
+
     let style: FloatingActionButtonStyle
-    let action: ([URL]) -> Void
 
     func body(content: Content) -> some View {
         content
@@ -37,9 +38,9 @@ struct FloatingActionButtonModifier: ViewModifier {
                     Group {
                         switch style {
                         case .newTransfer:
-                            NewTransferButton(action: action)
+                            NewTransferButton(selection: $selection)
                         case .firstTransfer:
-                            FirstTransferButton(style: .small, action: action)
+                            FirstTransferButton(selection: $selection, style: .small)
                         }
                     }
                     .padding([.trailing, .bottom], value: .medium)
@@ -49,7 +50,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 }
 
 public extension View {
-    func floatingActionButton(style: FloatingActionButtonStyle, perform action: @escaping ([URL]) -> Void) -> some View {
-        modifier(FloatingActionButtonModifier(style: style, action: action))
+    func floatingActionButton(selection: Binding<[URL]>, style: FloatingActionButtonStyle) -> some View {
+        modifier(FloatingActionButtonModifier(selection: selection, style: style))
     }
 }
