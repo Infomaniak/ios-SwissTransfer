@@ -8,16 +8,12 @@ import ProjectDescriptionHelpers
 
 let transferList = Feature(name: "TransferList")
 
-// MARK: New Upload
+// MARK: New Transfer & Upload
 
+let newTransferView = Feature(name: "NewTransferView")
 let uploadProgressView = Feature(name: "UploadProgressView")
 
-// MARK: New Transfer
-
-let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
-    uploadProgressView,
-    TargetDependency.external(name: "InfomaniakCore")
-])
+let rootTransferView = Feature(name: "RootTransferView", dependencies: [newTransferView, uploadProgressView])
 
 // MARK: Root
 
@@ -27,7 +23,7 @@ let sentView = Feature(name: "SentView", additionalDependencies: [transferDetail
 
 let settingsView = Feature(name: "SettingsView")
 
-let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView, newTransferView])
+let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView, rootTransferView])
 
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakOnboarding")
@@ -49,6 +45,7 @@ let mainiOSAppFeatures = [
     transferDetailsView,
     uploadProgressView,
     newTransferView,
+    rootTransferView,
     transferList
 ]
 
