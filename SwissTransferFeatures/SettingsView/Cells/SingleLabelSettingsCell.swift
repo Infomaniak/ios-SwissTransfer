@@ -19,7 +19,6 @@
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
-import SwissTransferCore
 
 struct SingleLabelSettingsCell: View {
     let title: String

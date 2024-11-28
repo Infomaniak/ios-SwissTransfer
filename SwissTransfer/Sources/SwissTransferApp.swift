@@ -20,7 +20,6 @@ import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
 import STCore
-import STResources
 import STRootView
 import SwiftUI
 import SwissTransferCore

@@ -17,9 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
-import STResources
 import SwiftUI
-import SwissTransferCore
 
 struct AboutSettingsCell: View {
     let title: String
