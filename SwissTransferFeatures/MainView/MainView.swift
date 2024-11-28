@@ -17,7 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
-import STNewTransferView
+import STRootTransferView
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -37,7 +37,7 @@ public struct MainView: View {
         }
         .environmentObject(mainViewState.transferManager)
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
-            NewTransferView(urls: container.urls)
+            RootTransferView(initialFiles: container.urls)
         }
     }
 }

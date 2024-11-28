@@ -36,25 +36,28 @@ public struct RootUploadProgressView: View {
     }
 
     public var body: some View {
-        Group {
-            if uploadError == nil {
-                UploadErrorView()
-            } else if let transferUUID {
-                SuccessfulTransferView(
-                    type: transferType,
-                    transferUUID: transferUUID,
-                    recipientsEmails: uploadSession.recipientsEmails
-                )
-            } else {
-                UploadProgressView(
-                    transferUUID: $transferUUID,
-                    error: $uploadError,
-                    transferType: transferType,
-                    uploadSession: uploadSession
-                )
-            }
-        }
-        .environment(\.dismissModal, dismiss)
+//        Group {
+//            if let uploadError {
+//                // TODO: Add Error View
+//                Text("Error")
+//            } else if let transferUUID {
+//                SuccessfulTransferView(
+//                    type: transferType,
+//                    transferUUID: transferUUID,
+//                    recipientsEmails: uploadSession.recipientsEmails
+//                )
+//            } else {
+//                UploadProgressView(
+//                    transferUUID: $transferUUID,
+//                    error: $uploadError,
+//                    transferType: transferType,
+//                    uploadSession: uploadSession
+//                )
+//            }
+//        }
+//        .environment(\.dismissModal, dismiss)
+
+        Text("coucou")
     }
 }
 

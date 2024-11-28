@@ -28,6 +28,7 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
     @StateObject private var newTransferManager: NewTransferManager
 
@@ -86,9 +87,6 @@ public struct NewTransferView: View {
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: NewUploadSession.self) { uploadSession in
-                RootUploadProgressView(transferType: transferType, uploadSession: uploadSession, dismiss: dismiss.callAsFunction)
-            }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
                     .stNavigationBarNewTransfer(title: file.name)
@@ -146,7 +144,10 @@ public struct NewTransferView: View {
                     recipientsEmails: recipientsEmail,
                     files: filesToUpload
                 )
-                navigationPath.append(newUploadSession)
+
+                withAnimation {
+                    rootTransferViewState.state = .uploadProgress(newUploadSession)
+                }
             } catch {
                 Logger.general.error("Error getting files to upload \(error.localizedDescription)")
             }

@@ -16,14 +16,39 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STNewTransferView
+import STUploadProgressView
 import SwiftUI
+import SwissTransferCoreUI
 
-struct RootTransferView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+import SwissTransferCore
+
+public struct RootTransferView: View {
+    @StateObject private var viewState = RootTransferViewState()
+
+    private let initialFiles: [URL]
+
+    public init(initialFiles: [URL]) {
+        self.initialFiles = initialFiles
+    }
+
+    public var body: some View {
+        Group {
+            switch viewState.state {
+            case .newTransfer:
+                NewTransferView(urls: initialFiles)
+            case .uploadProgress(let newUploadSession):
+                UploadProgressView(uploadSession: newUploadSession)
+            case .error:
+                Text("Error")
+            case .success(let transferUUID, let recipientsEmails):
+                UploadSuccessView(transferUUID: transferUUID, recipientsEmails: recipientsEmails)
+            }
+        }
+        .environmentObject(viewState)
     }
 }
 
 #Preview {
-    RootTransferView()
+    RootTransferView(initialFiles: [])
 }

@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OSLog
 import STCore
 import STNetwork
 import STResources
@@ -24,23 +25,28 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-struct UploadProgressView: View {
-    @Environment(\.dismissModal) private var dismissModal
+public struct UploadProgressView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var transferManager: TransferManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
-    @Binding var transferUUID: String?
-    @Binding var error: Error?
+//    @Binding var transferUUID: String?
+//    @Binding var error: Error?
 
-    let transferType: TransferType
-    let uploadSession: NewUploadSession
+    private let uploadSession: NewUploadSession
 
     private let emptyStateStyle = IllustrationAndTextView.Style.largeEmptyState
 
-    var body: some View {
+    public init(uploadSession: NewUploadSession) {
+        self.uploadSession = uploadSession
+    }
+
+    public var body: some View {
         VStack(spacing: IKPadding.medium) {
             UploadProgressHeaderView(subtitle: uploadProgressAd.description)
                 .frame(maxWidth: emptyStateStyle.textMaxWidth)
@@ -72,26 +78,27 @@ struct UploadProgressView: View {
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
             withAnimation {
-                self.transferUUID = transferUUID
+                rootTransferViewState.state = .success(transferUUID, uploadSession.recipientsEmails)
             }
         } catch {
+            Logger.general.error("Error trying to start upload: \(error)")
             withAnimation {
-                self.error = error
+                rootTransferViewState.state = .error
             }
         }
     }
 
     private func cancelTransfer() {
         // TODO: Cancel Transfer
-        dismissModal()
+        dismiss()
     }
 }
 
-#Preview {
-    UploadProgressView(
-        transferUUID: .constant(nil),
-        error: .constant(nil),
-        transferType: .qrCode,
-        uploadSession: PreviewHelper.sampleNewUploadSession
-    )
-}
+// #Preview {
+//    UploadProgressView(
+//        transferUUID: .constant(nil),
+//        error: .constant(nil),
+//        transferType: .qrCode,
+//        uploadSession: PreviewHelper.sampleNewUploadSession
+//    )
+// }

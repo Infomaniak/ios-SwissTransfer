@@ -22,7 +22,7 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct SuccessfulMailTransferView: View {
+struct UploadSuccessMailView: View {
     @Environment(\.dismissModal) private var dismissModal
 
     let recipients: [String]
@@ -56,12 +56,12 @@ struct SuccessfulMailTransferView: View {
 }
 
 #Preview("One Recipient") {
-    SuccessfulMailTransferView(recipients: ["john.smith@ik.me"])
+    UploadSuccessMailView(recipients: ["john.smith@ik.me"])
 }
 
 #Preview("Many Recipients") {
     let recipients = Array(repeating: "short@ik.me", count: 2)
         + Array(repeating: "long-email@infomaniak.com", count: 2)
         + Array(repeating: "middle@infomaniak.com", count: 3)
-    SuccessfulMailTransferView(recipients: recipients.shuffled())
+    UploadSuccessMailView(recipients: recipients.shuffled())
 }
