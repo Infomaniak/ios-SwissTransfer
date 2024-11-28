@@ -28,9 +28,9 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
-    @StateObject private var newTransferManager: NewTransferManager
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var newTransferManager: NewTransferManager
 
     @State private var isLoadingFileToUpload = false
     @State private var navigationPath = NavigationPath()
@@ -44,11 +44,7 @@ public struct NewTransferView: View {
     @State private var downloadLimit = DownloadLimit.twoHundredFifty
     @State private var emailLanguage = EmailLanguage.french
 
-    public init(urls: [URL]) {
-        let transferManager = NewTransferManager()
-        _ = transferManager.addFiles(urls: urls)
-        _newTransferManager = StateObject(wrappedValue: transferManager)
-    }
+    public init() {}
 
     public var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -99,9 +95,6 @@ public struct NewTransferView: View {
             }
         }
         .onAppear(perform: initializeValuesFromSettings)
-        .environment(\.dismissModal) {
-            dismiss()
-        }
         .environmentObject(newTransferManager)
     }
 
@@ -158,5 +151,5 @@ public struct NewTransferView: View {
 }
 
 #Preview {
-    NewTransferView(urls: [])
+    NewTransferView()
 }

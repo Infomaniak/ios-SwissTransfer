@@ -25,18 +25,26 @@ import SwissTransferCore
 
 public struct RootTransferView: View {
     @StateObject private var viewState = RootTransferViewState()
+    @StateObject private var newTransferManager: NewTransferManager
 
     private let initialFiles: [URL]
 
     public init(initialFiles: [URL]) {
         self.initialFiles = initialFiles
+
+        _newTransferManager = StateObject(wrappedValue: {
+            let newTransferManager = NewTransferManager()
+            _ = newTransferManager.addFiles(urls: initialFiles)
+            return newTransferManager
+        }())
     }
 
     public var body: some View {
         Group {
             switch viewState.state {
             case .newTransfer:
-                NewTransferView(urls: initialFiles)
+                NewTransferView()
+                    .environmentObject(newTransferManager)
             case .uploadProgress(let newUploadSession):
                 UploadProgressView(uploadSession: newUploadSession)
             case .error:

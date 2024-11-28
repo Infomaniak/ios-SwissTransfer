@@ -27,7 +27,7 @@ import SwissTransferCoreUI
 struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
-    @Environment(\.dismissModal) private var dismissModal
+    @Environment(\.dismiss) private var dismiss
 
     @LazyInjectService private var injection: SwissTransferInjection
 
@@ -85,7 +85,7 @@ struct UploadSuccessQRCodeView: View {
                 .frame(maxWidth: IKButtonConstants.maxWidth)
             }
 
-            Button(action: dismissModal) {
+            Button(action: dismiss.callAsFunction) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)

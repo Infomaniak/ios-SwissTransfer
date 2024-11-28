@@ -23,7 +23,7 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct UploadSuccessMailView: View {
-    @Environment(\.dismissModal) private var dismissModal
+    @Environment(\.dismiss) private var dismiss
 
     let recipients: [String]
 
@@ -47,7 +47,7 @@ struct UploadSuccessMailView: View {
         .padding(.horizontal, value: .medium)
         .scrollableEmptyState()
         .safeAreaButtons {
-            Button(action: dismissModal) {
+            Button(action: dismiss.callAsFunction) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
