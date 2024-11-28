@@ -40,6 +40,9 @@
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Teilen";
 
+/* loco:674834cdbb4f7b35ad00ea55 */
+"buttonStart" = "Starten";
+
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Zurück";
 
@@ -99,6 +102,33 @@
 
 /* loco:66d009adae0a00bb3c011352 */
 "noTransferReceivedTitle" = "Keine Überweisungen erhalten";
+
+/* loco:6746e8a0396f33e00a0fc393 */
+"onboardingExpirationSubtitleArgument" = "30 Tage";
+
+/* loco:6746e853f31dad284f0aa742 */
+"onboardingExpirationSubtitleTemplate" = "Teile deine Dateien per E-Mail, Link oder QR-Code. Deine Links bleiben %@ aktiv.";
+
+/* loco:6746e6c255f60b501f02d372 */
+"onboardingExpirationTitle" = "Spiel deine besten Karten aus!";
+
+/* loco:6746f713c933bb6d0001c2c2 */
+"onboardingPasswordSubtitleArgument" = "einem Passwort.";
+
+/* loco:6746f6d24c1e8eac030e37a2 */
+"onboardingPasswordSubtitleTemplate" = "Schütze deine Freigaben mit %@";
+
+/* loco:6746ea1214cc5fb6da022362 */
+"onboardingPasswordTitle" = "Behalte die Kontrolle!";
+
+/* loco:6745e4cbc46e4416540015f3 */
+"onboardingStorageSubtitleArgument" = "Teile bis zu 50 GB";
+
+/* loco:6745e479fd92d04bbd0ac2b2 */
+"onboardingStorageSubtitleTemplate" = "%@ Dateien – kostenlos und ohne Anmeldung.";
+
+/* loco:6745d761b427af1ed8084c32 */
+"onboardingStorageTitle" = "Hau richtig rein!";
 
 /* loco:66fa5ce7eb184f21290154a2 */
 "receivedFilesTitle" = "Empfangene Dateien";

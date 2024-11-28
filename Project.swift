@@ -29,9 +29,15 @@ let settingsView = Feature(name: "SettingsView")
 
 let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView, newTransferView])
 
-let onboardingView = Feature(name: "OnboardingView")
+let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
+    TargetDependency.external(name: "InfomaniakOnboarding")
+])
 
-let rootView = Feature(name: "RootView", dependencies: [mainView, onboardingView], resources: ["SwissTransfer/Resources/Assets.xcassets"])
+let rootView = Feature(
+    name: "RootView",
+    dependencies: [mainView, onboardingView],
+    resources: ["SwissTransfer/Resources/Assets.xcassets"]
+)
 
 let mainiOSAppFeatures = [
     rootView,
