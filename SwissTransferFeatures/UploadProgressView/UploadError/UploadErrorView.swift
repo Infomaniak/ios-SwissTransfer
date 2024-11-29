@@ -21,8 +21,10 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct UploadErrorView: View {
-    var body: some View {
+public struct UploadErrorView: View {
+    public init() {}
+
+    public var body: some View {
         IllustrationAndTextView(
             image: STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
             title: STResourcesStrings.Localizable.uploadErrorTitle,

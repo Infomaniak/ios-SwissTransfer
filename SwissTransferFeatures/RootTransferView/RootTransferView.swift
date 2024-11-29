@@ -43,7 +43,7 @@ public struct RootTransferView: View {
             case .uploadProgress(let newUploadSession):
                 UploadProgressView(uploadSession: newUploadSession)
             case .error:
-                Text("Error")
+                UploadErrorView()
             case .success(let transferUUID):
                 UploadSuccessView(transferUUID: transferUUID)
             }
