@@ -24,6 +24,8 @@ public final class MainViewState: ObservableObject {
     @Published public var selectedTab: STTab? = .sentTransfers
     @Published public var paths = [STTab: [NavigationDestination]]()
 
+    @Published public var newTransferContainer: NewTransferContainer?
+
     public var selectedDestination: NavigationDestination? {
         get {
             guard let selectedTab else { return nil }

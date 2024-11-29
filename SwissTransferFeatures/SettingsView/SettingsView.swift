@@ -33,8 +33,6 @@ enum SettingLinks {
 }
 
 public struct SettingsView: View {
-    @LazyInjectService private var settingsManager: AppSettingsManager
-
     @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject private var appSettings: FlowObserver<AppSettings>

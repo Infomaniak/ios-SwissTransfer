@@ -29,6 +29,7 @@ struct STSplitView: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
+    @State private var selectedItems = [URL]()
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -40,8 +41,11 @@ struct STSplitView: View {
             .stIconNavigationBar()
             .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.small)
             .safeAreaInset(edge: .bottom) {
-                SidebarNewTransferButton {}
+                SidebarNewTransferButton(selection: $selectedItems)
                     .padding(value: .medium)
+                    .onChange(of: selectedItems) { newSelectedItems in
+                        mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+                    }
             }
         } content: {
             if let selectedTab = mainViewState.selectedTab {

@@ -17,13 +17,15 @@
  */
 
 import InfomaniakCoreSwiftUI
-import STNewTransferView
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct SentEmptyView: View {
-    @State private var newTransferContainer: NewTransferContainer?
+    @EnvironmentObject private var mainViewState: MainViewState
+
+    @State private var selectedItems = [URL]()
 
     var body: some View {
         VStack(spacing: 40) {
@@ -39,14 +41,12 @@ struct SentEmptyView: View {
                     .multilineTextAlignment(.center)
             }
 
-            FirstTransferButton(style: .big) { urls in
-                newTransferContainer = NewTransferContainer(urls: urls)
-            }
+            FirstTransferButton(selection: $selectedItems, style: .big)
+                .onChange(of: selectedItems) { newSelectedItems in
+                    mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+                }
         }
         .padding(value: .medium)
-        .fullScreenCover(item: $newTransferContainer) { container in
-            NewTransferView(urls: container.urls)
-        }
     }
 }
 

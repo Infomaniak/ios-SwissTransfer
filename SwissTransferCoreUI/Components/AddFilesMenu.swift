@@ -23,18 +23,18 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-public struct AddFilesMenuView<Content: View>: View {
+public struct AddFilesMenu<Content: View>: View {
     @State private var isShowingImportFile = false
     @State private var isShowingCamera = false
-
     @State private var isShowingPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
 
-    private let completion: ([URL]) -> Void
+    @Binding var selection: [URL]
+
     private let label: Content
 
-    public init(completion: @escaping ([URL]) -> Void, @ViewBuilder label: () -> Content) {
-        self.completion = completion
+    public init(selection: Binding<[URL]>, @ViewBuilder label: () -> Content) {
+        _selection = selection
         self.label = label()
     }
 
@@ -90,7 +90,8 @@ public struct AddFilesMenuView<Content: View>: View {
             let fileName = URL.defaultFileName()
             let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.png)
             try uiImage.pngData()?.write(to: url)
-            completion([url])
+
+            selection = [url]
         } catch {
             Logger.general.error("An error occurred while saving picture: \(error)")
         }
@@ -114,20 +115,22 @@ public struct AddFilesMenuView<Content: View>: View {
             let urls = photoList.map {
                 $0.url
             }
-            completion(urls)
+            selection = urls
         }
     }
 
     private func didSelectFromFileSystem(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
-            completion(urls)
+            selection = urls
         case .failure(let error):
             Logger.general.error("An error occurred while importing files: \(error)")
         }
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
-    AddFilesMenuView { _ in } label: { EmptyView() }
+    @Previewable @State var selection = [URL]()
+    AddFilesMenu(selection: $selection) {}
 }

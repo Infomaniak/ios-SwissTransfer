@@ -23,11 +23,11 @@ let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView, transferList])
-let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList, newTransferView])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList])
 
 let settingsView = Feature(name: "SettingsView")
 
-let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView])
+let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView, newTransferView])
 
 let onboardingView = Feature(name: "OnboardingView")
 

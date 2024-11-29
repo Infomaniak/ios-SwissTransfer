@@ -17,7 +17,6 @@
  */
 
 import STCore
-import STResources
 import SwiftUI
 
 public extension ColorScheme {

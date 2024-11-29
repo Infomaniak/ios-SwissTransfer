@@ -19,7 +19,6 @@
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
-import SwissTransferCore
 
 /// A generic Setting cell that works well with enums from STCore
 struct SettingsCell<Content: View>: View {
