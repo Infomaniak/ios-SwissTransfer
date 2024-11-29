@@ -23,6 +23,7 @@ public enum PreviewHelper {
     public static let sampleFile = FileUi(
         uid: "fileUUID",
         fileName: "File name",
+        isFolder: false,
         fileSize: 8561,
         mimeType: "imge/jpeg",
         localPath: nil
@@ -36,6 +37,7 @@ public enum PreviewHelper {
         downloadLimit: 250,
         downloadLeft: 249,
         message: "Some message",
+        password: nil,
         files: [sampleFile]
     )
 
@@ -47,6 +49,7 @@ public enum PreviewHelper {
         downloadLimit: 250,
         downloadLeft: 249,
         message: "Some message",
+        password: nil,
         files: [sampleFile]
     )
 

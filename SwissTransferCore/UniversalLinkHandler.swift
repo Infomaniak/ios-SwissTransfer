@@ -31,6 +31,6 @@ public struct UniversalLinkHandler {
             return
         }
 
-        try await defaultTransferManager.addTransferByUrl(url: url.path)
+        try await defaultTransferManager.addTransferByUrl(url: url.path, password: nil)
     }
 }
