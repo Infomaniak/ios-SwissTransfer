@@ -37,9 +37,8 @@ public struct RootUploadProgressView: View {
 
     public var body: some View {
         Group {
-            if let uploadError {
-                // TODO: Add Error View
-                Text("Error")
+            if uploadError == nil {
+                UploadErrorView()
             } else if let transferUUID {
                 SuccessfulTransferView(
                     type: transferType,

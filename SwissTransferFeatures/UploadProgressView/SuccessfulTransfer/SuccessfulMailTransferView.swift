@@ -29,10 +29,11 @@ struct SuccessfulMailTransferView: View {
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
-            LargeEmptyStateView(
+            IllustrationAndTextView(
                 image: STResourcesAsset.Images.beers.swiftUIImage,
                 title: TransferType.mail.successTitle,
-                subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription(recipients.count)
+                subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription(recipients.count),
+                style: .largeEmptyState
             )
 
             FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
@@ -41,9 +42,9 @@ struct SuccessfulMailTransferView: View {
                         .roundedLabel()
                 }
             }
-            .padding(.horizontal, value: .medium)
             .frame(maxWidth: 800)
         }
+        .padding(.horizontal, value: .medium)
         .scrollableEmptyState()
         .safeAreaButtons {
             Button(action: dismissModal) {

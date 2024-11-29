@@ -22,11 +22,17 @@
 /* loco:670f888e8b65a30acb0c6be2 */
 "buttonCopyLink" = "Copier le lien";
 
+/* loco:67448efd69b0e5a4910909b2 */
+"buttonEditTransfer" = "Modifier mon transfert";
+
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Terminer";
 
 /* loco:66bf171580717241110432a2 */
 "buttonNext" = "Suivant";
+
+/* loco:672a116b6135bb977203e762 */
+"buttonRetry" = "Réessayer";
 
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Partager";
@@ -73,17 +79,8 @@
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Fichiers à transférer";
 
-/* loco:6718e0db7d3cf9ef4e0b9c83 */
-"importScreenTransferMessage" = "Un message à faire passer ? ";
-
-/* loco:6718e05f447ba2f97f0539f2 */
-"importScreenTransferTitle" = "Donnes un titre à ton transfert";
-
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Message :";
-
-/* loco:6707f351b85d3276c70621e2 */
-"messagePlaceholder" = "Un message à faire passer ?";
 
 /* loco:6707f41e004c1612f407fae2 */
 "myFilesTitle" = "Mes fichiers";
@@ -326,7 +323,7 @@
 "transferTypeScreenTitle" = "Transfert";
 
 /* loco:66c4a98a0aee7eb62404ec62 */
-"transferTypeTitle" = "Envoie tes fichiers par";
+"transferTypeTitle" = "Envoyer par";
 
 /* loco:66c2f780c0a809339808e802 */
 "transferUploadSourceChoiceCamera" = "Appareil photo";
@@ -336,6 +333,12 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galerie photos et vidéos";
+
+/* loco:6729e40f3f0d68fc7e03bab2 */
+"uploadErrorDescription" = "Le transfert n’a pas fonctionné, donnes-lui une autre chance. Si le problème persiste, contacte notre support.";
+
+/* loco:6729d9d657eb1ed1a40f5f92 */
+"uploadErrorTitle" = "Qu’est-ce que quoi ?";
 
 /* loco:6720a3367f6276e49d0d9902 */
 "uploadProgressDescriptionArgumentConfidentiality" = "un Internet qui respecte la confidentialité et la vie privée.";

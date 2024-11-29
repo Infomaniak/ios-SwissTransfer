@@ -22,14 +22,20 @@
 /* loco:670f888e8b65a30acb0c6be2 */
 "buttonCopyLink" = "Link kopieren";
 
-/* loco:670f577c33200f8f64069c62 */
-"buttonFinished" = "Beenden";
-
 /* loco:67220015101b3de12b0f1f82 */
 "buttonDownload" = "Download";
 
+/* loco:67448efd69b0e5a4910909b2 */
+"buttonEditTransfer" = "Meine Übertragung bearbeiten";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Beenden";
+
 /* loco:66bf171580717241110432a2 */
 "buttonNext" = "Weiter zu";
+
+/* loco:672a116b6135bb977203e762 */
+"buttonRetry" = "Wiederholen";
 
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Teilen";
@@ -47,7 +53,7 @@
 "contentDescriptionCreateNewTransferButton" = "Neuer Transfer";
 
 /* loco:66a24a3f3472a720090cfd52 */
-"downloadedTransferLabel" = "Heruntergeladene Übertragung : %d/%d";
+"downloadedTransferLabel" = "Heruntergeladene Übertragung: %d/%d";
 
 /* loco:6720ec444fa469071a050ee2 */
 "errorGeneratingQRCode" = "Unmöglich, den QR-Code zu generieren";
@@ -76,17 +82,8 @@
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Zu übertragende Dateien";
 
-/* loco:6718e0db7d3cf9ef4e0b9c83 */
-"importScreenTransferMessage" = "Eine Botschaft, die Sie weitergeben möchten? ";
-
-/* loco:6718e05f447ba2f97f0539f2 */
-"importScreenTransferTitle" = "Gib deiner Überweisung einen Titel";
-
 /* loco:66a24acfa855c577100e2353 */
-"messageHeader" = "Nachricht :";
-
-/* loco:6707f351b85d3276c70621e2 */
-"messagePlaceholder" = "Ihre Nachricht";
+"messageHeader" = "Nachricht:";
 
 /* loco:6707f41e004c1612f407fae2 */
 "myFilesTitle" = "Meine Dateien";
@@ -110,7 +107,7 @@
 "receivedTitle" = "Empfangen";
 
 /* loco:66a24aaccbb152954307a612 */
-"recipientHeader" = "Empfänger :";
+"recipientHeader" = "Empfänger:";
 
 /* loco:66a765a7ec41ffa0250df2d3 */
 "recipientHeader-plural" = "Adressaten:";
@@ -284,7 +281,7 @@
 "textFieldOptional" = "(Fakultativ)";
 
 /* loco:66a24b1d3472a720090cfd58 */
-"transferContentHeader" = "Inhalt der Übertragung :";
+"transferContentHeader" = "Inhalt der Übertragung:";
 
 /* loco:66c6d0936969c14fab0aec72 */
 "transferListSectionLastWeek" = "Letzte Woche";
@@ -323,13 +320,13 @@
 "transferTypeProximity" = "In der Nähe";
 
 /* loco:66c4aa8cf1945b5bd70ed563 */
-"transferTypeQrCode" = "QR-Code";
+"transferTypeQrCode" = "QR Code";
 
 /* loco:66c5f77ed20c38c185010bd3 */
 "transferTypeScreenTitle" = "Übertragen";
 
 /* loco:66c4a98a0aee7eb62404ec62 */
-"transferTypeTitle" = "Schicke deine Dateien per";
+"transferTypeTitle" = "Schicken per";
 
 /* loco:66c2f780c0a809339808e802 */
 "transferUploadSourceChoiceCamera" = "Kamera";
@@ -339,6 +336,12 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Foto- und Videogalerie";
+
+/* loco:6729e40f3f0d68fc7e03bab2 */
+"uploadErrorDescription" = "Die Übertragung hat nicht funktioniert, gib ihr noch eine Chance. Wenn das Problem weiterhin besteht, wende dich an unseren Support.";
+
+/* loco:6729d9d657eb1ed1a40f5f92 */
+"uploadErrorTitle" = "Was ist das denn?";
 
 /* loco:6720a3367f6276e49d0d9902 */
 "uploadProgressDescriptionArgumentConfidentiality" = "einem Internet bei, das den Datenschutz und die Privatsphäre respektiert.";
