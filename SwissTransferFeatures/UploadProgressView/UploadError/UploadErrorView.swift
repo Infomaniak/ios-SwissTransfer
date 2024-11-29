@@ -22,6 +22,8 @@ import SwiftUI
 import SwissTransferCoreUI
 
 public struct UploadErrorView: View {
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+
     public init() {}
 
     public var body: some View {
@@ -43,9 +45,13 @@ public struct UploadErrorView: View {
         .stIconNavigationBar()
     }
 
-    private func retryTransfer() {}
+    private func retryTransfer() {
+        //rootTransferViewState.state = .uploadProgress
+    }
 
-    private func editTransfer() {}
+    private func editTransfer() {
+        rootTransferViewState.state = .newTransfer
+    }
 }
 
 #Preview {

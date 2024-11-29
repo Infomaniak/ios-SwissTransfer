@@ -27,19 +27,16 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @Environment(\.dismiss) private var dismiss
-
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
     @State private var isLoadingFileToUpload = false
-    @State private var navigationPath = NavigationPath()
 
     public init() {}
 
     public var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferFilesCellView()
@@ -77,13 +74,9 @@ public struct NewTransferView: View {
             .stNavigationBarStyle()
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
-                    .stNavigationBarNewTransfer(title: file.name)
-                    .stNavigationBarStyle()
             }
             .navigationDestination(for: DisplayableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
-                    .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
-                    .stNavigationBarStyle()
             }
         }
         .environmentObject(newTransferManager)

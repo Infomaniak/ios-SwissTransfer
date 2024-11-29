@@ -29,19 +29,25 @@ struct FileListView: View {
     @State private var files = [DisplayableFile]()
 
     private let folder: DisplayableFile?
+    private let columns = [
+        GridItem(.flexible(), spacing: IKPadding.medium),
+        GridItem(.flexible(), spacing: IKPadding.medium)
+    ]
 
-    init(parentFolder: DisplayableFile?) {
-        folder = parentFolder
+    private var navigationTitle: String {
+        guard let folder else {
+            return STResourcesStrings.Localizable.importFilesScreenTitle
+        }
+        return folder.name
     }
 
     private var filesSize: Int64 {
         files.map { $0.size }.reduce(0, +)
     }
 
-    private let columns = [
-        GridItem(.flexible(), spacing: IKPadding.medium),
-        GridItem(.flexible(), spacing: IKPadding.medium)
-    ]
+    init(parentFolder: DisplayableFile?) {
+        folder = parentFolder
+    }
 
     var body: some View {
         ScrollView {
@@ -82,6 +88,8 @@ struct FileListView: View {
             }
             .padding(value: .medium)
         }
+        .stNavigationBarStyle()
+        .stNavigationBarNewTransfer(title: navigationTitle)
         .onAppear {
             files = newTransferManager.filesAt(folderURL: folder?.url)
         }
