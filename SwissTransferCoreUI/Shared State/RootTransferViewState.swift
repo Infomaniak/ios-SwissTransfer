@@ -16,9 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import STCore
-import SwiftUI
-import InfomaniakDI
 
 public enum RootTransferViewType {
     case newTransfer
@@ -31,30 +30,4 @@ public final class RootTransferViewState: ObservableObject {
     @Published public var state = RootTransferViewType.newTransfer
 
     public init() {}
-}
-
-public final class RootTransferViewModel: ObservableObject {
-    @Published public var transferType = TransferType.qrCode
-    @Published public var authorEmail = ""
-    @Published public var recipientEmail = ""
-    @Published public var message = ""
-    @Published public var password = ""
-    @Published public var validityPeriod = ValidityPeriod.thirty
-    @Published public var downloadLimit = DownloadLimit.twoHundredFifty
-    @Published public var emailLanguage = EmailLanguage.french
-
-    public init() {
-        fetchValuesFromSettings()
-    }
-
-    private func fetchValuesFromSettings() {
-        @InjectService var settingsManager: AppSettingsManager
-        guard let appSettings = settingsManager.getAppSettings() else { return }
-
-        transferType = appSettings.lastTransferType
-        authorEmail = appSettings.lastAuthorEmail ?? ""
-        validityPeriod = appSettings.validityPeriod
-        downloadLimit = appSettings.downloadLimit
-        emailLanguage = appSettings.emailLanguage
-    }
 }

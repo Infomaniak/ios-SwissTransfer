@@ -110,6 +110,7 @@ public struct NewTransferView: View {
                     files: filesToUpload
                 )
 
+                viewModel.newUploadSession = newUploadSession
                 withAnimation {
                     rootTransferViewState.state = .uploadProgress(newUploadSession)
                 }

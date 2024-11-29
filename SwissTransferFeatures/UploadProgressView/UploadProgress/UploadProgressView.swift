@@ -26,6 +26,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
+    private static let emptyStateStyle = IllustrationAndTextView.Style.largeEmptyState
+
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
@@ -35,8 +37,6 @@ public struct UploadProgressView: View {
 
     private let uploadSession: NewUploadSession
 
-    private let emptyStateStyle = IllustrationAndTextView.Style.largeEmptyState
-
     public init(uploadSession: NewUploadSession) {
         self.uploadSession = uploadSession
     }
@@ -45,12 +45,12 @@ public struct UploadProgressView: View {
         NavigationStack {
             VStack(spacing: IKPadding.medium) {
                 UploadProgressHeaderView(subtitle: uploadProgressAd.description)
-                    .frame(maxWidth: emptyStateStyle.textMaxWidth)
+                    .frame(maxWidth: Self.emptyStateStyle.textMaxWidth)
 
                 uploadProgressAd.image
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: emptyStateStyle.imageMaxWidth)
+                    .frame(maxWidth: Self.emptyStateStyle.imageMaxWidth, maxHeight: .infinity)
             }
             .padding(.horizontal, value: .medium)
             .padding(.top, value: .large)

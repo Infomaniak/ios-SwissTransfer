@@ -23,6 +23,7 @@ import SwissTransferCoreUI
 
 public struct UploadErrorView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
 
     public init() {}
 
@@ -36,8 +37,10 @@ public struct UploadErrorView: View {
         .padding(value: .medium)
         .scrollableEmptyState()
         .safeAreaButtons {
-            Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
-                .buttonStyle(.ikBorderedProminent)
+            if rootTransferViewModel.newUploadSession != nil {
+                Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
+                    .buttonStyle(.ikBorderedProminent)
+            }
             Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                 .buttonStyle(.ikBordered)
         }
@@ -46,7 +49,8 @@ public struct UploadErrorView: View {
     }
 
     private func retryTransfer() {
-        //rootTransferViewState.state = .uploadProgress
+        guard let newUploadSession = rootTransferViewModel.newUploadSession else { return }
+        rootTransferViewState.state = .uploadProgress(newUploadSession)
     }
 
     private func editTransfer() {
