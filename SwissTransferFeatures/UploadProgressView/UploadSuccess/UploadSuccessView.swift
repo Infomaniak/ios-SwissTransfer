@@ -36,7 +36,6 @@ extension TransferType {
 }
 
 public struct UploadSuccessView: View {
-    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
     let transferUUID: String

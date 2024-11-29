@@ -27,16 +27,11 @@ import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
     @Environment(\.dismiss) private var dismiss
-
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
-    @EnvironmentObject private var transferManager: TransferManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
-
-//    @Binding var transferUUID: String?
-//    @Binding var error: Error?
 
     private let uploadSession: NewUploadSession
 
@@ -96,11 +91,7 @@ public struct UploadProgressView: View {
     }
 }
 
-// #Preview {
-//    UploadProgressView(
-//        transferUUID: .constant(nil),
-//        error: .constant(nil),
-//        transferType: .qrCode,
-//        uploadSession: PreviewHelper.sampleNewUploadSession
-//    )
-// }
+#Preview {
+    UploadProgressView(uploadSession: PreviewHelper.sampleNewUploadSession)
+        .environmentObject(RootTransferViewModel())
+}
