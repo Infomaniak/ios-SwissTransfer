@@ -23,3 +23,7 @@ import STCore
 extension TransferUi: @retroactive @unchecked Sendable {}
 extension FileUi: @retroactive @unchecked Sendable {}
 extension NewUploadSession: @retroactive @unchecked Sendable {}
+
+extension TransferManager: @retroactive @unchecked Sendable {}
+extension UploadManager: @retroactive @unchecked Sendable {}
+extension STCore.AccountManager: @retroactive @unchecked Sendable {}
