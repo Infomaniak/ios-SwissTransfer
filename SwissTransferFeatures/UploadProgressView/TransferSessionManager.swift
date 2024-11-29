@@ -18,6 +18,7 @@
 
 import Combine
 import Foundation
+import InfomaniakConcurrency
 import InfomaniakCore
 import InfomaniakDI
 import OSLog
@@ -104,11 +105,15 @@ class TransferSessionManager: ObservableObject {
         let remoteUploadFiles = uploadWithRemoteContainer.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "All files should have a remote upload file")
 
-        for (index, remoteUploadFile) in remoteUploadFiles.enumerated() {
-            let localFile = uploadWithRemoteContainer.files[index]
-
-            try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: uploadSession.uuid)
-        }
+        try await remoteUploadFiles.enumerated()
+            .map { (uploadWithRemoteContainer.files[$0.offset], $0.element) }
+            .concurrentMap { localFile, remoteUploadFile in
+                try await self.uploadFile(
+                    atPath: localFile.localPath,
+                    toRemoteFile: remoteUploadFile,
+                    uploadUUID: uploadSession.uuid
+                )
+            }
 
         Logger.general.info("Found container: \(container.uuid)")
 

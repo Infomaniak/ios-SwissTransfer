@@ -163,6 +163,15 @@
       }
     },
     {
+      "identity" : "swift-concurrency",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/swift-concurrency",
+      "state" : {
+        "revision" : "55fe7541cbfcfb4b73e7836b390e2c566a9ba910",
+        "version" : "0.0.6"
+      }
+    },
+    {
       "identity" : "swift-log",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
