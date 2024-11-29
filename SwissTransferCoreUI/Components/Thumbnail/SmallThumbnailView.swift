@@ -22,6 +22,8 @@ import SwiftUI
 import SwissTransferCore
 
 public struct SmallThumbnailView: View {
+    @Environment(\.displayScale) private var scale
+
     @ScaledMetric(relativeTo: .body) private var size = 48
 
     private let url: URL?
@@ -85,7 +87,11 @@ public struct SmallThumbnailView: View {
                 .frame(width: size, height: size)
                 .background(Color.ST.background, in: .rect(cornerRadius: cornerRadius))
                 .task {
-                    thumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: size, height: size))
+                    thumbnail = await ThumbnailGenerator.generate(
+                        for: url,
+                        scale: scale,
+                        cgSize: CGSize(width: size, height: size)
+                    )
                 }
             }
 

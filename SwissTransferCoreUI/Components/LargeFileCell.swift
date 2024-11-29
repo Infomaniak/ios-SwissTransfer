@@ -23,6 +23,8 @@ import SwiftUI
 import SwissTransferCore
 
 public struct LargeFileCell: View {
+    @Environment(\.displayScale) private var scale
+
     @State private var largeThumbnail: Image?
 
     private let fileName: String
@@ -51,13 +53,20 @@ public struct LargeFileCell: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            VStack {
-                if let largeThumbnail {
-                    largeThumbnail
-                        .resizable()
-                        .scaledToFill()
-                } else {
-                    FileIconView(icon: icon, type: .large)
+            GeometryReader { reader in
+                ZStack {
+                    if let largeThumbnail {
+                        largeThumbnail
+                            .resizable()
+                            .scaledToFill()
+                    } else {
+                        FileIconView(icon: icon, type: .large)
+                    }
+                }
+                .frame(height: 96)
+                .frame(maxWidth: .infinity)
+                .task {
+                    largeThumbnail = await ThumbnailGenerator.generate(for: url, scale: scale, cgSize: reader.size)
                 }
             }
             .frame(height: 96)
@@ -98,9 +107,6 @@ public struct LargeFileCell: View {
             RoundedRectangle(cornerRadius: IKRadius.medium)
                 .stroke(Color.ST.cardBorder)
         )
-        .task {
-            largeThumbnail = await ThumbnailGenerator.generate(for: url, cgSize: CGSize(width: 164, height: 96))
-        }
     }
 }
 
