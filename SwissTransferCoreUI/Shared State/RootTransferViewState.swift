@@ -18,6 +18,7 @@
 
 import STCore
 import SwiftUI
+import InfomaniakDI
 
 public enum RootTransferViewType {
     case newTransfer
@@ -42,5 +43,18 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
     @Published public var emailLanguage = EmailLanguage.french
 
-    public init() {}
+    public init() {
+        fetchValuesFromSettings()
+    }
+
+    private func fetchValuesFromSettings() {
+        @InjectService var settingsManager: AppSettingsManager
+        guard let appSettings = settingsManager.getAppSettings() else { return }
+
+        transferType = appSettings.lastTransferType
+        authorEmail = appSettings.lastAuthorEmail ?? ""
+        validityPeriod = appSettings.validityPeriod
+        downloadLimit = appSettings.downloadLimit
+        emailLanguage = appSettings.emailLanguage
+    }
 }

@@ -86,20 +86,7 @@ public struct NewTransferView: View {
                     .stNavigationBarStyle()
             }
         }
-        .onAppear(perform: initializeValuesFromSettings)
         .environmentObject(newTransferManager)
-    }
-
-    private func initializeValuesFromSettings() {
-        @InjectService var settingsManager: AppSettingsManager
-        guard let appSettings = settingsManager.getAppSettings() else { return }
-
-        viewModel.transferType = appSettings.lastTransferType
-        viewModel.authorEmail = appSettings.lastAuthorEmail ?? ""
-
-        viewModel.validityPeriod = appSettings.validityPeriod
-        viewModel.downloadLimit = appSettings.downloadLimit
-        viewModel.emailLanguage = appSettings.emailLanguage
     }
 
     private func startUpload() {
