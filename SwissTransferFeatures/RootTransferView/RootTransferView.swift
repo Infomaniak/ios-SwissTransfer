@@ -27,11 +27,7 @@ public struct RootTransferView: View {
     @StateObject private var newTransferManager: NewTransferManager
 
     public init(initialFiles: [URL]) {
-        _newTransferManager = StateObject(wrappedValue: {
-            let newTransferManager = NewTransferManager()
-            _ = newTransferManager.addFiles(urls: initialFiles)
-            return newTransferManager
-        }())
+        _newTransferManager = StateObject(wrappedValue: NewTransferManager(initialFiles: initialFiles))
     }
 
     public var body: some View {

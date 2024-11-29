@@ -44,8 +44,11 @@ enum TmpDirType: String {
 
 @MainActor
 public class NewTransferManager: ObservableObject {
-    public init() {
+    public init(initialFiles: [URL]? = nil) {
         cleanTmpDir(type: .upload)
+        if let initialFiles {
+            addFiles(urls: initialFiles)
+        }
     }
 
     deinit {
@@ -54,6 +57,7 @@ public class NewTransferManager: ObservableObject {
 
     /// Add files to Upload Folder
     /// Return the content of the folder
+    @discardableResult
     public func addFiles(urls: [URL]) -> [DisplayableFile] {
         moveToTmp(files: urls)
         cleanTmpDir(type: .cache)
