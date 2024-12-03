@@ -33,7 +33,7 @@ struct UploadSuccessMailView: View {
                 image: STResourcesAsset.Images.beers.swiftUIImage,
                 title: TransferType.mail.successTitle,
                 subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription(recipients.count),
-                style: .largeEmptyState
+                style: .emptyState
             )
 
             FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
