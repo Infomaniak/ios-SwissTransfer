@@ -41,7 +41,7 @@ enum OnboardingText {
         result.font = .ST.specificTitleMedium
 
         if let argumentRange = result.range(of: argument) {
-            result[argumentRange].font = .ST.specificTitleMedium.weight(.heavy)
+            result[argumentRange].font = .ST.specificTitleMedium
         }
 
         return result
