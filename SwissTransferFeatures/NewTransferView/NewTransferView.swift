@@ -21,7 +21,6 @@ import InfomaniakDI
 import OSLog
 import STCore
 import STResources
-import STUploadProgressView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
