@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="364.0pt" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 375 364" width="375.0pt" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<radialGradient cx="0" cy="0" gradientTransform="matrix(-115.961 136.398 -140.694 -119.613 -7.07558 2.40717)" gradientUnits="userSpaceOnUse" id="RadialGradient" r="1">
+<stop offset="0.450361" stop-color="#e3f6dc"/>
+<stop offset="1" stop-color="#e3f6dc" stop-opacity="0"/>
+</radialGradient>
+</defs>
+<clipPath id="ArtboardFrame">
+<rect height="364" width="375" x="0" y="0"/>
+</clipPath>
+<g clip-path="url(#ArtboardFrame)" id="Sans-titre">
+<g opacity="1">
+<clipPath clip-rule="nonzero" id="ClipPath">
+<path d="M0 0L375 0L375 0L375 832L375 832L0 832L0 832L0 0L0 0Z"/>
+</clipPath>
+<g clip-path="url(#ClipPath)">
+<path d="M-182 2C-182-98.5158-100.516-180 0-180C100.516-180 182-98.5158 182 2C182 102.516 100.516 184 0 184C-100.516 184-182 102.516-182 2Z" fill="url(#RadialGradient)" fill-rule="nonzero" opacity="1" stroke="none"/>
+</g>
+</g>
+</g>
+</svg>

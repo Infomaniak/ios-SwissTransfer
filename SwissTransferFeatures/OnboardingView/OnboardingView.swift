@@ -16,33 +16,83 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import InfomaniakOnboarding
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+
+extension Slide {
+    static var onboardingSlides: [Slide] {
+        return [
+            Slide(
+                backgroundImage: STResourcesAsset.Images.onboardingBlurRight.image,
+                backgroundImageTintColor: nil,
+                content: .illustration(STResourcesAsset.Images.boxes.image),
+                bottomView: OnboardingTextView(text: .storage)
+            ),
+            Slide(
+                backgroundImage: STResourcesAsset.Images.onboardingBlurLeft.image,
+                backgroundImageTintColor: nil,
+                content: .illustration(STResourcesAsset.Images.sharingPhones.image),
+                bottomView: OnboardingTextView(text: .expiration)
+            ),
+            Slide(
+                backgroundImage: STResourcesAsset.Images.onboardingBlurRight.image,
+                backgroundImageTintColor: nil,
+                content: .illustration(STResourcesAsset.Images.locks.image),
+                bottomView: OnboardingTextView(text: .password)
+            )
+        ]
+    }
+}
 
 public struct OnboardingView: View {
     @LazyInjectService private var accountManager: AccountManager
 
     @EnvironmentObject private var rootViewState: RootViewState
 
+    @State private var selectedSlideIndex = 0
+
     public init() {}
 
     public var body: some View {
-        VStack {
-            Text("OnboardingView")
-            Button("Start") {
-                Task {
-                    await accountManager.createAndSetCurrentAccount()
-                    if let currentManager = await accountManager.getCurrentManager() {
-                        rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+        CarouselView(slides: Slide.onboardingSlides, selectedSlide: $selectedSlideIndex) { slideIndex in
+            if slideIndex == Slide.onboardingSlides.count - 1 {
+                Button(STResourcesStrings.Localizable.buttonStart) {
+                    Task {
+                        await accountManager.createAndSetCurrentAccount()
+                        if let currentManager = await accountManager.getCurrentManager() {
+                            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+                        }
                     }
                 }
+                .buttonStyle(.ikBorderedProminent)
+                .ikButtonFullWidth(true)
+                .controlSize(.large)
+                .padding(.horizontal, value: .medium)
+            } else {
+                Button {
+                    selectedSlideIndex += 1
+                } label: {
+                    Label {
+                        Text(STResourcesStrings.Localizable.buttonNext)
+                    } icon: {
+                        STResourcesAsset.Images.arrowRight.swiftUIImage
+                    }
+                    .labelStyle(.iconOnly)
+                }
+                .buttonStyle(.ikSquare)
             }
         }
+        .ignoresSafeArea()
     }
 }
 
 #Preview {
     OnboardingView()
+        .ikButtonTheme(.swissTransfer)
+        .tint(.ST.primary)
 }

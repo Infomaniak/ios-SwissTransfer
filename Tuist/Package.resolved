@@ -55,12 +55,30 @@
       }
     },
     {
+      "identity" : "ios-onboarding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-onboarding",
+      "state" : {
+        "revision" : "a436d9f66af5d66e9a1002e5be7c57cd2b0eceff",
+        "version" : "1.2.0"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
         "revision" : "2ef543ee21d63734e1c004ad6c870255e8716c50",
         "version" : "7.12.0"
+      }
+    },
+    {
+      "identity" : "lottie-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "state" : {
+        "revision" : "b842598f1295f3ffa1475b1580672d1fe5b83580",
+        "version" : "4.5.0"
       }
     },
     {
