@@ -42,7 +42,9 @@ struct SafeAreaButtonsModifier<Buttons: View>: ViewModifier {
                 }
                 .ikButtonFullWidth(true)
                 .controlSize(.large)
-                .padding(value: .medium)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, value: .medium)
+                .padding(.vertical, value: .intermediate)
                 .background(background)
             }
     }
