@@ -73,53 +73,48 @@ class TransferSessionManager: ObservableObject {
     }
 
     func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
-        do {
-            let filesSize = newUploadSession.files.reduce(0) { $0 + $1.size }
-            Task { @MainActor in
-                totalBytes = filesSize
-            }
-
-            overallProgress = Progress(totalUnitCount: filesSize)
-            overallProgress?
-                .publisher(for: \.completedUnitCount)
-                .receive(on: RunLoop.main)
-                .sink { [weak self] completedUnitCount in
-                    self?.completedBytes = completedUnitCount
-                }
-                .store(in: &cancellables)
-
-            let uploadManager = injection.uploadManager
-
-            let uploadSession = try await uploadManager.createAndGetUpload(newUploadSession: newUploadSession)
-
-            let uploadWithRemoteContainer = try await uploadManager.doInitUploadSession(
-                uuid: uploadSession.uuid,
-                recaptcha: "aabb"
-            )
-
-            guard let uploadWithRemoteContainer,
-                  let container = uploadWithRemoteContainer.remoteContainer else {
-                throw ErrorDomain.remoteContainerNotFound
-            }
-
-            let remoteUploadFiles = uploadWithRemoteContainer.files.compactMap { $0.remoteUploadFile }
-            assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "All files should have a remote upload file")
-
-            for (index, remoteUploadFile) in remoteUploadFiles.enumerated() {
-                let localFile = uploadWithRemoteContainer.files[index]
-
-                try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: uploadSession.uuid)
-            }
-
-            Logger.general.info("Found container: \(container.uuid)")
-
-            let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
-
-            return transferUUID
-        } catch {
-            Logger.general.error("Error trying to start upload: \(error)")
-            fatalError("Implement error handling")
+        let filesSize = newUploadSession.files.reduce(0) { $0 + $1.size }
+        Task { @MainActor in
+            totalBytes = filesSize
         }
+
+        overallProgress = Progress(totalUnitCount: filesSize)
+        overallProgress?
+            .publisher(for: \.completedUnitCount)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] completedUnitCount in
+                self?.completedBytes = completedUnitCount
+            }
+            .store(in: &cancellables)
+
+        let uploadManager = injection.uploadManager
+
+        let uploadSession = try await uploadManager.createAndGetUpload(newUploadSession: newUploadSession)
+
+        let uploadWithRemoteContainer = try await uploadManager.doInitUploadSession(
+            uuid: uploadSession.uuid,
+            recaptcha: "aabb"
+        )
+
+        guard let uploadWithRemoteContainer,
+              let container = uploadWithRemoteContainer.remoteContainer else {
+            throw ErrorDomain.remoteContainerNotFound
+        }
+
+        let remoteUploadFiles = uploadWithRemoteContainer.files.compactMap { $0.remoteUploadFile }
+        assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "All files should have a remote upload file")
+
+        for (index, remoteUploadFile) in remoteUploadFiles.enumerated() {
+            let localFile = uploadWithRemoteContainer.files[index]
+
+            try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: uploadSession.uuid)
+        }
+
+        Logger.general.info("Found container: \(container.uuid)")
+
+        let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
+
+        return transferUUID
     }
 
     private func uploadFile(atPath: String, toRemoteFile: any RemoteUploadFile, uploadUUID: String) async throws {

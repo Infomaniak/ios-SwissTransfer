@@ -27,50 +27,36 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    @StateObject private var newTransferManager: NewTransferManager
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var viewModel: RootTransferViewModel
+    @EnvironmentObject private var newTransferManager: NewTransferManager
 
     @State private var isLoadingFileToUpload = false
-    @State private var navigationPath = NavigationPath()
 
-    @State private var transferType = TransferType.qrCode
-    @State private var authorEmail = ""
-    @State private var recipientEmail = ""
-    @State private var message = ""
-    @State private var password = ""
-    @State private var validityPeriod = ValidityPeriod.thirty
-    @State private var downloadLimit = DownloadLimit.twoHundredFifty
-    @State private var emailLanguage = EmailLanguage.french
-
-    public init(urls: [URL]) {
-        let transferManager = NewTransferManager()
-        _ = transferManager.addFiles(urls: urls)
-        _newTransferManager = StateObject(wrappedValue: transferManager)
-    }
+    public init() {}
 
     public var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferFilesCellView()
                         .padding(.horizontal, value: .medium)
 
                     NewTransferDetailsView(
-                        authorEmail: $authorEmail,
-                        recipientEmail: $recipientEmail,
-                        message: $message,
-                        transferType: transferType
+                        authorEmail: $viewModel.authorEmail,
+                        recipientEmail: $viewModel.recipientEmail,
+                        message: $viewModel.message,
+                        transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
 
-                    NewTransferTypeView(transferType: $transferType)
+                    NewTransferTypeView(transferType: $viewModel.transferType)
 
                     NewTransferSettingsView(
-                        duration: $validityPeriod,
-                        limit: $downloadLimit,
-                        language: $emailLanguage,
-                        password: $password
+                        duration: $viewModel.validityPeriod,
+                        limit: $viewModel.downloadLimit,
+                        language: $viewModel.emailLanguage,
+                        password: $viewModel.password
                     )
                     .padding(.horizontal, value: .medium)
                 }
@@ -86,37 +72,14 @@ public struct NewTransferView: View {
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: NewUploadSession.self) { uploadSession in
-                RootUploadProgressView(transferType: transferType, uploadSession: uploadSession, dismiss: dismiss.callAsFunction)
-            }
             .navigationDestination(for: DisplayableFile.self) { file in
                 FileListView(parentFolder: file)
-                    .stNavigationBarNewTransfer(title: file.name)
-                    .stNavigationBarStyle()
             }
             .navigationDestination(for: DisplayableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
-                    .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
-                    .stNavigationBarStyle()
             }
         }
-        .onAppear(perform: initializeValuesFromSettings)
-        .environment(\.dismissModal) {
-            dismiss()
-        }
         .environmentObject(newTransferManager)
-    }
-
-    private func initializeValuesFromSettings() {
-        @InjectService var settingsManager: AppSettingsManager
-        guard let appSettings = settingsManager.getAppSettings() else { return }
-
-        transferType = appSettings.lastTransferType
-        authorEmail = appSettings.lastAuthorEmail ?? ""
-
-        validityPeriod = appSettings.validityPeriod
-        downloadLimit = appSettings.downloadLimit
-        emailLanguage = appSettings.emailLanguage
     }
 
     private func startUpload() {
@@ -124,29 +87,33 @@ public struct NewTransferView: View {
             isLoadingFileToUpload = true
 
             let recipientsEmail = [String]()
-            if transferType == .mail,
-               recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
-                recipientEmail.append(recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
+            if viewModel.transferType == .mail,
+               viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
+                viewModel.recipientEmail.append(viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
             }
 
             var authorTrimmedEmail = ""
-            if transferType == .mail {
-                authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            if viewModel.transferType == .mail {
+                authorTrimmedEmail = viewModel.authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
             }
 
             do {
                 let filesToUpload = try newTransferManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
-                    duration: validityPeriod,
+                    duration: viewModel.validityPeriod,
                     authorEmail: authorTrimmedEmail,
-                    password: password,
-                    message: message.trimmingCharacters(in: .whitespacesAndNewlines),
-                    numberOfDownload: downloadLimit,
-                    language: emailLanguage,
+                    password: viewModel.password,
+                    message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
+                    numberOfDownload: viewModel.downloadLimit,
+                    language: viewModel.emailLanguage,
                     recipientsEmails: recipientsEmail,
                     files: filesToUpload
                 )
-                navigationPath.append(newUploadSession)
+
+                viewModel.newUploadSession = newUploadSession
+                withAnimation {
+                    rootTransferViewState.state = .uploadProgress(newUploadSession)
+                }
             } catch {
                 Logger.general.error("Error getting files to upload \(error.localizedDescription)")
             }
@@ -157,5 +124,8 @@ public struct NewTransferView: View {
 }
 
 #Preview {
-    NewTransferView(urls: [])
+    NewTransferView()
+        .environmentObject(RootTransferViewState())
+        .environmentObject(RootTransferViewModel())
+        .environmentObject(NewTransferManager())
 }

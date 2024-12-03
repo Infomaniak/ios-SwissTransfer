@@ -21,8 +21,13 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct UploadErrorView: View {
-    var body: some View {
+public struct UploadErrorView: View {
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
+
+    public init() {}
+
+    public var body: some View {
         IllustrationAndTextView(
             image: STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
             title: STResourcesStrings.Localizable.uploadErrorTitle,
@@ -32,8 +37,10 @@ struct UploadErrorView: View {
         .padding(value: .medium)
         .scrollableEmptyState()
         .safeAreaButtons {
-            Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
-                .buttonStyle(.ikBorderedProminent)
+            if rootTransferViewModel.newUploadSession != nil {
+                Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
+                    .buttonStyle(.ikBorderedProminent)
+            }
             Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                 .buttonStyle(.ikBordered)
         }
@@ -41,9 +48,14 @@ struct UploadErrorView: View {
         .stIconNavigationBar()
     }
 
-    private func retryTransfer() {}
+    private func retryTransfer() {
+        guard let newUploadSession = rootTransferViewModel.newUploadSession else { return }
+        rootTransferViewState.state = .uploadProgress(newUploadSession)
+    }
 
-    private func editTransfer() {}
+    private func editTransfer() {
+        rootTransferViewState.state = .newTransfer
+    }
 }
 
 #Preview {

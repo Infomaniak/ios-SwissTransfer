@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OSLog
 import STCore
 import STNetwork
 import STResources
@@ -24,74 +25,73 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-struct UploadProgressView: View {
-    @Environment(\.dismissModal) private var dismissModal
-    @EnvironmentObject private var transferManager: TransferManager
+public struct UploadProgressView: View {
+    private static let emptyStateStyle = IllustrationAndTextView.Style.largeEmptyState
+
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
-    @Binding var transferUUID: String?
-    @Binding var error: Error?
+    private let uploadSession: NewUploadSession
 
-    let transferType: TransferType
-    let uploadSession: NewUploadSession
+    public init(uploadSession: NewUploadSession) {
+        self.uploadSession = uploadSession
+    }
 
-    private let emptyStateStyle = IllustrationAndTextView.Style.largeEmptyState
+    public var body: some View {
+        NavigationStack {
+            VStack(spacing: IKPadding.medium) {
+                UploadProgressHeaderView(subtitle: uploadProgressAd.description)
+                    .frame(maxWidth: Self.emptyStateStyle.textMaxWidth)
 
-    var body: some View {
-        VStack(spacing: IKPadding.medium) {
-            UploadProgressHeaderView(subtitle: uploadProgressAd.description)
-                .frame(maxWidth: emptyStateStyle.textMaxWidth)
+                uploadProgressAd.image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: Self.emptyStateStyle.imageMaxWidth, maxHeight: .infinity)
+            }
+            .padding(.horizontal, value: .medium)
+            .padding(.top, value: .large)
+            .scrollableEmptyState()
+            .background(Color.ST.background)
+            .safeAreaButtons(spacing: 32) {
+                UploadProgressIndicationView(
+                    completedBytes: transferSessionManager.completedBytes,
+                    totalBytes: transferSessionManager.totalBytes
+                )
 
-            uploadProgressAd.image
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: emptyStateStyle.imageMaxWidth)
+                Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
+                    .buttonStyle(.ikBorderedProminent)
+            }
+            .stIconNavigationBar()
+            .navigationBarBackButtonHidden()
+            .task(startUpload)
         }
-        .padding(.horizontal, value: .medium)
-        .padding(.top, value: .large)
-        .scrollableEmptyState()
-        .background(Color.ST.background)
-        .safeAreaButtons(spacing: 32) {
-            UploadProgressIndicationView(
-                completedBytes: transferSessionManager.completedBytes,
-                totalBytes: transferSessionManager.totalBytes
-            )
-
-            Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
-                .buttonStyle(.ikBorderedProminent)
-        }
-        .stIconNavigationBar()
-        .navigationBarBackButtonHidden()
-        .task(startUpload)
     }
 
     @Sendable private func startUpload() async {
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
             withAnimation {
-                self.transferUUID = transferUUID
+                rootTransferViewState.state = .success(transferUUID)
             }
         } catch {
+            Logger.general.error("Error trying to start upload: \(error)")
             withAnimation {
-                self.error = error
+                rootTransferViewState.state = .error
             }
         }
     }
 
     private func cancelTransfer() {
         // TODO: Cancel Transfer
-        dismissModal()
+        dismiss()
     }
 }
 
 #Preview {
-    UploadProgressView(
-        transferUUID: .constant(nil),
-        error: .constant(nil),
-        transferType: .qrCode,
-        uploadSession: PreviewHelper.sampleNewUploadSession
-    )
+    UploadProgressView(uploadSession: PreviewHelper.sampleNewUploadSession)
+        .environmentObject(RootTransferViewModel())
 }
