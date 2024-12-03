@@ -21,7 +21,7 @@ import QuickLookThumbnailing
 import SwiftUI
 
 public enum ThumbnailGenerator {
-    public static func generate(for url: URL?, cgSize: CGSize) async -> Image? {
+    public static func generate(for url: URL?, scale: CGFloat, cgSize: CGSize) async -> Image? {
         guard let url else { return nil }
 
         let size = cgSize
@@ -29,7 +29,7 @@ public enum ThumbnailGenerator {
         let request = QLThumbnailGenerator.Request(
             fileAt: url,
             size: size,
-            scale: 1,
+            scale: scale,
             representationTypes: .thumbnail
         )
 
@@ -37,7 +37,7 @@ public enum ThumbnailGenerator {
             let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
             return Image(uiImage: thumbnail.uiImage)
         } catch {
-            Logger.general.error("An error occured while generating a thumbnail: \(error)")
+            Logger.general.error("An error occurred while generating a thumbnail: \(error)")
         }
         return nil
     }
