@@ -56,33 +56,29 @@ struct CarouselView<BottomView: View>: UIViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(slides: slides, selectedSlide: $selectedSlide, bottomView: bottomView)
+        return Coordinator(parent: self)
     }
 
     class Coordinator: OnboardingViewControllerDelegate {
-        let slides: [Slide]
-        let selectedSlide: Binding<Int>
-        let bottomView: (Int) -> BottomView
+        let parent: CarouselView<BottomView>
 
-        init(slides: [Slide], selectedSlide: Binding<Int>, bottomView: @escaping (Int) -> BottomView) {
-            self.slides = slides
-            self.selectedSlide = selectedSlide
-            self.bottomView = bottomView
+        init(parent: CarouselView<BottomView>) {
+            self.parent = parent
         }
 
         func bottomViewForIndex(_ index: Int) -> (any View)? {
-            return bottomView(index)
+            return parent.bottomView(index)
         }
 
         func shouldAnimateBottomViewForIndex(_ index: Int) -> Bool {
-            return index == slides.count - 1
+            return index == parent.slides.count - 1
         }
 
         func willDisplaySlideViewCell(_ slideViewCell: SlideCollectionViewCell, at index: Int) {}
 
         func currentIndexChanged(newIndex: Int) {
             Task { @MainActor in
-                selectedSlide.wrappedValue = newIndex
+                parent.$selectedSlide.wrappedValue = newIndex
             }
         }
     }
