@@ -17,25 +17,19 @@
  */
 
 import SwiftUI
+import SwissTransferCoreUI
 
 struct STNavigationBarNewTransferModifier: ViewModifier {
-    @Environment(\.dismissModal) private var dismissModal
+    @Environment(\.dismiss) private var dismiss
 
     let title: String
 
     func body(content: Content) -> some View {
         content
+            .stNavigationTitle(title)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(title)
-                        .font(.ST.title2)
-                        .foregroundStyle(.white)
-                }
-
                 ToolbarItem(placement: .destructiveAction) {
-                    Button {
-                        dismissModal()
-                    } label: {
+                    Button(action: dismiss.callAsFunction) {
                         Image(systemName: "xmark")
                     }
                 }
