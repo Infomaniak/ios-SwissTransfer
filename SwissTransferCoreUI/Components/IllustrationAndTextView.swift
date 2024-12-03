@@ -22,22 +22,12 @@ import SwiftUI
 
 public extension IllustrationAndTextView {
     enum Style {
-        case largeEmptyState
         case emptyState
         case bottomSheet
 
-        public var imageMaxWidth: CGFloat {
-            switch self {
-            case .largeEmptyState:
-                return 400
-            case .emptyState, .bottomSheet:
-                return 300
-            }
-        }
-
         public var textMaxWidth: CGFloat? {
             switch self {
-            case .largeEmptyState, .emptyState:
+            case .emptyState:
                 return 300
             case .bottomSheet:
                 return nil
@@ -62,9 +52,7 @@ public struct IllustrationAndTextView: View {
     public var body: some View {
         VStack(spacing: 32) {
             image
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: style.imageMaxWidth)
+                .imageThatFits()
 
             VStack(spacing: IKPadding.medium) {
                 Text(title)

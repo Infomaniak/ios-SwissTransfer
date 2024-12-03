@@ -21,6 +21,8 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct UploadProgressHeaderView: View {
+    let subtitle: AttributedString
+
     private var title: AttributedString {
         var result = AttributedString(STResourcesStrings.Localizable.uploadProgressTitleTemplate(
             STResourcesStrings.Localizable.uploadProgressTitleArgument
@@ -32,8 +34,6 @@ struct UploadProgressHeaderView: View {
 
         return result
     }
-
-    let subtitle: AttributedString
 
     var body: some View {
         VStack(spacing: 32) {
