@@ -190,7 +190,7 @@ struct TransferManagerWorker {
         }
 
         var uploadRequest = URLRequest(url: chunkURL)
-        uploadRequest.httpMethod = "POST"
+        uploadRequest.httpMethod = Method.POST.rawValue
 
         let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
         overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
