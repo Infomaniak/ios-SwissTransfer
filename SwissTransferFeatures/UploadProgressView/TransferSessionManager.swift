@@ -58,6 +58,7 @@ class TransferSessionManager: ObservableObject {
         case invalidURL(rawURL: String)
         case invalidUploadChunkURL
         case invalidChunk
+        case invalidRange
         case invalidResponse
         case invalidChunkResponse
     }
@@ -135,10 +136,13 @@ struct TransferManagerWorker {
 
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
 
-        let ranges = try rangeProvider.allRanges
+        var ranges = try rangeProvider.allRanges
+
+        guard let lastRange = ranges.popLast() else {
+            throw TransferSessionManager.ErrorDomain.invalidRange
+        }
 
         try await ranges
-            .dropLast()
             .enumerated()
             .map { ($0, $1) }
             .concurrentForEach(customConcurrency: 4) { index, range in
@@ -155,13 +159,13 @@ struct TransferManagerWorker {
                 )
             }
 
-        guard let lastChunk = try chunkReader.readChunk(range: ranges[ranges.count - 1]) else {
+        guard let lastChunk = try chunkReader.readChunk(range: lastRange) else {
             throw TransferSessionManager.ErrorDomain.invalidChunk
         }
 
         try await uploadChunk(
             chunk: lastChunk,
-            index: ranges.count - 1,
+            index: ranges.count,
             isLastChunk: true,
             remoteUploadFileUUID: remoteUploadFileUUID,
             uploadUUID: uploadUUID
