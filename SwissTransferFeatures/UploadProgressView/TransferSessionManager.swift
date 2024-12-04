@@ -16,9 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import AsyncCollections
 import Combine
 import Foundation
-import InfomaniakConcurrency
 import InfomaniakCore
 import InfomaniakDI
 import OSLog
@@ -56,6 +56,8 @@ class TransferSessionManager: ObservableObject {
     private var overallProgress: Progress?
 
     private var cancellables: Set<AnyCancellable> = []
+
+    private let semaphore = AsyncSemaphore(value: 4)
 
     private static let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -107,10 +109,10 @@ class TransferSessionManager: ObservableObject {
 
         try await remoteUploadFiles.enumerated()
             .map { (uploadWithRemoteContainer.files[$0.offset], $0.element) }
-            .concurrentMap { localFile, remoteUploadFile in
+            .concurrentForEach { localFile, remoteUploadFile in
                 try await self.uploadFile(
                     atPath: localFile.localPath,
-                    toRemoteFile: remoteUploadFile,
+                    remoteUploadFileUUID: remoteUploadFile.uuid,
                     uploadUUID: uploadSession.uuid
                 )
             }
@@ -122,7 +124,7 @@ class TransferSessionManager: ObservableObject {
         return transferUUID
     }
 
-    private func uploadFile(atPath: String, toRemoteFile: any RemoteUploadFile, uploadUUID: String) async throws {
+    private func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
         guard let fileURL = URL(string: atPath) else {
             throw ErrorDomain.invalidURL(rawURL: atPath)
         }
@@ -135,28 +137,66 @@ class TransferSessionManager: ObservableObject {
         }
 
         var index: Int32 = 0
-        while let chunk = chunkProvider.next() {
-            guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
-                uploadUUID: uploadUUID,
-                fileUUID: toRemoteFile.uuid,
-                chunkIndex: index,
-                isLastChunk: index == ranges.count - 1
-            ) else {
-                throw ErrorDomain.invalidUploadChunkURL
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            while let chunk = chunkProvider.next() {
+                try await semaphore.wait()
+
+                let isLastChunk = index == ranges.count - 1
+                if !isLastChunk {
+                    group.addTask {
+                        try await self.uploadChunk(
+                            chunk: chunk,
+                            index: index,
+                            isLastChunk: isLastChunk,
+                            remoteUploadFileUUID: remoteUploadFileUUID,
+                            uploadUUID: uploadUUID
+                        )
+                        self.semaphore.signal()
+                    }
+                } else {
+                    try await group.waitForAll()
+
+                    try await self.uploadChunk(
+                        chunk: chunk,
+                        index: index,
+                        isLastChunk: isLastChunk,
+                        remoteUploadFileUUID: remoteUploadFileUUID,
+                        uploadUUID: uploadUUID
+                    )
+                    self.semaphore.signal()
+                }
+
+                index += 1
             }
-
-            guard let chunkURL = URL(string: rawChunkURL) else {
-                throw ErrorDomain.invalidURL(rawURL: rawChunkURL)
-            }
-
-            var uploadRequest = URLRequest(url: chunkURL)
-            uploadRequest.httpMethod = "POST"
-
-            let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
-            overallProgress?.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
-            try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
-
-            index += 1
         }
+    }
+
+    func uploadChunk(
+        chunk: Data,
+        index: Int32,
+        isLastChunk: Bool,
+        remoteUploadFileUUID: String,
+        uploadUUID: String
+    ) async throws {
+        guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
+            uploadUUID: uploadUUID,
+            fileUUID: remoteUploadFileUUID,
+            chunkIndex: index,
+            isLastChunk: isLastChunk
+        ) else {
+            throw ErrorDomain.invalidUploadChunkURL
+        }
+
+        guard let chunkURL = URL(string: rawChunkURL) else {
+            throw ErrorDomain.invalidURL(rawURL: rawChunkURL)
+        }
+
+        var uploadRequest = URLRequest(url: chunkURL)
+        uploadRequest.httpMethod = "POST"
+
+        let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
+        overallProgress?.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
+
+        let _ = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
     }
 }

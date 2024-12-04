@@ -12,7 +12,7 @@ let transferList = Feature(name: "TransferList")
 
 let newTransferView = Feature(name: "NewTransferView")
 let uploadProgressView = Feature(name: "UploadProgressView", additionalDependencies: [
-    TargetDependency.external(name: "InfomaniakConcurrency")
+    TargetDependency.external(name: "AsyncCollections")
 ])
 
 let rootTransferView = Feature(name: "RootTransferView", dependencies: [newTransferView, uploadProgressView])
