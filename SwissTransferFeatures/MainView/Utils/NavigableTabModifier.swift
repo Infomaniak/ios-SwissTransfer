@@ -20,6 +20,7 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+// periphery:ignore - Used in navigableTab
 struct NavigableTabModifier: ViewModifier {
     @EnvironmentObject private var mainViewState: MainViewState
 
@@ -42,6 +43,7 @@ struct NavigableTabModifier: ViewModifier {
 }
 
 extension View {
+    // periphery:ignore - Used in STTabModifier
     func navigableTab(_ tab: STTab) -> some View {
         modifier(NavigableTabModifier(tab: tab))
     }

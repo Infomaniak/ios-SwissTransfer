@@ -21,10 +21,12 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferTextFieldStyle: TextFieldStyle {
+    // periphery:ignore - Focus state is used
     @FocusState private var isFocused: Bool
 
     var height: CGFloat?
 
+    // periphery:ignore - Protocol uses private symbol
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .focused($isFocused)
