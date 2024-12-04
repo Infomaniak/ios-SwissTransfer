@@ -22,7 +22,6 @@ import InfomaniakDI
 import OSLog
 import STCore
 
-private let appIdentifierPrefix = Bundle.main.infoDictionary!["AppIdentifierPrefix"] as! String
 private let appGroupIdentifier = "group.com.infomaniak.swisstransfer"
 
 public extension UserDefaults {

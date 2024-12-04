@@ -109,6 +109,7 @@ struct SecurityCodeTextField: View {
 struct SecurityCodeTextFieldStyle: TextFieldStyle {
     let style: SecurityCodeFieldStyle
 
+    // periphery:ignore - Protocol uses private symbol
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .keyboardType(.numberPad)

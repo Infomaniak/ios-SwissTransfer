@@ -17,7 +17,6 @@
  */
 
 import SwiftUI
-import SwissTransferCoreUI
 
 struct STNavigationBarNewTransferModifier: ViewModifier {
     @Environment(\.dismiss) private var dismiss

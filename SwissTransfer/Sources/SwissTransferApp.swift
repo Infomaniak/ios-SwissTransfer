@@ -27,7 +27,9 @@ import SwissTransferCoreUI
 
 @main
 struct SwissTransferApp: App {
+    // periphery:ignore - Making sure the Sentry is initialized at a very early stage of the app launch.
     private let sentryService = SentryService()
+    // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
     private let dependencyInjectionHook = TargetAssembly()
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
