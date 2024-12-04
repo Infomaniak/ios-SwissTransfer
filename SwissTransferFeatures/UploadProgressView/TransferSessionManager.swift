@@ -16,9 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import AsyncCollections
 import Combine
 import Foundation
+import InfomaniakConcurrency
 import InfomaniakCore
 import InfomaniakDI
 import OSLog
@@ -57,7 +57,7 @@ class TransferSessionManager: ObservableObject {
         case remoteContainerNotFound
         case invalidURL(rawURL: String)
         case invalidUploadChunkURL
-        case invalidRangeCompute
+        case invalidChunk
         case invalidResponse
         case invalidChunkResponse
     }
@@ -96,7 +96,7 @@ class TransferSessionManager: ObservableObject {
 
         try await remoteUploadFiles.enumerated()
             .map { (uploadWithRemoteContainer.files[$0.offset], $0.element) }
-            .concurrentForEach { localFile, remoteUploadFile in
+            .asyncForEach { localFile, remoteUploadFile in
                 try await transferManagerWorker.uploadFile(
                     atPath: localFile.localPath,
                     remoteUploadFileUUID: remoteUploadFile.uuid,
@@ -115,7 +115,6 @@ class TransferSessionManager: ObservableObject {
 struct TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let uploadURLSession = URLSession.shared
-    private let parallelChunksSemaphore = AsyncSemaphore(value: maxParallelUploads)
 
     private let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -129,55 +128,49 @@ struct TransferManagerWorker {
     let overallProgress: Progress
 
     func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: atPath) else {
+        guard let fileURL = URL(string: atPath),
+              let chunkReader = ChunkReader(fileURL: fileURL) else {
             throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: atPath)
         }
 
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
 
         let ranges = try rangeProvider.allRanges
-        guard let chunkProvider = ChunkProvider(fileURL: fileURL, ranges: ranges) else {
-            throw TransferSessionManager.ErrorDomain.invalidRangeCompute
-        }
 
-        var index: Int32 = 0
-        try await withThrowingTaskGroup(of: Void.self) { group in
-            while let chunk = chunkProvider.next() {
-                try await parallelChunksSemaphore.wait()
-
-                let isLastChunk = index == ranges.count - 1
-                if !isLastChunk {
-                    group.addTask {
-                        try await uploadChunk(
-                            chunk: chunk,
-                            index: index,
-                            isLastChunk: isLastChunk,
-                            remoteUploadFileUUID: remoteUploadFileUUID,
-                            uploadUUID: uploadUUID
-                        )
-                        parallelChunksSemaphore.signal()
-                    }
-                } else {
-                    try await group.waitForAll()
-
-                    try await uploadChunk(
-                        chunk: chunk,
-                        index: index,
-                        isLastChunk: isLastChunk,
-                        remoteUploadFileUUID: remoteUploadFileUUID,
-                        uploadUUID: uploadUUID
-                    )
-                    parallelChunksSemaphore.signal()
+        try await ranges
+            .dropLast()
+            .enumerated()
+            .map { ($0, $1) }
+            .concurrentForEach(customConcurrency: 4) { index, range in
+                guard let chunk = try chunkReader.readChunk(range: range) else {
+                    throw TransferSessionManager.ErrorDomain.invalidChunk
                 }
 
-                index += 1
+                try await uploadChunk(
+                    chunk: chunk,
+                    index: index,
+                    isLastChunk: false,
+                    remoteUploadFileUUID: remoteUploadFileUUID,
+                    uploadUUID: uploadUUID
+                )
             }
+
+        guard let lastChunk = try chunkReader.readChunk(range: ranges[ranges.count - 1]) else {
+            throw TransferSessionManager.ErrorDomain.invalidChunk
         }
+
+        try await uploadChunk(
+            chunk: lastChunk,
+            index: ranges.count - 1,
+            isLastChunk: true,
+            remoteUploadFileUUID: remoteUploadFileUUID,
+            uploadUUID: uploadUUID
+        )
     }
 
     func uploadChunk(
         chunk: Data,
-        index: Int32,
+        index: Int,
         isLastChunk: Bool,
         remoteUploadFileUUID: String,
         uploadUUID: String
@@ -186,7 +179,7 @@ struct TransferManagerWorker {
         guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
             uploadUUID: uploadUUID,
             fileUUID: remoteUploadFileUUID,
-            chunkIndex: index,
+            chunkIndex: Int32(index),
             isLastChunk: isLastChunk
         ) else {
             throw TransferSessionManager.ErrorDomain.invalidUploadChunkURL
