@@ -18,6 +18,7 @@
 
 import Combine
 import Foundation
+import InfomaniakConcurrency
 import InfomaniakCore
 import InfomaniakDI
 import OSLog
@@ -50,36 +51,24 @@ class TransferSessionManager: ObservableObject {
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
 
-    private let uploadURLSession = URLSession.shared
-
-    private var overallProgress: Progress?
-
     private var cancellables: Set<AnyCancellable> = []
-
-    private static let rangeProviderConfig = RangeProvider.Config(
-        chunkMinSize: 50 * 1024 * 1024,
-        chunkMaxSizeClient: 50 * 1024 * 1024,
-        chunkMaxSizeServer: 50 * 1024 * 1024,
-        optimalChunkCount: 200,
-        maxTotalChunks: 10000,
-        minTotalChunks: 1
-    )
 
     enum ErrorDomain: Error {
         case remoteContainerNotFound
         case invalidURL(rawURL: String)
         case invalidUploadChunkURL
-        case invalidRangeCompute
+        case invalidChunk
+        case invalidRange
+        case invalidResponse
+        case invalidChunkResponse
     }
 
     func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
         let filesSize = newUploadSession.files.reduce(0) { $0 + $1.size }
-        Task { @MainActor in
-            totalBytes = filesSize
-        }
+        totalBytes = filesSize
 
-        overallProgress = Progress(totalUnitCount: filesSize)
-        overallProgress?
+        let overallProgress = Progress(totalUnitCount: filesSize)
+        overallProgress
             .publisher(for: \.completedUnitCount)
             .receive(on: RunLoop.main)
             .sink { [weak self] completedUnitCount in
@@ -104,11 +93,17 @@ class TransferSessionManager: ObservableObject {
         let remoteUploadFiles = uploadWithRemoteContainer.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "All files should have a remote upload file")
 
-        for (index, remoteUploadFile) in remoteUploadFiles.enumerated() {
-            let localFile = uploadWithRemoteContainer.files[index]
+        let transferManagerWorker = TransferManagerWorker(overallProgress: overallProgress)
 
-            try await uploadFile(atPath: localFile.localPath, toRemoteFile: remoteUploadFile, uploadUUID: uploadSession.uuid)
-        }
+        try await remoteUploadFiles.enumerated()
+            .map { (uploadWithRemoteContainer.files[$0.offset], $0.element) }
+            .asyncForEach { localFile, remoteUploadFile in
+                try await transferManagerWorker.uploadFile(
+                    atPath: localFile.localPath,
+                    remoteUploadFileUUID: remoteUploadFile.uuid,
+                    uploadUUID: uploadSession.uuid
+                )
+            }
 
         Logger.general.info("Found container: \(container.uuid)")
 
@@ -116,46 +111,101 @@ class TransferSessionManager: ObservableObject {
 
         return transferUUID
     }
+}
 
-    private func uploadFile(atPath: String, toRemoteFile: any RemoteUploadFile, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: atPath) else {
-            throw ErrorDomain.invalidURL(rawURL: atPath)
+struct TransferManagerWorker {
+    private static let maxParallelUploads = 4
+    private let uploadURLSession = URLSession.shared
+
+    private let rangeProviderConfig = RangeProvider.Config(
+        chunkMinSize: 50 * 1024 * 1024,
+        chunkMaxSizeClient: 50 * 1024 * 1024,
+        chunkMaxSizeServer: 50 * 1024 * 1024,
+        optimalChunkCount: 200,
+        maxTotalChunks: 10000,
+        minTotalChunks: 1
+    )
+
+    let overallProgress: Progress
+
+    func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
+        guard let fileURL = URL(string: atPath),
+              let chunkReader = ChunkReader(fileURL: fileURL) else {
+            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: atPath)
         }
 
-        let rangeProvider = RangeProvider(fileURL: fileURL, config: TransferSessionManager.rangeProviderConfig)
+        let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
 
-        let ranges = try rangeProvider.allRanges
-        guard let chunkProvider = ChunkProvider(fileURL: fileURL, ranges: ranges) else {
-            throw ErrorDomain.invalidRangeCompute
+        var ranges = try rangeProvider.allRanges
+
+        guard let lastRange = ranges.popLast() else {
+            throw TransferSessionManager.ErrorDomain.invalidRange
         }
 
-        let rangeCount = ranges.reduce(0) { $0 + $1.count }
-        let fileProgress = Progress(totalUnitCount: Int64(rangeCount))
-        overallProgress?.addChild(fileProgress, withPendingUnitCount: Int64(rangeCount))
+        try await ranges
+            .enumerated()
+            .map { ($0, $1) }
+            .concurrentForEach(customConcurrency: 4) { index, range in
+                guard let chunk = try chunkReader.readChunk(range: range) else {
+                    throw TransferSessionManager.ErrorDomain.invalidChunk
+                }
 
-        var index: Int32 = 0
-        while let chunk = chunkProvider.next() {
-            guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
-                uploadUUID: uploadUUID,
-                fileUUID: toRemoteFile.uuid,
-                chunkIndex: index,
-                isLastChunk: index == ranges.count - 1
-            ) else {
-                throw ErrorDomain.invalidUploadChunkURL
+                try await uploadChunk(
+                    chunk: chunk,
+                    index: index,
+                    isLastChunk: false,
+                    remoteUploadFileUUID: remoteUploadFileUUID,
+                    uploadUUID: uploadUUID
+                )
             }
 
-            guard let chunkURL = URL(string: rawChunkURL) else {
-                throw ErrorDomain.invalidURL(rawURL: rawChunkURL)
-            }
+        guard let lastChunk = try chunkReader.readChunk(range: lastRange) else {
+            throw TransferSessionManager.ErrorDomain.invalidChunk
+        }
 
-            var uploadRequest = URLRequest(url: chunkURL)
-            uploadRequest.httpMethod = "POST"
+        try await uploadChunk(
+            chunk: lastChunk,
+            index: ranges.count,
+            isLastChunk: true,
+            remoteUploadFileUUID: remoteUploadFileUUID,
+            uploadUUID: uploadUUID
+        )
+    }
 
-            let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
-            fileProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
-            try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
+    func uploadChunk(
+        chunk: Data,
+        index: Int,
+        isLastChunk: Bool,
+        remoteUploadFileUUID: String,
+        uploadUUID: String
+    ) async throws {
+        @InjectService var injection: SwissTransferInjection
+        guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
+            uploadUUID: uploadUUID,
+            fileUUID: remoteUploadFileUUID,
+            chunkIndex: Int32(index),
+            isLastChunk: isLastChunk
+        ) else {
+            throw TransferSessionManager.ErrorDomain.invalidUploadChunkURL
+        }
 
-            index += 1
+        guard let chunkURL = URL(string: rawChunkURL) else {
+            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: rawChunkURL)
+        }
+
+        var uploadRequest = URLRequest(url: chunkURL)
+        uploadRequest.httpMethod = Method.POST.rawValue
+
+        let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
+        overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
+
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw TransferSessionManager.ErrorDomain.invalidResponse
+        }
+
+        if httpResponse.statusCode >= 400 {
+            throw TransferSessionManager.ErrorDomain.invalidChunkResponse
         }
     }
 }

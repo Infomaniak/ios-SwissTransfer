@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "b0f5bec222ba2086d6b8719953d1744b31d4ae32",
-        "version" : "12.6.0"
+        "revision" : "1a9e9a9e86e5d9ffb685d9343bb76965c301656f",
+        "version" : "12.7.0"
       }
     },
     {
@@ -160,6 +160,15 @@
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "swift-concurrency",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/swift-concurrency",
+      "state" : {
+        "revision" : "55fe7541cbfcfb4b73e7836b390e2c566a9ba910",
+        "version" : "0.0.6"
       }
     },
     {
