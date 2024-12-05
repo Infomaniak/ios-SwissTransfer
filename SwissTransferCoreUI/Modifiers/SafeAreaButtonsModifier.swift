@@ -21,31 +21,26 @@ import SwiftUI
 
 public extension View {
     func safeAreaButtons<Buttons: View>(
-        spacing: CGFloat = IKPadding.medium,
+        spacing: CGFloat = BottomButtonsConstants.spacing,
         background: Color = Color.ST.background,
-        @ViewBuilder content: () -> Buttons
+        @ViewBuilder content: @escaping () -> Buttons
     ) -> some View {
-        modifier(SafeAreaButtonsModifier(spacing: spacing, background: background, buttons: content()))
+        modifier(SafeAreaButtonsModifier(spacing: spacing, background: background, buttons: content))
     }
 }
 
 struct SafeAreaButtonsModifier<Buttons: View>: ViewModifier {
     let spacing: CGFloat
     let background: Color
-    let buttons: Buttons
+    @ViewBuilder let buttons: () -> Buttons
 
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                VStack(spacing: spacing) {
-                    buttons
-                }
-                .ikButtonFullWidth(true)
-                .controlSize(.large)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, value: .medium)
-                .padding(.vertical, value: .intermediate)
-                .background(background)
+                BottomButtonsView(spacing: spacing, buttons: buttons)
+                    .padding(.top, BottomButtonsConstants.paddingBottom)
+                    .frame(maxWidth: .infinity)
+                    .background(background)
             }
     }
 }
