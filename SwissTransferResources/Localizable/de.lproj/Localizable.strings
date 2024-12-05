@@ -16,6 +16,12 @@
 /* loco:671f9576e0d073bd6b0ccfa2 */
 "buttonCancel" = "Abbrechen";
 
+/* loco:6721e8f6b18493385d00ec52 */
+"buttonCancelTransfer" = "Übertragung abbrechen";
+
+/* loco:6721eccd0752504a0d064d02 */
+"buttonCloseAndContinue" = "Schliessen und weiter";
+
 /* loco:6707f83845c44bad7f0d7805 */
 "buttonConfirm" = "Bestätigen";
 
@@ -366,6 +372,9 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Foto- und Videogalerie";
+
+/* loco:672104c0398a368f6308c152 */
+"uploadCancelConfirmBottomSheetTitle" = "Bist du dir sicher, dass du die Überweisung rückgängig machen willst?";
 
 /* loco:6729e40f3f0d68fc7e03bab2 */
 "uploadErrorDescription" = "Die Übertragung hat nicht funktioniert, gib ihr noch eine Chance. Wenn das Problem weiterhin besteht, wende dich an unseren Support.";
