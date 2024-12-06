@@ -24,13 +24,22 @@ import STCore
 public struct UniversalLinkHandler {
     public init() {}
 
-    public func handlePossibleTransferURL(_ url: URL) async throws {
+    public func handlePossibleTransferURL(_ url: URL) async throws -> TransferUi? {
         @InjectService var accountManager: AccountManager
 
-        guard let defaultTransferManager = await accountManager.getCurrentManager() else {
-            return
+        var defaultTransferManager = await accountManager.getCurrentManager()
+
+        if defaultTransferManager == nil {
+            await accountManager.createAndSetCurrentAccount()
+            defaultTransferManager = await accountManager.getCurrentManager()
         }
 
-        try await defaultTransferManager.addTransferByUrl(url: url.path, password: nil)
+        guard let transferUUID = try await defaultTransferManager?.addTransferByUrl(url: url.path, password: nil) else {
+            return nil
+        }
+
+        let transfer = defaultTransferManager?.getTransferByUUID(transferUUID: transferUUID)
+
+        return transfer
     }
 }

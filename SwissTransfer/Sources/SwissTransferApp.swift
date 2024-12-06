@@ -33,6 +33,7 @@ struct SwissTransferApp: App {
     private let dependencyInjectionHook = TargetAssembly()
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
+    @StateObject private var universalLinksState = UniversalLinksState()
 
     private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
@@ -51,6 +52,7 @@ struct SwissTransferApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environmentObject(universalLinksState)
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
@@ -62,7 +64,11 @@ struct SwissTransferApp: App {
     func handleURL(_ url: URL) {
         Task {
             do {
-                try await UniversalLinkHandler().handlePossibleTransferURL(url)
+                guard let addedTransfer = try await UniversalLinkHandler().handlePossibleTransferURL(url) else {
+                    return
+                }
+
+                universalLinksState.linkedTransfer = addedTransfer
             } catch {
                 Logger.view.error("Error while handling URL: \(error.localizedDescription)")
                 throw UserFacingError.badTransferURL
