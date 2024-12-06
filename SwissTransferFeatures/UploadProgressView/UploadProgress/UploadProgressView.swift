@@ -47,7 +47,7 @@ public struct UploadProgressView: View {
 
                 uploadProgressAd.image
                     .imageThatFits()
-                    .frame(maxWidth: .infinity)
+                    .frame(maxHeight: .infinity)
             }
             .padding(.horizontal, value: .medium)
             .padding(.top, value: .large)
@@ -69,12 +69,15 @@ public struct UploadProgressView: View {
     }
 
     @Sendable private func startUpload() async {
+        print("START UPLOAD")
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
             withAnimation {
                 rootTransferViewState.state = .success(transferUUID)
             }
         } catch {
+            guard (error as NSError).code != NSURLErrorCancelled else { return }
+
             Logger.general.error("Error trying to start upload: \(error)")
             withAnimation {
                 rootTransferViewState.state = .error
@@ -83,8 +86,8 @@ public struct UploadProgressView: View {
     }
 
     private func cancelTransfer() {
-        // TODO: Cancel Transfer
-        dismiss()
+        guard let currentUploadUUID = transferSessionManager.currentUploadUUID else { return }
+        rootTransferViewState.cancelUpload = CurrentUploadContainer(uuid: currentUploadUUID)
     }
 }
 

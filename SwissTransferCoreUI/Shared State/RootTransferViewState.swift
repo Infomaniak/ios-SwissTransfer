@@ -19,6 +19,15 @@
 import Foundation
 import STCore
 
+public struct CurrentUploadContainer: Identifiable {
+    public var id: String { uuid }
+    public let uuid: String
+
+    public init(uuid: String) {
+        self.uuid = uuid
+    }
+}
+
 public enum RootTransferViewType {
     case newTransfer
     case uploadProgress(NewUploadSession)
@@ -28,6 +37,8 @@ public enum RootTransferViewType {
 
 public final class RootTransferViewState: ObservableObject {
     @Published public var state = RootTransferViewType.newTransfer
+
+    @Published public var cancelUpload: CurrentUploadContainer?
 
     public init() {}
 }

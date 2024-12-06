@@ -31,7 +31,7 @@ public struct RootTransferView: View {
     }
 
     public var body: some View {
-        Group {
+        ZStack {
             switch viewState.state {
             case .newTransfer:
                 NewTransferView()
@@ -43,6 +43,9 @@ public struct RootTransferView: View {
             case .success(let transferUUID):
                 UploadSuccessView(transferUUID: transferUUID)
             }
+        }
+        .floatingPanel(item: $viewState.cancelUpload) { container in
+            CancelUploadView(uploadSessionUUID: container.uuid)
         }
         .environmentObject(viewState)
         .environmentObject(viewModel)
