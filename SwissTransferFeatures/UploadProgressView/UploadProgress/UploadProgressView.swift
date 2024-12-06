@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import OSLog
 import STCore
@@ -30,10 +31,15 @@ public struct UploadProgressView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
     @StateObject private var transferSessionManager = TransferSessionManager()
+    @StateObject private var reachabilityObserver = ReachabilityObserver()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
     private let uploadSession: SendableUploadSession
+
+    private var isOnline: Bool {
+        return reachabilityObserver.networkStatus == .wifi || reachabilityObserver.networkStatus == .cellular
+    }
 
     public init(uploadSession: SendableUploadSession) {
         self.uploadSession = uploadSession
@@ -54,17 +60,25 @@ public struct UploadProgressView: View {
             .scrollableEmptyState()
             .background(Color.ST.background)
             .safeAreaButtons(spacing: 32) {
-                UploadProgressIndicationView(
-                    completedBytes: transferSessionManager.completedBytes,
-                    totalBytes: transferSessionManager.totalBytes
-                )
+                ZStack {
+                    UploadProgressIndicationView(
+                        completedBytes: transferSessionManager.completedBytes,
+                        totalBytes: transferSessionManager.totalBytes
+                    )
+                    .opacity(isOnline ? 1 : 0)
+
+                    HStack {
+                        Text(STResourcesStrings.Localizable.networkUnavailable)
+                    }
+                    .opacity(isOnline ? 1 : 0)
+                }
 
                 Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
                     .buttonStyle(.ikBorderedProminent)
             }
             .stIconNavigationBar()
             .navigationBarBackButtonHidden()
-            .task(startUpload)
+            //.task(startUpload)
         }
     }
 
