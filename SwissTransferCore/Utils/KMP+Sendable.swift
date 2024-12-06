@@ -27,3 +27,49 @@ extension NewUploadSession: @retroactive @unchecked Sendable {}
 extension TransferManager: @retroactive @unchecked Sendable {}
 extension UploadManager: @retroactive @unchecked Sendable {}
 extension STCore.AccountManager: @retroactive @unchecked Sendable {}
+
+@frozen public struct SendableUploadSession {
+    public let uuid: String
+    public let files: [SendableUploadFileSession]
+
+    init(uploadSession: any UploadSession) {
+        uuid = uploadSession.uuid
+        files = uploadSession.files.map { SendableUploadFileSession(uploadFileSession: $0) }
+    }
+}
+
+@frozen public struct SendableUploadFileSession {
+    public let localPath: String
+    public let remoteUploadFile: SendableRemoteUploadFile?
+
+    init(uploadFileSession: any UploadFileSession) {
+        localPath = uploadFileSession.localPath
+        if let remoteUploadFile = uploadFileSession.remoteUploadFile {
+            self.remoteUploadFile = SendableRemoteUploadFile(remoteUploadFile: remoteUploadFile)
+        } else {
+            remoteUploadFile = nil
+        }
+    }
+}
+
+@frozen public struct SendableRemoteUploadFile {
+    public let uuid: String
+
+    init(remoteUploadFile: any RemoteUploadFile) {
+        uuid = remoteUploadFile.uuid
+    }
+}
+
+public extension UploadManager {
+    func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
+        let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
+        return SendableUploadSession(uploadSession: uploadSession)
+    }
+
+    func initSendableUploadSession(uuid: String) async throws -> SendableUploadSession? {
+        guard let uploadSession = try await doInitUploadSession(uuid: uuid, recaptcha: "aabb") else {
+            return nil
+        }
+        return SendableUploadSession(uploadSession: uploadSession)
+    }
+}
