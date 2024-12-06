@@ -86,7 +86,7 @@ public struct UploadProgressView: View {
 
     private func cancelTransfer() {
         guard let currentUploadUUID = transferSessionManager.currentUploadUUID else { return }
-        rootTransferViewState.cancelUpload = CurrentUploadContainer(uuid: currentUploadUUID)
+        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: currentUploadUUID)
     }
 }
 

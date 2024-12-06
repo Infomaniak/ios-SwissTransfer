@@ -44,7 +44,7 @@ public struct RootTransferView: View {
                 UploadSuccessView(transferUUID: transferUUID)
             }
         }
-        .floatingPanel(item: $viewState.cancelUpload) { container in
+        .floatingPanel(item: $viewState.cancelUploadUUID) { container in
             CancelUploadView(uploadSessionUUID: container.uuid)
         }
         .environmentObject(viewState)
