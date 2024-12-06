@@ -19,13 +19,20 @@
 import STResources
 import SwiftUI
 
-struct EmptyStateFloatingPanelView<Buttons: View>: View {
+public struct EmptyStateFloatingPanelView<Buttons: View>: View {
     let image: Image
     let title: String
     let subtitle: String?
-    @ViewBuilder let buttons: () -> Buttons
+    let buttons: () -> Buttons
 
-    var body: some View {
+    public init(image: Image, title: String, subtitle: String? = nil, @ViewBuilder buttons: @escaping () -> Buttons) {
+        self.image = image
+        self.title = title
+        self.subtitle = subtitle
+        self.buttons = buttons
+    }
+
+    public var body: some View {
         VStack(spacing: 32) {
             IllustrationAndTextView(image: image, title: title, subtitle: subtitle, style: .bottomSheet)
             BottomButtonsView(buttons: buttons)
