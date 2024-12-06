@@ -94,6 +94,9 @@
 /* loco:6707f41e004c1612f407fae2 */
 "myFilesTitle" = "I miei file";
 
+/* loco:673b609c03c82748a509bd92 */
+"networkUnavailable" = "In attesa della rete…";
+
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Aggiungere fino a 50 GB di file";
 
