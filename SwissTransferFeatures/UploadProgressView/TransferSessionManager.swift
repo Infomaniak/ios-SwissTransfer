@@ -78,15 +78,11 @@ class TransferSessionManager: ObservableObject {
 
         let uploadManager = injection.uploadManager
 
-        let uploadSession = try await uploadManager.createAndGetUpload(newUploadSession: newUploadSession)
+        let uploadSession = try await uploadManager.createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 
-        let uploadWithRemoteContainer = try await uploadManager.doInitUploadSession(
-            uuid: uploadSession.uuid,
-            recaptcha: "aabb"
-        )
+        let uploadWithRemoteContainer = try await uploadManager.initSendableUploadSession(uuid: uploadSession.uuid)
 
-        guard let uploadWithRemoteContainer,
-              let container = uploadWithRemoteContainer.remoteContainer else {
+        guard let uploadWithRemoteContainer else {
             throw ErrorDomain.remoteContainerNotFound
         }
 
@@ -104,8 +100,6 @@ class TransferSessionManager: ObservableObject {
                     uploadUUID: uploadSession.uuid
                 )
             }
-
-        Logger.general.info("Found container: \(container.uuid)")
 
         let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
