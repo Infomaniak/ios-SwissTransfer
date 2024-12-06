@@ -53,6 +53,7 @@ public struct OnboardingView: View {
     @LazyInjectService private var accountManager: AccountManager
 
     @EnvironmentObject private var rootViewState: RootViewState
+    @EnvironmentObject private var universalLinksState: UniversalLinksState
 
     @State private var selectedSlideIndex = 0
 
@@ -88,6 +89,23 @@ public struct OnboardingView: View {
             }
         }
         .ignoresSafeArea()
+        .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
+            guard let linkedTransfer else { return }
+
+            Task {
+                if let currentManager = await accountManager.getCurrentManager() {
+                    let mainViewState = MainViewState(transferManager: currentManager)
+
+                    mainViewState.selectedTab = .receivedTransfers
+                    mainViewState.selectedTransfer = linkedTransfer
+
+                    withAnimation {
+                        rootViewState.state = .mainView(mainViewState)
+                    }
+                }
+                universalLinksState.linkedTransfer = nil
+            }
+        }
     }
 }
 

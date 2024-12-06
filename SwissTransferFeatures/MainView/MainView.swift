@@ -24,6 +24,7 @@ import SwissTransferCoreUI
 public struct MainView: View {
     @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var universalLinksState: UniversalLinksState
 
     public init() {}
 
@@ -36,6 +37,13 @@ public struct MainView: View {
             }
         }
         .environmentObject(mainViewState.transferManager)
+        .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
+            guard let linkedTransfer else { return }
+
+            mainViewState.selectedTab = .receivedTransfers
+            mainViewState.selectedTransfer = linkedTransfer
+            universalLinksState.linkedTransfer = nil
+        }
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
             RootTransferView(initialFiles: container.urls)
         }
