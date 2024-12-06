@@ -69,7 +69,6 @@ public struct UploadProgressView: View {
     }
 
     @Sendable private func startUpload() async {
-        print("START UPLOAD")
         do {
             let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
             withAnimation {
