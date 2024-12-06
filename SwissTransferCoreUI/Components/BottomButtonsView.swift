@@ -1,4 +1,3 @@
-//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2024 Infomaniak Network SA
