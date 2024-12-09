@@ -51,7 +51,7 @@ class TransferSessionManager: ObservableObject {
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
 
-    var currentUploadUUID: String?
+    private(set) var currentUploadUUID: String?
 
     private var cancellables: Set<AnyCancellable> = []
 
