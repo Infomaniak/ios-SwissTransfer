@@ -43,12 +43,16 @@ struct ContentView: View {
                 pinnedViews: []
             ) {
                 ForEach(files, id: \.uid) { file in
-                    LargeFileCell(
-                        fileName: file.fileName,
-                        fileSize: file.fileSize,
-                        url: file.localURL,
-                        mimeType: file.mimeType ?? ""
-                    )
+                    if file.isFolder {
+                        LargeFileCell(folderName: file.fileName, folderSize: file.fileSize)
+                    } else {
+                        LargeFileCell(
+                            fileName: file.fileName,
+                            fileSize: file.fileSize,
+                            url: file.localURL,
+                            mimeType: file.mimeType ?? ""
+                        )
+                    }
                 }
             }
         }
