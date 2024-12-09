@@ -51,6 +51,8 @@ class TransferSessionManager: ObservableObject {
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
 
+    private(set) var currentUploadUUID: String?
+
     private var cancellables: Set<AnyCancellable> = []
 
     enum ErrorDomain: Error {
@@ -79,6 +81,7 @@ class TransferSessionManager: ObservableObject {
         let uploadManager = injection.uploadManager
 
         let uploadSession = try await uploadManager.createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+        currentUploadUUID = uploadSession.uuid
 
         let uploadWithRemoteContainer = try await uploadManager.initSendableUploadSession(uuid: uploadSession.uuid)
 

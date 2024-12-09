@@ -23,6 +23,7 @@ public enum PreviewHelper {
     public static let sampleFile = FileUi(
         uid: "fileUUID",
         fileName: "File name",
+        path: nil,
         isFolder: false,
         fileSize: 8561,
         mimeType: "imge/jpeg",
