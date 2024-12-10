@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "60e599e1b488e06a988763ca044e1aefd3b69212",
-        "version" : "14.1.0"
+        "revision" : "0b0a5782dfbe09c08ba102177d6398a8ef180a8d",
+        "version" : "14.2.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-onboarding",
       "state" : {
-        "revision" : "a436d9f66af5d66e9a1002e5be7c57cd2b0eceff",
-        "version" : "1.2.0"
+        "revision" : "58426ccfa0addfdceaac79020d177a80dc109f49",
+        "version" : "1.2.1"
       }
     },
     {
