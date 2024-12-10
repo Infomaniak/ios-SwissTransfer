@@ -40,10 +40,14 @@ struct NewTransferDetailsView: View {
                 }
                 .textFieldStyle(NewTransferTextFieldStyle())
                 .keyboardType(.emailAddress)
+                .textContentType(.emailAddress)
+                .textInputAutocapitalization(.never)
 
                 TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
+                    .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
             }
 
             TextEditor(text: $message)
