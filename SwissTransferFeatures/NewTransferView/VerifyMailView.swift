@@ -17,44 +17,59 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct VerifyMailView: View {
+public struct VerifyMailView: View {
+    @EnvironmentObject private var transferManager: TransferManager
+
     let mail: String
-    let fakeCode = "123456"
 
     @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.large) {
-            Text(STResourcesStrings.Localizable.validateMailTitle)
-                .font(.ST.title)
-                .foregroundStyle(Color.ST.textPrimary)
+    public init(mail: String) {
+        self.mail = mail
+    }
 
-            Text(STResourcesStrings.Localizable.validateMailDescription(mail))
-                .font(.ST.body)
-                .foregroundStyle(Color.ST.textSecondary)
+    public var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: IKPadding.large) {
+                Text(STResourcesStrings.Localizable.validateMailTitle)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
 
-            SecurityCodeTextField(style: $codeFieldStyle) { code in
-                if code == fakeCode {
-                    // Code valide
-                } else {
-                    withAnimation {
-                        codeFieldStyle = .error
-                    }
+                Text(STResourcesStrings.Localizable.validateMailDescription(mail))
+                    .font(.ST.body)
+                    .foregroundStyle(Color.ST.textSecondary)
+
+                SecurityCodeTextField(style: $codeFieldStyle) { code in
+                    verifyCode(code)
                 }
-            }
 
-            Text(STResourcesStrings.Localizable.validateMailInfo)
-                .font(.ST.caption)
-                .foregroundStyle(Color.ST.textSecondary)
+                Text(STResourcesStrings.Localizable.validateMailInfo)
+                    .font(.ST.caption)
+                    .foregroundStyle(Color.ST.textSecondary)
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
+            .stNavigationBarNewTransfer()
+            .stNavigationBarStyle()
+            .padding(value: .medium)
         }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .stNavigationBarNewTransfer()
-        .stNavigationBarStyle()
-        .padding(value: .medium)
+    }
+
+    func verifyCode(_ code: String) {
+        guard codeFieldStyle != .loading else { return }
+        codeFieldStyle = .loading
+        Task {
+            do {
+                let verifyEmailCodeBody = STNVerifyEmailCodeBody(code: code, email: mail)
+                let token = try await STNUploadRepository().verifyEmailCode(verifyEmailCodeBody: verifyEmailCodeBody).token
+            } catch {}
+
+            codeFieldStyle = .normal
+        }
     }
 }
 
