@@ -16,21 +16,31 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
-import STCore
-import SwissTransferCore
+import InfomaniakCoreSwiftUI
+import SwiftUI
 
-public enum RootTransferViewType {
-    case newTransfer
-    case uploadProgress(NewUploadSession)
-    case error
-    case success(String)
+public enum BottomButtonsConstants: Sendable {
+    public static let spacing = IKPadding.medium
+    public static let paddingBottom = IKPadding.intermediate
 }
 
-public final class RootTransferViewState: ObservableObject {
-    @Published public var state = RootTransferViewType.newTransfer
+public struct BottomButtonsView<Buttons: View>: View {
+    var spacing = BottomButtonsConstants.spacing
+    @ViewBuilder let buttons: Buttons
 
-    @Published public var cancelUploadUUID: CurrentUploadContainer?
+    public var body: some View {
+        VStack(spacing: spacing) {
+            buttons
+        }
+        .ikButtonFullWidth(true)
+        .controlSize(.large)
+        .padding(.horizontal, value: .medium)
+        .padding(.bottom, BottomButtonsConstants.paddingBottom)
+    }
+}
 
-    public init() {}
+#Preview {
+    BottomButtonsView {
+        Button("Ok") {}
+    }
 }

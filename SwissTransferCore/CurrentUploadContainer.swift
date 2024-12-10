@@ -16,21 +16,11 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
-import STCore
-import SwissTransferCore
+public struct CurrentUploadContainer: Identifiable, Sendable {
+    public var id: String { uuid }
+    public let uuid: String
 
-public enum RootTransferViewType {
-    case newTransfer
-    case uploadProgress(NewUploadSession)
-    case error
-    case success(String)
-}
-
-public final class RootTransferViewState: ObservableObject {
-    @Published public var state = RootTransferViewType.newTransfer
-
-    @Published public var cancelUploadUUID: CurrentUploadContainer?
-
-    public init() {}
+    public init(uuid: String) {
+        self.uuid = uuid
+    }
 }

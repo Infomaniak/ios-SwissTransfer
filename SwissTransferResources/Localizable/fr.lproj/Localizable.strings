@@ -16,6 +16,12 @@
 /* loco:671f9576e0d073bd6b0ccfa2 */
 "buttonCancel" = "Annuler";
 
+/* loco:6721e8f6b18493385d00ec52 */
+"buttonCancelTransfer" = "Annuler le transfert";
+
+/* loco:6721eccd0752504a0d064d02 */
+"buttonCloseAndContinue" = "Fermer et continuer";
+
 /* loco:6707f83845c44bad7f0d7805 */
 "buttonConfirm" = "Confirmer";
 
@@ -363,6 +369,9 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galerie photos et vidéos";
+
+/* loco:672104c0398a368f6308c152 */
+"uploadCancelConfirmBottomSheetTitle" = "Es-tu certain de vouloir annuler le transfert ?";
 
 /* loco:6729e40f3f0d68fc7e03bab2 */
 "uploadErrorDescription" = "Le transfert n’a pas fonctionné, donnes-lui une autre chance. Si le problème persiste, contacte notre support.";
