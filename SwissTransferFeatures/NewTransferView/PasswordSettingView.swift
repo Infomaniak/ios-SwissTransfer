@@ -21,16 +21,22 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
+enum PasswordInputFocus: Hashable, Sendable {
+    case secure
+    case clear
+}
+
 struct PasswordSettingView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn = false
-    @State private var isShowingPassword = false
-
-    @FocusState private var isSecureFieldFocused: Bool
-    @FocusState private var isVisibleFieldFocused: Bool
+    @FocusState private var focusedField: PasswordInputFocus?
 
     @Binding var password: String
+
+    private var isShowingPassword: Bool {
+        return focusedField == .clear
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.large) {
@@ -47,34 +53,37 @@ struct PasswordSettingView: View {
                     .font(.ST.calloutMedium)
                     .foregroundStyle(Color.ST.textPrimary)
             }
-            .onChange(of: isOn) { newValue in
-                if !newValue {
-                    password = ""
-                }
-            }
+            .onChange(of: isOn, perform: didUpdateToggle)
 
             if isOn {
                 HStack {
                     ZStack {
                         TextField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
+                            .focused($focusedField, equals: .clear)
                             .opacity(isShowingPassword ? 1 : 0)
-                            .focused($isVisibleFieldFocused)
 
                         SecureField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
+                            .focused($focusedField, equals: .secure)
                             .opacity(isShowingPassword ? 0 : 1)
-                            .focused($isSecureFieldFocused)
                     }
+                    .keyboardType(.asciiCapable)
+                    .textContentType(.password)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .padding(value: .intermediate)
 
                     Button(action: toggleShowPassword) {
                         if isShowingPassword {
                             STResourcesAsset.Images.eye.swiftUIImage
+                                .iconSize(.medium)
                         } else {
                             STResourcesAsset.Images.eyeSlash.swiftUIImage
+                                .iconSize(.medium)
                         }
                     }
                     .foregroundStyle(Color.ST.textSecondary)
+                    .padding(value: .intermediate)
                 }
-                .padding(value: .intermediate)
                 .overlay(
                     RoundedRectangle(cornerRadius: IKRadius.small)
                         .strokeBorder(Color.ST.textFieldBorder)
@@ -92,16 +101,16 @@ struct PasswordSettingView: View {
         }
     }
 
-    private func toggleShowPassword() {
-        isShowingPassword.toggle()
-
-        if isShowingPassword && isSecureFieldFocused {
-            isSecureFieldFocused = false
-            isVisibleFieldFocused = true
-        } else if !isShowingPassword && isVisibleFieldFocused {
-            isVisibleFieldFocused = false
-            isSecureFieldFocused = true
+    private func didUpdateToggle(_ isOn: Bool) {
+        if isOn {
+            focusedField = .secure
+        } else {
+            password = ""
         }
+    }
+
+    private func toggleShowPassword() {
+        focusedField = isShowingPassword ? .secure : .clear
     }
 }
 
