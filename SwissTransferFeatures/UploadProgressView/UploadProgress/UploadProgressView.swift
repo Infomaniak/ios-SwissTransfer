@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import OSLog
 import STCore
@@ -35,10 +34,6 @@ public struct UploadProgressView: View {
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
     private let uploadSession: SendableUploadSession
-
-    private var isOnline: Bool {
-        return reachabilityObserver.networkStatus == .wifi || reachabilityObserver.networkStatus == .cellular
-    }
 
     public init(uploadSession: SendableUploadSession) {
         self.uploadSession = uploadSession
