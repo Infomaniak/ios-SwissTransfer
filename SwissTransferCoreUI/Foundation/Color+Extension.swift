@@ -65,6 +65,8 @@ public extension Color {
         )
         /// red
         public static let error = STResourcesAsset.Colors.red.swiftUIColor
+        /// orange
+        public static let warning = STResourcesAsset.Colors.orange.swiftUIColor
         /// light: greyMouse / dark: dark2
         public static let textFieldBorder = Color(
             light: STResourcesAsset.Colors.greyMouse,
