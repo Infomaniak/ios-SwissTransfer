@@ -29,7 +29,7 @@ struct UploadProgressIndicationView: View {
     let totalBytes: Int64
 
     private var percentCompleted: Double {
-        guard completedBytes > 0 else { return 0 }
+        guard totalBytes > 0 else { return 0 }
         return Double(completedBytes) / Double(totalBytes)
     }
 
@@ -44,28 +44,28 @@ struct UploadProgressIndicationView: View {
                 .font(.ST.title2)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            ZStack {
-                HStack(spacing: IKPadding.extraSmall) {
-                    Text(percentCompleted, format: .defaultPercent)
-                    Text("-")
-                    HStack(spacing: 2) {
-                        Text(completedBytes, format: .progressByteCount)
-                        Text("/")
-                        Text(totalBytes, format: .progressByteCount)
+            Group {
+                if isOnline {
+                    HStack(spacing: IKPadding.extraSmall) {
+                        Text(percentCompleted, format: .defaultPercent)
+                        Text("-")
+                        HStack(spacing: 2) {
+                            Text(completedBytes, format: .progressByteCount)
+                            Text("/")
+                            Text(totalBytes, format: .progressByteCount)
+                        }
                     }
+                    .foregroundStyle(Color.ST.textSecondary)
+                } else {
+                    Label {
+                        Text(STResourcesStrings.Localizable.networkUnavailable)
+                    } icon: {
+                        STResourcesAsset.Images.antennaSignalSlash.swiftUIImage
+                            .iconSize(.medium)
+                    }
+                    .labelStyle(.ikLabel)
+                    .foregroundStyle(Color.ST.warning)
                 }
-                .foregroundStyle(Color.ST.textSecondary)
-                .opacity(isOnline ? 1 : 0)
-
-                Label {
-                    Text(STResourcesStrings.Localizable.networkUnavailable)
-                } icon: {
-                    STResourcesAsset.Images.antennaSignalSlash.swiftUIImage
-                        .iconSize(.medium)
-                }
-                .labelStyle(.ikLabel)
-                .foregroundStyle(Color.ST.warning)
-                .opacity(isOnline ? 0 : 1)
             }
             .font(.ST.caption)
         }
