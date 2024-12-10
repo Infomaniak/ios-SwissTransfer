@@ -23,11 +23,12 @@ import SwissTransferCoreUI
 
 public enum SecurityCodeFieldStyle {
     case normal
+    case loading
     case error
 
     var color: Color {
         switch self {
-        case .normal:
+        case .normal, .loading:
             return Color.ST.cardBorder
         case .error:
             return Color.ST.error
@@ -106,10 +107,19 @@ struct SecurityCodeTextField: View {
                 }
             }
             .font(.ST.body)
+            .disabled(style == .loading)
+            .opacity(style == .loading ? 0.5 : 1)
+            .overlay {
+                if style == .loading {
+                    ProgressView()
+                        .controlSize(.large)
+                }
+            }
 
             Text(style.label ?? "")
                 .foregroundStyle(style.color)
                 .font(.ST.caption)
+                .opacity(style == .loading ? 0.5 : 1)
         }
     }
 }
