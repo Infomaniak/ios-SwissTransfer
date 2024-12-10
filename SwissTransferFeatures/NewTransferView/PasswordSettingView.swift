@@ -47,11 +47,7 @@ struct PasswordSettingView: View {
                     .font(.ST.calloutMedium)
                     .foregroundStyle(Color.ST.textPrimary)
             }
-            .onChange(of: isOn) { newValue in
-                if !newValue {
-                    password = ""
-                }
-            }
+            .onChange(of: isOn, perform: didUpdateToggle)
 
             if isOn {
                 HStack {
@@ -64,17 +60,20 @@ struct PasswordSettingView: View {
                             .opacity(isShowingPassword ? 0 : 1)
                             .focused($isSecureFieldFocused)
                     }
+                    .padding(value: .intermediate)
 
                     Button(action: toggleShowPassword) {
                         if isShowingPassword {
                             STResourcesAsset.Images.eye.swiftUIImage
+                                .iconSize(.medium)
                         } else {
                             STResourcesAsset.Images.eyeSlash.swiftUIImage
+                                .iconSize(.medium)
                         }
                     }
                     .foregroundStyle(Color.ST.textSecondary)
+                    .padding(value: .intermediate)
                 }
-                .padding(value: .intermediate)
                 .overlay(
                     RoundedRectangle(cornerRadius: IKRadius.small)
                         .strokeBorder(Color.ST.textFieldBorder)
@@ -89,6 +88,14 @@ struct PasswordSettingView: View {
                 Text(STResourcesStrings.Localizable.buttonConfirm)
             }
             .buttonStyle(.ikBorderedProminent)
+        }
+    }
+
+    private func didUpdateToggle(_ isOn: Bool) {
+        if isOn {
+            // TODO: Select input
+        } else {
+            password = ""
         }
     }
 
