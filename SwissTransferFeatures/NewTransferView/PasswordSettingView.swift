@@ -66,6 +66,10 @@ struct PasswordSettingView: View {
                             .focused($focusedField, equals: .secure)
                             .opacity(isShowingPassword ? 0 : 1)
                     }
+                    .keyboardType(.asciiCapable)
+                    .textContentType(.password)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
                     .padding(value: .intermediate)
 
                     Button(action: toggleShowPassword) {
