@@ -31,7 +31,6 @@ public struct UploadProgressView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
     @StateObject private var transferSessionManager = TransferSessionManager()
-    @StateObject private var reachabilityObserver = ReachabilityObserver()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
@@ -60,25 +59,17 @@ public struct UploadProgressView: View {
             .scrollableEmptyState()
             .background(Color.ST.background)
             .safeAreaButtons(spacing: 32) {
-                ZStack {
-                    UploadProgressIndicationView(
-                        completedBytes: transferSessionManager.completedBytes,
-                        totalBytes: transferSessionManager.totalBytes
-                    )
-                    .opacity(isOnline ? 1 : 0)
-
-                    HStack {
-                        Text(STResourcesStrings.Localizable.networkUnavailable)
-                    }
-                    .opacity(isOnline ? 1 : 0)
-                }
+                UploadProgressIndicationView(
+                    completedBytes: transferSessionManager.completedBytes,
+                    totalBytes: transferSessionManager.totalBytes
+                )
 
                 Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
                     .buttonStyle(.ikBorderedProminent)
             }
             .stIconNavigationBar()
             .navigationBarBackButtonHidden()
-            //.task(startUpload)
+            .task(startUpload)
         }
     }
 
