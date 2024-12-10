@@ -65,16 +65,21 @@ public extension Color {
         )
         /// red
         public static let error = STResourcesAsset.Colors.red.swiftUIColor
-        /// light: greyMouse / dark: dark2
-        public static let textFieldBorder = Color(
-            light: STResourcesAsset.Colors.greyMouse,
-            dark: STResourcesAsset.Colors.dark2
-        )
         /// light: greenSecondary / dark: greenDark
         public static let highlighted = Color(
             light: STResourcesAsset.Colors.greenSecondary,
             dark: STResourcesAsset.Colors.greenDark
         )
+
+        // MARK: - TextFields
+
+        /// light: greyMouse / dark: dark2
+        public static let textFieldBorder = Color(
+            light: STResourcesAsset.Colors.greyMouse,
+            dark: STResourcesAsset.Colors.dark2
+        )
+        /// light: greyMouse / dark: dark2
+        public static let focusedTextFieldBorder = primary
 
         // MARK: - Buttons
 
