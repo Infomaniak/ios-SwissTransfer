@@ -63,6 +63,7 @@ struct SecurityCodeTextField: View {
                 ForEach(fields.indices, id: \.self) { index in
                     TextField("", text: $fields[index])
                         .textFieldStyle(SecurityCodeTextFieldStyle(style: style))
+                        .textContentType(.oneTimeCode)
                         .frame(maxWidth: .infinity)
                         .onTapGesture {
                             focusedField = index
@@ -70,12 +71,29 @@ struct SecurityCodeTextField: View {
                         .focused($focusedField, equals: index)
                         .onChange(of: fields[index]) { value in
                             guard !value.isEmpty else { return }
+                            let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+
                             withAnimation {
                                 style = .normal
                             }
-                            if value.count > 1 {
-                                let firstElement = String(Array(value)[0])
-                                fields[index] = firstElement
+
+                            if trimmedValue.count > 1 {
+                                if trimmedValue.count == fields.count {
+                                    for (index, element) in trimmedValue.enumerated() {
+                                        fields[index] = String(element)
+                                    }
+
+                                    // iOS focuses next field by default. We have to wait for next runloop to defocus.
+                                    Task { @MainActor in
+                                        focusedField = nil
+                                    }
+                                    completion(fields.joined())
+
+                                    return
+                                } else {
+                                    let firstElement = String(Array(trimmedValue)[0])
+                                    fields[index] = firstElement
+                                }
                             }
 
                             guard index < fields.count - 1 else {
@@ -87,17 +105,11 @@ struct SecurityCodeTextField: View {
                         }
                 }
             }
-            .onChange(of: focusedField) { index in
-                guard let index else { return }
-                fields[index] = ""
-            }
             .font(.ST.body)
 
-            if let label = style.label {
-                Text(label)
-                    .foregroundStyle(style.color)
-                    .font(.ST.caption)
-            }
+            Text(style.label ?? "")
+                .foregroundStyle(style.color)
+                .font(.ST.caption)
         }
     }
 }
