@@ -23,30 +23,51 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct UploadProgressIndicationView: View {
+    @StateObject private var reachabilityObserver = ReachabilityObserver()
+
     let completedBytes: Int64
     let totalBytes: Int64
 
     private var percentCompleted: Double {
+        guard completedBytes > 0 else { return 0 }
         return Double(completedBytes) / Double(totalBytes)
+    }
+
+    private var isOnline: Bool {
+        let networkStatus = reachabilityObserver.networkStatus
+        return networkStatus == .wifi || networkStatus == .cellular
     }
 
     var body: some View {
         VStack(spacing: IKPadding.small) {
             Text(STResourcesStrings.Localizable.uploadProgressIndication)
-                .font(.ST.headline)
+                .font(.ST.title2)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            HStack(spacing: IKPadding.extraSmall) {
-                Text(percentCompleted, format: .defaultPercent)
-                Text("-")
-                HStack(spacing: 2) {
-                    Text(completedBytes, format: .progressByteCount)
-                    Text("/")
-                    Text(totalBytes, format: .progressByteCount)
+            ZStack {
+                HStack(spacing: IKPadding.extraSmall) {
+                    Text(percentCompleted, format: .defaultPercent)
+                    Text("-")
+                    HStack(spacing: 2) {
+                        Text(completedBytes, format: .progressByteCount)
+                        Text("/")
+                        Text(totalBytes, format: .progressByteCount)
+                    }
                 }
+                .foregroundStyle(Color.ST.textSecondary)
+                .opacity(isOnline ? 1 : 0)
+
+                Label {
+                    Text(STResourcesStrings.Localizable.networkUnavailable)
+                } icon: {
+                    STResourcesAsset.Images.antennaSignalSlash.swiftUIImage
+                        .iconSize(.medium)
+                }
+                .labelStyle(.ikLabel)
+                .foregroundStyle(Color.ST.warning)
+                .opacity(isOnline ? 0 : 1)
             }
             .font(.ST.caption)
-            .foregroundStyle(Color.ST.textSecondary)
         }
     }
 }
