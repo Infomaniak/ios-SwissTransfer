@@ -16,7 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@frozen public struct CurrentUploadContainer: Identifiable {
+public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
 

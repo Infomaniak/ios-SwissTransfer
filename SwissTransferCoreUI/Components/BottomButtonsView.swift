@@ -19,7 +19,7 @@
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
-@frozen public enum BottomButtonsConstants {
+public enum BottomButtonsConstants: Sendable {
     public static let spacing = IKPadding.medium
     public static let paddingBottom = IKPadding.intermediate
 }
