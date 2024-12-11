@@ -45,6 +45,10 @@ public extension TransferUi {
             return date.formatted(.prettyDate)
         }
     }
+
+    var trimmedMessage: String? {
+        return message?.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 }
 
 public struct NavigableTransfer: Hashable {
