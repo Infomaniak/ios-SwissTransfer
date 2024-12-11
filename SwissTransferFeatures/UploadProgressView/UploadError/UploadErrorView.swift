@@ -34,25 +34,27 @@ public struct UploadErrorView: View {
     public init() {}
 
     public var body: some View {
-        IllustrationAndTextView(
-            image: STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
-            title: STResourcesStrings.Localizable.uploadErrorTitle,
-            subtitle: STResourcesStrings.Localizable.uploadErrorDescription,
-            style: .emptyState
-        )
-        .padding(value: .medium)
-        .scrollableEmptyState()
-        .safeAreaButtons {
-            if rootTransferViewModel.newUploadSession != nil {
-                Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
-                    .buttonStyle(.ikBorderedProminent)
-                    .ikButtonLoading(isRetryingUpload)
+        NavigationStack {
+            IllustrationAndTextView(
+                image: STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
+                title: STResourcesStrings.Localizable.uploadErrorTitle,
+                subtitle: STResourcesStrings.Localizable.uploadErrorDescription,
+                style: .emptyState
+            )
+            .padding(value: .medium)
+            .scrollableEmptyState()
+            .safeAreaButtons {
+                if rootTransferViewModel.newUploadSession != nil {
+                    Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
+                        .buttonStyle(.ikBorderedProminent)
+                        .ikButtonLoading(isRetryingUpload)
+                }
+                Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
+                    .buttonStyle(.ikBordered)
             }
-            Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
-                .buttonStyle(.ikBordered)
+            .navigationBarBackButtonHidden()
+            .stIconNavigationBar()
         }
-        .navigationBarBackButtonHidden()
-        .stIconNavigationBar()
     }
 
     private func retryTransfer() {
