@@ -51,8 +51,6 @@ class TransferSessionManager: ObservableObject {
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
 
-    private(set) var currentUploadUUID: String?
-
     private var cancellables: Set<AnyCancellable> = []
 
     enum ErrorDomain: Error {
@@ -65,8 +63,8 @@ class TransferSessionManager: ObservableObject {
         case invalidChunkResponse
     }
 
-    func startUpload(session newUploadSession: NewUploadSession) async throws -> String {
-        let filesSize = newUploadSession.files.reduce(0) { $0 + $1.size }
+    func uploadFiles(for uploadSession: SendableUploadSession) async throws -> String {
+        let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
 
         let overallProgress = Progress(totalUnitCount: filesSize)
@@ -80,22 +78,13 @@ class TransferSessionManager: ObservableObject {
 
         let uploadManager = injection.uploadManager
 
-        let uploadSession = try await uploadManager.createAndGetSendableUploadSession(newUploadSession: newUploadSession)
-        currentUploadUUID = uploadSession.uuid
-
-        let uploadWithRemoteContainer = try await uploadManager.initSendableUploadSession(uuid: uploadSession.uuid)
-
-        guard let uploadWithRemoteContainer else {
-            throw ErrorDomain.remoteContainerNotFound
-        }
-
-        let remoteUploadFiles = uploadWithRemoteContainer.files.compactMap { $0.remoteUploadFile }
-        assert(remoteUploadFiles.count == uploadWithRemoteContainer.files.count, "All files should have a remote upload file")
+        let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
+        assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
         let transferManagerWorker = TransferManagerWorker(overallProgress: overallProgress)
 
         try await remoteUploadFiles.enumerated()
-            .map { (uploadWithRemoteContainer.files[$0.offset], $0.element) }
+            .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
                 try await transferManagerWorker.uploadFile(
                     atPath: localFile.localPath,
