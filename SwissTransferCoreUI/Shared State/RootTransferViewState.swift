@@ -22,7 +22,7 @@ import SwissTransferCore
 
 public enum RootTransferViewType {
     case newTransfer
-    case uploadProgress(NewUploadSession)
+    case uploadProgress(SendableUploadSession)
     case error
     case success(String)
 }

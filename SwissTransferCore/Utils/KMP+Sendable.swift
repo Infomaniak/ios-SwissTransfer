@@ -41,9 +41,12 @@ extension STCore.AccountManager: @retroactive @unchecked Sendable {}
 @frozen public struct SendableUploadFileSession {
     public let localPath: String
     public let remoteUploadFile: SendableRemoteUploadFile?
+    public let size: Int64
 
     init(uploadFileSession: any UploadFileSession) {
         localPath = uploadFileSession.localPath
+        size = uploadFileSession.size
+
         if let remoteUploadFile = uploadFileSession.remoteUploadFile {
             self.remoteUploadFile = SendableRemoteUploadFile(remoteUploadFile: remoteUploadFile)
         } else {
@@ -71,5 +74,13 @@ public extension UploadManager {
             return nil
         }
         return SendableUploadSession(uploadSession: uploadSession)
+    }
+
+    func createAndInitSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession? {
+        let uploadSession = try await createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+
+        let uploadSessionWithRemoteContainer = try await initSendableUploadSession(uuid: uploadSession.uuid)
+
+        return uploadSessionWithRemoteContainer
     }
 }

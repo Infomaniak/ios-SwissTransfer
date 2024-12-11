@@ -17,13 +17,19 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
 public struct UploadErrorView: View {
+    @LazyInjectService var injection: SwissTransferInjection
+
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
+
+    @State private var isRetryingUpload = false
 
     public init() {}
 
@@ -40,6 +46,7 @@ public struct UploadErrorView: View {
             if rootTransferViewModel.newUploadSession != nil {
                 Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
                     .buttonStyle(.ikBorderedProminent)
+                    .ikButtonLoading(isRetryingUpload)
             }
             Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                 .buttonStyle(.ikBordered)
@@ -50,7 +57,21 @@ public struct UploadErrorView: View {
 
     private func retryTransfer() {
         guard let newUploadSession = rootTransferViewModel.newUploadSession else { return }
-        rootTransferViewState.state = .uploadProgress(newUploadSession)
+
+        Task {
+            isRetryingUpload = true
+            let uploadSession = try? await injection.uploadManager
+                .createAndInitSendableUploadSession(newUploadSession: newUploadSession)
+
+            guard let uploadSession else {
+                rootTransferViewState.state = .error
+                isRetryingUpload = false
+                return
+            }
+
+            rootTransferViewState.state = .uploadProgress(uploadSession)
+            isRetryingUpload = false
+        }
     }
 
     private func editTransfer() {

@@ -26,6 +26,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
+    @LazyInjectService var injection: SwissTransferInjection
+
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferManager: NewTransferManager
@@ -110,8 +112,17 @@ public struct NewTransferView: View {
                 )
 
                 viewModel.newUploadSession = newUploadSession
+
+                let uploadSession = try? await injection.uploadManager
+                    .createAndInitSendableUploadSession(newUploadSession: newUploadSession)
+
+                guard let uploadSession else {
+                    rootTransferViewState.state = .error
+                    return
+                }
+
                 withAnimation {
-                    rootTransferViewState.state = .uploadProgress(newUploadSession)
+                    rootTransferViewState.state = .uploadProgress(uploadSession)
                 }
             } catch {
                 Logger.general.error("Error getting files to upload \(error.localizedDescription)")

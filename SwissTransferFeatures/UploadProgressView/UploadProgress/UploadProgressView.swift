@@ -33,9 +33,9 @@ public struct UploadProgressView: View {
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
-    private let uploadSession: NewUploadSession
+    private let uploadSession: SendableUploadSession
 
-    public init(uploadSession: NewUploadSession) {
+    public init(uploadSession: SendableUploadSession) {
         self.uploadSession = uploadSession
     }
 
@@ -70,7 +70,7 @@ public struct UploadProgressView: View {
 
     @Sendable private func startUpload() async {
         do {
-            let transferUUID = try await transferSessionManager.startUpload(session: uploadSession)
+            let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
             withAnimation {
                 rootTransferViewState.state = .success(transferUUID)
             }
@@ -85,12 +85,11 @@ public struct UploadProgressView: View {
     }
 
     private func cancelTransfer() {
-        guard let currentUploadUUID = transferSessionManager.currentUploadUUID else { return }
-        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: currentUploadUUID)
+        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: uploadSession.uuid)
     }
 }
 
 #Preview {
-    UploadProgressView(uploadSession: PreviewHelper.sampleNewUploadSession)
+    UploadProgressView(uploadSession: PreviewHelper.sampleSendableUploadSession)
         .environmentObject(RootTransferViewModel())
 }
