@@ -51,9 +51,7 @@ public struct CancelUploadView: View {
 
     private func cancelUpload() {
         dismiss()
-        withAnimation {
-            rootTransferViewState.state = .newTransfer
-        }
+        rootTransferViewState.transition(to: .newTransfer)
 
         Task {
             @InjectService var injection: SwissTransferInjection
