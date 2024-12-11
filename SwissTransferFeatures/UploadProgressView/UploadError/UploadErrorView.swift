@@ -64,18 +64,18 @@ public struct UploadErrorView: View {
                 .createAndInitSendableUploadSession(newUploadSession: newUploadSession)
 
             guard let uploadSession else {
-                rootTransferViewState.state = .error
+                rootTransferViewState.transition(to: .error)
                 isRetryingUpload = false
                 return
             }
 
-            rootTransferViewState.state = .uploadProgress(uploadSession)
+            rootTransferViewState.transition(to: .uploadProgress(uploadSession))
             isRetryingUpload = false
         }
     }
 
     private func editTransfer() {
-        rootTransferViewState.state = .newTransfer
+        rootTransferViewState.transition(to: .newTransfer)
     }
 }
 

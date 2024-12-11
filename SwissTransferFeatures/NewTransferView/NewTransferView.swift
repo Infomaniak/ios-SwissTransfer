@@ -117,13 +117,11 @@ public struct NewTransferView: View {
                     .createAndInitSendableUploadSession(newUploadSession: newUploadSession)
 
                 guard let uploadSession else {
-                    rootTransferViewState.state = .error
+                    rootTransferViewState.transition(to: .error)
                     return
                 }
 
-                withAnimation {
-                    rootTransferViewState.state = .uploadProgress(uploadSession)
-                }
+                rootTransferViewState.transition(to: .uploadProgress(uploadSession))
             } catch {
                 Logger.general.error("Error getting files to upload \(error.localizedDescription)")
             }

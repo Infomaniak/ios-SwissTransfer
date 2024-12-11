@@ -28,8 +28,9 @@ public enum RootTransferViewType {
     case success(String)
 }
 
+@MainActor
 public final class RootTransferViewState: ObservableObject {
-    @Published public var state = RootTransferViewType.newTransfer
+    @Published public private(set) var state = RootTransferViewType.newTransfer
 
     @Published public var cancelUploadUUID: CurrentUploadContainer?
 

@@ -71,16 +71,12 @@ public struct UploadProgressView: View {
     @Sendable private func startUpload() async {
         do {
             let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
-            withAnimation {
-                rootTransferViewState.state = .success(transferUUID)
-            }
+            rootTransferViewState.transition(to: .success(transferUUID))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 
             Logger.general.error("Error trying to start upload: \(error)")
-            withAnimation {
-                rootTransferViewState.state = .error
-            }
+            rootTransferViewState.transition(to: .error)
         }
     }
 
