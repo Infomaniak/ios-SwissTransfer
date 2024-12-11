@@ -18,6 +18,7 @@
 
 import Foundation
 import STCore
+import SwiftUI
 import SwissTransferCore
 
 public enum RootTransferViewType {
@@ -33,4 +34,10 @@ public final class RootTransferViewState: ObservableObject {
     @Published public var cancelUploadUUID: CurrentUploadContainer?
 
     public init() {}
+
+    public func transition(to state: RootTransferViewType) {
+        withAnimation {
+            self.state = state
+        }
+    }
 }
