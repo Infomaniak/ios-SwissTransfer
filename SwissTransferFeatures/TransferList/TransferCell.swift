@@ -40,7 +40,8 @@ struct TransferCell: View {
                     .foregroundStyle(Color.ST.textPrimary)
 
                 HStack(spacing: 0) {
-                    Text("\(transfer.sizeUploaded.formatted(.defaultByteCount)) · ")
+                    Text(transfer.sizeUploaded, format: .defaultByteCount)
+                    Text(" · ")
                     Text(transfer.expirationDateTimestamp.formatted(.expiring))
                 }
                 .font(.ST.callout)
