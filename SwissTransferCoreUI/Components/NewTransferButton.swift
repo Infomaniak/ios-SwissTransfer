@@ -24,15 +24,6 @@ public enum NewTransferStyle {
     case big
     case small
 
-    var size: IKIconSize {
-        switch self {
-        case .big:
-            return .large
-        case .small:
-            return .medium
-        }
-    }
-
     var buttonSize: CGFloat {
         switch self {
         case .big:
@@ -56,14 +47,9 @@ struct NewTransferButton: View {
     var body: some View {
         AddFilesMenu(selection: $selection) {
             STResourcesAsset.Images.plus.swiftUIImage
-                .iconSize(style.size)
-                .tint(.white)
-                .frame(width: style.buttonSize, height: style.buttonSize)
-                .background {
-                    RoundedRectangle(cornerRadius: style.size.rawValue)
-                }
                 .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
         }
+        .buttonStyle(.ikFloatingActionButton(customSize: style.buttonSize))
     }
 }
 
