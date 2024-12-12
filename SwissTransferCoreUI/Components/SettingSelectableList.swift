@@ -18,7 +18,6 @@
 
 import InfomaniakCoreSwiftUI
 import STCore
-import STResources
 import SwiftUI
 import SwissTransferCore
 
@@ -36,38 +35,22 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
     }
 
     public var body: some View {
-        VStack(spacing: IKPadding.medium) {
+        VStack(spacing: 0) {
             ForEach(items, id: \.self) { item in
                 Button {
                     onSelection(item)
                     dismiss()
                 } label: {
-                    VStack(spacing: IKPadding.medium) {
-                        HStack(spacing: IKPadding.medium) {
-                            Label {
-                                Text(item.title)
-                                    .font(.ST.body)
-                                    .foregroundStyle(Color.ST.textPrimary)
-                            } icon: {
-                                item.leftImage
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                    SettingSelectableCell(item: item, selectedItem: selected)
+                }
 
-                            if selected == item {
-                                STResourcesAsset.Images.check.swiftUIImage
-                                    .foregroundStyle(Color.ST.primary)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                        if item != items.last {
-                            DividerView()
-                        }
-                    }
+                if item != items.last {
+                    DividerView()
+                        .padding(.horizontal, value: .medium)
                 }
             }
         }
-        .padding(value: .medium)
+        .padding(.vertical, value: .medium)
     }
 }
 
