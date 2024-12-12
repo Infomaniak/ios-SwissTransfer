@@ -47,6 +47,7 @@ struct NewTransferDetailsView: View {
             }
 
             TextEditor(text: $message)
+                .scrollContentBackground(.hidden)
                 .focused($isMessageFieldFocused)
                 .frame(minHeight: 88, alignment: .top)
                 .padding(value: .intermediate)

@@ -63,6 +63,7 @@ public struct NewTransferView: View {
                 }
                 .padding(.vertical, value: .medium)
             }
+            .background(Color.ST.background)
             .safeAreaButtons {
                 Button(action: startUpload) {
                     Text(STResourcesStrings.Localizable.buttonNext)

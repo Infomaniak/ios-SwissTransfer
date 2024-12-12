@@ -88,6 +88,7 @@ struct FileListView: View {
             }
             .padding(value: .medium)
         }
+        .background(Color.ST.background)
         .stNavigationBarStyle()
         .stNavigationBarNewTransfer(title: navigationTitle)
         .onAppear {
