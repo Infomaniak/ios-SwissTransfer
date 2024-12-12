@@ -38,11 +38,11 @@ struct NewTransferDetailsView: View {
                 TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail) { _ in
                     saveAuthorMailAddress()
                 }
-                .textFieldStyle(NewTransferTextFieldStyle())
+                .textFieldStyle(.swissTransfer)
                 .keyboardType(.emailAddress)
 
                 TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
-                    .textFieldStyle(NewTransferTextFieldStyle())
+                    .textFieldStyle(.swissTransfer)
                     .keyboardType(.emailAddress)
             }
 
