@@ -42,14 +42,6 @@ public extension FormatStyle where Self == ByteCountFormatStyle {
 
 // MARK: - Date
 
-public struct PrettyDateFormat: FormatStyle {
-    public func format(_ value: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E. d MMMM"
-        return formatter.string(from: value)
-    }
-}
-
-public extension FormatStyle where Self == PrettyDateFormat {
-    static var prettyDate: PrettyDateFormat { .init() }
+public extension FormatStyle where Self == Date.FormatStyle {
+    static var prettyDate: Date.FormatStyle { dateTime.weekday(.abbreviated).day().month(.wide) }
 }
