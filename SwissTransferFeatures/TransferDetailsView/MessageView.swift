@@ -22,21 +22,19 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct MessageView: View {
-    let message: String?
+    let message: String
 
     var body: some View {
-        if let message {
-            VStack(alignment: .leading, spacing: IKPadding.medium) {
-                Text(STResourcesStrings.Localizable.messageHeader)
-                    .sectionHeader()
+        VStack(alignment: .leading, spacing: IKPadding.medium) {
+            Text(STResourcesStrings.Localizable.messageHeader)
+                .sectionHeader()
 
-                Text(message)
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .padding(value: .large)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
-            }
+            Text(message)
+                .font(.ST.callout)
+                .foregroundStyle(Color.ST.textPrimary)
+                .padding(value: .large)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
     }
 }

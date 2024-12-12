@@ -38,7 +38,9 @@ public struct TransferDetailsView: View {
                     expiringTimestamp: transfer.expirationDateTimestamp
                 )
 
-                MessageView(message: transfer.message)
+                if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
+                    MessageView(message: trimmedMessage)
+                }
 
                 ContentView(files: transfer.files)
             }
