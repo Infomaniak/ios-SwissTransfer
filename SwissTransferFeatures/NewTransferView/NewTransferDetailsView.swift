@@ -36,13 +36,13 @@ struct NewTransferDetailsView: View {
                 TextField(STResourcesStrings.Localizable.transferSenderAddressPlaceholder, text: $authorEmail) { _ in
                     saveAuthorMailAddress()
                 }
-                .textFieldStyle(NewTransferTextFieldStyle())
+                .textFieldStyle(.swissTransfer)
                 .keyboardType(.emailAddress)
                 .textContentType(.emailAddress)
                 .textInputAutocapitalization(.never)
 
-                TextField(STResourcesStrings.Localizable.transferRecipientAddressPlaceholder, text: $recipientEmail)
-                    .textFieldStyle(NewTransferTextFieldStyle())
+                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
+                    .textFieldStyle(.swissTransfer)
                     .keyboardType(.emailAddress)
                     .textContentType(.emailAddress)
                     .textInputAutocapitalization(.never)
