@@ -29,9 +29,6 @@ public struct ReceivedView: View {
 
     public var body: some View {
         TransferList(transferManager: transferManager, origin: .received) {}
-            .task {
-                try? await transferManager.fetchWaitingTransfers()
-            }
             .navigationDestination(for: NavigationDestination.self) { destination in
                 if case .transfer(let transfer) = destination {
                     TransferDetailsView(transfer: transfer)
