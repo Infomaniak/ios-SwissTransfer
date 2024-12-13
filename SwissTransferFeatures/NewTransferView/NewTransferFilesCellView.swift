@@ -65,6 +65,20 @@ struct NewTransferFilesCellView: View {
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
 
+                        ForEach(newTransferFileManager.importedItems) { _ in
+                            SmallThumbnailView(url: nil, mimeType: "")
+                                .frame(width: 80, height: 80)
+                                .opacity(0.4)
+                                .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
+                                .overlay {
+                                    ProgressView()
+                                        .controlSize(.small)
+                                        .tint(nil)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                                        .padding(IKPadding.small)
+                                }
+                        }
+
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {

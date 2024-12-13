@@ -24,7 +24,7 @@ import XCTest
 final class SwissTransferTests: XCTestCase {
     override func tearDown() async throws {
         let newTransferManager = NewTransferFileManager()
-        newTransferManager.cleanTmpDir(type: .all)
+        await NewTransferFileManager.cleanTmpDir(type: .all)
     }
 
     func testDestinationURL() {

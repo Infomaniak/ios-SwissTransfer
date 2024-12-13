@@ -43,11 +43,14 @@ enum TmpDirType: String {
     }
 }
 
+@MainActor
 public final class NewTransferFileManager: ObservableObject {
-    private var initialItems: [ImportedItem]
+    @Published var importedItems: [ImportedItem] = []
+
+    private var shouldDoInitialClean = true
 
     public init(initialItems: [ImportedItem] = []) {
-        self.initialItems = initialItems
+        self.importedItems = initialItems
     }
 
     deinit {
@@ -59,19 +62,20 @@ public final class NewTransferFileManager: ObservableObject {
     /// Add files to Upload Folder
     /// Return the content of the folder
     @discardableResult
-    public func addItems(_ importedItems: [ImportedItem]) async -> [DisplayableFile] {
-        var itemsToImport = importedItems
-        if !initialItems.isEmpty {
+    public func addItems(_ itemsToImport: [ImportedItem]) async -> [DisplayableFile] {
+        if shouldDoInitialClean {
             await NewTransferFileManager.cleanTmpDir(type: .upload)
-            itemsToImport.append(contentsOf: initialItems)
-            initialItems.removeAll()
+            shouldDoInitialClean = false
         }
+        importedItems.append(contentsOf: itemsToImport)
 
         do {
-            let importedItemUrls = try await itemsToImport.asyncMap { importedItem in
+            let importedItemUrls = try await importedItems.asyncMap { importedItem in
                 try await importedItem.importItem()
             }
+
             moveToTmp(files: importedItemUrls)
+            importedItems.removeAll()
         } catch {
             Logger.general.error("An error occurred while importing item: \(error)")
         }

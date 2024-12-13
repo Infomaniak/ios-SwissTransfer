@@ -21,7 +21,11 @@ import PhotosUI
 import SwiftUI
 import UIKit
 
-public struct ImportedItem: Equatable, Hashable, Sendable {
+public struct ImportedItem: Identifiable, Equatable, Hashable, Sendable {
+    public var id: Int {
+        item.hashValue
+    }
+
     let item: any ImportableItem
 
     public init(item: any ImportableItem) {
