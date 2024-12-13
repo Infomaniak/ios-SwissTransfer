@@ -25,8 +25,9 @@ import SwissTransferCoreUI
 
 struct FileListView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var newTransferManager: NewTransferFileManager
+    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
+    @State private var selectedItems = [ImportedItem]()
     @State private var files = [DisplayableFile]()
 
     private let folder: DisplayableFile?
@@ -85,23 +86,27 @@ struct FileListView: View {
             }
             .padding(value: .medium)
         }
-        .background(Color.ST.background)
+        .appBackground()
+        .floatingActionButton(selection: $selectedItems, style: .newTransfer)
         .stNavigationBarStyle()
         .stNavigationBarNewTransfer(title: navigationTitle)
         .onAppear {
-            files = newTransferManager.filesAt(folderURL: folder?.url)
+            files = newTransferFileManager.filesAt(folderURL: folder?.url)
         }
         .onChange(of: files) { _ in
             if files.isEmpty {
                 dismiss()
             }
         }
+        .task(id: selectedItems) {
+            files = await newTransferFileManager.addItems(selectedItems)
+        }
     }
 
     func removeFile(_ file: DisplayableFile, atFolderURL folderURL: URL?) {
         do {
-            try newTransferManager.remove(file: file)
-            let newFiles = newTransferManager.filesAt(folderURL: folderURL)
+            try newTransferFileManager.remove(file: file)
+            let newFiles = newTransferFileManager.filesAt(folderURL: folderURL)
 
             withAnimation {
                 files = newFiles

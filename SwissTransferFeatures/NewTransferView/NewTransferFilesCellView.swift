@@ -40,20 +40,18 @@ struct NewTransferFilesCellView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                NavigationLink(value: DisplayableRootFolder()) {
-                    HStack {
-                        Text(
-                            "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
-                        )
-                        .font(.ST.callout)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    Text(
+                        "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
+                    )
+                    .font(.ST.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                        STResourcesAsset.Images.chevronRight.swiftUIImage
-                            .iconSize(.medium)
-                    }
-                    .padding(.horizontal, value: .medium)
-                    .foregroundStyle(Color.ST.textSecondary)
+                    STResourcesAsset.Images.chevronRight.swiftUIImage
+                        .iconSize(.medium)
                 }
+                .padding(.horizontal, value: .medium)
+                .foregroundStyle(Color.ST.textSecondary)
 
                 ScrollView(.horizontal) {
                     HStack(spacing: IKPadding.medium) {
@@ -66,8 +64,7 @@ struct NewTransferFilesCellView: View {
                         }
 
                         ForEach(newTransferFileManager.importedItems) { _ in
-                            SmallThumbnailView(url: nil, mimeType: "")
-                                .frame(width: 80, height: 80)
+                            SmallThumbnailView(url: nil, mimeType: "", size: .medium)
                                 .opacity(0.4)
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                                 .overlay(alignment: .bottomTrailing) {
@@ -81,14 +78,10 @@ struct NewTransferFilesCellView: View {
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
-                                    SmallThumbnailView(name: file.name) {
-                                        removeFile(file)
-                                    }
+                                    SmallThumbnailView(name: file.name, size: .medium)
                                 }
                             } else {
-                                SmallThumbnailView(url: file.url, mimeType: file.mimeType) {
-                                    removeFile(file)
-                                }
+                                SmallThumbnailView(url: file.url, mimeType: file.mimeType, size: .medium)
                             }
                         }
                     }
@@ -103,19 +96,6 @@ struct NewTransferFilesCellView: View {
         }
         .task(id: selectedItems) {
             files = await newTransferFileManager.addItems(selectedItems)
-        }
-    }
-
-    func removeFile(_ file: DisplayableFile) {
-        do {
-            try newTransferFileManager.remove(file: file)
-            let newFiles = newTransferFileManager.filesAt(folderURL: nil)
-
-            withAnimation {
-                files = newFiles
-            }
-        } catch {
-            Logger.general.error("An error occurred while removing file: \(error)")
         }
     }
 }

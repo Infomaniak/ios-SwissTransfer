@@ -40,8 +40,12 @@ public struct NewTransferView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
-                    NewTransferFilesCellView()
-                        .padding(.horizontal, value: .medium)
+                    NewTransferTypeView(transferType: $viewModel.transferType)
+
+                    NavigationLink(value: DisplayableRootFolder()) {
+                        NewTransferFilesCellView()
+                    }
+                    .padding(.horizontal, value: .medium)
 
                     NewTransferDetailsView(
                         authorEmail: $viewModel.authorEmail,
@@ -51,13 +55,12 @@ public struct NewTransferView: View {
                     )
                     .padding(.horizontal, value: .medium)
 
-                    NewTransferTypeView(transferType: $viewModel.transferType)
-
                     NewTransferSettingsView(
                         duration: $viewModel.validityPeriod,
                         limit: $viewModel.downloadLimit,
                         language: $viewModel.emailLanguage,
-                        password: $viewModel.password
+                        password: $viewModel.password,
+                        transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
                 }
