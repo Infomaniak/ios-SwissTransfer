@@ -30,7 +30,7 @@ public struct NewTransferView: View {
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
-    @EnvironmentObject private var newTransferManager: NewTransferManager
+    @EnvironmentObject private var newTransferManager: NewTransferFileManager
 
     @State private var isLoadingFileToUpload = false
 
@@ -136,5 +136,5 @@ public struct NewTransferView: View {
     NewTransferView()
         .environmentObject(RootTransferViewState())
         .environmentObject(RootTransferViewModel())
-        .environmentObject(NewTransferManager())
+        .environmentObject(NewTransferFileManager())
 }

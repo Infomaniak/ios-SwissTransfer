@@ -23,14 +23,14 @@ import XCTest
 @MainActor
 final class SwissTransferTests: XCTestCase {
     override func tearDown() async throws {
-        let newTransferManager = NewTransferManager()
+        let newTransferManager = NewTransferFileManager()
         newTransferManager.cleanTmpDir(type: .all)
     }
 
     func testDestinationURL() {
         do {
             // GIVEN
-            let newTransferManager = NewTransferManager()
+            let newTransferManager = NewTransferFileManager()
             let fileName = "my-file.txt"
             let sourcePath = URL(string: "http://my-url.com/\(fileName)")!
             let expectedResult = try URL.tmpUploadDirectory().appendingPathComponent(fileName)
@@ -48,7 +48,7 @@ final class SwissTransferTests: XCTestCase {
     func testRenameDestinationURL() {
         do {
             // GIVEN
-            let newTransferManager = NewTransferManager()
+            let newTransferManager = NewTransferFileManager()
             let sourcePath = URL(string: "http://my-url.com/my-file.txt")!
             let tmpDirectory = try URL.tmpUploadDirectory()
             let expectedResult = tmpDirectory.appendingPathComponent("my-file(1).txt")

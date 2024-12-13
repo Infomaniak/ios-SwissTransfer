@@ -43,7 +43,7 @@ enum TmpDirType: String {
     }
 }
 
-public final class NewTransferManager: ObservableObject {
+public final class NewTransferFileManager: ObservableObject {
     private var initialItems: [ImportedItem]
 
     public init(initialItems: [ImportedItem] = []) {
@@ -52,7 +52,7 @@ public final class NewTransferManager: ObservableObject {
 
     deinit {
         Task {
-            await NewTransferManager.cleanTmpDir(type: .all)
+            await NewTransferFileManager.cleanTmpDir(type: .all)
         }
     }
 
@@ -62,7 +62,7 @@ public final class NewTransferManager: ObservableObject {
     public func addItems(_ importedItems: [ImportedItem]) async -> [DisplayableFile] {
         var itemsToImport = importedItems
         if !initialItems.isEmpty {
-            await NewTransferManager.cleanTmpDir(type: .upload)
+            await NewTransferFileManager.cleanTmpDir(type: .upload)
             itemsToImport.append(contentsOf: initialItems)
             initialItems.removeAll()
         }
@@ -76,7 +76,7 @@ public final class NewTransferManager: ObservableObject {
             Logger.general.error("An error occurred while importing item: \(error)")
         }
 
-        await NewTransferManager.cleanTmpDir(type: .cache)
+        await NewTransferFileManager.cleanTmpDir(type: .cache)
         return filesAt(folderURL: nil)
     }
 
@@ -90,7 +90,7 @@ public final class NewTransferManager: ObservableObject {
     }
 }
 
-extension NewTransferManager {
+extension NewTransferFileManager {
     /// Move the imported files/folder in the temporary directory
     private func moveToTmp(files: [URL]) {
         for file in files {
@@ -147,7 +147,7 @@ extension NewTransferManager {
 
 // MARK: - Tools
 
-extension NewTransferManager {
+extension NewTransferFileManager {
     /// Flatten the upload folder
     /// Then return all the found Files to upload
     /// - Returns: An array of file to Upload (no folder, only file)

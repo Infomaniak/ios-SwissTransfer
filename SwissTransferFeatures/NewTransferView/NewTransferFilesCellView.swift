@@ -24,7 +24,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferFilesCellView: View {
-    @EnvironmentObject private var newTransferManager: NewTransferManager
+    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var selectedItems = [ImportedItem]()
     @State private var files = [DisplayableFile]()
@@ -89,14 +89,14 @@ struct NewTransferFilesCellView: View {
             .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
         .task(id: selectedItems) {
-            files = await newTransferManager.addItems(selectedItems)
+            files = await newTransferFileManager.addItems(selectedItems)
         }
     }
 
     func removeFile(_ file: DisplayableFile) {
         do {
-            try newTransferManager.remove(file: file)
-            let newFiles = newTransferManager.filesAt(folderURL: nil)
+            try newTransferFileManager.remove(file: file)
+            let newFiles = newTransferFileManager.filesAt(folderURL: nil)
 
             withAnimation {
                 files = newFiles

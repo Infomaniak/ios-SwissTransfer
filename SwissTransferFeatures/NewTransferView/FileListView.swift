@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 
 struct FileListView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var newTransferManager: NewTransferManager
+    @EnvironmentObject private var newTransferManager: NewTransferFileManager
 
     @State private var files = [DisplayableFile]()
 
