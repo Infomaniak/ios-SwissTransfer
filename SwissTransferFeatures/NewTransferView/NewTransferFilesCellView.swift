@@ -81,12 +81,12 @@ struct NewTransferFilesCellView: View {
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
-                                    SmallThumbnailView(name: file.name) {
+                                    SmallThumbnailView(name: file.name, size: .medium) {
                                         removeFile(file)
                                     }
                                 }
                             } else {
-                                SmallThumbnailView(url: file.url, mimeType: file.mimeType) {
+                                SmallThumbnailView(url: file.url, mimeType: file.mimeType, size: .medium) {
                                     removeFile(file)
                                 }
                             }
