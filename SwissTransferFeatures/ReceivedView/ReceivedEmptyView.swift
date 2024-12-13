@@ -16,29 +16,23 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STTransferDetailsView
-import STTransferList
 import SwiftUI
-import SwissTransferCore
+import SwissTransferCoreUI
+import STResources
 
-public struct ReceivedView: View {
-    @EnvironmentObject private var transferManager: TransferManager
-
-    public init() {}
-
-    public var body: some View {
-        TransferList(transferManager: transferManager, origin: .received) {
-            ReceivedEmptyView()
-        }
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            if case .transfer(let transfer) = destination {
-                TransferDetailsView(transfer: transfer)
-            }
-        }
+struct ReceivedEmptyView: View {
+    var body: some View {
+        IllustrationAndTextView(
+            image: STResourcesAsset.Images.ghostBinoculars.swiftUIImage,
+            title: STResourcesStrings.Localizable.noTransferReceivedTitle,
+            subtitle: STResourcesStrings.Localizable.noTransferReceivedDescription,
+            style: .emptyState
+        )
+        .scrollableEmptyState()
+        .appBackground()
     }
 }
 
 #Preview {
-    ReceivedView()
+    ReceivedEmptyView()
 }
