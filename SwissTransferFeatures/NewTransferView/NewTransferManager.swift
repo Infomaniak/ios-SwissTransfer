@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakConcurrency
 import InfomaniakCore
 import OSLog
 import STCore
@@ -66,16 +67,15 @@ public final class NewTransferManager: ObservableObject {
             initialItems.removeAll()
         }
 
-        var importedItemUrls = [URL]()
-        for importedItem in itemsToImport {
-            do {
-                let importedItemURL = try await importedItem.importItem()
-                importedItemUrls.append(importedItemURL)
-            } catch {
-                Logger.general.error("An error occurred while importing item: \(error)")
+        do {
+            let importedItemUrls = try await itemsToImport.asyncMap { importedItem in
+                try await importedItem.importItem()
             }
+            moveToTmp(files: importedItemUrls)
+        } catch {
+            Logger.general.error("An error occurred while importing item: \(error)")
         }
-        moveToTmp(files: importedItemUrls)
+
         await NewTransferManager.cleanTmpDir(type: .cache)
         return filesAt(folderURL: nil)
     }
