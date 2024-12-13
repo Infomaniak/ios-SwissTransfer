@@ -90,7 +90,7 @@ public struct TransferList<EmptyView: View>: View {
             }
         }
         .overlay {
-            if viewModel.sections?.isEmpty == true, let emptyView {
+            if viewModel.sections?.isEmpty != false, let emptyView {
                 emptyView
             }
         }
