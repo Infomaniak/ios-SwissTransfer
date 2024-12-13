@@ -40,6 +40,8 @@ public struct NewTransferView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
+                    NewTransferTypeView(transferType: $viewModel.transferType)
+                    
                     NewTransferFilesCellView()
                         .padding(.horizontal, value: .medium)
 
@@ -50,8 +52,6 @@ public struct NewTransferView: View {
                         transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
-
-                    NewTransferTypeView(transferType: $viewModel.transferType)
 
                     NewTransferSettingsView(
                         duration: $viewModel.validityPeriod,
