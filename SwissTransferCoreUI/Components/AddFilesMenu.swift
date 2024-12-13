@@ -29,11 +29,11 @@ public struct AddFilesMenu<Content: View>: View {
     @State private var isShowingPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
 
-    @Binding var selection: [URL]
+    @Binding var selection: [ImportedItem]
 
     private let label: Content
 
-    public init(selection: Binding<[URL]>, @ViewBuilder label: () -> Content) {
+    public init(selection: Binding<[ImportedItem]>, @ViewBuilder label: () -> Content) {
         _selection = selection
         self.label = label()
     }
@@ -86,43 +86,19 @@ public struct AddFilesMenu<Content: View>: View {
     }
 
     private func didTakePicture(uiImage: UIImage) {
-        do {
-            let fileName = URL.defaultFileName()
-            let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.png)
-            try uiImage.pngData()?.write(to: url)
-
-            selection = [url]
-        } catch {
-            Logger.general.error("An error occurred while saving picture: \(error)")
-        }
+        selection = [ImportedItem(item: uiImage)]
     }
 
     private func didSelectFromPhotoLibrary() {
         guard !selectedPhotos.isEmpty else { return }
-        Task {
-            var photoList = [PhotoLibraryContent]()
-            // Save photos
-            for photo in selectedPhotos {
-                do {
-                    guard let newFile = try await photo.loadTransferable(type: PhotoLibraryContent.self) else { continue }
-                    photoList.append(newFile)
-                } catch {
-                    Logger.general.error("An error occurred while saving photo: \(error)")
-                }
-            }
-            selectedPhotos = []
-
-            let urls = photoList.map {
-                $0.url
-            }
-            selection = urls
-        }
+        selection = selectedPhotos.map { ImportedItem(item: $0) }
+        selectedPhotos = []
     }
 
     private func didSelectFromFileSystem(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
-            selection = urls
+            selection = urls.map { ImportedItem(item: $0) }
         case .failure(let error):
             Logger.general.error("An error occurred while importing files: \(error)")
         }
@@ -131,6 +107,6 @@ public struct AddFilesMenu<Content: View>: View {
 
 @available(iOS 17.0, *)
 #Preview {
-    @Previewable @State var selection = [URL]()
+    @Previewable @State var selection = [ImportedItem]()
     AddFilesMenu(selection: $selection) {}
 }

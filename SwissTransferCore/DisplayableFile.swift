@@ -18,7 +18,7 @@
 
 import Foundation
 
-public class DisplayableFile: Identifiable, Hashable {
+public struct DisplayableFile: Identifiable, Hashable, Sendable {
     public var id: String {
         url.path()
     }
@@ -26,9 +26,9 @@ public class DisplayableFile: Identifiable, Hashable {
     public let name: String
     public let isFolder: Bool
 
-    public var url: URL
-    public var size: Int64 = 0
-    public var mimeType = ""
+    public let url: URL
+    public let size: Int64
+    public let mimeType: String
 
     public init?(url: URL) {
         guard let resources = try? url.resourceValues(forKeys: [

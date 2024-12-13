@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OSLog
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -25,7 +26,7 @@ import SwissTransferCoreUI
 struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var selectedItems = [URL]()
+    @State private var selectedItems = [ImportedItem]()
     @State private var files = [DisplayableFile]()
 
     private var filesSize: Int64 {
@@ -63,24 +64,17 @@ struct NewTransferFilesCellView: View {
                                 .frame(width: 80, height: 80)
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
-                        .onChange(of: selectedItems) { newSelectedItems in
-                            files = newTransferManager.addFiles(urls: newSelectedItems)
-                        }
 
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
                                     SmallThumbnailView(name: file.name) {
-                                        newTransferManager.remove(file: file) {
-                                            files = newTransferManager.filesAt(folderURL: nil)
-                                        }
+                                        removeFile(file)
                                     }
                                 }
                             } else {
                                 SmallThumbnailView(url: file.url, mimeType: file.mimeType) {
-                                    newTransferManager.remove(file: file) {
-                                        files = newTransferManager.filesAt(folderURL: nil)
-                                    }
+                                    removeFile(file)
                                 }
                             }
                         }
@@ -94,8 +88,21 @@ struct NewTransferFilesCellView: View {
             .padding(.bottom, value: .small)
             .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
-        .onAppear {
-            files = newTransferManager.filesAt(folderURL: nil)
+        .task(id: selectedItems) {
+            files = await newTransferManager.addItems(selectedItems)
+        }
+    }
+
+    func removeFile(_ file: DisplayableFile) {
+        do {
+            try newTransferManager.remove(file: file)
+            let newFiles = newTransferManager.filesAt(folderURL: nil)
+
+            withAnimation {
+                files = newFiles
+            }
+        } catch {
+            Logger.general.error("An error occurred while removing file: \(error)")
         }
     }
 }

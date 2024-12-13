@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakConcurrency
 import InfomaniakCore
 import OSLog
 import STCore
@@ -42,25 +43,40 @@ enum TmpDirType: String {
     }
 }
 
-@MainActor
 public final class NewTransferManager: ObservableObject {
-    public init(initialFiles: [URL]? = nil) {
-        cleanTmpDir(type: .upload)
-        if let initialFiles {
-            addFiles(urls: initialFiles)
-        }
+    private var initialItems: [ImportedItem]
+
+    public init(initialItems: [ImportedItem] = []) {
+        self.initialItems = initialItems
     }
 
     deinit {
-        cleanTmpDir(type: .all)
+        Task {
+            await NewTransferManager.cleanTmpDir(type: .all)
+        }
     }
 
     /// Add files to Upload Folder
     /// Return the content of the folder
     @discardableResult
-    public func addFiles(urls: [URL]) -> [DisplayableFile] {
-        moveToTmp(files: urls)
-        cleanTmpDir(type: .cache)
+    public func addItems(_ importedItems: [ImportedItem]) async -> [DisplayableFile] {
+        var itemsToImport = importedItems
+        if !initialItems.isEmpty {
+            await NewTransferManager.cleanTmpDir(type: .upload)
+            itemsToImport.append(contentsOf: initialItems)
+            initialItems.removeAll()
+        }
+
+        do {
+            let importedItemUrls = try await itemsToImport.asyncMap { importedItem in
+                try await importedItem.importItem()
+            }
+            moveToTmp(files: importedItemUrls)
+        } catch {
+            Logger.general.error("An error occurred while importing item: \(error)")
+        }
+
+        await NewTransferManager.cleanTmpDir(type: .cache)
         return filesAt(folderURL: nil)
     }
 
@@ -68,14 +84,9 @@ public final class NewTransferManager: ObservableObject {
     /// - FileManager
     /// - Upload list
     /// - Displayable list
-    func remove(file: DisplayableFile, completion: () -> Void) {
-        do {
-            try FileManager.default.removeItem(at: file.url)
-            cleanEmptyParent(of: file.url)
-            completion()
-        } catch {
-            Logger.general.error("An error occured while removing file: \(error)")
-        }
+    func remove(file: DisplayableFile) throws {
+        try FileManager.default.removeItem(at: file.url)
+        cleanEmptyParent(of: file.url)
     }
 }
 
@@ -88,7 +99,7 @@ extension NewTransferManager {
                 _ = file.startAccessingSecurityScopedResource()
                 try FileManager.default.copyItem(at: file, to: destination)
             } catch {
-                Logger.general.error("An error occured while copying files: \(error)")
+                Logger.general.error("An error occurred while copying files: \(error)")
             }
             file.stopAccessingSecurityScopedResource()
         }
@@ -113,7 +124,7 @@ extension NewTransferManager {
     }
 
     /// Empty the temporary directory
-    nonisolated func cleanTmpDir(type: TmpDirType) {
+    nonisolated static func cleanTmpDir(type: TmpDirType) async {
         do {
             try FileManager.default.removeItem(at: type.directory)
         } catch {

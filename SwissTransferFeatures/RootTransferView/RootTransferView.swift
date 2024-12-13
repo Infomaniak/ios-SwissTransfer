@@ -19,6 +19,7 @@
 import STNewTransferView
 import STUploadProgressView
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct RootTransferView: View {
@@ -26,8 +27,8 @@ public struct RootTransferView: View {
     @StateObject private var viewModel = RootTransferViewModel()
     @StateObject private var newTransferManager: NewTransferManager
 
-    public init(initialFiles: [URL]) {
-        _newTransferManager = StateObject(wrappedValue: NewTransferManager(initialFiles: initialFiles))
+    public init(initialItems: [ImportedItem]) {
+        _newTransferManager = StateObject(wrappedValue: NewTransferManager(initialItems: initialItems))
     }
 
     public var body: some View {
@@ -53,5 +54,5 @@ public struct RootTransferView: View {
 }
 
 #Preview {
-    RootTransferView(initialFiles: [])
+    RootTransferView(initialItems: [])
 }

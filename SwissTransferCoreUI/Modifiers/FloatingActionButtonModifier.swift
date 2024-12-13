@@ -18,6 +18,7 @@
 
 import InfomaniakCoreSwiftUI
 import SwiftUI
+import SwissTransferCore
 
 public enum FloatingActionButtonStyle {
     case newTransfer
@@ -27,7 +28,7 @@ public enum FloatingActionButtonStyle {
 struct FloatingActionButtonModifier: ViewModifier {
     @Environment(\.isCompactWindow) private var isCompactWindow
 
-    @Binding var selection: [URL]
+    @Binding var selection: [ImportedItem]
 
     let style: FloatingActionButtonStyle
 
@@ -50,7 +51,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 }
 
 public extension View {
-    func floatingActionButton(selection: Binding<[URL]>, style: FloatingActionButtonStyle) -> some View {
+    func floatingActionButton(selection: Binding<[ImportedItem]>, style: FloatingActionButtonStyle) -> some View {
         modifier(FloatingActionButtonModifier(selection: selection, style: style))
     }
 }

@@ -45,7 +45,7 @@ public struct MainView: View {
             universalLinksState.linkedTransfer = nil
         }
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
-            RootTransferView(initialFiles: container.urls)
+            RootTransferView(initialItems: container.importedItems)
         }
     }
 }

@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 struct SentEmptyView: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var selectedItems = [URL]()
+    @State private var selectedItems = [ImportedItem]()
 
     var body: some View {
         VStack(spacing: 40) {
@@ -43,7 +43,7 @@ struct SentEmptyView: View {
 
             FirstTransferButton(selection: $selectedItems, style: .big)
                 .onChange(of: selectedItems) { newSelectedItems in
-                    mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+                    mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
                 }
         }
         .padding(value: .medium)

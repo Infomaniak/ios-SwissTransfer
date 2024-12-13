@@ -8,7 +8,8 @@ let packageSettings = PackageSettings(
     productTypes: [
         "InfomaniakDI": .framework,
         "InfomaniakCore": .framework,
-        "InfomaniakCoreSwiftUI": .framework
+        "InfomaniakCoreSwiftUI": .framework,
+        "InfomaniakConcurrency": .framework
     ]
 )
 #endif
