@@ -68,14 +68,9 @@ public final class NewTransferManager: ObservableObject {
     /// - FileManager
     /// - Upload list
     /// - Displayable list
-    func remove(file: DisplayableFile, completion: () -> Void) {
-        do {
-            try FileManager.default.removeItem(at: file.url)
-            cleanEmptyParent(of: file.url)
-            completion()
-        } catch {
-            Logger.general.error("An error occured while removing file: \(error)")
-        }
+    func remove(file: DisplayableFile) throws {
+        try FileManager.default.removeItem(at: file.url)
+        cleanEmptyParent(of: file.url)
     }
 }
 
@@ -88,7 +83,7 @@ extension NewTransferManager {
                 _ = file.startAccessingSecurityScopedResource()
                 try FileManager.default.copyItem(at: file, to: destination)
             } catch {
-                Logger.general.error("An error occured while copying files: \(error)")
+                Logger.general.error("An error occurred while copying files: \(error)")
             }
             file.stopAccessingSecurityScopedResource()
         }

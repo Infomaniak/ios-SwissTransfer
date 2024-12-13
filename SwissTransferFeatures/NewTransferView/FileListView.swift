@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OSLog
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -66,9 +67,7 @@ struct FileListView: View {
                         if file.isFolder {
                             NavigationLink(value: file) {
                                 LargeFileCell(folderName: file.name, folderSize: file.size) {
-                                    newTransferManager.remove(file: file) {
-                                        files = newTransferManager.filesAt(folderURL: folder?.url)
-                                    }
+                                    removeFile(file, atFolderURL: folder?.url)
                                 }
                             }
                         } else {
@@ -78,9 +77,7 @@ struct FileListView: View {
                                 url: file.url,
                                 mimeType: file.mimeType
                             ) {
-                                newTransferManager.remove(file: file) {
-                                    files = newTransferManager.filesAt(folderURL: folder?.url)
-                                }
+                                removeFile(file, atFolderURL: folder?.url)
                             }
                         }
                     }
@@ -98,6 +95,19 @@ struct FileListView: View {
             if files.isEmpty {
                 dismiss()
             }
+        }
+    }
+
+    func removeFile(_ file: DisplayableFile, atFolderURL folderURL: URL?) {
+        do {
+            try newTransferManager.remove(file: file)
+            let newFiles = newTransferManager.filesAt(folderURL: folderURL)
+
+            withAnimation {
+                files = newFiles
+            }
+        } catch {
+            Logger.general.error("An error occurred while removing file: \(error)")
         }
     }
 }

@@ -71,16 +71,12 @@ struct NewTransferFilesCellView: View {
                             if file.isFolder {
                                 NavigationLink(value: file) {
                                     SmallThumbnailView(name: file.name) {
-                                        newTransferManager.remove(file: file) {
-                                            files = newTransferManager.filesAt(folderURL: nil)
-                                        }
+                                        removeFile(file)
                                     }
                                 }
                             } else {
                                 SmallThumbnailView(url: file.url, mimeType: file.mimeType) {
-                                    newTransferManager.remove(file: file) {
-                                        files = newTransferManager.filesAt(folderURL: nil)
-                                    }
+                                    removeFile(file)
                                 }
                             }
                         }
@@ -96,6 +92,17 @@ struct NewTransferFilesCellView: View {
         }
         .onAppear {
             files = newTransferManager.filesAt(folderURL: nil)
+
+    func removeFile(_ file: DisplayableFile) {
+        do {
+            try newTransferManager.remove(file: file)
+            let newFiles = newTransferManager.filesAt(folderURL: nil)
+
+            withAnimation {
+                files = newFiles
+            }
+        } catch {
+            Logger.general.error("An error occurred while removing file: \(error)")
         }
     }
 }
