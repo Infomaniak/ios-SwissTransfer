@@ -25,10 +25,10 @@ import SwissTransferCoreUI
 public struct RootTransferView: View {
     @StateObject private var viewState = RootTransferViewState()
     @StateObject private var viewModel = RootTransferViewModel()
-    @StateObject private var newTransferManager: NewTransferManager
+    @StateObject private var newTransferManager: NewTransferFileManager
 
     public init(initialItems: [ImportedItem]) {
-        _newTransferManager = StateObject(wrappedValue: NewTransferManager(initialItems: initialItems))
+        _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: initialItems))
     }
 
     public var body: some View {

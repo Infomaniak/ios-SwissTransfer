@@ -30,7 +30,7 @@ public struct NewTransferView: View {
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
-    @EnvironmentObject private var newTransferManager: NewTransferManager
+    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var isLoadingFileToUpload = false
 
@@ -69,7 +69,7 @@ public struct NewTransferView: View {
                     Text(STResourcesStrings.Localizable.buttonNext)
                 }
                 .buttonStyle(.ikBorderedProminent)
-                .ikButtonLoading(isLoadingFileToUpload)
+                .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
             }
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
@@ -81,7 +81,6 @@ public struct NewTransferView: View {
                 FileListView(parentFolder: nil)
             }
         }
-        .environmentObject(newTransferManager)
     }
 
     private func startUpload() {
@@ -100,7 +99,7 @@ public struct NewTransferView: View {
             }
 
             do {
-                let filesToUpload = try newTransferManager.filesToUpload()
+                let filesToUpload = try newTransferFileManager.filesToUpload()
                 let newUploadSession = NewUploadSession(
                     duration: viewModel.validityPeriod,
                     authorEmail: authorTrimmedEmail,
@@ -136,5 +135,5 @@ public struct NewTransferView: View {
     NewTransferView()
         .environmentObject(RootTransferViewState())
         .environmentObject(RootTransferViewModel())
-        .environmentObject(NewTransferManager())
+        .environmentObject(NewTransferFileManager())
 }

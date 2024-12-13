@@ -43,40 +43,44 @@ enum TmpDirType: String {
     }
 }
 
-public final class NewTransferManager: ObservableObject {
-    private var initialItems: [ImportedItem]
+@MainActor
+public final class NewTransferFileManager: ObservableObject {
+    @Published var importedItems: [ImportedItem] = []
+
+    private var shouldDoInitialClean = true
 
     public init(initialItems: [ImportedItem] = []) {
-        self.initialItems = initialItems
+        importedItems = initialItems
     }
 
     deinit {
         Task {
-            await NewTransferManager.cleanTmpDir(type: .all)
+            await NewTransferFileManager.cleanTmpDir(type: .all)
         }
     }
 
     /// Add files to Upload Folder
     /// Return the content of the folder
     @discardableResult
-    public func addItems(_ importedItems: [ImportedItem]) async -> [DisplayableFile] {
-        var itemsToImport = importedItems
-        if !initialItems.isEmpty {
-            await NewTransferManager.cleanTmpDir(type: .upload)
-            itemsToImport.append(contentsOf: initialItems)
-            initialItems.removeAll()
+    public func addItems(_ itemsToImport: [ImportedItem]) async -> [DisplayableFile] {
+        if shouldDoInitialClean {
+            await NewTransferFileManager.cleanTmpDir(type: .upload)
+            shouldDoInitialClean = false
         }
+        importedItems.append(contentsOf: itemsToImport)
 
         do {
-            let importedItemUrls = try await itemsToImport.asyncMap { importedItem in
+            let importedItemUrls = try await importedItems.asyncMap { importedItem in
                 try await importedItem.importItem()
             }
+
             moveToTmp(files: importedItemUrls)
+            importedItems.removeAll()
         } catch {
             Logger.general.error("An error occurred while importing item: \(error)")
         }
 
-        await NewTransferManager.cleanTmpDir(type: .cache)
+        await NewTransferFileManager.cleanTmpDir(type: .cache)
         return filesAt(folderURL: nil)
     }
 
@@ -90,7 +94,7 @@ public final class NewTransferManager: ObservableObject {
     }
 }
 
-extension NewTransferManager {
+extension NewTransferFileManager {
     /// Move the imported files/folder in the temporary directory
     private func moveToTmp(files: [URL]) {
         for file in files {
@@ -147,7 +151,7 @@ extension NewTransferManager {
 
 // MARK: - Tools
 
-extension NewTransferManager {
+extension NewTransferFileManager {
     /// Flatten the upload folder
     /// Then return all the found Files to upload
     /// - Returns: An array of file to Upload (no folder, only file)
