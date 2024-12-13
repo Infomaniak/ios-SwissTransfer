@@ -21,6 +21,7 @@ import InfomaniakDeviceCheck
 import InfomaniakDI
 import OSLog
 import STCore
+import STNetwork
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -91,43 +92,47 @@ public struct NewTransferView: View {
         Task {
             isLoadingFileToUpload = true
 
-            let recipientsEmail = [String]()
+            var recipientsEmail = [String]()
             if viewModel.transferType == .mail,
                viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
-                viewModel.recipientEmail.append(viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines))
+                recipientsEmail.append("\"" + viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines) + "\"")
             }
 
             var authorTrimmedEmail = ""
+            var authorEmailToken: String?
             if viewModel.transferType == .mail {
                 authorTrimmedEmail = viewModel.authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+                authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
             }
 
-            do {
-                let filesToUpload = try newTransferFileManager.filesToUpload()
-                let newUploadSession = NewUploadSession(
-                    duration: viewModel.validityPeriod,
-                    authorEmail: authorTrimmedEmail,
-                    authorEmailToken: nil,
-                    password: viewModel.password,
-                    message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
-                    numberOfDownload: viewModel.downloadLimit,
-                    language: viewModel.emailLanguage,
-                    recipientsEmails: recipientsEmail,
-                    files: filesToUpload
-                )
+            guard let filesToUpload = try? newTransferFileManager.filesToUpload() else {
+                return
+            }
 
+            let newUploadSession = NewUploadSession(
+                duration: viewModel.validityPeriod,
+                authorEmail: authorTrimmedEmail,
+                authorEmailToken: authorEmailToken,
+                password: viewModel.password,
+                message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
+                numberOfDownload: viewModel.downloadLimit,
+                language: viewModel.emailLanguage,
+                recipientsEmails: recipientsEmail,
+                files: filesToUpload
+            )
+
+            do {
                 viewModel.newUploadSession = newUploadSession
 
-                let uploadSession = try? await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
+                let uploadSession = try await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
 
-                guard let uploadSession else {
-                    rootTransferViewState.transition(to: .error)
-                    return
+                withAnimation {
+                    rootTransferViewState.transition(to: .uploadProgress(uploadSession))
                 }
-
-                rootTransferViewState.transition(to: .uploadProgress(uploadSession))
+            } catch let error as NSError where error.kotlinException != nil {
+                rootTransferViewState.transition(to: .verifyMail(newUploadSession))
             } catch {
-                Logger.general.error("Error getting files to upload \(error.localizedDescription)")
+                rootTransferViewState.transition(to: .error)
             }
 
             isLoadingFileToUpload = false

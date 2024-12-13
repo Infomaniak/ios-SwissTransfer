@@ -17,20 +17,25 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct VerifyMailView: View {
-    @EnvironmentObject private var transferManager: TransferManager
+    @LazyInjectService var injection: SwissTransferInjection
 
-    let mail: String
+    @EnvironmentObject private var transferManager: TransferManager
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+
+    let newUploadSession: NewUploadSession
 
     @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
 
-    public init(mail: String) {
-        self.mail = mail
+    public init(newUploadSession: NewUploadSession) {
+        self.newUploadSession = newUploadSession
     }
 
     public var body: some View {
@@ -40,7 +45,7 @@ public struct VerifyMailView: View {
                     .font(.ST.title)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text(STResourcesStrings.Localizable.validateMailDescription(mail))
+                Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
 
@@ -62,11 +67,35 @@ public struct VerifyMailView: View {
     func verifyCode(_ code: String) {
         guard codeFieldStyle != .loading else { return }
         codeFieldStyle = .loading
+
         Task {
             do {
-                let verifyEmailCodeBody = STNVerifyEmailCodeBody(code: code, email: mail)
+                let verifyEmailCodeBody = STNVerifyEmailCodeBody(code: code, email: newUploadSession.authorEmail)
                 let token = try await STNUploadRepository().verifyEmailCode(verifyEmailCodeBody: verifyEmailCodeBody).token
-            } catch {}
+
+                let uploadSessionWithEmailToken = NewUploadSession(
+                    duration: newUploadSession.duration,
+                    authorEmail: newUploadSession.authorEmail,
+                    authorEmailToken: token,
+                    password: newUploadSession.password,
+                    message: newUploadSession.message,
+                    numberOfDownload: newUploadSession.numberOfDownload,
+                    language: newUploadSession.language,
+                    recipientsEmails: newUploadSession.recipientsEmails,
+                    files: newUploadSession.files
+                )
+
+                let uploadSession = try await injection.uploadManager
+                    .createUploadSession(newUploadSession: uploadSessionWithEmailToken)
+
+                try await injection.emailTokensManager.setEmailToken(email: newUploadSession.authorEmail, token: token)
+
+                withAnimation {
+                    rootTransferViewState.transition(to: .uploadProgress(uploadSession))
+                }
+            } catch {
+                rootTransferViewState.transition(to: .error)
+            }
 
             codeFieldStyle = .normal
         }
@@ -74,5 +103,5 @@ public struct VerifyMailView: View {
 }
 
 #Preview {
-    VerifyMailView(mail: "john.smith@ik.me")
+    VerifyMailView(newUploadSession: PreviewHelper.sampleNewUploadSession)
 }
