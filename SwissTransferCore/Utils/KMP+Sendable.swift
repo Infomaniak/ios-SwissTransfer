@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakDeviceCheck
 import STCore
 
 // The following objects should be Sendable as discussed with the KMP team.
@@ -69,18 +70,12 @@ public extension UploadManager {
         return SendableUploadSession(uploadSession: uploadSession)
     }
 
-    func initSendableUploadSession(uuid: String) async throws -> SendableUploadSession? {
-        guard let uploadSession = try await doInitUploadSession(uuid: uuid, recaptcha: "aabb") else {
+    func initSendableUploadSession(uuid: String, attestationToken: String) async throws -> SendableUploadSession? {
+        guard let uploadSession = try await doInitUploadSession(uuid: uuid,
+                                                                attestationHeaderName: InfomaniakDeviceCheck.tokenHeaderField,
+                                                                attestationToken: attestationToken) else {
             return nil
         }
         return SendableUploadSession(uploadSession: uploadSession)
-    }
-
-    func createAndInitSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession? {
-        let uploadSession = try await createAndGetSendableUploadSession(newUploadSession: newUploadSession)
-
-        let uploadSessionWithRemoteContainer = try await initSendableUploadSession(uuid: uploadSession.uuid)
-
-        return uploadSessionWithRemoteContainer
     }
 }

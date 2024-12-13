@@ -17,8 +17,20 @@
  */
 
 import Foundation
+import InfomaniakDeviceCheck
+import STCore
 
-public enum Constants {
-    public static let bundleId = "com.infomaniak.swisstransfer"
-    public static let numberOfSecondsInADay: TimeInterval = 86400
+public extension UploadManager {
+    func createUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession? {
+        let attestationToken = try await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer()
+
+        let uploadSession = try await createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+
+        let uploadSessionWithRemoteContainer = try await initSendableUploadSession(
+            uuid: uploadSession.uuid,
+            attestationToken: attestationToken
+        )
+
+        return uploadSessionWithRemoteContainer
+    }
 }

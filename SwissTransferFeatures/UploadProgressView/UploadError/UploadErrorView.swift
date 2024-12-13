@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDeviceCheck
 import InfomaniakDI
 import STCore
 import STResources
@@ -62,8 +63,8 @@ public struct UploadErrorView: View {
 
         Task {
             isRetryingUpload = true
-            let uploadSession = try? await injection.uploadManager
-                .createAndInitSendableUploadSession(newUploadSession: newUploadSession)
+
+            let uploadSession = try? await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
 
             guard let uploadSession else {
                 rootTransferViewState.transition(to: .error)
