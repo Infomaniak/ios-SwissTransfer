@@ -47,6 +47,8 @@ struct SentEmptyView: View {
                 }
         }
         .padding(value: .medium)
+        .scrollableEmptyState()
+        .appBackground()
     }
 }
 
