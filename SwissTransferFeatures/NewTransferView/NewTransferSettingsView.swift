@@ -34,6 +34,8 @@ struct NewTransferSettingsView: View {
     @Binding var language: EmailLanguage
     @Binding var password: String
 
+    let transferType: TransferType
+
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.advancedSettingsTitle)
@@ -81,20 +83,21 @@ struct NewTransferSettingsView: View {
                     showPasswordSetting = true
                 }
 
-                NewTransferSettingCell(
-                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                    icon: STResourcesAsset.Images.message.swiftUIImage,
-                    value: language.title
-                ) {
-                    isShowingLanguageSetting = true
-                }
-
-                .floatingPanel(
-                    isPresented: $isShowingLanguageSetting,
-                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
-                ) {
-                    SettingSelectableList(EmailLanguage.self, selected: language) {
-                        language = $0
+                if transferType == .mail {
+                    NewTransferSettingCell(
+                        title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
+                        icon: STResourcesAsset.Images.message.swiftUIImage,
+                        value: language.title
+                    ) {
+                        isShowingLanguageSetting = true
+                    }
+                    .floatingPanel(
+                        isPresented: $isShowingLanguageSetting,
+                        title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
+                    ) {
+                        SettingSelectableList(EmailLanguage.self, selected: language) {
+                            language = $0
+                        }
                     }
                 }
             }
@@ -117,6 +120,7 @@ struct NewTransferSettingsView: View {
         duration: .constant(.one),
         limit: .constant(.oneHundred),
         language: .constant(.french),
-        password: .constant("")
+        password: .constant(""),
+        transferType: .qrCode
     )
 }

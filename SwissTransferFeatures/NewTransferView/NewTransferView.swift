@@ -57,7 +57,8 @@ public struct NewTransferView: View {
                         duration: $viewModel.validityPeriod,
                         limit: $viewModel.downloadLimit,
                         language: $viewModel.emailLanguage,
-                        password: $viewModel.password
+                        password: $viewModel.password,
+                        transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
                 }
