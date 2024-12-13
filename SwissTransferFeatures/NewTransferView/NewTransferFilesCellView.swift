@@ -40,20 +40,18 @@ struct NewTransferFilesCellView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                NavigationLink(value: DisplayableRootFolder()) {
-                    HStack {
-                        Text(
-                            "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
-                        )
-                        .font(.ST.callout)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    Text(
+                        "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
+                    )
+                    .font(.ST.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                        STResourcesAsset.Images.chevronRight.swiftUIImage
-                            .iconSize(.medium)
-                    }
-                    .padding(.horizontal, value: .medium)
-                    .foregroundStyle(Color.ST.textSecondary)
+                    STResourcesAsset.Images.chevronRight.swiftUIImage
+                        .iconSize(.medium)
                 }
+                .padding(.horizontal, value: .medium)
+                .foregroundStyle(Color.ST.textSecondary)
 
                 ScrollView(.horizontal) {
                     HStack(spacing: IKPadding.medium) {

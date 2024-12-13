@@ -39,7 +39,7 @@ public enum SmallThumbnailSize {
         case .small:
             return IKRadius.medium
         case .medium:
-            return  IKRadius.large
+            return IKRadius.large
         }
     }
 
