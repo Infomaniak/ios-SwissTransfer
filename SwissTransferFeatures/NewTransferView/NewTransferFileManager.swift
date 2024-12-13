@@ -50,7 +50,7 @@ public final class NewTransferFileManager: ObservableObject {
     private var shouldDoInitialClean = true
 
     public init(initialItems: [ImportedItem] = []) {
-        self.importedItems = initialItems
+        importedItems = initialItems
     }
 
     deinit {
