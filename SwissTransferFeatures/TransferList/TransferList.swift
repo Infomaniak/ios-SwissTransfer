@@ -30,7 +30,7 @@ public struct TransferList<EmptyView: View>: View {
 
     @StateObject private var viewModel: TransferListViewModel
 
-    @State private var selectedItems = [URL]()
+    @State private var selectedItems = [ImportedItem]()
 
     private let origin: TransferOrigin
 
@@ -77,7 +77,7 @@ public struct TransferList<EmptyView: View>: View {
             try? await transferManager.fetchWaitingTransfers()
         }
         .onChange(of: selectedItems) { newSelectedItems in
-            mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+            mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
         }
         .appBackground()
         .toolbar {
