@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OSLog
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -25,7 +26,7 @@ import SwissTransferCoreUI
 struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferManager: NewTransferManager
 
-    @State private var selectedItems = [URL]()
+    @State private var selectedItems = [ImportedItem]()
     @State private var files = [DisplayableFile]()
 
     private var filesSize: Int64 {
@@ -63,9 +64,6 @@ struct NewTransferFilesCellView: View {
                                 .frame(width: 80, height: 80)
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
-                        .onChange(of: selectedItems) { newSelectedItems in
-                            files = newTransferManager.addFiles(urls: newSelectedItems)
-                        }
 
                         ForEach(files) { file in
                             if file.isFolder {
@@ -90,8 +88,10 @@ struct NewTransferFilesCellView: View {
             .padding(.bottom, value: .small)
             .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         }
-        .onAppear {
-            files = newTransferManager.filesAt(folderURL: nil)
+        .task(id: selectedItems) {
+            files = await newTransferManager.addItems(selectedItems)
+        }
+    }
 
     func removeFile(_ file: DisplayableFile) {
         do {

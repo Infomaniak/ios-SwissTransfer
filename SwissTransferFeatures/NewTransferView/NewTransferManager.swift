@@ -42,25 +42,41 @@ enum TmpDirType: String {
     }
 }
 
-@MainActor
 public final class NewTransferManager: ObservableObject {
-    public init(initialFiles: [URL]? = nil) {
-        cleanTmpDir(type: .upload)
-        if let initialFiles {
-            addFiles(urls: initialFiles)
-        }
+    private var initialItems: [ImportedItem]
+
+    public init(initialItems: [ImportedItem] = []) {
+        self.initialItems = initialItems
     }
 
     deinit {
-        cleanTmpDir(type: .all)
+        Task {
+            await NewTransferManager.cleanTmpDir(type: .all)
+        }
     }
 
     /// Add files to Upload Folder
     /// Return the content of the folder
     @discardableResult
-    public func addFiles(urls: [URL]) -> [DisplayableFile] {
-        moveToTmp(files: urls)
-        cleanTmpDir(type: .cache)
+    public func addItems(_ importedItems: [ImportedItem]) async -> [DisplayableFile] {
+        var itemsToImport = importedItems
+        if !initialItems.isEmpty {
+            await NewTransferManager.cleanTmpDir(type: .upload)
+            itemsToImport.append(contentsOf: initialItems)
+            initialItems.removeAll()
+        }
+
+        var importedItemUrls = [URL]()
+        for importedItem in itemsToImport {
+            do {
+                let importedItemURL = try await importedItem.importItem()
+                importedItemUrls.append(importedItemURL)
+            } catch {
+                Logger.general.error("An error occurred while importing item: \(error)")
+            }
+        }
+        moveToTmp(files: importedItemUrls)
+        await NewTransferManager.cleanTmpDir(type: .cache)
         return filesAt(folderURL: nil)
     }
 
@@ -108,7 +124,7 @@ extension NewTransferManager {
     }
 
     /// Empty the temporary directory
-    nonisolated func cleanTmpDir(type: TmpDirType) {
+    nonisolated static func cleanTmpDir(type: TmpDirType) async {
         do {
             try FileManager.default.removeItem(at: type.directory)
         } catch {

@@ -20,10 +20,10 @@ import Foundation
 
 public struct NewTransferContainer: Identifiable, Equatable {
     public let id: Int
-    public let urls: [URL]
+    public let importedItems: [ImportedItem]
 
-    public init(urls: [URL]) {
-        id = urls.hashValue
-        self.urls = urls
+    public init(importedItems: [ImportedItem]) {
+        id = importedItems.hashValue
+        self.importedItems = importedItems
     }
 }

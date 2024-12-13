@@ -18,9 +18,10 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 public struct FirstTransferButton: View {
-    @Binding var selection: [URL]
+    @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
 
@@ -33,7 +34,7 @@ public struct FirstTransferButton: View {
         }
     }
 
-    public init(selection: Binding<[URL]>, style: NewTransferStyle) {
+    public init(selection: Binding<[ImportedItem]>, style: NewTransferStyle) {
         _selection = selection
         self.style = style
     }
@@ -70,7 +71,7 @@ public struct FirstTransferButton: View {
 
 @available(iOS 17.0, *)
 #Preview {
-    @Previewable @State var selection = [URL]()
+    @Previewable @State var selection = [ImportedItem]()
     VStack {
         FirstTransferButton(selection: $selection, style: .small)
         FirstTransferButton(selection: $selection, style: .big)

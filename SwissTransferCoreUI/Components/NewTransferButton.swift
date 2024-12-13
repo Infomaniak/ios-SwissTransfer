@@ -19,6 +19,7 @@
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 public enum NewTransferStyle {
     case big
@@ -35,11 +36,11 @@ public enum NewTransferStyle {
 }
 
 struct NewTransferButton: View {
-    @Binding var selection: [URL]
+    @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
 
-    init(selection: Binding<[URL]>, style: NewTransferStyle = .small) {
+    init(selection: Binding<[ImportedItem]>, style: NewTransferStyle = .small) {
         _selection = selection
         self.style = style
     }
@@ -54,9 +55,9 @@ struct NewTransferButton: View {
 }
 
 public struct SidebarNewTransferButton: View {
-    @Binding var selection: [URL]
+    @Binding var selection: [ImportedItem]
 
-    public init(selection: Binding<[URL]>) {
+    public init(selection: Binding<[ImportedItem]>) {
         _selection = selection
     }
 
@@ -76,7 +77,7 @@ public struct SidebarNewTransferButton: View {
 
 @available(iOS 17.0, *)
 #Preview {
-    @Previewable @State var selection = [URL]()
+    @Previewable @State var selection = [ImportedItem]()
 
     VStack {
         NewTransferButton(selection: $selection, style: .small)

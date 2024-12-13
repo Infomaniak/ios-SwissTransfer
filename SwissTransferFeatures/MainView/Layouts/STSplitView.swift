@@ -29,7 +29,7 @@ struct STSplitView: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
-    @State private var selectedItems = [URL]()
+    @State private var selectedItems = [ImportedItem]()
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -44,7 +44,7 @@ struct STSplitView: View {
                 SidebarNewTransferButton(selection: $selectedItems)
                     .padding(value: .medium)
                     .onChange(of: selectedItems) { newSelectedItems in
-                        mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+                        mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
                     }
             }
         } content: {
