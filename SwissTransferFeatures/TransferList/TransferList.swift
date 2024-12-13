@@ -24,9 +24,13 @@ import SwissTransferCoreUI
 
 public struct TransferList<EmptyView: View>: View {
     @Environment(\.isCompactWindow) private var isCompactWindow
+
     @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var transferManager: TransferManager
 
     @StateObject private var viewModel: TransferListViewModel
+
+    @State private var selectedItems = [URL]()
 
     private let origin: TransferOrigin
 
@@ -68,6 +72,13 @@ public struct TransferList<EmptyView: View>: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .floatingActionButton(selection: $selectedItems, style: .newTransfer)
+        .task {
+            try? await transferManager.fetchWaitingTransfers()
+        }
+        .onChange(of: selectedItems) { newSelectedItems in
+            mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
+        }
         .appBackground()
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -79,8 +90,7 @@ public struct TransferList<EmptyView: View>: View {
             }
         }
         .overlay {
-            if viewModel.sections?.isEmpty == true,
-               let emptyView {
+            if viewModel.sections?.isEmpty == true, let emptyView {
                 emptyView
             }
         }

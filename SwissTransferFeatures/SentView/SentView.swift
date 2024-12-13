@@ -21,13 +21,9 @@ import STTransferDetailsView
 import STTransferList
 import SwiftUI
 import SwissTransferCore
-import SwissTransferCoreUI
 
 public struct SentView: View {
-    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var transferManager: TransferManager
-
-    @State private var selectedItems = [URL]()
 
     public init() {}
 
@@ -35,17 +31,10 @@ public struct SentView: View {
         TransferList(transferManager: transferManager, origin: .sent) {
             SentEmptyView()
         }
-        .task {
-            try? await transferManager.fetchWaitingTransfers()
-        }
         .navigationDestination(for: NavigationDestination.self) { destination in
             if case .transfer(let transfer) = destination {
                 TransferDetailsView(transfer: transfer)
             }
-        }
-        .floatingActionButton(selection: $selectedItems, style: .newTransfer)
-        .onChange(of: selectedItems) { newSelectedItems in
-            mainViewState.newTransferContainer = NewTransferContainer(urls: newSelectedItems)
         }
     }
 }

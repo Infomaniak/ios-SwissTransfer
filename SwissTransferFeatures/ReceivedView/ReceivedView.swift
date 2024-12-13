@@ -28,15 +28,14 @@ public struct ReceivedView: View {
     public init() {}
 
     public var body: some View {
-        TransferList(transferManager: transferManager, origin: .received) {}
-            .task {
-                try? await transferManager.fetchWaitingTransfers()
+        TransferList(transferManager: transferManager, origin: .received) {
+            ReceivedEmptyView()
+        }
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            if case .transfer(let transfer) = destination {
+                TransferDetailsView(transfer: transfer)
             }
-            .navigationDestination(for: NavigationDestination.self) { destination in
-                if case .transfer(let transfer) = destination {
-                    TransferDetailsView(transfer: transfer)
-                }
-            }
+        }
     }
 }
 
