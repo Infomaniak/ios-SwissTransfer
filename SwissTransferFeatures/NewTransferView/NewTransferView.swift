@@ -69,7 +69,7 @@ public struct NewTransferView: View {
                     Text(STResourcesStrings.Localizable.buttonNext)
                 }
                 .buttonStyle(.ikBorderedProminent)
-                .ikButtonLoading(isLoadingFileToUpload)
+                .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
             }
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
