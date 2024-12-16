@@ -44,6 +44,7 @@ public struct UploadErrorView: View {
             )
             .padding(value: .medium)
             .scrollableEmptyState()
+            .appBackground()
             .safeAreaButtons {
                 if rootTransferViewModel.newUploadSession != nil {
                     Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
@@ -84,4 +85,6 @@ public struct UploadErrorView: View {
 
 #Preview {
     UploadErrorView()
+        .environmentObject(RootTransferViewState())
+        .environmentObject(RootTransferViewModel())
 }
