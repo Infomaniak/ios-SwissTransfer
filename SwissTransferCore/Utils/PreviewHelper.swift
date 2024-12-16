@@ -57,6 +57,7 @@ public enum PreviewHelper {
     public static let sampleNewUploadSession = NewUploadSession(
         duration: ValidityPeriod.thirty,
         authorEmail: "",
+        authorEmailToken: nil,
         password: "",
         message: "Coucou",
         numberOfDownload: DownloadLimit.twoHundredFifty,

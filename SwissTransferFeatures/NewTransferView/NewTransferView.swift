@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDeviceCheck
 import InfomaniakDI
 import OSLog
 import STCore
@@ -106,6 +107,7 @@ public struct NewTransferView: View {
                 let newUploadSession = NewUploadSession(
                     duration: viewModel.validityPeriod,
                     authorEmail: authorTrimmedEmail,
+                    authorEmailToken: nil,
                     password: viewModel.password,
                     message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
                     numberOfDownload: viewModel.downloadLimit,
@@ -116,8 +118,7 @@ public struct NewTransferView: View {
 
                 viewModel.newUploadSession = newUploadSession
 
-                let uploadSession = try? await injection.uploadManager
-                    .createAndInitSendableUploadSession(newUploadSession: newUploadSession)
+                let uploadSession = try? await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
 
                 guard let uploadSession else {
                     rootTransferViewState.transition(to: .error)

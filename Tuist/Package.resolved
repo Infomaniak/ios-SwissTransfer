@@ -46,6 +46,15 @@
       }
     },
     {
+      "identity" : "ios-device-check",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-device-check",
+      "state" : {
+        "revision" : "6f976d791138ff207fa7a6a82ae7b625f5990166",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "ios-login",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-login",
@@ -95,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "04c61920bab188bc690efde2208367e6ce063163",
-        "version" : "0.9.5"
+        "revision" : "1507d75763260b07fc2fb72ca37b8c101acd721a",
+        "version" : "0.9.6"
       }
     },
     {

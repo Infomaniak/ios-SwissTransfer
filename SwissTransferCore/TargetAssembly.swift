@@ -22,7 +22,7 @@ import InfomaniakDI
 import OSLog
 import STCore
 
-private let appGroupIdentifier = "group.com.infomaniak.swisstransfer"
+private let appGroupIdentifier = "group.\(Constants.bundleId)"
 
 public extension UserDefaults {
     static let shared = UserDefaults(suiteName: appGroupIdentifier)!
