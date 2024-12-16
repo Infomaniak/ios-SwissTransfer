@@ -88,20 +88,18 @@ struct SecurityCodeTextField: View {
                                     Task { @MainActor in
                                         focusedField = nil
                                     }
-                                    completion(fields.joined())
-
-                                    return
                                 } else {
                                     let firstElement = String(Array(trimmedValue)[0])
                                     fields[index] = firstElement
                                 }
                             }
 
-                            guard index < fields.count - 1 else {
+                            if index == fields.count - 1 {
                                 focusedField = nil
                                 completion(fields.joined())
                                 return
                             }
+
                             focusedField? += 1
                         }
                 }
