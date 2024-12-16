@@ -16,25 +16,21 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreSwiftUI
 import SwiftUI
-import SwissTransferCoreUI
 
-struct NewTransferTextFieldStyle: TextFieldStyle {
+public extension TextFieldStyle where Self == STTextFieldStyle {
+    @MainActor static var swissTransfer: STTextFieldStyle { STTextFieldStyle() }
+}
+
+@MainActor
+public struct STTextFieldStyle: @preconcurrency TextFieldStyle {
     // periphery:ignore - Focus state is used
     @FocusState private var isFocused: Bool
 
-    var height: CGFloat?
-
     // periphery:ignore - Protocol uses private symbol
-    func _body(configuration: TextField<Self._Label>) -> some View {
+    public func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .focused($isFocused)
-            .frame(minHeight: height, alignment: .top)
-            .padding(value: .intermediate)
-            .overlay(
-                RoundedRectangle(cornerRadius: IKRadius.small)
-                    .strokeBorder(isFocused ? Color.ST.primary : Color.ST.textFieldBorder)
-            )
+            .inputStyle(isFocused: isFocused)
     }
 }

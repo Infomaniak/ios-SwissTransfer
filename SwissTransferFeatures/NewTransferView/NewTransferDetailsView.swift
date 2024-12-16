@@ -38,23 +38,19 @@ struct NewTransferDetailsView: View {
                 TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail) { _ in
                     saveAuthorMailAddress()
                 }
-                .textFieldStyle(NewTransferTextFieldStyle())
+                .textFieldStyle(.swissTransfer)
                 .keyboardType(.emailAddress)
 
                 TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
-                    .textFieldStyle(NewTransferTextFieldStyle())
+                    .textFieldStyle(.swissTransfer)
                     .keyboardType(.emailAddress)
             }
 
             TextEditor(text: $message)
-                .scrollContentBackground(.hidden)
                 .focused($isMessageFieldFocused)
                 .frame(minHeight: 88, alignment: .top)
-                .padding(value: .intermediate)
-                .overlay(
-                    RoundedRectangle(cornerRadius: IKRadius.small)
-                        .strokeBorder(isMessageFieldFocused ? Color.ST.primary : Color.ST.textFieldBorder)
-                )
+                .scrollContentBackground(.hidden)
+                .inputStyle(isFocused: isMessageFieldFocused)
         }
     }
 
