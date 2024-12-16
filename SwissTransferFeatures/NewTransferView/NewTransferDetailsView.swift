@@ -41,7 +41,7 @@ struct NewTransferDetailsView: View {
                 .textContentType(.emailAddress)
                 .textInputAutocapitalization(.never)
 
-                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
+                TextField(STResourcesStrings.Localizable.transferRecipientAddressPlaceholder, text: $recipientEmail)
                     .textFieldStyle(.swissTransfer)
                     .keyboardType(.emailAddress)
                     .textContentType(.emailAddress)
