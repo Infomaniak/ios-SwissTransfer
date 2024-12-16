@@ -93,7 +93,8 @@ public struct VerifyMailView: View {
     }
 
     func openMailApp() {
-        openURL(URL(string: "message:")!)
+        guard let openMailURL = URL(string: "message:") else { return }
+        openURL(openMailURL)
     }
 
     func verifyCode(_ code: String) {
