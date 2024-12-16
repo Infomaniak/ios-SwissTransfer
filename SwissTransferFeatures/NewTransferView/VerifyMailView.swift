@@ -47,51 +47,48 @@ public struct VerifyMailView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: IKPadding.large) {
-                Text(STResourcesStrings.Localizable.validateMailTitle)
-                    .font(.ST.title)
-                    .foregroundStyle(Color.ST.textPrimary)
+        VStack(alignment: .leading, spacing: IKPadding.large) {
+            Text(STResourcesStrings.Localizable.validateMailTitle)
+                .font(.ST.title)
+                .foregroundStyle(Color.ST.textPrimary)
 
-                Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
-                    .font(.ST.body)
-                    .foregroundStyle(Color.ST.textSecondary)
+            Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
+                .font(.ST.body)
+                .foregroundStyle(Color.ST.textSecondary)
 
-                SecurityCodeTextField(error: $error) { code in
-                    verifyCode(code)
+            SecurityCodeTextField(error: $error) { code in
+                verifyCode(code)
+            }
+            .disabled(isVerifyingCode)
+            .opacity(isVerifyingCode ? 0.5 : 1)
+            .overlay {
+                if isVerifyingCode {
+                    ProgressView()
+                        .controlSize(.large)
                 }
-                .disabled(isVerifyingCode)
-                .opacity(isVerifyingCode ? 0.5 : 1)
-                .overlay {
-                    if isVerifyingCode {
-                        ProgressView()
-                            .controlSize(.large)
-                    }
-                }
+            }
 
-                Text(STResourcesStrings.Localizable.validateMailInfo)
+            Text(STResourcesStrings.Localizable.validateMailInfo)
+                .font(.ST.caption)
+                .foregroundStyle(Color.ST.textSecondary)
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .stNavigationBarStyle()
+        .padding(value: .medium)
+        .safeAreaButtons(spacing: 16) {
+            if let error {
+                Text(error.errorDescription)
                     .font(.ST.caption)
-                    .foregroundStyle(Color.ST.textSecondary)
+                    .foregroundStyle(Color.ST.error)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxHeight: .infinity, alignment: .top)
-            .stNavigationBarNewTransfer()
-            .stNavigationBarStyle()
-            .padding(value: .medium)
-            .safeAreaButtons(spacing: 16) {
-                if let error {
-                    Text(error.errorDescription)
-                        .font(.ST.caption)
-                        .foregroundStyle(Color.ST.error)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
 
-                Button("!Open Mail App", action: openMailApp)
-                    .buttonStyle(.ikBorderedProminent)
-                    .disabled(isVerifyingCode)
+            Button("!Open Mail App", action: openMailApp)
+                .buttonStyle(.ikBorderedProminent)
+                .disabled(isVerifyingCode)
 
-                ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
-                    .disabled(isVerifyingCode)
-            }
+            ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
+                .disabled(isVerifyingCode)
         }
     }
 

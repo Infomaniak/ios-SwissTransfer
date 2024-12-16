@@ -34,12 +34,13 @@ public struct NewTransferView: View {
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
+    @State private var rootNavigationPath = NavigationPath()
     @State private var isLoadingFileToUpload = false
 
     public init() {}
 
     public var body: some View {
-        NavigationStack {
+        NavigationStack(path: $rootNavigationPath) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferTypeView(transferType: $viewModel.transferType)
@@ -84,6 +85,9 @@ public struct NewTransferView: View {
             }
             .navigationDestination(for: DisplayableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
+            }
+            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
+                VerifyMailView(newUploadSession: newUploadSession)
             }
         }
     }
@@ -130,7 +134,7 @@ public struct NewTransferView: View {
                     rootTransferViewState.transition(to: .uploadProgress(uploadSession))
                 }
             } catch let error as NSError where error.kotlinException != nil {
-                rootTransferViewState.transition(to: .verifyMail(newUploadSession))
+                rootNavigationPath.append(newUploadSession)
             } catch {
                 rootTransferViewState.transition(to: .error)
             }

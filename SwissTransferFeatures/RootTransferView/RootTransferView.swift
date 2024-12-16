@@ -39,8 +39,6 @@ public struct RootTransferView: View {
                     .environmentObject(newTransferManager)
             case .uploadProgress(let uploadSession):
                 UploadProgressView(uploadSession: uploadSession)
-            case .verifyMail(let newUploadSession):
-                VerifyMailView(newUploadSession: newUploadSession)
             case .error:
                 UploadErrorView()
             case .success(let transferUUID):
