@@ -34,7 +34,6 @@ public struct VerifyMailView: View {
 
     @Environment(\.openURL) private var openURL
 
-    @EnvironmentObject private var transferManager: TransferManager
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
     let newUploadSession: NewUploadSession
