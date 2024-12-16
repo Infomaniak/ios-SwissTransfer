@@ -39,7 +39,7 @@ public struct VerifyMailView: View {
 
     let newUploadSession: NewUploadSession
 
-    @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
+    @State private var isVerifyingCode = false
     @State private var error: UserFacingError?
 
     public init(newUploadSession: NewUploadSession) {
@@ -57,8 +57,16 @@ public struct VerifyMailView: View {
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
 
-                SecurityCodeTextField(style: $codeFieldStyle) { code in
+                SecurityCodeTextField(error: $error) { code in
                     verifyCode(code)
+                }
+                .disabled(isVerifyingCode)
+                .opacity(isVerifyingCode ? 0.5 : 1)
+                .overlay {
+                    if isVerifyingCode {
+                        ProgressView()
+                            .controlSize(.large)
+                    }
                 }
 
                 Text(STResourcesStrings.Localizable.validateMailInfo)
@@ -69,19 +77,20 @@ public struct VerifyMailView: View {
             .stNavigationBarNewTransfer()
             .stNavigationBarStyle()
             .padding(value: .medium)
-            .safeAreaButtons(spacing: 32) {
+            .safeAreaButtons(spacing: 16) {
                 if let error {
                     Text(error.errorDescription)
                         .font(.ST.caption)
                         .foregroundStyle(Color.ST.error)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 Button("!Open Mail App", action: openMailApp)
                     .buttonStyle(.ikBorderedProminent)
-                    .disabled(codeFieldStyle == .loading)
+                    .disabled(isVerifyingCode)
 
                 ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
-                    .disabled(codeFieldStyle == .loading)
+                    .disabled(isVerifyingCode)
             }
         }
     }
@@ -91,8 +100,8 @@ public struct VerifyMailView: View {
     }
 
     func verifyCode(_ code: String) {
-        guard codeFieldStyle != .loading else { return }
-        codeFieldStyle = .loading
+        guard !isVerifyingCode else { return }
+        isVerifyingCode = true
 
         Task {
             do {
@@ -119,8 +128,7 @@ public struct VerifyMailView: View {
                 withAnimation {
                     rootTransferViewState.transition(to: .uploadProgress(uploadSession))
                 }
-            } catch let error as NSError
-                where error.kotlinException as? STNEmailValidationException.InvalidPasswordException != nil {
+            } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
                 withAnimation {
                     self.error = UserFacingError.validateMailCodeIncorrect
                 }
@@ -128,7 +136,7 @@ public struct VerifyMailView: View {
                 rootTransferViewState.transition(to: .error)
             }
 
-            codeFieldStyle = .normal
+            isVerifyingCode = false
         }
     }
 }

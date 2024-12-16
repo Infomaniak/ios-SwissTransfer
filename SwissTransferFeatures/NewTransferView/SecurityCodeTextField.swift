@@ -21,28 +21,6 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-public enum SecurityCodeFieldStyle {
-    case normal
-    case loading
-    case error
-
-    var color: Color {
-        switch self {
-        case .normal, .loading:
-            return Color.ST.cardBorder
-        case .error:
-            return Color.ST.error
-        }
-    }
-
-    var label: String? {
-        if self == .error {
-            return STResourcesStrings.Localizable.validateMailCodeIncorrectError
-        }
-        return nil
-    }
-}
-
 struct SecurityCodeTextField: View {
     @State private var fields: [String] = [
         "",
@@ -54,80 +32,66 @@ struct SecurityCodeTextField: View {
     ]
     @FocusState private var focusedField: Int?
 
-    @Binding var style: SecurityCodeFieldStyle
+    @Binding var error: UserFacingError?
 
     let completion: (String) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.extraSmall) {
-            HStack {
-                ForEach(fields.indices, id: \.self) { index in
-                    TextField("", text: $fields[index])
-                        .textFieldStyle(SecurityCodeTextFieldStyle(style: style))
-                        .textContentType(.oneTimeCode)
-                        .frame(maxWidth: .infinity)
-                        .onTapGesture {
-                            focusedField = index
+        HStack {
+            ForEach(fields.indices, id: \.self) { index in
+                TextField("", text: $fields[index])
+                    .textFieldStyle(SecurityCodeTextFieldStyle(borderColor: error == nil ? .ST.cardBorder : .ST.error))
+                    .textContentType(.oneTimeCode)
+                    .frame(maxWidth: .infinity)
+                    .onTapGesture {
+                        focusedField = index
+                    }
+                    .focused($focusedField, equals: index)
+                    .onChange(of: fields[index]) { value in
+                        guard !value.isEmpty else { return }
+                        let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+
+                        withAnimation {
+                            error = nil
                         }
-                        .focused($focusedField, equals: index)
-                        .onChange(of: fields[index]) { value in
-                            guard !value.isEmpty else { return }
-                            let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
 
-                            withAnimation {
-                                style = .normal
-                            }
-
-                            if trimmedValue.count > 1 {
-                                if trimmedValue.count == fields.count {
-                                    for (index, element) in trimmedValue.enumerated() {
-                                        fields[index] = String(element)
-                                    }
-
-                                    // iOS focuses next field by default. We have to wait for next runloop to defocus.
-                                    Task { @MainActor in
-                                        focusedField = nil
-                                    }
-                                } else {
-                                    let firstElement = String(Array(trimmedValue)[0])
-                                    fields[index] = firstElement
+                        if trimmedValue.count > 1 {
+                            if trimmedValue.count == fields.count {
+                                for (index, element) in trimmedValue.enumerated() {
+                                    fields[index] = String(element)
                                 }
-                            }
 
-                            if index == fields.count - 1 {
-                                focusedField = nil
-                                completion(fields.joined())
-                                return
+                                // iOS focuses next field by default. We have to wait for next runloop to defocus.
+                                Task { @MainActor in
+                                    focusedField = nil
+                                }
+                            } else {
+                                let firstElement = String(Array(trimmedValue)[0])
+                                fields[index] = firstElement
                             }
-
-                            focusedField? += 1
                         }
-                }
-            }
-            .font(.ST.body)
-            .disabled(style == .loading)
-            .opacity(style == .loading ? 0.5 : 1)
-            .overlay {
-                if style == .loading {
-                    ProgressView()
-                        .controlSize(.large)
-                }
-            }
 
-            Text(style.label ?? "")
-                .foregroundStyle(style.color)
-                .font(.ST.caption)
-                .opacity(style == .loading ? 0.5 : 1)
+                        if index == fields.count - 1 {
+                            focusedField = nil
+                            completion(fields.joined())
+                            return
+                        }
+
+                        focusedField? += 1
+                    }
+            }
         }
+        .font(.ST.body)
     }
 }
 
 #Preview {
-    SecurityCodeTextField(style: .constant(.normal)) { _ in }
+    SecurityCodeTextField(error: .constant(nil)) { _ in }
+    SecurityCodeTextField(error: .constant(UserFacingError.unknownError)) { _ in }
 }
 
 struct SecurityCodeTextFieldStyle: TextFieldStyle {
-    let style: SecurityCodeFieldStyle
+    let borderColor: Color
 
     // periphery:ignore - Protocol uses private symbol
     func _body(configuration: TextField<Self._Label>) -> some View {
@@ -137,7 +101,7 @@ struct SecurityCodeTextFieldStyle: TextFieldStyle {
             .overlay {
                 RoundedRectangle(cornerRadius: IKRadius.small)
                     .stroke()
-                    .foregroundStyle(style.color)
+                    .foregroundStyle(borderColor)
                     .frame(width: 48, height: 48)
             }
             .frame(width: 48, height: 48)

@@ -19,13 +19,13 @@
 import Foundation
 
 public struct UserFacingError: LocalizedError {
-    public let errorDescription: String?
+    public let errorDescription: String
     public let failureReason: String?
     public let helpAnchor: String?
     public let recoverySuggestion: String?
 
     public init(
-        errorDescription: String?,
+        errorDescription: String,
         failureReason: String? = nil,
         helpAnchor: String? = nil,
         recoverySuggestion: String? = nil
@@ -38,5 +38,6 @@ public struct UserFacingError: LocalizedError {
 }
 
 public extension UserFacingError {
+    static let unknownError = UserFacingError(errorDescription: "!An unknown error occurred")
     static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
 }
