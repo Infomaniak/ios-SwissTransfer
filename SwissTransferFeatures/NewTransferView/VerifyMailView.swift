@@ -24,8 +24,15 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+private extension UserFacingError {
+    static let validateMailCodeIncorrect = UserFacingError(errorDescription:
+        STResourcesStrings.Localizable.validateMailCodeIncorrectError)
+}
+
 public struct VerifyMailView: View {
     @LazyInjectService var injection: SwissTransferInjection
+
+    @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var transferManager: TransferManager
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
@@ -33,6 +40,7 @@ public struct VerifyMailView: View {
     let newUploadSession: NewUploadSession
 
     @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
+    @State private var error: UserFacingError?
 
     public init(newUploadSession: NewUploadSession) {
         self.newUploadSession = newUploadSession
@@ -61,7 +69,25 @@ public struct VerifyMailView: View {
             .stNavigationBarNewTransfer()
             .stNavigationBarStyle()
             .padding(value: .medium)
+            .safeAreaButtons(spacing: 32) {
+                if let error {
+                    Text(error.errorDescription)
+                        .font(.ST.caption)
+                        .foregroundStyle(Color.ST.error)
+                }
+
+                Button("!Open Mail App", action: openMailApp)
+                    .buttonStyle(.ikBorderedProminent)
+                    .disabled(codeFieldStyle == .loading)
+
+                ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
+                    .disabled(codeFieldStyle == .loading)
+            }
         }
+    }
+
+    func openMailApp() {
+        openURL(URL(string: "message:")!)
     }
 
     func verifyCode(_ code: String) {
@@ -92,6 +118,11 @@ public struct VerifyMailView: View {
 
                 withAnimation {
                     rootTransferViewState.transition(to: .uploadProgress(uploadSession))
+                }
+            } catch let error as NSError
+                where error.kotlinException as? STNEmailValidationException.InvalidPasswordException != nil {
+                withAnimation {
+                    self.error = UserFacingError.validateMailCodeIncorrect
                 }
             } catch {
                 rootTransferViewState.transition(to: .error)
