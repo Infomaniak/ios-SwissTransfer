@@ -27,7 +27,7 @@ struct FileListView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
-	@State private var selectedItems = [ImportedItem]()
+    @State private var selectedItems = [ImportedItem]()
     @State private var files = [TransferableFile]()
 
     private let folder: TransferableFile?
@@ -53,8 +53,11 @@ struct FileListView: View {
                 FileGridView(
                     files: files,
                     removeAction: RemoveFileAction {
-                        newTransferManager.remove(file: $0) {
-                            files = newTransferManager.filesAt(folderURL: folder?.localURL)
+                        do {
+                            try newTransferFileManager.remove(file: $0)
+                            files = newTransferFileManager.filesAt(folderURL: folder?.localURL)
+                        } catch {
+                            print("error")
                         }
                     }
                 )
@@ -78,7 +81,7 @@ struct FileListView: View {
         }
     }
 
-    func removeFile(_ file: DisplayableFile, atFolderURL folderURL: URL?) {
+    func removeFile(_ file: TransferableFile, atFolderURL folderURL: URL?) {
         do {
             try newTransferFileManager.remove(file: file)
             let newFiles = newTransferFileManager.filesAt(folderURL: folderURL)
