@@ -28,6 +28,9 @@
 /* loco:670f888e8b65a30acb0c6be2 */
 "buttonCopyLink" = "Copy link";
 
+/* loco:67616ea394ffdbb7e5071e36 */
+"buttonDeleteTransfer" = "Delete transfer";
+
 /* loco:67448efd69b0e5a4910909b2 */
 "buttonEditTransfer" = "Edit my transfer";
 

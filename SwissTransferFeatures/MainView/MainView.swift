@@ -17,12 +17,17 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STRootTransferView
 import SwiftUI
 import SwissTransferCoreUI
 
 public struct MainView: View {
+    @LazyInjectService private var injection: SwissTransferInjection
+
     @Environment(\.isCompactWindow) private var isCompactWindow
+
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
@@ -36,6 +41,7 @@ public struct MainView: View {
                 STSplitView()
             }
         }
+        .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
@@ -46,6 +52,12 @@ public struct MainView: View {
         }
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
             RootTransferView(initialItems: container.importedItems)
+        }
+    }
+
+    private func willEnterForeground() {
+        Task {
+            try? await injection.transferManager.deleteExpiredTransfers()
         }
     }
 }
