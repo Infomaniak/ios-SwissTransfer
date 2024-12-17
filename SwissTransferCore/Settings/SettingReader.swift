@@ -32,6 +32,10 @@ public final class NotificationSettings {
     ]
 
     public var allEnabled: Bool {
+        guard let firstKey = keys.first,
+              UserDefaults.standard.value(forKey: firstKey) != nil else {
+            return true
+        }
         let oneValueIsFalse = keys.contains { key in
             return !UserDefaults.standard.bool(forKey: key)
         }
