@@ -133,7 +133,7 @@ public struct NewTransferView: View {
                 withAnimation {
                     rootTransferViewState.transition(to: .uploadProgress(uploadSession))
                 }
-            } catch let error as NSError where error.kotlinException != nil {
+            } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
                 rootNavigationPath.append(newUploadSession)
             } catch {
                 rootTransferViewState.transition(to: .error)
