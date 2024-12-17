@@ -22,6 +22,8 @@ import STCore
 import STResources
 import SwiftUI
 
+extension FileUi: DisplayableFile {}
+
 public extension FileUi {
     var thumbnail: Image {
         // If doesn't have a thumbnail: Show file icon

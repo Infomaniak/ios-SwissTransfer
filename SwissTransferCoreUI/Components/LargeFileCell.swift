@@ -27,28 +27,20 @@ public struct LargeFileCell: View {
 
     @State private var largeThumbnail: Image?
 
-    private let fileName: String
-    private let fileSize: Int64
-    private let url: URL?
-    private let removeAction: (() -> Void)?
+    private let file: any DisplayableFile
+
+    private let removeAction: RemoveFileAction?
     private let icon: Image
 
-    public init(fileName: String, fileSize: Int64, url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
-        self.fileName = fileName
-        self.fileSize = fileSize
-        self.url = url
+    public init(file: any DisplayableFile, removeAction: RemoveFileAction? = nil) {
+        self.file = file
         self.removeAction = removeAction
 
-        icon = FileHelper(type: mimeType).icon.swiftUIImage
-    }
-
-    public init(folderName: String, folderSize: Int64, removeAction: (() -> Void)? = nil) {
-        fileName = folderName
-        fileSize = folderSize
-        url = nil
-        self.removeAction = removeAction
-
-        icon = STResourcesAsset.Images.folder.swiftUIImage
+        if file.isFolder {
+            icon = STResourcesAsset.Images.folder.swiftUIImage
+        } else {
+            icon = FileHelper(type: file.mimeType ?? "").icon.swiftUIImage
+        }
     }
 
     public var body: some View {
@@ -66,18 +58,18 @@ public struct LargeFileCell: View {
                 .frame(height: 96)
                 .frame(maxWidth: .infinity)
                 .task {
-                    largeThumbnail = await ThumbnailGenerator.generate(for: url, scale: scale, cgSize: reader.size)
+                    largeThumbnail = await ThumbnailGenerator.generate(for: file.localURL, scale: scale, cgSize: reader.size)
                 }
             }
             .frame(height: 96)
             .frame(maxWidth: .infinity)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(fileName)
+                Text(file.fileName)
                     .foregroundStyle(Color.ST.textPrimary)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                Text(fileSize.formatted(.defaultByteCount))
+                Text(file.fileSize.formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)
@@ -88,7 +80,8 @@ public struct LargeFileCell: View {
         .overlay(alignment: .topTrailing) {
             if let removeAction {
                 Button {
-                    removeAction()
+                    guard let transferableFile = file as? TransferableFile else { return }
+                    removeAction(file: transferableFile)
                 } label: {
                     Image(systemName: "xmark")
                         .resizable()
@@ -112,10 +105,11 @@ public struct LargeFileCell: View {
 
 #Preview {
     VStack {
-        LargeFileCell(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg")
+        LargeFileCell(file: PreviewHelper.sampleFile)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-        LargeFileCell(fileName: "Titre", fileSize: 8561, url: nil, mimeType: "public.jpeg") {}
+        let removeAction = RemoveFileAction { _ in }
+        LargeFileCell(file: PreviewHelper.sampleFile, removeAction: removeAction)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

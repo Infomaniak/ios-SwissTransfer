@@ -27,10 +27,10 @@ struct FileListView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
-    @State private var selectedItems = [ImportedItem]()
-    @State private var files = [DisplayableFile]()
+	@State private var selectedItems = [ImportedItem]()
+    @State private var files = [TransferableFile]()
 
-    private let folder: DisplayableFile?
+    private let folder: TransferableFile?
     private let columns = [
         GridItem(.flexible(), spacing: IKPadding.medium),
         GridItem(.flexible(), spacing: IKPadding.medium)
@@ -40,14 +40,14 @@ struct FileListView: View {
         guard let folder else {
             return STResourcesStrings.Localizable.importFilesScreenTitle
         }
-        return folder.name
+        return folder.fileName
     }
 
     private var filesSize: Int64 {
-        files.map { $0.size }.reduce(0, +)
+        files.map { $0.fileSize }.reduce(0, +)
     }
 
-    init(parentFolder: DisplayableFile?) {
+    init(parentFolder: TransferableFile?) {
         folder = parentFolder
     }
 
@@ -58,31 +58,14 @@ struct FileListView: View {
                     "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
                 )
 
-                LazyVGrid(
-                    columns: columns,
-                    alignment: .center,
-                    spacing: IKPadding.medium,
-                    pinnedViews: []
-                ) {
-                    ForEach(files) { file in
-                        if file.isFolder {
-                            NavigationLink(value: file) {
-                                LargeFileCell(folderName: file.name, folderSize: file.size) {
-                                    removeFile(file, atFolderURL: folder?.url)
-                                }
-                            }
-                        } else {
-                            LargeFileCell(
-                                fileName: file.name,
-                                fileSize: file.size,
-                                url: file.url,
-                                mimeType: file.mimeType
-                            ) {
-                                removeFile(file, atFolderURL: folder?.url)
-                            }
+                FileGridView(
+                    files: files,
+                    removeAction: RemoveFileAction {
+                        newTransferManager.remove(file: $0) {
+                            files = newTransferManager.filesAt(folderURL: folder?.localURL)
                         }
                     }
-                }
+                )
             }
             .padding(value: .medium)
         }
@@ -91,7 +74,7 @@ struct FileListView: View {
         .stNavigationBarStyle()
         .stNavigationBarNewTransfer(title: navigationTitle)
         .onAppear {
-            files = newTransferFileManager.filesAt(folderURL: folder?.url)
+            files = newTransferFileManager.filesAt(folderURL: folder?.localURL)
         }
         .onChange(of: files) { _ in
             if files.isEmpty {
