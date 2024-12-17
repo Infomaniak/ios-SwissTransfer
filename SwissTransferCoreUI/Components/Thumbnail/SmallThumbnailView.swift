@@ -91,6 +91,7 @@ public struct SmallThumbnailView: View {
                 thumbnail
                     .resizable()
                     .scaledToFill()
+                    .frame(width: size, height: size)
             } else {
                 VStack(spacing: IKPadding.small) {
                     FileIconView(icon: icon, type: .small)
@@ -104,6 +105,7 @@ public struct SmallThumbnailView: View {
                     }
                 }
                 .padding(value: .small)
+                .frame(width: size, height: size)
                 .background(Color.ST.background)
                 .task {
                     thumbnail = await ThumbnailGenerator.generate(
@@ -114,7 +116,6 @@ public struct SmallThumbnailView: View {
                 }
             }
         }
-        .frame(width: size, height: size)
         .clipShape(.rect(cornerRadius: thumbnailSize.radius))
     }
 }
