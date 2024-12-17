@@ -16,27 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import STCore
-import STTransferDetailsView
-import STTransferList
-import SwiftUI
-import SwissTransferCore
 
-public struct SentView: View {
-    @EnvironmentObject private var transferManager: TransferManager
+public struct TransferContainer: Identifiable {
+    public let id: String
+    public let transfer: TransferUi
 
-    public init() {}
-
-    public var body: some View {
-        TransferList(transferManager: transferManager, origin: .sent) {
-            SentEmptyView()
-        }
-        .sheet(item: $mainViewState.transferContainer) { transferContainer in
-            TransferDetailsView(transfer: transferContainer.transfer)
-        }
+    public init(transfer: STCore.TransferUi) {
+        id = transfer.uuid
+        self.transfer = transfer
     }
-}
-
-#Preview("SentView") {
-    SentView()
 }

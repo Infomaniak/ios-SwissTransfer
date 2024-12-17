@@ -56,6 +56,12 @@ struct STSplitView: View {
             DetailSplitView(destination: mainViewState.selectedDestination)
                 .stNavigationBarStyle()
         }
+        .onAppear {
+            mainViewState.isSplitView = true
+        }
+        .onDisappear {
+            mainViewState.isSplitView = false
+        }
     }
 }
 
