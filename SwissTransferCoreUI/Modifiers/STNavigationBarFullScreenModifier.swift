@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-struct STNavigationBarNewTransferModifier: ViewModifier {
+struct STNavigationBarFullScreenModifier: ViewModifier {
     @Environment(\.dismiss) private var dismiss
 
     let title: String
@@ -37,7 +37,7 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
 }
 
 public extension View {
-    func stNavigationBarNewTransfer(title: String = "Transfer") -> some View {
-        modifier(STNavigationBarNewTransferModifier(title: title))
+    func stNavigationBarFullScreen(title: String = "Transfer") -> some View {
+        modifier(STNavigationBarFullScreenModifier(title: title))
     }
 }

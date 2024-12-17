@@ -78,7 +78,7 @@ public struct NewTransferView: View {
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
             }
             .scrollDismissesKeyboard(.immediately)
-            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+            .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: TransferableFile.self) { file in
                 FileListView(parentFolder: file)

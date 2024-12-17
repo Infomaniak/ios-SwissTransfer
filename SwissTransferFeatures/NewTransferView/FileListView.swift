@@ -67,7 +67,7 @@ struct FileListView: View {
         .appBackground()
         .floatingActionButton(selection: $selectedItems, style: .newTransfer)
         .stNavigationBarStyle()
-        .stNavigationBarNewTransfer(title: navigationTitle)
+        .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
             files = newTransferFileManager.filesAt(folderURL: folder?.localURL)
         }
