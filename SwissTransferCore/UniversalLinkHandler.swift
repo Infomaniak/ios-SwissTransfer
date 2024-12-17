@@ -38,7 +38,7 @@ public struct UniversalLinkHandler {
             return nil
         }
 
-        let transfer = defaultTransferManager?.getTransferByUUID(transferUUID: transferUUID)
+        let transfer = try await defaultTransferManager?.getTransferByUUID(transferUUID: transferUUID)
 
         return transfer
     }
