@@ -28,6 +28,9 @@
 /* loco:670f888e8b65a30acb0c6be2 */
 "buttonCopyLink" = "Link kopieren";
 
+/* loco:67616ea394ffdbb7e5071e36 */
+"buttonDeleteTransfer" = "Übertragung löschen";
+
 /* loco:67220015101b3de12b0f1f82 */
 "buttonDownload" = "Download";
 

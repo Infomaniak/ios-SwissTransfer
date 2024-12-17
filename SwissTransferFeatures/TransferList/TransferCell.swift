@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -24,6 +25,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct TransferCell: View {
+    @LazyInjectService private var injection: SwissTransferInjection
+
     @EnvironmentObject private var mainViewState: MainViewState
 
     let transfer: TransferUi
@@ -57,6 +60,14 @@ struct TransferCell: View {
         }
         .padding(value: .medium)
         .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
+        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: IKRadius.large))
+        .contextMenu {
+            Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
+                Task {
+                    try? await injection.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+                }
+            }
+        }
         .overlay {
             if isSelected {
                 RoundedRectangle(cornerRadius: IKRadius.large)
