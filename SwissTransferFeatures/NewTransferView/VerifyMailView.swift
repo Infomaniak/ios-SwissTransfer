@@ -100,12 +100,12 @@ public struct VerifyMailView: View {
 
         Task {
             do {
-                let verifyEmailCodeBody = STNVerifyEmailCodeBody(code: code, email: newUploadSession.authorEmail)
-                let token = try await STNUploadRepository().verifyEmailCode(verifyEmailCodeBody: verifyEmailCodeBody).token
+                let addressToVerify = newUploadSession.authorEmail
+                let token = try await injection.uploadManager.verifyEmailCode(code: code, address: addressToVerify).token
 
                 let uploadSessionWithEmailToken = NewUploadSession(
                     duration: newUploadSession.duration,
-                    authorEmail: newUploadSession.authorEmail,
+                    authorEmail: addressToVerify,
                     authorEmailToken: token,
                     password: newUploadSession.password,
                     message: newUploadSession.message,
