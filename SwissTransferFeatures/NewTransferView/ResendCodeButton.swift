@@ -18,6 +18,7 @@
 
 import InfomaniakDI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
@@ -46,7 +47,9 @@ struct ResendCodeButton: View {
     var body: some View {
         Button(action: resendCode) {
             HStack {
-                Text(isSendCodeDelayDone ? "!Resend" : "!Resend \(timeLeftSeconds)s")
+                Text(isSendCodeDelayDone ?
+                    STResourcesStrings.Localizable.validateMailResendCode :
+                    STResourcesStrings.Localizable.validateMailResendCodeTemplate(timeLeftSeconds))
                     .monospacedDigit()
                     .contentTransition(.numericText(countsDown: true))
                     .onReceive(timer) { _ in

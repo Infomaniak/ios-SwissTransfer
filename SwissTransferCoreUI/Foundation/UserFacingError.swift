@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import STResources
 
 public struct UserFacingError: LocalizedError {
     public let errorDescription: String
@@ -38,6 +39,6 @@ public struct UserFacingError: LocalizedError {
 }
 
 public extension UserFacingError {
-    static let unknownError = UserFacingError(errorDescription: "!An unknown error occurred")
+    static let unknownError = UserFacingError(errorDescription: STResourcesStrings.Localizable.errorUnknown)
     static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
 }

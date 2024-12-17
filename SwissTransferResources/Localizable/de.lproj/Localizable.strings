@@ -37,8 +37,11 @@
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Beenden";
 
-/* loco:66bf171580717241110432a2 */
-"buttonNext" = "Weiter zu";
+/* loco:676122e1ac931696ce063122 */
+"buttonNext" = "Weiter";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Mail-App öffnen";
 
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Wiederholen";
@@ -70,6 +73,9 @@
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Abgelaufen am %@";
 
+/* loco:676126abcb8df55f0a08e7a2 */
+"errorUnknown" = "Ein Fehler ist aufgetreten";
+
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Verfällt in %d Tagen";
 
@@ -98,7 +104,7 @@
 "myFilesTitle" = "Meine Dateien";
 
 /* loco:673b609c03c82748a509bd92 */
-"networkUnavailable" = "Auf Netzwerk warten…";
+"networkUnavailable" = "Auf Netzwerk warten";
 
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Fügt bis zu 50 GB an Dateien hinzu";
@@ -150,12 +156,6 @@
 
 /* loco:66a765a7ec41ffa0250df2d3 */
 "recipientHeader-plural" = "Adressaten:";
-
-/* loco:6707f2a5535a86d2220b6ea2 */
-"recipientMailAddressPlaceholder" = "Senden Sie die Dateien an";
-
-/* loco:6707f27ec37017ff2b0192a2 */
-"senderMailAddressPlaceholder" = "Ihre E-Mail Adresse";
 
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "Unsere Geschichte beginnt hier";
@@ -337,8 +337,17 @@
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Gestern";
 
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "Eine Nachricht, die du weitergeben willst?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Dateien senden an";
+
 /* loco:6707d903f6f42e03b90b8632 */
 "transferSendButton" = "Senden";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Deine E-Mail Adresse";
 
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ übrig";
@@ -441,6 +450,12 @@
 
 /* loco:6707f9d6c8a673d44f0035f2 */
 "validateMailInfo" = "Denke daran, den Spam-Ordner deiner E-Mail-Adresse zu überprüfen.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Code erneut senden";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Code erneut senden (%ds)";
 
 /* loco:6707f9ac045804ab200b44f2 */
 "validateMailTitle" = "Überprüfe deine E-Mail";

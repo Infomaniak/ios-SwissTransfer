@@ -82,7 +82,7 @@ public struct VerifyMailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            Button("!Open Mail App", action: openMailApp)
+            Button(STResourcesStrings.Localizable.buttonOpenMailApp, action: openMailApp)
                 .buttonStyle(.ikBorderedProminent)
                 .disabled(isVerifyingCode)
 
