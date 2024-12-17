@@ -25,6 +25,9 @@ public final class MainViewState: ObservableObject {
     @Published public var paths = [STTab: [NavigationDestination]]()
 
     @Published public var newTransferContainer: NewTransferContainer?
+    @Published public var transferContainer: TransferContainer?
+
+    public var isSplitView = false
 
     public var selectedDestination: NavigationDestination? {
         get {
@@ -33,10 +36,16 @@ public final class MainViewState: ObservableObject {
         }
         set {
             guard let selectedTab else { return }
-            if let newValue {
-                paths[selectedTab] = [newValue]
-            } else {
+            guard let newValue else {
                 paths[selectedTab] = []
+                return
+            }
+
+            paths[selectedTab] = [newValue]
+
+            guard !isSplitView else { return }
+            if case .transfer(let transfer) = newValue {
+                transferContainer = TransferContainer(transfer: transfer)
             }
         }
     }

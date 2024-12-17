@@ -30,35 +30,42 @@ public struct TransferDetailsView: View {
     }
 
     public var body: some View {
-        ScrollView {
-            VStack(spacing: IKPadding.large) {
-                HeaderView(
-                    filesCount: transfer.files.count,
-                    transferSize: transfer.sizeUploaded,
-                    expiringTimestamp: transfer.expirationDateTimestamp
-                )
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: IKPadding.large) {
+                    HeaderView(
+                        filesCount: transfer.files.count,
+                        transferSize: transfer.sizeUploaded,
+                        expiringTimestamp: transfer.expirationDateTimestamp
+                    )
 
                 if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
                     MessageView(message: trimmedMessage)
                 }
 
-                ContentView(transfer: transfer)
+                    ContentView(files: transfer.files)
+                }
+                .padding(.vertical, value: .large)
+                .padding(.horizontal, value: .medium)
             }
-            .padding(.vertical, value: .large)
-            .padding(.horizontal, value: .medium)
-        }
-        .appBackground()
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(transfer.name)
-                    .font(.ST.title2)
-                    .foregroundStyle(.white)
+            .appBackground()
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(transfer.name)
+                        .font(.ST.title2)
+                        .foregroundStyle(.white)
+                }
+            }
+            .stNavigationBarStyle()
+            .navigationDestination(for: FileUi.self) { file in
+                // Get children of file using func in a stash
+                // Find a way to use FileList and ContentView
+                FileListView(folder: file)
             }
             ToolbarItem(placement: .primaryAction) {
                 DownloadButton(transfer: transfer)
             }
         }
-        .stNavigationBarStyle()
     }
 }
 

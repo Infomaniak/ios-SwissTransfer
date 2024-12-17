@@ -19,6 +19,7 @@
 import STReceivedView
 import STSentView
 import STSettingsView
+import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -35,6 +36,7 @@ struct STTabView: View {
                 .stTab(.receivedTransfers)
 
             SettingsView()
+                .navigableTab(.settings)
                 .stTab(.settings)
         }
     }

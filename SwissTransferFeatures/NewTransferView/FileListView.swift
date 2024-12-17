@@ -31,20 +31,12 @@ struct FileListView: View {
     @State private var files = [TransferableFile]()
 
     private let folder: TransferableFile?
-    private let columns = [
-        GridItem(.flexible(), spacing: IKPadding.medium),
-        GridItem(.flexible(), spacing: IKPadding.medium)
-    ]
 
     private var navigationTitle: String {
         guard let folder else {
             return STResourcesStrings.Localizable.importFilesScreenTitle
         }
         return folder.fileName
-    }
-
-    private var filesSize: Int64 {
-        files.map { $0.fileSize }.reduce(0, +)
     }
 
     init(parentFolder: TransferableFile?) {
@@ -55,7 +47,7 @@ struct FileListView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 Text(
-                    "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
+                    "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(files.filesSize().formatted(.defaultByteCount))"
                 )
 
                 FileGridView(
