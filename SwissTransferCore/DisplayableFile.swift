@@ -18,42 +18,11 @@
 
 import Foundation
 
-public struct DisplayableFile: Identifiable, Hashable, Sendable {
-    public var id: String {
-        url.path()
-    }
-
-    public let name: String
-    public let isFolder: Bool
-
-    public let url: URL
-    public let size: Int64
-    public let mimeType: String
-
-    public init?(url: URL) {
-        guard let resources = try? url.resourceValues(forKeys: [
-            .isDirectoryKey,
-            .nameKey
-        ]) else { return nil }
-
-        self.url = url
-        name = url.lastPathComponent
-        isFolder = resources.isDirectory ?? false
-        size = Int64(url.size())
-        mimeType = url.typeIdentifier ?? ""
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    public static func == (lhs: DisplayableFile, rhs: DisplayableFile) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-public struct DisplayableRootFolder: Identifiable, Hashable {
-    public let id = UUID()
-
-    public init() {}
+public protocol DisplayableFile: Identifiable, Hashable {
+    var uid: String { get }
+    var isFolder: Bool { get }
+    var fileName: String { get }
+    var fileSize: Int64 { get }
+    var localURL: URL? { get }
+    var mimeType: String? { get }
 }

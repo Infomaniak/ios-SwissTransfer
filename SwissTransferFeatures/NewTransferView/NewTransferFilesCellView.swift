@@ -27,10 +27,10 @@ struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var selectedItems = [ImportedItem]()
-    @State private var files = [DisplayableFile]()
+    @State private var files = [TransferableFile]()
 
     private var filesSize: Int64 {
-        files.map { $0.size }.reduce(0, +)
+        files.map { $0.fileSize }.reduce(0, +)
     }
 
     var body: some View {

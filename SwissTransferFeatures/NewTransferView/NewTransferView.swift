@@ -78,10 +78,10 @@ public struct NewTransferView: View {
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: DisplayableFile.self) { file in
+            .navigationDestination(for: TransferableFile.self) { file in
                 FileListView(parentFolder: file)
             }
-            .navigationDestination(for: DisplayableRootFolder.self) { _ in
+            .navigationDestination(for: TransferableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
             }
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in

@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -24,10 +25,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ContentView: View {
-    private let columns = [
-        GridItem(.flexible(), spacing: IKPadding.medium),
-        GridItem(.flexible(), spacing: IKPadding.medium)
-    ]
+    @State private var files: [FileUi]
 
     let transfer: TransferUi
 
