@@ -17,15 +17,24 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferDetailsView: View {
+    @LazyInjectService private var injection: SwissTransferInjection
     @Environment(\.dismiss) private var dismiss
 
     private let transfer: TransferUi
+
+    private var transferURL: URL? {
+        let apiURLCreator = injection.sharedApiUrlCreator
+        let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        return URL(string: url)
+    }
 
     public init(transfer: TransferUi) {
         self.transfer = transfer
@@ -50,6 +59,53 @@ public struct TransferDetailsView: View {
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    if let transferURL {
+                        Spacer()
+
+                        ShareLink(item: transferURL) {
+                            VStack {
+                                STResourcesAsset.Images.share.swiftUIImage
+                                    .iconSize(.large)
+
+                                Text(STResourcesStrings.Localizable.buttonShare)
+                                    .font(.ST.caption)
+                            }
+                            .frame(width: 100)
+                        }
+                    }
+
+                    Spacer()
+
+                    Button {} label: {
+                        VStack {
+                            STResourcesAsset.Images.qrCode.swiftUIImage
+                                .iconSize(.large)
+
+                            Text(STResourcesStrings.Localizable.transferTypeQrCode)
+                                .font(.ST.caption)
+                        }
+                        .frame(width: 100)
+                    }
+
+                    Spacer()
+
+                    Button {} label: {
+                        VStack {
+                            STResourcesAsset.Images.textfieldLock.swiftUIImage
+                                .iconSize(.large)
+
+                            Text(STResourcesStrings.Localizable.settingsOptionPassword)
+                                .font(.ST.caption)
+                        }
+                        .frame(width: 100)
+                    }
+
+                    Spacer()
+                }
+            }
+            .toolbarBackground(.visible, for: .bottomBar)
             .appBackground()
             .stNavigationBarStyle()
             .stNavigationBarFullScreen(title: transfer.name)
