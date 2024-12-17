@@ -35,15 +35,19 @@ struct NewTransferDetailsView: View {
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if transferType == .mail {
-                TextField(STResourcesStrings.Localizable.senderMailAddressPlaceholder, text: $authorEmail) { _ in
+                TextField(STResourcesStrings.Localizable.transferSenderAddressPlaceholder, text: $authorEmail) { _ in
                     saveAuthorMailAddress()
                 }
                 .textFieldStyle(NewTransferTextFieldStyle())
                 .keyboardType(.emailAddress)
+                .textContentType(.emailAddress)
+                .textInputAutocapitalization(.never)
 
-                TextField(STResourcesStrings.Localizable.recipientMailAddressPlaceholder, text: $recipientEmail)
+                TextField(STResourcesStrings.Localizable.transferRecipientAddressPlaceholder, text: $recipientEmail)
                     .textFieldStyle(NewTransferTextFieldStyle())
                     .keyboardType(.emailAddress)
+                    .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
             }
 
             TextEditor(text: $message)

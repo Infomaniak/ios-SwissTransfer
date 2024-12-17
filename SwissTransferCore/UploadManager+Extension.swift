@@ -21,7 +21,7 @@ import InfomaniakDeviceCheck
 import STCore
 
 public extension UploadManager {
-    func createUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession? {
+    func createUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
         let attestationToken = try await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer()
 
         let uploadSession = try await createAndGetSendableUploadSession(newUploadSession: newUploadSession)

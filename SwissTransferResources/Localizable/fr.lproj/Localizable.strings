@@ -34,8 +34,11 @@
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Terminer";
 
-/* loco:66bf171580717241110432a2 */
+/* loco:676122e1ac931696ce063122 */
 "buttonNext" = "Suivant";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Ouvrir l’app mail";
 
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Réessayer";
@@ -67,6 +70,9 @@
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Expiré le %@";
 
+/* loco:676126abcb8df55f0a08e7a2 */
+"errorUnknown" = "Une erreur est survenue";
+
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expire dans %d jours";
 
@@ -95,7 +101,7 @@
 "myFilesTitle" = "Mes fichiers";
 
 /* loco:673b609c03c82748a509bd92 */
-"networkUnavailable" = "En attente de réseau…";
+"networkUnavailable" = "En attente de réseau";
 
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Ajoute jusqu’à 50 Go de fichiers";
@@ -147,12 +153,6 @@
 
 /* loco:66a765a7ec41ffa0250df2d3 */
 "recipientHeader-plural" = "Destinataires :";
-
-/* loco:6707f2a5535a86d2220b6ea2 */
-"recipientMailAddressPlaceholder" = "Envoyer les fichiers à";
-
-/* loco:6707f27ec37017ff2b0192a2 */
-"senderMailAddressPlaceholder" = "Ton adresse mail";
 
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "Notre histoire commence ici";
@@ -334,8 +334,17 @@
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Hier";
 
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "Un message à faire passer ?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Envoyer les fichiers à";
+
 /* loco:6707d903f6f42e03b90b8632 */
 "transferSendButton" = "Envoyer";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Ton adresse mail";
 
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ restant";
@@ -431,13 +440,19 @@
 "urlAbout" = "https://www.infomaniak.com/fr/a-propos";
 
 /* loco:6707f8d793cc933d520740f4 */
-"validateMailCodeIncorrectError" = "Le code saisie est incorrect";
+"validateMailCodeIncorrectError" = "Le code saisi est incorrect";
 
 /* loco:6707f975b37970cb7704b0c2 */
-"validateMailDescription" = "On a envoyé un code à %@. Saisi le ci-dessous pour faire vérifier ton adresse mail dans l’app :";
+"validateMailDescription" = "On a envoyé un code à %@. Saisis le ci-dessous pour faire vérifier ton adresse mail dans l’app :";
 
 /* loco:6707f9d6c8a673d44f0035f2 */
 "validateMailInfo" = "Pense à vérifier le dossier spam de ton adresse mail.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Renvoyer un code";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Renvoyer un code (%ds)";
 
 /* loco:6707f9ac045804ab200b44f2 */
 "validateMailTitle" = "Vérifie ton e-mail";

@@ -17,47 +17,125 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
-struct VerifyMailView: View {
-    let mail: String
-    let fakeCode = "123456"
+private extension UserFacingError {
+    static let validateMailCodeIncorrect = UserFacingError(errorDescription:
+        STResourcesStrings.Localizable.validateMailCodeIncorrectError)
+}
 
-    @State private var codeFieldStyle = SecurityCodeFieldStyle.normal
+public struct VerifyMailView: View {
+    @LazyInjectService private var injection: SwissTransferInjection
 
-    var body: some View {
+    @Environment(\.openURL) private var openURL
+
+    @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+
+    @State private var isVerifyingCode = false
+    @State private var error: UserFacingError?
+
+    let newUploadSession: NewUploadSession
+
+    public init(newUploadSession: NewUploadSession) {
+        self.newUploadSession = newUploadSession
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.large) {
             Text(STResourcesStrings.Localizable.validateMailTitle)
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            Text(STResourcesStrings.Localizable.validateMailDescription(mail))
+            Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
 
-            SecurityCodeTextField(style: $codeFieldStyle) { code in
-                if code == fakeCode {
-                    // Code valide
-                } else {
-                    withAnimation {
-                        codeFieldStyle = .error
+            SecurityCodeTextField(error: $error, completion: verifyCode)
+                .disabled(isVerifyingCode)
+                .opacity(isVerifyingCode ? 0.5 : 1)
+                .overlay {
+                    if isVerifyingCode {
+                        ProgressView()
+                            .controlSize(.large)
                     }
                 }
-            }
 
             Text(STResourcesStrings.Localizable.validateMailInfo)
                 .font(.ST.caption)
                 .foregroundStyle(Color.ST.textSecondary)
         }
         .frame(maxHeight: .infinity, alignment: .top)
-        .stNavigationBarNewTransfer()
         .stNavigationBarStyle()
         .padding(value: .medium)
+        .safeAreaButtons {
+            if let error {
+                Text(error.errorDescription)
+                    .font(.ST.caption)
+                    .foregroundStyle(Color.ST.error)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            Button(STResourcesStrings.Localizable.buttonOpenMailApp, action: openMailApp)
+                .buttonStyle(.ikBorderedProminent)
+                .disabled(isVerifyingCode)
+
+            ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
+                .disabled(isVerifyingCode)
+        }
+    }
+
+    private func openMailApp() {
+        guard let openMailURL = URL(string: "message:") else { return }
+        openURL(openMailURL)
+    }
+
+    private func verifyCode(_ code: String) {
+        guard !isVerifyingCode else { return }
+        isVerifyingCode = true
+
+        Task {
+            do {
+                let addressToVerify = newUploadSession.authorEmail
+                let token = try await injection.uploadManager.verifyEmailCode(code: code, address: addressToVerify).token
+
+                let uploadSessionWithEmailToken = NewUploadSession(
+                    duration: newUploadSession.duration,
+                    authorEmail: addressToVerify,
+                    authorEmailToken: token,
+                    password: newUploadSession.password,
+                    message: newUploadSession.message,
+                    numberOfDownload: newUploadSession.numberOfDownload,
+                    language: newUploadSession.language,
+                    recipientsEmails: newUploadSession.recipientsEmails,
+                    files: newUploadSession.files
+                )
+
+                let uploadSession = try await injection.uploadManager
+                    .createUploadSession(newUploadSession: uploadSessionWithEmailToken)
+
+                try await injection.emailTokensManager.setEmailToken(email: newUploadSession.authorEmail, token: token)
+
+                withAnimation {
+                    rootTransferViewState.transition(to: .uploadProgress(uploadSession))
+                }
+            } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
+                withAnimation {
+                    self.error = UserFacingError.validateMailCodeIncorrect
+                }
+            } catch {
+                rootTransferViewState.transition(to: .error)
+            }
+
+            isVerifyingCode = false
+        }
     }
 }
 
 #Preview {
-    VerifyMailView(mail: "john.smith@ik.me")
+    VerifyMailView(newUploadSession: PreviewHelper.sampleNewUploadSession)
 }

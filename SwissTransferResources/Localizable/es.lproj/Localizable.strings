@@ -34,8 +34,11 @@
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Acabado";
 
-/* loco:66bf171580717241110432a2 */
+/* loco:676122e1ac931696ce063122 */
 "buttonNext" = "Siguiente";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Abrir la aplicación de correo";
 
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Reintentar";
@@ -67,6 +70,9 @@
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Expirado el %@";
 
+/* loco:676126abcb8df55f0a08e7a2 */
+"errorUnknown" = "Se ha producido un error";
+
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Caduca en %d días";
 
@@ -88,11 +94,6 @@
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Archivos para transferir";
 
-/* loco:6718e0db7d3cf9ef4e0b9c83 */
-"importScreenTransferMessage" = "¿Algún mensaje que quiera transmitir? ";
-
-/* loco:6718e05f447ba2f97f0539f2 */
-"importScreenTransferTitle" = "Dé un título a su transferencia";
 
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Mensaje:";
@@ -101,7 +102,7 @@
 "myFilesTitle" = "Mis archivos";
 
 /* loco:673b609c03c82748a509bd92 */
-"networkUnavailable" = "Esperando la red…";
+"networkUnavailable" = "Esperando la red";
 
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Añade hasta 50 GB de archivos";
@@ -334,8 +335,17 @@
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Ayer";
 
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "¿Algún mensaje que quieras transmitir?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Enviar archivos a";
+
 /* loco:6707d903f6f42e03b90b8632 */
 "transferSendButton" = "Enviar";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Tu dirección de correo electrónico";
 
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "Queda %@";
@@ -437,10 +447,16 @@
 "validateMailDescription" = "Hemos enviado un código a %@. Introdúcelo a continuación para verificar tu dirección de correo electrónico en la aplicación:";
 
 /* loco:6707f9d6c8a673d44f0035f2 */
-"validateMailInfo" = "Recuerde comprobar la carpeta de correo no deseado de su dirección de correo electrónico.";
+"validateMailInfo" = "Recuerda comprobar la carpeta de correo no deseado de tu dirección de correo electrónico.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Reenviar un código";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Reenviar un código (%ds)";
 
 /* loco:6707f9ac045804ab200b44f2 */
-"validateMailTitle" = "Compruebe su correo electrónico";
+"validateMailTitle" = "Consulta tu correo electrónico";
 
 /* loco:66c335b6cb643611950ea795 */
 "version" = "Versión";

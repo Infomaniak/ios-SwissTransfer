@@ -34,8 +34,11 @@
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Finisci";
 
-/* loco:66bf171580717241110432a2 */
+/* loco:676122e1ac931696ce063122 */
 "buttonNext" = "Avanti";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Apri l’app di posta elettronica";
 
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Riprova";
@@ -67,6 +70,9 @@
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Scaduto il %@";
 
+/* loco:676126abcb8df55f0a08e7a2 */
+"errorUnknown" = "Si è verificato un errore";
+
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Scade tra %d giorni";
 
@@ -95,7 +101,7 @@
 "myFilesTitle" = "I miei file";
 
 /* loco:673b609c03c82748a509bd92 */
-"networkUnavailable" = "In attesa della rete…";
+"networkUnavailable" = "In attesa della rete";
 
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Aggiungere fino a 50 GB di file";
@@ -146,13 +152,7 @@
 "recipientHeader" = "A:";
 
 /* loco:66a765a7ec41ffa0250df2d3 */
-"recipientHeader-plural" = "A :";
-
-/* loco:6707f2a5535a86d2220b6ea2 */
-"recipientMailAddressPlaceholder" = "Inviare i file a";
-
-/* loco:6707f27ec37017ff2b0192a2 */
-"senderMailAddressPlaceholder" = "Il vostro indirizzo e-mail";
+"recipientHeader-plural" = "A:";
 
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "La nostra storia inizia qui";
@@ -334,8 +334,17 @@
 /* loco:66c6d050074f03cc770d2932 */
 "transferListSectionYesterday" = "Ieri";
 
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "C’è qualche messaggio che vorresti trasmettere?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Invia i file a";
+
 /* loco:6707d903f6f42e03b90b8632 */
 "transferSendButton" = "Invia";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Il tuo indirizzo e-mail";
 
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ rimasto";
@@ -439,8 +448,14 @@
 /* loco:6707f9d6c8a673d44f0035f2 */
 "validateMailInfo" = "Ricordate di controllare la cartella spam del vostro indirizzo e-mail.";
 
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Reinvia il codice";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Reinvia il codice (%ds)";
+
 /* loco:6707f9ac045804ab200b44f2 */
-"validateMailTitle" = "Controllare la posta elettronica";
+"validateMailTitle" = "Controlla la tua e-mail";
 
 /* loco:66c335b6cb643611950ea795 */
 "version" = "Versione";

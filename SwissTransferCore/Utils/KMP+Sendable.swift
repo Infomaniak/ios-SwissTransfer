@@ -27,14 +27,18 @@ extension NewUploadSession: @retroactive @unchecked Sendable {}
 
 extension TransferManager: @retroactive @unchecked Sendable {}
 extension UploadManager: @retroactive @unchecked Sendable {}
+extension EmailTokensManager: @retroactive @unchecked Sendable {}
 extension STCore.AccountManager: @retroactive @unchecked Sendable {}
+extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
 
 @frozen public struct SendableUploadSession {
     public let uuid: String
+    public let authorEmail: String
     public let files: [SendableUploadFileSession]
 
     init(uploadSession: any UploadSession) {
         uuid = uploadSession.uuid
+        authorEmail = uploadSession.authorEmail
         files = uploadSession.files.map { SendableUploadFileSession(uploadFileSession: $0) }
     }
 }
@@ -65,16 +69,20 @@ extension STCore.AccountManager: @retroactive @unchecked Sendable {}
 }
 
 public extension UploadManager {
+    enum DomainError: Error {
+        case containerNotFound
+    }
+
     func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
         let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
         return SendableUploadSession(uploadSession: uploadSession)
     }
 
-    func initSendableUploadSession(uuid: String, attestationToken: String) async throws -> SendableUploadSession? {
+    func initSendableUploadSession(uuid: String, attestationToken: String) async throws -> SendableUploadSession {
         guard let uploadSession = try await doInitUploadSession(uuid: uuid,
                                                                 attestationHeaderName: InfomaniakDeviceCheck.tokenHeaderField,
                                                                 attestationToken: attestationToken) else {
-            return nil
+            throw DomainError.containerNotFound
         }
         return SendableUploadSession(uploadSession: uploadSession)
     }
