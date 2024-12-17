@@ -81,7 +81,7 @@ public struct SmallThumbnailView: View {
         self.name = name
         thumbnailSize = size
 
-        _size = ScaledMetric(wrappedValue: 80, relativeTo: .body)
+        _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
         icon = STResourcesAsset.Images.folder.swiftUIImage
     }
 
