@@ -48,8 +48,11 @@ open class TargetAssembly {
                 AccountManager()
             },
             Factory(type: SwissTransferInjection.self) { _, _ in
-                // FIXME: Use the UserAgentBuilder once SwissTransfer has whitelisted it
-                SwissTransferInjection(userAgent: "Ktor client")
+                #if DEBUG
+                SwissTransferInjection(environment: STCore.ApiEnvironment.Preprod(), userAgent: UserAgentBuilder().userAgent)
+                #else
+                SwissTransferInjection(environment: STCore.ApiEnvironment.Prod(), userAgent: UserAgentBuilder().userAgent)
+                #endif
             },
             Factory(type: AppSettingsManager.self) { _, resolver in
                 let stInjection = try resolver.resolve(type: SwissTransferInjection.self,
