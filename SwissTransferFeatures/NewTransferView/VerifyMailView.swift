@@ -74,7 +74,7 @@ public struct VerifyMailView: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .stNavigationBarStyle()
         .padding(value: .medium)
-        .safeAreaButtons(spacing: 16) {
+        .safeAreaButtons {
             if let error {
                 Text(error.errorDescription)
                     .font(.ST.caption)
