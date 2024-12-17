@@ -47,21 +47,19 @@ struct ResendCodeButton: View {
 
     var body: some View {
         Button(action: resendCode) {
-            HStack {
-                Text(isSendCodeDelayDone ?
-                    STResourcesStrings.Localizable.validateMailResendCode :
-                    STResourcesStrings.Localizable.validateMailResendCodeTemplate(timeLeftSeconds))
-                    .monospacedDigit()
-                    .contentTransition(.numericText(countsDown: true))
-                    .onReceive(timer) { _ in
-                        withAnimation {
-                            timeLeftSeconds -= 1
-                            if isSendCodeDelayDone {
-                                timer.upstream.connect().cancel()
-                            }
+            Text(isSendCodeDelayDone ?
+                STResourcesStrings.Localizable.validateMailResendCode :
+                STResourcesStrings.Localizable.validateMailResendCodeTemplate(timeLeftSeconds))
+                .monospacedDigit()
+                .contentTransition(.numericText(countsDown: true))
+                .onReceive(timer) { _ in
+                    withAnimation {
+                        timeLeftSeconds -= 1
+                        if isSendCodeDelayDone {
+                            timer.upstream.connect().cancel()
                         }
                     }
-            }
+                }
         }
         .buttonStyle(.ikBorderless)
         .ikButtonLoading(isSendingCode)
