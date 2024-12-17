@@ -22,7 +22,7 @@ struct RoundedLabelModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.ST.body)
-            .foregroundStyle(Color.ST.secondary)
+            .foregroundStyle(Color.ST.onRecipientLabelBackground)
             .lineLimit(1)
             .padding(.vertical, 2)
             .padding(.horizontal, value: .small)

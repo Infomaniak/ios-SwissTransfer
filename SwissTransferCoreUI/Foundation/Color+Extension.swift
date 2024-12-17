@@ -100,7 +100,7 @@ public extension Color {
 
         /// light: greenContrast / dark: greenDark
         public static let recipientLabelBackground = Color(
-            light: STResourcesAsset.Colors.greenContrast,
+            light: STResourcesAsset.Colors.greenSecondary,
             dark: STResourcesAsset.Colors.greenDark
         )
         /// light: greenDark / dark: greenMain
