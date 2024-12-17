@@ -21,9 +21,11 @@ import STTransferDetailsView
 import STTransferList
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct SentView: View {
     @EnvironmentObject private var transferManager: TransferManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     public init() {}
 

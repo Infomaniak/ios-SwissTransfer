@@ -29,10 +29,6 @@ struct NewTransferFilesCellView: View {
     @State private var selectedItems = [ImportedItem]()
     @State private var files = [TransferableFile]()
 
-    private var filesSize: Int64 {
-        files.map { $0.fileSize }.reduce(0, +)
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.myFilesTitle)
@@ -42,7 +38,7 @@ struct NewTransferFilesCellView: View {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 HStack {
                     Text(
-                        "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
+                        "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(files.filesSize().formatted(.defaultByteCount))"
                     )
                     .font(.ST.callout)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -78,7 +74,7 @@ struct NewTransferFilesCellView: View {
                         ForEach(files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
-                                    SmallThumbnailView(name: file.name, size: .medium)
+                                    SmallThumbnailView(name: file.fileName, size: .medium)
                                 }
                             } else {
                                 NavigationLink(value: DisplayableRootFolder()) {
