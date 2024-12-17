@@ -30,16 +30,16 @@ private extension UserFacingError {
 }
 
 public struct VerifyMailView: View {
-    @LazyInjectService var injection: SwissTransferInjection
+    @LazyInjectService private var injection: SwissTransferInjection
 
     @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
-    let newUploadSession: NewUploadSession
-
     @State private var isVerifyingCode = false
     @State private var error: UserFacingError?
+
+    let newUploadSession: NewUploadSession
 
     public init(newUploadSession: NewUploadSession) {
         self.newUploadSession = newUploadSession
@@ -55,17 +55,15 @@ public struct VerifyMailView: View {
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
 
-            SecurityCodeTextField(error: $error) { code in
-                verifyCode(code)
-            }
-            .disabled(isVerifyingCode)
-            .opacity(isVerifyingCode ? 0.5 : 1)
-            .overlay {
-                if isVerifyingCode {
-                    ProgressView()
-                        .controlSize(.large)
+            SecurityCodeTextField(error: $error, completion: verifyCode)
+                .disabled(isVerifyingCode)
+                .opacity(isVerifyingCode ? 0.5 : 1)
+                .overlay {
+                    if isVerifyingCode {
+                        ProgressView()
+                            .controlSize(.large)
+                    }
                 }
-            }
 
             Text(STResourcesStrings.Localizable.validateMailInfo)
                 .font(.ST.caption)
@@ -91,12 +89,12 @@ public struct VerifyMailView: View {
         }
     }
 
-    func openMailApp() {
+    private func openMailApp() {
         guard let openMailURL = URL(string: "message:") else { return }
         openURL(openMailURL)
     }
 
-    func verifyCode(_ code: String) {
+    private func verifyCode(_ code: String) {
         guard !isVerifyingCode else { return }
         isVerifyingCode = true
 

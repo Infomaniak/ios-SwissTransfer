@@ -23,11 +23,12 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct ResendCodeButton: View {
-    @LazyInjectService var injection: SwissTransferInjection
+    @LazyInjectService private var injection: SwissTransferInjection
 
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var isSendingCode = false
     @State private var timeLeftSeconds: Int
+
     @Binding private var error: UserFacingError?
 
     private let emailToVerify: String
@@ -67,7 +68,7 @@ struct ResendCodeButton: View {
         .disabled(!isSendCodeDelayDone)
     }
 
-    func resendCode() {
+    private func resendCode() {
         guard !isSendingCode else { return }
         isSendingCode = true
 
