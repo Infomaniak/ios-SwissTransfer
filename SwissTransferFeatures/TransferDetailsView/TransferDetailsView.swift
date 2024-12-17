@@ -49,13 +49,6 @@ public struct TransferDetailsView: View {
                 .padding(.horizontal, value: .medium)
             }
             .appBackground()
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(transfer.name)
-                        .font(.ST.title2)
-                        .foregroundStyle(.white)
-                }
-            }
             .stNavigationBarStyle()
             .stNavigationBarFullScreen(title: transfer.name)
             .navigationDestination(for: FileUi.self) { file in
