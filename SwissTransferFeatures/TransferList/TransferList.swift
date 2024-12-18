@@ -33,8 +33,7 @@ public struct TransferList<EmptyView: View>: View {
     @State private var selectedItems = [ImportedItem]()
 
     private let origin: TransferOrigin
-
-    public let emptyView: EmptyView?
+    private let emptyView: EmptyView?
 
     public init(transferManager: TransferManager, origin: TransferOrigin, @ViewBuilder emptyView: () -> EmptyView) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(transferManager: transferManager, transferOrigin: origin))
@@ -44,7 +43,7 @@ public struct TransferList<EmptyView: View>: View {
 
     public var body: some View {
         List(selection: $mainViewState.selectedDestination) {
-            if let sections = viewModel.sections {
+            if let sections = viewModel.sections, !sections.isEmpty {
                 if isCompactWindow {
                     Text(origin.title)
                         .font(.ST.title)
@@ -56,7 +55,7 @@ public struct TransferList<EmptyView: View>: View {
                         .listRowBackground(Color.ST.background)
                 }
 
-                ForEach(viewModel.sections ?? []) { section in
+                ForEach(sections) { section in
                     Section {
                         ForEach(section.transfers, id: \.uuid) { transfer in
                             TransferCell(transfer: transfer)
@@ -74,7 +73,7 @@ public struct TransferList<EmptyView: View>: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .floatingActionButton(isShowing: viewModel.sections != nil, selection: $selectedItems, style: .newTransfer)
+        .floatingActionButton(isShowing: viewModel.sections?.isEmpty == false, selection: $selectedItems, style: .newTransfer)
         .task {
             try? await transferManager.fetchWaitingTransfers()
         }

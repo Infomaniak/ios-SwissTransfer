@@ -52,7 +52,8 @@ struct FloatingActionButtonModifier: ViewModifier {
 }
 
 public extension View {
-    func floatingActionButton(isShowing: Bool = true, selection: Binding<[ImportedItem]>, style: FloatingActionButtonStyle) -> some View {
+    func floatingActionButton(isShowing: Bool = true, selection: Binding<[ImportedItem]>,
+                              style: FloatingActionButtonStyle) -> some View {
         modifier(FloatingActionButtonModifier(selection: selection, isShowing: isShowing, style: style))
     }
 }
