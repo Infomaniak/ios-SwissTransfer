@@ -67,7 +67,14 @@ public struct AddFilesMenu<Content: View>: View {
                 )
             }
         } label: {
-            label
+            if #available(iOS 17.0, *) {
+                label
+            } else {
+                // To apply `buttonStyle` correctly, the label must be wrapped in a button on iOS 16
+                Button {} label: {
+                    label
+                }
+            }
         }
         .photosPicker(isPresented: $isShowingPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
         .onChange(of: selectedPhotos) { _ in
