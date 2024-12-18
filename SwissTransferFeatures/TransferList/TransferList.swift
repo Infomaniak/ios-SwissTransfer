@@ -44,30 +44,32 @@ public struct TransferList<EmptyView: View>: View {
 
     public var body: some View {
         List(selection: $mainViewState.selectedDestination) {
-            if isCompactWindow {
-                Text(origin.title)
-                    .font(.ST.title)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .padding(.horizontal, value: .medium)
-                    .padding(.top, value: .medium)
+            if let sections = viewModel.sections {
+                if isCompactWindow {
+                    Text(origin.title)
+                        .font(.ST.title)
+                        .foregroundStyle(Color.ST.textPrimary)
+                        .padding(.horizontal, value: .medium)
+                        .padding(.top, value: .medium)
+                        .listRowInsets(EdgeInsets(.zero))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.ST.background)
+                }
+
+                ForEach(viewModel.sections ?? []) { section in
+                    Section {
+                        ForEach(section.transfers, id: \.uuid) { transfer in
+                            TransferCell(transfer: transfer)
+                                .tag(NavigationDestination.transfer(transfer))
+                        }
+                    } header: {
+                        Text(section.title)
+                            .sectionHeader()
+                            .padding(.horizontal, value: .medium)
+                    }
                     .listRowInsets(EdgeInsets(.zero))
                     .listRowSeparator(.hidden)
-                    .listRowBackground(Color.ST.background)
-            }
-
-            ForEach(viewModel.sections ?? []) { section in
-                Section {
-                    ForEach(section.transfers, id: \.uuid) { transfer in
-                        TransferCell(transfer: transfer)
-                            .tag(NavigationDestination.transfer(transfer))
-                    }
-                } header: {
-                    Text(section.title)
-                        .sectionHeader()
-                        .padding(.horizontal, value: .medium)
                 }
-                .listRowInsets(EdgeInsets(.zero))
-                .listRowSeparator(.hidden)
             }
         }
         .listRowSpacing(0)
