@@ -87,6 +87,9 @@ struct NotificationsSettingsView: View {
                 }
             }
         }
+        .onAppear {
+            allNotificationsEnabled = NotificationSettings().allEnabled
+        }
         .onChange(of: [newTransfers,
                        downloadInProgress,
                        finishedTransfers,
