@@ -54,22 +54,22 @@ enum NotificationsSettingsModel: Hashable, CaseIterable {
 
 struct NotificationsSettingsView: View {
     @AppStorage(UserDefaults.shared.key(.notificationsNewTransfers))
-    private var newTransfers = DefaultNotificationsPreferences.notificationsNewTransfers
+    private var newTransfers = DefaultPreferences.notificationsNewTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsDownloadInProgress))
-    private var downloadInProgress = DefaultNotificationsPreferences.notificationsDownloadInProgress
+    private var downloadInProgress = DefaultPreferences.notificationsDownloadInProgress
 
     @AppStorage(UserDefaults.shared.key(.notificationsFinishedTransfers))
-    private var finishedTransfers = DefaultNotificationsPreferences.notificationsFinishedTransfers
+    private var finishedTransfers = DefaultPreferences.notificationsFinishedTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsDownloadTransfers))
-    private var downloadTransfers = DefaultNotificationsPreferences.notificationsDownloadTransfers
+    private var downloadTransfers = DefaultPreferences.notificationsDownloadTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsFailedTransfers))
-    private var failedTransfers = DefaultNotificationsPreferences.notificationsFailedTransfers
+    private var failedTransfers = DefaultPreferences.notificationsFailedTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsExpiredTransfers))
-    private var expiredTransfers = DefaultNotificationsPreferences.notificationsExpiredTransfers
+    private var expiredTransfers = DefaultPreferences.notificationsExpiredTransfers
 
     @State private var allNotificationsEnabled = NotificationSettings().allEnabled
 

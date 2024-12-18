@@ -23,12 +23,12 @@ public final class NotificationSettings {
     public init() {}
 
     let keys: [ReferenceWritableKeyPath<UserDefaults, Bool>] = [
-        \.isNotificationsNewTransfersEnabled,
-        \.isNotificationsDownloadInProgressEnabled,
-        \.isNotificationsFinishedTransfersEnabled,
-        \.isNotificationsDownloadTransfersEnabled,
-        \.isNotificationsFailedTransfersEnabled,
-        \.isNotificationsExpiredTransfersEnabled
+        \.isNotificationsNewTransfers,
+        \.isNotificationsDownloadInProgress,
+        \.isNotificationsFinishedTransfers,
+        \.isNotificationsDownloadTransfers,
+        \.isNotificationsFailedTransfers,
+        \.isNotificationsExpiredTransfers
     ]
 
     public var allEnabled: Bool {
