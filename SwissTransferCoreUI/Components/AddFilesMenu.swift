@@ -86,21 +86,33 @@ public struct AddFilesMenu<Content: View>: View {
     }
 
     private func didTakePicture(uiImage: UIImage) {
-        selection = [ImportedItem(item: uiImage)]
+        setSelection([ImportedItem(item: uiImage)])
     }
 
     private func didSelectFromPhotoLibrary() {
         guard !selectedPhotos.isEmpty else { return }
-        selection = selectedPhotos.map { ImportedItem(item: $0) }
+        setSelection(selectedPhotos.map { ImportedItem(item: $0) })
         selectedPhotos = []
     }
 
     private func didSelectFromFileSystem(_ result: Result<[URL], Error>) {
         switch result {
         case .success(let urls):
-            selection = urls.map { ImportedItem(item: $0) }
+            setSelection(urls.map { ImportedItem(item: $0) })
         case .failure(let error):
             Logger.general.error("An error occurred while importing files: \(error)")
+        }
+    }
+
+    private func setSelection(_ selection: [ImportedItem]) {
+        if #available(iOS 17.0, *) {
+            self.selection = selection
+        } else {
+            // We have to wait for sheet closure on iOS 16
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(25))
+                self.selection = selection
+            }
         }
     }
 }
