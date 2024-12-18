@@ -88,6 +88,7 @@ public struct OnboardingView: View {
                 .buttonStyle(.ikSquare)
             }
         }
+        .appBackground()
         .ignoresSafeArea()
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
