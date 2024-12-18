@@ -27,3 +27,80 @@ public extension UserDefaults.Keys {
     static let notificationsFailedTransfers = UserDefaults.Keys(rawValue: "notificationsFailedTransfers")
     static let notificationsExpiredTransfers = UserDefaults.Keys(rawValue: "notificationsExpiredTransfers")
 }
+
+public extension UserDefaults {
+    var isNotificationsNewTransfersEnabled: Bool {
+        get {
+            if object(forKey: key(.notificationsNewTransfers)) == nil {
+                set(DefaultNotificationsPreferences.notificationsNewTransfers, forKey: key(.notificationsNewTransfers))
+            }
+            return bool(forKey: key(.notificationsNewTransfers))
+        }
+        set {
+            set(newValue, forKey: key(.notificationsNewTransfers))
+        }
+    }
+
+    var isNotificationsDownloadInProgressEnabled: Bool {
+        get {
+            if object(forKey: key(.notificationsDownloadInProgress)) == nil {
+                set(
+                    DefaultNotificationsPreferences.notificationsDownloadInProgress,
+                    forKey: key(.notificationsDownloadInProgress)
+                )
+            }
+            return bool(forKey: key(.notificationsDownloadInProgress))
+        }
+        set {
+            set(newValue, forKey: key(.notificationsDownloadInProgress))
+        }
+    }
+
+    var isNotificationsFinishedTransfersEnabled: Bool {
+        get {
+            if object(forKey: key(.notificationsFinishedTransfers)) == nil {
+                set(DefaultNotificationsPreferences.notificationsFinishedTransfers, forKey: key(.notificationsFinishedTransfers))
+            }
+            return bool(forKey: key(.notificationsFinishedTransfers))
+        }
+        set {
+            set(newValue, forKey: key(.notificationsFinishedTransfers))
+        }
+    }
+
+    var isNotificationsDownloadTransfersEnabled: Bool {
+        get {
+            if object(forKey: key(.notificationsDownloadTransfers)) == nil {
+                set(DefaultNotificationsPreferences.notificationsDownloadTransfers, forKey: key(.notificationsDownloadTransfers))
+            }
+            return bool(forKey: key(.notificationsDownloadTransfers))
+        }
+        set {
+            set(newValue, forKey: key(.notificationsDownloadTransfers))
+        }
+    }
+
+    var isNotificationsFailedTransfersEnabled: Bool {
+        get {
+            if object(forKey: key(.notificationsFailedTransfers)) == nil {
+                set(DefaultNotificationsPreferences.notificationsFailedTransfers, forKey: key(.notificationsFailedTransfers))
+            }
+            return bool(forKey: key(.notificationsFailedTransfers))
+        }
+        set {
+            set(newValue, forKey: key(.notificationsFailedTransfers))
+        }
+    }
+
+    var isNotificationsExpiredTransfersEnabled: Bool {
+        get {
+            if object(forKey: key(.notificationsExpiredTransfers)) == nil {
+                set(DefaultNotificationsPreferences.notificationsExpiredTransfers, forKey: key(.notificationsExpiredTransfers))
+            }
+            return bool(forKey: key(.notificationsExpiredTransfers))
+        }
+        set {
+            set(newValue, forKey: key(.notificationsExpiredTransfers))
+        }
+    }
+}

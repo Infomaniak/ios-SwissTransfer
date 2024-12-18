@@ -18,7 +18,7 @@
 
 import Foundation
 
-public enum DefaultPreferences {
+public enum DefaultNotificationsPreferences {
     public static let notificationsNewTransfers = true
     public static let notificationsDownloadInProgress = true
     public static let notificationsFinishedTransfers = true

@@ -54,30 +54,26 @@ enum NotificationsSettingsModel: Hashable, CaseIterable {
 
 struct NotificationsSettingsView: View {
     @AppStorage(UserDefaults.shared.key(.notificationsNewTransfers))
-    private var newTransfers = DefaultPreferences.notificationsNewTransfers
+    private var newTransfers = DefaultNotificationsPreferences.notificationsNewTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsDownloadInProgress))
-    private var downloadInProgress = DefaultPreferences.notificationsDownloadInProgress
+    private var downloadInProgress = DefaultNotificationsPreferences.notificationsDownloadInProgress
 
     @AppStorage(UserDefaults.shared.key(.notificationsFinishedTransfers))
-    private var finishedTransfers = DefaultPreferences.notificationsFinishedTransfers
+    private var finishedTransfers = DefaultNotificationsPreferences.notificationsFinishedTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsDownloadTransfers))
-    private var downloadTransfers = DefaultPreferences.notificationsDownloadTransfers
+    private var downloadTransfers = DefaultNotificationsPreferences.notificationsDownloadTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsFailedTransfers))
-    private var failedTransfers = DefaultPreferences.notificationsFailedTransfers
+    private var failedTransfers = DefaultNotificationsPreferences.notificationsFailedTransfers
 
     @AppStorage(UserDefaults.shared.key(.notificationsExpiredTransfers))
-    private var expiredTransfers = DefaultPreferences.notificationsExpiredTransfers
+    private var expiredTransfers = DefaultNotificationsPreferences.notificationsExpiredTransfers
 
     @State private var allNotificationsEnabled = NotificationSettings().allEnabled
 
     @State private var mutationFromCode = false
-
-    init() {
-        allNotificationsEnabled = computeAllNotificationsEnabled()
-    }
 
     var body: some View {
         List {
@@ -88,7 +84,7 @@ struct NotificationsSettingsView: View {
             }
         }
         .onAppear {
-            allNotificationsEnabled = NotificationSettings().allEnabled
+            allNotificationsEnabled = computeAllNotificationsEnabled()
         }
         .onChange(of: [newTransfers,
                        downloadInProgress,

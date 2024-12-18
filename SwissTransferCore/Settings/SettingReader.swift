@@ -22,22 +22,18 @@ import STResources
 public final class NotificationSettings {
     public init() {}
 
-    let keys = [
-        UserDefaults.shared.key(.notificationsNewTransfers),
-        UserDefaults.shared.key(.notificationsDownloadInProgress),
-        UserDefaults.shared.key(.notificationsFinishedTransfers),
-        UserDefaults.shared.key(.notificationsDownloadTransfers),
-        UserDefaults.shared.key(.notificationsFailedTransfers),
-        UserDefaults.shared.key(.notificationsExpiredTransfers)
+    let keys: [ReferenceWritableKeyPath<UserDefaults, Bool>] = [
+        \.isNotificationsNewTransfersEnabled,
+        \.isNotificationsDownloadInProgressEnabled,
+        \.isNotificationsFinishedTransfersEnabled,
+        \.isNotificationsDownloadTransfersEnabled,
+        \.isNotificationsFailedTransfersEnabled,
+        \.isNotificationsExpiredTransfersEnabled
     ]
 
     public var allEnabled: Bool {
-        guard let firstKey = keys.first,
-              UserDefaults.standard.value(forKey: firstKey) != nil else {
-            return true
-        }
         let oneValueIsFalse = keys.contains { key in
-            return !UserDefaults.standard.bool(forKey: key)
+            return !UserDefaults.shared[keyPath: key]
         }
         return !oneValueIsFalse
     }
