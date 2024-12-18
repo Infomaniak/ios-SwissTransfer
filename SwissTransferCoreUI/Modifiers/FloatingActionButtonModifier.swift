@@ -30,12 +30,13 @@ struct FloatingActionButtonModifier: ViewModifier {
 
     @Binding var selection: [ImportedItem]
 
+    let isShowing: Bool
     let style: FloatingActionButtonStyle
 
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom, alignment: .trailing) {
-                if isCompactWindow {
+                if isShowing && isCompactWindow {
                     Group {
                         switch style {
                         case .newTransfer:
@@ -51,7 +52,8 @@ struct FloatingActionButtonModifier: ViewModifier {
 }
 
 public extension View {
-    func floatingActionButton(selection: Binding<[ImportedItem]>, style: FloatingActionButtonStyle) -> some View {
-        modifier(FloatingActionButtonModifier(selection: selection, style: style))
+    func floatingActionButton(isShowing: Bool = true, selection: Binding<[ImportedItem]>,
+                              style: FloatingActionButtonStyle) -> some View {
+        modifier(FloatingActionButtonModifier(selection: selection, isShowing: isShowing, style: style))
     }
 }
