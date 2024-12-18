@@ -59,6 +59,7 @@ struct SwissTransferApp: App {
                 .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
         }
+        .defaultAppStorage(.shared)
     }
 
     func handleURL(_ url: URL) {

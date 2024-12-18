@@ -56,8 +56,7 @@ public struct SettingsView: View {
 
                 NotificationsSettingsCell {
                     NotificationsSettingsView()
-                        .defaultAppStorage(.shared) // not demure. SwiftUI is production ready.
-                }.defaultAppStorage(.shared)
+                }
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
