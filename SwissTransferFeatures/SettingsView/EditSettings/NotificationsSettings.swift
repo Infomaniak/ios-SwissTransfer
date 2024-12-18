@@ -75,10 +75,6 @@ struct NotificationsSettingsView: View {
 
     @State private var mutationFromCode = false
 
-    init() {
-        allNotificationsEnabled = computeAllNotificationsEnabled()
-    }
-
     var body: some View {
         List {
             Section(header: Text(STResourcesStrings.Localizable.settingsNotificationsTitle)) {
@@ -86,6 +82,9 @@ struct NotificationsSettingsView: View {
                     NotificationSettingCell(enabled: toggleBinding(for: setting), label: setting.localized)
                 }
             }
+        }
+        .onAppear {
+            allNotificationsEnabled = computeAllNotificationsEnabled()
         }
         .onChange(of: [newTransfers,
                        downloadInProgress,
