@@ -29,13 +29,22 @@ enum PasswordInputFocus: Hashable, Sendable {
 struct PasswordSettingView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var isOn = false
+    @State private var isOn: Bool
     @FocusState private var focusedField: PasswordInputFocus?
 
     @Binding var password: String
 
     private var isShowingPassword: Bool {
         return focusedField == .clear
+    }
+
+    private var isButtonDisabled: Bool {
+        return isOn && password.isEmpty
+    }
+
+    init(password: Binding<String>) {
+        _isOn = State(wrappedValue: !password.wrappedValue.isEmpty)
+        _password = password
     }
 
     var body: some View {
@@ -98,6 +107,7 @@ struct PasswordSettingView: View {
                 Text(STResourcesStrings.Localizable.buttonConfirm)
             }
             .buttonStyle(.ikBorderedProminent)
+            .disabled(isButtonDisabled)
         }
     }
 

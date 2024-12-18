@@ -36,6 +36,10 @@ struct NewTransferSettingsView: View {
 
     let transferType: TransferType
 
+    private var hasPassword: Bool {
+        return !password.isEmpty
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
             Text(STResourcesStrings.Localizable.advancedSettingsTitle)
@@ -78,7 +82,9 @@ struct NewTransferSettingsView: View {
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionPassword,
                     icon: STResourcesAsset.Images.textfieldLock.swiftUIImage,
-                    value: STResourcesStrings.Localizable.settingsOptionNone
+                    value: hasPassword
+                        ? STResourcesStrings.Localizable.settingsOptionActivated
+                        : STResourcesStrings.Localizable.settingsOptionNone
                 ) {
                     showPasswordSetting = true
                 }
