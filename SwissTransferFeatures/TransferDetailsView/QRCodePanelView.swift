@@ -30,11 +30,11 @@ struct QRCodePanelView: View {
 
     var body: some View {
         VStack(spacing: IKPadding.large) {
-            Text(STResourcesStrings.Localizable.quickShareTitle)
+            Text(STResourcesStrings.Localizable.shareQrCodeTitle)
                 .font(.ST.headline)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            Text(STResourcesStrings.Localizable.quickShareDescription)
+            Text(STResourcesStrings.Localizable.shareQrCodeDescription)
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
                 .multilineTextAlignment(.center)
