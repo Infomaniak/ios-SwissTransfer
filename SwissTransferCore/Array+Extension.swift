@@ -16,27 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STReceivedView
-import STSentView
-import STSettingsView
-import SwiftUI
-import SwissTransferCore
-import SwissTransferCoreUI
+import Foundation
 
-struct STTabView: View {
-    @EnvironmentObject private var mainViewState: MainViewState
-
-    var body: some View {
-        TabView(selection: $mainViewState.selectedTab) {
-            SentView()
-                .stTab(.sentTransfers)
-
-            ReceivedView()
-                .stTab(.receivedTransfers)
-
-            SettingsView()
-                .navigableTab(.settings)
-                .stTab(.settings)
-        }
+public extension Array where Element: DisplayableFile {
+    func filesSize() -> Int64 {
+        return map { $0.fileSize }.reduce(0, +)
     }
 }

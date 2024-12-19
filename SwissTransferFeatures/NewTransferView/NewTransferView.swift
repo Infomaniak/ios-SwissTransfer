@@ -45,7 +45,7 @@ public struct NewTransferView: View {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferTypeView(transferType: $viewModel.transferType)
 
-                    NavigationLink(value: DisplayableRootFolder()) {
+                    NavigationLink(value: TransferableRootFolder()) {
                         NewTransferFilesCellView()
                     }
                     .padding(.horizontal, value: .medium)
@@ -78,12 +78,12 @@ public struct NewTransferView: View {
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
             }
             .scrollDismissesKeyboard(.immediately)
-            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+            .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: DisplayableFile.self) { file in
+            .navigationDestination(for: TransferableFile.self) { file in
                 FileListView(parentFolder: file)
             }
-            .navigationDestination(for: DisplayableRootFolder.self) { _ in
+            .navigationDestination(for: TransferableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
             }
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in

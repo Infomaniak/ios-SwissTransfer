@@ -16,27 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STReceivedView
-import STSentView
-import STSettingsView
-import SwiftUI
-import SwissTransferCore
-import SwissTransferCoreUI
+import Foundation
+import STCore
 
-struct STTabView: View {
-    @EnvironmentObject private var mainViewState: MainViewState
+public struct TransferContainer: Identifiable {
+    public let id: String
+    public let transfer: TransferUi
 
-    var body: some View {
-        TabView(selection: $mainViewState.selectedTab) {
-            SentView()
-                .stTab(.sentTransfers)
-
-            ReceivedView()
-                .stTab(.receivedTransfers)
-
-            SettingsView()
-                .navigableTab(.settings)
-                .stTab(.settings)
-        }
+    public init(transfer: STCore.TransferUi) {
+        id = transfer.uuid
+        self.transfer = transfer
     }
 }

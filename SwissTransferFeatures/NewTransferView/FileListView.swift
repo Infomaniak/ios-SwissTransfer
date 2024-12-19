@@ -28,26 +28,18 @@ struct FileListView: View {
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var selectedItems = [ImportedItem]()
-    @State private var files = [DisplayableFile]()
+    @State private var files = [TransferableFile]()
 
-    private let folder: DisplayableFile?
-    private let columns = [
-        GridItem(.flexible(), spacing: IKPadding.medium),
-        GridItem(.flexible(), spacing: IKPadding.medium)
-    ]
+    private let folder: TransferableFile?
 
     private var navigationTitle: String {
         guard let folder else {
             return STResourcesStrings.Localizable.importFilesScreenTitle
         }
-        return folder.name
+        return folder.fileName
     }
 
-    private var filesSize: Int64 {
-        files.map { $0.size }.reduce(0, +)
-    }
-
-    init(parentFolder: DisplayableFile?) {
+    init(parentFolder: TransferableFile?) {
         folder = parentFolder
     }
 
@@ -55,43 +47,24 @@ struct FileListView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 Text(
-                    "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
+                    "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(files.filesSize().formatted(.defaultByteCount))"
                 )
 
-                LazyVGrid(
-                    columns: columns,
-                    alignment: .center,
-                    spacing: IKPadding.medium,
-                    pinnedViews: []
-                ) {
-                    ForEach(files) { file in
-                        if file.isFolder {
-                            NavigationLink(value: file) {
-                                LargeFileCell(folderName: file.name, folderSize: file.size) {
-                                    removeFile(file, atFolderURL: folder?.url)
-                                }
-                            }
-                        } else {
-                            LargeFileCell(
-                                fileName: file.name,
-                                fileSize: file.size,
-                                url: file.url,
-                                mimeType: file.mimeType
-                            ) {
-                                removeFile(file, atFolderURL: folder?.url)
-                            }
-                        }
+                FileGridView(
+                    files: files,
+                    removeAction: RemoveFileAction {
+                        removeFile($0, atFolderURL: folder?.localURL)
                     }
-                }
+                )
             }
             .padding(value: .medium)
         }
         .appBackground()
         .floatingActionButton(selection: $selectedItems, style: .newTransfer)
         .stNavigationBarStyle()
-        .stNavigationBarNewTransfer(title: navigationTitle)
+        .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
-            files = newTransferFileManager.filesAt(folderURL: folder?.url)
+            files = newTransferFileManager.filesAt(folderURL: folder?.localURL)
         }
         .onChange(of: files) { _ in
             if files.isEmpty {
@@ -103,7 +76,7 @@ struct FileListView: View {
         }
     }
 
-    func removeFile(_ file: DisplayableFile, atFolderURL folderURL: URL?) {
+    func removeFile(_ file: TransferableFile, atFolderURL folderURL: URL?) {
         do {
             try newTransferFileManager.remove(file: file)
             let newFiles = newTransferFileManager.filesAt(folderURL: folderURL)
