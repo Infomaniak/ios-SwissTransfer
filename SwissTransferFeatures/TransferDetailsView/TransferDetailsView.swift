@@ -27,6 +27,8 @@ import SwissTransferCoreUI
 public struct TransferDetailsView: View {
     @LazyInjectService private var injection: SwissTransferInjection
 
+    @State private var isShowingQRCode = false
+
     private let transfer: TransferUi
 
     private var transferURL: URL? {
@@ -73,19 +75,24 @@ public struct TransferDetailsView: View {
                             }
                             .frame(width: 100)
                         }
-                    }
 
-                    Spacer()
+                        Spacer()
 
-                    Button {} label: {
-                        VStack {
-                            STResourcesAsset.Images.qrCode.swiftUIImage
-                                .iconSize(.large)
+                        Button {
+                            isShowingQRCode = true
+                        } label: {
+                            VStack {
+                                STResourcesAsset.Images.qrCode.swiftUIImage
+                                    .iconSize(.large)
 
-                            Text(STResourcesStrings.Localizable.transferTypeQrCode)
-                                .font(.ST.caption)
+                                Text(STResourcesStrings.Localizable.transferTypeQrCode)
+                                    .font(.ST.caption)
+                            }
+                            .frame(width: 100)
                         }
-                        .frame(width: 100)
+                        .floatingPanel(isPresented: $isShowingQRCode) {
+                            QRCodePanelView(url: transferURL)
+                        }
                     }
 
                     Spacer()
