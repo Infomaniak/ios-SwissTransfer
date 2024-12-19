@@ -42,12 +42,11 @@ struct DownloadableFileCellView: View {
                 url: file.localURL,
                 mimeType: file.mimeType ?? ""
             )
-            .overlay {
+            .overlay(alignment: .topTrailing) {
                 if let progress {
                     ProgressView(value: progress)
                         .progressViewStyle(.circularDeterminate)
                         .frame(width: 20, height: 20)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                         .padding(value: .small)
                 }
             }
