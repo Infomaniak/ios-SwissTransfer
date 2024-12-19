@@ -19,6 +19,7 @@
 import Foundation
 import OSLog
 import STCore
+import UniformTypeIdentifiers
 
 public class UploadFile: Identifiable {
     public var id: String {
@@ -39,7 +40,12 @@ public class UploadFile: Identifiable {
 
         self.url = url
         size = Int64(resources.fileSize ?? 0)
-        mimeType = url.typeIdentifier ?? ""
+        if let typeIdentifier = url.typeIdentifier,
+           let mimeType = UTType(typeIdentifier)?.preferredMIMEType {
+            self.mimeType = mimeType
+        } else {
+            mimeType = ""
+        }
 
         do {
             let baseURL = try URL.tmpUploadDirectory()
