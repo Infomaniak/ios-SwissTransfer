@@ -52,22 +52,21 @@ struct DownloadButton: View {
     @State private var downloadedFileURL: IdentifiableURL?
 
     let transfer: TransferUi
+    var file: FileUi?
 
     var body: some View {
         Button(action: download) {
-            ZStack {
-                if let progress {
-                    CircleProgressView(progress: progress)
-                } else {
-                    Label(
-                        title: {
-                            Text(STResourcesStrings.Localizable.buttonDownload)
-                        },
-                        icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
-                    )
-                }
+            if let progress {
+                CircleProgressView(progress: progress)
+            } else {
+                Label(
+                    title: {
+                        Text(STResourcesStrings.Localizable.buttonDownload)
+                    },
+                    icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
+                )
+                .labelStyle(.iconOnly)
             }
-            .labelStyle(.iconOnly)
         }
         .sheet(item: $downloadedFileURL) { downloadedFileURL in
             ActivityView(sharedFileURL: downloadedFileURL.url)
@@ -81,14 +80,21 @@ struct DownloadButton: View {
         } else {
             downloadTask = Task {
                 do {
-                    let downloadedURL = try await downloadManager.download(transfer: transfer) { progress in
-                        Task { @MainActor in
-                            guard let downloadTask, !downloadTask.isCancelled else { return }
-                            withAnimation {
-                                self.progress = progress
+                    let downloadedURL: URL
+                    if let file {
+                        downloadedURL = try await downloadManager.download(file: file, in: transfer) { progress in
+                            Task { @MainActor in
+                                handleProgress(progress)
+                            }
+                        }
+                    } else {
+                        downloadedURL = try await downloadManager.download(transfer: transfer) { progress in
+                            Task { @MainActor in
+                                handleProgress(progress)
                             }
                         }
                     }
+
                     downloadedFileURL = IdentifiableURL(url: downloadedURL)
                 } catch {
                     Logger.general.error("Error downloading transfer: \(error)")
@@ -96,6 +102,13 @@ struct DownloadButton: View {
                 }
                 reset()
             }
+        }
+    }
+
+    private func handleProgress(_ progress: Double) {
+        guard let downloadTask, !downloadTask.isCancelled else { return }
+        withAnimation {
+            self.progress = progress
         }
     }
 
