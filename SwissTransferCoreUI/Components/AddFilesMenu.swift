@@ -45,7 +45,7 @@ public struct AddFilesMenu<Content: View>: View {
             } label: {
                 Label(
                     title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
-                    icon: { STResourcesAsset.Images.folder.swiftUIImage }
+                    icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
                 )
             }
             Button {
@@ -53,7 +53,7 @@ public struct AddFilesMenu<Content: View>: View {
             } label: {
                 Label(
                     title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
-                    icon: { STResourcesAsset.Images.image.swiftUIImage }
+                    icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
                 )
             }
             Button {
@@ -63,7 +63,7 @@ public struct AddFilesMenu<Content: View>: View {
                     title: {
                         Text(STResourcesStrings.Localizable.transferUploadSourceChoiceCamera)
                     },
-                    icon: { STResourcesAsset.Images.camera.swiftUIImage }
+                    icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
                 )
             }
         } label: {

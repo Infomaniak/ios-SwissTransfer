@@ -58,11 +58,11 @@ public struct SmallThumbnailView: View {
 
     @ScaledMetric(wrappedValue: 0, relativeTo: .body) private var size
 
+    private let fileType: FileType
     private let url: URL?
     private let name: String?
     private let thumbnailSize: SmallThumbnailSize
 
-    @State private var icon: Image
     @State private var thumbnail: Image?
 
     /// File init
@@ -72,7 +72,7 @@ public struct SmallThumbnailView: View {
         thumbnailSize = size
 
         _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
-        icon = FileHelper(type: mimeType).icon.swiftUIImage
+        fileType = FileTypeProvider(type: mimeType).fileType
     }
 
     /// Folder init
@@ -82,7 +82,7 @@ public struct SmallThumbnailView: View {
         thumbnailSize = size
 
         _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
-        icon = STResourcesAsset.Images.folder.swiftUIImage
+        fileType = .folder
     }
 
     public var body: some View {
@@ -94,7 +94,7 @@ public struct SmallThumbnailView: View {
                     .frame(width: size, height: size)
             } else {
                 VStack(spacing: IKPadding.small) {
-                    FileIconView(icon: icon, type: .small)
+                    FileIconView(fileType: fileType, type: .small)
 
                     if let name, thumbnailSize.shouldShowName {
                         Text(name)

@@ -62,7 +62,7 @@ public enum FileTypeIconSize {
 }
 
 public struct FileIconView: View {
-    private let icon: Image
+    private let fileType: FileType
     private let type: FileTypeIconSize
 
     @ScaledMetric private var scaledSize: CGFloat
@@ -76,8 +76,8 @@ public struct FileIconView: View {
         type.shouldScale ? scaledPadding : type.padding
     }
 
-    public init(icon: Image, type: FileTypeIconSize) {
-        self.icon = icon
+    public init(fileType: FileType, type: FileTypeIconSize) {
+        self.fileType = fileType
         self.type = type
 
         _scaledSize = ScaledMetric(wrappedValue: type.size, relativeTo: .body)
@@ -85,9 +85,10 @@ public struct FileIconView: View {
     }
 
     public var body: some View {
-        icon
+        fileType.image
             .resizable()
             .frame(width: size, height: size)
+            .foregroundStyle(fileType.color)
             .padding(padding)
             .background(
                 type.background
@@ -98,8 +99,8 @@ public struct FileIconView: View {
 
 #Preview {
     VStack {
-        FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .small)
-        FileIconView(icon: STResourcesAsset.Images.fileAdobe.swiftUIImage, type: .large)
+        FileIconView(fileType: .pdf, type: .small)
+        FileIconView(fileType: .pdf, type: .large)
             .padding()
             .background {
                 Color.ST.cardBackground
