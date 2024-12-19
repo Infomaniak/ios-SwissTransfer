@@ -87,7 +87,7 @@ private struct DetailSplitView: View {
                 Text("TODO: Settings Option.")
             }
         } else {
-            STEmptyStateView()
+            SplitViewDetailsEmptyView()
         }
     }
 }

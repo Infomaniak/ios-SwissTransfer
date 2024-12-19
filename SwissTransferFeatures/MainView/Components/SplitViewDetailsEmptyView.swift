@@ -1,4 +1,3 @@
-//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2024 Infomaniak Network SA
@@ -19,10 +18,10 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
-public struct STEmptyStateView: View {
-    public init() {}
-    public var body: some View {
+struct SplitViewDetailsEmptyView: View {
+    var body: some View {
         IllustrationAndTextView(
             image: nil,
             title: STResourcesStrings.Localizable.noTransferSelectedTitle,
@@ -34,5 +33,5 @@ public struct STEmptyStateView: View {
 }
 
 #Preview {
-    STEmptyStateView()
+    SplitViewDetailsEmptyView()
 }
