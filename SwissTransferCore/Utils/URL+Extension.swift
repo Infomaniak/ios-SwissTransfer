@@ -57,6 +57,12 @@ public extension URL {
         return tmpDirectory
     }
 
+    static func tmpDownloadsDirectory() throws -> URL {
+        let tmpDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("downloads", isDirectory: true)
+        try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
+        return tmpDirectory
+    }
+
     /// Size of the file/folder in bytes
     func size() -> Int {
         guard let resources = try? resourceValues(forKeys: [.isDirectoryKey, .fileSizeKey]) else { return 0 }

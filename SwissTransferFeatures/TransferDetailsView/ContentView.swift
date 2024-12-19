@@ -29,7 +29,7 @@ struct ContentView: View {
         GridItem(.flexible(), spacing: IKPadding.medium)
     ]
 
-    let files: [FileUi]
+    let transfer: TransferUi
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -42,13 +42,8 @@ struct ContentView: View {
                 spacing: IKPadding.medium,
                 pinnedViews: []
             ) {
-                ForEach(files, id: \.uid) { file in
-                    LargeFileCell(
-                        fileName: file.fileName,
-                        fileSize: file.fileSize,
-                        url: file.localURL,
-                        mimeType: file.mimeType ?? ""
-                    )
+                ForEach(transfer.files, id: \.uid) { file in
+                    DownloadableFileCellView(transfer: transfer, file: file)
                 }
             }
         }
@@ -56,5 +51,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(files: [PreviewHelper.sampleFile, PreviewHelper.sampleFile, PreviewHelper.sampleFile])
+    ContentView(transfer: PreviewHelper.sampleTransfer)
 }
