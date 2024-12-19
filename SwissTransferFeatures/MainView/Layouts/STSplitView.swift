@@ -87,12 +87,7 @@ private struct DetailSplitView: View {
                 Text("TODO: Settings Option.")
             }
         } else {
-            IllustrationAndTextView(
-                image: nil,
-                title: STResourcesStrings.Localizable.noTransferSelectedTitle,
-                subtitle: STResourcesStrings.Localizable.noTransferSelectedDescription,
-                style: .emptyState
-            )
+            STEmptyStateView()
         }
     }
 }

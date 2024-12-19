@@ -52,8 +52,10 @@ public struct IllustrationAndTextView: View {
     public var body: some View {
         VStack(spacing: 32) {
             if let image {
-                image.imageThatFits()
+                image
+                    .imageThatFits()
             }
+
             VStack(spacing: IKPadding.medium) {
                 Text(title)
                     .font(.ST.title)
