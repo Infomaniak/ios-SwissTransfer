@@ -24,8 +24,6 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
-    @FocusState private var isMessageFieldFocused
-
     @Binding var authorEmail: String
     @Binding var recipientEmail: String
     @Binding var message: String
@@ -50,15 +48,11 @@ struct NewTransferDetailsView: View {
                     .textInputAutocapitalization(.never)
             }
 
-            TextEditor(text: $message)
-                .scrollContentBackground(.hidden)
-                .focused($isMessageFieldFocused)
-                .frame(minHeight: 88, alignment: .top)
-                .padding(value: .intermediate)
-                .overlay(
-                    RoundedRectangle(cornerRadius: IKRadius.small)
-                        .strokeBorder(isMessageFieldFocused ? Color.ST.primary : Color.ST.textFieldBorder)
-                )
+            STTextEditor(
+                text: $message,
+                placeholder: STResourcesStrings.Localizable.transferMessagePlaceholder,
+                size: 88
+            )
         }
     }
 
