@@ -121,6 +121,12 @@
 /* loco:66d009adae0a00bb3c011352 */
 "noTransferReceivedTitle" = "Keine Überweisungen erhalten";
 
+/* loco:67482c2dde54f81d2a0824d2 */
+"noTransferSelectedDescription" = "Wähle eine Übertragung aus oder erstelle eine neue.";
+
+/* loco:6748294ce710a9c2af069052 */
+"noTransferSelectedTitle" = "Keine Transfers zum Anzeigen";
+
 /* loco:6746e8a0396f33e00a0fc393 */
 "onboardingExpirationSubtitleArgument" = "30 Tage";
 
