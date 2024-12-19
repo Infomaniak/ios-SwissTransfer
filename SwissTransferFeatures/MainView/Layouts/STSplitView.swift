@@ -18,6 +18,7 @@
 
 import InfomaniakCoreSwiftUI
 import STReceivedView
+import STResources
 import STSentView
 import STSettingsView
 import STTransferDetailsView
@@ -86,7 +87,12 @@ private struct DetailSplitView: View {
                 Text("TODO: Settings Option.")
             }
         } else {
-            Text("No Item Selected.")
+            IllustrationAndTextView(
+                image: nil,
+                title: STResourcesStrings.Localizable.noTransferSelectedTitle,
+                subtitle: STResourcesStrings.Localizable.noTransferSelectedDescription,
+                style: .emptyState
+            )
         }
     }
 }

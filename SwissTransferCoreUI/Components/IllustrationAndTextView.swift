@@ -37,12 +37,12 @@ public extension IllustrationAndTextView {
 }
 
 public struct IllustrationAndTextView: View {
-    let image: Image
+    let image: Image?
     let title: String
     let subtitle: String?
     let style: Style
 
-    public init(image: Image, title: String, subtitle: String? = nil, style: Style) {
+    public init(image: Image?, title: String, subtitle: String? = nil, style: Style) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
@@ -51,9 +51,9 @@ public struct IllustrationAndTextView: View {
 
     public var body: some View {
         VStack(spacing: 32) {
-            image
-                .imageThatFits()
-
+            if let image {
+                image.imageThatFits()
+            }
             VStack(spacing: IKPadding.medium) {
                 Text(title)
                     .font(.ST.title)
