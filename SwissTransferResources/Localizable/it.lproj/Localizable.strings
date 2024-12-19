@@ -118,6 +118,12 @@
 /* loco:66d009adae0a00bb3c011352 */
 "noTransferReceivedTitle" = "Nessun trasferimento ricevuto";
 
+/* loco:67482c2dde54f81d2a0824d2 */
+"noTransferSelectedDescription" = "Selezionare un trasferimento o crearne uno nuovo.";
+
+/* loco:6748294ce710a9c2af069052 */
+"noTransferSelectedTitle" = "Nessun trasferimento da visualizzare";
+
 /* loco:6746e8a0396f33e00a0fc393 */
 "onboardingExpirationSubtitleArgument" = "30 giorni.";
 
