@@ -54,6 +54,9 @@ public struct TransferDetailsView: View {
                     .font(.ST.title2)
                     .foregroundStyle(.white)
             }
+            ToolbarItem(placement: .primaryAction) {
+                DownloadButton(transfer: transfer)
+            }
         }
         .stNavigationBarStyle()
     }
