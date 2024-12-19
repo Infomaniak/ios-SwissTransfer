@@ -70,7 +70,7 @@ public struct SmallThumbnailView: View {
         thumbnailSize = size
 
         _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
-        fileType = FileTypeProvider(type: mimeType).fileType
+        fileType = FileTypeProvider(mimeType: mimeType).fileType
     }
 
     /// Folder init

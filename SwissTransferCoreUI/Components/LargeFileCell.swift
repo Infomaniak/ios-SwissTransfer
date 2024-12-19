@@ -38,7 +38,7 @@ public struct LargeFileCell: View {
         self.url = url
         self.removeAction = removeAction
 
-        fileType = FileTypeProvider(type: mimeType).fileType
+        fileType = FileTypeProvider(mimeType: mimeType).fileType
     }
 
     public init(folderName: String, folderSize: Int64, removeAction: (() -> Void)? = nil) {
