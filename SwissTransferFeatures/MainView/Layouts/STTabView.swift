@@ -19,7 +19,6 @@
 import STReceivedView
 import STSentView
 import STSettingsView
-import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI

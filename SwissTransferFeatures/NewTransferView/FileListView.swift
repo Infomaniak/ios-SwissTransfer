@@ -53,12 +53,7 @@ struct FileListView: View {
                 FileGridView(
                     files: files,
                     removeAction: RemoveFileAction {
-                        do {
-                            try newTransferFileManager.remove(file: $0)
-                            files = newTransferFileManager.filesAt(folderURL: folder?.localURL)
-                        } catch {
-                            print("error")
-                        }
+                        removeFile($0, atFolderURL: folder?.localURL)
                     }
                 )
             }
