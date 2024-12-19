@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STResources
 import SwiftUI
 
 struct CircleProgressView: View {
@@ -38,6 +37,7 @@ struct CircleProgressView: View {
                 .rotationEffect(.degrees(-90))
                 .animation(.easeInOut, value: progress)
         }
+        .frame(width: 20, height: 20)
     }
 }
 
