@@ -17,11 +17,8 @@
  */
 
 import Foundation
-import InfomaniakCoreSwiftUI
 import OSLog
 import STCore
-import STResources
-import SwiftUI
 
 public extension FileUi {
     var localURL: URL? {
