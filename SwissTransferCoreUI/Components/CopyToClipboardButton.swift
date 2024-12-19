@@ -20,15 +20,21 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-struct CopyToClipboardButton: View {
+public struct CopyToClipboardButton<T, V: LabelStyle>: View {
     @State private var isCopying = false
 
     private let animation = Animation.default.speed(1.5)
 
-    let url: URL
+    let item: T
+    let labelStyle: V
 
-    var body: some View {
-        Button(action: copyLinkToClipboard) {
+    public init(item: T, labelStyle: V) {
+        self.item = item
+        self.labelStyle = labelStyle
+    }
+
+    public var body: some View {
+        Button(action: copyToClipboard) {
             Label {
                 Text(STResourcesStrings.Localizable.buttonCopyLink)
             } icon: {
@@ -41,12 +47,18 @@ struct CopyToClipboardButton: View {
                 }
                 .transition(.scale)
             }
-            .labelStyle(.verticalButton)
+            .labelStyle(labelStyle)
         }
     }
 
-    private func copyLinkToClipboard() {
-        UIPasteboard.general.url = url
+    private func copyToClipboard() {
+        if let url = item as? URL {
+            UIPasteboard.general.url = url
+        } else if let text = item as? String {
+            UIPasteboard.general.string = text
+        } else {
+            return
+        }
 
         let feedback = UINotificationFeedbackGenerator()
         feedback.prepare()
@@ -65,5 +77,5 @@ struct CopyToClipboardButton: View {
 }
 
 #Preview {
-    CopyToClipboardButton(url: URL(string: "https://www.infomaniak.com")!)
+    CopyToClipboardButton(item: URL(string: "https://www.infomaniak.com")!, labelStyle: .verticalButton)
 }
