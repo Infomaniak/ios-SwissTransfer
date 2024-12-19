@@ -44,7 +44,8 @@ struct DownloadableFileCellView: View {
             )
             .overlay {
                 if let progress {
-                    CircleProgressView(progress: progress)
+                    ProgressView(value: progress)
+                        .progressViewStyle(.circularDeterminate)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                         .padding(value: .small)
                 }

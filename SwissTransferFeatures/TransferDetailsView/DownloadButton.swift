@@ -56,7 +56,8 @@ struct DownloadButton: View {
     var body: some View {
         Button(action: download) {
             if let progress {
-                CircleProgressView(progress: progress)
+                ProgressView(value: progress)
+                    .progressViewStyle(.circularDeterminate)
             } else {
                 Label(
                     title: {

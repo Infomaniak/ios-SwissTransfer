@@ -16,26 +16,32 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import SwiftUI
 
-struct CircleProgressView: View {
-    let progress: Double
+extension ProgressViewStyle where Self == CircleDeterminateProgressViewStyle {
+    static var circularDeterminate: CircleDeterminateProgressViewStyle {
+        return CircleDeterminateProgressViewStyle()
+    }
+}
+
+struct CircleDeterminateProgressViewStyle: ProgressViewStyle {
     let lineWidth: CGFloat = 2
 
-    var body: some View {
+    func makeBody(configuration: Configuration) -> some View {
         ZStack {
             Circle()
                 .stroke(Color.ST.onPrimary, lineWidth: lineWidth)
                 .overlay {
                     RoundedRectangle(cornerRadius: 2)
                         .fill(Color.ST.primary)
-                        .padding(value: .extraSmall)
+                        .padding(6)
                 }
             Circle()
-                .trim(from: 0, to: progress)
+                .trim(from: 0, to: configuration.fractionCompleted ?? 0)
                 .stroke(Color.ST.primary, lineWidth: lineWidth)
                 .rotationEffect(.degrees(-90))
-                .animation(.easeInOut, value: progress)
+                .animation(.easeInOut, value: configuration.fractionCompleted)
         }
         .frame(width: 20, height: 20)
     }
@@ -43,10 +49,11 @@ struct CircleProgressView: View {
 
 #Preview {
     VStack {
-        CircleProgressView(progress: 0)
-        CircleProgressView(progress: 0.25)
-        CircleProgressView(progress: 0.5)
-        CircleProgressView(progress: 1)
+        ProgressView(value: 0)
+        ProgressView(value: 0.25)
+        ProgressView(value: 0.5)
+        ProgressView(value: 1)
     }
+    .progressViewStyle(.circularDeterminate)
     .background(Color.gray)
 }
