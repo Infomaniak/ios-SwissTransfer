@@ -24,8 +24,6 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
-    @FocusState private var isMessageFieldFocused
-
     @Binding var authorEmail: String
     @Binding var recipientEmail: String
     @Binding var message: String
@@ -52,7 +50,8 @@ struct NewTransferDetailsView: View {
 
             STTextEditor(
                 text: $message,
-                placeholder: STResourcesStrings.Localizable.transferMessagePlaceholder
+                placeholder: STResourcesStrings.Localizable.transferMessagePlaceholder,
+                size: 88
             )
         }
     }

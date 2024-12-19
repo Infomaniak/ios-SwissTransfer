@@ -18,17 +18,20 @@
 
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
-import STResources
 import SwiftUI
 
 public struct STTextEditor: View {
-    @Binding private var text: String
     @FocusState private var isFocused: Bool
-    private var placeholder: String
 
-    public init(text: Binding<String>, placeholder: String) {
+    @Binding private var text: String
+
+    private let placeholder: String
+    private let size: CGFloat
+
+    public init(text: Binding<String>, placeholder: String, size: CGFloat) {
         _text = text
         self.placeholder = placeholder
+        self.size = size
     }
 
     public var body: some View {
@@ -41,6 +44,7 @@ public struct STTextEditor: View {
                         textView.textContainerInset = .zero
                     }
             }
+
             TextEditor(text: $text)
                 .foregroundStyle(Color.ST.textPrimary)
                 .scrollContentBackground(.hidden)
@@ -49,7 +53,7 @@ public struct STTextEditor: View {
                     textView.textContainerInset = .zero
                 }
         }
-        .frame(minHeight: 88, alignment: .top)
+        .frame(minHeight: size, alignment: .top)
         .padding(value: .intermediate)
         .overlay(
             RoundedRectangle(cornerRadius: IKRadius.small)
@@ -59,5 +63,5 @@ public struct STTextEditor: View {
 }
 
 #Preview {
-    STTextEditor(text: .constant(""), placeholder: "")
+    STTextEditor(text: .constant(""), placeholder: "", size: 88)
 }
