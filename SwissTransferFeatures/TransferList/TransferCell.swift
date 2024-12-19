@@ -50,7 +50,7 @@ struct TransferCell: View {
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textSecondary)
 
-                TransferCellThumbnailsView(files: transfer.files)
+                TransferCellThumbnailsView(transfer: transfer)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

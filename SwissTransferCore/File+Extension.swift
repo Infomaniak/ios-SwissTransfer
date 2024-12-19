@@ -21,23 +21,10 @@ import OSLog
 import STCore
 
 public extension FileUi {
-    var localURL: URL? {
-        var url: URL?
-        do {
-            url = try URL.fileStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
-        } catch {
-            Logger.general.error("Could not get local url: \(error)")
-        }
-        return url
-    }
-
-    var previewURL: URL? {
-        var url: URL?
-        do {
-            url = try URL.previewStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
-        } catch {
-            Logger.general.error("Could not get preview url: \(error)")
-        }
-        return url
+    func localURL(in transfer: TransferUi) -> URL? {
+        return try? URL.tmpDownloadsDirectory()
+            .appendingPathComponent("\(transfer.uuid)/")
+            .appendingPathComponent("\(uid)/")
+            .appendingPathComponent(fileName)
     }
 }

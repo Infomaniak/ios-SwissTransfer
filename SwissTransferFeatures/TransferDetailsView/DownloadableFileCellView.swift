@@ -39,7 +39,7 @@ struct DownloadableFileCellView: View {
             LargeFileCell(
                 fileName: file.fileName,
                 fileSize: file.fileSize,
-                url: file.localURL,
+                url: file.localURL(in: transfer),
                 mimeType: file.mimeType ?? ""
             )
             .overlay(alignment: .topTrailing) {

@@ -23,26 +23,26 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct TransferCellThumbnailsView: View {
-    let files: [FileUi]
+    let transfer: TransferUi
 
     private var additionalItemsCount: Int {
-        if files.count > 99 + 3 { // +3 visible
+        if transfer.files.count > 99 + 3 { // +3 visible
             return 99
         }
-        if files.count > 4 {
-            return files.count - 3
+        if transfer.files.count > 4 {
+            return transfer.files.count - 3
         }
         return 0
     }
 
     private var itemsToShow: [FileUi] {
-        return Array(files.prefix(3))
+        return Array(transfer.files.prefix(3))
     }
 
     var body: some View {
         HStack(spacing: IKPadding.small) {
             ForEach(itemsToShow, id: \.uid) { file in
-                SmallThumbnailView(url: file.localURL, mimeType: file.mimeType ?? "", size: .small)
+                SmallThumbnailView(url: file.localURL(in: transfer), mimeType: file.mimeType ?? "", size: .small)
             }
             if additionalItemsCount > 0 {
                 SmallMoreItemsThumbnailView(count: additionalItemsCount)
@@ -52,5 +52,5 @@ struct TransferCellThumbnailsView: View {
 }
 
 #Preview {
-    TransferCellThumbnailsView(files: [PreviewHelper.sampleFile, PreviewHelper.sampleFile, PreviewHelper.sampleFile])
+    TransferCellThumbnailsView(transfer: PreviewHelper.sampleTransfer)
 }
