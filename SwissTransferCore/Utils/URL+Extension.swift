@@ -21,28 +21,6 @@ import InfomaniakCore
 import InfomaniakDI
 
 public extension URL {
-    /// URL to store files
-    /// Files are stored in the cache directory so they can be removed by the system if it need more storage
-    static func fileStorageFolder(fileUUID: String) throws -> URL {
-        @InjectService var pathProvider: AppGroupPathProvidable
-        let targetFolderURL = pathProvider.cacheDirectoryURL
-            .appendingPathComponent("files", isDirectory: true)
-            .appendingPathComponent(fileUUID, isDirectory: true)
-        try FileManager.default.createDirectory(at: targetFolderURL, withIntermediateDirectories: true)
-        return targetFolderURL
-    }
-
-    /// URL to store previews
-    /// Previews are stored in the group directory
-    static func previewStorageFolder(fileUUID: String) throws -> URL {
-        @InjectService var pathProvider: AppGroupPathProvidable
-        let targetFolderURL = pathProvider.groupDirectoryURL
-            .appendingPathComponent("previews", isDirectory: true)
-            .appendingPathComponent(fileUUID, isDirectory: true)
-        try FileManager.default.createDirectory(at: targetFolderURL, withIntermediateDirectories: true)
-        return targetFolderURL
-    }
-
     static func tmpUploadDirectory() throws -> URL {
         let tmpDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("upload", isDirectory: true)
@@ -53,6 +31,12 @@ public extension URL {
     static func tmpCacheDirectory() throws -> URL {
         let tmpDirectory = FileManager.default.temporaryDirectory
             .appendingPathComponent("cache", isDirectory: true)
+        try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
+        return tmpDirectory
+    }
+
+    static func tmpDownloadsDirectory() throws -> URL {
+        let tmpDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("downloads", isDirectory: true)
         try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
         return tmpDirectory
     }

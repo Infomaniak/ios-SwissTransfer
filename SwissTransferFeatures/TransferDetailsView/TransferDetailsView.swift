@@ -42,7 +42,7 @@ public struct TransferDetailsView: View {
                     MessageView(message: trimmedMessage)
                 }
 
-                ContentView(files: transfer.files)
+                ContentView(transfer: transfer)
             }
             .padding(.vertical, value: .large)
             .padding(.horizontal, value: .medium)
@@ -53,6 +53,9 @@ public struct TransferDetailsView: View {
                 Text(transfer.name)
                     .font(.ST.title2)
                     .foregroundStyle(.white)
+            }
+            ToolbarItem(placement: .primaryAction) {
+                DownloadButton(transfer: transfer)
             }
         }
         .stNavigationBarStyle()

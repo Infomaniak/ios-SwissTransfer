@@ -47,6 +47,9 @@ open class TargetAssembly {
             Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
             },
+            Factory(type: DownloadManager.self) { _, _ in
+                DownloadManager()
+            },
             Factory(type: SwissTransferInjection.self) { _, _ in
                 #if DEBUG
                 SwissTransferInjection(environment: STCore.ApiEnvironment.Preprod(), userAgent: UserAgentBuilder().userAgent)
