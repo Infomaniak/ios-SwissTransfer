@@ -43,17 +43,7 @@ struct ContentView: View {
                 pinnedViews: []
             ) {
                 ForEach(transfer.files, id: \.uid) { file in
-                    LargeFileCell(
-                        fileName: file.fileName,
-                        fileSize: file.fileSize,
-                        url: file.localURL,
-                        mimeType: file.mimeType ?? ""
-                    )
-                    .overlay {
-                        DownloadButton(transfer: transfer, file: file)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-                            .padding(value: .small)
-                    }
+                    DownloadableFileCellView(transfer: transfer, file: file)
                 }
             }
         }

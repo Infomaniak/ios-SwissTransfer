@@ -19,55 +19,40 @@
 import InfomaniakDI
 import OSLog
 import STCore
-import STResources
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
-struct ActivityView: UIViewControllerRepresentable {
-    let sharedFileURL: URL
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: [sharedFileURL], applicationActivities: nil)
-    }
-
-    func updateUIViewController(
-        _ uiViewController: UIActivityViewController,
-        context: UIViewControllerRepresentableContext<ActivityView>
-    ) {}
-}
-
-struct IdentifiableURL: Identifiable {
-    var id: String {
-        url.absoluteString
-    }
-
-    let url: URL
-}
-
-struct DownloadButton: View {
+struct DownloadableFileCellView: View {
     @LazyInjectService private var downloadManager: DownloadManager
 
     @State private var progress: Double?
     @State private var downloadTask: Task<Void, any Error>?
-    @State private var downloadedFileURL: IdentifiableURL?
+    @State private var downloadedFilePreviewURL: URL?
+    @State private var downloadedDirectoryURL: IdentifiableURL?
 
     let transfer: TransferUi
+    let file: FileUi
 
     var body: some View {
         Button(action: download) {
-            if let progress {
-                CircleProgressView(progress: progress)
-            } else {
-                Label(
-                    title: {
-                        Text(STResourcesStrings.Localizable.buttonDownload)
-                    },
-                    icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
-                )
-                .labelStyle(.iconOnly)
+            LargeFileCell(
+                fileName: file.fileName,
+                fileSize: file.fileSize,
+                url: file.localURL,
+                mimeType: file.mimeType ?? ""
+            )
+            .overlay {
+                if let progress {
+                    CircleProgressView(progress: progress)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                        .padding(value: .small)
+                }
             }
         }
-        .sheet(item: $downloadedFileURL) { downloadedFileURL in
+        .buttonStyle(.plain)
+        .quickLookPreview($downloadedFilePreviewURL)
+        .sheet(item: $downloadedDirectoryURL) { downloadedFileURL in
             ActivityView(sharedFileURL: downloadedFileURL.url)
         }
     }
@@ -79,7 +64,7 @@ struct DownloadButton: View {
         } else {
             downloadTask = Task {
                 do {
-                    let downloadedURL = try await downloadManager.download(transfer: transfer) { progress in
+                    let downloadedURL = try await downloadManager.download(file: file, in: transfer) { progress in
                         Task { @MainActor in
                             guard let downloadTask, !downloadTask.isCancelled else { return }
 
@@ -89,7 +74,11 @@ struct DownloadButton: View {
                         }
                     }
 
-                    downloadedFileURL = IdentifiableURL(url: downloadedURL)
+                    if file.isFolder {
+                        downloadedDirectoryURL = IdentifiableURL(url: downloadedURL)
+                    } else {
+                        downloadedFilePreviewURL = downloadedURL
+                    }
                 } catch {
                     Logger.general.error("Error downloading transfer: \(error)")
                     // TODO: Display the error someway ?
@@ -105,4 +94,8 @@ struct DownloadButton: View {
             self.progress = nil
         }
     }
+}
+
+#Preview {
+    DownloadableFileCellView(transfer: PreviewHelper.sampleTransfer, file: PreviewHelper.sampleFile)
 }
