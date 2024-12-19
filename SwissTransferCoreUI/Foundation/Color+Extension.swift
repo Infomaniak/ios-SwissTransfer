@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
@@ -121,6 +122,10 @@ public extension Color {
             light: STResourcesAsset.Colors.greyMouse,
             dark: STResourcesAsset.Colors.dark2
         )
+
+        // MARK: - File Type
+
+        public static let folder = FileType.unknown.color
     }
 }
 

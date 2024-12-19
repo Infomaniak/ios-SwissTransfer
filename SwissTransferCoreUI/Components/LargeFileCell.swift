@@ -18,7 +18,6 @@
 
 import InfomaniakCoreSwiftUI
 import STCore
-import STResources
 import SwiftUI
 import SwissTransferCore
 
@@ -27,11 +26,11 @@ public struct LargeFileCell: View {
 
     @State private var largeThumbnail: Image?
 
+    private let fileType: FileType
     private let fileName: String
     private let fileSize: Int64
     private let url: URL?
     private let removeAction: (() -> Void)?
-    private let icon: Image
 
     public init(fileName: String, fileSize: Int64, url: URL?, mimeType: String, removeAction: (() -> Void)? = nil) {
         self.fileName = fileName
@@ -39,7 +38,7 @@ public struct LargeFileCell: View {
         self.url = url
         self.removeAction = removeAction
 
-        icon = FileHelper(type: mimeType).icon.swiftUIImage
+        fileType = FileTypeProvider(mimeType: mimeType).fileType
     }
 
     public init(folderName: String, folderSize: Int64, removeAction: (() -> Void)? = nil) {
@@ -48,7 +47,7 @@ public struct LargeFileCell: View {
         url = nil
         self.removeAction = removeAction
 
-        icon = STResourcesAsset.Images.folder.swiftUIImage
+        fileType = .folder
     }
 
     public var body: some View {
@@ -60,7 +59,7 @@ public struct LargeFileCell: View {
                             .resizable()
                             .scaledToFill()
                     } else {
-                        FileIconView(icon: icon, type: .large)
+                        FileIconView(fileType: fileType, type: .large)
                     }
                 }
                 .frame(height: 96)

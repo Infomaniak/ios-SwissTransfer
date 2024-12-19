@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "file-video.svg",
+      "filename" : "image.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "image-dark.svg",
       "idiom" : "universal"
     }
   ],

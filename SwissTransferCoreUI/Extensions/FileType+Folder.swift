@@ -16,28 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
-import OSLog
-import STCore
+import InfomaniakCoreSwiftUI
+import STResources
+import SwiftUI
 
-public extension FileUi {
-    var localURL: URL? {
-        var url: URL?
-        do {
-            url = try URL.fileStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
-        } catch {
-            Logger.general.error("Could not get local url: \(error)")
-        }
-        return url
-    }
-
-    var previewURL: URL? {
-        var url: URL?
-        do {
-            url = try URL.previewStorageFolder(fileUUID: uid).appendingPathComponent(fileName, conformingTo: .item)
-        } catch {
-            Logger.general.error("Could not get preview url: \(error)")
-        }
-        return url
-    }
+public extension FileType {
+    static let folder = FileType(image: STResourcesAsset.Images.folder.swiftUIImage, color: Color.ST.folder, types: [])
 }
