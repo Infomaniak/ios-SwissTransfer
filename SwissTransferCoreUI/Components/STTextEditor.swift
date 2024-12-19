@@ -35,14 +35,10 @@ public struct STTextEditor: View {
     }
 
     public var body: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             if text.isEmpty {
-                TextEditor(text: .constant(placeholder))
+                Text(placeholder)
                     .foregroundStyle(Color(UIColor.placeholderText))
-                    .disabled(true)
-                    .introspect(.textEditor, on: .iOS(.v16, .v17, .v18)) { textView in
-                        textView.textContainerInset = .zero
-                    }
             }
 
             TextEditor(text: $text)
@@ -51,6 +47,7 @@ public struct STTextEditor: View {
                 .focused($isFocused)
                 .introspect(.textEditor, on: .iOS(.v16, .v17, .v18)) { textView in
                     textView.textContainerInset = .zero
+                    textView.textContainer.lineFragmentPadding = .zero
                 }
         }
         .frame(minHeight: size, alignment: .top)
