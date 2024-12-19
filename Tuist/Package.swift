@@ -9,7 +9,8 @@ let packageSettings = PackageSettings(
         "InfomaniakDI": .framework,
         "InfomaniakCore": .framework,
         "InfomaniakCoreSwiftUI": .framework,
-        "InfomaniakConcurrency": .framework
+        "InfomaniakConcurrency": .framework,
+        "SwiftUIIntrospect": .framework
     ]
 )
 #endif
@@ -24,6 +25,7 @@ let package = Package(
         .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "0.1.0")),
         .package(url: "https://github.com/Infomaniak/swift-concurrency", .upToNextMajor(from: "0.0.6")),
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "8.0.0")),
-        .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0"))
+        .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0")),
+        .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "1.0.0"))
     ]
 )

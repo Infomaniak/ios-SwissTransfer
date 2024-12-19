@@ -19,6 +19,7 @@
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import SwiftUI
+import SwiftUIIntrospect
 
 public struct STTextEditor: View {
     @FocusState private var isFocused: Bool

@@ -131,7 +131,8 @@ let project = Project(
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
                     .target(name: "SwissTransferCore"),
-                    .external(name: "QRCode")
+                    .external(name: "QRCode"),
+                    .external(name: "SwiftUIIntrospect-Static")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",
