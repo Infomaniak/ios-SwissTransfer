@@ -74,7 +74,10 @@ let project = Project(
                 "SwissTransfer/Resources/Localizable/**/InfoPlist.strings"
             ],
             entitlements: "SwissTransfer/Resources/SwissTransfer.entitlements",
-            scripts: [Constants.swiftlintScript],
+            scripts: [
+                Constants.swiftlintScript,
+                Constants.stripSymbolsScript
+            ],
             dependencies: [
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
