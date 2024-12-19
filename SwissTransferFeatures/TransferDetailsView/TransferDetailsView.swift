@@ -28,6 +28,7 @@ public struct TransferDetailsView: View {
     @LazyInjectService private var injection: SwissTransferInjection
 
     @State private var isShowingQRCode = false
+    @State private var isShowingPassword = false
 
     private let transfer: TransferUi
 
@@ -97,18 +98,25 @@ public struct TransferDetailsView: View {
 
                     Spacer()
 
-                    Button {} label: {
-                        VStack {
-                            STResourcesAsset.Images.textfieldLock.swiftUIImage
-                                .iconSize(.large)
+                    if let password = transfer.password, !password.isEmpty {
+                        Button {
+                            isShowingPassword = true
+                        } label: {
+                            VStack {
+                                STResourcesAsset.Images.textfieldLock.swiftUIImage
+                                    .iconSize(.large)
 
-                            Text(STResourcesStrings.Localizable.settingsOptionPassword)
-                                .font(.ST.caption)
+                                Text(STResourcesStrings.Localizable.settingsOptionPassword)
+                                    .font(.ST.caption)
+                            }
+                            .frame(width: 100)
                         }
-                        .frame(width: 100)
-                    }
+                        .floatingPanel(isPresented: $isShowingPassword) {
+                            PasswordPanelView(password: password)
+                        }
 
-                    Spacer()
+                        Spacer()
+                    }
                 }
             }
             .toolbarBackground(.visible, for: .bottomBar)
