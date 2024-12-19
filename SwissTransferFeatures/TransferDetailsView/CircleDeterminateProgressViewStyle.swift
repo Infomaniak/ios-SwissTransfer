@@ -26,29 +26,39 @@ extension ProgressViewStyle where Self == CircleDeterminateProgressViewStyle {
 }
 
 struct CircleDeterminateProgressViewStyle: ProgressViewStyle {
-    let lineWidth: CGFloat = 2
-
     func makeBody(configuration: Configuration) -> some View {
-        ZStack {
-            Circle()
-                .stroke(Color.ST.onPrimary, lineWidth: lineWidth)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.ST.primary)
-                        .padding(6)
+        Circle()
+            .fill(Color.clear)
+            .overlay {
+                GeometryReader { reader in
+                    ZStack {
+                        Circle()
+                            .stroke(
+                                Color.ST.onPrimary,
+                                style: StrokeStyle(lineWidth: CGFloat(reader.size.width * 0.1), lineCap: .round)
+                            )
+                            .overlay {
+                                RoundedRectangle(cornerRadius: CGFloat(reader.size.width * 0.1))
+                                    .fill(Color.ST.primary)
+                                    .padding(CGFloat(reader.size.width * 0.3))
+                            }
+
+                        Circle()
+                            .trim(from: 0, to: configuration.fractionCompleted ?? 0)
+                            .stroke(
+                                Color.ST.primary,
+                                style: StrokeStyle(lineWidth: CGFloat(reader.size.width * 0.1), lineCap: .round)
+                            )
+                            .rotationEffect(.degrees(-90))
+                            .animation(.easeInOut, value: configuration.fractionCompleted)
+                    }
                 }
-            Circle()
-                .trim(from: 0, to: configuration.fractionCompleted ?? 0)
-                .stroke(Color.ST.primary, lineWidth: lineWidth)
-                .rotationEffect(.degrees(-90))
-                .animation(.easeInOut, value: configuration.fractionCompleted)
-        }
-        .frame(width: 20, height: 20)
+            }
     }
 }
 
 #Preview {
-    VStack {
+    VStack(spacing: 16) {
         ProgressView(value: 0)
         ProgressView(value: 0.25)
         ProgressView(value: 0.5)
