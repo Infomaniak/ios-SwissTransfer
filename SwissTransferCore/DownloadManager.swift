@@ -130,7 +130,7 @@ public actor DownloadManager: NSObject {
         return destinationURL
     }
 
-    func addProgress(for requestURL: String, progress: Progress) {
+    private func addProgress(for requestURL: String, progress: Progress) {
         progressCallbacks[requestURL] = progress
     }
 }
