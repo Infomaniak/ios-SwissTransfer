@@ -29,7 +29,7 @@ struct CircleProgressView: View {
                 .overlay {
                     RoundedRectangle(cornerRadius: 2)
                         .fill(Color.ST.primary)
-                        .padding(5)
+                        .padding(value: .extraSmall)
                 }
             Circle()
                 .trim(from: 0, to: progress)
