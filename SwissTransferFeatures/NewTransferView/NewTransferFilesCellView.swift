@@ -81,7 +81,9 @@ struct NewTransferFilesCellView: View {
                                     SmallThumbnailView(name: file.name, size: .medium)
                                 }
                             } else {
-                                SmallThumbnailView(url: file.url, mimeType: file.mimeType, size: .medium)
+                                NavigationLink(value: DisplayableRootFolder()) {
+                                    SmallThumbnailView(url: file.url, mimeType: file.mimeType, size: .medium)
+                                }
                             }
                         }
                     }
@@ -92,7 +94,12 @@ struct NewTransferFilesCellView: View {
             }
             .padding(.top, value: .medium)
             .padding(.bottom, value: .small)
-            .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
+            .background {
+                NavigationLink(value: DisplayableRootFolder()) {
+                    Color.ST.cardBackground
+                        .clipShape(RoundedRectangle(cornerRadius: IKRadius.large))
+                }
+            }
         }
         .task(id: selectedItems) {
             files = await newTransferFileManager.addItems(selectedItems)
