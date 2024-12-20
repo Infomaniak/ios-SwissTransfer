@@ -45,10 +45,8 @@ public struct NewTransferView: View {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferTypeView(transferType: $viewModel.transferType)
 
-                    NavigationLink(value: DisplayableRootFolder()) {
-                        NewTransferFilesCellView()
-                    }
-                    .padding(.horizontal, value: .medium)
+                    NewTransferFilesCellView()
+                        .padding(.horizontal, value: .medium)
 
                     NewTransferDetailsView(
                         authorEmail: $viewModel.authorEmail,
