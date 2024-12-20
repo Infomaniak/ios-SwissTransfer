@@ -24,7 +24,7 @@ import STCore
 public actor DownloadManager: NSObject {
     @LazyInjectService private var injection: SwissTransferInjection
 
-    private let session: URLSession = .shared
+    private let session: URLSession = .sharedSwissTransfer
 
     private var progressCallbacks = [String: Progress]()
     private var cancellables: Set<AnyCancellable> = []
