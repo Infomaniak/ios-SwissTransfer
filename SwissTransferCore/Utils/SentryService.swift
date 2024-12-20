@@ -26,6 +26,15 @@ public struct SentryService {
     private func initSentry() {
         SentrySDK.start { options in
             options.dsn = "https://200ddb73d9c67f455b0e2d190016715b@sentry-mobile.infomaniak.com/20"
+            options.environment = Bundle.main.isRunningInTestFlight ? "testflight" : "production"
+            options.tracePropagationTargets = []
+            options.enableUIViewControllerTracing = false
+            options.enableUserInteractionTracing = false
+            options.enableNetworkTracking = false
+            options.enableNetworkBreadcrumbs = false
+            options.enableSwizzling = false // We can disable swizzling because we only used it for networking
+            options.enableMetricKit = true
+
             options.beforeSend = { event in
                 // if the application is in debug mode discard the events
                 #if DEBUG
