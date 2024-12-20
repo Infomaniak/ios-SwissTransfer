@@ -101,7 +101,7 @@ class TransferSessionManager: ObservableObject {
 
 struct TransferManagerWorker {
     private static let maxParallelUploads = 4
-    private let uploadURLSession = URLSession.shared
+    private let uploadURLSession: URLSession = .sharedSwissTransfer
 
     private let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
