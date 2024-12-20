@@ -64,6 +64,7 @@ public struct LargeFileCell: View {
                 }
                 .frame(height: 96)
                 .frame(maxWidth: .infinity)
+                .clipped()
                 .task {
                     largeThumbnail = await ThumbnailGenerator.generate(for: url, scale: scale, cgSize: reader.size)
                 }
