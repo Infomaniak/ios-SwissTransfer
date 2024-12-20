@@ -62,30 +62,40 @@ struct DownloadableFileCellView: View {
         if let downloadTask {
             downloadTask.cancel()
             reset()
-        } else {
-            downloadTask = Task {
-                do {
-                    let downloadedURL = try await downloadManager.download(file: file, in: transfer) { progress in
-                        Task { @MainActor in
-                            guard let downloadTask, !downloadTask.isCancelled else { return }
+            return
+        }
 
-                            withAnimation {
-                                self.progress = progress
-                            }
+        if let localURL = file.localURL(in: transfer), FileManager.default.fileExists(atPath: localURL.path()) {
+            presentFile(at: localURL)
+            return
+        }
+
+        downloadTask = Task {
+            do {
+                let downloadedURL = try await downloadManager.download(file: file, in: transfer) { progress in
+                    Task { @MainActor in
+                        guard let downloadTask, !downloadTask.isCancelled else { return }
+
+                        withAnimation {
+                            self.progress = progress
                         }
                     }
-
-                    if file.isFolder {
-                        downloadedDirectoryURL = IdentifiableURL(url: downloadedURL)
-                    } else {
-                        downloadedFilePreviewURL = downloadedURL
-                    }
-                } catch {
-                    Logger.general.error("Error downloading transfer: \(error)")
-                    // TODO: Display the error someway ?
                 }
-                reset()
+
+                presentFile(at: downloadedURL)
+            } catch {
+                Logger.general.error("Error downloading transfer: \(error)")
+                // TODO: Display the error someway ?
             }
+            reset()
+        }
+    }
+
+    private func presentFile(at url: URL) {
+        if file.isFolder {
+            downloadedDirectoryURL = IdentifiableURL(url: url)
+        } else {
+            downloadedFilePreviewURL = url
         }
     }
 
