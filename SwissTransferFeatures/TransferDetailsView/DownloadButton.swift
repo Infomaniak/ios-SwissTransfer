@@ -77,26 +77,32 @@ struct DownloadButton: View {
         if let downloadTask {
             downloadTask.cancel()
             reset()
-        } else {
-            downloadTask = Task {
-                do {
-                    let downloadedURL = try await downloadManager.download(transfer: transfer) { progress in
-                        Task { @MainActor in
-                            guard let downloadTask, !downloadTask.isCancelled else { return }
+        }
 
-                            withAnimation {
-                                self.progress = progress
-                            }
+        if let localURL = transfer.localArchiveURL,
+           FileManager.default.fileExists(atPath: localURL.path()) {
+            downloadedFileURL = IdentifiableURL(url: localURL)
+            return
+        }
+
+        downloadTask = Task {
+            do {
+                let downloadedURL = try await downloadManager.download(transfer: transfer) { progress in
+                    Task { @MainActor in
+                        guard let downloadTask, !downloadTask.isCancelled else { return }
+
+                        withAnimation {
+                            self.progress = progress
                         }
                     }
-
-                    downloadedFileURL = IdentifiableURL(url: downloadedURL)
-                } catch {
-                    Logger.general.error("Error downloading transfer: \(error)")
-                    // TODO: Display the error someway ?
                 }
-                reset()
+
+                downloadedFileURL = IdentifiableURL(url: downloadedURL)
+            } catch {
+                Logger.general.error("Error downloading transfer: \(error)")
+                // TODO: Display the error someway ?
             }
+            reset()
         }
     }
 

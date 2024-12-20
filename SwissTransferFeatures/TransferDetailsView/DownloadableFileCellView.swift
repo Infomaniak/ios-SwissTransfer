@@ -65,7 +65,8 @@ struct DownloadableFileCellView: View {
             return
         }
 
-        if let localURL = file.localURL(in: transfer), FileManager.default.fileExists(atPath: localURL.path()) {
+        if let localURL = file.localURL(in: transfer),
+           FileManager.default.fileExists(atPath: localURL.path()) {
             presentFile(at: localURL)
             return
         }
