@@ -119,7 +119,7 @@ let project = Project(
                     .external(name: "STCore"),
                     .external(name: "STNetwork"),
                     .external(name: "STDatabase"),
-                    .external(name: "Sentry")
+                    .external(name: "Sentry-Dynamic")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",
