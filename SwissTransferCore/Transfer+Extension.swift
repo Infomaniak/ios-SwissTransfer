@@ -49,6 +49,28 @@ public extension TransferUi {
     var trimmedMessage: String? {
         return message?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+
+    var localArchiveURL: URL? {
+        if files.count == 1,
+           let fileURL = files.first?.localURL(in: self) {
+            return fileURL
+        }
+
+        guard let transferContainerURL = try? URL.tmpDownloadsDirectory().appendingPathComponent("\(uuid)/") else {
+            return nil
+        }
+
+        let filePaths = (try? FileManager.default.contentsOfDirectory(atPath: transferContainerURL.path())) ?? []
+        for filePath in filePaths {
+            guard (filePath as NSString).pathExtension == "zip" else {
+                continue
+            }
+
+            return transferContainerURL.appending(path: filePath)
+        }
+
+        return nil
+    }
 }
 
 public struct NavigableTransfer: Hashable {
