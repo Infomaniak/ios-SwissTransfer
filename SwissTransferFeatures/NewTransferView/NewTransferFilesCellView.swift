@@ -39,63 +39,59 @@ struct NewTransferFilesCellView: View {
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
 
-            VStack(alignment: .leading, spacing: IKPadding.medium) {
-                HStack {
-                    Text(
-                        "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
-                    )
-                    .font(.ST.callout)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink(value: DisplayableRootFolder()) {
+                VStack(alignment: .leading, spacing: IKPadding.medium) {
+                    HStack {
+                        Text(
+                            "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(filesSize.formatted(.defaultByteCount))"
+                        )
+                        .font(.ST.callout)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                    STResourcesAsset.Images.chevronRight.swiftUIImage
-                        .iconSize(.medium)
-                }
-                .padding(.horizontal, value: .medium)
-                .foregroundStyle(Color.ST.textSecondary)
+                        STResourcesAsset.Images.chevronRight.swiftUIImage
+                            .iconSize(.medium)
+                    }
+                    .padding(.horizontal, value: .medium)
+                    .foregroundStyle(Color.ST.textSecondary)
 
-                ScrollView(.horizontal) {
-                    HStack(spacing: IKPadding.medium) {
-                        AddFilesMenu(selection: $selectedItems) {
-                            STResourcesAsset.Images.plus.swiftUIImage
-                                .iconSize(.large)
-                                .foregroundStyle(Color.ST.primary)
-                                .frame(width: 80, height: 80)
-                                .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
-                        }
+                    ScrollView(.horizontal) {
+                        HStack(spacing: IKPadding.medium) {
+                            AddFilesMenu(selection: $selectedItems) {
+                                STResourcesAsset.Images.plus.swiftUIImage
+                                    .iconSize(.large)
+                                    .foregroundStyle(Color.ST.primary)
+                                    .frame(width: 80, height: 80)
+                                    .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
+                            }
 
-                        ForEach(newTransferFileManager.importedItems) { _ in
-                            SmallThumbnailView(url: nil, mimeType: "", size: .medium)
-                                .opacity(0.4)
-                                .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
-                                .overlay(alignment: .bottomTrailing) {
-                                    ProgressView()
-                                        .controlSize(.small)
-                                        .tint(nil)
-                                        .padding(IKPadding.small)
-                                }
-                        }
+                            ForEach(newTransferFileManager.importedItems) { _ in
+                                SmallThumbnailView(url: nil, mimeType: "", size: .medium)
+                                    .opacity(0.4)
+                                    .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
+                                    .overlay(alignment: .bottomTrailing) {
+                                        ProgressView()
+                                            .controlSize(.small)
+                                            .tint(nil)
+                                            .padding(IKPadding.small)
+                                    }
+                            }
 
-                        ForEach(files) { file in
-                            if file.isFolder {
-                                NavigationLink(value: file) {
+                            ForEach(files) { file in
+                                if file.isFolder {
                                     SmallThumbnailView(name: file.name, size: .medium)
-                                }
-                            } else {
-                                NavigationLink(value: DisplayableRootFolder()) {
+                                } else {
                                     SmallThumbnailView(url: file.url, mimeType: file.mimeType, size: .medium)
                                 }
                             }
                         }
+                        .padding(.bottom, value: .small)
+                        .padding(.horizontal, value: .medium)
                     }
-                    .padding(.bottom, value: .small)
-                    .padding(.horizontal, value: .medium)
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
-            }
-            .padding(.top, value: .medium)
-            .padding(.bottom, value: .small)
-            .background {
-                NavigationLink(value: DisplayableRootFolder()) {
+                .padding(.top, value: .medium)
+                .padding(.bottom, value: .small)
+                .background {
                     Color.ST.cardBackground
                         .clipShape(RoundedRectangle(cornerRadius: IKRadius.large))
                 }
