@@ -70,6 +70,13 @@ public enum PreviewHelper {
 
     public static let sampleSendableUploadSession = SendableUploadSession(uploadSession: sampleNewUploadSession)
 
+    public static let sampleListOfRecipients: [String] = {
+        let recipients = Array(repeating: "short@ik.me", count: 2)
+            + Array(repeating: "long-email@infomaniak.com", count: 2)
+            + Array(repeating: "middle@infomaniak.com", count: 3)
+        return recipients.shuffled()
+    }()
+
     private static func expireTimeStamp(expired: Bool) -> Int64 {
         let date = Date()
         let calendar = Calendar(identifier: .gregorian)

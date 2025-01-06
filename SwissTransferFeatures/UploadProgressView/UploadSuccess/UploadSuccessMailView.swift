@@ -20,6 +20,7 @@ import InfomaniakCoreSwiftUI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct UploadSuccessMailView: View {
@@ -60,8 +61,5 @@ struct UploadSuccessMailView: View {
 }
 
 #Preview("Many Recipients") {
-    let recipients = Array(repeating: "short@ik.me", count: 2)
-        + Array(repeating: "long-email@infomaniak.com", count: 2)
-        + Array(repeating: "middle@infomaniak.com", count: 3)
-    UploadSuccessMailView(recipients: recipients.shuffled())
+    UploadSuccessMailView(recipients: PreviewHelper.sampleListOfRecipients)
 }
