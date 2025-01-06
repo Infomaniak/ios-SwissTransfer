@@ -10,6 +10,9 @@
 /* loco:6707f4ba182e2d63b400cd42 */
 "advancedSettingsTitle" = "Erweiterte Einstellungen";
 
+/* loco:677be58b7579b67f0406b33e */
+"awaitingNetwork" = "Auf Netzwerk warten";
+
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Dateien hinzufügen";
 
@@ -107,7 +110,7 @@
 "myFilesTitle" = "Meine Dateien";
 
 /* loco:673b609c03c82748a509bd92 */
-"networkUnavailable" = "Auf Netzwerk warten";
+"networkUnavailable" = "Netzwerk nicht verfügbar";
 
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Fügt bis zu 50 GB an Dateien hinzu";
