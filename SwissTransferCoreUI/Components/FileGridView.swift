@@ -28,10 +28,12 @@ public struct FileGridView: View {
     ]
 
     private let files: [any DisplayableFile]
+    private let container: String?
     private let removeAction: RemoveFileAction?
 
-    public init(files: [any DisplayableFile], removeAction: RemoveFileAction? = nil) {
+    public init(files: [any DisplayableFile], container: String?, removeAction: RemoveFileAction? = nil) {
         self.files = files
+        self.container = container
         self.removeAction = removeAction
     }
 
@@ -47,12 +49,14 @@ public struct FileGridView: View {
                     NavigationLink(value: file) {
                         LargeFileCell(
                             file: file,
+                            container: container,
                             removeAction: removeAction
                         )
                     }
                 } else {
                     LargeFileCell(
                         file: file,
+                        container: container,
                         removeAction: removeAction
                     )
                 }
@@ -62,5 +66,5 @@ public struct FileGridView: View {
 }
 
 #Preview {
-    FileGridView(files: [])
+    FileGridView(files: [], container: nil)
 }

@@ -52,8 +52,9 @@ struct FileListView: View {
 
                 FileGridView(
                     files: files,
+                    container: nil,
                     removeAction: RemoveFileAction {
-                        removeFile($0, atFolderURL: folder?.localURL)
+                        removeFile($0, atFolderURL: folder?.localURL(in: ""))
                     }
                 )
             }
@@ -64,7 +65,7 @@ struct FileListView: View {
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
-            files = newTransferFileManager.filesAt(folderURL: folder?.localURL)
+            files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
         }
         .onChange(of: files) { _ in
             if files.isEmpty {

@@ -25,7 +25,10 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ContentView: View {
-    @State private var files: [FileUi]
+    private let columns = [
+        GridItem(.flexible(), spacing: IKPadding.medium),
+        GridItem(.flexible(), spacing: IKPadding.medium)
+    ]
 
     let transfer: TransferUi
 

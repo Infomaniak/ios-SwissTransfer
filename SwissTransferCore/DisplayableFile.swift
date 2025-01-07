@@ -23,6 +23,7 @@ public protocol DisplayableFile: Identifiable, Hashable {
     var isFolder: Bool { get }
     var fileName: String { get }
     var fileSize: Int64 { get }
-    var localURL: URL? { get }
     var mimeType: String? { get }
+
+    func localURL(in container: String) -> URL?
 }

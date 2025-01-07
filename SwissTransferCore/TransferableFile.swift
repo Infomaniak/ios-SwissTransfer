@@ -21,14 +21,18 @@ import STCore
 
 public class TransferableFile: Identifiable, Hashable, DisplayableFile {
     public var uid: String {
-        localURL!.path()
+        localURL.path()
     }
 
     public var fileName: String
     public var fileSize: Int64
-    public var localURL: URL?
+    private var localURL: URL
     public var mimeType: String?
     public var isFolder: Bool
+
+    public func localURL(in container: String) -> URL? {
+        localURL
+    }
 
     public init?(url: URL) {
         guard let resources = try? url.resourceValues(forKeys: [

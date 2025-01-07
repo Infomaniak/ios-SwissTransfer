@@ -43,7 +43,7 @@ public struct TransferDetailsView: View {
                         MessageView(message: trimmedMessage)
                     }
 
-                    ContentView(files: transfer.files)
+                    ContentView(transfer: transfer)
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
@@ -54,10 +54,12 @@ public struct TransferDetailsView: View {
             .navigationDestination(for: FileUi.self) { file in
                 // Get children of file using func in a stash
                 // Find a way to use FileList and ContentView
-                FileListView(folder: file)
+                FileListView(folder: file, container: transfer.uuid)
             }
-            ToolbarItem(placement: .primaryAction) {
-                DownloadButton(transfer: transfer)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    DownloadButton(transfer: transfer)
+                }
             }
         }
     }

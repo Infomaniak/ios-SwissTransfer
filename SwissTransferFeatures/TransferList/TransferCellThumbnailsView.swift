@@ -45,7 +45,7 @@ struct TransferCellThumbnailsView: View {
                 if file.isFolder {
                     SmallThumbnailView(size: .small)
                 } else {
-                    SmallThumbnailView(url: file.localURL, mimeType: file.mimeType ?? "", size: .small)
+                    SmallThumbnailView(url: file.localURL(in: transfer), mimeType: file.mimeType ?? "", size: .small)
                 }
             }
             if additionalItemsCount > 0 {

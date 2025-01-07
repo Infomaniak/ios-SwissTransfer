@@ -28,6 +28,7 @@ struct FileListView: View {
     @StateObject private var files: FlowObserver<[FileUi]>
 
     private let title: String
+    private let container: String?
 
     private var filesCount: Int {
         files.value?.count ?? 0
@@ -37,12 +38,14 @@ struct FileListView: View {
         files.value?.filesSize() ?? 0
     }
 
-    init(folder: FileUi) {
+    init(folder: FileUi, container: String?) {
         @LazyInjectService var injection: SwissTransferInjection
         let children = injection.fileManager.getFilesFromTransfer(folderUuid: folder.uid)
 
         title = folder.fileName
         _files = StateObject(wrappedValue: FlowObserver(flow: children))
+
+        self.container = container
     }
 
     var body: some View {
@@ -52,7 +55,7 @@ struct FileListView: View {
                     "\(STResourcesStrings.Localizable.filesCount(filesCount)) · \(filesSize.formatted(.defaultByteCount))"
                 )
 
-                FileGridView(files: files.value ?? [])
+                FileGridView(files: files.value ?? [], container: container)
             }
             .padding(value: .medium)
         }

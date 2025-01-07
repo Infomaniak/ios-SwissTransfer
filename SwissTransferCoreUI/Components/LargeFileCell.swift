@@ -18,6 +18,7 @@
 
 import InfomaniakCoreSwiftUI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 
@@ -27,19 +28,20 @@ public struct LargeFileCell: View {
     @State private var largeThumbnail: Image?
 
     private let file: any DisplayableFile
+    private let container: String?
 
     private let removeAction: RemoveFileAction?
-    private let icon: Image
+    private let fileType: FileType
 
-
-    public init(file: any DisplayableFile, removeAction: RemoveFileAction? = nil) {
+    public init(file: any DisplayableFile, container: String?, removeAction: RemoveFileAction? = nil) {
         self.file = file
+        self.container = container
         self.removeAction = removeAction
 
         if file.isFolder {
-            icon = STResourcesAsset.Images.folder.swiftUIImage
+            fileType = .folder
         } else {
-            icon = FileHelper(type: file.mimeType ?? "").icon.swiftUIImage
+            fileType = FileTypeProvider(mimeType: file.mimeType ?? "").fileType
         }
     }
 
@@ -59,7 +61,12 @@ public struct LargeFileCell: View {
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .task {
-                    largeThumbnail = await ThumbnailGenerator.generate(for: file.localURL, scale: scale, cgSize: reader.size)
+                    guard let container else { return }
+                    largeThumbnail = await ThumbnailGenerator.generate(
+                        for: file.localURL(in: container),
+                        scale: scale,
+                        cgSize: reader.size
+                    )
                 }
             }
             .frame(height: 96)
@@ -106,11 +113,11 @@ public struct LargeFileCell: View {
 
 #Preview {
     VStack {
-        LargeFileCell(file: PreviewHelper.sampleFile)
+        LargeFileCell(file: PreviewHelper.sampleFile, container: nil)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
         let removeAction = RemoveFileAction { _ in }
-        LargeFileCell(file: PreviewHelper.sampleFile, removeAction: removeAction)
+        LargeFileCell(file: PreviewHelper.sampleFile, container: nil, removeAction: removeAction)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

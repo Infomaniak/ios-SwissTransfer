@@ -77,8 +77,8 @@ struct NewTransferFilesCellView: View {
                                     SmallThumbnailView(name: file.fileName, size: .medium)
                                 }
                             } else {
-                                NavigationLink(value: DisplayableRootFolder()) {
-                                    SmallThumbnailView(url: file.url, mimeType: file.mimeType, size: .medium)
+                                NavigationLink(value: TransferableRootFolder()) {
+                                    SmallThumbnailView(url: file.localURL(in: ""), mimeType: file.mimeType ?? "", size: .medium)
                                 }
                             }
                         }
@@ -91,7 +91,7 @@ struct NewTransferFilesCellView: View {
             .padding(.top, value: .medium)
             .padding(.bottom, value: .small)
             .background {
-                NavigationLink(value: DisplayableRootFolder()) {
+                NavigationLink(value: TransferableRootFolder()) {
                     Color.ST.cardBackground
                         .clipShape(RoundedRectangle(cornerRadius: IKRadius.large))
                 }
