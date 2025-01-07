@@ -31,4 +31,15 @@ public extension URLSessionConfiguration {
 
         return configuration
     }()
+
+    static let backgroundIdentifier = "background"
+    static let swissTransferBackground: URLSessionConfiguration = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: URLSessionConfiguration.backgroundIdentifier)
+        configuration.shouldUseExtendedBackgroundIdleMode = true
+        configuration.isDiscretionary = false
+        configuration.sessionSendsLaunchEvents = true
+        configuration.httpAdditionalHeaders = ["User-Agent": UserAgentBuilder().userAgent]
+
+        return configuration
+    }()
 }
