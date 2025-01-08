@@ -49,21 +49,18 @@ public class DownloadManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
 
     private let session: URLSession
-    private let sessionDelegate: DownloadManagerSessionDelegate
 
     private var cancellables: Set<AnyCancellable> = []
 
     @Published private var trackedDownloadTasks = [String: DownloadTask]()
 
     enum ErrorDomain: Error {
-        case badResult
         case badURL
     }
 
     public init() {
         let sessionDelegate = DownloadManagerSessionDelegate()
         session = URLSession(configuration: .swissTransferBackground, delegate: sessionDelegate, delegateQueue: nil)
-        self.sessionDelegate = sessionDelegate
 
         sessionDelegate.downloadCompletedSubject
             .sink { downloadTaskCompletion in
