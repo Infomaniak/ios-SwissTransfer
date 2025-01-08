@@ -20,10 +20,36 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
+// MARK: - UIColor
+
+public extension UIColor {
+    enum ST {
+        // MARK: Recipient Labels
+
+        public static let recipientLabelBackground = UIColor(
+            light: STResourcesAsset.Colors.greenSecondary,
+            dark: STResourcesAsset.Colors.greenDark
+        )
+
+        public static let onRecipientLabelBackground = UIColor(
+            light: STResourcesAsset.Colors.greenDark,
+            dark: STResourcesAsset.Colors.greenMain
+        )
+    }
+}
+
+extension UIColor {
+    convenience init(light: STResourcesColors, dark: STResourcesColors) {
+        self.init { $0.userInterfaceStyle == .dark ? dark.color : light.color }
+    }
+}
+
+// MARK: - Color
+
 public extension Color {
     /// List of colors used by the SwissTransfer app.
     enum ST {
-        // MARK: - Texts
+        // MARK: Texts
 
         /// light: greyOrca / dark: greyRabbit
         public static let textPrimary = Color(
@@ -36,7 +62,7 @@ public extension Color {
             dark: STResourcesAsset.Colors.greyShark
         )
 
-        // MARK: - General
+        // MARK: General
 
         /// greenMain
         public static let primary = STResourcesAsset.Colors.greenMain.swiftUIColor
@@ -74,7 +100,7 @@ public extension Color {
             dark: STResourcesAsset.Colors.greenDark
         )
 
-        // MARK: - TextFields
+        // MARK: TextFields
 
         /// light: greyMouse / dark: dark2
         public static let textFieldBorder = Color(
@@ -84,7 +110,7 @@ public extension Color {
         /// light: greyMouse / dark: dark2
         public static let focusedTextFieldBorder = primary
 
-        // MARK: - Buttons
+        // MARK: Buttons
 
         /// light: greyRabbit / dark: dark1
         public static let tertiaryButton = Color(
@@ -102,20 +128,14 @@ public extension Color {
             dark: STResourcesAsset.Colors.dark0
         )
 
-        // MARK: - Recipient Labels
+        // MARK: Recipient Labels
 
-        /// light: greenContrast / dark: greenDark
-        public static let recipientLabelBackground = Color(
-            light: STResourcesAsset.Colors.greenSecondary,
-            dark: STResourcesAsset.Colors.greenDark
-        )
-        /// light: greenDark / dark: greenMain
-        public static let onRecipientLabelBackground = Color(
-            light: STResourcesAsset.Colors.greenDark,
-            dark: STResourcesAsset.Colors.greenMain
-        )
+        /// see `UIColor.ST.recipientLabelBackground`
+        public static let recipientLabelBackground = Color(uiColor: .ST.recipientLabelBackground)
+        /// see `UIColor.ST.onRecipientLabelBackground`
+        public static let onRecipientLabelBackground = Color(uiColor: .ST.onRecipientLabelBackground)
 
-        // MARK: - Cards
+        // MARK: Cards
 
         /// light: greyPolarBear / dark: dark1
         public static let cardBackground = Color(
@@ -128,7 +148,7 @@ public extension Color {
             dark: STResourcesAsset.Colors.dark2
         )
 
-        // MARK: - File Type
+        // MARK: File Type
 
         public static let folder = FileType.unknown.color
     }
@@ -136,7 +156,6 @@ public extension Color {
 
 extension Color {
     init(light: STResourcesColors, dark: STResourcesColors) {
-        let dynamicColor = UIColor { $0.userInterfaceStyle == .dark ? dark.color : light.color }
-        self.init(uiColor: dynamicColor)
+        self.init(uiColor: UIColor(light: light, dark: dark))
     }
 }
