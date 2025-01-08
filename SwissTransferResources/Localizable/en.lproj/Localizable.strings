@@ -10,6 +10,9 @@
 /* loco:6707f4ba182e2d63b400cd42 */
 "advancedSettingsTitle" = "Advanced settings";
 
+/* loco:677be58b7579b67f0406b33e */
+"awaitingNetwork" = "Waiting for network";
+
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Add files";
 
@@ -104,7 +107,7 @@
 "myFilesTitle" = "My files";
 
 /* loco:673b609c03c82748a509bd92 */
-"networkUnavailable" = "Waiting for network";
+"networkUnavailable" = "Network unavailable";
 
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Add up to 50 GB of files";
