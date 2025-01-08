@@ -19,24 +19,31 @@
 import InfomaniakCoreSwiftUI
 import UIKit
 
-final class UIFocusableRecipientView: UIView {
+final class UIFocusableRecipientView: UIView, UIKeyInput {
     private static let buttonImageSize: CGFloat = 8
     private static let buttonInset = IKPadding.small
 
+    var didPressTabKey: (() -> Void)?
+    var didPressDeleteKey: (() -> Void)?
+
+    private let text: String
+    private var buttonConstraints = [NSLayoutConstraint]()
+
+    var hasText: Bool {
+        return false
+    }
+
+    override var canBecomeFirstResponder: Bool {
+        return isUserInteractionEnabled
+    }
+
     override var intrinsicContentSize: CGSize {
         let labelSize = label.intrinsicContentSize
-        var buttonWidth = CGFloat.zero
-        if tempVar {
-            buttonWidth = Self.buttonImageSize + Self.buttonInset * 2
-        }
+        let buttonWidth = isFirstResponder ? Self.buttonImageSize + Self.buttonInset * 2 : .zero
 
         let width = labelSize.width + buttonWidth
         return CGSize(width: width, height: labelSize.height)
     }
-
-    private let text: String
-
-    private var tempVar = false
 
     private var label: UILabel = {
         let label = UILabel()
@@ -54,8 +61,6 @@ final class UIFocusableRecipientView: UIView {
         return button
     }()
 
-    private var buttonConstraints = [NSLayoutConstraint]()
-
     init(text: String) {
         self.text = text
         super.init(frame: .zero)
@@ -65,6 +70,26 @@ final class UIFocusableRecipientView: UIView {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override public func becomeFirstResponder() -> Bool {
+        handleFirstResponder()
+        return super.becomeFirstResponder()
+    }
+
+    override public func resignFirstResponder() -> Bool {
+        handleFirstResponder()
+        return super.resignFirstResponder()
+    }
+
+    func insertText(_ text: String) {
+        if text == "\t" {
+            didPressTabKey?()
+        }
+    }
+
+    func deleteBackward() {
+        didPressDeleteKey?()
     }
 
     private func setupView() {
@@ -93,23 +118,21 @@ final class UIFocusableRecipientView: UIView {
         updateColors()
     }
 
-    @objc private func temp() {
-        tempVar.toggle()
-
+    private func handleFirstResponder() {
         updateColors()
         toggleButton()
     }
 
     private func updateColors() {
-        backgroundColor = tempVar ? .ST.onRecipientLabelBackground : .ST.recipientLabelBackground
+        backgroundColor = isFirstResponder ? .ST.onRecipientLabelBackground : .ST.recipientLabelBackground
 
-        let foregroundColor = tempVar ? UIColor.ST.recipientLabelBackground : UIColor.ST.onRecipientLabelBackground
+        let foregroundColor = isFirstResponder ? UIColor.ST.recipientLabelBackground : UIColor.ST.onRecipientLabelBackground
         label.textColor = foregroundColor
         button.tintColor = foregroundColor
     }
 
     private func toggleButton() {
-        if tempVar {
+        if isFirstResponder {
             addSubview(button)
             NSLayoutConstraint.activate(buttonConstraints)
         } else {
@@ -117,8 +140,6 @@ final class UIFocusableRecipientView: UIView {
             button.removeFromSuperview()
             NSLayoutConstraint.deactivate(buttonConstraints)
         }
-
-//        layoutSubviews()
     }
 }
 
