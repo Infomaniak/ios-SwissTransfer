@@ -19,30 +19,42 @@
 import InfomaniakCoreSwiftUI
 import UIKit
 
-final class UIFocusableRecipientView: UIView, UIKeyInput {
+public final class UIFocusableRecipientView: UIView, UIKeyInput {
     private static let buttonImageSize: CGFloat = 8
     private static let buttonInset = IKPadding.small
 
-    var didPressTabKey: (() -> Void)?
-    var didPressDeleteKey: (() -> Void)?
+    public var shouldDisplayButton = false {
+        didSet {
+            toggleButton()
+        }
+    }
+    public var didPressTabKey: (() -> Void)?
+    public var removeRecipient: (() -> Void)?
 
     private let text: String
     private var buttonConstraints = [NSLayoutConstraint]()
 
-    var hasText: Bool {
-        return false
-    }
+    public let hasText = false
 
-    override var canBecomeFirstResponder: Bool {
+    override public var canBecomeFirstResponder: Bool {
         return isUserInteractionEnabled
     }
 
-    override var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         let labelSize = label.intrinsicContentSize
-        let buttonWidth = isFirstResponder ? Self.buttonImageSize + Self.buttonInset * 2 : .zero
+        let buttonSize = button.intrinsicContentSize
 
-        let width = labelSize.width + buttonWidth
-        return CGSize(width: width, height: labelSize.height)
+        var labelWidth = labelSize.width + IKPadding.small
+        var buttonWidth = CGFloat.zero
+        if shouldDisplayButton {
+            buttonWidth = Self.buttonImageSize + Self.buttonInset * 2
+        } else {
+            labelWidth += IKPadding.small
+        }
+
+        let width = labelWidth + buttonWidth
+        let height = max(labelSize.height + IKPadding.extraSmall * 2, buttonSize.height)
+        return CGSize(width: width, height: height)
     }
 
     private var label: UILabel = {
@@ -61,7 +73,7 @@ final class UIFocusableRecipientView: UIView, UIKeyInput {
         return button
     }()
 
-    init(text: String) {
+    public init(text: String) {
         self.text = text
         super.init(frame: .zero)
         setupView()
@@ -73,32 +85,36 @@ final class UIFocusableRecipientView: UIView, UIKeyInput {
     }
 
     override public func becomeFirstResponder() -> Bool {
-        handleFirstResponder()
+        updateColors(isFirstResponder: true)
         return super.becomeFirstResponder()
     }
 
     override public func resignFirstResponder() -> Bool {
-        handleFirstResponder()
+        updateColors(isFirstResponder: false)
         return super.resignFirstResponder()
     }
 
-    func insertText(_ text: String) {
+    public func insertText(_ text: String) {
         if text == "\t" {
             didPressTabKey?()
         }
     }
 
-    func deleteBackward() {
-        didPressDeleteKey?()
+    public func deleteBackward() {
+        removeRecipient?()
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        layer.cornerRadius = intrinsicContentSize.height / 2
 
         label.text = text
         addSubview(label)
 
-        layer.cornerRadius = intrinsicContentSize.height * 0.66
+        let action = UIAction { [weak self] _ in
+            self?.removeRecipient?()
+        }
+        button.addAction(action, for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: IKPadding.extraSmall),
@@ -118,12 +134,7 @@ final class UIFocusableRecipientView: UIView, UIKeyInput {
         updateColors()
     }
 
-    private func handleFirstResponder() {
-        updateColors()
-        toggleButton()
-    }
-
-    private func updateColors() {
+    private func updateColors(isFirstResponder: Bool = false) {
         backgroundColor = isFirstResponder ? .ST.onRecipientLabelBackground : .ST.recipientLabelBackground
 
         let foregroundColor = isFirstResponder ? UIColor.ST.recipientLabelBackground : UIColor.ST.onRecipientLabelBackground
@@ -132,7 +143,7 @@ final class UIFocusableRecipientView: UIView, UIKeyInput {
     }
 
     private func toggleButton() {
-        if isFirstResponder {
+        if shouldDisplayButton {
             addSubview(button)
             NSLayoutConstraint.activate(buttonConstraints)
         } else {
@@ -145,6 +156,5 @@ final class UIFocusableRecipientView: UIView, UIKeyInput {
 
 @available(iOS 17.0, *)
 #Preview {
-    let view = UIFocusableRecipientView(text: "john.smith@ik.me")
-    return view
+    return UIFocusableRecipientView(text: "john.smith@ik.me")
 }

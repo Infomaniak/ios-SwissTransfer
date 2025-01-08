@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OrderedCollections
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -26,7 +27,7 @@ struct RecipientsTextFieldView: View {
     @State private var text = ""
     @FocusState private var isFocused: Bool
 
-    @Binding var recipients: [String]
+    @Binding var recipients: OrderedSet<String>
 
     private var placeholder: String {
         guard recipients.isEmpty else { return "" }
@@ -36,13 +37,19 @@ struct RecipientsTextFieldView: View {
     var body: some View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
             ForEach(recipients, id: \.hash) { recipient in
-                Text(recipient)
-                    .roundedLabel()
+                FocusableRecipientView(recipient: recipient, shouldDisplayButton: isFocused) {
+                    // TODO
+                } removeRecipient: {
+                    removeRecipient(recipient)
+                }
             }
 
             TextField(placeholder, text: $text)
-                .onSubmit(didSubmitNewRecipient)
+                .keyboardType(.emailAddress)
+                .textContentType(.emailAddress)
+                .textInputAutocapitalization(.never)
                 .focused($isFocused)
+                .onSubmit(didSubmitNewRecipient)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .inputStyle(isFocused: isFocused)
@@ -53,12 +60,16 @@ struct RecipientsTextFieldView: View {
         recipients.append(text)
         text = ""
     }
+
+    private func removeRecipient(_ recipient: String) {
+        recipients.remove(recipient)
+    }
 }
 
 @available(iOS 17.0, *)
 #Preview {
-    @Previewable @State var fullRecipients = PreviewHelper.sampleListOfRecipients
-    @Previewable @State var emptyRecipients = [String]()
+    @Previewable @State var fullRecipients = OrderedSet<String>(PreviewHelper.sampleListOfRecipients)
+    @Previewable @State var emptyRecipients = OrderedSet<String>()
 
     VStack {
         RecipientsTextFieldView(recipients: $fullRecipients)

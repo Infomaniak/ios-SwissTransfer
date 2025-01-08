@@ -11,7 +11,8 @@ let transferList = Feature(name: "TransferList")
 // MARK: New Transfer & Upload
 
 let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
-    TargetDependency.external(name: "InfomaniakConcurrency")
+    TargetDependency.external(name: "InfomaniakConcurrency"),
+    TargetDependency.external(name: "OrderedCollections")
 ])
 let uploadProgressView = Feature(name: "UploadProgressView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakCore"),

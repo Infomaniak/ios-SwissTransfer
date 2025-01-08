@@ -18,6 +18,7 @@
 
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import OrderedCollections
 import STCore
 import STResources
 import SwiftUI
@@ -27,6 +28,8 @@ struct NewTransferDetailsView: View {
     @Binding var authorEmail: String
     @Binding var recipientEmail: String
     @Binding var message: String
+
+    @State private var recipientsEmail = OrderedSet<String>()
 
     let transferType: TransferType
 
@@ -41,11 +44,7 @@ struct NewTransferDetailsView: View {
                 .textContentType(.emailAddress)
                 .textInputAutocapitalization(.never)
 
-                TextField(STResourcesStrings.Localizable.transferRecipientAddressPlaceholder, text: $recipientEmail)
-                    .textFieldStyle(.swissTransfer)
-                    .keyboardType(.emailAddress)
-                    .textContentType(.emailAddress)
-                    .textInputAutocapitalization(.never)
+                RecipientsTextFieldView(recipients: $recipientsEmail)
             }
 
             STTextEditor(
