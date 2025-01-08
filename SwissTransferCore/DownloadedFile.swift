@@ -19,7 +19,7 @@
 import Foundation
 
 struct DownloadTaskCompletion {
-    let taskDescription: String
+    let id: String
     let result: Result<DownloadedFile, Error>
 }
 

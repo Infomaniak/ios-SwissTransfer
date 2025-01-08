@@ -32,6 +32,8 @@ struct SwissTransferApp: App {
     // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
     private let dependencyInjectionHook = TargetAssembly()
 
+    @LazyInjectService private var downloadManager: DownloadManager
+
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
 
@@ -53,6 +55,7 @@ struct SwissTransferApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(universalLinksState)
+                .environmentObject(downloadManager)
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()

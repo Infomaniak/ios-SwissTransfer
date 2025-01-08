@@ -35,6 +35,7 @@ extension [Factory] {
 }
 
 /// Each target should subclass `TargetAssembly` and override `getTargetServices` to provide additional, target related, services.
+@MainActor
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 

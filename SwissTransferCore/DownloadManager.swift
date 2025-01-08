@@ -16,18 +16,44 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Combine
+@preconcurrency import Combine
 import Foundation
 import InfomaniakDI
 import STCore
 
-public actor DownloadManager {
+public struct DownloadTask: Equatable, Sendable {
+    public let id: String
+    public let state: DownloadTaskState
+}
+
+public enum DownloadTaskState: Equatable, Sendable {
+    case running(URLSessionTask)
+    case completed(URL)
+    case error(Error)
+
+    public static func == (lhs: DownloadTaskState, rhs: DownloadTaskState) -> Bool {
+        switch (lhs, rhs) {
+        case (.running(let lhs), .running(let rhs)):
+            return lhs.taskIdentifier == rhs.taskIdentifier
+        case (.completed(let lhs), .completed(let rhs)):
+            return lhs == rhs
+        case (.error(let lhs), .error(let rhs)):
+            return lhs.localizedDescription == rhs.localizedDescription
+        default: return false
+        }
+    }
+}
+
+@MainActor
+public class DownloadManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
 
     private let session: URLSession
     private let sessionDelegate: DownloadManagerSessionDelegate
 
     private var cancellables: Set<AnyCancellable> = []
+
+    @Published private var trackedDownloadTasks = [String: DownloadTask]()
 
     enum ErrorDomain: Error {
         case badResult
@@ -38,6 +64,52 @@ public actor DownloadManager {
         let sessionDelegate = DownloadManagerSessionDelegate()
         session = URLSession(configuration: .swissTransferBackground, delegate: sessionDelegate, delegateQueue: nil)
         self.sessionDelegate = sessionDelegate
+
+        sessionDelegate.downloadCompletedSubject
+            .sink { downloadTaskCompletion in
+                Task { @MainActor [weak self] in
+                    self?.handleDownloadTaskCompletion(downloadTaskCompletion)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    public func getDownloadTaskFor(file: FileUi, in transfer: TransferUi) -> DownloadTask? {
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
+        return trackedDownloadTasks[taskId]
+    }
+
+    public func getDownloadTaskFor(transfer: TransferUi) -> DownloadTask? {
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
+        return trackedDownloadTasks[taskId]
+    }
+
+    private func updateDownloadTask(id: String, state: DownloadTaskState) {
+        trackedDownloadTasks[id] = DownloadTask(id: id, state: state)
+    }
+
+    public func removeDownloadTask(id: String) {
+        guard let trackedDownloadTask = trackedDownloadTasks[id] else { return }
+        if case .running(let task) = trackedDownloadTask.state {
+            task.cancel()
+        }
+        trackedDownloadTasks[id] = nil
+    }
+
+    public func startDownload(file: FileUi, in transfer: TransferUi) async throws {
+        let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
+        try createDownloadTask(url: downloadURL, taskId: taskId)
+    }
+
+    public func startDownload(transfer: TransferUi) async throws {
+        let downloadURL = try await getDownloadURLFor(transfer: transfer)
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
+        try createDownloadTask(url: downloadURL, taskId: taskId)
+    }
+
+    private func taskId(transferUUID: String, fileUUID: String?) -> String {
+        "\(transferUUID)__\(fileUUID ?? "")"
     }
 
     private func getDownloadURLFor(file: FileUi, in transfer: TransferUi) async throws -> URL {
@@ -66,95 +138,45 @@ public actor DownloadManager {
         return downloadURL
     }
 
-    public func download(file: FileUi,
-                         in transfer: TransferUi,
-                         progressCallback: @escaping @Sendable (Double) -> Void) async throws -> URL {
-        let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
-        return try await download(
-            url: downloadURL,
-            transferUUID: transfer.uuid,
-            fileUUID: file.uid,
-            progressCallback: progressCallback
-        )
-    }
-
-    public func download(transfer: TransferUi, progressCallback: @escaping @Sendable (Double) -> Void) async throws -> URL {
-        let downloadURL = try await getDownloadURLFor(transfer: transfer)
-        return try await download(
-            url: downloadURL,
-            transferUUID: transfer.uuid,
-            fileUUID: nil,
-            progressCallback: progressCallback
-        )
-    }
-
-    private func download(
-        url downloadURL: URL,
-        transferUUID: String,
-        fileUUID: String?,
-        progressCallback: @escaping @Sendable (Double) -> Void
-    ) async throws -> URL {
+    private func createDownloadTask(url downloadURL: URL, taskId: String) throws {
         let downloadRequest = try URLRequest(url: downloadURL, method: .get)
-        let downloadTask = session.downloadTask(with: downloadRequest)
-        downloadTask.taskDescription = "\(transferUUID)__\(fileUUID ?? ""))"
+        let sessionDownloadTask = session.downloadTask(with: downloadRequest)
+        sessionDownloadTask.taskDescription = taskId
 
-        downloadTask.progress
-            .publisher(for: \.fractionCompleted)
-            .receive(on: RunLoop.main)
-            .sink { fractionCompleted in
-                progressCallback(fractionCompleted)
-            }
-            .store(in: &cancellables)
+        sessionDownloadTask.resume()
 
-        do {
-            let downloadedFile = try await downloadFile(with: downloadTask)
-            let destinationURL = try handleDownloadedFile(
-                transferUUID: transferUUID,
-                fileUUID: fileUUID,
-                downloadedFile: downloadedFile
-            )
-            return destinationURL
-        } catch DownloadManagerSessionDelegate.ErrorDomain.badResult(let url) {
-            if let url {
-                try? FileManager.default.removeItem(at: url)
+        updateDownloadTask(id: taskId, state: .running(sessionDownloadTask))
+    }
+
+    private func handleDownloadTaskCompletion(_ downloadTaskCompletion: DownloadTaskCompletion) {
+        let transferUUIDAndFileUUID = downloadTaskCompletion.id.split(separator: "__")
+        guard !transferUUIDAndFileUUID.isEmpty else { return }
+
+        let transferUUID = String(transferUUIDAndFileUUID[0])
+        let fileUUID = transferUUIDAndFileUUID.count > 1 ? String(transferUUIDAndFileUUID[1]) : nil
+
+        switch downloadTaskCompletion.result {
+        case .success(let downloadedFile):
+            do {
+                let resultURL = try handleDownloadedFile(
+                    transferUUID: transferUUID,
+                    fileUUID: fileUUID,
+                    downloadedFile: downloadedFile
+                )
+
+                updateDownloadTask(
+                    id: downloadTaskCompletion.id,
+                    state: .completed(resultURL)
+                )
+            } catch {
+                updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
             }
-            throw ErrorDomain.badResult
+        case .failure(let error):
+            updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
         }
     }
 
-    private func downloadFile(with downloadTask: URLSessionDownloadTask) async throws -> DownloadedFile {
-        var cancellable: AnyCancellable?
-
-        let downloadedFile: DownloadedFile = try await withTaskCancellationHandler {
-            return try await withCheckedThrowingContinuation { continuation in
-                cancellable = sessionDelegate.downloadCompletedSubject
-                    .sink { downloadTaskCompletion in
-                        guard downloadTaskCompletion.taskDescription == downloadTask.taskDescription else { return }
-
-                        switch downloadTaskCompletion.result {
-                        case .success(let downloadedFile):
-                            continuation.resume(returning: downloadedFile)
-                            cancellable?.cancel()
-                        case .failure(let error):
-                            continuation.resume(throwing: error)
-                            cancellable?.cancel()
-                        }
-                    }
-
-                downloadTask.resume()
-            }
-        } onCancel: {
-            downloadTask.cancel()
-        }
-
-        return downloadedFile
-    }
-
-    private nonisolated func handleDownloadedFile(
-        transferUUID: String,
-        fileUUID: String?,
-        downloadedFile: DownloadedFile
-    ) throws -> URL {
+    private func handleDownloadedFile(transferUUID: String, fileUUID: String?, downloadedFile: DownloadedFile) throws -> URL {
         defer {
             // Always try to cleanup result
             try? FileManager.default.removeItem(at: downloadedFile.url)
@@ -180,23 +202,30 @@ public actor DownloadManager {
     }
 }
 
-final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate, @unchecked Sendable {
+final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate, Sendable {
     let downloadCompletedSubject = PassthroughSubject<DownloadTaskCompletion, Never>()
 
     enum ErrorDomain: Error {
         case badResult(URL?)
     }
 
-    nonisolated func urlSession(
-        _ session: URLSession,
-        downloadTask: URLSessionDownloadTask,
-        didFinishDownloadingTo location: URL
-    ) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: (any Error)?) {
+        guard let error,
+              (error as NSError).code != NSURLErrorCancelled,
+              let taskDescription = task.taskDescription else { return }
+
+        downloadCompletedSubject.send(DownloadTaskCompletion(
+            id: taskDescription,
+            result: .failure(ErrorDomain.badResult(nil))
+        ))
+    }
+
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let taskDescription = downloadTask.taskDescription else { return }
         guard let httpResponse = downloadTask.response as? HTTPURLResponse,
               httpResponse.statusCode <= 299 else {
             downloadCompletedSubject.send(DownloadTaskCompletion(
-                taskDescription: taskDescription,
+                id: taskDescription,
                 result: .failure(ErrorDomain.badResult(location))
             ))
             return
@@ -207,7 +236,7 @@ final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate
             try FileManager.default.moveItem(at: location, to: progressCacheURL)
 
             downloadCompletedSubject.send(
-                DownloadTaskCompletion(taskDescription: taskDescription,
+                DownloadTaskCompletion(id: taskDescription,
                                        result: .success(DownloadedFile(
                                            suggestedFilename: httpResponse.suggestedFilename,
                                            url: progressCacheURL
@@ -215,7 +244,7 @@ final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate
             )
         } catch {
             downloadCompletedSubject.send(DownloadTaskCompletion(
-                taskDescription: taskDescription,
+                id: taskDescription,
                 result: .failure(ErrorDomain.badResult(location))
             ))
         }

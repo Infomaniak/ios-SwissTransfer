@@ -45,19 +45,18 @@ struct IdentifiableURL: Identifiable {
 }
 
 struct DownloadButton: View {
-    @LazyInjectService private var downloadManager: DownloadManager
+    @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var progress: Double?
-    @State private var downloadTask: Task<Void, any Error>?
     @State private var downloadedFileURL: IdentifiableURL?
 
     let transfer: TransferUi
 
     var body: some View {
-        Button(action: download) {
-            if let progress {
-                ProgressView(value: progress)
-                    .progressViewStyle(.circularDeterminate)
+        Button(action: startOrCancelDownloadIfNeeded) {
+            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
+                DownloadProgressView(downloadTask: downloadTask) { downloadedURL in
+                    downloadedFileURL = IdentifiableURL(url: downloadedURL)
+                }
             } else {
                 Label(
                     title: {
@@ -73,10 +72,10 @@ struct DownloadButton: View {
         }
     }
 
-    private func download() {
-        if let downloadTask {
-            downloadTask.cancel()
-            reset()
+    private func startOrCancelDownloadIfNeeded() {
+        if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
+            downloadManager.removeDownloadTask(id: downloadTask.id)
+            return
         }
 
         if let localURL = transfer.localArchiveURL,
@@ -85,31 +84,8 @@ struct DownloadButton: View {
             return
         }
 
-        downloadTask = Task {
-            do {
-                let downloadedURL = try await downloadManager.download(transfer: transfer) { progress in
-                    Task { @MainActor in
-                        guard let downloadTask, !downloadTask.isCancelled else { return }
-
-                        withAnimation {
-                            self.progress = progress
-                        }
-                    }
-                }
-
-                downloadedFileURL = IdentifiableURL(url: downloadedURL)
-            } catch {
-                Logger.general.error("Error downloading transfer: \(error)")
-                // TODO: Display the error someway ?
-            }
-            reset()
-        }
-    }
-
-    private func reset() {
-        withAnimation {
-            self.downloadTask = nil
-            self.progress = nil
+        Task {
+            try? await downloadManager.startDownload(transfer: transfer)
         }
     }
 }
