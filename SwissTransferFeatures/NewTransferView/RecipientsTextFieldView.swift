@@ -23,9 +23,14 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+enum RecipientFocus: Hashable {
+    case textField
+    case recipient(String)
+}
+
 struct RecipientsTextFieldView: View {
     @State private var text = ""
-    @FocusState private var isFocused: Bool
+    @FocusState private var isFocused: RecipientFocus?
 
     @Binding var recipients: OrderedSet<String>
 
@@ -37,32 +42,43 @@ struct RecipientsTextFieldView: View {
     var body: some View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
             ForEach(recipients, id: \.hash) { recipient in
-                FocusableRecipientView(recipient: recipient, shouldDisplayButton: isFocused) {
-                    // TODO
+                FocusableRecipientView(recipient: recipient, shouldDisplayButton: isFocused != nil) {
+                    didPressTabKey(recipient)
                 } removeRecipient: {
                     removeRecipient(recipient)
                 }
+                .focused($isFocused, equals: .recipient(recipient))
             }
 
             TextField(placeholder, text: $text)
                 .keyboardType(.emailAddress)
                 .textContentType(.emailAddress)
                 .textInputAutocapitalization(.never)
-                .focused($isFocused)
+                .focused($isFocused, equals: .textField)
                 .onSubmit(didSubmitNewRecipient)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .inputStyle(isFocused: isFocused)
+        .inputStyle(isFocused: isFocused != nil)
     }
 
     private func didSubmitNewRecipient() {
         // TODO: Check recipient
         recipients.append(text)
         text = ""
+        isFocused = .textField
+    }
+
+    private func didPressTabKey(_ recipient: String) {
+        if let indexOfChip = recipients.firstIndex(of: recipient), indexOfChip < recipients.count - 1 {
+            isFocused = .recipient(recipients[indexOfChip + 1])
+        } else {
+            isFocused = .textField
+        }
     }
 
     private func removeRecipient(_ recipient: String) {
         recipients.remove(recipient)
+        isFocused = .textField
     }
 }
 
