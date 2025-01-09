@@ -30,6 +30,7 @@ struct STTabModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .navigableTab(tab)
             .tabItem { tab.label }
             .tag(tab)
     }

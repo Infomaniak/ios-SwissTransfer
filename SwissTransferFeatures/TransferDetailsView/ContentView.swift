@@ -44,7 +44,13 @@ struct ContentView: View {
                 pinnedViews: []
             ) {
                 ForEach(transfer.files, id: \.uid) { file in
-                    DownloadableFileCellView(transfer: transfer, file: file)
+                    if file.isFolder {
+                        NavigationLink(value: file) {
+                            LargeFileCell(file: file, container: transfer.uuid)
+                        }
+                    } else {
+                        DownloadableFileCellView(transfer: transfer, file: file)
+                    }
                 }
             }
         }

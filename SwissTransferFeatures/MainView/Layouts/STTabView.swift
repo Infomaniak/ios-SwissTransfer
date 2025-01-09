@@ -35,7 +35,6 @@ struct STTabView: View {
                 .stTab(.receivedTransfers)
 
             SettingsView()
-                .navigableTab(.settings)
                 .stTab(.settings)
         }
     }

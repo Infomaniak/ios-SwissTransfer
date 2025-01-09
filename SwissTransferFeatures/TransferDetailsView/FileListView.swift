@@ -60,7 +60,7 @@ struct FileListView: View {
             .padding(value: .medium)
         }
         .stNavigationBarStyle()
-        .stNavigationTitle(title)
+        .stNavigationBarFullScreen(title: title)
     }
 }
 
