@@ -21,8 +21,8 @@ import SwiftUI
 public struct FocusableRecipientView: UIViewRepresentable {
     private let recipient: String
     private let shouldDisplayButton: Bool
-    public let didPressTabKey: (() -> Void)?
-    public let removeRecipient: (() -> Void)?
+    private let didPressTabKey: (() -> Void)?
+    private let removeRecipient: (() -> Void)?
 
     public init(
         recipient: String,
@@ -45,7 +45,7 @@ public struct FocusableRecipientView: UIViewRepresentable {
     }
 
     public func updateUIView(_ uiView: UIFocusableRecipientView, context: Context) {
-
+        uiView.shouldDisplayButton = shouldDisplayButton
     }
 
     public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIFocusableRecipientView, context: Context) -> CGSize? {
