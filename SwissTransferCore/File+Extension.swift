@@ -22,8 +22,6 @@ import STCore
 
 extension FileUi: DisplayableFile {}
 
-extension FileUi: DisplayableFile {}
-
 public extension FileUi {
     func localURL(in container: String) -> URL? {
         return try? URL.tmpDownloadsDirectory()
