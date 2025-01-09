@@ -38,3 +38,29 @@ excluded:
  - DerivedData/
  - Derived/
  - Tuist/.build/
+custom_rules:
+  private_state:
+    included:
+      - ".*\\.swift"
+    regex: "(?<!@Previewable\\s)@State\\s+var"
+    message: "State should be private"
+  private_state_object:
+    included:
+      - ".*\\.swift"
+    regex: "(?<!@Previewable\\s)@StateObject\\s+var"
+    message: "StateObject should be private"
+  private_modal_state:
+    included:
+      - ".*\\.swift"
+    regex: "(?<!@Previewable\\s)@ModalState\\s+var"
+    message: "ModalState should be private"
+  private_environment:
+    included:
+      - ".*\\.swift"
+    regex: "@Environment\\([^)]*\\)\\s+var"
+    message: "Environment should be private"
+  private_environment_object:
+    included:
+      - ".*\\.swift"
+    regex: "@EnvironmentObject\\s+var"
+    message: "EnvironmentObject should be private"
