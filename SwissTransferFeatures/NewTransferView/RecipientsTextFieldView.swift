@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import OrderedCollections
 import STResources
@@ -62,10 +63,15 @@ struct RecipientsTextFieldView: View {
     }
 
     private func didSubmitNewRecipient() {
-        // TODO: Check recipient
+        defer {
+            isFocused = .textField
+        }
+
+        let trimmedRecipient = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedRecipient.isEmpty, EmailChecker(email: trimmedRecipient).validate() else { return }
+
         recipients.append(text)
         text = ""
-        isFocused = .textField
     }
 
     private func didPressTabKey(_ recipient: String) {
