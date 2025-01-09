@@ -30,6 +30,8 @@ import SwissTransferCoreUI
 public struct NewTransferView: View {
     @LazyInjectService var injection: SwissTransferInjection
 
+    @Environment(\.dismiss) private var dismiss
+
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
@@ -90,6 +92,7 @@ public struct NewTransferView: View {
                 VerifyMailView(newUploadSession: newUploadSession)
             }
         }
+        .environment(\.dismissModal) { dismiss() }
     }
 
     private func startUpload() {

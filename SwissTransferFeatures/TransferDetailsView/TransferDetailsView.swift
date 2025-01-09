@@ -23,6 +23,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferDetailsView: View {
+    @Environment(\.dismiss) private var dismiss
+
     private let transfer: TransferUi
 
     public init(transfer: TransferUi) {
@@ -62,6 +64,7 @@ public struct TransferDetailsView: View {
                 }
             }
         }
+        .environment(\.dismissModal) { dismiss() }
     }
 }
 
