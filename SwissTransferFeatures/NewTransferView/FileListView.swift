@@ -61,7 +61,7 @@ struct FileListView: View {
             .padding(value: .medium)
         }
         .appBackground()
-        .floatingActionButton(selection: $selectedItems, style: .newTransfer)
+        .floatingActionButton(isShowing: folder == nil, selection: $selectedItems, style: .newTransfer)
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
@@ -73,7 +73,8 @@ struct FileListView: View {
             }
         }
         .task(id: selectedItems) {
-            files = await newTransferFileManager.addItems(selectedItems)
+            _ = await newTransferFileManager.addItems(selectedItems)
+            files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
         }
     }
 
