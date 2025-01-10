@@ -42,13 +42,10 @@ struct RecipientsTextFieldView: View {
 
     var body: some View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
-            ForEach(recipients, id: \.hash) { recipient in
-                FocusableRecipientView(recipient: recipient, shouldDisplayButton: isFocused != nil) {
-                    didPressTabKey(recipient)
-                } removeRecipient: {
-                    removeRecipient(recipient)
-                }
-                .focused($isFocused, equals: .recipient(recipient))
+            if isFocused == nil {
+                CollapsedRecipientsFlowView(isFocused: _isFocused, recipients: recipients)
+            } else {
+                ExpandedRecipientsFlowView(isFocused: _isFocused, recipients: $recipients)
             }
 
             TextField(placeholder, text: $text)
@@ -72,19 +69,6 @@ struct RecipientsTextFieldView: View {
 
         recipients.append(text)
         text = ""
-    }
-
-    private func didPressTabKey(_ recipient: String) {
-        if let indexOfChip = recipients.firstIndex(of: recipient), indexOfChip < recipients.count - 1 {
-            isFocused = .recipient(recipients[indexOfChip + 1])
-        } else {
-            isFocused = .textField
-        }
-    }
-
-    private func removeRecipient(_ recipient: String) {
-        recipients.remove(recipient)
-        isFocused = .textField
     }
 }
 
