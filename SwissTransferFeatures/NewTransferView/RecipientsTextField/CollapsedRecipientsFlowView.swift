@@ -31,14 +31,13 @@ struct CollapsedRecipientsFlowView: View {
     }
 
     var body: some View {
-        if let firstRecipient = recipients.first {
-            FocusableRecipientView(recipient: firstRecipient, shouldDisplayButton: false)
-                .disabled(true)
-        }
-
-        if hiddenRecipientsCount > 0 {
-            FocusableRecipientView(recipient: "+\(hiddenRecipientsCount)", shouldDisplayButton: false)
-                .disabled(true)
+        Group {
+            if let firstRecipient = recipients.first {
+                FocusableRecipientView(recipient: firstRecipient, shouldDisplayButton: false)
+            }
+            if hiddenRecipientsCount > 0 {
+                FocusableRecipientView(recipient: "+\(hiddenRecipientsCount)", shouldDisplayButton: false)
+            }
         }
     }
 }

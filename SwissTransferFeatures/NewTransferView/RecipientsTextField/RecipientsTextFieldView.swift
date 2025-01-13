@@ -53,12 +53,14 @@ struct RecipientsTextFieldView: View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
             if isFocused == nil {
                 CollapsedRecipientsFlowView(isFocused: _isFocused, recipients: recipients)
+                    .onTapGesture(perform: didTapCollapsedChips)
             } else {
                 ExpandedRecipientsFlowView(isFocused: _isFocused, recipients: $recipients)
             }
 
             AdvancedTextField(text: $text, placeholder: placeholder, onSubmit: didSubmitNewRecipient, onBackspace: didBackspace)
                 .focused($isFocused, equals: .textField)
+                .frame(minWidth: isFocused != nil ? 40 : nil)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .inputStyle(isFocused: isFocused != nil, error: error)
@@ -81,6 +83,10 @@ struct RecipientsTextFieldView: View {
               let lastRecipient = recipients.last else { return }
 
         isFocused = .recipient(lastRecipient)
+    }
+
+    private func didTapCollapsedChips() {
+        isFocused = .textField
     }
 }
 
