@@ -34,6 +34,12 @@
 /* loco:67616ea394ffdbb7e5071e36 */
 "buttonDeleteTransfer" = "Cancella trasferimento";
 
+/* loco:67220015101b3de12b0f1f82 */
+"buttonDownload" = "Scaricare";
+
+/* loco:677e9253d2777f26f5019852 */
+"buttonDownloaded" = "Scaricato";
+
 /* loco:67448efd69b0e5a4910909b2 */
 "buttonEditTransfer" = "Modifica mio trasferimento";
 
@@ -66,6 +72,9 @@
 
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Nuovo trasferimento";
+
+/* loco:67852070453d66cb9a0033c2 */
+"downloadInProgressDialogTitle" = "Download in corso …";
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Trasferimento scaricato: %d/%d";

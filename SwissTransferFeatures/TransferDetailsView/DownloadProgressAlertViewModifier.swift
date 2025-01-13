@@ -17,6 +17,7 @@
  */
 
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 
@@ -45,7 +46,7 @@ struct DownloadProgressAlert: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("!Téléchargement en cours")
+            Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                 .font(.ST.headline)
             ProgressView(value: Double(currentProgress) / Double(totalProgress))
                 .progressViewStyle(.linear)
@@ -60,7 +61,7 @@ struct DownloadProgressAlert: View {
             .font(.ST.callout)
             .foregroundStyle(.secondary)
 
-            Button("!Annuler") {
+            Button(STResourcesStrings.Localizable.buttonCancel) {
                 Task {
                     await downloadManager.removeDownloadTask(id: downloadTask.id)
                 }
