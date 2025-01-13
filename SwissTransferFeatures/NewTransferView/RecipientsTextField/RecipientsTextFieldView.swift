@@ -40,6 +40,14 @@ struct RecipientsTextFieldView: View {
         return STResourcesStrings.Localizable.transferRecipientAddressPlaceholder
     }
 
+    private var error: InputErrorState? {
+        if !text.isEmpty && !EmailChecker(email: text).validate() {
+            return .errorWithMessage(STResourcesStrings.Localizable.invalidAddress)
+        } else {
+            return nil
+        }
+    }
+
     var body: some View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
             if isFocused == nil {
@@ -48,15 +56,11 @@ struct RecipientsTextFieldView: View {
                 ExpandedRecipientsFlowView(isFocused: _isFocused, recipients: $recipients)
             }
 
-            TextField(placeholder, text: $text)
-                .keyboardType(.emailAddress)
-                .textContentType(.emailAddress)
-                .textInputAutocapitalization(.never)
+            AdvancedTextField(text: $text, placeholder: placeholder, onSubmit: didSubmitNewRecipient, onBackspace: didBackspace)
                 .focused($isFocused, equals: .textField)
-                .onSubmit(didSubmitNewRecipient)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .inputStyle(isFocused: isFocused != nil)
+        .inputStyle(isFocused: isFocused != nil, error: error)
     }
 
     private func didSubmitNewRecipient() {
@@ -69,6 +73,13 @@ struct RecipientsTextFieldView: View {
 
         recipients.append(text)
         text = ""
+    }
+
+    private func didBackspace(_ textFieldIsEmpty: Bool) {
+        guard textFieldIsEmpty,
+              let lastRecipient = recipients.last else { return }
+
+        isFocused = .recipient(lastRecipient)
     }
 }
 

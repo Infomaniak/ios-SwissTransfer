@@ -109,6 +109,9 @@
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Zu übertragende Dateien";
 
+/* loco:6750234ba38b270dc804a7d2 */
+"invalidAddress" = "Ungültige Adresse";
+
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Nachricht:";
 

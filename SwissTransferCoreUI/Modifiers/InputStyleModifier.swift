@@ -20,22 +20,41 @@ import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public extension View {
-    func inputStyle(isFocused: Bool, withPadding: Bool = true) -> some View {
-        modifier(InputStyleModifier(isFocused: isFocused, withPadding: withPadding))
+    func inputStyle(isFocused: Bool, withPadding: Bool = true, error: InputErrorState? = nil) -> some View {
+        modifier(InputStyleModifier(isFocused: isFocused, withPadding: withPadding, error: error))
     }
+}
+
+public enum InputErrorState {
+    case error
+    case errorWithMessage(String)
 }
 
 struct InputStyleModifier: ViewModifier {
     let isFocused: Bool
     let withPadding: Bool
+    let error: InputErrorState?
+
+    private var strokeColor: Color {
+        guard error == nil else { return Color.ST.error }
+        return isFocused ? Color.ST.primary : Color.ST.textFieldBorder
+    }
 
     func body(content: Content) -> some View {
-        content
-            .padding(withPadding ? IKPadding.intermediate : 0)
-            .overlay(
-                RoundedRectangle(cornerRadius: IKRadius.small)
-                    .strokeBorder(isFocused ? Color.ST.primary : Color.ST.textFieldBorder)
-            )
+        VStack(alignment: .leading, spacing: IKPadding.extraSmall) {
+            content
+                .padding(withPadding ? IKPadding.intermediate : 0)
+                .overlay(
+                    RoundedRectangle(cornerRadius: IKRadius.small)
+                        .strokeBorder(strokeColor)
+                )
+
+            if case let .errorWithMessage(message) = error {
+                Text(message)
+                    .font(.ST.caption)
+                    .foregroundStyle(Color.ST.error)
+            }
+        }
     }
 }
 

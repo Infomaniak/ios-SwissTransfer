@@ -19,6 +19,8 @@
 import SwiftUI
 
 public struct FocusableRecipientView: UIViewRepresentable {
+    @Environment(\.isEnabled) private var isEnabled
+
     private let recipient: String
     private let shouldDisplayButton: Bool
     private let didPressTabKey: (() -> Void)?
@@ -41,11 +43,13 @@ public struct FocusableRecipientView: UIViewRepresentable {
         recipientView.shouldDisplayButton = shouldDisplayButton
         recipientView.didPressTabKey = didPressTabKey
         recipientView.removeRecipient = removeRecipient
+        recipientView.isUserInteractionEnabled = isEnabled
         return recipientView
     }
 
     public func updateUIView(_ uiView: UIFocusableRecipientView, context: Context) {
         uiView.shouldDisplayButton = shouldDisplayButton
+        uiView.isUserInteractionEnabled = isEnabled
     }
 
     public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIFocusableRecipientView, context: Context) -> CGSize? {

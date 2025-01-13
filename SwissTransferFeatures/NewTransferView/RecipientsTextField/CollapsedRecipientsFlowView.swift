@@ -33,11 +33,12 @@ struct CollapsedRecipientsFlowView: View {
     var body: some View {
         if let firstRecipient = recipients.first {
             FocusableRecipientView(recipient: firstRecipient, shouldDisplayButton: false)
-                .focused($isFocused, equals: .recipient(firstRecipient))
+                .disabled(true)
         }
 
         if hiddenRecipientsCount > 0 {
             FocusableRecipientView(recipient: "+\(hiddenRecipientsCount)", shouldDisplayButton: false)
+                .disabled(true)
         }
     }
 }
