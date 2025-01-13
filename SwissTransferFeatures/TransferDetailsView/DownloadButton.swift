@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
 import STCore
@@ -47,44 +48,41 @@ struct IdentifiableURL: Identifiable {
 struct DownloadButton: View {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var downloadedFileURL: IdentifiableURL?
+    @State private var downloadedTransferURL: IdentifiableURL?
 
     let transfer: TransferUi
 
     var body: some View {
         Button(action: startOrCancelDownloadIfNeeded) {
-            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
-                DownloadProgressView(downloadTask: downloadTask) { downloadedURL in
-                    downloadedFileURL = IdentifiableURL(url: downloadedURL)
-                }
-            } else {
-                Label(
-                    title: {
-                        Text(STResourcesStrings.Localizable.buttonDownload)
-                    },
-                    icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
-                )
-                .labelStyle(.iconOnly)
-            }
+            Label(
+                title: {
+                    Text(STResourcesStrings.Localizable.buttonDownload)
+                },
+                icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
+            )
+            .labelStyle(.iconOnly)
         }
-        .sheet(item: $downloadedFileURL) { downloadedFileURL in
+        .downloadProgressAlertFor(transfer: transfer) { downloadedFileURL in
+            self.downloadedTransferURL = IdentifiableURL(url: downloadedFileURL)
+        }
+        .sheet(item: $downloadedTransferURL) { downloadedFileURL in
             ActivityView(sharedFileURL: downloadedFileURL.url)
         }
     }
 
     private func startOrCancelDownloadIfNeeded() {
-        if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
-            downloadManager.removeDownloadTask(id: downloadTask.id)
-            return
-        }
-
-        if let localURL = transfer.localArchiveURL,
-           FileManager.default.fileExists(atPath: localURL.path()) {
-            downloadedFileURL = IdentifiableURL(url: localURL)
-            return
-        }
-
         Task {
+            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
+                await downloadManager.removeDownloadTask(id: downloadTask.id)
+                return
+            }
+
+            if let localURL = transfer.localArchiveURL,
+               FileManager.default.fileExists(atPath: localURL.path()) {
+                downloadedTransferURL = IdentifiableURL(url: localURL)
+                return
+            }
+
             try? await downloadManager.startDownload(transfer: transfer)
         }
     }
