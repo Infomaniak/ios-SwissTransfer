@@ -37,7 +37,8 @@ extension View {
 struct DownloadProgressAlert: View {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var progress: Double = 0
+    @State private var currentProgress: Int64 = 0
+    @State private var totalProgress: Int64 = 0
 
     let downloadTask: DownloadTask
     let downloadCompletedCallback: ((URL) -> Void)?
@@ -46,11 +47,18 @@ struct DownloadProgressAlert: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("!Téléchargement en cours")
                 .font(.ST.headline)
-            ProgressView(value: progress)
+            ProgressView(value: Double(currentProgress) / Double(totalProgress))
                 .progressViewStyle(.linear)
 
-            Text("!Téléchargement en cours")
-                .font(.ST.caption)
+            HStack(spacing: 2) {
+                Text(currentProgress, format: .progressByteCount)
+                Text(verbatim: "/")
+                Text(totalProgress, format: .progressByteCount)
+            }
+            .opacity(currentProgress > 0 && totalProgress > 0 ? 1 : 0)
+            .monospacedDigit()
+            .font(.ST.callout)
+            .foregroundStyle(.secondary)
 
             Button("!Annuler") {
                 Task {
@@ -68,7 +76,8 @@ struct DownloadProgressAlert: View {
                 }
             case .running(let current, let total):
                 withAnimation {
-                    progress = Double(current) / Double(total)
+                    currentProgress = current
+                    totalProgress = total
                 }
             default:
                 break
