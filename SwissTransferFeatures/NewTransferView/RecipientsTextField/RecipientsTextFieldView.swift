@@ -41,7 +41,8 @@ struct RecipientsTextFieldView: View {
     }
 
     private var error: InputErrorState? {
-        if !text.isEmpty && !EmailChecker(email: text).validate() {
+        let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmedText.isEmpty && !EmailChecker(email: trimmedText).validate() {
             return .errorWithMessage(STResourcesStrings.Localizable.invalidAddress)
         } else {
             return nil
@@ -71,7 +72,7 @@ struct RecipientsTextFieldView: View {
         let trimmedRecipient = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedRecipient.isEmpty, EmailChecker(email: trimmedRecipient).validate() else { return }
 
-        recipients.append(text)
+        recipients.append(trimmedRecipient)
         text = ""
     }
 
