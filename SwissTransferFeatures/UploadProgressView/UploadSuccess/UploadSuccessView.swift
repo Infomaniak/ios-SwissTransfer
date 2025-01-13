@@ -51,7 +51,7 @@ public struct UploadSuccessView: View {
                 case .link, .qrCode, .proximity:
                     UploadSuccessQRCodeView(type: viewModel.transferType, transferUUID: transferUUID)
                 case .mail:
-                    UploadSuccessMailView(recipients: [viewModel.recipientEmail])
+                    UploadSuccessMailView(recipients: viewModel.recipientsEmail)
                 }
             }
             .stIconNavigationBar()

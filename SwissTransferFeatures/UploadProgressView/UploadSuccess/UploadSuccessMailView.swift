@@ -22,11 +22,12 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+import OrderedCollections
 
 struct UploadSuccessMailView: View {
     @Environment(\.dismiss) private var dismiss
 
-    let recipients: [String]
+    let recipients: OrderedSet<String>
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
@@ -57,9 +58,9 @@ struct UploadSuccessMailView: View {
 }
 
 #Preview("One Recipient") {
-    UploadSuccessMailView(recipients: ["john.smith@ik.me"])
+    UploadSuccessMailView(recipients: OrderedSet(["john.smith@ik.me"]))
 }
 
 #Preview("Many Recipients") {
-    UploadSuccessMailView(recipients: PreviewHelper.sampleListOfRecipients)
+    UploadSuccessMailView(recipients: OrderedSet(PreviewHelper.sampleListOfRecipients))
 }

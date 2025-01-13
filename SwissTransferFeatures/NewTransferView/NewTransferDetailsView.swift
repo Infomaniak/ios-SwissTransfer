@@ -26,10 +26,8 @@ import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
     @Binding var authorEmail: String
-    @Binding var recipientEmail: String
+    @Binding var recipientsEmail: OrderedSet<String>
     @Binding var message: String
-
-    @State private var recipientsEmail = OrderedSet<String>()
 
     let transferType: TransferType
 
@@ -64,5 +62,10 @@ struct NewTransferDetailsView: View {
 }
 
 #Preview {
-    NewTransferDetailsView(authorEmail: .constant(""), recipientEmail: .constant(""), message: .constant(""), transferType: .link)
+    NewTransferDetailsView(
+        authorEmail: .constant(""),
+        recipientsEmail: .constant(OrderedSet()),
+        message: .constant(""),
+        transferType: .link
+    )
 }
