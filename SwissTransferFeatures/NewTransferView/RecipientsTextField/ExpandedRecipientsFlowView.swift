@@ -18,44 +18,47 @@
 
 import InfomaniakCore
 import OrderedCollections
-import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
 struct ExpandedRecipientsFlowView: View {
-    @FocusState var isFocused: RecipientFocus?
+    @FocusState var focusedView: RecipientFocus?
 
     @Binding var recipients: OrderedSet<String>
 
+    private var hasFocus: Bool {
+        return focusedView != nil
+    }
+
     var body: some View {
         ForEach(recipients, id: \.hash) { recipient in
-            STFocusableChipView(recipient: recipient, shouldDisplayButton: isFocused != nil) {
+            STFocusableChipView(recipient: recipient, shouldDisplayButton: hasFocus) {
                 didPressTabKey(recipient)
             } removeRecipient: {
                 removeRecipient(recipient)
             }
-            .focused($isFocused, equals: .recipient(recipient))
+            .focused($focusedView, equals: .recipient(recipient))
         }
     }
 
     private func didPressTabKey(_ recipient: String) {
         if let indexOfChip = recipients.firstIndex(of: recipient), indexOfChip < recipients.count - 1 {
-            isFocused = .recipient(recipients[indexOfChip + 1])
+            focusedView = .recipient(recipients[indexOfChip + 1])
         } else {
-            isFocused = .textField
+            focusedView = .textField
         }
     }
 
     private func removeRecipient(_ recipient: String) {
         recipients.remove(recipient)
-        isFocused = .textField
+        focusedView = .textField
     }
 }
 
 @available(iOS 17.0, *)
 #Preview {
-    @Previewable @FocusState var isFocused: RecipientFocus?
+    @Previewable @FocusState var focusedView: RecipientFocus?
     @Previewable @State var recipients = OrderedSet<String>()
 
-    ExpandedRecipientsFlowView(isFocused: _isFocused, recipients: $recipients)
+    ExpandedRecipientsFlowView(focusedView: _focusedView, recipients: $recipients)
 }

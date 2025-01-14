@@ -22,8 +22,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct CollapsedRecipientsFlowView: View {
-    @FocusState var isFocused: RecipientFocus?
-
     let recipients: OrderedSet<String>
 
     private var hiddenRecipientsCount: Int {
@@ -39,6 +37,7 @@ struct CollapsedRecipientsFlowView: View {
                 STFocusableChipView(recipient: "+\(hiddenRecipientsCount)", shouldDisplayButton: false)
             }
         }
+        .disabled(true)
     }
 }
 

@@ -31,9 +31,13 @@ enum RecipientFocus: Hashable {
 
 struct RecipientsTextFieldView: View {
     @State private var text = ""
-    @FocusState private var isFocused: RecipientFocus?
+    @FocusState private var focusedView: RecipientFocus?
 
     @Binding var recipients: OrderedSet<String>
+
+    private var isFocused: Bool {
+        return focusedView != nil
+    }
 
     private var placeholder: String {
         guard recipients.isEmpty else { return "" }
@@ -51,24 +55,24 @@ struct RecipientsTextFieldView: View {
 
     var body: some View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
-            if isFocused == nil {
-                CollapsedRecipientsFlowView(isFocused: _isFocused, recipients: recipients)
+            if focusedView == nil {
+                CollapsedRecipientsFlowView(recipients: recipients)
                     .onTapGesture(perform: didTapCollapsedChips)
             } else {
-                ExpandedRecipientsFlowView(isFocused: _isFocused, recipients: $recipients)
+                ExpandedRecipientsFlowView(focusedView: _focusedView, recipients: $recipients)
             }
 
             AdvancedTextField(text: $text, placeholder: placeholder, onSubmit: didSubmitNewRecipient, onBackspace: didBackspace)
-                .focused($isFocused, equals: .textField)
-                .frame(minWidth: isFocused != nil ? 40 : nil)
+                .focused($focusedView, equals: .textField)
+                .frame(minWidth: isFocused ? 40 : nil)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .inputStyle(isFocused: isFocused != nil, error: error)
+        .inputStyle(isFocused: isFocused, error: error)
     }
 
     private func didSubmitNewRecipient() {
         defer {
-            isFocused = .textField
+            focusedView = .textField
         }
 
         let trimmedRecipient = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -82,11 +86,11 @@ struct RecipientsTextFieldView: View {
         guard textFieldIsEmpty,
               let lastRecipient = recipients.last else { return }
 
-        isFocused = .recipient(lastRecipient)
+        focusedView = .recipient(lastRecipient)
     }
 
     private func didTapCollapsedChips() {
-        isFocused = .textField
+        focusedView = .textField
     }
 }
 
