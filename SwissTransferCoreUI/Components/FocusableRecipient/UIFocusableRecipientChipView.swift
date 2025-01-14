@@ -137,13 +137,11 @@ public final class UIFocusableRecipientChipView: UIView, UIKeyInput {
     }
 
     private func updateColors(isFirstResponder: Bool = false) {
-        backgroundColor = isFirstResponder ? .ST.recipientLabelBackground : .clear
+        backgroundColor = isFirstResponder ? .ST.onRecipientLabelBackground : .ST.recipientLabelBackground
 
-        label.textColor = UIColor.ST.onRecipientLabelBackground
-        button.tintColor = UIColor.ST.onRecipientLabelBackground
-
-        layer.borderWidth = isFirstResponder ? 0 : 1
-        layer.borderColor = UIColor.ST.recipientLabelBorder.cgColor
+        let foregroundColor = isFirstResponder ? UIColor.ST.onRecipientLabelBackground : UIColor.ST.recipientLabelBackground
+        label.textColor = foregroundColor
+        button.tintColor = foregroundColor
     }
 
     private func toggleButton() {

@@ -35,11 +35,6 @@ public extension UIColor {
             light: STResourcesAsset.Colors.greenDark,
             dark: STResourcesAsset.Colors.greenMain
         )
-
-        public static let recipientLabelBorder = UIColor(
-            light: STResourcesAsset.Colors.greyMouse,
-            dark: STResourcesAsset.Colors.dark2
-        )
     }
 }
 
@@ -54,6 +49,14 @@ extension UIColor {
 public extension Color {
     /// List of colors used by the SwissTransfer app.
     enum ST {
+        // MARK: Generics
+
+        /// light: greyMouse / dark: dark2
+        private static let border = Color(
+            light: STResourcesAsset.Colors.greyMouse,
+            dark: STResourcesAsset.Colors.dark2
+        )
+
         // MARK: Texts
 
         /// light: greyOrca / dark: greyRabbit
@@ -108,7 +111,7 @@ public extension Color {
         // MARK: TextFields
 
         /// light: greyMouse / dark: dark2
-        public static let textFieldBorder = recipientLabelBorder
+        public static let textFieldBorder = border
         /// light: greyMouse / dark: dark2
         public static let focusedTextFieldBorder = primary
 
@@ -136,8 +139,6 @@ public extension Color {
         public static let recipientLabelBackground = Color(uiColor: .ST.recipientLabelBackground)
         /// see `UIColor.ST.onRecipientLabelBackground`
         public static let onRecipientLabelBackground = Color(uiColor: .ST.onRecipientLabelBackground)
-        /// see `UIColor.ST.recipientLabelBorder`
-        public static let recipientLabelBorder = Color(uiColor: .ST.recipientLabelBorder)
 
         // MARK: Cards
 
@@ -147,7 +148,7 @@ public extension Color {
             dark: STResourcesAsset.Colors.dark1
         )
         /// light: greyMouse / dark: dark2
-        public static let cardBorder = recipientLabelBorder
+        public static let cardBorder = border
 
         // MARK: File Type
 

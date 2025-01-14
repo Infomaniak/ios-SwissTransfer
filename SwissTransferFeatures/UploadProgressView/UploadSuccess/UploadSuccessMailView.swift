@@ -41,7 +41,7 @@ struct UploadSuccessMailView: View {
             FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
                 ForEach(recipients, id: \.self) { recipient in
                     Text(recipient)
-                        .roundedLabel()
+                        .stChip()
                 }
             }
             .frame(maxWidth: 800)
