@@ -67,8 +67,8 @@ extension PhotosPickerItem: ImportableItem {
 extension UIImage: ImportableItem {
     public func importItem() async throws -> URL {
         let fileName = URL.defaultFileName()
-        let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.png)
-        try pngData()?.write(to: url)
+        let url = try URL.tmpCacheDirectory().appendingPathComponent(fileName).appendingPathExtension(for: UTType.jpeg)
+        try jpegData(compressionQuality: 0.8)?.write(to: url)
 
         return url
     }
