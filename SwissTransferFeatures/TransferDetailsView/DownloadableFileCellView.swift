@@ -24,10 +24,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct DownloadableFileCellView: View {
-    @LazyInjectService private var downloadManager: DownloadManager
+    @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var progress: Double?
-    @State private var downloadTask: Task<Void, any Error>?
     @State private var downloadedFilePreviewURL: URL?
     @State private var downloadedDirectoryURL: IdentifiableURL?
 
@@ -35,7 +33,7 @@ struct DownloadableFileCellView: View {
     let file: FileUi
 
     var body: some View {
-        Button(action: download) {
+        Button(action: startOrCancelDownloadIfNeeded) {
             LargeFileCell(
                 fileName: file.fileName,
                 fileSize: file.fileSize,
@@ -43,9 +41,8 @@ struct DownloadableFileCellView: View {
                 mimeType: file.mimeType ?? ""
             )
             .overlay(alignment: .topTrailing) {
-                if let progress {
-                    ProgressView(value: progress)
-                        .progressViewStyle(.circularDeterminate)
+                if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
+                    DownloadProgressView(downloadTask: downloadTask, downloadCompleteCallback: presentFile(at:))
                         .frame(width: 20, height: 20)
                         .padding(value: .small)
                 }
@@ -58,10 +55,9 @@ struct DownloadableFileCellView: View {
         }
     }
 
-    private func download() {
-        if let downloadTask {
-            downloadTask.cancel()
-            reset()
+    private func startOrCancelDownloadIfNeeded() {
+        if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
+            downloadManager.removeDownloadTask(id: downloadTask.id)
             return
         }
 
@@ -71,24 +67,8 @@ struct DownloadableFileCellView: View {
             return
         }
 
-        downloadTask = Task {
-            do {
-                let downloadedURL = try await downloadManager.download(file: file, in: transfer) { progress in
-                    Task { @MainActor in
-                        guard let downloadTask, !downloadTask.isCancelled else { return }
-
-                        withAnimation {
-                            self.progress = progress
-                        }
-                    }
-                }
-
-                presentFile(at: downloadedURL)
-            } catch {
-                Logger.general.error("Error downloading transfer: \(error)")
-                // TODO: Display the error someway ?
-            }
-            reset()
+        Task {
+            try await downloadManager.startDownload(file: file, in: transfer)
         }
     }
 
@@ -97,13 +77,6 @@ struct DownloadableFileCellView: View {
             downloadedDirectoryURL = IdentifiableURL(url: url)
         } else {
             downloadedFilePreviewURL = url
-        }
-    }
-
-    private func reset() {
-        withAnimation {
-            self.downloadTask = nil
-            self.progress = nil
         }
     }
 }
