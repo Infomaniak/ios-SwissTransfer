@@ -35,7 +35,7 @@
 "buttonDeleteTransfer" = "Cancella trasferimento";
 
 /* loco:67220015101b3de12b0f1f82 */
-"buttonDownload" = "Scaricare";
+"buttonDownload" = "Scarica";
 
 /* loco:677e9253d2777f26f5019852 */
 "buttonDownloaded" = "Scaricato";
@@ -74,7 +74,7 @@
 "contentDescriptionCreateNewTransferButton" = "Nuovo trasferimento";
 
 /* loco:67852070453d66cb9a0033c2 */
-"downloadInProgressDialogTitle" = "Download in corso …";
+"downloadInProgressDialogTitle" = "Download in corso…";
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Trasferimento scaricato: %d/%d";

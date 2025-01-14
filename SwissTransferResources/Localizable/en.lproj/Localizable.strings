@@ -74,7 +74,7 @@
 "contentDescriptionCreateNewTransferButton" = "New transfer";
 
 /* loco:67852070453d66cb9a0033c2 */
-"downloadInProgressDialogTitle" = "Download in progress …";
+"downloadInProgressDialogTitle" = "Download in progress…";
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Downloaded transfer: %d/%d ";
