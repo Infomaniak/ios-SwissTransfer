@@ -49,7 +49,7 @@ struct InputStyleModifier: ViewModifier {
                         .strokeBorder(strokeColor)
                 )
 
-            if case let .errorWithMessage(message) = error {
+            if case .errorWithMessage(let message) = error {
                 Text(message)
                     .font(.ST.caption)
                     .foregroundStyle(Color.ST.error)

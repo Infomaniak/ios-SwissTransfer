@@ -17,12 +17,12 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OrderedCollections
 import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
-import OrderedCollections
 
 struct UploadSuccessMailView: View {
     @Environment(\.dismiss) private var dismiss
