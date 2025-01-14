@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-public struct FocusableRecipientChipView: UIViewRepresentable {
+public struct STFocusableChipView: UIViewRepresentable {
     @Environment(\.isEnabled) private var isEnabled
 
     private let recipient: String
@@ -38,8 +38,8 @@ public struct FocusableRecipientChipView: UIViewRepresentable {
         self.removeRecipient = removeRecipient
     }
 
-    public func makeUIView(context: Context) -> UIFocusableRecipientChipView {
-        let recipientView = UIFocusableRecipientChipView(text: recipient)
+    public func makeUIView(context: Context) -> UISTFocusableChipView {
+        let recipientView = UISTFocusableChipView(text: recipient)
         recipientView.shouldDisplayButton = shouldDisplayButton
         recipientView.didPressTabKey = didPressTabKey
         recipientView.removeRecipient = removeRecipient
@@ -47,12 +47,12 @@ public struct FocusableRecipientChipView: UIViewRepresentable {
         return recipientView
     }
 
-    public func updateUIView(_ uiView: UIFocusableRecipientChipView, context: Context) {
+    public func updateUIView(_ uiView: UISTFocusableChipView, context: Context) {
         uiView.shouldDisplayButton = shouldDisplayButton
         uiView.isUserInteractionEnabled = isEnabled
     }
 
-    public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIFocusableRecipientChipView, context: Context) -> CGSize? {
+    public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UISTFocusableChipView, context: Context) -> CGSize? {
         let intrinsicContentSize = uiView.intrinsicContentSize
         let minWidth = min(proposal.width ?? .infinity, intrinsicContentSize.width)
         return CGSize(width: minWidth, height: intrinsicContentSize.height)
@@ -61,7 +61,7 @@ public struct FocusableRecipientChipView: UIViewRepresentable {
 
 #Preview {
     VStack {
-        FocusableRecipientChipView(recipient: "john.smith@ik.me", shouldDisplayButton: false)
-        FocusableRecipientChipView(recipient: "john.smith@ik.me", shouldDisplayButton: true)
+        STFocusableChipView(recipient: "john.smith@ik.me", shouldDisplayButton: false)
+        STFocusableChipView(recipient: "john.smith@ik.me", shouldDisplayButton: true)
     }
 }

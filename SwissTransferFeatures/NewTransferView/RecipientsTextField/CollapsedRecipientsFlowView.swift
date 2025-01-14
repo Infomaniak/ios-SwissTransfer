@@ -33,10 +33,10 @@ struct CollapsedRecipientsFlowView: View {
     var body: some View {
         Group {
             if let firstRecipient = recipients.first {
-                FocusableRecipientChipView(recipient: firstRecipient, shouldDisplayButton: false)
+                STFocusableChipView(recipient: firstRecipient, shouldDisplayButton: false)
             }
             if hiddenRecipientsCount > 0 {
-                FocusableRecipientChipView(recipient: "+\(hiddenRecipientsCount)", shouldDisplayButton: false)
+                STFocusableChipView(recipient: "+\(hiddenRecipientsCount)", shouldDisplayButton: false)
             }
         }
     }
