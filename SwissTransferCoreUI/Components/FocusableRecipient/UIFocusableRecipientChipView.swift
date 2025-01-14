@@ -19,8 +19,8 @@
 import InfomaniakCoreSwiftUI
 import UIKit
 
-public final class UIFocusableRecipientView: UIView, UIKeyInput {
-    private static let buttonImageSize: CGFloat = 8
+public final class UIFocusableRecipientChipView: UIView, UIKeyInput {
+    private static let buttonImageSize: CGFloat = 12
     private static let buttonInset = IKPadding.small
 
     public var shouldDisplayButton = false {
@@ -44,7 +44,7 @@ public final class UIFocusableRecipientView: UIView, UIKeyInput {
         let labelSize = label.intrinsicContentSize
         let buttonSize = button.intrinsicContentSize
 
-        var labelWidth = labelSize.width + IKPadding.small
+        var labelWidth = labelSize.width + IKPadding.intermediate
         var buttonWidth = CGFloat.zero
         if shouldDisplayButton {
             buttonWidth = Self.buttonImageSize + Self.buttonInset * 2
@@ -53,7 +53,7 @@ public final class UIFocusableRecipientView: UIView, UIKeyInput {
         }
 
         let width = labelWidth + buttonWidth
-        let height = max(labelSize.height + IKPadding.extraSmall * 2, buttonSize.height)
+        let height = max(labelSize.height + 6 * 2, buttonSize.height)
         return CGSize(width: width, height: height)
     }
 
@@ -61,7 +61,7 @@ public final class UIFocusableRecipientView: UIView, UIKeyInput {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         return label
     }()
 
@@ -106,7 +106,7 @@ public final class UIFocusableRecipientView: UIView, UIKeyInput {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = intrinsicContentSize.height / 2
+        layer.cornerRadius = 8
 
         label.text = text
         addSubview(label)
@@ -117,29 +117,33 @@ public final class UIFocusableRecipientView: UIView, UIKeyInput {
         button.addAction(action, for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: IKPadding.extraSmall),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: IKPadding.small),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -IKPadding.small),
-            label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -IKPadding.extraSmall),
-            label.centerYAnchor.constraint(equalTo: centerYAnchor)
+            label.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 6),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: IKPadding.intermediate),
+            label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -6),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+            trailingAnchor.constraint(greaterThanOrEqualTo: label.trailingAnchor, constant: IKPadding.intermediate),
         ])
 
         buttonConstraints = [
-            button.leadingAnchor.constraint(equalTo: label.trailingAnchor),
+            label.trailingAnchor.constraint(equalTo: button.leadingAnchor),
+
             button.trailingAnchor.constraint(equalTo: trailingAnchor),
-            button.centerYAnchor.constraint(equalTo: centerYAnchor),
-            button.widthAnchor.constraint(equalToConstant: Self.buttonImageSize + 2 * Self.buttonImageSize)
+            button.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            button.widthAnchor.constraint(equalToConstant: Self.buttonImageSize + 2 * Self.buttonInset)
         ]
 
         updateColors()
+        toggleButton()
     }
 
     private func updateColors(isFirstResponder: Bool = false) {
-        backgroundColor = isFirstResponder ? .ST.onRecipientLabelBackground : .ST.recipientLabelBackground
+        backgroundColor = isFirstResponder ? .ST.recipientLabelBackground : .clear
 
-        let foregroundColor = isFirstResponder ? UIColor.ST.recipientLabelBackground : UIColor.ST.onRecipientLabelBackground
-        label.textColor = foregroundColor
-        button.tintColor = foregroundColor
+        label.textColor = UIColor.ST.onRecipientLabelBackground
+        button.tintColor = UIColor.ST.onRecipientLabelBackground
+
+        layer.borderWidth = isFirstResponder ? 0 : 1
+        layer.borderColor = UIColor.ST.recipientLabelBorder.cgColor
     }
 
     private func toggleButton() {
@@ -156,5 +160,12 @@ public final class UIFocusableRecipientView: UIView, UIKeyInput {
 
 @available(iOS 17.0, *)
 #Preview {
-    return UIFocusableRecipientView(text: "john.smith@ik.me")
+    return UIFocusableRecipientChipView(text: "john.smith@ik.me")
+}
+
+@available(iOS 17.0, *)
+#Preview {
+    let chip = UIFocusableRecipientChipView(text: "john.smith@ik.me")
+    chip.shouldDisplayButton = true
+    return chip
 }

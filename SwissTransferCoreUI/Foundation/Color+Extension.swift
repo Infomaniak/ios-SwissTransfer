@@ -35,6 +35,11 @@ public extension UIColor {
             light: STResourcesAsset.Colors.greenDark,
             dark: STResourcesAsset.Colors.greenMain
         )
+
+        public static let recipientLabelBorder = UIColor(
+            light: STResourcesAsset.Colors.greyMouse,
+            dark: STResourcesAsset.Colors.dark2
+        )
     }
 }
 
@@ -103,10 +108,7 @@ public extension Color {
         // MARK: TextFields
 
         /// light: greyMouse / dark: dark2
-        public static let textFieldBorder = Color(
-            light: STResourcesAsset.Colors.greyMouse,
-            dark: STResourcesAsset.Colors.dark2
-        )
+        public static let textFieldBorder = recipientLabelBorder
         /// light: greyMouse / dark: dark2
         public static let focusedTextFieldBorder = primary
 
@@ -134,6 +136,8 @@ public extension Color {
         public static let recipientLabelBackground = Color(uiColor: .ST.recipientLabelBackground)
         /// see `UIColor.ST.onRecipientLabelBackground`
         public static let onRecipientLabelBackground = Color(uiColor: .ST.onRecipientLabelBackground)
+        /// see `UIColor.ST.recipientLabelBorder`
+        public static let recipientLabelBorder = Color(uiColor: .ST.recipientLabelBorder)
 
         // MARK: Cards
 
@@ -143,10 +147,7 @@ public extension Color {
             dark: STResourcesAsset.Colors.dark1
         )
         /// light: greyMouse / dark: dark2
-        public static let cardBorder = Color(
-            light: STResourcesAsset.Colors.greyMouse,
-            dark: STResourcesAsset.Colors.dark2
-        )
+        public static let cardBorder = recipientLabelBorder
 
         // MARK: File Type
 

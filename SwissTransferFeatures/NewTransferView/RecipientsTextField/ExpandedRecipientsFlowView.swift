@@ -30,7 +30,7 @@ struct ExpandedRecipientsFlowView: View {
 
     var body: some View {
         ForEach(recipients, id: \.hash) { recipient in
-            FocusableRecipientView(recipient: recipient, shouldDisplayButton: isFocused != nil) {
+            FocusableRecipientChipView(recipient: recipient, shouldDisplayButton: isFocused != nil) {
                 didPressTabKey(recipient)
             } removeRecipient: {
                 removeRecipient(recipient)

@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-public struct FocusableRecipientView: UIViewRepresentable {
+public struct FocusableRecipientChipView: UIViewRepresentable {
     @Environment(\.isEnabled) private var isEnabled
 
     private let recipient: String
@@ -38,8 +38,8 @@ public struct FocusableRecipientView: UIViewRepresentable {
         self.removeRecipient = removeRecipient
     }
 
-    public func makeUIView(context: Context) -> UIFocusableRecipientView {
-        let recipientView = UIFocusableRecipientView(text: recipient)
+    public func makeUIView(context: Context) -> UIFocusableRecipientChipView {
+        let recipientView = UIFocusableRecipientChipView(text: recipient)
         recipientView.shouldDisplayButton = shouldDisplayButton
         recipientView.didPressTabKey = didPressTabKey
         recipientView.removeRecipient = removeRecipient
@@ -47,19 +47,19 @@ public struct FocusableRecipientView: UIViewRepresentable {
         return recipientView
     }
 
-    public func updateUIView(_ uiView: UIFocusableRecipientView, context: Context) {
+    public func updateUIView(_ uiView: UIFocusableRecipientChipView, context: Context) {
         uiView.shouldDisplayButton = shouldDisplayButton
         uiView.isUserInteractionEnabled = isEnabled
     }
 
-    public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIFocusableRecipientView, context: Context) -> CGSize? {
+    public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIFocusableRecipientChipView, context: Context) -> CGSize? {
         return uiView.intrinsicContentSize
     }
 }
 
 #Preview {
     VStack {
-        FocusableRecipientView(recipient: "john.smith@ik.me", shouldDisplayButton: false)
-        FocusableRecipientView(recipient: "john.smith@ik.me", shouldDisplayButton: true)
+        FocusableRecipientChipView(recipient: "john.smith@ik.me", shouldDisplayButton: false)
+        FocusableRecipientChipView(recipient: "john.smith@ik.me", shouldDisplayButton: true)
     }
 }
