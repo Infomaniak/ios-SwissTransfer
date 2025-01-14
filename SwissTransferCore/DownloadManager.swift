@@ -77,24 +77,20 @@ public class DownloadManager: ObservableObject {
         session = URLSession(configuration: .swissTransferBackground, delegate: sessionDelegate, delegateQueue: nil)
 
         sessionDelegate.downloadCompletedSubject
-            .receive(on: DispatchQueue.global(qos: .default))
-            .sink { downloadTaskCompletion in
-                Task { [weak self] in
-                    self?.handleDownloadTaskCompletion(downloadTaskCompletion)
-                }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] downloadTaskCompletion in
+                self?.handleDownloadTaskCompletion(downloadTaskCompletion)
             }
             .store(in: &cancellables)
 
         sessionDelegate.downloadRunningSubject
-            .throttle(for: .milliseconds(500), scheduler: DispatchQueue.global(qos: .default), latest: true)
-            .sink { downloadTaskProgress in
-                Task { @MainActor [weak self] in
-                    guard self?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true else { return }
-                    self?.updateDownloadTask(
-                        id: downloadTaskProgress.id,
-                        state: .running(current: downloadTaskProgress.current, total: downloadTaskProgress.total)
-                    )
-                }
+            .throttle(for: .milliseconds(500), scheduler: DispatchQueue.main, latest: true)
+            .sink { [weak self] downloadTaskProgress in
+                guard self?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true else { return }
+                self?.updateDownloadTask(
+                    id: downloadTaskProgress.id,
+                    state: .running(current: downloadTaskProgress.current, total: downloadTaskProgress.total)
+                )
             }
             .store(in: &cancellables)
 
