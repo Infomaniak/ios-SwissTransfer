@@ -51,11 +51,27 @@ open class TargetAssembly {
             Factory(type: DownloadManager.self) { _, _ in
                 DownloadManager()
             },
-            Factory(type: SwissTransferInjection.self) { _, _ in
+            Factory(type: SwissTransferInjection.self) { _, resolver in
+                let groupPathProvider = try resolver.resolve(type: AppGroupPathProvidable.self,
+                                                             forCustomTypeIdentifier: nil,
+                                                             factoryParameters: nil,
+                                                             resolver: resolver)
+
+                let realmRootDirectory = groupPathProvider.realmRootURL.path()
+                Logger.general.info("Realm group directory \(realmRootDirectory)")
+
                 #if DEBUG
-                SwissTransferInjection(environment: STCore.ApiEnvironment.Preprod(), userAgent: UserAgentBuilder().userAgent)
+                return SwissTransferInjection(
+                    environment: STCore.ApiEnvironment.Preprod(),
+                    userAgent: UserAgentBuilder().userAgent,
+                    databaseRootDirectory: realmRootDirectory
+                )
                 #else
-                SwissTransferInjection(environment: STCore.ApiEnvironment.Prod(), userAgent: UserAgentBuilder().userAgent)
+                return SwissTransferInjection(
+                    environment: STCore.ApiEnvironment.Prod(),
+                    userAgent: UserAgentBuilder().userAgent,
+                    databaseRootDirectory: realmRootDirectory
+                )
                 #endif
             },
             Factory(type: AppSettingsManager.self) { _, resolver in
@@ -70,7 +86,7 @@ open class TargetAssembly {
             },
             Factory(type: AppGroupPathProvidable.self) { _, _ in
                 guard let provider = AppGroupPathProvider(
-                    realmRootPath: "",
+                    realmRootPath: "database",
                     appGroupIdentifier: appGroupIdentifier
                 ) else {
                     fatalError("could not safely init AppGroupPathProvider")
