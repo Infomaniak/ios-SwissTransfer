@@ -36,7 +36,7 @@ struct ShareTransferModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .toolbar(content: {
+            .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     if let transferURL {
                         Spacer()
@@ -93,7 +93,7 @@ struct ShareTransferModifier: ViewModifier {
                         Spacer()
                     }
                 }
-            })
+            }
     }
 }
 

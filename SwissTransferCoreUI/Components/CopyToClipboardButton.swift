@@ -20,15 +20,15 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-public struct CopyToClipboardButton<T, V: LabelStyle>: View {
+public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     @State private var isCopying = false
 
     private let animation = Animation.default.speed(1.5)
 
-    let item: T
-    let labelStyle: V
+    let item: Item
+    let labelStyle: Style
 
-    public init(item: T, labelStyle: V) {
+    public init(item: Item, labelStyle: Style) {
         self.item = item
         self.labelStyle = labelStyle
     }
