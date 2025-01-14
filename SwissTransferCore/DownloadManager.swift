@@ -63,8 +63,9 @@ public class DownloadManager: ObservableObject {
         session = URLSession(configuration: .swissTransferBackground, delegate: sessionDelegate, delegateQueue: nil)
 
         sessionDelegate.downloadCompletedSubject
+            .receive(on: DispatchQueue.global(qos: .default))
             .sink { downloadTaskCompletion in
-                Task { @MainActor [weak self] in
+                Task { [weak self] in
                     self?.handleDownloadTaskCompletion(downloadTaskCompletion)
                 }
             }
