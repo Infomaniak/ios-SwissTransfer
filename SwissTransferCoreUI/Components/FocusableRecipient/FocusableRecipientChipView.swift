@@ -53,7 +53,9 @@ public struct FocusableRecipientChipView: UIViewRepresentable {
     }
 
     public func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIFocusableRecipientChipView, context: Context) -> CGSize? {
-        return uiView.intrinsicContentSize
+        let intrinsicContentSize = uiView.intrinsicContentSize
+        let minWidth = min(proposal.width ?? .infinity, intrinsicContentSize.width)
+        return CGSize(width: minWidth, height: intrinsicContentSize.height)
     }
 }
 

@@ -49,7 +49,7 @@ public final class UIFocusableRecipientChipView: UIView, UIKeyInput {
         if shouldDisplayButton {
             buttonWidth = Self.buttonImageSize + Self.buttonInset * 2
         } else {
-            labelWidth += IKPadding.small
+            labelWidth += IKPadding.intermediate
         }
 
         let width = labelWidth + buttonWidth
