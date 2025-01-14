@@ -54,8 +54,6 @@ public struct TransferDetailsView: View {
             .stNavigationBarStyle()
             .stNavigationBarFullScreen(title: transfer.name)
             .navigationDestination(for: FileUi.self) { file in
-                // Get children of file using func in a stash
-                // Find a way to use FileList and ContentView
                 FileListView(folder: file, container: transfer.uuid)
             }
             .toolbar {

@@ -65,5 +65,5 @@ struct FileListView: View {
 }
 
 #Preview {
-//    InnerContentView(folder: "")
+    FileListView(folder: PreviewHelper.sampleFolder, container: nil)
 }

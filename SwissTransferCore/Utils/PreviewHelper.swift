@@ -20,6 +20,16 @@ import Foundation
 import STCore
 
 public enum PreviewHelper {
+    public static let sampleFolder = FileUi(
+        uid: "folderUUID",
+        fileName: "Folder name",
+        path: nil,
+        isFolder: true,
+        fileSize: 8561,
+        mimeType: nil,
+        localPath: nil
+    )
+
     public static let sampleFile = FileUi(
         uid: "fileUUID",
         fileName: "File name",
