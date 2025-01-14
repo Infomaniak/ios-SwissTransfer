@@ -108,9 +108,16 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
     override public func layoutSubviews() {
         super.layoutSubviews()
 
-        if label.bounds.width > bounds.width {
+        var availableWidth = bounds.width - Constants.labelInsets.right
+        if shouldDisplayButton {
+            availableWidth -= Constants.buttonTotalWidth
+        } else {
+            availableWidth -= Constants.labelInsets.left
+        }
+
+        if label.bounds.width > availableWidth {
             NSLayoutConstraint.activate([
-                label.widthAnchor.constraint(equalToConstant: bounds.width - IKPadding.intermediate * 2)
+                label.widthAnchor.constraint(equalToConstant: availableWidth)
             ])
             setNeedsLayout()
         }
