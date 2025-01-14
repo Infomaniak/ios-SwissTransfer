@@ -40,15 +40,11 @@ struct DownloadableFileCellView: View {
                 url: file.localURL(in: transfer),
                 mimeType: file.mimeType ?? ""
             )
-            .overlay(alignment: .topTrailing) {
-                if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
-                    DownloadProgressView(downloadTask: downloadTask, downloadCompleteCallback: presentFile(at:))
-                        .frame(width: 20, height: 20)
-                        .padding(value: .small)
-                }
-            }
         }
         .buttonStyle(.plain)
+        .downloadProgressAlertFor(transfer: transfer, file: file) { downloadedFileURL in
+            presentFile(at: downloadedFileURL)
+        }
         .quickLookPreview($downloadedFilePreviewURL)
         .sheet(item: $downloadedDirectoryURL) { downloadedFileURL in
             ActivityView(sharedFileURL: downloadedFileURL.url)
@@ -56,18 +52,18 @@ struct DownloadableFileCellView: View {
     }
 
     private func startOrCancelDownloadIfNeeded() {
-        if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
-            downloadManager.removeDownloadTask(id: downloadTask.id)
-            return
-        }
-
-        if let localURL = file.localURL(in: transfer),
-           FileManager.default.fileExists(atPath: localURL.path()) {
-            presentFile(at: localURL)
-            return
-        }
-
         Task {
+            if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
+                await downloadManager.removeDownloadTask(id: downloadTask.id)
+                return
+            }
+
+            if let localURL = file.localURL(in: transfer),
+               FileManager.default.fileExists(atPath: localURL.path()) {
+                presentFile(at: localURL)
+                return
+            }
+
             try await downloadManager.startDownload(file: file, in: transfer)
         }
     }

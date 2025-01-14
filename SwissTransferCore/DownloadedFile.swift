@@ -23,6 +23,12 @@ struct DownloadTaskCompletion {
     let result: Result<DownloadedFile, Error>
 }
 
+struct DownloadTaskProgress {
+    let id: String
+    let current: Int64
+    let total: Int64
+}
+
 struct DownloadedFile {
     let filename: String
     let url: URL

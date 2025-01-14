@@ -21,25 +21,39 @@ import Foundation
 import InfomaniakDI
 import STCore
 
-public struct DownloadTask: Equatable, Sendable {
+public struct DownloadTask: Equatable, Sendable, Identifiable {
     public let id: String
     public let state: DownloadTaskState
+
+    public init(id: String, state: DownloadTaskState) {
+        self.id = id
+        self.state = state
+    }
 }
 
 public enum DownloadTaskState: Equatable, Sendable {
-    case running(URLSessionTask)
+    case running(current: Int64, total: Int64)
     case completed(URL)
     case error(Error)
 
     public static func == (lhs: DownloadTaskState, rhs: DownloadTaskState) -> Bool {
         switch (lhs, rhs) {
-        case (.running(let lhs), .running(let rhs)):
-            return lhs.taskIdentifier == rhs.taskIdentifier
+        case (.running(let lhsCurrent, let lhsTotal), .running(let rhsCurrent, let rhsTotal)):
+            return lhsCurrent == rhsCurrent && lhsTotal == rhsTotal
         case (.completed(let lhs), .completed(let rhs)):
             return lhs == rhs
         case (.error(let lhs), .error(let rhs)):
             return lhs.localizedDescription == rhs.localizedDescription
         default: return false
+        }
+    }
+
+    var isRunning: Bool {
+        switch self {
+        case .running:
+            return true
+        default:
+            return false
         }
     }
 }
@@ -63,22 +77,41 @@ public class DownloadManager: ObservableObject {
         session = URLSession(configuration: .swissTransferBackground, delegate: sessionDelegate, delegateQueue: nil)
 
         sessionDelegate.downloadCompletedSubject
-            .receive(on: DispatchQueue.global(qos: .default))
-            .sink { downloadTaskCompletion in
-                Task { [weak self] in
-                    self?.handleDownloadTaskCompletion(downloadTaskCompletion)
-                }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] downloadTaskCompletion in
+                self?.handleDownloadTaskCompletion(downloadTaskCompletion)
             }
             .store(in: &cancellables)
+
+        sessionDelegate.downloadRunningSubject
+            .throttle(for: .milliseconds(500), scheduler: DispatchQueue.main, latest: true)
+            .sink { [weak self] downloadTaskProgress in
+                guard self?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true else { return }
+                self?.updateDownloadTask(
+                    id: downloadTaskProgress.id,
+                    state: .running(current: downloadTaskProgress.current, total: downloadTaskProgress.total)
+                )
+            }
+            .store(in: &cancellables)
+
+        Task {
+            for task in await session.allTasks {
+                guard let taskId = task.taskDescription else { return }
+                updateDownloadTask(id: taskId, state: .running(current: 0, total: 1))
+            }
+        }
     }
 
     public func getDownloadTaskFor(file: FileUi, in transfer: TransferUi) -> DownloadTask? {
-        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
-        return trackedDownloadTasks[taskId]
+        return getDownloadTaskFor(transfer: transfer, file: file)
     }
 
     public func getDownloadTaskFor(transfer: TransferUi) -> DownloadTask? {
-        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
+        return getDownloadTaskFor(transfer: transfer, file: nil)
+    }
+
+    public func getDownloadTaskFor(transfer: TransferUi, file: FileUi?) -> DownloadTask? {
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file?.uid)
         return trackedDownloadTasks[taskId]
     }
 
@@ -86,24 +119,24 @@ public class DownloadManager: ObservableObject {
         trackedDownloadTasks[id] = DownloadTask(id: id, state: state)
     }
 
-    public func removeDownloadTask(id: String) {
-        guard let trackedDownloadTask = trackedDownloadTasks[id] else { return }
-        if case .running(let task) = trackedDownloadTask.state {
+    public func removeDownloadTask(id: String) async {
+        if let task = await session.allTasks.first(where: { $0.taskDescription == id }) {
             task.cancel()
         }
+
         trackedDownloadTasks[id] = nil
     }
 
     public func startDownload(file: FileUi, in transfer: TransferUi) async throws {
         let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
-        try createDownloadTask(url: downloadURL, taskId: taskId)
+        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
     }
 
     public func startDownload(transfer: TransferUi) async throws {
         let downloadURL = try await getDownloadURLFor(transfer: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
-        try createDownloadTask(url: downloadURL, taskId: taskId)
+        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
     private func taskId(transferUUID: String, fileUUID: String?) -> String {
@@ -136,14 +169,15 @@ public class DownloadManager: ObservableObject {
         return downloadURL
     }
 
-    private func createDownloadTask(url downloadURL: URL, taskId: String) throws {
+    private func createDownloadTask(url downloadURL: URL, taskId: String, expectedSize: Int64) throws {
         let downloadRequest = try URLRequest(url: downloadURL, method: .get)
         let sessionDownloadTask = session.downloadTask(with: downloadRequest)
         sessionDownloadTask.taskDescription = taskId
+        sessionDownloadTask.countOfBytesClientExpectsToReceive = expectedSize
 
         sessionDownloadTask.resume()
 
-        updateDownloadTask(id: taskId, state: .running(sessionDownloadTask))
+        updateDownloadTask(id: taskId, state: .running(current: 0, total: 1))
     }
 
     private func handleDownloadTaskCompletion(_ downloadTaskCompletion: DownloadTaskCompletion) {
@@ -202,6 +236,7 @@ public class DownloadManager: ObservableObject {
 
 final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate, Sendable {
     let downloadCompletedSubject = PassthroughSubject<DownloadTaskCompletion, Never>()
+    let downloadRunningSubject = PassthroughSubject<DownloadTaskProgress, Never>()
 
     enum ErrorDomain: Error {
         case badResult(URL?)
@@ -216,6 +251,27 @@ final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate
             id: taskDescription,
             result: .failure(ErrorDomain.badResult(nil))
         ))
+    }
+
+    func urlSession(
+        _ session: URLSession,
+        downloadTask: URLSessionDownloadTask,
+        didWriteData bytesWritten: Int64,
+        totalBytesWritten: Int64,
+        totalBytesExpectedToWrite: Int64
+    ) {
+        guard let taskDescription = downloadTask.taskDescription, downloadTask.state == .running else { return }
+
+        let total = totalBytesExpectedToWrite != NSURLSessionTransferSizeUnknown && totalBytesExpectedToWrite > 0 ?
+            totalBytesExpectedToWrite : downloadTask.countOfBytesClientExpectsToReceive
+
+        downloadRunningSubject.send(
+            DownloadTaskProgress(
+                id: taskDescription,
+                current: totalBytesWritten,
+                total: total
+            )
+        )
     }
 
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
