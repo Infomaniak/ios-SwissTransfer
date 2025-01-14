@@ -20,8 +20,17 @@ import InfomaniakCoreSwiftUI
 import UIKit
 
 public final class UISTFocusableChipView: UIView, UIKeyInput {
-    private static let buttonImageSize: CGFloat = 12
-    private static let buttonInset = IKPadding.small
+    private enum Constants {
+        // Button
+        static let buttonInset = IKPadding.small
+        static let buttonImageSize: CGFloat = 12
+        static var buttonTotalWidth: CGFloat {
+            buttonImageSize + 2 * buttonInset
+        }
+
+        // Label
+        static let labelInsets: UIEdgeInsets = .init(top: 6, left: 12, bottom: 6, right: 12)
+    }
 
     public var shouldDisplayButton = false {
         didSet {
@@ -42,19 +51,20 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
     }
 
     override public var intrinsicContentSize: CGSize {
-        let labelSize = label.intrinsicContentSize
-        let buttonSize = button.intrinsicContentSize
+        let labelContentSize = label.intrinsicContentSize
+        let buttonContentSize = button.intrinsicContentSize
 
-        var labelWidth = labelSize.width + IKPadding.intermediate
+        let labelHeight = labelContentSize.height + Constants.labelInsets.top + Constants.labelInsets.bottom
+        var labelWidth = labelContentSize.width + Constants.labelInsets.left
         var buttonWidth = CGFloat.zero
         if shouldDisplayButton {
-            buttonWidth = Self.buttonImageSize + Self.buttonInset * 2
+            buttonWidth = Constants.buttonTotalWidth
         } else {
-            labelWidth += IKPadding.intermediate
+            labelWidth += Constants.labelInsets.right
         }
 
         let width = labelWidth + buttonWidth
-        let height = max(labelSize.height + 6 * 2, buttonSize.height)
+        let height = max(labelHeight, buttonContentSize.height)
         return CGSize(width: width, height: height)
     }
 
@@ -70,7 +80,7 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
         let button = UIButton(configuration: .plain())
         button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration?.image = UIImage(systemName: "xmark")?
-            .withConfiguration(UIImage.SymbolConfiguration(pointSize: buttonImageSize))
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: Constants.buttonImageSize))
         return button
     }()
 
@@ -129,11 +139,11 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
         button.addAction(action, for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 6),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: IKPadding.intermediate),
-            label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -6),
+            label.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: Constants.labelInsets.top),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.labelInsets.left),
+            label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -Constants.labelInsets.bottom),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
-            trailingAnchor.constraint(greaterThanOrEqualTo: label.trailingAnchor, constant: IKPadding.intermediate)
+            trailingAnchor.constraint(greaterThanOrEqualTo: label.trailingAnchor, constant: Constants.labelInsets.right)
         ])
 
         buttonConstraints = [
@@ -141,7 +151,7 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
 
             button.trailingAnchor.constraint(equalTo: trailingAnchor),
             button.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-            button.widthAnchor.constraint(equalToConstant: Self.buttonImageSize + 2 * Self.buttonInset)
+            button.widthAnchor.constraint(equalToConstant: Constants.buttonImageSize + Constants.buttonInset * 2)
         ]
 
         updateColors()
