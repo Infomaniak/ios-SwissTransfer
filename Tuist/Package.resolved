@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "eaf53f35780befa26d2ac30c8262d7529352bfb9",
-        "version" : "13.0.0"
+        "revision" : "9fdaf17dea8d950a520d240f21391be6195239fd",
+        "version" : "13.1.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-login",
       "state" : {
-        "revision" : "b12bf4fbbfe0edf10d2516503e97a9f212d1cd5b",
-        "version" : "7.0.1"
+        "revision" : "b7791f1321c86a9aa0e52eb79acb5c6318a3810a",
+        "version" : "7.1.0"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/lottie-spm.git",
       "state" : {
-        "revision" : "b842598f1295f3ffa1475b1580672d1fe5b83580",
-        "version" : "4.5.0"
+        "revision" : "8c6edf4f0fa84fe9c058600a4295eb0c01661c69",
+        "version" : "4.5.1"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "67865ac7b9930cf15220d46444b78a193ffb5234",
-        "version" : "0.10.0"
+        "revision" : "5ffc600c4bcdfcbf36b27586ea933ae46ec54a54",
+        "version" : "0.11.0"
       }
     },
     {
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "c1404acfa3a71e42aa789c6d5564da59d4377569",
-        "version" : "8.42.1"
+        "revision" : "f45e9c62d7a4d9258ac3cf35a3acf9dbab4481d1",
+        "version" : "8.43.0"
       }
     },
     {

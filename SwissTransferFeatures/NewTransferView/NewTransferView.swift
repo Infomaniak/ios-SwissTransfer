@@ -119,7 +119,7 @@ public struct NewTransferView: View {
                 message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
                 numberOfDownload: viewModel.downloadLimit,
                 language: viewModel.emailLanguage,
-                recipientsEmails: recipientsEmail,
+                recipientsEmails: Set(recipientsEmail),
                 files: filesToUpload
             )
 

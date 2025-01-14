@@ -118,7 +118,7 @@ public struct VerifyMailView: View {
                 let uploadSession = try await injection.uploadManager
                     .createUploadSession(newUploadSession: uploadSessionWithEmailToken)
 
-                try await injection.emailTokensManager.setEmailToken(email: newUploadSession.authorEmail, token: token)
+                try await injection.emailTokensManager.setEmailToken(email: newUploadSession.authorEmail, emailToken: token)
 
                 withAnimation {
                     rootTransferViewState.transition(to: .uploadProgress(uploadSession))

@@ -39,6 +39,7 @@ public enum PreviewHelper {
         downloadLeft: 249,
         message: "Some message",
         password: nil,
+        recipients: Set(),
         files: [sampleFile]
     )
 
@@ -51,6 +52,7 @@ public enum PreviewHelper {
         downloadLeft: 249,
         message: "Some message",
         password: nil,
+        recipients: Set(),
         files: [sampleFile]
     )
 
