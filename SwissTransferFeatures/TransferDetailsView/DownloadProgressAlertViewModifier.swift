@@ -71,15 +71,11 @@ struct DownloadProgressAlert: View {
         .task(id: downloadTask.state) {
             switch downloadTask.state {
             case .completed(let url):
-                Task { @MainActor in
-                    await downloadManager.removeDownloadTask(id: downloadTask.id)
-                    downloadCompletedCallback?(url)
-                }
+                await downloadManager.removeDownloadTask(id: downloadTask.id)
+                downloadCompletedCallback?(url)
             case .running(let current, let total):
-                withAnimation {
-                    currentProgress = current
-                    totalProgress = total
-                }
+                currentProgress = current
+                totalProgress = total
             default:
                 break
             }
