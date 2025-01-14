@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STCore
 import STResources
 import SwiftUI
@@ -45,7 +46,7 @@ struct DownloadProgressAlert: View {
     let downloadCompletedCallback: ((URL) -> Void)?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: IKPadding.small) {
             Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                 .font(.ST.headline)
             ProgressView(value: Double(currentProgress) / Double(totalProgress))
@@ -67,6 +68,7 @@ struct DownloadProgressAlert: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
+            .buttonStyle(.ikBorderless(isInlined: true))
         }
         .task(id: downloadTask.state) {
             switch downloadTask.state {
