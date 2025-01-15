@@ -11,7 +11,8 @@ let transferList = Feature(name: "TransferList")
 // MARK: New Transfer & Upload
 
 let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
-    TargetDependency.external(name: "InfomaniakConcurrency")
+    TargetDependency.external(name: "InfomaniakConcurrency"),
+    TargetDependency.external(name: "OrderedCollections")
 ])
 let uploadProgressView = Feature(name: "UploadProgressView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakCore"),
@@ -132,7 +133,8 @@ let project = Project(
                 dependencies: [
                     .target(name: "SwissTransferCore"),
                     .external(name: "QRCode"),
-                    .external(name: "SwiftUIIntrospect-Static")
+                    .external(name: "SwiftUIIntrospect-Static"),
+                    .external(name: "OrderedCollections")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",

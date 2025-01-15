@@ -93,10 +93,7 @@ struct PasswordSettingView: View {
                     .foregroundStyle(Color.ST.textSecondary)
                     .padding(value: .intermediate)
                 }
-                .overlay(
-                    RoundedRectangle(cornerRadius: IKRadius.small)
-                        .strokeBorder(Color.ST.textFieldBorder)
-                )
+                .inputStyle(isFocused: focusedField != nil, withPadding: false)
             }
         }
         .padding(value: .medium)

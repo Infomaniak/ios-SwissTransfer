@@ -17,15 +17,17 @@
  */
 
 import InfomaniakCoreSwiftUI
+import OrderedCollections
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct UploadSuccessMailView: View {
     @Environment(\.dismiss) private var dismiss
 
-    let recipients: [String]
+    let recipients: OrderedSet<String>
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
@@ -39,7 +41,7 @@ struct UploadSuccessMailView: View {
             FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
                 ForEach(recipients, id: \.self) { recipient in
                     Text(recipient)
-                        .roundedLabel()
+                        .stChip()
                 }
             }
             .frame(maxWidth: 800)
@@ -56,12 +58,9 @@ struct UploadSuccessMailView: View {
 }
 
 #Preview("One Recipient") {
-    UploadSuccessMailView(recipients: ["john.smith@ik.me"])
+    UploadSuccessMailView(recipients: OrderedSet(["john.smith@ik.me"]))
 }
 
 #Preview("Many Recipients") {
-    let recipients = Array(repeating: "short@ik.me", count: 2)
-        + Array(repeating: "long-email@infomaniak.com", count: 2)
-        + Array(repeating: "middle@infomaniak.com", count: 3)
-    UploadSuccessMailView(recipients: recipients.shuffled())
+    UploadSuccessMailView(recipients: OrderedSet(PreviewHelper.sampleListOfRecipients))
 }

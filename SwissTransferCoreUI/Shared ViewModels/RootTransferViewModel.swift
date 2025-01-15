@@ -18,12 +18,13 @@
 
 import Foundation
 import InfomaniakDI
+import OrderedCollections
 import STCore
 
 public final class RootTransferViewModel: ObservableObject {
     @Published public var transferType = TransferType.qrCode
     @Published public var authorEmail = ""
-    @Published public var recipientEmail = ""
+    @Published public var recipientsEmail = OrderedSet<String>()
     @Published public var message = ""
     @Published public var password = ""
     @Published public var validityPeriod = ValidityPeriod.thirty

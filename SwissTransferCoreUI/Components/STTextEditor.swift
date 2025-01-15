@@ -52,11 +52,7 @@ public struct STTextEditor: View {
                 }
         }
         .frame(minHeight: size, alignment: .top)
-        .padding(value: .intermediate)
-        .overlay(
-            RoundedRectangle(cornerRadius: IKRadius.small)
-                .strokeBorder(isFocused ? Color.ST.primary : Color.ST.textFieldBorder)
-        )
+        .inputStyle(isFocused: isFocused)
     }
 }
 

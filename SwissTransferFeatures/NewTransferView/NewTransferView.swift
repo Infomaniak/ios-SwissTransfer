@@ -50,7 +50,7 @@ public struct NewTransferView: View {
 
                     NewTransferDetailsView(
                         authorEmail: $viewModel.authorEmail,
-                        recipientEmail: $viewModel.recipientEmail,
+                        recipientsEmail: $viewModel.recipientsEmail,
                         message: $viewModel.message,
                         transferType: viewModel.transferType
                     )
@@ -94,10 +94,9 @@ public struct NewTransferView: View {
         Task {
             isLoadingFileToUpload = true
 
-            var recipientsEmail = [String]()
-            if viewModel.transferType == .mail,
-               viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false {
-                recipientsEmail.append("\"" + viewModel.recipientEmail.trimmingCharacters(in: .whitespacesAndNewlines) + "\"")
+            var transformedRecipients = [String]()
+            if viewModel.transferType == .mail {
+                transformedRecipients = viewModel.recipientsEmail.map { "\"" + $0 + "\"" }
             }
 
             var authorTrimmedEmail = ""
@@ -119,7 +118,7 @@ public struct NewTransferView: View {
                 message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
                 numberOfDownload: viewModel.downloadLimit,
                 language: viewModel.emailLanguage,
-                recipientsEmails: Set(recipientsEmail),
+                recipientsEmails: Set(transformedRecipients),
                 files: filesToUpload
             )
 
