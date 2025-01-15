@@ -10,7 +10,8 @@ let packageSettings = PackageSettings(
         "InfomaniakCore": .framework,
         "InfomaniakCoreSwiftUI": .framework,
         "InfomaniakConcurrency": .framework,
-        "SwiftUIIntrospect": .framework
+        "SwiftUIIntrospect": .framework,
+        "OrderedCollections": .framework
     ]
 )
 #endif
