@@ -19,6 +19,8 @@
 import Foundation
 import STCore
 
+extension TransferUi: Identifiable {}
+
 public extension TransferUi {
     var name: String {
         return date.formatted(.prettyDate)

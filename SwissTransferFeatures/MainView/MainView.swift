@@ -50,6 +50,9 @@ public struct MainView: View {
             mainViewState.selectedTransfer = linkedTransfer
             universalLinksState.linkedTransfer = nil
         }
+        .task(id: isCompactWindow) {
+            mainViewState.isSplitView = !isCompactWindow
+        }
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
             RootTransferView(initialItems: container.importedItems)
         }

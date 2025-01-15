@@ -20,6 +20,7 @@ import SwiftUI
 
 struct STNavigationBarFullScreenModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismiss
+    @Environment(\.isCompactWindow) private var isCompactWindow
 
     let title: String
 
@@ -27,11 +28,13 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
         content
             .stNavigationTitle(title)
             .toolbar {
-                ToolbarItem(placement: .destructiveAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
+                if isCompactWindow {
+                    ToolbarItem(placement: .destructiveAction) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
                     }
                 }
             }

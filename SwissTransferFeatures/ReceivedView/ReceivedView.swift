@@ -21,9 +21,11 @@ import STTransferDetailsView
 import STTransferList
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct ReceivedView: View {
     @EnvironmentObject private var transferManager: TransferManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     public init() {}
 
@@ -31,10 +33,8 @@ public struct ReceivedView: View {
         TransferList(transferManager: transferManager, origin: .received) {
             ReceivedEmptyView()
         }
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            if case .transfer(let transfer) = destination {
-                TransferDetailsView(transfer: transfer)
-            }
+        .fullScreenCover(item: $mainViewState.transfer) { transfer in
+            TransferDetailsView(transfer: transfer)
         }
     }
 }

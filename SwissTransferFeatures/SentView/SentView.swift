@@ -33,8 +33,8 @@ public struct SentView: View {
         TransferList(transferManager: transferManager, origin: .sent) {
             SentEmptyView()
         }
-        .fullScreenCover(item: $mainViewState.transferContainer) { transferContainer in
-            TransferDetailsView(transfer: transferContainer.transfer)
+        .fullScreenCover(item: $mainViewState.transfer) { transfer in
+            TransferDetailsView(transfer: transfer)
         }
     }
 }
