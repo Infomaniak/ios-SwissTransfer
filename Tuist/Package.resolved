@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "branch" : "fix-flow-layout",
-        "revision" : "b3625085dd3a438287c0f809b495fd30fd5f0bae"
+        "revision" : "1e717057950cd8e3664f0930bd8da3c798ba158f",
+        "version" : "16.3.0"
       }
     },
     {
