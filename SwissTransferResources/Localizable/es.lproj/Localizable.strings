@@ -461,6 +461,9 @@
 /* loco:66c5ef9c409f7ef5ca058e34 */
 "urlAbout" = "https://www.infomaniak.com/es/about";
 
+/* loco:66c5ef608055a7b4f70c4022 */
+"urlUserReport" = "https://feedback.userreport.com/60e9cc6b-8352-451c-ae3d-8fe4722f85d6/#ideas/popular";
+
 /* loco:6707f8d793cc933d520740f4 */
 "validateMailCodeIncorrectError" = "El código introducido es incorrecto";
 
