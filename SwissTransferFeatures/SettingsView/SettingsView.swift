@@ -24,12 +24,10 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-// TODO: i18n needed for links. A ticket was created.
 /// Links used in the settings view
 enum SettingLinks {
-    static let discoverInfomaniak = URL(string: "https://www.infomaniak.com/en/about")!
-    static let shareYourIdeas =
-        URL(string: "https://feedback.userreport.com/f12466ad-db5b-4f5c-b24c-a54b0a5117ca/#ideas/popular")!
+    static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
+    static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
 }
 
 public struct SettingsView: View {
