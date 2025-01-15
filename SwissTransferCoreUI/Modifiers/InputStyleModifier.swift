@@ -46,7 +46,7 @@ struct InputStyleModifier: ViewModifier {
                 .padding(withPadding ? IKPadding.intermediate : 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: IKRadius.small)
-                        .strokeBorder(strokeColor)
+                        .strokeBorder(strokeColor, lineWidth: isFocused ? 2 : 1)
                 )
 
             if case .errorWithMessage(let message) = error {
