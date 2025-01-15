@@ -50,8 +50,8 @@ public final class MainViewState: ObservableObject {
 
             if isSplitView {
                 paths[selectedTab] = [newValue]
-            } else if case .transfer(let transfer) = newValue {
-                self.transfer = transfer
+            } else if case .transfer(let newTransfer) = newValue {
+                transfer = newTransfer
             }
         }
     }
