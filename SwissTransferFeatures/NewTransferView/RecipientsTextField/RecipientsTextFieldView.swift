@@ -55,8 +55,9 @@ struct RecipientsTextFieldView: View {
 
     var body: some View {
         FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
-            if focusedView == nil {
+            if !isFocused {
                 CollapsedRecipientsFlowView(recipients: recipients)
+                    .contentShape(Rectangle())
                     .onTapGesture(perform: didTapCollapsedChips)
             } else {
                 ExpandedRecipientsFlowView(focusedView: _focusedView, recipients: $recipients)

@@ -32,19 +32,24 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
         static let labelInsets: UIEdgeInsets = .init(top: 6, left: 12, bottom: 6, right: 12)
     }
 
-    public var shouldDisplayButton = false {
+    public var text: String {
         didSet {
-            toggleButton()
+            label.text = text
         }
     }
 
     public var didPressTabKey: (() -> Void)?
     public var removeRecipient: (() -> Void)?
 
-    private let text: String
-    private var buttonConstraints = [NSLayoutConstraint]()
+    public var shouldDisplayButton = false {
+        didSet {
+            toggleButton()
+        }
+    }
 
     public let hasText = false
+
+    private var buttonConstraints = [NSLayoutConstraint]()
 
     override public var canBecomeFirstResponder: Bool {
         return isUserInteractionEnabled
@@ -137,7 +142,6 @@ public final class UISTFocusableChipView: UIView, UIKeyInput {
         translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 8
 
-        label.text = text
         addSubview(label)
 
         let action = UIAction { [weak self] _ in

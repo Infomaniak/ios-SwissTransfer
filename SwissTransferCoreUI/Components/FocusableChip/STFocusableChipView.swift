@@ -49,6 +49,7 @@ public struct STFocusableChipView: UIViewRepresentable {
 
     public func updateUIView(_ uiView: UISTFocusableChipView, context: Context) {
         uiView.shouldDisplayButton = shouldDisplayButton
+        uiView.text = recipient
         uiView.isUserInteractionEnabled = isEnabled
     }
 
