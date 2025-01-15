@@ -65,16 +65,21 @@ struct RecipientsTextFieldView: View {
             AdvancedTextField(text: $text, placeholder: placeholder, onSubmit: didSubmitNewRecipient, onBackspace: didBackspace)
                 .focused($focusedView, equals: .textField)
                 .frame(minWidth: isFocused ? 40 : nil)
+                .onChange(of: focusedView) { newValue in
+                    guard newValue != .textField else { return }
+                    checkAndInsertNewRecipient()
+                }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .inputStyle(isFocused: isFocused, error: error)
     }
 
     private func didSubmitNewRecipient() {
-        defer {
-            focusedView = .textField
-        }
+        checkAndInsertNewRecipient()
+        focusedView = .textField
+    }
 
+    private func checkAndInsertNewRecipient() {
         let trimmedRecipient = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedRecipient.isEmpty, EmailChecker(email: trimmedRecipient).validate() else { return }
 
