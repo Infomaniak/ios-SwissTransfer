@@ -97,14 +97,15 @@ public struct OnboardingView: View {
                 if let currentManager = await accountManager.getCurrentManager() {
                     let mainViewState = MainViewState(transferManager: currentManager)
 
-                    mainViewState.selectedTab = .receivedTransfers
-                    mainViewState.selectedTransfer = linkedTransfer
-
+                    if mainViewState.handleDeepLink(linkedTransfer) {
+                        universalLinksState.linkedTransfer = nil
+                    }
                     withAnimation {
                         rootViewState.state = .mainView(mainViewState)
                     }
+                } else {
+                    universalLinksState.linkedTransfer = nil
                 }
-                universalLinksState.linkedTransfer = nil
             }
         }
     }

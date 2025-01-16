@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,11 +17,16 @@
  */
 
 import Foundation
-import STCore
-import SwissTransferCore
 
-public class UniversalLinksState: ObservableObject {
-    @Published public var linkedTransfer: Result<TransferUi, IdentifiableError>?
+public struct IdentifiableError: Error, Identifiable, Equatable {
+    public var id: String { error.localizedDescription }
+    public let error: Error
 
-    public init() {}
+    public init(error: Error) {
+        self.error = error
+    }
+
+    public static func == (lhs: IdentifiableError, rhs: IdentifiableError) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

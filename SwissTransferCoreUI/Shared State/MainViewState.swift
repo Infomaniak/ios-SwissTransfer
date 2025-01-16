@@ -19,6 +19,7 @@
 import STCore
 import SwiftUI
 import SwissTransferCore
+import SwiftModalPresentation
 
 public final class MainViewState: ObservableObject {
     @Published public var selectedTab: STTab? = .sentTransfers
@@ -29,6 +30,8 @@ public final class MainViewState: ObservableObject {
     @Published public var transfer: TransferUi?
 
     public var isSplitView = false
+
+    @ModalPublished public var deepLinkPassword = false
 
     public var selectedDestination: NavigationDestination? {
         get {
@@ -71,5 +74,27 @@ public final class MainViewState: ObservableObject {
 
     public init(transferManager: TransferManager) {
         self.transferManager = transferManager
+    }
+
+    private func navigateTo(tab: STTab, destination: NavigationDestination? = nil) {
+        selectedTab = tab
+        selectedDestination = destination
+    }
+
+    public func handleDeepLink(_ result: Result<TransferUi, IdentifiableError>) -> Bool {
+        switch result {
+        case .success(let transfer):
+            navigateTo(tab: .receivedTransfers, destination: .transfer(transfer))
+            return true
+        case .failure(let error):
+            let nsError = error.error as NSError
+            if nsError.kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
+                navigateTo(tab: .receivedTransfers)
+                deepLinkPassword = true
+                return false
+            } else {
+                return true
+            }
+        }
     }
 }
