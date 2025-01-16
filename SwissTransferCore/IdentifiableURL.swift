@@ -18,15 +18,14 @@
 
 import Foundation
 
-public struct IdentifiableError: Error, Identifiable, Equatable {
-    public var id: String { error.localizedDescription }
-    public let error: Error
-
-    public init(error: Error) {
-        self.error = error
+public struct IdentifiableURL: Identifiable, Equatable {
+    public var id: String {
+        url.absoluteString
     }
 
-    public static func == (lhs: IdentifiableError, rhs: IdentifiableError) -> Bool {
-        return lhs.id == rhs.id
+    public let url: URL
+
+    public init(url: URL) {
+        self.url = url
     }
 }

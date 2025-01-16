@@ -24,7 +24,7 @@ import STCore
 public struct UniversalLinkHandler {
     public init() {}
 
-    public func handlePossibleTransferURL(_ url: URL) async -> Result<TransferUi, IdentifiableError>? {
+    public func handlePossibleTransferURL(_ url: URL) async -> UniversalLinkResult? {
         @InjectService var accountManager: AccountManager
 
         var defaultTransferManager = await accountManager.getCurrentManager()
@@ -39,9 +39,24 @@ public struct UniversalLinkHandler {
                   let transfer = try await defaultTransferManager?.getTransferByUUID(transferUUID: transferUUID)
             else { return nil }
 
-            return .success(transfer)
+            return UniversalLinkResult(link: url, result: .success(transfer))
         } catch {
-            return .failure(IdentifiableError(error: error))
+            return UniversalLinkResult(link: url, result: .failure(error))
         }
+    }
+}
+
+public struct UniversalLinkResult: Identifiable, Equatable, Sendable {
+    public var id: String { link.absoluteString }
+    public let link: URL
+    public let result: Result<TransferUi, Error>
+
+    public init(link: URL, result: Result<TransferUi, Error>) {
+        self.link = link
+        self.result = result
+    }
+
+    public static func == (lhs: UniversalLinkResult, rhs: UniversalLinkResult) -> Bool {
+        return lhs.id == rhs.id
     }
 }

@@ -21,7 +21,7 @@ import STCore
 import SwissTransferCore
 
 public class UniversalLinksState: ObservableObject {
-    @Published public var linkedTransfer: Result<TransferUi, IdentifiableError>?
+    @Published public var linkedTransfer: UniversalLinkResult?
 
     public init() {}
 }

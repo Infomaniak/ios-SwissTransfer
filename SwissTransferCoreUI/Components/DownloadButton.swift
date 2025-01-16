@@ -37,15 +37,7 @@ struct ActivityView: UIViewControllerRepresentable {
     ) {}
 }
 
-struct IdentifiableURL: Identifiable {
-    var id: String {
-        url.absoluteString
-    }
-
-    let url: URL
-}
-
-public struct DownloadButton: View {
+struct DownloadButton: View {
     @EnvironmentObject private var downloadManager: DownloadManager
 
     @State private var downloadedTransferURL: IdentifiableURL?

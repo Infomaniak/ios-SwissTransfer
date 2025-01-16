@@ -46,9 +46,8 @@ public struct MainView: View {
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
 
-            if mainViewState.handleDeepLink(linkedTransfer) {
-                universalLinksState.linkedTransfer = nil
-            }
+            mainViewState.handleDeepLink(linkedTransfer)
+            universalLinksState.linkedTransfer = nil
         }
         .task(id: isCompactWindow) {
             mainViewState.isSplitView = !isCompactWindow
@@ -56,8 +55,8 @@ public struct MainView: View {
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
             RootTransferView(initialItems: container.importedItems)
         }
-        .customAlert(isPresented: $mainViewState.deepLinkPassword) {
-            Text("Coucou")
+        .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
+            Text(identifiableURL.url.absoluteString)
         }
     }
 
