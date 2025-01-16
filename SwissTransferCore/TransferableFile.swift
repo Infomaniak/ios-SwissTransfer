@@ -19,7 +19,7 @@
 import Foundation
 import STCore
 
-public class TransferableFile: Identifiable, Hashable, DisplayableFile {
+public class TransferableFile: Hashable, DisplayableFile {
     public var uid: String {
         localURL.path()
     }

@@ -44,7 +44,7 @@ public struct FileGridView: View {
             spacing: IKPadding.medium,
             pinnedViews: []
         ) {
-            ForEach(files, id: \.uid) { file in
+            ForEach(files, id: \.id) { file in
                 if file.isFolder {
                     NavigationLink(value: file) {
                         LargeFileCell(

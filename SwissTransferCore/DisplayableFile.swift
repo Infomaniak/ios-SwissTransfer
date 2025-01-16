@@ -27,3 +27,7 @@ public protocol DisplayableFile: Identifiable, Hashable {
 
     func localURL(in container: String) -> URL?
 }
+
+public extension DisplayableFile {
+    var id: String { uid }
+}
