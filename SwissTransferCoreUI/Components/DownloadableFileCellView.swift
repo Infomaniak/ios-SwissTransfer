@@ -21,7 +21,6 @@ import OSLog
 import STCore
 import SwiftUI
 import SwissTransferCore
-import SwissTransferCoreUI
 
 struct DownloadableFileCellView: View {
     @EnvironmentObject private var downloadManager: DownloadManager

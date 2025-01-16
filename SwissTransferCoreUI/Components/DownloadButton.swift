@@ -45,14 +45,18 @@ struct IdentifiableURL: Identifiable {
     let url: URL
 }
 
-struct DownloadButton: View {
+public struct DownloadButton: View {
     @EnvironmentObject private var downloadManager: DownloadManager
 
     @State private var downloadedTransferURL: IdentifiableURL?
 
     let transfer: TransferUi
 
-    var body: some View {
+    public init(transfer: TransferUi) {
+        self.transfer = transfer
+    }
+
+    public var body: some View {
         Button(action: startOrCancelDownloadIfNeeded) {
             Label(
                 title: {

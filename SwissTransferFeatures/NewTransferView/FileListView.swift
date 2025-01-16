@@ -52,7 +52,7 @@ struct FileListView: View {
 
                 FileGridView(
                     files: files,
-                    container: nil,
+                    transfer: nil,
                     removeAction: RemoveFileAction {
                         removeFile($0, atFolderURL: folder?.localURL(in: ""))
                     }

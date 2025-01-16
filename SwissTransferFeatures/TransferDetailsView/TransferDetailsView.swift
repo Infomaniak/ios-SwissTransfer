@@ -54,7 +54,7 @@ public struct TransferDetailsView: View {
             .stNavigationBarStyle()
             .stNavigationBarFullScreen(title: transfer.name)
             .navigationDestination(for: FileUi.self) { file in
-                FileListView(folder: file, container: transfer.uuid)
+                FileListView(folder: file, transfer: transfer)
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {

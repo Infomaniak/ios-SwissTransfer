@@ -37,22 +37,7 @@ struct ContentView: View {
             Text(STResourcesStrings.Localizable.transferContentHeader)
                 .sectionHeader()
 
-            LazyVGrid(
-                columns: columns,
-                alignment: .center,
-                spacing: IKPadding.medium,
-                pinnedViews: []
-            ) {
-                ForEach(transfer.files, id: \.uid) { file in
-                    if file.isFolder {
-                        NavigationLink(value: file) {
-                            LargeFileCell(file: file, container: transfer.uuid)
-                        }
-                    } else {
-                        DownloadableFileCellView(transfer: transfer, file: file)
-                    }
-                }
-            }
+            FileGridView(files: transfer.files, transfer: transfer)
         }
     }
 }
