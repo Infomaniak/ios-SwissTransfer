@@ -87,6 +87,9 @@
 
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Expiré le %@";
+/* loco:677cfe305ec5b8afc10db732 */
+"errorIncorrectPassword" = "Mot de passe incorrect";
+
 
 /* loco:676126abcb8df55f0a08e7a2 */
 "errorUnknown" = "Une erreur est survenue";

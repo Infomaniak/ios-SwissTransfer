@@ -17,6 +17,8 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -26,9 +28,15 @@ struct DeepLinkPasswordView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var password = ""
+    @State private var error: InputErrorState?
+
     @FocusState private var isFocused: Bool
 
     let url: IdentifiableURL
+
+    private var isButtonDisabled: Bool {
+        return password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
 
     var body: some View {
         NavigationStack {
@@ -38,7 +46,7 @@ struct DeepLinkPasswordView: View {
                         .font(.ST.body)
                         .foregroundStyle(Color.ST.textSecondary)
 
-                    TogglableSecureTextField(password: $password)
+                    TogglableSecureTextField(password: $password, error: error)
                         .focused($isFocused)
                         .submitLabel(.done)
                         .onSubmit {
@@ -49,6 +57,7 @@ struct DeepLinkPasswordView: View {
                         .buttonStyle(.ikBorderedProminent)
                         .ikButtonFullWidth(true)
                         .controlSize(.large)
+                        .disabled(isButtonDisabled)
                 }
                 .padding(value: .medium)
             }
@@ -65,7 +74,24 @@ struct DeepLinkPasswordView: View {
         }
     }
 
-    private func checkPassword() {}
+    private func checkPassword() {
+        Task {
+            let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            do {
+                @InjectService var injection: SwissTransferInjection
+                let transferManager = injection.transferManager
+
+                let _ = try await transferManager.addTransferByUrl(url: url.url.path(), password: trimmedPassword)
+            } catch {
+                if (error as NSError).kotlinException is STNDeeplinkException.WrongPasswordDeeplinkException {
+                    self.error = .errorWithMessage(STResourcesStrings.Localizable.errorIncorrectPassword)
+                } else {
+                    print(error)
+                }
+            }
+        }
+    }
 }
 
 #Preview {
