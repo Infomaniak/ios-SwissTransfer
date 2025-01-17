@@ -56,7 +56,7 @@ public struct MainView: View {
             RootTransferView(initialItems: container.importedItems)
         }
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
-            Text(identifiableURL.url.absoluteString)
+            DeepLinkPasswordView(url: identifiableURL)
         }
     }
 

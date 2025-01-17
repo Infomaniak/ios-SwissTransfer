@@ -21,22 +21,13 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-enum PasswordInputFocus: Hashable, Sendable {
-    case secure
-    case clear
-}
-
 struct PasswordSettingView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn: Bool
-    @FocusState private var focusedField: PasswordInputFocus?
+    @FocusState private var isFocused: Bool
 
     @Binding var password: String
-
-    private var isShowingPassword: Bool {
-        return focusedField == .clear
-    }
 
     private var isButtonDisabled: Bool {
         return isOn && password.isEmpty
@@ -65,35 +56,8 @@ struct PasswordSettingView: View {
             .onChange(of: isOn, perform: didUpdateToggle)
 
             if isOn {
-                HStack {
-                    ZStack {
-                        TextField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
-                            .focused($focusedField, equals: .clear)
-                            .opacity(isShowingPassword ? 1 : 0)
-
-                        SecureField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
-                            .focused($focusedField, equals: .secure)
-                            .opacity(isShowingPassword ? 0 : 1)
-                    }
-                    .keyboardType(.asciiCapable)
-                    .textContentType(.password)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .padding(value: .intermediate)
-
-                    Button(action: toggleShowPassword) {
-                        if isShowingPassword {
-                            STResourcesAsset.Images.eye.swiftUIImage
-                                .iconSize(.medium)
-                        } else {
-                            STResourcesAsset.Images.eyeSlash.swiftUIImage
-                                .iconSize(.medium)
-                        }
-                    }
-                    .foregroundStyle(Color.ST.textSecondary)
-                    .padding(value: .intermediate)
-                }
-                .inputStyle(isFocused: focusedField != nil, withPadding: false)
+                TogglableSecureTextField(password: $password)
+                    .focused($isFocused)
             }
         }
         .padding(value: .medium)
@@ -110,14 +74,10 @@ struct PasswordSettingView: View {
 
     private func didUpdateToggle(_ isOn: Bool) {
         if isOn {
-            focusedField = .secure
+            isFocused = true
         } else {
             password = ""
         }
-    }
-
-    private func toggleShowPassword() {
-        focusedField = isShowingPassword ? .secure : .clear
     }
 }
 
