@@ -96,7 +96,41 @@ let project = Project(
             dependencies: [
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
+                .target(name: "SwissTransferShareExtension"),
                 rootView.asDependency
+            ],
+            settings: .settings(base: Constants.baseSettings),
+            environmentVariables: [
+                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
+            ]
+        ),
+        .target(
+            name: "SwissTransferShareExtension",
+            destinations: Set<Destination>([.iPhone, .iPad]),
+            product: .appExtension,
+            bundleId: "\(Constants.baseIdentifier).ShareExtension",
+            deploymentTargets: Constants.deploymentTarget,
+            infoPlist: .extendingDefault(with: [
+                "CFBundleName": "$(PRODUCT_NAME)",
+                "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+                "AppIdentifierPrefix": "$(AppIdentifierPrefix)",
+                "CFBundleDisplayName": "$(PRODUCT_NAME)",
+                "NSExtension": [
+                    "NSExtensionPointIdentifier": "com.apple.share-services",
+                    "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).ShareViewController",
+                    "NSExtensionAttributes": ["NSExtensionActivationRule": "SUBQUERY (extensionItems, $extensionItem, SUBQUERY ($extensionItem.attachments, $attachment, (ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.data\")).@count == $extensionItem.attachments.@count ).@count > 0"]
+                ]
+            ]),
+            sources: "SwissTransferShareExtension/Sources/**",
+            resources: [],
+            entitlements: "SwissTransfer/Resources/SwissTransfer.entitlements",
+            scripts: [
+                Constants.swiftlintScript
+            ],
+            dependencies: [
+                .target(name: "SwissTransferCore"),
+                .target(name: "SwissTransferCoreUI"),
+                rootTransferView.asDependency
             ],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
