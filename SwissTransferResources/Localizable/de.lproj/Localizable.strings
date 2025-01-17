@@ -76,6 +76,12 @@
 /* loco:677cf4a37658668b1c07d9a2 */
 "deeplinkPasswordDescription" = "Gib das Passwort ein, das du erhalten hast, um diese Dateien herunterzuladen.";
 
+/* loco:6787727e96fb165b36011422 */
+"deeplinkTransferExpired" = "Diese Überweisung ist abgelaufen";
+
+/* loco:677fbfbeb541dd8a8c0276d2 */
+"deeplinkTransferNotFound" = "Diese Übertragung gibt es nicht";
+
 /* loco:67852070453d66cb9a0033c2 */
 "downloadInProgressDialogTitle" = "Herunterladen läuft…";
 

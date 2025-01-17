@@ -78,6 +78,7 @@ struct DeepLinkPasswordView: View {
 
     private func checkPassword() {
         Task {
+            error = nil
             let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
 
             do {
@@ -93,10 +94,12 @@ struct DeepLinkPasswordView: View {
                 dismiss()
                 mainViewState.selectedTransfer = transfer
             } catch {
-                if (error as NSError).kotlinException is STNDeeplinkException.WrongPasswordDeeplinkException {
-                    self.error = .errorWithMessage(STResourcesStrings.Localizable.errorIncorrectPassword)
+                let kotlinException = (error as NSError).kotlinException
+
+                if let localizedError = kotlinException as? LocalizedError, let message = localizedError.errorDescription {
+                    self.error = .errorWithMessage(message)
                 } else {
-                    print(error)
+                    self.error = .errorWithMessage(STResourcesStrings.Localizable.errorUnknown)
                 }
             }
         }
