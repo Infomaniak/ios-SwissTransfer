@@ -27,6 +27,8 @@ import SwissTransferCoreUI
 struct DeepLinkPasswordView: View {
     @Environment(\.dismiss) private var dismiss
 
+    @EnvironmentObject private var mainViewState: MainViewState
+
     @State private var password = ""
     @State private var error: InputErrorState?
 
@@ -82,7 +84,14 @@ struct DeepLinkPasswordView: View {
                 @InjectService var injection: SwissTransferInjection
                 let transferManager = injection.transferManager
 
-                let _ = try await transferManager.addTransferByUrl(url: url.url.path(), password: trimmedPassword)
+                guard let transferUUID = try await transferManager.addTransferByUrl(
+                    url: url.url.path(),
+                    password: trimmedPassword
+                ) else { return }
+                let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
+
+                dismiss()
+                mainViewState.selectedTransfer = transfer
             } catch {
                 if (error as NSError).kotlinException is STNDeeplinkException.WrongPasswordDeeplinkException {
                     self.error = .errorWithMessage(STResourcesStrings.Localizable.errorIncorrectPassword)
