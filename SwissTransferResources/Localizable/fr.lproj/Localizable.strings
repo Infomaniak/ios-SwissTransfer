@@ -96,6 +96,8 @@
 /* loco:677cfe305ec5b8afc10db732 */
 "errorIncorrectPassword" = "Mot de passe incorrect";
 
+/* loco:6728e0698584637cc20ef6b2 */
+"errorTransferPasswordLength" = "Le mot de passe doit comporter entre 6 et 25 caractères";
 
 /* loco:676126abcb8df55f0a08e7a2 */
 "errorUnknown" = "Une erreur est survenue";
