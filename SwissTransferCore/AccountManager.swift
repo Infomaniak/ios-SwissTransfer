@@ -37,7 +37,6 @@ public actor AccountManager {
     }
 
     public func getManager(userId: UserId) async -> TransferManager? {
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         assert(userId == AccountManager.guestUserId, "Only guest user is supported")
         if let manager = managers[userId] {
             return manager

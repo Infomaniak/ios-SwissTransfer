@@ -21,28 +21,36 @@ import InfomaniakCore
 import InfomaniakDI
 
 public extension URL {
+    static func appGroupTmpDirectory() throws -> URL {
+        @InjectService var appGroupPathProvider: AppGroupPathProvidable
+
+        let tmpDirectoryURL = appGroupPathProvider.groupDirectoryURL.appending(path: "tmp", directoryHint: .isDirectory)
+
+        try FileManager.default.createDirectory(at: tmpDirectoryURL, withIntermediateDirectories: true)
+
+        return tmpDirectoryURL
+    }
+
     static func tmpUploadDirectory() throws -> URL {
-        let tmpDirectory = FileManager.default.temporaryDirectory
-            .appendingPathComponent("upload", isDirectory: true)
+        let tmpDirectory = try appGroupTmpDirectory().appendingPathComponent("upload", isDirectory: true)
         try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
         return tmpDirectory
     }
 
     static func tmpCacheDirectory() throws -> URL {
-        let tmpDirectory = FileManager.default.temporaryDirectory
-            .appendingPathComponent("cache", isDirectory: true)
+        let tmpDirectory = try appGroupTmpDirectory().appendingPathComponent("cache", isDirectory: true)
         try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
         return tmpDirectory
     }
 
     static func tmpDownloadsDirectory() throws -> URL {
-        let tmpDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("downloads", isDirectory: true)
+        let tmpDirectory = try appGroupTmpDirectory().appendingPathComponent("downloads", isDirectory: true)
         try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
         return tmpDirectory
     }
 
     static func tmpInProgressDownloadsDirectory() throws -> URL {
-        let tmpDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("inprogess", isDirectory: true)
+        let tmpDirectory = try appGroupTmpDirectory().appendingPathComponent("inprogess", isDirectory: true)
         try FileManager.default.createDirectory(at: tmpDirectory, withIntermediateDirectories: true)
         return tmpDirectory
     }
