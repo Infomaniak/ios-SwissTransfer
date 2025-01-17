@@ -20,7 +20,6 @@ import STCore
 import STTransferDetailsView
 import STTransferList
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
