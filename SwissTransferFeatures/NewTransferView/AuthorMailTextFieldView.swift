@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OrderedCollections
@@ -29,11 +30,20 @@ struct AuthorMailTextFieldView: View {
 
     @Binding var authorEmail: String
 
+    private var error: InputErrorState? {
+        let trimmedText = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmedText.isEmpty && !EmailChecker(email: trimmedText).validate() {
+            return .errorWithMessage(STResourcesStrings.Localizable.invalidAddress)
+        } else {
+            return nil
+        }
+    }
+
     var body: some View {
         TextField(STResourcesStrings.Localizable.transferSenderAddressPlaceholder, text: $authorEmail) { _ in
             saveAuthorMailAddress()
         }
-        .inputStyle(isFocused: isFocused, error: nil)
+        .inputStyle(isFocused: isFocused, error: error)
         .focused($isFocused)
         .keyboardType(.emailAddress)
         .textContentType(.emailAddress)
@@ -41,9 +51,16 @@ struct AuthorMailTextFieldView: View {
     }
 
     private func saveAuthorMailAddress() {
+        let trimmedAuthorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedAuthorEmail.isEmpty, EmailChecker(email: trimmedAuthorEmail).validate() else {
+            return
+        }
+
+        authorEmail = trimmedAuthorEmail
+
         Task {
             @InjectService var settingsManager: AppSettingsManager
-            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
+            try? await settingsManager.setLastAuthorEmail(authorEmail: trimmedAuthorEmail)
         }
     }
 }
