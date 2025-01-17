@@ -73,6 +73,15 @@
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Neuer Transfer";
 
+/* loco:677cf4a37658668b1c07d9a2 */
+"deeplinkPasswordDescription" = "Gib das Passwort ein, das du erhalten hast, um diese Dateien herunterzuladen.";
+
+/* loco:6787727e96fb165b36011422 */
+"deeplinkTransferExpired" = "Diese Überweisung ist abgelaufen";
+
+/* loco:677fbfbeb541dd8a8c0276d2 */
+"deeplinkTransferNotFound" = "Diese Übertragung gibt es nicht";
+
 /* loco:67852070453d66cb9a0033c2 */
 "downloadInProgressDialogTitle" = "Herunterladen läuft…";
 
@@ -84,6 +93,9 @@
 
 /* loco:66c725c0834eeac04c0b2ee2 */
 "expiredThe" = "Abgelaufen am %@";
+/* loco:677cfe305ec5b8afc10db732 */
+"errorIncorrectPassword" = "Falsches Kennwort";
+
 
 /* loco:676126abcb8df55f0a08e7a2 */
 "errorUnknown" = "Ein Fehler ist aufgetreten";
@@ -336,6 +348,9 @@
 
 /* loco:66c58d32b754b5821b0b2c22 */
 "settingsValidityPeriodValue-plural" = "%d Tage";
+
+/* loco:673358d1792d18d1c40c4612 */
+"sharePasswordTitle" = "Diese Übertragung ist sicher";
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Fakultativ)";

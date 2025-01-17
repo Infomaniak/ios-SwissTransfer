@@ -67,17 +67,10 @@ struct SwissTransferApp: App {
 
     func handleURL(_ url: URL) {
         Task {
-            do {
-                guard let addedTransfer = try await UniversalLinkHandler().handlePossibleTransferURL(url) else {
-                    return
-                }
-
-                universalLinksState.linkedTransfer = addedTransfer
-            } catch {
-                Logger.view.error("Error while handling URL: \(error.localizedDescription)")
-                throw UserFacingError.badTransferURL
-                // TODO: Maybe have something like tryOrDisplayError in Mail to display snackbar
+            guard let result = await UniversalLinkHandler().handlePossibleTransferURL(url) else {
+                return
             }
+            universalLinksState.linkedTransfer = result
         }
     }
 }

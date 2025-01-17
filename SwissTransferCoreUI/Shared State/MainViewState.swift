@@ -17,6 +17,7 @@
  */
 
 import STCore
+import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
 
@@ -29,6 +30,8 @@ public final class MainViewState: ObservableObject {
     @Published public var selectedFullscreenTransfer: TransferUi?
 
     public var isSplitView = false
+
+    @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
 
     public var selectedDestination: NavigationDestination? {
         get {
@@ -63,6 +66,7 @@ public final class MainViewState: ObservableObject {
         }
         set {
             guard let newValue else { return }
+            selectedTab = newValue.direction == .sent ? .sentTransfers : .receivedTransfers
             selectedDestination = .transfer(newValue)
         }
     }
@@ -71,5 +75,18 @@ public final class MainViewState: ObservableObject {
 
     public init(transferManager: TransferManager) {
         self.transferManager = transferManager
+    }
+
+    public func handleDeepLink(_ linkResult: UniversalLinkResult) {
+        switch linkResult.result {
+        case .success(let transfer):
+            selectedTransfer = transfer
+        case .failure(let error as NSError):
+            if error.kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
+                isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)
+            } else {
+                // TODO: Handle other errors
+            }
+        }
     }
 }

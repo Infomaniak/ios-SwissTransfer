@@ -21,22 +21,13 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-enum PasswordInputFocus: Hashable, Sendable {
-    case secure
-    case clear
-}
-
 struct PasswordSettingView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn: Bool
-    @FocusState private var focusedField: PasswordInputFocus?
+    @FocusState private var isFocused: Bool
 
     @Binding var password: String
-
-    private var isShowingPassword: Bool {
-        return focusedField == .clear
-    }
 
     private var isButtonDisabled: Bool {
         return isOn && password.isEmpty
@@ -48,76 +39,49 @@ struct PasswordSettingView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.large) {
-            Text(STResourcesStrings.Localizable.settingsPasswordTitle)
-                .font(.ST.title2)
-                .foregroundStyle(Color.ST.textPrimary)
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: IKPadding.large) {
+                    Text(STResourcesStrings.Localizable.settingsPasswordTitle)
+                        .font(.ST.title2)
+                        .foregroundStyle(Color.ST.textPrimary)
 
-            Text(STResourcesStrings.Localizable.settingsPasswordDescription)
-                .font(.ST.body)
-                .foregroundStyle(Color.ST.textSecondary)
+                    Text(STResourcesStrings.Localizable.settingsPasswordDescription)
+                        .font(.ST.body)
+                        .foregroundStyle(Color.ST.textSecondary)
 
-            Toggle(isOn: $isOn) {
-                Text(STResourcesStrings.Localizable.settingsPasswordToggleDescription)
-                    .font(.ST.calloutMedium)
-                    .foregroundStyle(Color.ST.textPrimary)
-            }
-            .onChange(of: isOn, perform: didUpdateToggle)
-
-            if isOn {
-                HStack {
-                    ZStack {
-                        TextField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
-                            .focused($focusedField, equals: .clear)
-                            .opacity(isShowingPassword ? 1 : 0)
-
-                        SecureField(STResourcesStrings.Localizable.settingsOptionPassword, text: $password)
-                            .focused($focusedField, equals: .secure)
-                            .opacity(isShowingPassword ? 0 : 1)
+                    Toggle(isOn: $isOn) {
+                        Text(STResourcesStrings.Localizable.settingsPasswordToggleDescription)
+                            .font(.ST.calloutMedium)
+                            .foregroundStyle(Color.ST.textPrimary)
                     }
-                    .keyboardType(.asciiCapable)
-                    .textContentType(.password)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .padding(value: .intermediate)
+                    .onChange(of: isOn, perform: didUpdateToggle)
 
-                    Button(action: toggleShowPassword) {
-                        if isShowingPassword {
-                            STResourcesAsset.Images.eye.swiftUIImage
-                                .iconSize(.medium)
-                        } else {
-                            STResourcesAsset.Images.eyeSlash.swiftUIImage
-                                .iconSize(.medium)
-                        }
+                    if isOn {
+                        TogglableSecureTextField(password: $password)
+                            .focused($isFocused)
                     }
-                    .foregroundStyle(Color.ST.textSecondary)
-                    .padding(value: .intermediate)
                 }
-                .inputStyle(isFocused: focusedField != nil, withPadding: false)
+                .padding(value: .medium)
             }
-        }
-        .padding(value: .medium)
-        .frame(maxHeight: .infinity, alignment: .top)
-        .background(Color.ST.background)
-        .safeAreaButtons {
-            Button(action: dismiss.callAsFunction) {
-                Text(STResourcesStrings.Localizable.buttonConfirm)
+            .background(Color.ST.background)
+            .safeAreaButtons {
+                Button(action: dismiss.callAsFunction) {
+                    Text(STResourcesStrings.Localizable.buttonConfirm)
+                }
+                .buttonStyle(.ikBorderedProminent)
+                .disabled(isButtonDisabled)
             }
-            .buttonStyle(.ikBorderedProminent)
-            .disabled(isButtonDisabled)
+            .stNavigationBarStyle()
         }
     }
 
     private func didUpdateToggle(_ isOn: Bool) {
         if isOn {
-            focusedField = .secure
+            isFocused = true
         } else {
             password = ""
         }
-    }
-
-    private func toggleShowPassword() {
-        focusedField = isShowingPassword ? .secure : .clear
     }
 }
 
