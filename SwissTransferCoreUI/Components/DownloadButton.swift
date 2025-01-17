@@ -37,7 +37,7 @@ struct ActivityView: UIViewControllerRepresentable {
     ) {}
 }
 
-struct DownloadButton: View {
+public struct DownloadButton: View {
     @EnvironmentObject private var downloadManager: DownloadManager
 
     @State private var downloadedTransferURL: IdentifiableURL?

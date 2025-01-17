@@ -66,6 +66,7 @@ public final class MainViewState: ObservableObject {
         }
         set {
             guard let newValue else { return }
+            selectedTab = newValue.direction == .sent ? .sentTransfers : .receivedTransfers
             selectedDestination = .transfer(newValue)
         }
     }
@@ -76,18 +77,12 @@ public final class MainViewState: ObservableObject {
         self.transferManager = transferManager
     }
 
-    private func navigateTo(tab: STTab, destination: NavigationDestination? = nil) {
-        selectedTab = tab
-        selectedDestination = destination
-    }
-
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {
         switch linkResult.result {
         case .success(let transfer):
-            navigateTo(tab: .receivedTransfers, destination: .transfer(transfer))
+            selectedTransfer = transfer
         case .failure(let error as NSError):
             if error.kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
-                navigateTo(tab: .receivedTransfers)
                 isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)
             } else {
                 // TODO: Handle other errors

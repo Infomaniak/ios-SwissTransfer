@@ -39,36 +39,40 @@ struct PasswordSettingView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.large) {
-            Text(STResourcesStrings.Localizable.settingsPasswordTitle)
-                .font(.ST.title2)
-                .foregroundStyle(Color.ST.textPrimary)
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: IKPadding.large) {
+                    Text(STResourcesStrings.Localizable.settingsPasswordTitle)
+                        .font(.ST.title2)
+                        .foregroundStyle(Color.ST.textPrimary)
 
-            Text(STResourcesStrings.Localizable.settingsPasswordDescription)
-                .font(.ST.body)
-                .foregroundStyle(Color.ST.textSecondary)
+                    Text(STResourcesStrings.Localizable.settingsPasswordDescription)
+                        .font(.ST.body)
+                        .foregroundStyle(Color.ST.textSecondary)
 
-            Toggle(isOn: $isOn) {
-                Text(STResourcesStrings.Localizable.settingsPasswordToggleDescription)
-                    .font(.ST.calloutMedium)
-                    .foregroundStyle(Color.ST.textPrimary)
-            }
-            .onChange(of: isOn, perform: didUpdateToggle)
+                    Toggle(isOn: $isOn) {
+                        Text(STResourcesStrings.Localizable.settingsPasswordToggleDescription)
+                            .font(.ST.calloutMedium)
+                            .foregroundStyle(Color.ST.textPrimary)
+                    }
+                    .onChange(of: isOn, perform: didUpdateToggle)
 
-            if isOn {
-                TogglableSecureTextField(password: $password)
-                    .focused($isFocused)
+                    if isOn {
+                        TogglableSecureTextField(password: $password)
+                            .focused($isFocused)
+                    }
+                }
+                .padding(value: .medium)
             }
-        }
-        .padding(value: .medium)
-        .frame(maxHeight: .infinity, alignment: .top)
-        .background(Color.ST.background)
-        .safeAreaButtons {
-            Button(action: dismiss.callAsFunction) {
-                Text(STResourcesStrings.Localizable.buttonConfirm)
+            .background(Color.ST.background)
+            .safeAreaButtons {
+                Button(action: dismiss.callAsFunction) {
+                    Text(STResourcesStrings.Localizable.buttonConfirm)
+                }
+                .buttonStyle(.ikBorderedProminent)
+                .disabled(isButtonDisabled)
             }
-            .buttonStyle(.ikBorderedProminent)
-            .disabled(isButtonDisabled)
+            .stNavigationBarStyle()
         }
     }
 

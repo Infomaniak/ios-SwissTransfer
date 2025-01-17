@@ -51,17 +51,14 @@ struct DeepLinkPasswordView: View {
                     TogglableSecureTextField(password: $password, error: error)
                         .focused($isFocused)
                         .submitLabel(.done)
-                        .onSubmit {
-                            checkPassword()
-                        }
-
-                    Button(STResourcesStrings.Localizable.buttonConfirm, action: checkPassword)
-                        .buttonStyle(.ikBorderedProminent)
-                        .ikButtonFullWidth(true)
-                        .controlSize(.large)
-                        .disabled(isButtonDisabled)
+                        .onSubmit(checkPassword)
                 }
                 .padding(value: .medium)
+            }
+            .safeAreaButtons {
+                Button(STResourcesStrings.Localizable.buttonConfirm, action: checkPassword)
+                    .buttonStyle(.ikBorderedProminent)
+                    .disabled(isButtonDisabled)
             }
             .onAppear {
                 isFocused = true
@@ -70,7 +67,9 @@ struct DeepLinkPasswordView: View {
             .stNavigationTitle(STResourcesStrings.Localizable.sharePasswordTitle)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(STResourcesStrings.Localizable.buttonCancel, action: dismiss.callAsFunction)
+                    Button(action: dismiss.callAsFunction) {
+                        Image(systemName: "xmark")
+                    }
                 }
             }
         }
@@ -82,8 +81,8 @@ struct DeepLinkPasswordView: View {
             let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
 
             do {
-                @InjectService var injection: SwissTransferInjection
-                let transferManager = injection.transferManager
+                @InjectService var accountManager: SwissTransferCore.AccountManager
+                guard let transferManager = await accountManager.getCurrentManager() else { return }
 
                 guard let transferUUID = try await transferManager.addTransferByUrl(
                     url: url.url.path(),
@@ -101,6 +100,7 @@ struct DeepLinkPasswordView: View {
                 } else {
                     self.error = .errorWithMessage(STResourcesStrings.Localizable.errorUnknown)
                 }
+                isFocused = true
             }
         }
     }
