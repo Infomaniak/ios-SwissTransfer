@@ -45,7 +45,7 @@ enum TmpDirType: String {
 
 @MainActor
 public final class NewTransferFileManager: ObservableObject {
-    @Published var importedItems: [ImportedItem] = []
+    @Published public private(set) var importedItems: [ImportedItem] = []
 
     private var shouldDoInitialClean = true
 
