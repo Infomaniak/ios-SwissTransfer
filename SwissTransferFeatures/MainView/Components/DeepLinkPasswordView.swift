@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -33,7 +34,7 @@ struct DeepLinkPasswordView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: IKPadding.large) {
-                    Text("!Saisi le mot de passe qui ta été fourni pour télécharger ces fichiers.")
+                    Text(STResourcesStrings.Localizable.deeplinkPasswordDescription)
                         .font(.ST.body)
                         .foregroundStyle(Color.ST.textSecondary)
 
@@ -44,12 +45,10 @@ struct DeepLinkPasswordView: View {
                             checkPassword()
                         }
 
-                    Button("!Valider") {
-                        checkPassword()
-                    }
-                    .buttonStyle(.ikBorderedProminent)
-                    .ikButtonFullWidth(true)
-                    .controlSize(.large)
+                    Button(STResourcesStrings.Localizable.buttonConfirm, action: checkPassword)
+                        .buttonStyle(.ikBorderedProminent)
+                        .ikButtonFullWidth(true)
+                        .controlSize(.large)
                 }
                 .padding(value: .medium)
             }
@@ -57,20 +56,16 @@ struct DeepLinkPasswordView: View {
                 isFocused = true
             }
             .stNavigationBarStyle()
-            .stNavigationTitle("!Ce transfert est sécurisé")
+            .stNavigationTitle(STResourcesStrings.Localizable.sharePasswordTitle)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("!Annuler") {
-                        dismiss()
-                    }
+                    Button(STResourcesStrings.Localizable.buttonCancel, action: dismiss.callAsFunction)
                 }
             }
         }
     }
 
-    private func checkPassword() {
-
-    }
+    private func checkPassword() {}
 }
 
 #Preview {
