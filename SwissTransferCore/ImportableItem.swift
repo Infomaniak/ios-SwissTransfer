@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCore
 import PhotosUI
 import SwiftUI
 import UIKit
@@ -48,6 +49,53 @@ public struct ImportedItem: Identifiable, Equatable, Hashable, Sendable {
 
 public protocol ImportableItem: Equatable, Hashable, Sendable {
     func importItem() async throws -> URL
+}
+
+extension NSItemProvider: @unchecked @retroactive Sendable, ImportableItem {
+    enum ErrorDomain: Error {
+        /// Not matching an UTI
+        case UTINotFound
+
+        /// The type needs dedicated handling
+        case unsupportedUnderlyingType
+
+        /// The item cannot be saved to a file
+        case notWritableItem
+    }
+
+    public func importItem() async throws -> URL {
+        switch underlyingType {
+        case .isURL:
+            let getURL = try ItemProviderURLRepresentation(from: self)
+            let result = try await getURL.result.get()
+            return result.url
+
+        case .isText:
+            let getText = try ItemProviderTextRepresentation(from: self)
+            let resultURL = try await getText.result.get()
+            return resultURL
+
+        case .isImageData, .isCompressedData, .isMiscellaneous:
+            let getFile = try ItemProviderFileRepresentation(from: self)
+            let result = try await getFile.result.get()
+            return result.url
+
+        case .isDirectory:
+            let getFile = try ItemProviderZipRepresentation(from: self)
+            let result = try await getFile.result.get()
+            return result.url
+
+        case .isPropertyList:
+            throw ErrorDomain.notWritableItem
+
+        case .none:
+            throw ErrorDomain.UTINotFound
+
+        // Keep it for forward compatibility
+        default:
+            throw ErrorDomain.unsupportedUnderlyingType
+        }
+    }
 }
 
 extension PhotosPickerItem: ImportableItem {

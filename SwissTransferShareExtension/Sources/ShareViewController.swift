@@ -30,7 +30,24 @@ class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let rootTransferView = RootTransferView(initialItems: [])
+        // Modify sheet size on iPadOS, property is ignored on iOS
+        preferredContentSize = CGSize(width: 540, height: 620)
+
+        guard let extensionItems: [NSExtensionItem] = extensionContext?.inputItems.compactMap({ $0 as? NSExtensionItem }),
+              !extensionItems.isEmpty else {
+            dismiss(animated: true)
+            return
+        }
+
+        let itemProviders: [NSItemProvider] = extensionItems.filteredItemProviders
+        guard !itemProviders.isEmpty else {
+            dismiss(animated: true)
+            return
+        }
+
+        let importedItems = itemProviders.map { ImportedItem(item: $0) }
+
+        let rootTransferView = RootTransferView(initialItems: importedItems)
             .tint(.ST.primary)
             .ikButtonTheme(.swissTransfer)
             .detectCompactWindow()

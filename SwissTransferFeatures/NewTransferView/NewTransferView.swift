@@ -29,6 +29,7 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @Environment(\.dismiss) private var dismiss
 
@@ -99,6 +100,9 @@ public struct NewTransferView: View {
     private func startUpload() {
         Task {
             isLoadingFileToUpload = true
+
+            // We need to ensure that we have an account initialized before starting
+            _ = await accountManager.getCurrentManager()
 
             var transformedRecipients = [String]()
             if viewModel.transferType == .mail {
