@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -24,34 +24,32 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct NewTransferDetailsView: View {
-    @Binding var authorEmail: String
-    @Binding var recipientsEmail: OrderedSet<String>
-    @Binding var message: String
+struct AuthorMailTextFieldView: View {
+    @FocusState private var isFocused
 
-    let transferType: TransferType
+    @Binding var authorEmail: String
 
     var body: some View {
-        VStack(spacing: IKPadding.medium) {
-            if transferType == .mail {
-                AuthorMailTextFieldView(authorEmail: $authorEmail)
-                RecipientsTextFieldView(recipients: $recipientsEmail)
-            }
+        TextField(STResourcesStrings.Localizable.transferSenderAddressPlaceholder, text: $authorEmail) { _ in
+            saveAuthorMailAddress()
+        }
+        .inputStyle(isFocused: isFocused, error: nil)
+        .focused($isFocused)
+        .keyboardType(.emailAddress)
+        .textContentType(.emailAddress)
+        .textInputAutocapitalization(.never)
+    }
 
-            STTextEditor(
-                text: $message,
-                placeholder: STResourcesStrings.Localizable.transferMessagePlaceholder,
-                size: 88
-            )
+    private func saveAuthorMailAddress() {
+        Task {
+            @InjectService var settingsManager: AppSettingsManager
+            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
         }
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
-    NewTransferDetailsView(
-        authorEmail: .constant(""),
-        recipientsEmail: .constant(OrderedSet()),
-        message: .constant(""),
-        transferType: .link
-    )
+    @Previewable @State var authorEmail = ""
+    AuthorMailTextFieldView(authorEmail: $authorEmail)
 }
