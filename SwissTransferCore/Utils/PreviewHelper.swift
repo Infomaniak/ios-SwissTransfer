@@ -39,8 +39,9 @@ public enum PreviewHelper {
         downloadLeft: 249,
         message: "Some message",
         password: nil,
-        recipients: Set(),
-        files: [sampleFile]
+        recipientsEmails: Set(),
+        files: [sampleFile],
+        direction: .received
     )
 
     public static let sampleOldTransfer = TransferUi(
@@ -52,8 +53,9 @@ public enum PreviewHelper {
         downloadLeft: 249,
         message: "Some message",
         password: nil,
-        recipients: Set(),
-        files: [sampleFile]
+        recipientsEmails: Set(),
+        files: [sampleFile],
+        direction: .received
     )
 
     public static let sampleNewUploadSession = NewUploadSession(
