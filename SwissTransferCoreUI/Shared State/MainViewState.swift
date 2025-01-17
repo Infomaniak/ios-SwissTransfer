@@ -25,8 +25,8 @@ public final class MainViewState: ObservableObject {
     @Published public var paths = [STTab: [NavigationDestination]]()
 
     @Published public var newTransferContainer: NewTransferContainer?
-    /// Used for TabView
-    @Published public var transfer: TransferUi?
+    /// Only used by STTabView
+    @Published public var selectedFullscreenTransfer: TransferUi?
 
     public var isSplitView = false
 
@@ -35,8 +35,8 @@ public final class MainViewState: ObservableObject {
             guard let selectedTab else { return nil }
             if isSplitView {
                 return paths[selectedTab]?.last
-            } else if let transfer {
-                return .transfer(transfer)
+            } else if let selectedFullscreenTransfer {
+                return .transfer(selectedFullscreenTransfer)
             }
             return nil
         }
@@ -44,14 +44,14 @@ public final class MainViewState: ObservableObject {
             guard let selectedTab else { return }
             guard let newValue else {
                 paths[selectedTab] = []
-                transfer = nil
+                selectedFullscreenTransfer = nil
                 return
             }
 
             if isSplitView {
                 paths[selectedTab] = [newValue]
             } else if case .transfer(let newTransfer) = newValue {
-                transfer = newTransfer
+                selectedFullscreenTransfer = newTransfer
             }
         }
     }

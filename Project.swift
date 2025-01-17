@@ -24,12 +24,15 @@ let rootTransferView = Feature(name: "RootTransferView", dependencies: [newTrans
 // MARK: Root
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
-let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferDetailsView, transferList])
-let sentView = Feature(name: "SentView", additionalDependencies: [transferDetailsView, transferList])
+let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferList])
+let sentView = Feature(name: "SentView", additionalDependencies: [transferList])
 
 let settingsView = Feature(name: "SettingsView")
 
-let mainView = Feature(name: "MainView", additionalDependencies: [settingsView, receivedView, sentView, rootTransferView])
+let mainView = Feature(
+    name: "MainView",
+    additionalDependencies: [settingsView, receivedView, sentView, transferDetailsView, rootTransferView]
+)
 
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakOnboarding")
