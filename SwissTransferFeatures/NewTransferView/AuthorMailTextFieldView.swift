@@ -17,9 +17,7 @@
  */
 
 import InfomaniakCore
-import InfomaniakCoreSwiftUI
 import InfomaniakDI
-import OrderedCollections
 import STCore
 import STResources
 import SwiftUI
