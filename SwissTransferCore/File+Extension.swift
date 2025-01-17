@@ -20,11 +20,17 @@ import Foundation
 import OSLog
 import STCore
 
+extension FileUi: DisplayableFile {}
+
 public extension FileUi {
-    func localURL(in transfer: TransferUi) -> URL? {
+    func localURL(in container: String) -> URL? {
         return try? URL.tmpDownloadsDirectory()
-            .appendingPathComponent("\(transfer.uuid)/")
+            .appendingPathComponent("\(container)/")
             .appendingPathComponent("\(uid)/")
             .appendingPathComponent(fileName)
+    }
+
+    func localURL(in transfer: TransferUi) -> URL? {
+        localURL(in: transfer.uuid)
     }
 }

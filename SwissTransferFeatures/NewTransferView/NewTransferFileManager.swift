@@ -62,7 +62,7 @@ public final class NewTransferFileManager: ObservableObject {
     /// Add files to Upload Folder
     /// Return the content of the folder
     @discardableResult
-    public func addItems(_ itemsToImport: [ImportedItem]) async -> [DisplayableFile] {
+    public func addItems(_ itemsToImport: [ImportedItem]) async -> [TransferableFile] {
         if shouldDoInitialClean {
             await NewTransferFileManager.cleanTmpDir(type: .upload)
             shouldDoInitialClean = false
@@ -88,9 +88,10 @@ public final class NewTransferFileManager: ObservableObject {
     /// - FileManager
     /// - Upload list
     /// - Displayable list
-    func remove(file: DisplayableFile) throws {
-        try FileManager.default.removeItem(at: file.url)
-        cleanEmptyParent(of: file.url)
+    func remove(file: TransferableFile) throws {
+        guard let url = file.localURL(in: "") else { return }
+        try FileManager.default.removeItem(at: url)
+        cleanEmptyParent(of: url)
     }
 }
 
@@ -172,7 +173,7 @@ extension NewTransferFileManager {
         return result
     }
 
-    func filesAt(folderURL: URL?) -> [DisplayableFile] {
+    func filesAt(folderURL: URL?) -> [TransferableFile] {
         let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey]
 
         do {
@@ -182,7 +183,7 @@ extension NewTransferFileManager {
             }
             let urls = try FileManager.default.contentsOfDirectory(at: src, includingPropertiesForKeys: resourceKeys)
 
-            let files = urls.compactMap { DisplayableFile(url: $0) }
+            let files = urls.compactMap { TransferableFile(url: $0) }
 
             return files
         } catch {

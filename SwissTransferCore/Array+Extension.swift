@@ -16,28 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STTransferDetailsView
-import STTransferList
-import SwiftUI
-import SwissTransferCoreUI
+import Foundation
 
-public struct ReceivedView: View {
-    @EnvironmentObject private var transferManager: TransferManager
-    @EnvironmentObject private var mainViewState: MainViewState
-
-    public init() {}
-
-    public var body: some View {
-        TransferList(transferManager: transferManager, origin: .received) {
-            ReceivedEmptyView()
-        }
-        .fullScreenCover(item: $mainViewState.transfer) { transfer in
-            TransferDetailsView(transfer: transfer)
-        }
+public extension Array where Element: DisplayableFile {
+    func filesSize() -> Int64 {
+        return map { $0.fileSize }.reduce(0, +)
     }
-}
-
-#Preview {
-    ReceivedView()
 }

@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -24,11 +25,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ContentView: View {
-    private let columns = [
-        GridItem(.flexible(), spacing: IKPadding.medium),
-        GridItem(.flexible(), spacing: IKPadding.medium)
-    ]
-
     let transfer: TransferUi
 
     var body: some View {
@@ -36,16 +32,7 @@ struct ContentView: View {
             Text(STResourcesStrings.Localizable.transferContentHeader)
                 .sectionHeader()
 
-            LazyVGrid(
-                columns: columns,
-                alignment: .center,
-                spacing: IKPadding.medium,
-                pinnedViews: []
-            ) {
-                ForEach(transfer.files, id: \.uid) { file in
-                    DownloadableFileCellView(transfer: transfer, file: file)
-                }
-            }
+            FileGridView(files: transfer.files, transfer: transfer)
         }
     }
 }

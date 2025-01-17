@@ -30,6 +30,8 @@ import SwissTransferCoreUI
 public struct NewTransferView: View {
     @LazyInjectService var injection: SwissTransferInjection
 
+    @Environment(\.dismiss) private var dismiss
+
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
@@ -45,8 +47,10 @@ public struct NewTransferView: View {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferTypeView(transferType: $viewModel.transferType)
 
-                    NewTransferFilesCellView()
-                        .padding(.horizontal, value: .medium)
+                    NavigationLink(value: TransferableRootFolder()) {
+                        NewTransferFilesCellView()
+                    }
+                    .padding(.horizontal, value: .medium)
 
                     NewTransferDetailsView(
                         authorEmail: $viewModel.authorEmail,
@@ -76,18 +80,19 @@ public struct NewTransferView: View {
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
             }
             .scrollDismissesKeyboard(.immediately)
-            .stNavigationBarNewTransfer(title: STResourcesStrings.Localizable.importFilesScreenTitle)
+            .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
-            .navigationDestination(for: DisplayableFile.self) { file in
+            .navigationDestination(for: TransferableFile.self) { file in
                 FileListView(parentFolder: file)
             }
-            .navigationDestination(for: DisplayableRootFolder.self) { _ in
+            .navigationDestination(for: TransferableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
             }
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in
                 VerifyMailView(newUploadSession: newUploadSession)
             }
         }
+        .environment(\.dismissModal) { dismiss() }
     }
 
     private func startUpload() {

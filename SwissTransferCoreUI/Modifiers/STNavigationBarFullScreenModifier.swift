@@ -18,8 +18,9 @@
 
 import SwiftUI
 
-struct STNavigationBarNewTransferModifier: ViewModifier {
-    @Environment(\.dismiss) private var dismiss
+struct STNavigationBarFullScreenModifier: ViewModifier {
+    @Environment(\.dismissModal) private var dismiss
+    @Environment(\.isCompactWindow) private var isCompactWindow
 
     let title: String
 
@@ -27,9 +28,13 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
         content
             .stNavigationTitle(title)
             .toolbar {
-                ToolbarItem(placement: .destructiveAction) {
-                    Button(action: dismiss.callAsFunction) {
-                        Image(systemName: "xmark")
+                if isCompactWindow {
+                    ToolbarItem(placement: .destructiveAction) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
                     }
                 }
             }
@@ -37,7 +42,7 @@ struct STNavigationBarNewTransferModifier: ViewModifier {
 }
 
 public extension View {
-    func stNavigationBarNewTransfer(title: String = "Transfer") -> some View {
-        modifier(STNavigationBarNewTransferModifier(title: title))
+    func stNavigationBarFullScreen(title: String = "Transfer") -> some View {
+        modifier(STNavigationBarFullScreenModifier(title: title))
     }
 }
