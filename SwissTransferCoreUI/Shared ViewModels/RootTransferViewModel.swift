@@ -44,10 +44,8 @@ public final class RootTransferViewModel: ObservableObject {
             return false
         }
 
-        if !password.isEmpty {
-            if password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength {
-                return false
-            }
+        if !password.isEmpty && (password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength) {
+            return false
         }
 
         if transferType == .mail {
