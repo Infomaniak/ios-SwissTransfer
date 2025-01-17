@@ -22,9 +22,6 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct PasswordSettingView: View {
-    let minPasswordLength = 6
-    let maxPasswordLength = 25
-
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn: Bool
@@ -39,7 +36,8 @@ struct PasswordSettingView: View {
     }
 
     private var isPasswordValid: Bool {
-        return password.count >= minPasswordLength && password.count <= maxPasswordLength
+        return password.count >= RootTransferViewModel.minPasswordLength
+            && password.count <= RootTransferViewModel.maxPasswordLength
     }
 
     init(password: Binding<String>) {

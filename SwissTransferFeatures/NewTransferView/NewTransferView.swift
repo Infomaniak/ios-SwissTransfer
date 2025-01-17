@@ -48,7 +48,7 @@ public struct NewTransferView: View {
                     NewTransferTypeView(transferType: $viewModel.transferType)
 
                     NavigationLink(value: TransferableRootFolder()) {
-                        NewTransferFilesCellView()
+                        NewTransferFilesCellView(files: $viewModel.files)
                     }
                     .padding(.horizontal, value: .medium)
 
@@ -78,6 +78,7 @@ public struct NewTransferView: View {
                 }
                 .buttonStyle(.ikBorderedProminent)
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
+                .disabled(!viewModel.isNewTransferValid)
             }
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
