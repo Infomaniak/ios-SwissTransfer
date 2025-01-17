@@ -17,23 +17,17 @@
  */
 
 import STCore
-import STTransferDetailsView
 import STTransferList
 import SwiftUI
-import SwissTransferCoreUI
 
 public struct SentView: View {
     @EnvironmentObject private var transferManager: TransferManager
-    @EnvironmentObject private var mainViewState: MainViewState
 
     public init() {}
 
     public var body: some View {
         TransferList(transferManager: transferManager, origin: .sent) {
             SentEmptyView()
-        }
-        .fullScreenCover(item: $mainViewState.transfer) { transfer in
-            TransferDetailsView(transfer: transfer)
         }
     }
 }

@@ -19,6 +19,7 @@
 import STReceivedView
 import STSentView
 import STSettingsView
+import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -36,6 +37,9 @@ struct STTabView: View {
 
             SettingsView()
                 .stTab(.settings)
+        }
+        .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transfer in
+            TransferDetailsView(transfer: transfer)
         }
     }
 }
