@@ -20,6 +20,7 @@ import STCore
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+import InfomaniakDI
 
 @MainActor
 final class TransferDetailsViewModel: ObservableObject {
@@ -29,6 +30,20 @@ final class TransferDetailsViewModel: ObservableObject {
     init(data: TransferData) {
         transfer = data.transfer
         state = data.state ?? .ready
+    }
+
+    func fetchTransfer() async {
+        guard let transfer else { return }
+
+        @InjectService var accountManager: SwissTransferCore.AccountManager
+        let currentManager = await accountManager.getCurrentManager()
+
+        do {
+            try await currentManager?.fetchTransfer(transferUUID: transfer.uuid)
+        } catch {
+            // TODO: Handle state update here
+            print("here")
+        }
     }
 }
 
@@ -40,17 +55,22 @@ public struct TransferDetailsRootView: View {
     }
 
     public var body: some View {
-        switch viewModel.state {
-        case .ready:
-            if let transfer = viewModel.transfer {
-                TransferDetailsView(transfer: transfer)
+        ZStack {
+            switch viewModel.state {
+            case .ready:
+                if let transfer = viewModel.transfer {
+                    TransferDetailsView(transfer: transfer)
+                }
+            case .expired:
+                Text("Expired")
+            case .waitVirusCheck:
+                Text("Wait Virus Check")
+            case .virusFlagged:
+                Text("Virus Flagged")
             }
-        case .expired:
-            Text("Expired")
-        case .waitVirusCheck:
-            Text("Wait Virus Check")
-        case .virusFlagged:
-            Text("Virus Flagged")
+        }
+        .task {
+            await viewModel.fetchTransfer()
         }
     }
 }

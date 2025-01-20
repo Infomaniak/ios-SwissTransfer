@@ -38,7 +38,9 @@ public struct TransferDetailsView: View {
                     HeaderView(
                         filesCount: transfer.files.count,
                         transferSize: transfer.sizeUploaded,
-                        expiringTimestamp: transfer.expirationDateTimestamp
+                        expiringTimestamp: transfer.expirationDateTimestamp,
+                        downloadLeft: transfer.downloadLeft,
+                        downloadLimit: transfer.downloadLimit
                     )
 
                     if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
