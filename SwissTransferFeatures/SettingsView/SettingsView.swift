@@ -114,6 +114,7 @@ public struct SettingsView: View {
             }
         }
         .listStyle(.insetGrouped)
+        .matomoView(view: "SettingsView")
     }
 }
 

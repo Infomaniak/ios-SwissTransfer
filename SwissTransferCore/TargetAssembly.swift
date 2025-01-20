@@ -18,6 +18,7 @@
 
 import Foundation
 import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import OSLog
 import STCore
@@ -96,6 +97,13 @@ open class TargetAssembly {
             },
             Factory(type: PlatformDetectable.self) { _, _ in
                 PlatformDetector()
+            },
+            Factory(type: MatomoUtils.self) { _, _ in
+                let matomo = MatomoUtils(siteId: MatomoUtils.siteID, baseURL: MatomoUtils.siteURL)
+                #if DEBUG
+                matomo.optOut(true)
+                #endif
+                return matomo
             }
         ]
     }

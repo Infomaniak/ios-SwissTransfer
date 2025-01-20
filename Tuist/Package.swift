@@ -29,6 +29,7 @@ let package = Package(
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "8.0.0")),
         .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0")),
         .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "1.0.0")),
-        .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4"))
+        .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
+        .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0"))
     ]
 )

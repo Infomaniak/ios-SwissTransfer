@@ -29,6 +29,7 @@ public struct SentView: View {
         TransferList(transferManager: transferManager, origin: .sent) {
             SentEmptyView()
         }
+        .matomoView(view: "SentView")
     }
 }
 
