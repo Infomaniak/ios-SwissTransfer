@@ -156,6 +156,9 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "Keine Transfers zum Anzeigen";
 
+/* loco:678630b92eec2a91f00603af */
+"notificationUploadFailureTitle" = "Die Übertragung ist fehlgeschlagen";
+
 /* loco:6746e8a0396f33e00a0fc393 */
 "onboardingExpirationSubtitleArgument" = "30 Tage";
 

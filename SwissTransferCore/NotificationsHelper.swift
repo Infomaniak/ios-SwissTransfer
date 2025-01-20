@@ -62,7 +62,7 @@ public struct NotificationsHelper: Sendable {
         }
     }
 
-    public func sendBackgroundUploadNotificationForUploadSession(uuid: String) {
+    public func sendBackgroundUploadNotificationForUploadSession() {
         Task { @MainActor in
             let content = UNMutableNotificationContent()
             content.categoryIdentifier = CategoryIdentifier.upload
@@ -70,7 +70,20 @@ public struct NotificationsHelper: Sendable {
             content.title = STResourcesStrings.Localizable.uploadProgressIndication
             content.body = STResourcesStrings.Localizable.keepAppForegroundNotificationDescription
 
-            let request = UNNotificationRequest(identifier: uuid, content: content, trigger: immediateTrigger)
+            let request = UNNotificationRequest(identifier: "upload_success", content: content, trigger: immediateTrigger)
+            try? await UNUserNotificationCenter.current().add(request)
+        }
+    }
+
+    public func sendUploadFailedExpiredNotificationForUploadSession() {
+        Task { @MainActor in
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = CategoryIdentifier.upload
+            content.sound = .default
+            content.title = STResourcesStrings.Localizable.notificationUploadFailureTitle
+            content.body = STResourcesStrings.Localizable.keepAppForegroundNotificationDescription
+
+            let request = UNNotificationRequest(identifier: "upload_failed", content: content, trigger: immediateTrigger)
             try? await UNUserNotificationCenter.current().add(request)
         }
     }

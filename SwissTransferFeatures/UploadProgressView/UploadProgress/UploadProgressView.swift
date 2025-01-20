@@ -68,7 +68,10 @@ public struct UploadProgressView: View {
             .stIconNavigationBar()
             .navigationBarBackButtonHidden()
             .task(startUpload)
-            .sceneLifecycle(willEnterForeground: nil, didEnterBackground: didEnterBackground)
+            .sceneLifecycle(
+                willEnterForeground: nil,
+                didEnterBackground: notificationsHelper.sendBackgroundUploadNotificationForUploadSession
+            )
             .onAppear {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
@@ -97,10 +100,6 @@ public struct UploadProgressView: View {
 
     private func cancelTransfer() {
         rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: uploadSession.uuid)
-    }
-
-    private func didEnterBackground() {
-        notificationsHelper.sendBackgroundUploadNotificationForUploadSession(uuid: uploadSession.uuid)
     }
 }
 
