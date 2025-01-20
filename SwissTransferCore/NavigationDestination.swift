@@ -16,18 +16,42 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import STCore
 
+public enum TransferState {
+    case ready
+    case expired
+    case waitVirusCheck
+    case virusFlagged
+}
+
+public struct TransferData: Identifiable {
+    public let id = UUID()
+    public let transfer: TransferUi?
+    public let state: TransferState?
+
+    public init(transfer: TransferUi) {
+        self.transfer = transfer
+        state = nil
+    }
+
+    public init(state: TransferState) {
+        transfer = nil
+        self.state = state
+    }
+}
+
 public enum NavigationDestination: Hashable {
-    case transfer(TransferUi)
+    case transfer(TransferData)
     case settings(SettingDetailUI)
 
     public static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
         switch (lhs, rhs) {
         case (.transfer(let leftTransfer), .transfer(let rightTransfer)):
-            return leftTransfer.uuid == rightTransfer.uuid
-        case (.settings, .settings):
-            return true
+            return leftTransfer.id == rightTransfer.id
+        case (.settings(let leftSetting), .settings(let rightSetting)):
+            return leftSetting.hashValue == rightSetting.hashValue
         default:
             return false
         }
@@ -36,9 +60,9 @@ public enum NavigationDestination: Hashable {
     public func hash(into hasher: inout Hasher) {
         switch self {
         case .transfer(let transfer):
-            hasher.combine(transfer.uuid)
-        case .settings:
-            hasher.combine("settingsItem")
+            hasher.combine(transfer.id)
+        case .settings(let setting):
+            hasher.combine(setting.hashValue)
         }
     }
 }

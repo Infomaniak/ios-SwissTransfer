@@ -60,7 +60,7 @@ public struct TransferList<EmptyView: View>: View {
                         ForEach(section.transfers, id: \.uuid) { transfer in
                             TransferCell(transfer: transfer)
                                 .listRowBackground(Color.ST.background)
-                                .tag(NavigationDestination.transfer(transfer))
+                                .tag(NavigationDestination.transfer(TransferData(transfer: transfer)))
                         }
                     } header: {
                         Text(section.title)

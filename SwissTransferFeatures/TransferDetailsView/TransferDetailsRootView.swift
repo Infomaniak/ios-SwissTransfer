@@ -16,25 +16,41 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import SwiftUI
 import STCore
+import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
-public struct TransferState {
-    let transfer: TransferUi?
-    let status: TransferStatus?
+@MainActor
+final class TransferDetailsViewModel: ObservableObject {
+    @Published var transfer: TransferUi?
+    @Published var state: TransferState
 
-    public init(transfer: TransferUi?, status: TransferStatus?) {
-        self.transfer = transfer
-        self.status = status
+    init(data: TransferData) {
+        transfer = data.transfer
+        state = data.state ?? .ready
     }
 }
 
-struct TransferDetailsRootView: View {
-    let state: TransferState
+public struct TransferDetailsRootView: View {
+    @StateObject private var viewModel: TransferDetailsViewModel
 
-    var body: some View {
-        ZStack {
+    public init(data: TransferData) {
+        _viewModel = .init(wrappedValue: .init(data: data))
+    }
 
+    public var body: some View {
+        switch viewModel.state {
+        case .ready:
+            if let transfer = viewModel.transfer {
+                TransferDetailsView(transfer: transfer)
+            }
+        case .expired:
+            Text("Expired")
+        case .waitVirusCheck:
+            Text("Wait Virus Check")
+        case .virusFlagged:
+            Text("Virus Flagged")
         }
     }
 }

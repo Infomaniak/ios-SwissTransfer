@@ -27,7 +27,7 @@ public final class MainViewState: ObservableObject {
 
     @Published public var newTransferContainer: NewTransferContainer?
     /// Only used by STTabView
-    @Published public var selectedFullscreenTransfer: TransferUi?
+    @Published public var selectedFullscreenTransfer: TransferData?
 
     public var isSplitView = false
 
@@ -59,14 +59,16 @@ public final class MainViewState: ObservableObject {
         }
     }
 
-    public var selectedTransfer: TransferUi? {
+    public var selectedTransfer: TransferData? {
         get {
             guard case .transfer(let transfer) = selectedDestination else { return nil }
             return transfer
         }
         set {
             guard let newValue else { return }
-            selectedTab = newValue.direction == .sent ? .sentTransfers : .receivedTransfers
+            if let transfer = newValue.transfer {
+                selectedTab = transfer.direction == .sent ? .sentTransfers : .receivedTransfers
+            }
             selectedDestination = .transfer(newValue)
         }
     }
@@ -80,7 +82,7 @@ public final class MainViewState: ObservableObject {
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {
         switch linkResult.result {
         case .success(let transfer):
-            selectedTransfer = transfer
+            selectedTransfer = TransferData(transfer: transfer)
         case .failure(let error as NSError):
             if error.kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
                 isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)

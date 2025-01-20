@@ -91,7 +91,9 @@ struct DeepLinkPasswordView: View {
                 let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
 
                 dismiss()
-                mainViewState.selectedTransfer = transfer
+                if let transfer {
+                    mainViewState.selectedTransfer = TransferData(transfer: transfer)
+                }
             } catch {
                 let kotlinException = (error as NSError).kotlinException
 
