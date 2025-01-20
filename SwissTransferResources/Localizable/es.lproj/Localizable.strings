@@ -351,8 +351,20 @@
 /* loco:66c58d32b754b5821b0b2c22 */
 "settingsValidityPeriodValue-plural" = "%d días";
 
+/* loco:67335c646d95d56ce00c77b2 */
+"sharePasswordButton" = "Copiar contraseña";
+
+/* loco:673358d908873a82380b99b2 */
+"sharePasswordDescription" = "¡Aquí está la llave mágica para descargar los archivos!";
+
 /* loco:673358d1792d18d1c40c4612 */
 "sharePasswordTitle" = "Esta transferencia es segura";
+
+/* loco:673357fffb9ea749380dce44 */
+"shareQrCodeDescription" = "Escanee este código QR a su alrededor para compartir su traslado:";
+
+/* loco:673357ce7a09e445af086eb3 */
+"shareQrCodeTitle" = "Compartir rápidamente";
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Opcional)";

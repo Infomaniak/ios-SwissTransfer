@@ -20,6 +20,7 @@ import InfomaniakCoreSwiftUI
 import STCore
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
