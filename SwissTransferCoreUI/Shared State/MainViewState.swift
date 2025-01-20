@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import OSLog
 import STCore
 import SwiftModalPresentation
 import SwiftUI
@@ -84,10 +85,15 @@ public final class MainViewState: ObservableObject {
         case .success(let transfer):
             selectedTransfer = TransferData(transfer: transfer)
         case .failure(let error as NSError):
-            if error.kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
+            let kotlinException = error.kotlinException
+            if kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
                 isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)
+            } else if kotlinException is STNDeeplinkException.ExpiredDeeplinkException
+                        || kotlinException is STNDeeplinkException.NotFoundDeeplinkException {
+                selectedTransfer = TransferData(state: .expired)
             } else {
-                // TODO: Handle other errors
+                // TODO: Need to handle Virus_check and virus_flagged exceptions
+                Logger.deepLink.error("Unable to handle DeepLink: \(error.localizedDescription)")
             }
         }
     }

@@ -22,6 +22,7 @@ import OSLog
 public extension Logger {
     static let view = Logger(category: "View")
     static let general = Logger(category: "general")
+    static let deepLink = Logger(category: "DeepLink")
 
     internal init(category: String) {
         self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
