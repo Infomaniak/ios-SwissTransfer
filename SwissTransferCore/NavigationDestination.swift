@@ -24,6 +24,15 @@ public enum TransferState {
     case expired
     case waitVirusCheck
     case virusFlagged
+
+    public init(from transferStatus: TransferStatus) {
+        switch transferStatus {
+        case .ready, .unknown:
+            self = .ready
+        case .waitVirusCheck:
+            self = .waitVirusCheck
+        }
+    }
 }
 
 public struct TransferData: Identifiable {

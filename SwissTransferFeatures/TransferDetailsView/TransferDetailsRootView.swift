@@ -27,22 +27,64 @@ final class TransferDetailsViewModel: ObservableObject {
     @Published var transfer: TransferUi?
     @Published var state: TransferState
 
+    private var flow: (any AsyncSequence)?
+    private var transferUUID: String?
+
     init(data: TransferData) {
-        transfer = data.transfer
         state = data.state ?? .ready
+
+        if let transfer = data.transfer {
+            Task {
+                await fetchTransfer(uuid: transfer.uuid)
+            }
+            Task {
+                try await observeTransfer(uuid: transfer.uuid)
+            }
+        }
     }
 
-    func fetchTransfer() async {
-        guard let transfer else { return }
-
+    private func fetchTransfer(uuid: String) async {
         @InjectService var accountManager: SwissTransferCore.AccountManager
         let currentManager = await accountManager.getCurrentManager()
 
         do {
-            try await currentManager?.fetchTransfer(transferUUID: transfer.uuid)
+            try await currentManager?.fetchTransfer(transferUUID: uuid)
         } catch {
             // TODO: Handle state update here
-            print("here")
+
+            let kotlinException = (error as NSError).kotlinException
+            if kotlinException is STNDeeplinkException.ExpiredDeeplinkException
+                || kotlinException is STNDeeplinkException.NotFoundDeeplinkException {
+                state = .expired
+            } else {
+                // TODO: Check virus check
+                print("coucou")
+            }
+        }
+    }
+
+    private func observeTransfer(uuid: String) async throws {
+        @InjectService var accountManager: SwissTransferCore.AccountManager
+        guard let currentManager = await accountManager.getCurrentManager() else { return }
+
+        flow = try currentManager.getTransferFlow(transferUUID: uuid)
+        guard let flow else { return }
+
+        for try await flowResult in flow {
+            guard let newTransfer = flowResult as? TransferUi else { continue }
+
+            transfer = newTransfer
+            computeState(from: newTransfer)
+        }
+    }
+
+    private func computeState(from transfer: TransferUi) {
+        if let status = transfer.transferStatus {
+            state = TransferState(from: status)
+        } else if transfer.isExpired {
+            state = .expired
+        } else {
+            state = .ready
         }
     }
 }
@@ -68,9 +110,6 @@ public struct TransferDetailsRootView: View {
             case .virusFlagged:
                 Text("Virus Flagged")
             }
-        }
-        .task {
-            await viewModel.fetchTransfer()
         }
     }
 }
