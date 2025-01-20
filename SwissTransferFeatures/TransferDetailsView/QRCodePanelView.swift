@@ -43,15 +43,15 @@ struct QRCodePanelView: View {
                 .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
                 .padding(.vertical, 32)
 
-            Button {
-                dismiss()
-            } label: {
-                Text(STResourcesStrings.Localizable.contentDescriptionButtonClose)
-                    .font(.ST.headline)
+            BottomButtonsView {
+                Button {
+                    dismiss()
+                } label: {
+                    Text(STResourcesStrings.Localizable.contentDescriptionButtonClose)
+                        .font(.ST.headline)
+                }
+                .buttonStyle(.ikBorderedProminent)
             }
-            .buttonStyle(.ikBorderedProminent)
-            .ikButtonFullWidth(true)
-            .controlSize(.large)
         }
         .padding(.horizontal, value: .medium)
         .padding(.top, value: .medium)

@@ -60,18 +60,18 @@ struct PasswordPanelView: View {
             .overlay(Color.ST.textFieldBorder, in: .rect(cornerRadius: IKRadius.small).stroke())
             .padding(.bottom, 30)
 
-            CopyToClipboardButton(item: password, labelStyle: .ikLabel)
-                .buttonStyle(.ikBorderedProminent)
-                .ikButtonFullWidth(true)
-                .controlSize(.large)
+            BottomButtonsView {
+                CopyToClipboardButton(item: password, labelStyle: .ikLabel)
+                    .buttonStyle(.ikBorderedProminent)
 
-            Button {
-                dismiss()
-            } label: {
-                Text(STResourcesStrings.Localizable.contentDescriptionButtonClose)
-                    .font(.ST.headline)
+                Button {
+                    dismiss()
+                } label: {
+                    Text(STResourcesStrings.Localizable.contentDescriptionButtonClose)
+                        .font(.ST.headline)
+                }
+                .buttonStyle(.ikBorderless)
             }
-            .buttonStyle(.ikBorderless)
         }
         .padding(.horizontal, value: .medium)
         .padding(.top, value: .medium)

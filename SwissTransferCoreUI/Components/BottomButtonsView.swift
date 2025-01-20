@@ -26,11 +26,16 @@ public enum BottomButtonsConstants: Sendable {
 
 public struct BottomButtonsView<Buttons: View>: View {
     var spacing = BottomButtonsConstants.spacing
-    @ViewBuilder let buttons: Buttons
+    let buttons: () -> Buttons
+
+    public init(spacing: CGFloat = BottomButtonsConstants.spacing, @ViewBuilder buttons: @escaping () -> Buttons) {
+        self.spacing = spacing
+        self.buttons = buttons
+    }
 
     public var body: some View {
         VStack(spacing: spacing) {
-            buttons
+            buttons()
         }
         .ikButtonFullWidth(true)
         .controlSize(.large)

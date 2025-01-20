@@ -66,7 +66,7 @@ struct ShareTransferModifier: ViewModifier {
                             }
                             .frame(width: 100)
                         }
-                        .floatingPanel(isPresented: $isShowingQRCode) {
+                        .floatingPanel(isPresented: $isShowingQRCode, bottomPadding: .zero) {
                             QRCodePanelView(url: transferURL)
                         }
                     }
@@ -86,7 +86,7 @@ struct ShareTransferModifier: ViewModifier {
                             }
                             .frame(width: 100)
                         }
-                        .floatingPanel(isPresented: $isShowingPassword) {
+                        .floatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
                             PasswordPanelView(password: password)
                         }
 
