@@ -27,7 +27,8 @@ struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var selectedItems = [ImportedItem]()
-    @State private var files = [TransferableFile]()
+
+    @Binding var files: [TransferableFile]
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -104,5 +105,5 @@ struct NewTransferFilesCellView: View {
 }
 
 #Preview {
-    NewTransferFilesCellView()
+    NewTransferFilesCellView(files: .constant([]))
 }

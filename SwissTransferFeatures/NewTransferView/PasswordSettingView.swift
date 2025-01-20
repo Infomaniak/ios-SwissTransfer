@@ -25,12 +25,19 @@ struct PasswordSettingView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn: Bool
+    @State private var error: InputErrorState?
+
     @FocusState private var isFocused: Bool
 
     @Binding var password: String
 
     private var isButtonDisabled: Bool {
-        return isOn && password.isEmpty
+        return isOn && !isPasswordValid
+    }
+
+    private var isPasswordValid: Bool {
+        return password.count >= RootTransferViewModel.minPasswordLength
+            && password.count <= RootTransferViewModel.maxPasswordLength
     }
 
     init(password: Binding<String>) {
@@ -58,13 +65,21 @@ struct PasswordSettingView: View {
                     .onChange(of: isOn, perform: didUpdateToggle)
 
                     if isOn {
-                        TogglableSecureTextField(password: $password)
+                        TogglableSecureTextField(password: $password, error: error)
                             .focused($isFocused)
                     }
                 }
                 .padding(value: .medium)
             }
             .background(Color.ST.background)
+            .onChange(of: password) { _ in
+                guard isPasswordValid else {
+                    error = .errorWithMessage(STResourcesStrings.Localizable.errorTransferPasswordLength)
+                    return
+                }
+
+                error = nil
+            }
             .safeAreaButtons {
                 Button(action: dismiss.callAsFunction) {
                     Text(STResourcesStrings.Localizable.buttonConfirm)
@@ -73,6 +88,13 @@ struct PasswordSettingView: View {
                 .disabled(isButtonDisabled)
             }
             .stNavigationBarStyle()
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(action: dismiss.callAsFunction) {
+                        Image(systemName: "xmark")
+                    }
+                }
+            }
         }
     }
 

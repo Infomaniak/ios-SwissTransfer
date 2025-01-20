@@ -17,11 +17,16 @@
  */
 
 import Foundation
+import InfomaniakCore
 import InfomaniakDI
 import OrderedCollections
 import STCore
+import SwissTransferCore
 
 public final class RootTransferViewModel: ObservableObject {
+    public static let minPasswordLength = 6
+    public static let maxPasswordLength = 25
+
     @Published public var transferType = TransferType.qrCode
     @Published public var authorEmail = ""
     @Published public var recipientsEmail = OrderedSet<String>()
@@ -30,8 +35,31 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var validityPeriod = ValidityPeriod.thirty
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
     @Published public var emailLanguage = EmailLanguage.french
+    @Published public var files = [TransferableFile]()
 
     @Published public var newUploadSession: NewUploadSession?
+
+    public var isNewTransferValid: Bool {
+        if files.isEmpty {
+            return false
+        }
+
+        if !password.isEmpty && (password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength) {
+            return false
+        }
+
+        if transferType == .mail {
+            if authorEmail.isEmpty || !EmailChecker(email: authorEmail).validate() {
+                return false
+            }
+
+            if recipientsEmail.isEmpty {
+                return false
+            }
+        }
+
+        return true
+    }
 
     public init() {
         fetchValuesFromSettings()
