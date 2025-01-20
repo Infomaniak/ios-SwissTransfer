@@ -389,6 +389,12 @@
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenu du transfert :";
 
+/* loco:678e7bb990830fe7f1052e92 */
+"transferExpiredDescription" = "Désolé, ce transfert a expiré. Tu ne peux plus télécharger ni consulter les fichiers.";
+
+/* loco:6720aec78a4f6e6b0c0d28a2 */
+"transferExpiredTitle" = "Ce transfert n’est plus disponible";
+
 /* loco:66c6d0936969c14fab0aec72 */
 "transferListSectionLastWeek" = "La semaine dernière";
 
@@ -451,6 +457,12 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Galerie photos et vidéos";
+
+/* loco:678e7b3b30ca99c9690c7c92 */
+"transferVirusCheckDescription" = "Les fichiers ne sont pas encore accessibles pour des raisons de sécurité.\nReviens dans quelques instants.";
+
+/* loco:678e7b0a570febadc1013692 */
+"transferVirusCheckTitle" = "Fichiers en cours de vérification";
 
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Es-tu certain de vouloir annuler le transfert ?";
