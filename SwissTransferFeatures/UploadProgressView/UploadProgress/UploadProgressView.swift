@@ -69,6 +69,12 @@ public struct UploadProgressView: View {
             .navigationBarBackButtonHidden()
             .task(startUpload)
             .sceneLifecycle(willEnterForeground: nil, didEnterBackground: didEnterBackground)
+            .onAppear {
+                UIApplication.shared.isIdleTimerDisabled = true
+            }
+            .onDisappear {
+                UIApplication.shared.isIdleTimerDisabled = false
+            }
         }
     }
 
@@ -79,7 +85,7 @@ public struct UploadProgressView: View {
             }
 
             let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
-            try await Task.sleep(for: .seconds(5))
+
             rootTransferViewState.transition(to: .success(transferUUID))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }

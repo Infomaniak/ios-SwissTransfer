@@ -105,7 +105,7 @@ open class TargetAssembly {
                 #endif
                 return matomo
             },
-            Factory(type: NotificationsHelper.self) { _,_ in
+            Factory(type: NotificationsHelper.self) { _, _ in
                 NotificationsHelper()
             }
         ]
