@@ -32,38 +32,35 @@ public struct TransferDetailsView: View {
     }
 
     public var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: IKPadding.large) {
-                    HeaderView(
-                        filesCount: transfer.files.count,
-                        transferSize: transfer.sizeUploaded,
-                        expiringTimestamp: transfer.expirationDateTimestamp,
-                        downloadLeft: transfer.downloadLeft,
-                        downloadLimit: transfer.downloadLimit
-                    )
+        ScrollView {
+            VStack(spacing: IKPadding.large) {
+                HeaderView(
+                    filesCount: transfer.files.count,
+                    transferSize: transfer.sizeUploaded,
+                    expiringTimestamp: transfer.expirationDateTimestamp,
+                    downloadLeft: transfer.downloadLeft,
+                    downloadLimit: transfer.downloadLimit
+                )
 
-                    if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
-                        MessageView(message: trimmedMessage)
-                    }
+                if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
+                    MessageView(message: trimmedMessage)
+                }
 
-                    ContentView(transfer: transfer)
-                }
-                .padding(.vertical, value: .large)
-                .padding(.horizontal, value: .medium)
+                ContentView(transfer: transfer)
             }
-            .shareTransferToolbar(transfer: transfer)
-            .toolbarBackground(.visible, for: .bottomBar)
-            .appBackground()
-            .stNavigationBarStyle()
-            .stNavigationBarFullScreen(title: transfer.name)
-            .navigationDestination(for: FileUi.self) { file in
-                FileListView(folder: file, transfer: transfer)
-            }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    DownloadButton(transfer: transfer)
-                }
+            .padding(.vertical, value: .large)
+            .padding(.horizontal, value: .medium)
+        }
+        .shareTransferToolbar(transfer: transfer)
+        .toolbarBackground(.visible, for: .bottomBar)
+        .appBackground()
+        .stNavigationBarFullScreen(title: transfer.name)
+        .navigationDestination(for: FileUi.self) { file in
+            FileListView(folder: file, transfer: transfer)
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                DownloadButton(transfer: transfer)
             }
         }
         .environment(\.dismissModal) { dismiss() }

@@ -86,14 +86,13 @@ public final class MainViewState: ObservableObject {
             selectedTransfer = TransferData(transfer: transfer)
         case .failure(let error as NSError):
             let kotlinException = error.kotlinException
-            if kotlinException is STNDeeplinkException.PasswordNeededDeeplinkException {
+            if kotlinException is STNFetchTransferException.PasswordNeededFetchTransferException {
                 isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)
-            } else if kotlinException is STNDeeplinkException.ExpiredDeeplinkException
-                        || kotlinException is STNDeeplinkException.NotFoundDeeplinkException {
-                selectedTransfer = TransferData(state: .expired)
-            } else {
-                // TODO: Need to handle Virus_check and virus_flagged exceptions
-                Logger.deepLink.error("Unable to handle DeepLink: \(error.localizedDescription)")
+            } else if kotlinException is STNFetchTransferException.ExpiredFetchTransferException
+                        || kotlinException is STNFetchTransferException.NotFoundFetchTransferException {
+                selectedTransfer = TransferData(status: .expired)
+            } else if kotlinException is STNFetchTransferException.VirusCheckFetchTransferException {
+                selectedTransfer = TransferData(status: .waitVirusCheck)
             }
         }
     }

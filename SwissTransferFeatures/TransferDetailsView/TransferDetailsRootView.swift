@@ -25,13 +25,13 @@ import InfomaniakDI
 @MainActor
 final class TransferDetailsViewModel: ObservableObject {
     @Published var transfer: TransferUi?
-    @Published var state: TransferState
+    @Published var status: TransferStatus
 
     private var flow: (any AsyncSequence)?
     private var transferUUID: String?
 
     init(data: TransferData) {
-        state = data.state ?? .ready
+        status = data.status ?? data.transfer?.transferStatus ?? .ready
 
         if let transfer = data.transfer {
             Task {
@@ -47,20 +47,7 @@ final class TransferDetailsViewModel: ObservableObject {
         @InjectService var accountManager: SwissTransferCore.AccountManager
         let currentManager = await accountManager.getCurrentManager()
 
-        do {
-            try await currentManager?.fetchTransfer(transferUUID: uuid)
-        } catch {
-            // TODO: Handle state update here
-
-            let kotlinException = (error as NSError).kotlinException
-            if kotlinException is STNDeeplinkException.ExpiredDeeplinkException
-                || kotlinException is STNDeeplinkException.NotFoundDeeplinkException {
-                state = .expired
-            } else {
-                // TODO: Check virus check
-                print("coucou")
-            }
-        }
+        try? await currentManager?.fetchTransfer(transferUUID: uuid)
     }
 
     private func observeTransfer(uuid: String) async throws {
@@ -74,17 +61,9 @@ final class TransferDetailsViewModel: ObservableObject {
             guard let newTransfer = flowResult as? TransferUi else { continue }
 
             transfer = newTransfer
-            computeState(from: newTransfer)
-        }
-    }
-
-    private func computeState(from transfer: TransferUi) {
-        if let status = transfer.transferStatus {
-            state = TransferState(from: status)
-        } else if transfer.isExpired {
-            state = .expired
-        } else {
-            state = .ready
+            if let transferStatus = newTransfer.transferStatus {
+                status = transferStatus
+            }
         }
     }
 }
@@ -97,8 +76,8 @@ public struct TransferDetailsRootView: View {
     }
 
     public var body: some View {
-        ZStack {
-            switch viewModel.state {
+        NavigationStack {
+            switch viewModel.status {
             case .ready:
                 if let transfer = viewModel.transfer {
                     TransferDetailsView(transfer: transfer)
@@ -107,9 +86,10 @@ public struct TransferDetailsRootView: View {
                 Text("Expired")
             case .waitVirusCheck:
                 Text("Wait Virus Check")
-            case .virusFlagged:
-                Text("Virus Flagged")
+            case .unknown:
+                Text("Unknown Case")
             }
         }
+        .stNavigationBarStyle()
     }
 }

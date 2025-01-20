@@ -19,35 +19,19 @@
 import Foundation
 import STCore
 
-public enum TransferState {
-    case ready
-    case expired
-    case waitVirusCheck
-    case virusFlagged
-
-    public init(from transferStatus: TransferStatus) {
-        switch transferStatus {
-        case .ready, .unknown:
-            self = .ready
-        case .waitVirusCheck:
-            self = .waitVirusCheck
-        }
-    }
-}
-
 public struct TransferData: Identifiable {
     public let id = UUID()
     public let transfer: TransferUi?
-    public let state: TransferState?
+    public let status: TransferStatus?
 
     public init(transfer: TransferUi) {
         self.transfer = transfer
-        state = nil
+        status = nil
     }
 
-    public init(state: TransferState) {
+    public init(status: TransferStatus) {
         transfer = nil
-        self.state = state
+        self.status = status
     }
 }
 
