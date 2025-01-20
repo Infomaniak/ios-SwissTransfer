@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import InfomaniakDI
 import OrderedCollections
 import STCore
 import STResources
@@ -34,14 +33,7 @@ struct NewTransferDetailsView: View {
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             if transferType == .mail {
-                TextField(STResourcesStrings.Localizable.transferSenderAddressPlaceholder, text: $authorEmail) { _ in
-                    saveAuthorMailAddress()
-                }
-                .textFieldStyle(.swissTransfer)
-                .keyboardType(.emailAddress)
-                .textContentType(.emailAddress)
-                .textInputAutocapitalization(.never)
-
+                AuthorMailTextFieldView(authorEmail: $authorEmail)
                 RecipientsTextFieldView(recipients: $recipientsEmail)
             }
 
@@ -50,13 +42,6 @@ struct NewTransferDetailsView: View {
                 placeholder: STResourcesStrings.Localizable.transferMessagePlaceholder,
                 size: 88
             )
-        }
-    }
-
-    private func saveAuthorMailAddress() {
-        Task {
-            @InjectService var settingsManager: AppSettingsManager
-            try? await settingsManager.setLastAuthorEmail(authorEmail: authorEmail)
         }
     }
 }
