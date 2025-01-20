@@ -32,6 +32,8 @@ struct SwissTransferApp: App {
     // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
     private let dependencyInjectionHook = TargetAssembly()
 
+    @UIApplicationDelegateAdaptor private var appDelegateAdaptor: AppDelegate
+
     @LazyInjectService private var downloadManager: DownloadManager
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 

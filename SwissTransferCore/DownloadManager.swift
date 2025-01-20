@@ -68,6 +68,13 @@ public class DownloadManager: ObservableObject {
 
     @Published private var trackedDownloadTasks = [String: DownloadTask]()
 
+    public var backgroundDownloadCompletionCallback: (() -> Void)? {
+        didSet {
+            guard let delegate = session.delegate as? DownloadManagerSessionDelegate else { return }
+            delegate.backgroundDownloadCompletionCallback = backgroundDownloadCompletionCallback
+        }
+    }
+
     enum ErrorDomain: Error {
         case badURL
     }
@@ -238,6 +245,8 @@ final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate
     let downloadCompletedSubject = PassthroughSubject<DownloadTaskCompletion, Never>()
     let downloadRunningSubject = PassthroughSubject<DownloadTaskProgress, Never>()
 
+    @MainActor var backgroundDownloadCompletionCallback: (() -> Void)?
+
     enum ErrorDomain: Error {
         case badResult(URL?)
     }
@@ -301,6 +310,12 @@ final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate
                 id: taskDescription,
                 result: .failure(ErrorDomain.badResult(location))
             ))
+        }
+    }
+
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        Task { @MainActor in
+            backgroundDownloadCompletionCallback?()
         }
     }
 }
