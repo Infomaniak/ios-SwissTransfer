@@ -64,6 +64,9 @@ class TransferSessionManager: ObservableObject {
     }
 
     func uploadFiles(for uploadSession: SendableUploadSession) async throws -> String {
+        let expiringActivity = ExpiringActivity(id: "uploadSession-\(uploadSession.uuid)")
+        expiringActivity.start()
+
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
 
@@ -95,6 +98,7 @@ class TransferSessionManager: ObservableObject {
 
         let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
+        expiringActivity.endAll()
         return transferUUID
     }
 }
