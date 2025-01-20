@@ -126,6 +126,9 @@
 /* loco:6750234ba38b270dc804a7d2 */
 "invalidAddress" = "Dirección no válida";
 
+/* loco:678e479bdf4d2ab457051f92 */
+"keepAppForegroundNotificationDescription" = "Mantén la aplicación abierta hasta el final de la transferencia.";
+
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Mensaje:";
 

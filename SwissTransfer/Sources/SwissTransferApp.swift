@@ -33,6 +33,7 @@ struct SwissTransferApp: App {
     private let dependencyInjectionHook = TargetAssembly()
 
     @LazyInjectService private var downloadManager: DownloadManager
+    @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
@@ -61,6 +62,7 @@ struct SwissTransferApp: App {
                 .detectCompactWindow()
                 .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
+                .sceneLifecycle(willEnterForeground: notificationsHelper.removeAllUploadNotifications)
         }
         .defaultAppStorage(.shared)
     }

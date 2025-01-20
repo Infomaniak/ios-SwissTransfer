@@ -104,6 +104,9 @@ open class TargetAssembly {
                 matomo.optOut(true)
                 #endif
                 return matomo
+            },
+            Factory(type: NotificationsHelper.self) { _,_ in
+                NotificationsHelper()
             }
         ]
     }

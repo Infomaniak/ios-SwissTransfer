@@ -126,6 +126,9 @@
 /* loco:6750234ba38b270dc804a7d2 */
 "invalidAddress" = "Invalid address";
 
+/* loco:678e479bdf4d2ab457051f92 */
+"keepAppForegroundNotificationDescription" = "Keep the app open until the end of the transfer.";
+
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Message:";
 
