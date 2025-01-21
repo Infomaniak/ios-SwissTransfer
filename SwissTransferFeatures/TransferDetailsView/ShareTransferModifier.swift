@@ -43,7 +43,7 @@ struct ShareTransferModifier: ViewModifier {
 
                         ShareLink(item: transferURL) {
                             VStack {
-                                STResourcesAsset.Images.share.swiftUIImage
+                                STResourcesAsset.Images.squareArrowUp.swiftUIImage
                                     .iconSize(.large)
 
                                 Text(STResourcesStrings.Localizable.buttonShare)
