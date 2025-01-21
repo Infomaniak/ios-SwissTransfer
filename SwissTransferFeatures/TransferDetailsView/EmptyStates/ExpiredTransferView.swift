@@ -31,8 +31,9 @@ struct ExpiredTransferView: View {
             style: .emptyState
         )
         .padding(value: .medium)
+        .stNavigationBarStyle()
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button(action: dismiss.callAsFunction) {
                     Image(systemName: "xmark")
                 }

@@ -19,22 +19,6 @@
 import Foundation
 import STCore
 
-public struct TransferData: Identifiable {
-    public let id = UUID()
-    public let transfer: TransferUi?
-    public let status: TransferStatus?
-
-    public init(transfer: TransferUi) {
-        self.transfer = transfer
-        status = nil
-    }
-
-    public init(status: TransferStatus) {
-        transfer = nil
-        self.status = status
-    }
-}
-
 public enum NavigationDestination: Hashable {
     case transfer(TransferData)
     case settings(SettingDetailUI)

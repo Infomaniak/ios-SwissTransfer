@@ -89,7 +89,7 @@ public final class MainViewState: ObservableObject {
             if kotlinException is STNFetchTransferException.PasswordNeededFetchTransferException {
                 isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)
             } else if kotlinException is STNFetchTransferException.ExpiredFetchTransferException
-                        || kotlinException is STNFetchTransferException.NotFoundFetchTransferException {
+                || kotlinException is STNFetchTransferException.NotFoundFetchTransferException {
                 selectedTransfer = TransferData(status: .expired)
             } else if kotlinException is STNFetchTransferException.VirusCheckFetchTransferException {
                 selectedTransfer = TransferData(status: .waitVirusCheck)

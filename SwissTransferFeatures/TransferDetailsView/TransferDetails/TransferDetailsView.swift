@@ -54,6 +54,7 @@ public struct TransferDetailsView: View {
         .shareTransferToolbar(transfer: transfer)
         .toolbarBackground(.visible, for: .bottomBar)
         .appBackground()
+        .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: transfer.name)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer)

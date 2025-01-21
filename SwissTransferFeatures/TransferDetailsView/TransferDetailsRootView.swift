@@ -90,6 +90,5 @@ public struct TransferDetailsRootView: View {
                 VirusDetectedView()
             }
         }
-        .stNavigationBarStyle()
     }
 }
