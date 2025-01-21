@@ -54,7 +54,7 @@ public struct MainView: View {
         .onChange(of: notificationCenterDelegate.tappedTransfer) { tappedTransfer in
             guard let tappedTransfer else { return }
 
-            mainViewState.selectedTransfer = tappedTransfer
+            mainViewState.selectedTransfer = .transfer(tappedTransfer)
         }
         .task(id: isCompactWindow) {
             mainViewState.isSplitView = !isCompactWindow
