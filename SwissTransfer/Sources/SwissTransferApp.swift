@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
@@ -25,12 +26,18 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+public extension UserDefaults.Keys {
+    static let lastLaunchDate = UserDefaults.Keys(rawValue: "lastLaunchDate")
+}
+
 @main
 struct SwissTransferApp: App {
     // periphery:ignore - Making sure the Sentry is initialized at a very early stage of the app launch.
     private let sentryService = SentryService()
     // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
     private let dependencyInjectionHook = TargetAssembly()
+
+    @AppStorage(UserDefaults.shared.key(.lastLaunchDate)) var lastLaunch: TimeInterval?
 
     @UIApplicationDelegateAdaptor private var appDelegateAdaptor: AppDelegate
 
@@ -68,9 +75,32 @@ struct SwissTransferApp: App {
                 .detectCompactWindow()
                 .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
-                .sceneLifecycle(willEnterForeground: notificationsHelper.removeAllUploadNotifications)
+                .sceneLifecycle(willEnterForeground: {
+                    notificationsHelper.removeAllUploadNotifications()
+                    refreshAllTransfersIfNeeded()
+                })
         }
         .defaultAppStorage(.shared)
+    }
+
+    func refreshAllTransfersIfNeeded() {
+        let now = Date().timeIntervalSince1970
+        defer { lastLaunch = now }
+
+        guard let lastLaunch else {
+            refreshAll()
+            return
+        }
+
+        guard now - lastLaunch > 15 * 60 else {
+            return
+        }
+
+        refreshAll()
+    }
+
+    private func refreshAll() {
+        print("• refresh")
     }
 
     func handleURL(_ url: URL) {
