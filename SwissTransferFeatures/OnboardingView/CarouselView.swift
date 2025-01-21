@@ -57,9 +57,9 @@ struct CarouselView<BottomView: View>: UIViewControllerRepresentable {
             uiViewController.setSelectedSlide(index: selectedSlide)
         }
 
-        if colorScheme != context.coordinator.currentColorScheme, let currentSlideViewCell = uiViewController.currentSlideViewCell {
+        if colorScheme != context.coordinator.currentColorScheme,
+           let currentSlideViewCell = uiViewController.currentSlideViewCell {
             context.coordinator.currentColorScheme = context.environment.colorScheme
-            print(colorScheme, context.coordinator.currentColorScheme, context.environment.colorScheme)
             context.coordinator.selectCorrectAnimation(for: currentSlideViewCell, at: selectedSlide)
         }
     }

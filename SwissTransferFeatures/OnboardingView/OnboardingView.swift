@@ -25,14 +25,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 extension Slide {
-    private static var lottieName: String {
-        if UIScreen.mainScreen.traitCollection.userInterfaceStyle == .light {
-            return "storage-cardboard-box-light"
-        } else {
-            return "storage-cardboard-box-dark"
-        }
-    }
-
     static var onboardingSlides: [Slide] {
         return [
             Slide(
