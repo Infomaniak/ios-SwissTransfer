@@ -42,7 +42,7 @@ struct ReceivedEmptyView: View {
         )
         .padding(value: .medium)
         .scrollableEmptyState()
-        .floatingActionButton(selection: $selection, style: fabStyle)
+        .emptyStateFloatingButton(selection: $selection, style: fabStyle)
         .onChange(of: selection) { newSelectedItems in
             mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
         }
@@ -52,6 +52,17 @@ struct ReceivedEmptyView: View {
             for await transfers in sentTransfers {
                 hasAlreadyMadeTransfers = !transfers.isEmpty
             }
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder func emptyStateFloatingButton(selection: Binding<[ImportedItem]>,
+                                               style: FloatingActionButtonStyle) -> some View {
+        if #available(iOS 18.2, *) {
+            self.floatingActionButton(selection: selection, style: style)
+        } else {
+            self
         }
     }
 }
