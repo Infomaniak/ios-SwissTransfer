@@ -16,11 +16,11 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
-import InfomaniakDI
 
 @MainActor
 final class TransferDetailsViewModel: ObservableObject {
@@ -78,16 +78,14 @@ public struct TransferDetailsRootView: View {
     public var body: some View {
         NavigationStack {
             switch viewModel.status {
-            case .ready:
+            case .ready, .unknown:
                 if let transfer = viewModel.transfer {
                     TransferDetailsView(transfer: transfer)
                 }
             case .expired:
-                Text("Expired")
+                ExpiredTransferView()
             case .waitVirusCheck:
-                Text("Wait Virus Check")
-            case .unknown:
-                Text("Unknown Case")
+                VirusCheckView()
             }
         }
         .stNavigationBarStyle()
