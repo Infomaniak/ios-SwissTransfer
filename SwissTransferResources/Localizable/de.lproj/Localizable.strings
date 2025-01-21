@@ -126,9 +126,6 @@
 /* loco:6750234ba38b270dc804a7d2 */
 "invalidAddress" = "Ungültige Adresse";
 
-/* loco:678e479bdf4d2ab457051f92 */
-"keepAppForegroundNotificationDescription" = "Hält die App offen, bis die Übertragung abgeschlossen ist.";
-
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Nachricht:";
 
@@ -156,6 +153,9 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "Keine Transfers zum Anzeigen";
 
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Hält die App offen, bis die Übertragung abgeschlossen ist.";
 /* loco:678630b92eec2a91f00603af */
 "notificationUploadFailureTitle" = "Die Übertragung ist fehlgeschlagen";
 

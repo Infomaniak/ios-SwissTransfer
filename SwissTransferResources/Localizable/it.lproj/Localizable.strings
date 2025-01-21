@@ -126,9 +126,6 @@
 /* loco:6750234ba38b270dc804a7d2 */
 "invalidAddress" = "Indirizzo non valido";
 
-/* loco:678e479bdf4d2ab457051f92 */
-"keepAppForegroundNotificationDescription" = "Mantenere l’applicazione aperta fino al termine del trasferimento.";
-
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Messaggio:";
 
@@ -156,6 +153,9 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "Nessun trasferimento da visualizzare";
 
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Mantenere l’applicazione aperta fino al termine del trasferimento.";
 /* loco:678630b92eec2a91f00603af */
 "notificationUploadFailureTitle" = "Il trasferimento non è riuscito";
 

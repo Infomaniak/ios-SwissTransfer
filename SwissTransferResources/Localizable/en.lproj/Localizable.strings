@@ -126,9 +126,6 @@
 /* loco:6750234ba38b270dc804a7d2 */
 "invalidAddress" = "Invalid address";
 
-/* loco:678e479bdf4d2ab457051f92 */
-"keepAppForegroundNotificationDescription" = "Keep the app open until the end of the transfer.";
-
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Message:";
 
@@ -156,6 +153,9 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "No transfers to display";
 
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Keep the app open until the end of the transfer.";
 /* loco:678630b92eec2a91f00603af */
 "notificationUploadFailureTitle" = "The transfer failed";
 

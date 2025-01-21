@@ -68,7 +68,7 @@ public struct NotificationsHelper: Sendable {
             content.categoryIdentifier = CategoryIdentifier.upload
             content.sound = .default
             content.title = STResourcesStrings.Localizable.uploadProgressIndication
-            content.body = STResourcesStrings.Localizable.keepAppForegroundNotificationDescription
+            content.body = STResourcesStrings.Localizable.notificationKeepAppForegroundDescription
 
             let request = UNNotificationRequest(identifier: "upload_success", content: content, trigger: immediateTrigger)
             try? await UNUserNotificationCenter.current().add(request)
@@ -81,7 +81,7 @@ public struct NotificationsHelper: Sendable {
             content.categoryIdentifier = CategoryIdentifier.upload
             content.sound = .default
             content.title = STResourcesStrings.Localizable.notificationUploadFailureTitle
-            content.body = STResourcesStrings.Localizable.keepAppForegroundNotificationDescription
+            content.body = STResourcesStrings.Localizable.notificationKeepAppForegroundDescription
 
             let request = UNNotificationRequest(identifier: "upload_failed", content: content, trigger: immediateTrigger)
             try? await UNUserNotificationCenter.current().add(request)
