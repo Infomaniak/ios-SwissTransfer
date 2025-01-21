@@ -23,6 +23,8 @@ import SwiftUI
 import SwissTransferCore
 
 struct DownloadableFileCellView: View {
+    @LazyInjectService private var notificationsHelper: NotificationsHelper
+
     @EnvironmentObject private var downloadManager: DownloadManager
 
     @State private var downloadedFilePreviewURL: URL?
@@ -56,6 +58,10 @@ struct DownloadableFileCellView: View {
                FileManager.default.fileExists(atPath: localURL.path()) {
                 presentFile(at: localURL)
                 return
+            }
+
+            Task {
+                await notificationsHelper.requestPermissionIfNeeded()
             }
 
             try await downloadManager.startDownload(file: file, in: transfer)
