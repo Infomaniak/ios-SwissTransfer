@@ -20,7 +20,6 @@ import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
-import SwissTransferCoreUI
 
 @MainActor
 final class TransferDetailsViewModel: ObservableObject {
@@ -28,7 +27,6 @@ final class TransferDetailsViewModel: ObservableObject {
     @Published var status: TransferStatus
 
     private var flow: (any AsyncSequence)?
-    private var transferUUID: String?
 
     init(data: TransferData) {
         switch data {
