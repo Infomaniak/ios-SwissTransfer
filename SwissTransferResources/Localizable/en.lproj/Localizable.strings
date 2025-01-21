@@ -153,6 +153,12 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "No transfers to display";
 
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Keep the app open until the end of the transfer.";
+/* loco:678630b92eec2a91f00603af */
+"notificationUploadFailureTitle" = "The transfer failed";
+
 /* loco:6746e8a0396f33e00a0fc393 */
 "onboardingExpirationSubtitleArgument" = "30 days.";
 

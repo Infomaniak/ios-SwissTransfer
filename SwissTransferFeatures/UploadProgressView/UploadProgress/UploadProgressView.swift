@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import OSLog
 import STCore
 import STNetwork
@@ -26,6 +27,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
+    @LazyInjectService private var notificationsHelper: NotificationsHelper
+
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
@@ -65,12 +68,27 @@ public struct UploadProgressView: View {
             .stIconNavigationBar()
             .navigationBarBackButtonHidden()
             .task(startUpload)
+            .sceneLifecycle(
+                willEnterForeground: nil,
+                didEnterBackground: notificationsHelper.sendBackgroundUploadNotificationForUploadSession
+            )
+            .onAppear {
+                UIApplication.shared.isIdleTimerDisabled = true
+            }
+            .onDisappear {
+                UIApplication.shared.isIdleTimerDisabled = false
+            }
         }
     }
 
     @Sendable private func startUpload() async {
         do {
+            Task { @MainActor in
+                await notificationsHelper.requestPermissionIfNeeded()
+            }
+
             let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
+
             rootTransferViewState.transition(to: .success(transferUUID))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }

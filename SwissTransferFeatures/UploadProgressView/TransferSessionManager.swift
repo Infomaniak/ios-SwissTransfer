@@ -22,6 +22,7 @@ import InfomaniakConcurrency
 import InfomaniakCore
 import InfomaniakDI
 import OSLog
+import Sentry
 import STCore
 import STNetwork
 import SwissTransferCore
@@ -64,6 +65,9 @@ class TransferSessionManager: ObservableObject {
     }
 
     func uploadFiles(for uploadSession: SendableUploadSession) async throws -> String {
+        let expiringActivity = ExpiringActivity(id: "uploadSession-\(uploadSession.uuid)", delegate: self)
+        expiringActivity.start()
+
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
 
@@ -95,7 +99,17 @@ class TransferSessionManager: ObservableObject {
 
         let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
+        expiringActivity.endAll()
         return transferUUID
+    }
+}
+
+extension TransferSessionManager: ExpiringActivityDelegate {
+    nonisolated func backgroundActivityExpiring() {
+        @InjectService var notificationsHelper: NotificationsHelper
+        notificationsHelper.sendUploadFailedExpiredNotificationForUploadSession()
+
+        SentrySDK.capture(message: "Upload couldn't complete because the app went in the background")
     }
 }
 
