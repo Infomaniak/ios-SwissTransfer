@@ -37,6 +37,7 @@ struct SwissTransferApp: App {
     @LazyInjectService private var downloadManager: DownloadManager
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
@@ -68,9 +69,21 @@ struct SwissTransferApp: App {
                 .detectCompactWindow()
                 .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
-                .sceneLifecycle(willEnterForeground: notificationsHelper.removeAllUploadNotifications)
+                .sceneLifecycle(willEnterForeground: onWillEnterForeground)
         }
         .defaultAppStorage(.shared)
+    }
+
+    private func onWillEnterForeground() {
+        notificationsHelper.removeAllUploadNotifications()
+
+        Task {
+            guard let currentManager = await accountManager.getCurrentManager() else {
+                return
+            }
+
+            try await currentManager.tryUpdatingAllTransfers()
+        }
     }
 
     func handleURL(_ url: URL) {
