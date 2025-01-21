@@ -86,6 +86,8 @@ public struct TransferDetailsRootView: View {
                 ExpiredTransferView()
             case .waitVirusCheck:
                 VirusCheckView()
+            case .virusDetected:
+                VirusDetectedView()
             }
         }
         .stNavigationBarStyle()

@@ -464,6 +464,12 @@
 /* loco:678e7b0a570febadc1013692 */
 "transferVirusCheckTitle" = "Fichiers en cours de vérification";
 
+/* loco:678f4ab56e8b3c2390077452 */
+"transferVirusDetectedDescription" = "Tu ne peux pas accéder à ce transfert car il ne respect pas nos conditions d’utilisation";
+
+/* loco:678f4a42026090be7200ee62 */
+"transferVirusDetectedTitle" = "Fichiers non conformes";
+
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Es-tu certain de vouloir annuler le transfert ?";
 
