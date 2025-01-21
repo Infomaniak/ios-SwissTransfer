@@ -32,7 +32,10 @@ struct TransferCell: View {
     let transfer: TransferUi
 
     private var isSelected: Bool {
-        mainViewState.selectedTransfer?.uuid == transfer.uuid
+        guard case .transfer(let selectedTransfer) = mainViewState.selectedTransfer else {
+            return false
+        }
+        return selectedTransfer.uuid == transfer.uuid
     }
 
     var body: some View {

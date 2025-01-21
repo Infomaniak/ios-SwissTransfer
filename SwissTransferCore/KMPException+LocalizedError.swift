@@ -22,19 +22,19 @@ import STResources
 
 // MARK: - STNDeeplinkException
 
-extension STNDeeplinkException.WrongPasswordDeeplinkException: @retroactive LocalizedError, @unchecked Sendable {
+extension STNFetchTransferException.WrongPasswordFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
     public var errorDescription: String? {
         return STResourcesStrings.Localizable.errorIncorrectPassword
     }
 }
 
-extension STNDeeplinkException.ExpiredDeeplinkException: @retroactive LocalizedError, @unchecked Sendable {
+extension STNFetchTransferException.ExpiredFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
     public var errorDescription: String? {
         return STResourcesStrings.Localizable.deeplinkTransferExpired
     }
 }
 
-extension STNDeeplinkException.NotFoundDeeplinkException: @retroactive LocalizedError, @unchecked Sendable {
+extension STNFetchTransferException.NotFoundFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
     public var errorDescription: String? {
         return STResourcesStrings.Localizable.deeplinkTransferNotFound
     }

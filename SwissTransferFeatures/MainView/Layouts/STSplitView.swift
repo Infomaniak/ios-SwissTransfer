@@ -80,8 +80,8 @@ private struct DetailSplitView: View {
     var body: some View {
         if let destination {
             switch destination {
-            case .transfer(let transfer):
-                TransferDetailsView(transfer: transfer)
+            case .transfer(let transferData):
+                TransferDetailsRootView(data: transferData)
             case .settings:
                 Text("TODO: Settings Option.")
             }

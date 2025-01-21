@@ -27,6 +27,12 @@ struct HeaderView: View {
     let filesCount: Int
     let transferSize: Int64
     let expiringTimestamp: Int64
+    let downloadLeft: Int32
+    let downloadLimit: Int32
+
+    private var downloadedTimes: Int {
+        Int(downloadLimit) - Int(downloadLeft)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -51,7 +57,7 @@ struct HeaderView: View {
             DividerView()
 
             Label(
-                title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(0, 250)) },
+                title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(downloadedTimes, Int(downloadLimit))) },
                 icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
             )
             .labelStyle(.horizontal)
@@ -60,5 +66,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView(filesCount: 4, transferSize: 8561, expiringTimestamp: 0)
+    HeaderView(filesCount: 4, transferSize: 8561, expiringTimestamp: 0, downloadLeft: 249, downloadLimit: 250)
 }

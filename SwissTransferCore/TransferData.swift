@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,14 +17,18 @@
  */
 
 import Foundation
-import OSLog
+import STCore
 
-public extension Logger {
-    static let view = Logger(category: "View")
-    static let general = Logger(category: "general")
-    static let deepLink = Logger(category: "DeepLink")
+public enum TransferData: Identifiable {
+    case transfer(TransferUi)
+    case status(TransferStatus)
 
-    internal init(category: String) {
-        self.init(subsystem: Bundle.main.bundleIdentifier ?? "SwissTransfer", category: category)
+    public var id: String {
+        switch self {
+        case .transfer(let transferUi):
+            return transferUi.id
+        case .status(let transferStatus):
+            return transferStatus.name
+        }
     }
 }

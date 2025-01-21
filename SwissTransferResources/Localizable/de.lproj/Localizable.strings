@@ -389,6 +389,12 @@
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Inhalt der Übertragung:";
 
+/* loco:678e7bb990830fe7f1052e92 */
+"transferExpiredDescription" = "Diese Übertragung ist leider abgelaufen. Du kannst die Dateien nicht mehr herunterladen oder ansehen.";
+
+/* loco:6720aec78a4f6e6b0c0d28a2 */
+"transferExpiredTitle" = "Diese Übertragung ist nicht mehr verfügbar";
+
 /* loco:66c6d0936969c14fab0aec72 */
 "transferListSectionLastWeek" = "Letzte Woche";
 
@@ -451,6 +457,18 @@
 
 /* loco:66c2f7b4302dbac2e60ec512 */
 "transferUploadSourceChoiceGallery" = "Foto- und Videogalerie";
+
+/* loco:678e7b3b30ca99c9690c7c92 */
+"transferVirusCheckDescription" = "Die Dateien sind aus Sicherheitsgründen noch nicht zugänglich.\nBitte kommen Sie gleich wieder.";
+
+/* loco:678e7b0a570febadc1013692 */
+"transferVirusCheckTitle" = "Dateien werden überprüft";
+
+/* loco:678f4ab56e8b3c2390077452 */
+"transferVirusDetectedDescription" = "Du kannst nicht auf diesen Transfer zugreifen, da er gegen unsere Nutzungsbedingungen verstösst.";
+
+/* loco:678f4a42026090be7200ee62 */
+"transferVirusDetectedTitle" = "Nicht konforme Dateien";
 
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Bist du dir sicher, dass du die Überweisung rückgängig machen willst?";

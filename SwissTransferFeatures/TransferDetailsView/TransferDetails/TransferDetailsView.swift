@@ -25,20 +25,22 @@ import SwissTransferCoreUI
 public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
 
-    private let transfer: TransferUi
+    private let transfer: TransferUi?
 
-    public init(transfer: TransferUi) {
+    public init(transfer: TransferUi?) {
         self.transfer = transfer
     }
 
     public var body: some View {
-        NavigationStack {
-            ScrollView {
+        ScrollView {
+            if let transfer {
                 VStack(spacing: IKPadding.large) {
                     HeaderView(
                         filesCount: transfer.files.count,
                         transferSize: transfer.sizeUploaded,
-                        expiringTimestamp: transfer.expirationDateTimestamp
+                        expiringTimestamp: transfer.expirationDateTimestamp,
+                        downloadLeft: transfer.downloadLeft,
+                        downloadLimit: transfer.downloadLimit
                     )
 
                     if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
@@ -49,17 +51,21 @@ public struct TransferDetailsView: View {
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
+                .shareTransferToolbar(transfer: transfer)
+            } else {
+                ProgressView()
             }
-            .shareTransferToolbar(transfer: transfer)
-            .toolbarBackground(.visible, for: .bottomBar)
-            .appBackground()
-            .stNavigationBarStyle()
-            .stNavigationBarFullScreen(title: transfer.name)
-            .navigationDestination(for: FileUi.self) { file in
-                FileListView(folder: file, transfer: transfer)
-            }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+        }
+        .toolbarBackground(.visible, for: .bottomBar)
+        .appBackground()
+        .stNavigationBarStyle()
+        .stNavigationBarFullScreen(title: transfer?.name ?? "")
+        .navigationDestination(for: FileUi.self) { file in
+            FileListView(folder: file, transfer: transfer)
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                if let transfer {
                     DownloadButton(transfer: transfer)
                 }
             }
