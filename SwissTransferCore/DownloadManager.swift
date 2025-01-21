@@ -61,12 +61,20 @@ public enum DownloadTaskState: Equatable, Sendable {
 @MainActor
 public class DownloadManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     private let session: URLSession
 
     private var cancellables: Set<AnyCancellable> = []
 
     @Published private var trackedDownloadTasks = [String: DownloadTask]()
+
+    public var backgroundDownloadCompletionCallback: (() -> Void)? {
+        didSet {
+            guard let delegate = session.delegate as? DownloadManagerSessionDelegate else { return }
+            delegate.backgroundDownloadCompletionCallback = backgroundDownloadCompletionCallback
+        }
+    }
 
     enum ErrorDomain: Error {
         case badURL
@@ -196,14 +204,27 @@ public class DownloadManager: ObservableObject {
                     downloadedFile: downloadedFile
                 )
 
+                notificationsHelper.sendBackgroundDownloadSuccessNotificationIfNeeded(
+                    transferUUID: transferUUID,
+                    fileUUID: fileUUID,
+                    filename: downloadedFile.filename
+                )
                 updateDownloadTask(
                     id: downloadTaskCompletion.id,
                     state: .completed(resultURL)
                 )
             } catch {
+                notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded(
+                    transferUUID: transferUUID,
+                    fileUUID: fileUUID
+                )
                 updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
             }
         case .failure(let error):
+            notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded(
+                transferUUID: transferUUID,
+                fileUUID: fileUUID
+            )
             updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
         }
     }
@@ -237,6 +258,8 @@ public class DownloadManager: ObservableObject {
 final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate, Sendable {
     let downloadCompletedSubject = PassthroughSubject<DownloadTaskCompletion, Never>()
     let downloadRunningSubject = PassthroughSubject<DownloadTaskProgress, Never>()
+
+    @MainActor var backgroundDownloadCompletionCallback: (() -> Void)?
 
     enum ErrorDomain: Error {
         case badResult(URL?)
@@ -301,6 +324,12 @@ final class DownloadManagerSessionDelegate: NSObject, URLSessionDownloadDelegate
                 id: taskDescription,
                 result: .failure(ErrorDomain.badResult(location))
             ))
+        }
+    }
+
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        Task { @MainActor in
+            backgroundDownloadCompletionCallback?()
         }
     }
 }

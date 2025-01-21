@@ -32,8 +32,11 @@ struct SwissTransferApp: App {
     // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
     private let dependencyInjectionHook = TargetAssembly()
 
+    @UIApplicationDelegateAdaptor private var appDelegateAdaptor: AppDelegate
+
     @LazyInjectService private var downloadManager: DownloadManager
     @LazyInjectService private var notificationsHelper: NotificationsHelper
+    @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
@@ -50,6 +53,8 @@ struct SwissTransferApp: App {
     public init() {
         @InjectService var settings: AppSettingsManager
         _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
+
+        UNUserNotificationCenter.current().delegate = notificationCenterDelegate
     }
 
     var body: some Scene {
@@ -57,6 +62,7 @@ struct SwissTransferApp: App {
             RootView()
                 .environmentObject(universalLinksState)
                 .environmentObject(downloadManager)
+                .environmentObject(notificationCenterDelegate)
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()

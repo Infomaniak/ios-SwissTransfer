@@ -38,6 +38,8 @@ struct ActivityView: UIViewControllerRepresentable {
 }
 
 public struct DownloadButton: View {
+    @LazyInjectService private var notificationsHelper: NotificationsHelper
+
     @EnvironmentObject private var downloadManager: DownloadManager
 
     @State private var downloadedTransferURL: IdentifiableURL?
@@ -77,6 +79,10 @@ public struct DownloadButton: View {
                FileManager.default.fileExists(atPath: localURL.path()) {
                 downloadedTransferURL = IdentifiableURL(url: localURL)
                 return
+            }
+
+            Task {
+                await notificationsHelper.requestPermissionIfNeeded()
             }
 
             try? await downloadManager.startDownload(transfer: transfer)

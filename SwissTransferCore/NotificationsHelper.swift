@@ -19,6 +19,7 @@
 import Foundation
 import OSLog
 import STResources
+import UIKit
 import UserNotifications
 
 public struct NotificationsHelper: Sendable {
@@ -26,6 +27,11 @@ public struct NotificationsHelper: Sendable {
         public static let general = "com.infomaniak.swisstransfer.general"
         public static let upload = "com.infomaniak.swisstransfer.upload"
         public static let download = "com.infomaniak.swisstransfer.download"
+    }
+
+    public enum UserInfoKeys {
+        public static let fileUUID = "fileUUID"
+        public static let transferUUID = "transferUUID"
     }
 
     private var immediateTrigger: UNTimeIntervalNotificationTrigger {
@@ -59,6 +65,44 @@ public struct NotificationsHelper: Sendable {
                 .filter { $0.request.content.categoryIdentifier == CategoryIdentifier.upload }
 
             notificationCenter.removeDeliveredNotifications(withIdentifiers: uploadNotifications.map(\.request.identifier))
+        }
+    }
+
+    public func sendBackgroundDownloadSuccessNotificationIfNeeded(transferUUID: String, fileUUID: String?, filename: String) {
+        Task { @MainActor in
+            guard UIApplication.shared.applicationState == .background else { return }
+
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = CategoryIdentifier.download
+            content.userInfo = [UserInfoKeys.transferUUID: transferUUID]
+            if let fileUUID = fileUUID {
+                content.userInfo[UserInfoKeys.fileUUID] = fileUUID
+            }
+            content.sound = .default
+            content.title = STResourcesStrings.Localizable.notificationDownloadSuccessNotificationTitle
+            content.body = STResourcesStrings.Localizable.notificationDownloadSuccessDescription(filename)
+
+            let request = UNNotificationRequest(identifier: "download_success", content: content, trigger: immediateTrigger)
+            try? await UNUserNotificationCenter.current().add(request)
+        }
+    }
+
+    public func sendBackgroundDownloadErrorNotificationIfNeeded(transferUUID: String, fileUUID: String?) {
+        Task { @MainActor in
+            guard UIApplication.shared.applicationState == .background else { return }
+
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = CategoryIdentifier.download
+            content.userInfo = [UserInfoKeys.transferUUID: transferUUID]
+            if let fileUUID = fileUUID {
+                content.userInfo[UserInfoKeys.fileUUID] = fileUUID
+            }
+            content.sound = .default
+            content.title = STResourcesStrings.Localizable.notificationDownloadErrorNotificationTitle
+            content.body = STResourcesStrings.Localizable.notificationDownloadErrorDescription
+
+            let request = UNNotificationRequest(identifier: "download_error", content: content, trigger: immediateTrigger)
+            try? await UNUserNotificationCenter.current().add(request)
         }
     }
 

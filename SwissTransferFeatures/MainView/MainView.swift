@@ -21,6 +21,7 @@ import InfomaniakDI
 import STCore
 import STRootTransferView
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct MainView: View {
@@ -30,6 +31,7 @@ public struct MainView: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
+    @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
 
     public init() {}
 
@@ -48,6 +50,11 @@ public struct MainView: View {
 
             mainViewState.handleDeepLink(linkedTransfer)
             universalLinksState.linkedTransfer = nil
+        }
+        .onChange(of: notificationCenterDelegate.tappedTransfer) { tappedTransfer in
+            guard let tappedTransfer else { return }
+
+            mainViewState.selectedTransfer = tappedTransfer
         }
         .task(id: isCompactWindow) {
             mainViewState.isSplitView = !isCompactWindow

@@ -153,6 +153,17 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "No hay transferencias que mostrar";
 
+/* loco:678f47605b4d4a18240a8395 */
+"notificationDownloadErrorDescription" = "Se ha producido un error durante la descarga.";
+
+/* loco:678f44b7f2593a75b90f0f92 */
+"notificationDownloadErrorNotificationTitle" = "Error de descarga";
+
+/* loco:678f473fe3af2239cf0b99c2 */
+"notificationDownloadSuccessDescription" = "El archivo %@ ha sido descargado.";
+
+/* loco:678f44517474b710de0065b6 */
+"notificationDownloadSuccessNotificationTitle" = "Descarga completa";
 
 /* loco:678e479bdf4d2ab457051f92 */
 "notificationKeepAppForegroundDescription" = "Mantén la aplicación abierta hasta el final de la transferencia.";
