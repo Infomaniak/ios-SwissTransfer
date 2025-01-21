@@ -50,6 +50,8 @@ public struct TransferDetailsView: View {
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
             }
+            .shareTransferToolbar(transfer: transfer)
+            .toolbarBackground(.visible, for: .bottomBar)
             .appBackground()
             .stNavigationBarStyle()
             .stNavigationBarFullScreen(title: transfer.name)
