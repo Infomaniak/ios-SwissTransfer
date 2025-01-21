@@ -107,6 +107,9 @@ open class TargetAssembly {
             },
             Factory(type: NotificationsHelper.self) { _, _ in
                 NotificationsHelper()
+            },
+            Factory(type: NotificationCenterDelegate.self) { _, _ in
+                NotificationCenterDelegate()
             }
         ]
     }

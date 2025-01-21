@@ -19,8 +19,8 @@
 import Foundation
 import OSLog
 import STResources
-import UserNotifications
 import UIKit
+import UserNotifications
 
 public struct NotificationsHelper: Sendable {
     public enum CategoryIdentifier {
@@ -29,9 +29,9 @@ public struct NotificationsHelper: Sendable {
         public static let download = "com.infomaniak.swisstransfer.download"
     }
 
-    private enum UserInfoKeys: String {
-        case fileUUID
-        case transferUUID
+    public enum UserInfoKeys {
+        public static let fileUUID = "fileUUID"
+        public static let transferUUID = "transferUUID"
     }
 
     private var immediateTrigger: UNTimeIntervalNotificationTrigger {
