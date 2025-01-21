@@ -465,7 +465,7 @@
 "transferVirusCheckTitle" = "Fichiers en cours de vérification";
 
 /* loco:678f4ab56e8b3c2390077452 */
-"transferVirusDetectedDescription" = "Tu ne peux pas accéder à ce transfert car il ne respect pas nos conditions d’utilisation";
+"transferVirusDetectedDescription" = "Tu ne peux pas accéder à ce transfert car il ne respecte pas nos conditions d’utilisation.";
 
 /* loco:678f4a42026090be7200ee62 */
 "transferVirusDetectedTitle" = "Fichiers non conformes";

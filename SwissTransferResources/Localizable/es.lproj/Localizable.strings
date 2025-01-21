@@ -465,7 +465,7 @@
 "transferVirusCheckTitle" = "Ficheros controlados";
 
 /* loco:678f4ab56e8b3c2390077452 */
-"transferVirusDetectedDescription" = "No puede acceder a esta transferencia porque no cumple nuestras condiciones de uso";
+"transferVirusDetectedDescription" = "No puede acceder a esta transferencia porque no cumple nuestras condiciones de uso.";
 
 /* loco:678f4a42026090be7200ee62 */
 "transferVirusDetectedTitle" = "Archivos no compatibles";
