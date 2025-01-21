@@ -67,7 +67,7 @@ public final class MainViewState: ObservableObject {
         }
         set {
             guard let newValue else { return }
-            if let transfer = newValue.transfer {
+            if case .transfer(let transfer) = newValue {
                 selectedTab = transfer.direction == .sent ? .sentTransfers : .receivedTransfers
             }
             selectedDestination = .transfer(newValue)
@@ -83,16 +83,16 @@ public final class MainViewState: ObservableObject {
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {
         switch linkResult.result {
         case .success(let transfer):
-            selectedTransfer = TransferData(transfer: transfer)
+            selectedTransfer = .transfer(transfer)
         case .failure(let error as NSError):
             let kotlinException = error.kotlinException
             if kotlinException is STNFetchTransferException.PasswordNeededFetchTransferException {
                 isShowingProtectedDeepLink = IdentifiableURL(url: linkResult.link)
             } else if kotlinException is STNFetchTransferException.ExpiredFetchTransferException
                 || kotlinException is STNFetchTransferException.NotFoundFetchTransferException {
-                selectedTransfer = TransferData(status: .expired)
+                selectedTransfer = .status(.expired)
             } else if kotlinException is STNFetchTransferException.VirusCheckFetchTransferException {
-                selectedTransfer = TransferData(status: .waitVirusCheck)
+                selectedTransfer = .status(.waitVirusCheck)
             }
         }
     }

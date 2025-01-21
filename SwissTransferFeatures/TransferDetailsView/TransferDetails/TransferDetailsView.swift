@@ -51,11 +51,11 @@ public struct TransferDetailsView: View {
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
+                .shareTransferToolbar(transfer: transfer)
             } else {
                 ProgressView()
             }
         }
-        .shareTransferToolbar(transfer: transfer)
         .toolbarBackground(.visible, for: .bottomBar)
         .appBackground()
         .stNavigationBarStyle()

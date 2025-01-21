@@ -92,7 +92,7 @@ struct DeepLinkPasswordView: View {
 
                 dismiss()
                 if let transfer {
-                    mainViewState.selectedTransfer = TransferData(transfer: transfer)
+                    mainViewState.selectedTransfer = .transfer(transfer)
                 }
             } catch {
                 let kotlinException = (error as NSError).kotlinException

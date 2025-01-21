@@ -31,9 +31,15 @@ final class TransferDetailsViewModel: ObservableObject {
     private var transferUUID: String?
 
     init(data: TransferData) {
-        status = data.status ?? data.transfer?.transferStatus ?? .unknown
+        switch data {
+        case .transfer(let transfer):
+            self.transfer = transfer
+            status = transfer.transferStatus ?? .unknown
+        case .status(let transferStatus):
+            status = transferStatus
+        }
 
-        if let transfer = data.transfer {
+        if let transfer {
             Task {
                 await fetchTransfer(uuid: transfer.uuid)
             }

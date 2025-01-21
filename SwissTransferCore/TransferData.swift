@@ -19,18 +19,16 @@
 import Foundation
 import STCore
 
-public struct TransferData: Identifiable {
-    public let id = UUID()
-    public let transfer: TransferUi?
-    public let status: TransferStatus?
+public enum TransferData: Identifiable {
+    case transfer(TransferUi)
+    case status(TransferStatus)
 
-    public init(transfer: TransferUi) {
-        self.transfer = transfer
-        status = nil
-    }
-
-    public init(status: TransferStatus) {
-        transfer = nil
-        self.status = status
+    public var id: String {
+        switch self {
+        case .transfer(let transferUi):
+            return transferUi.id
+        case .status(let transferStatus):
+            return transferStatus.name
+        }
     }
 }
