@@ -20,6 +20,7 @@ import Foundation
 import OSLog
 import STResources
 import UserNotifications
+import UIKit
 
 public struct NotificationsHelper: Sendable {
     public enum CategoryIdentifier {
@@ -59,6 +60,36 @@ public struct NotificationsHelper: Sendable {
                 .filter { $0.request.content.categoryIdentifier == CategoryIdentifier.upload }
 
             notificationCenter.removeDeliveredNotifications(withIdentifiers: uploadNotifications.map(\.request.identifier))
+        }
+    }
+
+    public func sendBackgroundDownloadSuccessNotificationIfNeeded(filename: String) {
+        Task { @MainActor in
+            guard UIApplication.shared.applicationState == .background else { return }
+
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = CategoryIdentifier.download
+            content.sound = .default
+            content.title = STResourcesStrings.Localizable.notificationDownloadSuccessNotificationTitle
+            content.body = STResourcesStrings.Localizable.notificationDownloadSuccessDescription(filename)
+
+            let request = UNNotificationRequest(identifier: "download_success", content: content, trigger: immediateTrigger)
+            try? await UNUserNotificationCenter.current().add(request)
+        }
+    }
+
+    public func sendBackgroundDownloadErrorNotificationIfNeeded() {
+        Task { @MainActor in
+            guard UIApplication.shared.applicationState == .background else { return }
+
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = CategoryIdentifier.download
+            content.sound = .default
+            content.title = STResourcesStrings.Localizable.notificationDownloadErrorNotificationTitle
+            content.body = STResourcesStrings.Localizable.notificationDownloadErrorDescription
+
+            let request = UNNotificationRequest(identifier: "download_error", content: content, trigger: immediateTrigger)
+            try? await UNUserNotificationCenter.current().add(request)
         }
     }
 

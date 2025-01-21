@@ -61,6 +61,7 @@ public enum DownloadTaskState: Equatable, Sendable {
 @MainActor
 public class DownloadManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     private let session: URLSession
 
@@ -203,14 +204,17 @@ public class DownloadManager: ObservableObject {
                     downloadedFile: downloadedFile
                 )
 
+                notificationsHelper.sendBackgroundDownloadSuccessNotificationIfNeeded(filename: downloadedFile.filename)
                 updateDownloadTask(
                     id: downloadTaskCompletion.id,
                     state: .completed(resultURL)
                 )
             } catch {
+                notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded()
                 updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
             }
         case .failure(let error):
+            notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded()
             updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
         }
     }

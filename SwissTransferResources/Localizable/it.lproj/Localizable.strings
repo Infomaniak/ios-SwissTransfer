@@ -153,6 +153,17 @@
 /* loco:6748294ce710a9c2af069052 */
 "noTransferSelectedTitle" = "Nessun trasferimento da visualizzare";
 
+/* loco:678f47605b4d4a18240a8395 */
+"notificationDownloadErrorDescription" = "Si è verificato un errore durante il download.";
+
+/* loco:678f44b7f2593a75b90f0f92 */
+"notificationDownloadErrorNotificationTitle" = "Scarica l’errore";
+
+/* loco:678f473fe3af2239cf0b99c2 */
+"notificationDownloadSuccessDescription" = "Il file %@ è stato scaricato.";
+
+/* loco:678f44517474b710de0065b6 */
+"notificationDownloadSuccessNotificationTitle" = "Scaricamento completato";
 
 /* loco:678e479bdf4d2ab457051f92 */
 "notificationKeepAppForegroundDescription" = "Mantieni l’app aperta fino al termine del trasferimento.";
