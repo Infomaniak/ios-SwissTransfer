@@ -30,19 +30,37 @@ extension Slide {
             Slide(
                 backgroundImage: STResourcesAsset.Images.onboardingBlurRight.image,
                 backgroundImageTintColor: nil,
-                content: .illustration(STResourcesAsset.Images.boxes.image),
+                content: .animation(
+                    IKLottieConfiguration(
+                        id: 1,
+                        filename: "storage-cardboard-box",
+                        bundle: STResourcesResources.bundle
+                    )
+                ),
                 bottomView: OnboardingTextView(text: .storage)
             ),
             Slide(
                 backgroundImage: STResourcesAsset.Images.onboardingBlurLeft.image,
                 backgroundImageTintColor: nil,
-                content: .illustration(STResourcesAsset.Images.sharingPhones.image),
+                content: .animation(
+                    IKLottieConfiguration(
+                        id: 2,
+                        filename: "cards-transfer-type",
+                        bundle: STResourcesResources.bundle
+                    )
+                ),
                 bottomView: OnboardingTextView(text: .expiration)
             ),
             Slide(
                 backgroundImage: STResourcesAsset.Images.onboardingBlurRight.image,
                 backgroundImageTintColor: nil,
-                content: .illustration(STResourcesAsset.Images.locks.image),
+                content: .animation(
+                    IKLottieConfiguration(
+                        id: 3,
+                        filename: "padlocks",
+                        bundle: STResourcesResources.bundle
+                    )
+                ),
                 bottomView: OnboardingTextView(text: .password)
             )
         ]

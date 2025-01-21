@@ -11,7 +11,8 @@ let packageSettings = PackageSettings(
         "InfomaniakCoreSwiftUI": .framework,
         "InfomaniakConcurrency": .framework,
         "SwiftUIIntrospect": .framework,
-        "OrderedCollections": .framework
+        "OrderedCollections": .framework,
+        "Lottie": .framework
     ]
 )
 #endif
@@ -30,6 +31,7 @@ let package = Package(
         .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0")),
         .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
-        .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0"))
+        .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),
+        .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMajor(from: "4.5.1"))
     ]
 )

@@ -17,10 +17,13 @@
  */
 
 import InfomaniakOnboarding
+import Lottie
 import STResources
 import SwiftUI
 
 struct CarouselView<BottomView: View>: UIViewControllerRepresentable {
+    @Environment(\.colorScheme) private var colorScheme
+
     @Binding var selectedSlide: Int
 
     let slides: [Slide]
@@ -53,17 +56,26 @@ struct CarouselView<BottomView: View>: UIViewControllerRepresentable {
         if uiViewController.pageIndicator.currentPage != selectedSlide {
             uiViewController.setSelectedSlide(index: selectedSlide)
         }
+
+        if colorScheme != context.coordinator.currentColorScheme,
+           let currentSlideViewCell = uiViewController.currentSlideViewCell {
+            context.coordinator.currentColorScheme = context.environment.colorScheme
+            context.coordinator.selectCorrectAnimation(for: currentSlideViewCell, at: selectedSlide)
+        }
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self)
+        return Coordinator(parent: self, colorScheme: colorScheme)
     }
 
     class Coordinator: OnboardingViewControllerDelegate {
         let parent: CarouselView<BottomView>
 
-        init(parent: CarouselView<BottomView>) {
+        var currentColorScheme: ColorScheme
+
+        init(parent: CarouselView<BottomView>, colorScheme: ColorScheme) {
             self.parent = parent
+            currentColorScheme = colorScheme
         }
 
         func bottomViewForIndex(_ index: Int) -> (any View)? {
@@ -74,12 +86,23 @@ struct CarouselView<BottomView: View>: UIViewControllerRepresentable {
             return index == parent.slides.count - 1
         }
 
-        func willDisplaySlideViewCell(_ slideViewCell: SlideCollectionViewCell, at index: Int) {}
+        func willDisplaySlideViewCell(_ slideViewCell: SlideCollectionViewCell, at index: Int) {
+            selectCorrectAnimation(for: slideViewCell, at: index)
+        }
 
         func currentIndexChanged(newIndex: Int) {
             Task { @MainActor in
                 parent.$selectedSlide.wrappedValue = newIndex
             }
+        }
+
+        func selectCorrectAnimation(for slideViewCell: SlideCollectionViewCell, at index: Int) {
+            guard case .animation(let configuration) = parent.slides[index].content else { return }
+
+            let suffix = currentColorScheme == .dark ? "dark" : "light"
+            let animation = LottieAnimation.named("\(configuration.filename)-\(suffix)", bundle: configuration.bundle)
+            slideViewCell.illustrationAnimationView.animation = animation
+            slideViewCell.illustrationAnimationView.play()
         }
     }
 }
