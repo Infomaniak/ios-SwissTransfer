@@ -69,18 +69,21 @@ struct SwissTransferApp: App {
                 .detectCompactWindow()
                 .preferredColorScheme(savedColorScheme)
                 .onOpenURL(perform: handleURL)
-                .sceneLifecycle(willEnterForeground: {
-                    notificationsHelper.removeAllUploadNotifications()
-                    Task {
-                        guard let currentManager = await accountManager.getCurrentManager() else {
-                            return
-                        }
-
-                        try await currentManager.tryUpdatingAllTransfers()
-                    }
-                })
+                .sceneLifecycle(willEnterForeground: onWillEnterForeground)
         }
         .defaultAppStorage(.shared)
+    }
+
+    private func onWillEnterForeground() {
+        notificationsHelper.removeAllUploadNotifications()
+
+        Task {
+            guard let currentManager = await accountManager.getCurrentManager() else {
+                return
+            }
+
+            try await currentManager.tryUpdatingAllTransfers()
+        }
     }
 
     func handleURL(_ url: URL) {
