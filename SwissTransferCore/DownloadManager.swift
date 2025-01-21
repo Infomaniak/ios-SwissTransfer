@@ -204,17 +204,27 @@ public class DownloadManager: ObservableObject {
                     downloadedFile: downloadedFile
                 )
 
-                notificationsHelper.sendBackgroundDownloadSuccessNotificationIfNeeded(filename: downloadedFile.filename)
+                notificationsHelper.sendBackgroundDownloadSuccessNotificationIfNeeded(
+                    transferUUID: transferUUID,
+                    fileUUID: fileUUID,
+                    filename: downloadedFile.filename
+                )
                 updateDownloadTask(
                     id: downloadTaskCompletion.id,
                     state: .completed(resultURL)
                 )
             } catch {
-                notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded()
+                notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded(
+                    transferUUID: transferUUID,
+                    fileUUID: fileUUID
+                )
                 updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
             }
         case .failure(let error):
-            notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded()
+            notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded(
+                transferUUID: transferUUID,
+                fileUUID: fileUUID
+            )
             updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
         }
     }

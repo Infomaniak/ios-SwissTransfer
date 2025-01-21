@@ -29,6 +29,11 @@ public struct NotificationsHelper: Sendable {
         public static let download = "com.infomaniak.swisstransfer.download"
     }
 
+    private enum UserInfoKeys: String {
+        case fileUUID
+        case transferUUID
+    }
+
     private var immediateTrigger: UNTimeIntervalNotificationTrigger {
         return UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
     }
@@ -63,12 +68,16 @@ public struct NotificationsHelper: Sendable {
         }
     }
 
-    public func sendBackgroundDownloadSuccessNotificationIfNeeded(filename: String) {
+    public func sendBackgroundDownloadSuccessNotificationIfNeeded(transferUUID: String, fileUUID: String?, filename: String) {
         Task { @MainActor in
             guard UIApplication.shared.applicationState == .background else { return }
 
             let content = UNMutableNotificationContent()
             content.categoryIdentifier = CategoryIdentifier.download
+            content.userInfo = [UserInfoKeys.transferUUID: transferUUID]
+            if let fileUUID = fileUUID {
+                content.userInfo[UserInfoKeys.fileUUID] = fileUUID
+            }
             content.sound = .default
             content.title = STResourcesStrings.Localizable.notificationDownloadSuccessNotificationTitle
             content.body = STResourcesStrings.Localizable.notificationDownloadSuccessDescription(filename)
@@ -78,12 +87,16 @@ public struct NotificationsHelper: Sendable {
         }
     }
 
-    public func sendBackgroundDownloadErrorNotificationIfNeeded() {
+    public func sendBackgroundDownloadErrorNotificationIfNeeded(transferUUID: String, fileUUID: String?) {
         Task { @MainActor in
             guard UIApplication.shared.applicationState == .background else { return }
 
             let content = UNMutableNotificationContent()
             content.categoryIdentifier = CategoryIdentifier.download
+            content.userInfo = [UserInfoKeys.transferUUID: transferUUID]
+            if let fileUUID = fileUUID {
+                content.userInfo[UserInfoKeys.fileUUID] = fileUUID
+            }
             content.sound = .default
             content.title = STResourcesStrings.Localizable.notificationDownloadErrorNotificationTitle
             content.body = STResourcesStrings.Localizable.notificationDownloadErrorDescription
