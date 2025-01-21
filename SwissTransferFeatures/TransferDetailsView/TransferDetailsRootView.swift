@@ -31,7 +31,7 @@ final class TransferDetailsViewModel: ObservableObject {
     private var transferUUID: String?
 
     init(data: TransferData) {
-        status = data.status ?? data.transfer?.transferStatus ?? .ready
+        status = data.status ?? data.transfer?.transferStatus ?? .unknown
 
         if let transfer = data.transfer {
             Task {
@@ -79,9 +79,7 @@ public struct TransferDetailsRootView: View {
         NavigationStack {
             switch viewModel.status {
             case .ready, .unknown:
-                if let transfer = viewModel.transfer {
-                    TransferDetailsView(transfer: transfer)
-                }
+                TransferDetailsView(transfer: viewModel.transfer)
             case .expired:
                 ExpiredTransferView()
             case .waitVirusCheck:
