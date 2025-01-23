@@ -75,9 +75,7 @@ public struct VerifyMailView: View {
             .toolbar {
                 ToolbarItem(placement: .navigation) {
                     Button(STResourcesStrings.Localizable.contentDescriptionButtonBack, systemImage: "chevron.backward") {
-                        withAnimation {
-                            rootTransferViewState.transition(to: .newTransfer)
-                        }
+                        rootTransferViewState.transition(to: .newTransfer)
                     }
                 }
             }
@@ -129,9 +127,7 @@ public struct VerifyMailView: View {
 
                 viewModel.newUploadSession = uploadSessionWithEmailToken
 
-                withAnimation {
-                    rootTransferViewState.transition(to: .uploadProgress)
-                }
+                rootTransferViewState.transition(to: .uploadProgress)
             } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
                 withAnimation {
                     self.error = UserFacingError.validateMailCodeIncorrect

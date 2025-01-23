@@ -129,9 +129,7 @@ public struct NewTransferView: View {
 
             viewModel.newUploadSession = newUploadSession
 
-            withAnimation {
-                rootTransferViewState.transition(to: .uploadProgress)
-            }
+            rootTransferViewState.transition(to: .uploadProgress)
 
             isLoadingFileToUpload = false
         }
