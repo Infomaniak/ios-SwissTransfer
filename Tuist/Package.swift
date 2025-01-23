@@ -9,6 +9,7 @@ let packageSettings = PackageSettings(
         "InfomaniakDI": .framework,
         "InfomaniakCore": .framework,
         "InfomaniakCoreSwiftUI": .framework,
+        "InfomaniakCoreUIResources": .framework,
         "InfomaniakConcurrency": .framework,
         "SwiftUIIntrospect": .framework,
         "OrderedCollections": .framework,
@@ -21,7 +22,7 @@ let package = Package(
     name: "SwissTransfer",
     dependencies: [
         .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "13.1.0")),
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "16.3.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core-ui", branch: "feat-add-strings"),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "1.0.0")),

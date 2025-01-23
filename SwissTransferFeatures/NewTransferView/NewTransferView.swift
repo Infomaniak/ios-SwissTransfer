@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import OSLog
 import STCore
@@ -73,7 +74,7 @@ public struct NewTransferView: View {
             .background(Color.ST.background)
             .safeAreaButtons {
                 Button(action: startUpload) {
-                    Text(STResourcesStrings.Localizable.buttonNext)
+                    Text(CoreUILocalizable.buttonNext)
                 }
                 .buttonStyle(.ikBorderedProminent)
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
