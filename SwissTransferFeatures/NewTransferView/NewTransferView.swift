@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import InfomaniakDeviceCheck
 import InfomaniakDI
 import OSLog
 import STCore
@@ -130,9 +129,7 @@ public struct NewTransferView: View {
 
             viewModel.newUploadSession = newUploadSession
 
-            withAnimation {
-                rootTransferViewState.transition(to: .uploadProgress)
-            }
+            rootTransferViewState.transition(to: .uploadProgress)
 
             isLoadingFileToUpload = false
         }

@@ -70,23 +70,3 @@ extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
         uuid = remoteUploadFile.uuid
     }
 }
-
-public extension UploadManager {
-    enum DomainError: Error {
-        case containerNotFound
-    }
-
-    func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
-        let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
-        return SendableUploadSession(uploadSession: uploadSession)
-    }
-
-    func initSendableUploadSession(uuid: String, attestationToken: String) async throws -> SendableUploadSession {
-        guard let uploadSession = try await doInitUploadSession(uuid: uuid,
-                                                                attestationHeaderName: InfomaniakDeviceCheck.tokenHeaderField,
-                                                                attestationToken: attestationToken) else {
-            throw DomainError.containerNotFound
-        }
-        return SendableUploadSession(uploadSession: uploadSession)
-    }
-}

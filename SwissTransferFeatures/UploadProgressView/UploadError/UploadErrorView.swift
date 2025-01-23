@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import InfomaniakDeviceCheck
 import InfomaniakDI
 import STCore
 import STResources
@@ -30,14 +29,26 @@ public struct UploadErrorView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
 
-    public init() {}
+    private let userFacingError: UserFacingError?
+
+    private var errorSubtitle: String {
+        guard let userFacingError else {
+            return STResourcesStrings.Localizable.uploadErrorDescription
+        }
+
+        return userFacingError.errorDescription
+    }
+
+    public init(userFacingError: UserFacingError?) {
+        self.userFacingError = userFacingError
+    }
 
     public var body: some View {
         NavigationStack {
             IllustrationAndTextView(
                 image: STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
                 title: STResourcesStrings.Localizable.uploadErrorTitle,
-                subtitle: STResourcesStrings.Localizable.uploadErrorDescription,
+                subtitle: errorSubtitle,
                 style: .emptyState
             )
             .padding(value: .medium)
@@ -66,7 +77,7 @@ public struct UploadErrorView: View {
 }
 
 #Preview {
-    UploadErrorView()
+    UploadErrorView(userFacingError: nil)
         .environmentObject(RootTransferViewState())
         .environmentObject(RootTransferViewModel())
 }

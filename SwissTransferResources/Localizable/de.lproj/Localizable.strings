@@ -88,6 +88,9 @@
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Heruntergeladene Übertragung: %d/%d";
 
+/* loco:6761311fef0ed7ef9d0a2812 */
+"errorAppIntegrity" = "Ihr Gerät wird nicht als sicher erkannt";
+
 /* loco:6720ec444fa469071a050ee2 */
 "errorGeneratingQRCode" = "Unmöglich, den QR-Code zu generieren";
 
