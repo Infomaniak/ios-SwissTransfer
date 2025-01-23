@@ -22,15 +22,24 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
+enum ProgressStatus {
+    case initializing
+    case uploading(completedBytes: Int64, totalBytes: Int64)
+}
+
 struct UploadProgressIndicationView: View {
     @StateObject private var reachabilityObserver = ReachabilityObserver()
 
-    let completedBytes: Int64
-    let totalBytes: Int64
+    let status: ProgressStatus
 
     private var percentCompleted: Double {
-        guard totalBytes > 0 else { return 0 }
-        return Double(completedBytes) / Double(totalBytes)
+        switch status {
+        case .initializing:
+            return 0
+        case .uploading(completedBytes: let completedBytes, totalBytes: let totalBytes):
+            guard totalBytes > 0 else { return 0 }
+            return Double(completedBytes) / Double(totalBytes)
+        }
     }
 
     private var isOnline: Bool {
@@ -46,13 +55,20 @@ struct UploadProgressIndicationView: View {
 
             Group {
                 if isOnline {
-                    HStack(spacing: IKPadding.extraSmall) {
-                        Text(percentCompleted, format: .defaultPercent)
-                        Text("-")
-                        HStack(spacing: 2) {
-                            Text(completedBytes, format: .progressByteCount)
-                            Text("/")
-                            Text(totalBytes, format: .progressByteCount)
+                    Group {
+                        switch status {
+                        case .initializing:
+                            Text(STResourcesStrings.Localizable.transferInitializing)
+                        case .uploading(completedBytes: let completedBytes, totalBytes: let totalBytes):
+                            HStack(spacing: IKPadding.extraSmall) {
+                                Text(percentCompleted, format: .defaultPercent)
+                                Text("-")
+                                HStack(spacing: 2) {
+                                    Text(completedBytes, format: .progressByteCount)
+                                    Text("/")
+                                    Text(totalBytes, format: .progressByteCount)
+                                }
+                            }
                         }
                     }
                     .foregroundStyle(Color.ST.textSecondary)
@@ -73,5 +89,9 @@ struct UploadProgressIndicationView: View {
 }
 
 #Preview {
-    UploadProgressIndicationView(completedBytes: 12, totalBytes: 42)
+    UploadProgressIndicationView(status: .uploading(completedBytes: 12, totalBytes: 42))
+}
+
+#Preview {
+    UploadProgressIndicationView(status: .initializing)
 }

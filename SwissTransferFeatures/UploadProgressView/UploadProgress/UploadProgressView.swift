@@ -41,6 +41,17 @@ public struct UploadProgressView: View {
 
     @State private var currentUploadSession: SendableUploadSession?
 
+    private var status: ProgressStatus {
+        guard currentUploadSession != nil else {
+            return .initializing
+        }
+
+        return .uploading(
+            completedBytes: transferSessionManager.completedBytes,
+            totalBytes: transferSessionManager.totalBytes
+        )
+    }
+
     public init() {}
 
     public var body: some View {
@@ -58,10 +69,7 @@ public struct UploadProgressView: View {
             .scrollableEmptyState()
             .background(Color.ST.background)
             .safeAreaButtons(spacing: 32) {
-                UploadProgressIndicationView(
-                    completedBytes: transferSessionManager.completedBytes,
-                    totalBytes: transferSessionManager.totalBytes
-                )
+                UploadProgressIndicationView(status: status)
 
                 Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
                     .buttonStyle(.ikBorderedProminent)
