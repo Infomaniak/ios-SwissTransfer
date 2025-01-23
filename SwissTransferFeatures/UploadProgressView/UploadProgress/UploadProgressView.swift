@@ -27,20 +27,21 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
+    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @Environment(\.dismiss) private var dismiss
+
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var viewModel: RootTransferViewModel
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
     @State private var uploadProgressAd = UploadProgressAd.getRandomElement()
 
-    private let uploadSession: SendableUploadSession
+    @State private var currentUploadSession: SendableUploadSession?
 
-    public init(uploadSession: SendableUploadSession) {
-        self.uploadSession = uploadSession
-    }
+    public init() {}
 
     public var body: some View {
         NavigationStack {
@@ -82,14 +83,23 @@ public struct UploadProgressView: View {
     }
 
     @Sendable private func startUpload() async {
+        guard let newUploadSession = viewModel.newUploadSession else { return }
+
         do {
             Task { @MainActor in
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
+            let uploadSession = try await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
+            await saveEmailTokenIfNeeded(uploadSession: uploadSession)
+
+            currentUploadSession = uploadSession
+
             let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
 
             rootTransferViewState.transition(to: .success(transferUUID))
+        } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
+            rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 
@@ -98,12 +108,21 @@ public struct UploadProgressView: View {
         }
     }
 
+    private func saveEmailTokenIfNeeded(uploadSession: SendableUploadSession) async {
+        let authorEmailToken = uploadSession.authorEmail
+        guard !authorEmailToken.isEmpty,
+              let authorEmailToken = uploadSession.authorEmailToken else { return }
+
+        try? await injection.emailTokensManager.setEmailToken(email: uploadSession.authorEmail, emailToken: authorEmailToken)
+    }
+
     private func cancelTransfer() {
-        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: uploadSession.uuid)
+        guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
+        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: currentUploadSessionUUID)
     }
 }
 
 #Preview {
-    UploadProgressView(uploadSession: PreviewHelper.sampleSendableUploadSession)
+    UploadProgressView()
         .environmentObject(RootTransferViewModel())
 }

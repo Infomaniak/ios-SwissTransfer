@@ -35,6 +35,7 @@ public struct VerifyMailView: View {
     @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
+    @EnvironmentObject private var viewModel: RootTransferViewModel
 
     @State private var isVerifyingCode = false
     @State private var error: UserFacingError?
@@ -46,46 +47,57 @@ public struct VerifyMailView: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.large) {
-            Text(STResourcesStrings.Localizable.validateMailTitle)
-                .font(.ST.title)
-                .foregroundStyle(Color.ST.textPrimary)
+        NavigationStack {
+            VStack(alignment: .leading, spacing: IKPadding.large) {
+                Text(STResourcesStrings.Localizable.validateMailTitle)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
 
-            Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
-                .font(.ST.body)
-                .foregroundStyle(Color.ST.textSecondary)
+                Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
+                    .font(.ST.body)
+                    .foregroundStyle(Color.ST.textSecondary)
 
-            SecurityCodeTextField(error: $error, completion: verifyCode)
-                .disabled(isVerifyingCode)
-                .opacity(isVerifyingCode ? 0.5 : 1)
-                .overlay {
-                    if isVerifyingCode {
-                        ProgressView()
-                            .controlSize(.large)
+                SecurityCodeTextField(error: $error, completion: verifyCode)
+                    .disabled(isVerifyingCode)
+                    .opacity(isVerifyingCode ? 0.5 : 1)
+                    .overlay {
+                        if isVerifyingCode {
+                            ProgressView()
+                                .controlSize(.large)
+                        }
+                    }
+
+                Text(STResourcesStrings.Localizable.validateMailInfo)
+                    .font(.ST.caption)
+                    .foregroundStyle(Color.ST.textSecondary)
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
+            .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    Button(STResourcesStrings.Localizable.contentDescriptionButtonBack, systemImage: "chevron.backward") {
+                        withAnimation {
+                            rootTransferViewState.transition(to: .newTransfer)
+                        }
                     }
                 }
-
-            Text(STResourcesStrings.Localizable.validateMailInfo)
-                .font(.ST.caption)
-                .foregroundStyle(Color.ST.textSecondary)
-        }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .stNavigationBarStyle()
-        .padding(value: .medium)
-        .safeAreaButtons {
-            if let error {
-                Text(error.errorDescription)
-                    .font(.ST.caption)
-                    .foregroundStyle(Color.ST.error)
-                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .stNavigationBarStyle()
+            .padding(value: .medium)
+            .safeAreaButtons {
+                if let error {
+                    Text(error.errorDescription)
+                        .font(.ST.caption)
+                        .foregroundStyle(Color.ST.error)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
 
-            Button(STResourcesStrings.Localizable.buttonOpenMailApp, action: openMailApp)
-                .buttonStyle(.ikBorderedProminent)
-                .disabled(isVerifyingCode)
+                Button(STResourcesStrings.Localizable.buttonOpenMailApp, action: openMailApp)
+                    .buttonStyle(.ikBorderedProminent)
+                    .disabled(isVerifyingCode)
 
-            ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
-                .disabled(isVerifyingCode)
+                ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
+                    .disabled(isVerifyingCode)
+            }
         }
     }
 
@@ -115,13 +127,10 @@ public struct VerifyMailView: View {
                     files: newUploadSession.files
                 )
 
-                let uploadSession = try await injection.uploadManager
-                    .createUploadSession(newUploadSession: uploadSessionWithEmailToken)
-
-                try await injection.emailTokensManager.setEmailToken(email: newUploadSession.authorEmail, emailToken: token)
+                viewModel.newUploadSession = uploadSessionWithEmailToken
 
                 withAnimation {
-                    rootTransferViewState.transition(to: .uploadProgress(uploadSession))
+                    rootTransferViewState.transition(to: .uploadProgress)
                 }
             } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
                 withAnimation {

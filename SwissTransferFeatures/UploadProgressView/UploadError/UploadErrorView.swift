@@ -30,8 +30,6 @@ public struct UploadErrorView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
 
-    @State private var isRetryingUpload = false
-
     public init() {}
 
     public var body: some View {
@@ -49,7 +47,6 @@ public struct UploadErrorView: View {
                 if rootTransferViewModel.newUploadSession != nil {
                     Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
                         .buttonStyle(.ikBorderedProminent)
-                        .ikButtonLoading(isRetryingUpload)
                 }
                 Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                     .buttonStyle(.ikBordered)
@@ -60,22 +57,7 @@ public struct UploadErrorView: View {
     }
 
     private func retryTransfer() {
-        guard let newUploadSession = rootTransferViewModel.newUploadSession else { return }
-
-        Task {
-            isRetryingUpload = true
-
-            let uploadSession = try? await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
-
-            guard let uploadSession else {
-                rootTransferViewState.transition(to: .error)
-                isRetryingUpload = false
-                return
-            }
-
-            rootTransferViewState.transition(to: .uploadProgress(uploadSession))
-            isRetryingUpload = false
-        }
+        rootTransferViewState.transition(to: .uploadProgress)
     }
 
     private func editTransfer() {
