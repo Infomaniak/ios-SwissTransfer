@@ -396,6 +396,9 @@
 /* loco:6720aec78a4f6e6b0c0d28a2 */
 "transferExpiredTitle" = "Questo trasferimento non è più disponibile";
 
+/* loco:6791edf4a6f878c7ab05bc22 */
+"transferInitializing" = "Inizializzazione…";
+
 /* loco:66c6d0936969c14fab0aec72 */
 "transferListSectionLastWeek" = "La scorsa settimana";
 

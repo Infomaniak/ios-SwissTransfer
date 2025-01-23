@@ -28,7 +28,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @LazyInjectService var injection: SwissTransferInjection
+    @LazyInjectService private var injection: SwissTransferInjection
 
     @Environment(\.dismiss) private var dismiss
 
@@ -128,18 +128,10 @@ public struct NewTransferView: View {
                 files: filesToUpload
             )
 
-            do {
-                viewModel.newUploadSession = newUploadSession
+            viewModel.newUploadSession = newUploadSession
 
-                let uploadSession = try await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
-
-                withAnimation {
-                    rootTransferViewState.transition(to: .uploadProgress(uploadSession))
-                }
-            } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
-                rootNavigationPath.append(newUploadSession)
-            } catch {
-                rootTransferViewState.transition(to: .error)
+            withAnimation {
+                rootTransferViewState.transition(to: .uploadProgress)
             }
 
             isLoadingFileToUpload = false
