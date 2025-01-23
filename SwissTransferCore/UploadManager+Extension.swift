@@ -21,8 +21,29 @@ import InfomaniakDeviceCheck
 import STCore
 
 public extension UploadManager {
+    enum DomainError: Error {
+        case containerNotFound
+        case deviceCheckFailed
+    }
+
+    func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
+        let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
+        return SendableUploadSession(uploadSession: uploadSession)
+    }
+
+    func initSendableUploadSession(uuid: String, attestationToken: String) async throws -> SendableUploadSession {
+        guard let uploadSession = try await doInitUploadSession(uuid: uuid,
+                                                                attestationHeaderName: InfomaniakDeviceCheck.tokenHeaderField,
+                                                                attestationToken: attestationToken) else {
+            throw DomainError.containerNotFound
+        }
+        return SendableUploadSession(uploadSession: uploadSession)
+    }
+
     func createUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
-        let attestationToken = try await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer()
+        guard let attestationToken = await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer() else {
+            throw DomainError.deviceCheckFailed
+        }
 
         let uploadSession = try await createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 

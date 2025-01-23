@@ -17,7 +17,6 @@
  */
 
 import InfomaniakCoreSwiftUI
-import InfomaniakDeviceCheck
 import InfomaniakDI
 import OSLog
 import STCore

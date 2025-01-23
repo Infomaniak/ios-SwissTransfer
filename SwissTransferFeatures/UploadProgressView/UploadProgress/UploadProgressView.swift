@@ -106,13 +106,15 @@ public struct UploadProgressView: View {
             let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
 
             rootTransferViewState.transition(to: .success(transferUUID))
+        } catch UploadManager.DomainError.deviceCheckFailed {
+            rootTransferViewState.transition(to: .error(.deviceInvalidError))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 
             Logger.general.error("Error trying to start upload: \(error)")
-            rootTransferViewState.transition(to: .error)
+            rootTransferViewState.transition(to: .error(nil))
         }
     }
 
