@@ -16,9 +16,6 @@
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Añadir archivos";
 
-/* loco:671f9576e0d073bd6b0ccfa2 */
-"buttonCancel" = "Cancelar";
-
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Cancelar transferencia";
 
@@ -45,9 +42,6 @@
 
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Acabado";
-
-/* loco:676122e1ac931696ce063122 */
-"buttonNext" = "Siguiente";
 
 /* loco:67580dfad1fd26fc9d068a82 */
 "buttonOpenMailApp" = "Abrir la aplicación de correo";
@@ -101,9 +95,6 @@
 
 /* loco:6728e0698584637cc20ef6b2 */
 "errorTransferPasswordLength" = "La contraseña debe tener entre 6 y 25 caracteres";
-
-/* loco:676126abcb8df55f0a08e7a2 */
-"errorUnknown" = "Se ha producido un error";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Caduca en %d días";
@@ -336,7 +327,7 @@
 "settingsOptionThemeDark" = "Oscuro";
 
 /* loco:66c576623f6469240f064202 */
-"settingsOptionThemeLight" = "Luz";
+"settingsOptionThemeLight" = "Claro";
 
 /* loco:66c57650368985cbec0f7d42 */
 "settingsOptionThemeSystem" = "Sistema";
