@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import STCore
 import STResources
@@ -100,7 +101,7 @@ struct DeepLinkPasswordView: View {
                 if let localizedError = kotlinException as? LocalizedError, let message = localizedError.errorDescription {
                     self.error = .errorWithMessage(message)
                 } else {
-                    self.error = .errorWithMessage(STResourcesStrings.Localizable.errorUnknown)
+                    self.error = .errorWithMessage(CoreUILocalizable.anErrorHasOccurred)
                 }
                 isFocused = true
             }

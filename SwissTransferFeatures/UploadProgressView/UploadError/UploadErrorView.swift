@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import STCore
 import STResources
@@ -56,7 +57,7 @@ public struct UploadErrorView: View {
             .appBackground()
             .safeAreaButtons {
                 if rootTransferViewModel.newUploadSession != nil {
-                    Button(STResourcesStrings.Localizable.buttonRetry, action: retryTransfer)
+                    Button(CoreUILocalizable.buttonRetry, action: retryTransfer)
                         .buttonStyle(.ikBorderedProminent)
                 }
                 Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)

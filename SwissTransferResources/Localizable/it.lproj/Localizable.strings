@@ -16,9 +16,6 @@
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Aggiunta di file";
 
-/* loco:671f9576e0d073bd6b0ccfa2 */
-"buttonCancel" = "Annulla";
-
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Annullamento del trasferimento";
 
@@ -45,9 +42,6 @@
 
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Finisci";
-
-/* loco:676122e1ac931696ce063122 */
-"buttonNext" = "Avanti";
 
 /* loco:67580dfad1fd26fc9d068a82 */
 "buttonOpenMailApp" = "Apri l’app di posta elettronica";
@@ -101,9 +95,6 @@
 
 /* loco:6728e0698584637cc20ef6b2 */
 "errorTransferPasswordLength" = "La password deve essere compresa tra 6 e 24 caratteri";
-
-/* loco:676126abcb8df55f0a08e7a2 */
-"errorUnknown" = "Si è verificato un errore";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Scade tra %d giorni";

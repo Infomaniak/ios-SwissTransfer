@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import InfomaniakOnboarding
 import STResources
@@ -97,7 +98,7 @@ public struct OnboardingView: View {
                     selectedSlideIndex += 1
                 } label: {
                     Label {
-                        Text(STResourcesStrings.Localizable.buttonNext)
+                        Text(CoreUILocalizable.buttonNext)
                     } icon: {
                         STResourcesAsset.Images.arrowRight.swiftUIImage
                     }

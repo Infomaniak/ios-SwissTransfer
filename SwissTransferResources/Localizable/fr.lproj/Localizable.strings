@@ -16,9 +16,6 @@
 /* loco:66bf172f88dce506ed0a5ce2 */
 "buttonAddFiles" = "Ajouter des fichiers";
 
-/* loco:671f9576e0d073bd6b0ccfa2 */
-"buttonCancel" = "Annuler";
-
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Annuler le transfert";
 
@@ -45,9 +42,6 @@
 
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Terminer";
-
-/* loco:676122e1ac931696ce063122 */
-"buttonNext" = "Suivant";
 
 /* loco:67580dfad1fd26fc9d068a82 */
 "buttonOpenMailApp" = "Ouvrir l’app mail";
@@ -101,9 +95,6 @@
 
 /* loco:6728e0698584637cc20ef6b2 */
 "errorTransferPasswordLength" = "Le mot de passe doit comporter entre 6 et 25 caractères";
-
-/* loco:676126abcb8df55f0a08e7a2 */
-"errorUnknown" = "Une erreur est survenue";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Expire dans %d jours";

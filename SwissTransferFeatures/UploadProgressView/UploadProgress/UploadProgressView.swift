@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import OSLog
 import STCore
@@ -71,7 +72,7 @@ public struct UploadProgressView: View {
             .safeAreaButtons(spacing: 32) {
                 UploadProgressIndicationView(status: status)
 
-                Button(STResourcesStrings.Localizable.buttonCancel, action: cancelTransfer)
+                Button(CoreUILocalizable.buttonCancel, action: cancelTransfer)
                     .buttonStyle(.ikBorderedProminent)
             }
             .stIconNavigationBar()

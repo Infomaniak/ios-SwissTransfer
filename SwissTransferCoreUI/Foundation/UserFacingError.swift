@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCoreUIResources
 import STResources
 
 public struct UserFacingError: LocalizedError {
@@ -39,7 +40,7 @@ public struct UserFacingError: LocalizedError {
 }
 
 public extension UserFacingError {
-    static let unknownError = UserFacingError(errorDescription: STResourcesStrings.Localizable.errorUnknown)
+    static let unknownError = UserFacingError(errorDescription: CoreUILocalizable.anErrorHasOccurred)
     static let deviceInvalidError = UserFacingError(errorDescription: STResourcesStrings.Localizable.errorAppIntegrity)
     static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
 }

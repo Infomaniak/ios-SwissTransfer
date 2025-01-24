@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreUIResources
 import STCore
 import STResources
 import SwiftUI
@@ -62,7 +63,7 @@ struct DownloadProgressAlert: View {
             .font(.ST.callout)
             .foregroundStyle(.secondary)
 
-            Button(STResourcesStrings.Localizable.buttonCancel) {
+            Button(CoreUILocalizable.buttonCancel) {
                 Task {
                     await downloadManager.removeDownloadTask(id: downloadTask.id)
                 }
