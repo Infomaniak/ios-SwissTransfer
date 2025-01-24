@@ -134,7 +134,10 @@ public struct NewTransferView: View {
 
             viewModel.newUploadSession = newUploadSession
 
-            rootTransferViewState.transition(to: .uploadProgress)
+            let localUploadSession = try await injection.uploadManager
+                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+
+            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
 
             isLoadingFileToUpload = false
         }

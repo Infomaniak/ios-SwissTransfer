@@ -53,7 +53,11 @@ public struct UploadProgressView: View {
         )
     }
 
-    public init() {}
+    private let localSessionUUID: String
+
+    public init(localSessionUUID: String) {
+        self.localSessionUUID = localSessionUUID
+    }
 
     public var body: some View {
         NavigationStack {
@@ -99,7 +103,10 @@ public struct UploadProgressView: View {
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
-            let uploadSession = try await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
+            let uploadManager = injection.uploadManager
+
+            let uploadSession = try await uploadManager.createRemoteUploadSession(localSessionUUID: localSessionUUID)
+
             await saveEmailTokenIfNeeded(uploadSession: uploadSession)
 
             currentUploadSession = uploadSession
@@ -134,6 +141,6 @@ public struct UploadProgressView: View {
 }
 
 #Preview {
-    UploadProgressView()
+    UploadProgressView(localSessionUUID: "")
         .environmentObject(RootTransferViewModel())
 }

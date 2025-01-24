@@ -30,6 +30,8 @@ public struct UploadErrorView: View {
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
 
+    @State private var isRetryingUpload = false
+
     private let userFacingError: UserFacingError?
 
     private var errorSubtitle: String {
@@ -59,6 +61,7 @@ public struct UploadErrorView: View {
                 if rootTransferViewModel.newUploadSession != nil {
                     Button(CoreUILocalizable.buttonRetry, action: retryTransfer)
                         .buttonStyle(.ikBorderedProminent)
+                        .ikButtonLoading(isRetryingUpload)
                 }
                 Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                     .buttonStyle(.ikBordered)
@@ -69,7 +72,17 @@ public struct UploadErrorView: View {
     }
 
     private func retryTransfer() {
-        rootTransferViewState.transition(to: .uploadProgress)
+        guard let newUploadSession = rootTransferViewModel.newUploadSession else { return }
+
+        Task {
+            isRetryingUpload = true
+
+            let localUploadSession = try await injection.uploadManager
+                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+
+            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            isRetryingUpload = false
+        }
     }
 
     private func editTransfer() {
