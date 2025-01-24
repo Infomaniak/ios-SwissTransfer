@@ -11,11 +11,13 @@ let transferList = Feature(name: "TransferList")
 // MARK: New Transfer & Upload
 
 let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
+    TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakConcurrency"),
     TargetDependency.external(name: "OrderedCollections")
 ])
 let uploadProgressView = Feature(name: "UploadProgressView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakCore"),
+    TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakConcurrency")
 ])
 
@@ -31,10 +33,18 @@ let settingsView = Feature(name: "SettingsView")
 
 let mainView = Feature(
     name: "MainView",
-    additionalDependencies: [settingsView, receivedView, sentView, transferDetailsView, rootTransferView]
+    additionalDependencies: [
+        settingsView,
+        receivedView,
+        sentView,
+        transferDetailsView,
+        rootTransferView,
+        TargetDependency.external(name: "InfomaniakCoreUIResources")
+    ]
 )
 
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
+    TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakOnboarding"),
     TargetDependency.external(name: "Lottie")
 ])
@@ -120,7 +130,6 @@ let project = Project(
                     .external(name: "InfomaniakCoreCommonUI"),
                     .external(name: "InfomaniakCoreSwiftUI"),
                     .external(name: "InfomaniakCoreUIKit"),
-                    .external(name: "InfomaniakCoreUIResources"),
                     .external(name: "InfomaniakDeviceCheck"),
                     .external(name: "STCore"),
                     .external(name: "STNetwork"),
@@ -137,6 +146,7 @@ let project = Project(
                 sources: "SwissTransferCoreUI/**",
                 dependencies: [
                     .target(name: "SwissTransferCore"),
+                    .external(name: "InfomaniakCoreUIResources"),
                     .external(name: "SwiftModalPresentation"),
                     .external(name: "QRCode"),
                     .external(name: "SwiftUIIntrospect-Static"),
