@@ -23,12 +23,20 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct RootTransferView: View {
-    @StateObject private var viewState = RootTransferViewState()
+    @StateObject private var viewState: RootTransferViewState
     @StateObject private var viewModel = RootTransferViewModel()
     @StateObject private var newTransferManager: NewTransferFileManager
 
     public init(initialItems: [ImportedItem]) {
+        _viewState = StateObject(wrappedValue: RootTransferViewState())
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: initialItems))
+    }
+
+    public init(localSessionUUID: String) {
+        _viewState = StateObject(wrappedValue: RootTransferViewState(
+            initialState: .uploadProgress(localSessionUUID: localSessionUUID)
+        ))
+        _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: []))
     }
 
     public var body: some View {

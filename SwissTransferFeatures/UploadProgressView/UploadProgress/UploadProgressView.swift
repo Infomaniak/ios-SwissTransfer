@@ -96,8 +96,6 @@ public struct UploadProgressView: View {
     }
 
     @Sendable private func startUpload() async {
-        guard let newUploadSession = viewModel.newUploadSession else { return }
-
         do {
             Task { @MainActor in
                 await notificationsHelper.requestPermissionIfNeeded()
@@ -117,6 +115,7 @@ public struct UploadProgressView: View {
         } catch UploadManager.DomainError.deviceCheckFailed {
             rootTransferViewState.transition(to: .error(.deviceInvalidError))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
+            guard let newUploadSession = viewModel.newUploadSession else { return }
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }

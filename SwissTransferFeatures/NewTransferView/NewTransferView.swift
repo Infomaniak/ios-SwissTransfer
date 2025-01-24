@@ -32,6 +32,8 @@ public struct NewTransferView: View {
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    @Environment(\.shareExtensionContext) private var shareExtensionContext
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
@@ -137,7 +139,12 @@ public struct NewTransferView: View {
             let localUploadSession = try await injection.uploadManager
                 .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 
-            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            if let shareExtensionContext {
+                openURL(URL(string: "https://swisstransfer.preprod.dev.infomaniak.ch/import?uuid=\(localUploadSession.uuid)")!)
+                shareExtensionContext.dismissShareSheet()
+            } else {
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            }
 
             isLoadingFileToUpload = false
         }

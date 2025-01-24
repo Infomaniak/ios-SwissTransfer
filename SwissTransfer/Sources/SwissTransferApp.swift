@@ -92,10 +92,12 @@ struct SwissTransferApp: App {
 
     func handleURL(_ url: URL) {
         Task {
-            guard let result = await UniversalLinkHandler().handlePossibleTransferURL(url) else {
-                return
+            let linkHandler = UniversalLinkHandler()
+            if let importSessionUUID = await linkHandler.handlePossibleImportURL(url) {
+                universalLinksState.linkedImportUUID = importSessionUUID
+            } else if let result = await linkHandler.handlePossibleTransferURL(url) {
+                universalLinksState.linkedTransfer = result
             }
-            universalLinksState.linkedTransfer = result
         }
     }
 }

@@ -24,7 +24,7 @@ import STCore
 public struct UniversalLinkHandler {
     public init() {}
 
-    public func handlePossibleTransferURL(_ url: URL) async -> UniversalLinkResult? {
+    private func createAccountIfNeeded() async -> TransferManager? {
         @InjectService var accountManager: AccountManager
 
         var defaultTransferManager = await accountManager.getCurrentManager()
@@ -33,6 +33,25 @@ public struct UniversalLinkHandler {
             await accountManager.createAndSetCurrentAccount()
             defaultTransferManager = await accountManager.getCurrentManager()
         }
+
+        return defaultTransferManager
+    }
+
+    public func handlePossibleImportURL(_ url: URL) async -> String? {
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        guard components?.path == "/import",
+              let localSessionUUID = components?.queryItems?.first(where: { $0.name == "uuid" })?.value
+        else {
+            return nil
+        }
+
+        var defaultTransferManager = await createAccountIfNeeded()
+
+        return localSessionUUID
+    }
+
+    public func handlePossibleTransferURL(_ url: URL) async -> UniversalLinkResult? {
+        var defaultTransferManager = await createAccountIfNeeded()
 
         do {
             guard let transferUUID = try await defaultTransferManager?.addTransferByUrl(url: url.path, password: nil),

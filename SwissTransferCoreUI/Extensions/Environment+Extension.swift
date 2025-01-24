@@ -22,4 +22,5 @@ public typealias DismissModalAction = () -> Void
 
 public extension EnvironmentValues {
     @Entry var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
+    @Entry var shareExtensionContext: ShareExtensionContext?
 }

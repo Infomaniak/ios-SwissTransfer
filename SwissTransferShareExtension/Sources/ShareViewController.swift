@@ -19,6 +19,7 @@
 import STRootTransferView
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 import UIKit
 
 class ShareViewController: UIViewController {
@@ -51,6 +52,7 @@ class ShareViewController: UIViewController {
             .tint(.ST.primary)
             .ikButtonTheme(.swissTransfer)
             .detectCompactWindow()
+            .environment(\.shareExtensionContext, ShareExtensionContext { self.dismiss(animated: true) })
             .defaultAppStorage(.shared)
 
         let hostingController = UIHostingController(rootView: rootTransferView)
