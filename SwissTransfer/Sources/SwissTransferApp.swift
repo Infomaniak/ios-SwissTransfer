@@ -68,6 +68,10 @@ struct SwissTransferApp: App {
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
                 .preferredColorScheme(savedColorScheme)
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
+                    guard let url = activity.webpageURL else { return }
+                    handleURL(url)
+                }
                 .onOpenURL(perform: handleURL)
                 .sceneLifecycle(willEnterForeground: onWillEnterForeground)
         }
