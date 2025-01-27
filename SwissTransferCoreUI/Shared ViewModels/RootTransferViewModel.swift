@@ -23,12 +23,14 @@ import OrderedCollections
 import STCore
 import SwissTransferCore
 
+@MainActor
 public final class RootTransferViewModel: ObservableObject {
     public static let minPasswordLength = 6
     public static let maxPasswordLength = 25
 
     @Published public var transferType = TransferType.qrCode
     @Published public var authorEmail = ""
+    public var authorEmailToken: String?
     @Published public var recipientsEmail = OrderedSet<String>()
     @Published public var message = ""
     @Published public var password = ""
@@ -37,7 +39,40 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
 
-    @Published public var newUploadSession: NewUploadSession?
+    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
+        @InjectService var injection: SwissTransferInjection
+
+        var transformedRecipients = [String]()
+        if transferType == .mail {
+            transformedRecipients = recipientsEmail.map { "\"" + $0 + "\"" }
+        }
+
+        var authorTrimmedEmail = ""
+        var authorEmailToken: String?
+        if transferType == .mail {
+            authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
+        }
+
+        guard let filesToUpload = try? newTransferFileManager.filesToUpload(),
+              filesToUpload.isEmpty == false else {
+            return nil
+        }
+
+        let newUploadSession = NewUploadSession(
+            duration: validityPeriod,
+            authorEmail: authorTrimmedEmail,
+            authorEmailToken: authorEmailToken,
+            password: password,
+            message: message.trimmingCharacters(in: .whitespacesAndNewlines),
+            numberOfDownload: downloadLimit,
+            language: emailLanguage,
+            recipientsEmails: Set(transformedRecipients),
+            files: filesToUpload
+        )
+
+        return newUploadSession
+    }
 
     public var isNewTransferValid: Bool {
         if files.isEmpty {

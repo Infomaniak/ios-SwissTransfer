@@ -44,7 +44,6 @@ public struct RootTransferView: View {
             switch viewState.state {
             case .newTransfer:
                 NewTransferView()
-                    .environmentObject(newTransferManager)
             case .uploadProgress(let localSessionUUID):
                 UploadProgressView(localSessionUUID: localSessionUUID)
             case .verifyMail(let newUploadSession):
@@ -58,6 +57,7 @@ public struct RootTransferView: View {
         .floatingPanel(item: $viewState.cancelUploadUUID, bottomPadding: .zero) { container in
             CancelUploadView(uploadSessionUUID: container.uuid)
         }
+        .environmentObject(newTransferManager)
         .environmentObject(viewState)
         .environmentObject(viewModel)
     }

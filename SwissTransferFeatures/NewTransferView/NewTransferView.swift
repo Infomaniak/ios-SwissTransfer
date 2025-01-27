@@ -106,35 +106,7 @@ public struct NewTransferView: View {
             // We need to ensure that we have an account initialized before starting
             _ = await accountManager.getCurrentManager()
 
-            var transformedRecipients = [String]()
-            if viewModel.transferType == .mail {
-                transformedRecipients = viewModel.recipientsEmail.map { "\"" + $0 + "\"" }
-            }
-
-            var authorTrimmedEmail = ""
-            var authorEmailToken: String?
-            if viewModel.transferType == .mail {
-                authorTrimmedEmail = viewModel.authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-                authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
-            }
-
-            guard let filesToUpload = try? newTransferFileManager.filesToUpload() else {
-                return
-            }
-
-            let newUploadSession = NewUploadSession(
-                duration: viewModel.validityPeriod,
-                authorEmail: authorTrimmedEmail,
-                authorEmailToken: authorEmailToken,
-                password: viewModel.password,
-                message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
-                numberOfDownload: viewModel.downloadLimit,
-                language: viewModel.emailLanguage,
-                recipientsEmails: Set(transformedRecipients),
-                files: filesToUpload
-            )
-
-            viewModel.newUploadSession = newUploadSession
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
 
             let localUploadSession = try await injection.uploadManager
                 .createAndGetSendableUploadSession(newUploadSession: newUploadSession)

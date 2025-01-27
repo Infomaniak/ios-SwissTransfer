@@ -125,10 +125,10 @@ public struct VerifyMailView: View {
                     files: newUploadSession.files
                 )
 
-                viewModel.newUploadSession = uploadSessionWithEmailToken
+                viewModel.authorEmailToken = token
 
                 let localUploadSession = try await injection.uploadManager
-                    .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+                    .createAndGetSendableUploadSession(newUploadSession: uploadSessionWithEmailToken)
 
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
             } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {

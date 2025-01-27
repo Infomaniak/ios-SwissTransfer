@@ -35,6 +35,7 @@ public struct UploadProgressView: View {
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
+    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
@@ -115,7 +116,9 @@ public struct UploadProgressView: View {
         } catch UploadManager.DomainError.deviceCheckFailed {
             rootTransferViewState.transition(to: .error(.deviceInvalidError))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
-            guard let newUploadSession = viewModel.newUploadSession else { return }
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
+                return
+            }
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }

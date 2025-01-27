@@ -21,14 +21,14 @@ import OSLog
 import STCore
 import UniformTypeIdentifiers
 
-public class UploadFile: Identifiable {
+public final class UploadFile: Identifiable, Sendable {
     public var id: String {
         return url.absoluteString
     }
 
     public let url: URL
     public let size: Int64
-    public var path: String?
+    public let path: String?
     public let mimeType: String
 
     public init?(url: URL) {

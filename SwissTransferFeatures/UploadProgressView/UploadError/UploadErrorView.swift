@@ -29,6 +29,7 @@ public struct UploadErrorView: View {
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
+    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var isRetryingUpload = false
 
@@ -58,11 +59,9 @@ public struct UploadErrorView: View {
             .scrollableEmptyState()
             .appBackground()
             .safeAreaButtons {
-                if rootTransferViewModel.newUploadSession != nil {
-                    Button(CoreUILocalizable.buttonRetry, action: retryTransfer)
-                        .buttonStyle(.ikBorderedProminent)
-                        .ikButtonLoading(isRetryingUpload)
-                }
+                Button(CoreUILocalizable.buttonRetry, action: retryTransfer)
+                    .buttonStyle(.ikBorderedProminent)
+                    .ikButtonLoading(isRetryingUpload)
                 Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                     .buttonStyle(.ikBordered)
             }
@@ -72,10 +71,12 @@ public struct UploadErrorView: View {
     }
 
     private func retryTransfer() {
-        guard let newUploadSession = rootTransferViewModel.newUploadSession else { return }
-
         Task {
             isRetryingUpload = true
+            guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(newTransferFileManager) else {
+                isRetryingUpload = false
+                return
+            }
 
             let localUploadSession = try await injection.uploadManager
                 .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
