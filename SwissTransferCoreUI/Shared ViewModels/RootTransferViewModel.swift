@@ -41,6 +41,44 @@ public final class RootTransferViewModel: ObservableObject {
 
     public private(set) var initializedFromShare: Bool
 
+    public var isNewTransferValid: Bool {
+        if files.isEmpty {
+            return false
+        }
+
+        if !password.isEmpty && (password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength) {
+            return false
+        }
+
+        if transferType == .mail {
+            if authorEmail.isEmpty || !EmailChecker(email: authorEmail).validate() {
+                return false
+            }
+
+            if recipientsEmail.isEmpty {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    public init(initializedFromShare: Bool = false) {
+        self.initializedFromShare = initializedFromShare
+        fetchValuesFromSettings()
+    }
+
+    private func fetchValuesFromSettings() {
+        @InjectService var settingsManager: AppSettingsManager
+        guard let appSettings = settingsManager.getAppSettings() else { return }
+
+        transferType = appSettings.lastTransferType
+        authorEmail = appSettings.lastAuthorEmail ?? ""
+        validityPeriod = appSettings.validityPeriod
+        downloadLimit = appSettings.downloadLimit
+        emailLanguage = appSettings.emailLanguage
+    }
+
     public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
         @InjectService var injection: SwissTransferInjection
 
@@ -89,43 +127,5 @@ public final class RootTransferViewModel: ObservableObject {
         validityPeriod = uploadSession.duration
         downloadLimit = uploadSession.numberOfDownload
         emailLanguage = uploadSession.language
-    }
-
-    public var isNewTransferValid: Bool {
-        if files.isEmpty {
-            return false
-        }
-
-        if !password.isEmpty && (password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength) {
-            return false
-        }
-
-        if transferType == .mail {
-            if authorEmail.isEmpty || !EmailChecker(email: authorEmail).validate() {
-                return false
-            }
-
-            if recipientsEmail.isEmpty {
-                return false
-            }
-        }
-
-        return true
-    }
-
-    public init(initializedFromShare: Bool = false) {
-        self.initializedFromShare = initializedFromShare
-        fetchValuesFromSettings()
-    }
-
-    private func fetchValuesFromSettings() {
-        @InjectService var settingsManager: AppSettingsManager
-        guard let appSettings = settingsManager.getAppSettings() else { return }
-
-        transferType = appSettings.lastTransferType
-        authorEmail = appSettings.lastAuthorEmail ?? ""
-        validityPeriod = appSettings.validityPeriod
-        downloadLimit = appSettings.downloadLimit
-        emailLanguage = appSettings.emailLanguage
     }
 }
