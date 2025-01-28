@@ -24,11 +24,12 @@ import SwissTransferCoreUI
 
 public struct RootTransferView: View {
     @StateObject private var viewState: RootTransferViewState
-    @StateObject private var viewModel = RootTransferViewModel()
+    @StateObject private var viewModel: RootTransferViewModel
     @StateObject private var newTransferManager: NewTransferFileManager
 
     public init(initialItems: [ImportedItem]) {
         _viewState = StateObject(wrappedValue: RootTransferViewState())
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: false))
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: initialItems))
     }
 
@@ -36,7 +37,8 @@ public struct RootTransferView: View {
         _viewState = StateObject(wrappedValue: RootTransferViewState(
             initialState: .uploadProgress(localSessionUUID: localSessionUUID)
         ))
-        _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: []))
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: true))
+        _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: [], shouldDoInitialClean: false))
     }
 
     public var body: some View {

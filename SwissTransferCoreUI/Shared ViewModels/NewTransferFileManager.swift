@@ -47,10 +47,11 @@ enum TmpDirType: String {
 public final class NewTransferFileManager: ObservableObject {
     @Published public private(set) var importedItems: [ImportedItem] = []
 
-    private var shouldDoInitialClean = true
+    private var shouldDoInitialClean: Bool
 
-    public init(initialItems: [ImportedItem] = []) {
+    public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {
         importedItems = initialItems
+        self.shouldDoInitialClean = shouldDoInitialClean
     }
 
     deinit {

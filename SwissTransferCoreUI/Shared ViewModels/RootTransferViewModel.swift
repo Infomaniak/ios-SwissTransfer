@@ -39,6 +39,8 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
 
+    public private(set) var initializedFromShare: Bool
+
     public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
         @InjectService var injection: SwissTransferInjection
 
@@ -74,6 +76,21 @@ public final class RootTransferViewModel: ObservableObject {
         return newUploadSession
     }
 
+    public func restoreWith(uploadSession: any UploadSession) {
+        authorEmail = uploadSession.authorEmail
+        recipientsEmail = OrderedSet(uploadSession.recipientsEmails.map { String($0.dropFirst().dropLast()) })
+
+        if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
+            transferType = .mail
+        }
+
+        password = uploadSession.password
+        message = uploadSession.message
+        validityPeriod = uploadSession.duration
+        downloadLimit = uploadSession.numberOfDownload
+        emailLanguage = uploadSession.language
+    }
+
     public var isNewTransferValid: Bool {
         if files.isEmpty {
             return false
@@ -96,7 +113,8 @@ public final class RootTransferViewModel: ObservableObject {
         return true
     }
 
-    public init() {
+    public init(initializedFromShare: Bool = false) {
+        self.initializedFromShare = initializedFromShare
         fetchValuesFromSettings()
     }
 

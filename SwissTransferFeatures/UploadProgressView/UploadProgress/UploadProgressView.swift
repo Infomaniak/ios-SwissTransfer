@@ -104,6 +104,11 @@ public struct UploadProgressView: View {
 
             let uploadManager = injection.uploadManager
 
+            if viewModel.initializedFromShare,
+               let uploadSessionFromShare = try? await uploadManager.getUploads().first(where: { $0.uuid == localSessionUUID }) {
+                viewModel.restoreWith(uploadSession: uploadSessionFromShare)
+            }
+
             let uploadSession = try await uploadManager.createRemoteUploadSession(localSessionUUID: localSessionUUID)
 
             await saveEmailTokenIfNeeded(uploadSession: uploadSession)
