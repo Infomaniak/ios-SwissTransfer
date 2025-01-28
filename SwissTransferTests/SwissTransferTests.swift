@@ -17,13 +17,13 @@
  */
 
 import Foundation
-@testable import STNewTransferView
+@testable import SwissTransferCoreUI
 import XCTest
 
 @MainActor
 final class SwissTransferTests: XCTestCase {
     override func tearDown() async throws {
-        let newTransferManager = NewTransferFileManager()
+        let newTransferManager = NewTransferFileManager(shouldDoInitialClean: true)
         await NewTransferFileManager.cleanTmpDir(type: .all)
     }
 
