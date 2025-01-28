@@ -35,7 +35,7 @@ public enum FileTypeIconSize {
     var padding: CGFloat {
         switch self {
         case .small:
-            return IKPadding.small
+            return IKPadding.mini
         case .large:
             return IKPadding.medium
         }

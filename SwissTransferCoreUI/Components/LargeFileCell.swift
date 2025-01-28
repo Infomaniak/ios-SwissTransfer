@@ -80,7 +80,7 @@ public struct LargeFileCell: View {
             }
             .font(.ST.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(value: .small)
+            .padding(value: .mini)
             .background(Color.ST.background)
         }
         .overlay(alignment: .topTrailing) {
@@ -93,9 +93,9 @@ public struct LargeFileCell: View {
                         .resizable()
                         .foregroundStyle(.white)
                         .frame(width: 8, height: 8)
-                        .padding(value: .small)
+                        .padding(value: .mini)
                         .background(.black.opacity(0.5), in: .circle)
-                        .padding(value: .small)
+                        .padding(value: .mini)
                 }
             }
         }

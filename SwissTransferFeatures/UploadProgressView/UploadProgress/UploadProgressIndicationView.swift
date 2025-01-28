@@ -48,7 +48,7 @@ struct UploadProgressIndicationView: View {
     }
 
     var body: some View {
-        VStack(spacing: IKPadding.small) {
+        VStack(spacing: IKPadding.mini) {
             Text(STResourcesStrings.Localizable.uploadProgressIndication)
                 .font(.ST.title2)
                 .foregroundStyle(Color.ST.textPrimary)
@@ -60,7 +60,7 @@ struct UploadProgressIndicationView: View {
                         case .initializing:
                             Text(STResourcesStrings.Localizable.transferInitializing)
                         case .uploading(completedBytes: let completedBytes, totalBytes: let totalBytes):
-                            HStack(spacing: IKPadding.extraSmall) {
+                            HStack(spacing: IKPadding.micro) {
                                 Text(percentCompleted, format: .defaultPercent)
                                 Text("-")
                                 HStack(spacing: 2) {

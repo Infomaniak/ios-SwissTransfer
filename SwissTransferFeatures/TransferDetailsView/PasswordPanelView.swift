@@ -56,7 +56,7 @@ struct PasswordPanelView: View {
                 }
             }
             .foregroundStyle(Color.ST.textSecondary)
-            .padding(value: .intermediate)
+            .padding(value: .small)
             .overlay(Color.ST.textFieldBorder, in: .rect(cornerRadius: IKRadius.small).stroke())
             .padding(.bottom, 30)
 

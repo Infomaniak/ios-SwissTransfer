@@ -36,7 +36,7 @@ struct UploadProgressHeaderView: View {
     }
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: IKPadding.huge) {
             Text(title)
                 .font(.ST.headline)
 

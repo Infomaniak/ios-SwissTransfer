@@ -21,7 +21,7 @@ import SwiftUI
 
 public enum BottomButtonsConstants: Sendable {
     public static let spacing = IKPadding.medium
-    public static let paddingBottom = IKPadding.intermediate
+    public static let paddingBottom = IKPadding.small
 }
 
 public struct BottomButtonsView<Buttons: View>: View {

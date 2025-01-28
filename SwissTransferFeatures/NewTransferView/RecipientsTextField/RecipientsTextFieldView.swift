@@ -54,7 +54,7 @@ struct RecipientsTextFieldView: View {
     }
 
     var body: some View {
-        FlowLayout(alignment: .leading, verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
+        FlowLayout(alignment: .leading, verticalSpacing: IKPadding.mini, horizontalSpacing: IKPadding.mini) {
             if !isFocused {
                 CollapsedRecipientsFlowView(recipients: recipients)
                     .contentShape(Rectangle())

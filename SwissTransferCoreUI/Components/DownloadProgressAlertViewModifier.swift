@@ -47,7 +47,7 @@ struct DownloadProgressAlert: View {
     let downloadCompletedCallback: ((URL) -> Void)?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.small) {
+        VStack(alignment: .leading, spacing: IKPadding.mini) {
             Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                 .font(.ST.headline)
             ProgressView(value: Double(currentProgress) / Double(totalProgress))

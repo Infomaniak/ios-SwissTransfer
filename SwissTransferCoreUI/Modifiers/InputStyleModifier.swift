@@ -41,9 +41,9 @@ struct InputStyleModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        VStack(alignment: .leading, spacing: IKPadding.extraSmall) {
+        VStack(alignment: .leading, spacing: IKPadding.micro) {
             content
-                .padding(withPadding ? IKPadding.intermediate : 0)
+                .padding(withPadding ? IKPadding.small : 0)
                 .overlay(
                     RoundedRectangle(cornerRadius: IKRadius.small)
                         .strokeBorder(strokeColor, lineWidth: isFocused ? 2 : 1)

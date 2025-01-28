@@ -29,7 +29,7 @@ struct SettingsCell<Content: View>: View {
 
     var body: some View {
         NavigationLink(destination: destination) {
-            HStack(spacing: IKPadding.small) {
+            HStack(spacing: IKPadding.mini) {
                 if let leftIconAsset {
                     Image(asset: leftIconAsset)
                         .iconSize(.large)

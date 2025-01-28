@@ -40,7 +40,7 @@ struct TransferCellThumbnailsView: View {
     }
 
     var body: some View {
-        HStack(spacing: IKPadding.small) {
+        HStack(spacing: IKPadding.mini) {
             ForEach(itemsToShow, id: \.uid) { file in
                 if file.isFolder {
                     SmallThumbnailView(size: .small)

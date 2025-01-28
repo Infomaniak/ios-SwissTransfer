@@ -38,7 +38,7 @@ struct UploadSuccessMailView: View {
                 style: .emptyState
             )
 
-            FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
+            FlowLayout(verticalSpacing: IKPadding.mini, horizontalSpacing: IKPadding.mini) {
                 ForEach(recipients, id: \.self) { recipient in
                     Text(recipient)
                         .stChip()

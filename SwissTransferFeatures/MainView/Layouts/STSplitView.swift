@@ -39,7 +39,7 @@ struct STSplitView: View {
                 }
             }
             .stIconNavigationBar()
-            .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.small)
+            .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.mini)
             .safeAreaInset(edge: .bottom) {
                 SidebarNewTransferButton(selection: $selectedItems)
                     .padding(value: .medium)

@@ -25,7 +25,7 @@ struct SingleLabelSettingsCell: View {
     var rightIconAsset: STResourcesImages?
 
     var body: some View {
-        HStack(spacing: IKPadding.small) {
+        HStack(spacing: IKPadding.mini) {
             Text(title)
                 .lineLimit(1)
                 .foregroundStyle(Color.ST.textPrimary)

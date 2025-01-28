@@ -74,7 +74,7 @@ struct OnboardingTextView: View {
     let text: OnboardingText
 
     var body: some View {
-        VStack(spacing: IKPadding.small) {
+        VStack(spacing: IKPadding.mini) {
             Text(text.title)
                 .font(.ST.specificTitleLight)
 

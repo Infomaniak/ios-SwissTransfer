@@ -71,7 +71,7 @@ struct NewTransferFilesCellView: View {
                                     ProgressView()
                                         .controlSize(.small)
                                         .tint(nil)
-                                        .padding(IKPadding.small)
+                                        .padding(IKPadding.mini)
                                 }
                         }
 
@@ -87,13 +87,13 @@ struct NewTransferFilesCellView: View {
                             }
                         }
                     }
-                    .padding(.bottom, value: .small)
+                    .padding(.bottom, value: .mini)
                     .padding(.horizontal, value: .medium)
                 }
                 .scrollIndicators(.hidden)
             }
             .padding(.top, value: .medium)
-            .padding(.bottom, value: .small)
+            .padding(.bottom, value: .mini)
             .background {
                 NavigationLink(value: TransferableRootFolder()) {
                     Color.ST.cardBackground

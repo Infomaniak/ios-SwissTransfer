@@ -50,7 +50,7 @@ public struct IllustrationAndTextView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: IKPadding.huge) {
             if let image {
                 image
                     .imageThatFits()

@@ -34,7 +34,7 @@ public struct SmallMoreItemsThumbnailView: View {
             .minimumScaleFactor(0.5)
             .lineLimit(1)
             .foregroundStyle(Color.ST.onSecondary)
-            .padding(value: .extraSmall)
+            .padding(value: .micro)
             .frame(width: size, height: size)
             .background(
                 Color.ST.secondary

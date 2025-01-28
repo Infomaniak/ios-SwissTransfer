@@ -91,7 +91,7 @@ public struct SmallThumbnailView: View {
                     .scaledToFill()
                     .frame(width: size, height: size)
             } else {
-                VStack(spacing: IKPadding.small) {
+                VStack(spacing: IKPadding.mini) {
                     FileIconView(fileType: fileType, type: .small)
 
                     if let name, thumbnailSize.shouldShowName {
@@ -102,7 +102,7 @@ public struct SmallThumbnailView: View {
                             .truncationMode(.tail)
                     }
                 }
-                .padding(value: .small)
+                .padding(value: .mini)
                 .frame(width: size, height: size)
                 .background(Color.ST.background)
                 .task {

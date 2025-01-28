@@ -21,7 +21,7 @@ import SwiftUI
 
 public struct VerticalButtonLabelStyle: LabelStyle {
     public func makeBody(configuration: Configuration) -> some View {
-        VStack(spacing: IKPadding.small) {
+        VStack(spacing: IKPadding.mini) {
             configuration.icon
             configuration.title
         }

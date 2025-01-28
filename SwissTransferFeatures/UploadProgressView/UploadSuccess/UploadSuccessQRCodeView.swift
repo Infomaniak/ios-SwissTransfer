@@ -41,7 +41,7 @@ struct UploadSuccessQRCodeView: View {
     }
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: IKPadding.huge) {
             STResourcesAsset.Images.beers.swiftUIImage
                 .resizable()
                 .scaledToFit()

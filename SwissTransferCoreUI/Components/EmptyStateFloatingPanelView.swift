@@ -33,7 +33,7 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
     }
 
     public var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: IKPadding.huge) {
             IllustrationAndTextView(image: image, title: title, subtitle: subtitle, style: .bottomSheet)
             BottomButtonsView(buttons: buttons)
         }

@@ -41,7 +41,7 @@ struct QRCodePanelView: View {
 
             QRCodeView(url: url)
                 .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
-                .padding(.vertical, 32)
+                .padding(.vertical, value: .huge)
 
             BottomButtonsView {
                 Button {
