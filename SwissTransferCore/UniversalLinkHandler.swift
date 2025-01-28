@@ -24,6 +24,7 @@ import STCore
 public struct UniversalLinkHandler {
     public init() {}
 
+    @discardableResult
     private func createAccountIfNeeded() async -> TransferManager? {
         @InjectService var accountManager: AccountManager
 
@@ -45,7 +46,7 @@ public struct UniversalLinkHandler {
             return nil
         }
 
-        var defaultTransferManager = await createAccountIfNeeded()
+        await createAccountIfNeeded()
 
         return localSessionUUID
     }

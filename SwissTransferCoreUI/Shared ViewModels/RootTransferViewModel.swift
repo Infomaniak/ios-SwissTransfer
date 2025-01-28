@@ -88,14 +88,13 @@ public final class RootTransferViewModel: ObservableObject {
         }
 
         var authorTrimmedEmail = ""
-        var authorEmailToken: String?
         if transferType == .mail {
             authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
             authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
         }
 
         guard let filesToUpload = try? newTransferFileManager.filesToUpload(),
-              filesToUpload.isEmpty == false else {
+              !filesToUpload.isEmpty else {
             return nil
         }
 

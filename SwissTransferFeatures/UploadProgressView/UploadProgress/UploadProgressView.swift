@@ -134,8 +134,7 @@ public struct UploadProgressView: View {
     }
 
     private func saveEmailTokenIfNeeded(uploadSession: SendableUploadSession) async {
-        let authorEmailToken = uploadSession.authorEmail
-        guard !authorEmailToken.isEmpty,
+        guard !uploadSession.authorEmail.isEmpty,
               let authorEmailToken = uploadSession.authorEmailToken else { return }
 
         try? await injection.emailTokensManager.setEmailToken(email: uploadSession.authorEmail, emailToken: authorEmailToken)
