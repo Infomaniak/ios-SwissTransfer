@@ -96,7 +96,13 @@ public struct NewTransferView: View {
                 VerifyMailView(newUploadSession: newUploadSession)
             }
         }
-        .environment(\.dismissModal) { dismiss() }
+        .environment(\.dismissModal) {
+            if let shareExtensionContext {
+                shareExtensionContext.dismissShareSheet()
+            } else {
+                dismiss()
+            }
+        }
     }
 
     private func startUpload() {
