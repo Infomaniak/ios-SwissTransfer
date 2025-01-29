@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "824ac002c136fc706321e8f12f8c7736bebd8680",
-        "version" : "16.4.0"
+        "branch" : "chore-update-paddings",
+        "revision" : "776899439cfd7a89ae13a059825497d807fd2dd7"
       }
     },
     {
