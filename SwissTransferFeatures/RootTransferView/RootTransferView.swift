@@ -23,12 +23,22 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct RootTransferView: View {
-    @StateObject private var viewState = RootTransferViewState()
-    @StateObject private var viewModel = RootTransferViewModel()
+    @StateObject private var viewState: RootTransferViewState
+    @StateObject private var viewModel: RootTransferViewModel
     @StateObject private var newTransferManager: NewTransferFileManager
 
     public init(initialItems: [ImportedItem]) {
+        _viewState = StateObject(wrappedValue: RootTransferViewState())
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: false))
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: initialItems))
+    }
+
+    public init(localSessionUUID: String) {
+        _viewState = StateObject(wrappedValue: RootTransferViewState(
+            initialState: .uploadProgress(localSessionUUID: localSessionUUID)
+        ))
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: true))
+        _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: [], shouldDoInitialClean: false))
     }
 
     public var body: some View {
@@ -36,9 +46,8 @@ public struct RootTransferView: View {
             switch viewState.state {
             case .newTransfer:
                 NewTransferView()
-                    .environmentObject(newTransferManager)
-            case .uploadProgress:
-                UploadProgressView()
+            case .uploadProgress(let localSessionUUID):
+                UploadProgressView(localSessionUUID: localSessionUUID)
             case .verifyMail(let newUploadSession):
                 VerifyMailView(newUploadSession: newUploadSession)
             case .error(let userFacingError):
@@ -50,6 +59,7 @@ public struct RootTransferView: View {
         .floatingPanel(item: $viewState.cancelUploadUUID, bottomPadding: .zero) { container in
             CancelUploadView(uploadSessionUUID: container.uuid)
         }
+        .environmentObject(newTransferManager)
         .environmentObject(viewState)
         .environmentObject(viewModel)
     }

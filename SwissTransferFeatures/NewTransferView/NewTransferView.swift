@@ -29,8 +29,11 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    @Environment(\.shareExtensionContext) private var shareExtensionContext
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
@@ -93,44 +96,35 @@ public struct NewTransferView: View {
                 VerifyMailView(newUploadSession: newUploadSession)
             }
         }
-        .environment(\.dismissModal) { dismiss() }
+        .environment(\.dismissModal) {
+            if let shareExtensionContext {
+                shareExtensionContext.dismissShareSheet()
+            } else {
+                dismiss()
+            }
+        }
     }
 
     private func startUpload() {
         Task {
             isLoadingFileToUpload = true
 
-            var transformedRecipients = [String]()
-            if viewModel.transferType == .mail {
-                transformedRecipients = viewModel.recipientsEmail.map { "\"" + $0 + "\"" }
+            // We need to ensure that we have an account initialized before starting
+            _ = await accountManager.getCurrentManager()
+
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
+
+            let localUploadSession = try await injection.uploadManager
+                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+
+            if let shareExtensionContext {
+                let importURL = try injection.sharedApiUrlCreator
+                    .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
+                openURL(importURL)
+                shareExtensionContext.dismissShareSheet()
+            } else {
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
             }
-
-            var authorTrimmedEmail = ""
-            var authorEmailToken: String?
-            if viewModel.transferType == .mail {
-                authorTrimmedEmail = viewModel.authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-                authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
-            }
-
-            guard let filesToUpload = try? newTransferFileManager.filesToUpload() else {
-                return
-            }
-
-            let newUploadSession = NewUploadSession(
-                duration: viewModel.validityPeriod,
-                authorEmail: authorTrimmedEmail,
-                authorEmailToken: authorEmailToken,
-                password: viewModel.password,
-                message: viewModel.message.trimmingCharacters(in: .whitespacesAndNewlines),
-                numberOfDownload: viewModel.downloadLimit,
-                language: viewModel.emailLanguage,
-                recipientsEmails: Set(transformedRecipients),
-                files: filesToUpload
-            )
-
-            viewModel.newUploadSession = newUploadSession
-
-            rootTransferViewState.transition(to: .uploadProgress)
 
             isLoadingFileToUpload = false
         }

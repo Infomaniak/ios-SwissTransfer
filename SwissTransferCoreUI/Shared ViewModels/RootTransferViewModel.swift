@@ -23,12 +23,14 @@ import OrderedCollections
 import STCore
 import SwissTransferCore
 
+@MainActor
 public final class RootTransferViewModel: ObservableObject {
     public static let minPasswordLength = 6
     public static let maxPasswordLength = 25
 
     @Published public var transferType = TransferType.qrCode
     @Published public var authorEmail = ""
+    public var authorEmailToken: String?
     @Published public var recipientsEmail = OrderedSet<String>()
     @Published public var message = ""
     @Published public var password = ""
@@ -37,7 +39,7 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
 
-    @Published public var newUploadSession: NewUploadSession?
+    public private(set) var initializedFromShare: Bool
 
     public var isNewTransferValid: Bool {
         if files.isEmpty {
@@ -61,7 +63,8 @@ public final class RootTransferViewModel: ObservableObject {
         return true
     }
 
-    public init() {
+    public init(initializedFromShare: Bool = false) {
+        self.initializedFromShare = initializedFromShare
         fetchValuesFromSettings()
     }
 
@@ -74,5 +77,54 @@ public final class RootTransferViewModel: ObservableObject {
         validityPeriod = appSettings.validityPeriod
         downloadLimit = appSettings.downloadLimit
         emailLanguage = appSettings.emailLanguage
+    }
+
+    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
+        @InjectService var injection: SwissTransferInjection
+
+        var transformedRecipients = [String]()
+        if transferType == .mail {
+            transformedRecipients = recipientsEmail.map { "\"" + $0 + "\"" }
+        }
+
+        var authorTrimmedEmail = ""
+        if transferType == .mail {
+            authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
+        }
+
+        guard let filesToUpload = try? newTransferFileManager.filesToUpload(),
+              !filesToUpload.isEmpty else {
+            return nil
+        }
+
+        let newUploadSession = NewUploadSession(
+            duration: validityPeriod,
+            authorEmail: authorTrimmedEmail,
+            authorEmailToken: authorEmailToken,
+            password: password,
+            message: message.trimmingCharacters(in: .whitespacesAndNewlines),
+            numberOfDownload: downloadLimit,
+            language: emailLanguage,
+            recipientsEmails: Set(transformedRecipients),
+            files: filesToUpload
+        )
+
+        return newUploadSession
+    }
+
+    public func restoreWith(uploadSession: any UploadSession) {
+        authorEmail = uploadSession.authorEmail
+        recipientsEmail = OrderedSet(uploadSession.recipientsEmails.map { String($0.dropFirst().dropLast()) })
+
+        if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
+            transferType = .mail
+        }
+
+        password = uploadSession.password
+        message = uploadSession.message
+        validityPeriod = uploadSession.duration
+        downloadLimit = uploadSession.numberOfDownload
+        emailLanguage = uploadSession.language
     }
 }

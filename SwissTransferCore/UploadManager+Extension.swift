@@ -40,15 +40,13 @@ public extension UploadManager {
         return SendableUploadSession(uploadSession: uploadSession)
     }
 
-    func createUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
+    func createRemoteUploadSession(localSessionUUID: String) async throws -> SendableUploadSession {
         guard let attestationToken = await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer() else {
             throw DomainError.deviceCheckFailed
         }
 
-        let uploadSession = try await createAndGetSendableUploadSession(newUploadSession: newUploadSession)
-
         let uploadSessionWithRemoteContainer = try await initSendableUploadSession(
-            uuid: uploadSession.uuid,
+            uuid: localSessionUUID,
             attestationToken: attestationToken
         )
 

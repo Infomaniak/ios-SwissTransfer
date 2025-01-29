@@ -23,7 +23,7 @@ import SwissTransferCore
 
 public enum RootTransferViewType {
     case newTransfer
-    case uploadProgress
+    case uploadProgress(localSessionUUID: String)
     case verifyMail(NewUploadSession)
     case error(UserFacingError?)
     case success(String)
@@ -31,11 +31,13 @@ public enum RootTransferViewType {
 
 @MainActor
 public final class RootTransferViewState: ObservableObject {
-    @Published public private(set) var state = RootTransferViewType.newTransfer
+    @Published public private(set) var state: RootTransferViewType
 
     @Published public var cancelUploadUUID: CurrentUploadContainer?
 
-    public init() {}
+    public init(initialState: RootTransferViewType = .newTransfer) {
+        state = initialState
+    }
 
     public func transition(to state: RootTransferViewType) {
         withAnimation {

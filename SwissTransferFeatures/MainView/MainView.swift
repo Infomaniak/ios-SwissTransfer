@@ -51,6 +51,12 @@ public struct MainView: View {
             mainViewState.handleDeepLink(linkedTransfer)
             universalLinksState.linkedTransfer = nil
         }
+        .onChange(of: universalLinksState.linkedImportUUID) { linkedLocalSessionUUID in
+            guard let linkedLocalSessionUUID else { return }
+
+            mainViewState.newTransferContainer = NewTransferContainer(localSessionUUID: linkedLocalSessionUUID)
+            universalLinksState.linkedImportUUID = nil
+        }
         .onChange(of: notificationCenterDelegate.tappedTransfer) { tappedTransfer in
             guard let tappedTransfer else { return }
 
@@ -60,7 +66,12 @@ public struct MainView: View {
             mainViewState.isSplitView = !isCompactWindow
         }
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
-            RootTransferView(initialItems: container.importedItems)
+            switch container.content {
+            case .importedItems(let importedItems):
+                RootTransferView(initialItems: importedItems)
+            case .shareExtensionContinuing(let localSessionUUID):
+                RootTransferView(localSessionUUID: localSessionUUID)
+            }
         }
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
             DeepLinkPasswordView(url: identifiableURL)

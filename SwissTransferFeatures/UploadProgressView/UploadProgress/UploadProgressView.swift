@@ -35,6 +35,7 @@ public struct UploadProgressView: View {
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
+    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
@@ -53,7 +54,11 @@ public struct UploadProgressView: View {
         )
     }
 
-    public init() {}
+    private let localSessionUUID: String
+
+    public init(localSessionUUID: String) {
+        self.localSessionUUID = localSessionUUID
+    }
 
     public var body: some View {
         NavigationStack {
@@ -92,14 +97,20 @@ public struct UploadProgressView: View {
     }
 
     @Sendable private func startUpload() async {
-        guard let newUploadSession = viewModel.newUploadSession else { return }
-
         do {
             Task { @MainActor in
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
-            let uploadSession = try await injection.uploadManager.createUploadSession(newUploadSession: newUploadSession)
+            let uploadManager = injection.uploadManager
+
+            if viewModel.initializedFromShare,
+               let uploadSessionFromShare = try? await uploadManager.getUploads().first(where: { $0.uuid == localSessionUUID }) {
+                viewModel.restoreWith(uploadSession: uploadSessionFromShare)
+            }
+
+            let uploadSession = try await uploadManager.createRemoteUploadSession(localSessionUUID: localSessionUUID)
+
             await saveEmailTokenIfNeeded(uploadSession: uploadSession)
 
             currentUploadSession = uploadSession
@@ -110,6 +121,9 @@ public struct UploadProgressView: View {
         } catch UploadManager.DomainError.deviceCheckFailed {
             rootTransferViewState.transition(to: .error(.deviceInvalidError))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
+                return
+            }
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
@@ -120,8 +134,7 @@ public struct UploadProgressView: View {
     }
 
     private func saveEmailTokenIfNeeded(uploadSession: SendableUploadSession) async {
-        let authorEmailToken = uploadSession.authorEmail
-        guard !authorEmailToken.isEmpty,
+        guard !uploadSession.authorEmail.isEmpty,
               let authorEmailToken = uploadSession.authorEmailToken else { return }
 
         try? await injection.emailTokensManager.setEmailToken(email: uploadSession.authorEmail, emailToken: authorEmailToken)
@@ -134,6 +147,6 @@ public struct UploadProgressView: View {
 }
 
 #Preview {
-    UploadProgressView()
+    UploadProgressView(localSessionUUID: "")
         .environmentObject(RootTransferViewModel())
 }

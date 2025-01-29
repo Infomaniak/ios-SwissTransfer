@@ -18,12 +18,22 @@
 
 import Foundation
 
+public enum NewTransferContainerContent: Equatable {
+    case importedItems([ImportedItem])
+    case shareExtensionContinuing(String)
+}
+
 public struct NewTransferContainer: Identifiable, Equatable {
     public let id: Int
-    public let importedItems: [ImportedItem]
+    public let content: NewTransferContainerContent
 
     public init(importedItems: [ImportedItem]) {
         id = importedItems.hashValue
-        self.importedItems = importedItems
+        content = .importedItems(importedItems)
+    }
+
+    public init(localSessionUUID: String) {
+        id = localSessionUUID.hashValue
+        content = .shareExtensionContinuing(localSessionUUID)
     }
 }

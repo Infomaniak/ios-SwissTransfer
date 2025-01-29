@@ -47,10 +47,11 @@ enum TmpDirType: String {
 public final class NewTransferFileManager: ObservableObject {
     @Published public private(set) var importedItems: [ImportedItem] = []
 
-    private var shouldDoInitialClean = true
+    private var shouldDoInitialClean: Bool
 
-    public init(initialItems: [ImportedItem] = []) {
+    public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {
         importedItems = initialItems
+        self.shouldDoInitialClean = shouldDoInitialClean
     }
 
     deinit {
@@ -88,7 +89,7 @@ public final class NewTransferFileManager: ObservableObject {
     /// - FileManager
     /// - Upload list
     /// - Displayable list
-    func remove(file: TransferableFile) throws {
+    public func remove(file: TransferableFile) throws {
         guard let url = file.localURL(in: "") else { return }
         try FileManager.default.removeItem(at: url)
         cleanEmptyParent(of: url)
@@ -111,7 +112,7 @@ extension NewTransferFileManager {
     }
 
     /// Find a valid name if a file/folder already exist with the same name
-    func destinationURLFor(source: URL) throws -> URL {
+    public func destinationURLFor(source: URL) throws -> URL {
         let allFiles = try FileManager.default.contentsOfDirectory(at: URL.tmpUploadDirectory(), includingPropertiesForKeys: nil)
             .map(\.lastPathComponent)
 
@@ -152,7 +153,7 @@ extension NewTransferFileManager {
 
 // MARK: - Tools
 
-extension NewTransferFileManager {
+public extension NewTransferFileManager {
     /// Flatten the upload folder
     /// Then return all the found Files to upload
     /// - Returns: An array of file to Upload (no folder, only file)
