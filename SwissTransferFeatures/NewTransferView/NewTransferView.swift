@@ -112,7 +112,9 @@ public struct NewTransferView: View {
                 .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 
             if let shareExtensionContext {
-                openURL(URL(string: "https://swisstransfer.preprod.dev.infomaniak.ch/import?uuid=\(localUploadSession.uuid)")!)
+                let importURL = try injection.sharedApiUrlCreator
+                    .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
+                openURL(importURL)
                 shareExtensionContext.dismissShareSheet()
             } else {
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
