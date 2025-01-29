@@ -53,14 +53,6 @@ struct HeaderView: View {
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
             .labelStyle(.horizontal)
-
-            DividerView()
-
-            Label(
-                title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(downloadedTimes, Int(downloadLimit))) },
-                icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
-            )
-            .labelStyle(.horizontal)
         }
     }
 }
