@@ -22,3 +22,16 @@ public enum Constants {
     public static let bundleId = "com.infomaniak.swisstransfer"
     public static let numberOfSecondsInADay: TimeInterval = 86400
 }
+
+public struct URLConstants: Sendable {
+    public static let githubRepository = URLConstants(urlString: "https://github.com/Infomaniak/ios-SwissTransfer")
+
+    private var urlString: String
+
+    public var url: URL {
+        guard let url = URL(string: urlString) else {
+            fatalError("Invalid URL")
+        }
+        return url
+    }
+}

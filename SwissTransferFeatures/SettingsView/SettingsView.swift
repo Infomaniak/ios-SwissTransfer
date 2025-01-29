@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreDataManagementUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -87,7 +88,18 @@ public struct SettingsView: View {
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
-                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+                NavigationLink {
+                    SettingsDataManagementView(
+                        urlRepository: URLConstants.githubRepository.url,
+                        backgroundColor: Color.ST.background,
+                        dataPrivacyimage: STResourcesAsset.Images.dataPrivacy.swiftUIImage,
+                        userDefaultStore: .shared,
+                        userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
+                        userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized)
+                    )
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+                }
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
