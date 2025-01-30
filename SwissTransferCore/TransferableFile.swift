@@ -18,6 +18,7 @@
 
 import Foundation
 import STCore
+import UniformTypeIdentifiers
 
 public class TransferableFile: Hashable, DisplayableFile {
     public var uid: String {
@@ -44,7 +45,7 @@ public class TransferableFile: Hashable, DisplayableFile {
         fileName = url.lastPathComponent
         isFolder = resources.isDirectory ?? false
         fileSize = Int64(url.size())
-        mimeType = url.typeIdentifier ?? ""
+        mimeType = UTType(url.typeIdentifier ?? "")?.preferredMIMEType
     }
 
     public func hash(into hasher: inout Hasher) {
