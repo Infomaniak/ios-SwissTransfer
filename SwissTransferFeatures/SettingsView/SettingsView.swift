@@ -17,8 +17,8 @@
  */
 
 import InfomaniakCore
-import InfomaniakCoreDataManagementUI
 import InfomaniakDI
+import InfomaniakPrivacyManagementUI
 import STCore
 import STResources
 import SwiftUI
@@ -90,10 +90,10 @@ public struct SettingsView: View {
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
                 NavigationLink {
-                    SettingsDataManagementView(
+                    PrivacyManagementView(
                         urlRepository: SettingLinks.githubRepository,
                         backgroundColor: Color.ST.background,
-                        dataPrivacyimage: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
+                        illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
                         userDefaultStore: .shared,
                         userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
                         userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized)
