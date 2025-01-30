@@ -29,6 +29,7 @@ struct HeaderView: View {
     let expiringTimestamp: Int64
     let downloadLeft: Int32
     let downloadLimit: Int32
+    let transferDirection: TransferDirection?
 
     private var downloadedTimes: Int {
         Int(downloadLimit) - Int(downloadLeft)
@@ -54,17 +55,26 @@ struct HeaderView: View {
             )
             .labelStyle(.horizontal)
 
-            DividerView()
+            if transferDirection == .sent {
+                DividerView()
 
-            Label(
-                title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(downloadedTimes, Int(downloadLimit))) },
-                icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
-            )
-            .labelStyle(.horizontal)
+                Label(
+                    title: { Text(STResourcesStrings.Localizable.downloadedTransferLabel(downloadedTimes, Int(downloadLimit))) },
+                    icon: { STResourcesAsset.Images.fileDownload.swiftUIImage }
+                )
+                .labelStyle(.horizontal)
+            }
         }
     }
 }
 
 #Preview {
-    HeaderView(filesCount: 4, transferSize: 8561, expiringTimestamp: 0, downloadLeft: 249, downloadLimit: 250)
+    HeaderView(
+        filesCount: 4,
+        transferSize: 8561,
+        expiringTimestamp: 0,
+        downloadLeft: 249,
+        downloadLimit: 250,
+        transferDirection: .received
+    )
 }
