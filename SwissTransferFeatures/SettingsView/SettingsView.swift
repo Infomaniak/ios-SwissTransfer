@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import InfomaniakPrivacyManagementUI
 import STCore
@@ -34,6 +35,8 @@ enum SettingLinks {
 
 public struct SettingsView: View {
     @EnvironmentObject private var mainViewState: MainViewState
+
+    @AppStorage(UserDefaults.shared.key(.matomoAuthorized)) private var matomoAuthorized = DefaultPreferences.matomoAuthorized
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
 
@@ -101,6 +104,14 @@ public struct SettingsView: View {
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
                 }
+            }
+            .onChange(of: matomoAuthorized) { newValue in
+                @InjectService var matomo: MatomoUtils
+                #if DEBUG && !TEST
+                matomo.optOut(true)
+                #else
+                matomo.optOut(!newValue)
+                #endif
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {

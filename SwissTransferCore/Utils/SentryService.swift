@@ -37,10 +37,14 @@ public struct SentryService {
 
             options.beforeSend = { event in
                 // if the application is in debug mode discard the events
-                #if DEBUG
+                #if DEBUG || TEST
                 return nil
                 #else
-                return event
+                if UserDefaults.shared.isSentryAuthorized {
+                    return event
+                } else {
+                    return nil
+                }
                 #endif
             }
         }

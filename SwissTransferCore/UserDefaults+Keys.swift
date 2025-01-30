@@ -108,7 +108,10 @@ public extension UserDefaults {
 
     var isMatomoAuthorized: Bool {
         get {
-            bool(forKey: key(.matomoAuthorized))
+            if object(forKey: key(.matomoAuthorized)) == nil {
+                set(DefaultPreferences.matomoAuthorized, forKey: key(.matomoAuthorized))
+            }
+            return bool(forKey: key(.matomoAuthorized))
         }
         set {
             set(newValue, forKey: key(.matomoAuthorized))
@@ -117,7 +120,10 @@ public extension UserDefaults {
 
     var isSentryAuthorized: Bool {
         get {
-            bool(forKey: key(.sentryAuthorized))
+            if object(forKey: key(.sentryAuthorized)) == nil {
+                set(DefaultPreferences.sentryAuthorized, forKey: key(.sentryAuthorized))
+            }
+            return bool(forKey: key(.sentryAuthorized))
         }
         set {
             set(newValue, forKey: key(.sentryAuthorized))
