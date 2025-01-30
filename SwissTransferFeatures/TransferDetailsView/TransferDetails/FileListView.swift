@@ -56,7 +56,9 @@ struct FileListView: View {
                     "\(STResourcesStrings.Localizable.filesCount(filesCount)) · \(filesSize.formatted(.defaultByteCount))"
                 )
 
-                FileGridView(files: files.value ?? [], transfer: transfer)
+                FileGridLayoutView {
+                    FileGridCellsView(files: files.value ?? [], transfer: transfer)
+                }
             }
             .padding(value: .medium)
         }

@@ -100,7 +100,6 @@ public struct LargeFileCell: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
         .background(Color.ST.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
         .overlay(

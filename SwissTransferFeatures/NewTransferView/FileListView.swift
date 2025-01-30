@@ -51,13 +51,14 @@ struct FileListView: View {
                     "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(files.filesSize().formatted(.defaultByteCount))"
                 )
 
-                FileGridView(
-                    files: files,
-                    transfer: nil,
-                    removeAction: RemoveFileAction {
-                        removeFile($0, atFolderURL: folder?.localURL(in: ""))
-                    }
-                )
+                FileGridLayoutView {
+                    FileGridCellsView(
+                        files: files,
+                        removeAction: RemoveFileAction {
+                            removeFile($0, atFolderURL: folder?.localURL(in: ""))
+                        }
+                    )
+                }
             }
             .padding(value: .medium)
         }

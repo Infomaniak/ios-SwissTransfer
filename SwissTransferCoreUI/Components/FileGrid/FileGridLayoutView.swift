@@ -16,30 +16,30 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import DesignSystem
 import InfomaniakCoreSwiftUI
-import InfomaniakDI
-import STCore
-import STResources
 import SwiftUI
-import SwissTransferCore
-import SwissTransferCoreUI
 
-struct ContentView: View {
-    let transfer: TransferUi
+public struct FileGridLayoutView<Content: View>: View {
+    private let columns = [
+        GridItem(.adaptive(minimum: 150, maximum: 180), spacing: IKPadding.medium),
+        GridItem(.adaptive(minimum: 150, maximum: 180), spacing: IKPadding.medium)
+    ]
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.medium) {
-            Text(STResourcesStrings.Localizable.transferContentHeader)
-                .sectionHeader()
+    private let content: Content
 
-            FileGridLayoutView {
-                FileGridCellsView(files: transfer.files, transfer: transfer)
-            }
+    public init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    public var body: some View {
+        LazyVGrid(columns: columns, alignment: .center, spacing: IKPadding.medium, pinnedViews: []) {
+            content
         }
     }
 }
 
 #Preview {
-    ContentView(transfer: PreviewHelper.sampleTransfer)
+    FileGridLayoutView {
+        Text("Hello")
+    }
 }
