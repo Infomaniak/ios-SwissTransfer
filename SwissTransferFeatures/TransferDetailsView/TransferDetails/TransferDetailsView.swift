@@ -40,7 +40,8 @@ public struct TransferDetailsView: View {
                         transferSize: transfer.sizeUploaded,
                         expiringTimestamp: transfer.expirationDateTimestamp,
                         downloadLeft: transfer.downloadLeft,
-                        downloadLimit: transfer.downloadLimit
+                        downloadLimit: transfer.downloadLimit,
+                        transferDirection: transfer.direction ?? .received
                     )
 
                     if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
