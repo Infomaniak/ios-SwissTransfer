@@ -123,7 +123,7 @@ let project = Project(
             ]),
             sources: "SwissTransferShareExtension/Sources/**",
             resources: [],
-            entitlements: "SwissTransfer/Resources/SwissTransfer.entitlements",
+            entitlements: "SwissTransferShareExtension/Resources/SwissTransfer.entitlements",
             scripts: [
                 Constants.swiftlintScript
             ],
