@@ -68,7 +68,10 @@ public final class NewTransferFileManager: ObservableObject {
             await NewTransferFileManager.cleanTmpDir(type: .upload)
             shouldDoInitialClean = false
         }
-        importedItems.append(contentsOf: itemsToImport)
+
+        withAnimation {
+            importedItems.append(contentsOf: itemsToImport)
+        }
 
         do {
             let importedItemUrls = try await importedItems.asyncMap { importedItem in
@@ -76,13 +79,15 @@ public final class NewTransferFileManager: ObservableObject {
             }
 
             moveToTmp(files: importedItemUrls)
-            importedItems.removeAll()
         } catch {
             Logger.general.error("An error occurred while importing item: \(error)")
         }
 
         await NewTransferFileManager.cleanTmpDir(type: .cache)
-        return filesAt(folderURL: nil)
+
+        let files = filesAt(folderURL: nil)
+        importedItems.removeAll()
+        return files
     }
 
     /// Removes completely the given file and his children from :

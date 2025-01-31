@@ -30,6 +30,7 @@ struct FileListView: View {
 
     @State private var selectedItems = [ImportedItem]()
     @State private var files = [TransferableFile]()
+    @State private var filesCount = 0
 
     private let folder: TransferableFile?
 
@@ -47,17 +48,47 @@ struct FileListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                Text(
-                    "\(STResourcesStrings.Localizable.filesCount(files.count)) · \(files.filesSize().formatted(.defaultByteCount))"
-                )
+                HStack {
+                    Text(STResourcesStrings.Localizable.filesCount(filesCount))
+                        .monospacedDigit()
+                        .contentTransition(.numericText())
+                    Text("·")
+                    Text(files.filesSize(), format: .defaultByteCount)
+                        .monospacedDigit()
+                        .contentTransition(.numericText())
+                }
+                .onChange(of: files) { newFiles in
+                    withAnimation {
+                        filesCount = newFiles.count + newTransferFileManager.importedItems.count
+                    }
+                }
+                .onChange(of: newTransferFileManager.importedItems) { newImportedItems in
+                    withAnimation {
+                        filesCount = files.count + newImportedItems.count
+                    }
+                }
 
                 FileGridLayoutView {
+                    ForEach(newTransferFileManager.importedItems) { _ in
+                        LargeFileCell()
+                            .opacity(0.4)
+                            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
+                            .overlay(alignment: .bottomTrailing) {
+                                ProgressView()
+                                    .controlSize(.regular)
+                                    .tint(nil)
+                                    .padding(IKPadding.small)
+                            }
+                    }
+
                     FileGridCellsView(
                         files: files,
                         removeAction: RemoveFileAction {
                             removeFile($0, atFolderURL: folder?.localURL(in: ""))
                         }
                     )
+                    .animation(nil, value: files)
+                    .animation(nil, value: newTransferFileManager.importedItems)
                 }
             }
             .padding(value: .medium)
@@ -68,6 +99,7 @@ struct FileListView: View {
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
             files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
+            filesCount = files.count
         }
         .onChange(of: files) { _ in
             if files.isEmpty {
@@ -76,7 +108,9 @@ struct FileListView: View {
         }
         .task(id: selectedItems) {
             _ = await newTransferFileManager.addItems(selectedItems)
-            files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
+            withAnimation {
+                files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
+            }
         }
     }
 
