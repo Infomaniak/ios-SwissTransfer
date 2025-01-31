@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,30 +16,32 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import DesignSystem
-import InfomaniakCoreSwiftUI
-import InfomaniakDI
-import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
-import SwissTransferCoreUI
 
-struct ContentView: View {
-    let transfer: TransferUi
+public struct FilesCountAndSizeView: View {
+    private let count: Int
+    private let size: Int64
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.medium) {
-            Text(STResourcesStrings.Localizable.transferContentHeader)
-                .sectionHeader()
+    public init(count: Int, size: Int64) {
+        self.size = size
+        self.count = count
+    }
 
-            FileGridLayoutView {
-                FileGridCellsView(files: transfer.files, transfer: transfer)
-            }
+    public var body: some View {
+        SeparatedItemsView {
+            Text(STResourcesStrings.Localizable.filesCount(count))
+                .monospacedDigit()
+                .contentTransition(.numericText())
+        } rhs: {
+            Text(size, format: .defaultByteCount)
+                .monospacedDigit()
+                .contentTransition(.numericText())
         }
     }
 }
 
 #Preview {
-    ContentView(transfer: PreviewHelper.sampleTransfer)
+    FilesCountAndSizeView(count: 15, size: 200_000)
 }

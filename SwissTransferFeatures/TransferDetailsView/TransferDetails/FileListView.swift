@@ -20,7 +20,6 @@ import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
-import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -52,11 +51,13 @@ struct FileListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                Text(
-                    "\(STResourcesStrings.Localizable.filesCount(filesCount)) · \(filesSize.formatted(.defaultByteCount))"
-                )
+                FilesCountAndSizeView(count: filesCount, size: filesSize)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .font(.ST.callout)
 
-                FileGridView(files: files.value ?? [], transfer: transfer)
+                FileGridLayoutView {
+                    FileGridCellsView(files: files.value ?? [], transfer: transfer)
+                }
             }
             .padding(value: .medium)
         }

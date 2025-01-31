@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -18,28 +18,30 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
-import InfomaniakDI
-import STCore
-import STResources
 import SwiftUI
-import SwissTransferCore
-import SwissTransferCoreUI
 
-struct ContentView: View {
-    let transfer: TransferUi
+public struct SeparatedItemsView<Lhs: View, Rhs: View>: View {
+    private let lhs: Lhs
+    private let rhs: Rhs
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.medium) {
-            Text(STResourcesStrings.Localizable.transferContentHeader)
-                .sectionHeader()
+    public init(@ViewBuilder lhs: () -> Lhs, @ViewBuilder rhs: () -> Rhs) {
+        self.lhs = lhs()
+        self.rhs = rhs()
+    }
 
-            FileGridLayoutView {
-                FileGridCellsView(files: transfer.files, transfer: transfer)
-            }
+    public var body: some View {
+        HStack(spacing: IKPadding.micro) {
+            lhs
+            Text("•")
+            rhs
         }
     }
 }
 
 #Preview {
-    ContentView(transfer: PreviewHelper.sampleTransfer)
+    SeparatedItemsView {
+        Text("Hello")
+    } rhs: {
+        Text("World")
+    }
 }

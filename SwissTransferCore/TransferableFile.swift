@@ -30,6 +30,7 @@ public class TransferableFile: Hashable, DisplayableFile {
     private var localURL: URL
     public var mimeType: String?
     public var isFolder: Bool
+    public var addedDate: Date
 
     public func localURL(in container: String) -> URL? {
         localURL
@@ -38,7 +39,8 @@ public class TransferableFile: Hashable, DisplayableFile {
     public init?(url: URL) {
         guard let resources = try? url.resourceValues(forKeys: [
             .isDirectoryKey,
-            .nameKey
+            .nameKey,
+            .addedToDirectoryDateKey
         ]) else { return nil }
 
         localURL = url
@@ -46,6 +48,7 @@ public class TransferableFile: Hashable, DisplayableFile {
         isFolder = resources.isDirectory ?? false
         fileSize = Int64(url.size())
         mimeType = UTType(url.typeIdentifier ?? "")?.preferredMIMEType
+        addedDate = resources.addedToDirectoryDate ?? .now
     }
 
     public func hash(into hasher: inout Hasher) {

@@ -21,7 +21,6 @@ import InfomaniakCoreSwiftUI
 import STCore
 import STResources
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct HeaderView: View {
@@ -39,11 +38,7 @@ struct HeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
             Label(
-                title: {
-                    Text(
-                        "\(STResourcesStrings.Localizable.filesCount(filesCount)) · \(transferSize.formatted(.defaultByteCount))"
-                    )
-                },
+                title: { FilesCountAndSizeView(count: filesCount, size: transferSize) },
                 icon: { STResourcesAsset.Images.fileZip.swiftUIImage }
             )
             .labelStyle(.horizontal)

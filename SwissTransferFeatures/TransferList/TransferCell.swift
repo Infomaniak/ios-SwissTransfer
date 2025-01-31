@@ -46,9 +46,9 @@ struct TransferCell: View {
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                HStack(spacing: 0) {
+                SeparatedItemsView {
                     Text(transfer.sizeUploaded, format: .defaultByteCount)
-                    Text(" · ")
+                } rhs: {
                     Text(transfer.expirationDateTimestamp.formatted(.expiring))
                 }
                 .font(.ST.callout)
