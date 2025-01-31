@@ -19,7 +19,7 @@
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakDI
-import InfomaniakPrivacyManagementUI
+import InfomaniakPrivacyManagement
 import STCore
 import STResources
 import SwiftUI

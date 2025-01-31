@@ -164,7 +164,7 @@ let project = Project(
                     .external(name: "InfomaniakCoreCommonUI"),
                     .external(name: "InfomaniakCoreSwiftUI"),
                     .external(name: "InfomaniakCoreUIKit"),
-                    .external(name: "InfomaniakPrivacyManagementUI"),
+                    .external(name: "InfomaniakPrivacyManagement"),
                     .external(name: "DesignSystem"),
                     .external(name: "InfomaniakDeviceCheck"),
                     .external(name: "STCore"),
