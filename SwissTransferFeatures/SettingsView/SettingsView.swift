@@ -101,6 +101,7 @@ public struct SettingsView: View {
                         userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
                         userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized)
                     )
+                    .stNavigationBarStyle()
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
                 }
