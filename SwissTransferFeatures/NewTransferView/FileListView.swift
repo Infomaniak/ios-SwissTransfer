@@ -75,8 +75,8 @@ struct FileListView: View {
                         }
                     )
                     .animation(nil, value: files)
-                    .animation(nil, value: newTransferFileManager.importedItems)
                 }
+                .animation(nil, value: newTransferFileManager.importedItems)
             }
             .padding(value: .medium)
         }
