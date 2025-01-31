@@ -41,6 +41,7 @@ public struct NewTransferView: View {
 
     @State private var rootNavigationPath = NavigationPath()
     @State private var isLoadingFileToUpload = false
+    @State private var importFilesTasks = [Task<Void, Never>]()
 
     public init() {}
 
@@ -51,7 +52,7 @@ public struct NewTransferView: View {
                     NewTransferTypeView(transferType: $viewModel.transferType)
 
                     NavigationLink(value: TransferableRootFolder()) {
-                        NewTransferFilesCellView(files: $viewModel.files)
+                        NewTransferFilesCellView(files: $viewModel.files, importFilesTasks: $importFilesTasks)
                     }
                     .padding(.horizontal, value: .medium)
 
@@ -102,6 +103,7 @@ public struct NewTransferView: View {
             } else {
                 dismiss()
             }
+            cancelTasks()
         }
     }
 
@@ -127,6 +129,12 @@ public struct NewTransferView: View {
             }
 
             isLoadingFileToUpload = false
+        }
+    }
+
+    private func cancelTasks() {
+        for task in importFilesTasks {
+            task.cancel()
         }
     }
 }

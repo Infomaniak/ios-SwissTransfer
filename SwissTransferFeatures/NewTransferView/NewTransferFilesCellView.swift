@@ -29,6 +29,7 @@ struct NewTransferFilesCellView: View {
     @State private var selectedItems = [ImportedItem]()
 
     @Binding var files: [TransferableFile]
+    @Binding var importFilesTasks: [Task<Void, Never>]
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -59,6 +60,8 @@ struct NewTransferFilesCellView: View {
                                 .frame(width: 80, height: 80)
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
+                        .onAppear { addItems() }
+                        .onChange(of: selectedItems, perform: addItems)
 
                         ForEach(newTransferFileManager.importedItems) { _ in
                             SmallThumbnailView(url: nil, mimeType: "", size: .medium)
@@ -98,12 +101,16 @@ struct NewTransferFilesCellView: View {
                 }
             }
         }
-        .task(id: selectedItems) {
-            files = await newTransferFileManager.addItems(selectedItems)
+    }
+
+    private func addItems(_ items: [ImportedItem] = []) {
+        let task = Task {
+            files = await newTransferFileManager.addItems(items)
         }
+        importFilesTasks.append(task)
     }
 }
 
 #Preview {
-    NewTransferFilesCellView(files: .constant([]))
+    NewTransferFilesCellView(files: .constant([]), importFilesTasks: .constant([]))
 }
