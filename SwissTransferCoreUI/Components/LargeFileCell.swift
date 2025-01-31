@@ -60,9 +60,8 @@ public struct LargeFileCell: View {
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .task {
-                    guard let container else { return }
                     largeThumbnail = await ThumbnailGenerator.generate(
-                        for: file.localURL(in: container),
+                        for: file.localURL(in: container ?? ""),
                         scale: scale,
                         cgSize: reader.size
                     )
