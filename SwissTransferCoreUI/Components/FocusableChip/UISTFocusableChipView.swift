@@ -16,13 +16,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import UIKit
 
 public final class UISTFocusableChipView: UIView, UIKeyInput {
     private enum Constants {
         // Button
-        static let buttonInset = IKPadding.small
+        static let buttonInset = IKPadding.mini
         static let buttonImageSize: CGFloat = 12
         static var buttonTotalWidth: CGFloat {
             buttonImageSize + 2 * buttonInset

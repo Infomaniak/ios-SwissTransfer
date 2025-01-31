@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
@@ -41,7 +42,7 @@ struct QRCodePanelView: View {
 
             QRCodeView(url: url)
                 .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
-                .padding(.vertical, 32)
+                .padding(.vertical, value: .huge)
 
             BottomButtonsView {
                 Button {

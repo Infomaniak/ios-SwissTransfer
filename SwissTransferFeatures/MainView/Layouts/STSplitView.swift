@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import STReceivedView
 import STSentView
@@ -39,7 +40,7 @@ struct STSplitView: View {
                 }
             }
             .stIconNavigationBar()
-            .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.small)
+            .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.mini)
             .safeAreaInset(edge: .bottom) {
                 SidebarNewTransferButton(selection: $selectedItems)
                     .padding(value: .medium)

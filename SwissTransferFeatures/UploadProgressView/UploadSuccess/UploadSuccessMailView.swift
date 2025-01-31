@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import OrderedCollections
 import STCore
@@ -38,7 +39,7 @@ struct UploadSuccessMailView: View {
                 style: .emptyState
             )
 
-            FlowLayout(verticalSpacing: IKPadding.small, horizontalSpacing: IKPadding.small) {
+            FlowLayout(verticalSpacing: IKPadding.mini, horizontalSpacing: IKPadding.mini) {
                 ForEach(recipients, id: \.self) { recipient in
                     Text(recipient)
                         .stChip()

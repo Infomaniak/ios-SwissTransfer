@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import STCore
 import STResources
@@ -44,7 +45,7 @@ struct NewTransferSettingCell: View {
                 .labelStyle(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                HStack(spacing: IKPadding.small) {
+                HStack(spacing: IKPadding.mini) {
                     Text(value)
                         .font(.ST.callout)
 
@@ -53,7 +54,7 @@ struct NewTransferSettingCell: View {
                 }
                 .foregroundStyle(Color.ST.textSecondary)
             }
-            .padding(.vertical, value: .small)
+            .padding(.vertical, value: .mini)
         }
     }
 }

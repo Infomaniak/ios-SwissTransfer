@@ -16,12 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public struct VerticalButtonLabelStyle: LabelStyle {
     public func makeBody(configuration: Configuration) -> some View {
-        VStack(spacing: IKPadding.small) {
+        VStack(spacing: IKPadding.mini) {
             configuration.icon
             configuration.title
         }

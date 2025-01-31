@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
@@ -28,7 +29,7 @@ struct EditSettingCell: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: IKPadding.small) {
+            HStack(spacing: IKPadding.mini) {
                 if let leftImage {
                     leftImage
                         .iconSize(.large)

@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
@@ -40,7 +41,7 @@ struct TransferCell: View {
 
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: IKPadding.small) {
+            VStack(alignment: .leading, spacing: IKPadding.mini) {
                 Text(transfer.name)
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
@@ -78,7 +79,7 @@ struct TransferCell: View {
             }
         }
         .padding(.horizontal, value: .medium)
-        .padding(.vertical, value: .extraSmall)
+        .padding(.vertical, value: .micro)
         .appBackground()
     }
 }

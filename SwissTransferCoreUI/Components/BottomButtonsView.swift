@@ -16,12 +16,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public enum BottomButtonsConstants: Sendable {
     public static let spacing = IKPadding.medium
-    public static let paddingBottom = IKPadding.intermediate
+    public static let paddingBottom = IKPadding.small
 }
 
 public struct BottomButtonsView<Buttons: View>: View {

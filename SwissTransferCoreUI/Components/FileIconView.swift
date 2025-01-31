@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
@@ -35,7 +36,7 @@ public enum FileTypeIconSize {
     var padding: CGFloat {
         switch self {
         case .small:
-            return IKPadding.small
+            return IKPadding.mini
         case .large:
             return IKPadding.medium
         }

@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -36,7 +37,7 @@ struct UploadProgressHeaderView: View {
     }
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: IKPadding.huge) {
             Text(title)
                 .font(.ST.headline)
 

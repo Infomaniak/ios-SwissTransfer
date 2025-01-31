@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
@@ -74,7 +75,7 @@ public struct UploadProgressView: View {
             .padding(.top, value: .large)
             .scrollableEmptyState()
             .background(Color.ST.background)
-            .safeAreaButtons(spacing: 32) {
+            .safeAreaButtons(spacing: IKPadding.huge) {
                 UploadProgressIndicationView(status: status)
 
                 Button(CoreUILocalizable.buttonCancel, action: cancelTransfer)

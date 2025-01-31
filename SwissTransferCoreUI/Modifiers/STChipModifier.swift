@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
@@ -26,7 +27,7 @@ struct STChipModifier: ViewModifier {
             .foregroundStyle(Color.ST.onRecipientLabelBackground)
             .lineLimit(1)
             .padding(.vertical, 6)
-            .padding(.horizontal, value: .intermediate)
+            .padding(.horizontal, value: .small)
             .background(Color.ST.recipientLabelBackground, in: .rect(cornerRadius: IKRadius.medium))
     }
 }

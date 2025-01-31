@@ -56,7 +56,7 @@ public struct TogglableSecureTextField: View {
             .textContentType(.password)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
-            .padding(value: .intermediate)
+            .padding(value: .small)
 
             Button(action: toggleShowPassword) {
                 if isShowingPassword {
@@ -68,7 +68,7 @@ public struct TogglableSecureTextField: View {
                 }
             }
             .foregroundStyle(Color.ST.textSecondary)
-            .padding(value: .intermediate)
+            .padding(value: .small)
         }
         .inputStyle(isFocused: focusedField != nil, withPadding: false, error: error)
     }

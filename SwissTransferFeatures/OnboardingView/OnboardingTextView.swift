@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
@@ -74,7 +75,7 @@ struct OnboardingTextView: View {
     let text: OnboardingText
 
     var body: some View {
-        VStack(spacing: IKPadding.small) {
+        VStack(spacing: IKPadding.mini) {
             Text(text.title)
                 .font(.ST.specificTitleLight)
 

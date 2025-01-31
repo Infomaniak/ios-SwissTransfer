@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
@@ -56,7 +57,7 @@ struct PasswordPanelView: View {
                 }
             }
             .foregroundStyle(Color.ST.textSecondary)
-            .padding(value: .intermediate)
+            .padding(value: .small)
             .overlay(Color.ST.textFieldBorder, in: .rect(cornerRadius: IKRadius.small).stroke())
             .padding(.bottom, 30)
 
