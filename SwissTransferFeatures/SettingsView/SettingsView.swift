@@ -99,8 +99,10 @@ public struct SettingsView: View {
                         illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
                         userDefaultStore: .shared,
                         userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
-                        userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized)
+                        userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized),
+                        showTitle: false
                     )
+                    .stNavigationTitle(PrivacyManagementView.title)
                     .stNavigationBarStyle()
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
