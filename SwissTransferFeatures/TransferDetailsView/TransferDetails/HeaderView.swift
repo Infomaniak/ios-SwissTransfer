@@ -21,7 +21,6 @@ import InfomaniakCoreSwiftUI
 import STCore
 import STResources
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct HeaderView: View {
