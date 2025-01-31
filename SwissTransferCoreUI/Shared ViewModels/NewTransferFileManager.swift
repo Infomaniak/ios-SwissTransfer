@@ -180,7 +180,7 @@ public extension NewTransferFileManager {
     }
 
     func filesAt(folderURL: URL?) -> [TransferableFile] {
-        let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey]
+        let resourceKeys: [URLResourceKey] = [.fileSizeKey, .isDirectoryKey, .nameKey, .addedToDirectoryDateKey]
 
         do {
             var src = try URL.tmpUploadDirectory()
@@ -191,7 +191,9 @@ public extension NewTransferFileManager {
 
             let files = urls.compactMap { TransferableFile(url: $0) }
 
-            return files
+            return files.sorted { lhs, rhs in
+                lhs.addedDate > rhs.addedDate
+            }
         } catch {
             Logger.general.error("An error occurred while getting files from: \(folderURL?.path() ?? "") \(error)")
         }
