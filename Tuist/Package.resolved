@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "9fdaf17dea8d950a520d240f21391be6195239fd",
-        "version" : "13.1.0"
+        "revision" : "c3a442b5bd2fb67680aa252638773c4d7d1551ad",
+        "version" : "14.0.0"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "branch" : "chore-update-paddings",
-        "revision" : "776899439cfd7a89ae13a059825497d807fd2dd7"
+        "revision" : "fc37b5e6e96e38f232f62bd03d322ea6951c1c0f",
+        "version" : "17.0.0"
       }
     },
     {
