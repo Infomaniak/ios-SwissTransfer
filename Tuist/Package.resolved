@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-login",
       "state" : {
-        "revision" : "b7791f1321c86a9aa0e52eb79acb5c6318a3810a",
-        "version" : "7.1.0"
+        "revision" : "d3c8fa9dd7ea7e44a1a741b58d1036d4a7989588",
+        "version" : "7.2.0"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "bc155f1aefbc6aa5e6ed08f4ef7d6a7e018776c6",
-        "version" : "1.0.1"
+        "revision" : "3bb68a11ff5dd2e2430361caa9ab1b117b05a6ff",
+        "version" : "1.0.3"
       }
     },
     {
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "f45e9c62d7a4d9258ac3cf35a3acf9dbab4481d1",
-        "version" : "8.43.0"
+        "revision" : "0c34e4da899a1dd9183db04082d1ceb6e9c2b301",
+        "version" : "8.44.0"
       }
     },
     {
