@@ -40,8 +40,9 @@ struct NewTransferFilesCellView: View {
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 HStack {
-                    Text(
-                        "\(STResourcesStrings.Localizable.filesCount(files.count + newTransferFileManager.importedItems.count)) · \(files.filesSize().formatted(.defaultByteCount))"
+                    FilesCountAndSizeView(
+                        count: files.count + newTransferFileManager.importedItems.count,
+                        size: files.filesSize()
                     )
                     .font(.ST.callout)
                     .frame(maxWidth: .infinity, alignment: .leading)

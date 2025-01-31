@@ -48,25 +48,19 @@ struct FileListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                HStack {
-                    Text(STResourcesStrings.Localizable.filesCount(filesCount))
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
-                    Text("·")
-                    Text(files.filesSize(), format: .defaultByteCount)
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
-                }
-                .onChange(of: files) { newFiles in
-                    withAnimation {
-                        filesCount = newFiles.count + newTransferFileManager.importedItems.count
+                FilesCountAndSizeView(count: filesCount, size: files.filesSize())
+                    .font(.ST.callout)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .onChange(of: files) { newFiles in
+                        withAnimation {
+                            filesCount = newFiles.count + newTransferFileManager.importedItems.count
+                        }
                     }
-                }
-                .onChange(of: newTransferFileManager.importedItems) { newImportedItems in
-                    withAnimation {
-                        filesCount = files.count + newImportedItems.count
+                    .onChange(of: newTransferFileManager.importedItems) { newImportedItems in
+                        withAnimation {
+                            filesCount = files.count + newImportedItems.count
+                        }
                     }
-                }
 
                 FileGridLayoutView {
                     ForEach(newTransferFileManager.importedItems) { _ in
