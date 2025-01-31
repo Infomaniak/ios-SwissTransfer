@@ -27,21 +27,21 @@ public struct LargeFileCell: View {
 
     @State private var largeThumbnail: Image?
 
-    private let file: any DisplayableFile
+    private let file: (any DisplayableFile)?
     private let container: String?
 
     private let removeAction: RemoveFileAction?
     private let fileType: FileType
 
-    public init(file: any DisplayableFile, container: String?, removeAction: RemoveFileAction? = nil) {
+    public init(file: (any DisplayableFile)? = nil, container: String? = nil, removeAction: RemoveFileAction? = nil) {
         self.file = file
         self.container = container
         self.removeAction = removeAction
 
-        if file.isFolder {
+        if file?.isFolder == true {
             fileType = .folder
         } else {
-            fileType = FileTypeProvider(mimeType: file.mimeType ?? "").fileType
+            fileType = FileTypeProvider(mimeType: file?.mimeType ?? "").fileType
         }
     }
 
@@ -61,6 +61,7 @@ public struct LargeFileCell: View {
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .task {
+                    guard let file else { return }
                     largeThumbnail = await ThumbnailGenerator.generate(
                         for: file.localURL(in: container ?? ""),
                         scale: scale,
@@ -72,11 +73,11 @@ public struct LargeFileCell: View {
             .frame(maxWidth: .infinity)
 
             VStack(alignment: .leading, spacing: 0) {
-                Text(file.fileName)
+                Text(file?.fileName ?? "-")
                     .foregroundStyle(Color.ST.textPrimary)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                Text(file.fileSize.formatted(.defaultByteCount))
+                Text((file?.fileSize ?? 0).formatted(.defaultByteCount))
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)
