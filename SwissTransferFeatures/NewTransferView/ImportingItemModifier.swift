@@ -20,27 +20,30 @@ import DesignSystem
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
-public struct FileGridLayoutView<Content: View>: View {
-    private let columns = [
-        GridItem(.adaptive(minimum: 150, maximum: 180), spacing: IKPadding.medium),
-        GridItem(.adaptive(minimum: 150, maximum: 180), spacing: IKPadding.medium)
-    ]
-
-    private let content: Content
-
-    public init(@ViewBuilder content: () -> Content) {
-        self.content = content()
+extension View {
+    func importingItem(controlSize: ControlSize) -> some View {
+        modifier(ImportingItemModifier(controlSize: controlSize))
     }
+}
 
-    public var body: some View {
-        LazyVGrid(columns: columns, alignment: .center, spacing: IKPadding.medium, pinnedViews: []) {
-            content
-        }
+struct ImportingItemModifier: ViewModifier {
+    let controlSize: ControlSize
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(0.4)
+            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
+            .overlay(alignment: .bottomTrailing) {
+                ProgressView()
+                    .controlSize(controlSize)
+                    .tint(nil)
+                    .padding(value: .mini)
+            }
     }
 }
 
 #Preview {
-    FileGridLayoutView {
-        Text("Hello")
-    }
+    Rectangle()
+        .frame(width: 400, height: 400)
+        .importingItem(controlSize: .regular)
 }

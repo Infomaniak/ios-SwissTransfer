@@ -65,14 +65,7 @@ struct FileListView: View {
                 FileGridLayoutView {
                     ForEach(newTransferFileManager.importedItems) { _ in
                         LargeFileCell()
-                            .opacity(0.4)
-                            .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
-                            .overlay(alignment: .bottomTrailing) {
-                                ProgressView()
-                                    .controlSize(.regular)
-                                    .tint(nil)
-                                    .padding(IKPadding.small)
-                            }
+                            .importingItem(controlSize: .regular)
                     }
 
                     FileGridCellsView(

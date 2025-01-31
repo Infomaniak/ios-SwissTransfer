@@ -67,14 +67,7 @@ struct NewTransferFilesCellView: View {
 
                         ForEach(newTransferFileManager.importedItems) { _ in
                             SmallThumbnailView(url: nil, mimeType: "", size: .medium)
-                                .opacity(0.4)
-                                .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
-                                .overlay(alignment: .bottomTrailing) {
-                                    ProgressView()
-                                        .controlSize(.small)
-                                        .tint(nil)
-                                        .padding(IKPadding.mini)
-                                }
+                                .importingItem(controlSize: .small)
                         }
 
                         ForEach(files) { file in

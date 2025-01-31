@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreSwiftUI
 import SwiftUI
 
@@ -29,7 +30,7 @@ public struct SeparatedItemsView<Lhs: View, Rhs: View>: View {
     }
 
     public var body: some View {
-        HStack(spacing: IKPadding.extraSmall) {
+        HStack(spacing: IKPadding.micro) {
             lhs
             Text("•")
             rhs
