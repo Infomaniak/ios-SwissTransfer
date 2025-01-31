@@ -29,7 +29,10 @@ let transferDetailsView = Feature(name: "TransferDetailsView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferList])
 let sentView = Feature(name: "SentView", additionalDependencies: [transferList])
 
-let settingsView = Feature(name: "SettingsView")
+let settingsView = Feature(
+    name: "SettingsView",
+    additionalDependencies: [TargetDependency.external(name: "InfomaniakPrivacyManagement")]
+)
 
 let mainView = Feature(
     name: "MainView",

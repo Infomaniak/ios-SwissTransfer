@@ -17,7 +17,9 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakDI
+import InfomaniakPrivacyManagement
 import STCore
 import STResources
 import SwiftUI
@@ -28,10 +30,13 @@ import SwissTransferCoreUI
 enum SettingLinks {
     static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
     static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
+    static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
 }
 
 public struct SettingsView: View {
     @EnvironmentObject private var mainViewState: MainViewState
+
+    @AppStorage(UserDefaults.shared.key(.matomoAuthorized)) private var matomoAuthorized = DefaultPreferences.matomoAuthorized
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
 
@@ -87,7 +92,29 @@ public struct SettingsView: View {
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
-                SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+                NavigationLink {
+                    PrivacyManagementView(
+                        urlRepository: SettingLinks.githubRepository,
+                        backgroundColor: Color.ST.background,
+                        illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
+                        userDefaultStore: .shared,
+                        userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
+                        userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized),
+                        showTitle: false
+                    )
+                    .stNavigationTitle(PrivacyManagementView.title)
+                    .stNavigationBarStyle()
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+                }
+            }
+            .onChange(of: matomoAuthorized) { newValue in
+                @InjectService var matomo: MatomoUtils
+                #if DEBUG && !TEST
+                matomo.optOut(true)
+                #else
+                matomo.optOut(!newValue)
+                #endif
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
