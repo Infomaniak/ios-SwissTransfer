@@ -38,31 +38,50 @@ extension View {
     }
 }
 
+enum DownloadProgressAlertState {
+    case idle
+    case running(currentProgress: Int64, totalProgress: Int64)
+    case error(Error)
+}
+
 struct DownloadProgressAlert: View {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var currentProgress: Int64 = 0
-    @State private var totalProgress: Int64 = 0
+    @State private var state: DownloadProgressAlertState = .idle
 
     let downloadTask: DownloadTask
     let downloadCompletedCallback: ((URL) -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.mini) {
-            Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
-                .font(.ST.headline)
-            ProgressView(value: Double(currentProgress) / Double(totalProgress))
-                .progressViewStyle(.linear)
+            switch state {
+            case .idle:
+                Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
+                    .font(.ST.headline)
+            case .running(let currentProgress, let totalProgress):
+                Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
+                    .font(.ST.headline)
 
-            HStack(spacing: 2) {
-                Text(currentProgress, format: .progressByteCount)
-                Text(verbatim: "/")
-                Text(totalProgress, format: .progressByteCount)
+                ProgressView(value: Double(currentProgress) / Double(totalProgress))
+                    .progressViewStyle(.linear)
+
+                HStack(spacing: 2) {
+                    Text(currentProgress, format: .progressByteCount)
+                    Text(verbatim: "/")
+                    Text(totalProgress, format: .progressByteCount)
+                }
+                .opacity(currentProgress > 0 && totalProgress > 0 ? 1 : 0)
+                .monospacedDigit()
+                .font(.ST.callout)
+                .foregroundStyle(.secondary)
+            case .error(let error):
+                Text(STResourcesStrings.Localizable.notificationDownloadErrorNotificationTitle)
+                    .font(.ST.headline)
+
+                Text(STResourcesStrings.Localizable.notificationDownloadErrorDescription)
+                    .font(.ST.callout)
+                    .foregroundStyle(.secondary)
             }
-            .opacity(currentProgress > 0 && totalProgress > 0 ? 1 : 0)
-            .monospacedDigit()
-            .font(.ST.callout)
-            .foregroundStyle(.secondary)
 
             Button(CoreUILocalizable.buttonCancel) {
                 Task {
@@ -78,10 +97,9 @@ struct DownloadProgressAlert: View {
                 await downloadManager.removeDownloadTask(id: downloadTask.id)
                 downloadCompletedCallback?(url)
             case .running(let current, let total):
-                currentProgress = current
-                totalProgress = total
-            default:
-                break
+                state = .running(currentProgress: current, totalProgress: total)
+            case .error(let error):
+                state = .error(error)
             }
         }
     }
