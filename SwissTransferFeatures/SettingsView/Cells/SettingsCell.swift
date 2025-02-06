@@ -25,14 +25,14 @@ import SwiftUI
 struct SettingsCell<Content: View>: View {
     let title: String
     let subtitle: String
-    var leftIconAsset: STResourcesImages?
+    var icon: STResourcesImages?
     @ViewBuilder var destination: () -> Content
 
     var body: some View {
         NavigationLink(destination: destination) {
             HStack(spacing: IKPadding.mini) {
-                if let leftIconAsset {
-                    Image(asset: leftIconAsset)
+                if let icon {
+                    Image(asset: icon)
                         .iconSize(.large)
                         .foregroundColor(Color.ST.primary)
                 }
@@ -56,5 +56,5 @@ struct SettingsCell<Content: View>: View {
 #Preview {
     SettingsCell(title: "Time",
                  subtitle: "Clock",
-                 leftIconAsset: STResourcesAsset.Images.clock) {}
+                 icon: STResourcesAsset.Images.clock) {}
 }

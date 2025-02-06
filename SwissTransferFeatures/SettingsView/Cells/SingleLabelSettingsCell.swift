@@ -23,18 +23,25 @@ import SwiftUI
 
 struct SingleLabelSettingsCell: View {
     let title: String
-    var rightIconAsset: STResourcesImages?
+    var leadingIcon: STResourcesImages?
+    var trailingIcon: STResourcesImages?
 
     var body: some View {
         HStack(spacing: IKPadding.mini) {
+            if let leadingIcon {
+                Image(asset: leadingIcon)
+                    .iconSize(.large)
+                    .foregroundStyle(Color.accentColor)
+            }
+
             Text(title)
                 .lineLimit(1)
                 .foregroundStyle(Color.ST.textPrimary)
                 .font(.ST.body)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            if let rightIconAsset {
-                Image(asset: rightIconAsset)
+            if let trailingIcon {
+                Image(asset: trailingIcon)
                     .iconSize(.medium)
                     .foregroundStyle(Color.ST.textSecondary)
             }
