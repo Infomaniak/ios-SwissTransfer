@@ -29,7 +29,7 @@ struct EditSettingCell: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: IKPadding.mini) {
+            HStack(spacing: IKPadding.small) {
                 if let leftImage {
                     leftImage
                         .iconSize(.large)

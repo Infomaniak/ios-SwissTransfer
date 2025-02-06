@@ -27,7 +27,7 @@ struct SingleLabelSettingsCell: View {
     var trailingIcon: STResourcesImages?
 
     var body: some View {
-        HStack(spacing: IKPadding.mini) {
+        HStack(spacing: IKPadding.small) {
             if let leadingIcon {
                 Image(asset: leadingIcon)
                     .iconSize(.large)
