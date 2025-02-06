@@ -80,9 +80,12 @@ struct NotificationsSettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsNotificationsTitle)) {
                 ForEach(NotificationsSettingsModel.allCases, id: \.self) { setting in
                     NotificationSettingCell(enabled: toggleBinding(for: setting), label: setting.localized)
+                        .settingsCell()
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .appBackground()
         .onAppear {
             allNotificationsEnabled = computeAllNotificationsEnabled()
         }

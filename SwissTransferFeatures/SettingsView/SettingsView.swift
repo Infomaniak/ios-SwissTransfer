@@ -56,10 +56,12 @@ public struct SettingsView: View {
                                     title: STResourcesStrings.Localizable.settingsOptionTheme,
                                     section: STResourcesStrings.Localizable.settingsThemeTitle)
                 }
+                .settingsCell()
 
                 NotificationsSettingsCell {
                     NotificationsSettingsView()
                 }
+                .settingsCell()
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
@@ -71,6 +73,7 @@ public struct SettingsView: View {
                                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                                     section: STResourcesStrings.Localizable.settingsValidityPeriodTitle)
                 }
+                .settingsCell()
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                              subtitle: appSettings.value?.downloadLimit.title ?? "",
@@ -80,6 +83,7 @@ public struct SettingsView: View {
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                                     section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle)
                 }
+                .settingsCell()
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                              subtitle: appSettings.value?.emailLanguage.title ?? "",
@@ -89,6 +93,7 @@ public struct SettingsView: View {
                                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                                     section: STResourcesStrings.Localizable.settingsEmailLanguageTitle)
                 }
+                .settingsCell()
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
@@ -108,6 +113,7 @@ public struct SettingsView: View {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
                                             leadingIcon: STResourcesAsset.Images.shield)
                 }
+                .settingsCell()
             }
             .onChange(of: matomoAuthorized) { newValue in
                 @InjectService var matomo: MatomoUtils
@@ -123,11 +129,13 @@ public struct SettingsView: View {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .settingsCell()
 
                 Link(destination: SettingLinks.shareYourIdeas) {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .settingsCell()
 
                 Button {
                     @InjectService var reviewManager: ReviewManageable
@@ -136,12 +144,16 @@ public struct SettingsView: View {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .settingsCell()
 
                 AboutSettingsCell(title: STResourcesStrings.Localizable.version,
                                   subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
+                    .settingsCell()
             }
         }
         .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .appBackground()
         .matomoView(view: "SettingsView")
     }
 }
