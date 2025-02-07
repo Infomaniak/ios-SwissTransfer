@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-dependency-injection",
       "state" : {
-        "revision" : "7d127ead20bbb4a6a39ca60e6dc32e580197b59e",
-        "version" : "2.0.2"
+        "revision" : "f7724f3237f6e2b36fbfabacb88f2658e1e7281e",
+        "version" : "2.0.3"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "3bb68a11ff5dd2e2430361caa9ab1b117b05a6ff",
-        "version" : "1.0.3"
+        "revision" : "8c682a00b3ed3ce9aa4270ba737e1ab50875bc6c",
+        "version" : "1.0.4"
       }
     },
     {
