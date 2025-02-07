@@ -46,9 +46,12 @@ struct EditSettingView<T: SettingSelectable>: View {
                                     leftImage: item.leftImage) {
                         action(item)
                     }
+                    .settingsCell()
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .appBackground()
         .stNavigationBarStyle()
         .stNavigationTitle(title)
     }

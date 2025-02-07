@@ -31,6 +31,8 @@ struct ExpiredTransferView: View {
             style: .emptyState
         )
         .padding(value: .medium)
+        .scrollableEmptyState()
+        .appBackground()
         .stNavigationBarStyle()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
