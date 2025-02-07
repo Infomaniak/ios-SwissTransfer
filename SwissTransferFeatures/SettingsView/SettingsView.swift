@@ -50,7 +50,7 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionTheme,
                              subtitle: appSettings.value?.theme.title ?? "",
-                             leftIconAsset: STResourcesAsset.Images.brush) {
+                             icon: STResourcesAsset.Images.brush) {
                     EditSettingView(Theme.self,
                                     selected: appSettings.value?.theme ?? .system,
                                     title: STResourcesStrings.Localizable.settingsOptionTheme,
@@ -65,7 +65,7 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                              subtitle: appSettings.value?.validityPeriod.title ?? "",
-                             leftIconAsset: STResourcesAsset.Images.clock) {
+                             icon: STResourcesAsset.Images.clock) {
                     EditSettingView(ValidityPeriod.self,
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
                                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
@@ -74,7 +74,7 @@ public struct SettingsView: View {
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                              subtitle: appSettings.value?.downloadLimit.title ?? "",
-                             leftIconAsset: STResourcesAsset.Images.fileDownload) {
+                             icon: STResourcesAsset.Images.fileDownload) {
                     EditSettingView(DownloadLimit.self,
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
@@ -83,7 +83,7 @@ public struct SettingsView: View {
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                              subtitle: appSettings.value?.emailLanguage.title ?? "",
-                             leftIconAsset: STResourcesAsset.Images.bubble) {
+                             icon: STResourcesAsset.Images.bubble) {
                     EditSettingView(EmailLanguage.self,
                                     selected: appSettings.value?.emailLanguage ?? .french,
                                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
@@ -105,7 +105,8 @@ public struct SettingsView: View {
                     .stNavigationTitle(PrivacyManagementView.title)
                     .stNavigationBarStyle()
                 } label: {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement)
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
+                                            leadingIcon: STResourcesAsset.Images.shield)
                 }
             }
             .onChange(of: matomoAuthorized) { newValue in
@@ -120,12 +121,12 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
                 Link(destination: SettingLinks.discoverInfomaniak) {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
-                                            rightIconAsset: STResourcesAsset.Images.export)
+                                            trailingIcon: STResourcesAsset.Images.export)
                 }
 
                 Link(destination: SettingLinks.shareYourIdeas) {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
-                                            rightIconAsset: STResourcesAsset.Images.export)
+                                            trailingIcon: STResourcesAsset.Images.export)
                 }
 
                 Button {
@@ -133,7 +134,7 @@ public struct SettingsView: View {
                     reviewManager.requestReview()
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                            rightIconAsset: STResourcesAsset.Images.export)
+                                            trailingIcon: STResourcesAsset.Images.export)
                 }
 
                 AboutSettingsCell(title: STResourcesStrings.Localizable.version,

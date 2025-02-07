@@ -34,7 +34,14 @@ extension Theme: SettingSelectable {
     }
 
     public var leftImage: Image? {
-        nil
+        switch self {
+        case .dark:
+            return STResourcesAsset.Images.circleDark.swiftUIImage
+        case .light:
+            return STResourcesAsset.Images.circleLight.swiftUIImage
+        case .system:
+            return STResourcesAsset.Images.circleHalfLightHalfDark.swiftUIImage
+        }
     }
 
     public func setSelected() async {
