@@ -129,3 +129,9 @@ public struct LargeFileCell: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
+@available(iOS 17.0, *)
+#Preview {
+    @Previewable @State var di = PreviewThumbnailProvider_TargetAssembly()
+    LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil)
+}
