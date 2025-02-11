@@ -66,7 +66,7 @@ struct NewTransferFilesCellView: View {
                         .onChange(of: selectedItems, perform: addItems)
 
                         ForEach(newTransferFileManager.importedItems) { _ in
-                            SmallThumbnailView(url: nil, mimeType: "", size: .medium)
+                            SmallThumbnailView(size: .medium)
                                 .importingItem(controlSize: .small)
                         }
 
@@ -78,7 +78,7 @@ struct NewTransferFilesCellView: View {
                             } else {
                                 NavigationLink(value: TransferableRootFolder()) {
                                     SmallThumbnailView(
-                                        url: file.localURLFor(transferUUID: ""),
+                                        url: file.localURL,
                                         mimeType: file.mimeType ?? "",
                                         size: .medium
                                     )

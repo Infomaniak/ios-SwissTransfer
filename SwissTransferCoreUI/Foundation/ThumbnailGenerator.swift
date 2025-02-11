@@ -18,27 +18,123 @@
 
 import OSLog
 import QuickLookThumbnailing
+import STCore
 import SwiftUI
+import SwissTransferCore
 
-public enum ThumbnailGenerator {
-    public static func generate(for url: URL?, scale: CGFloat, cgSize: CGSize) async -> Image? {
-        guard let url else { return nil }
+public struct ThumbnailProvider: Sendable {
+    enum DomainError: Error {
+        case invalidData
+    }
 
-        let size = cgSize
+    private let thumbnailsDirectory: URL?
 
+    public init() {
+        let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+        thumbnailsDirectory = cacheURL?.appendingPathComponent("thumbnails")
+    }
+
+    private func thumbnailURLFor(fileUUID: String, transferUUID: String) -> URL? {
+        guard let thumbnailsDirectory else { return nil }
+
+        try? FileManager.default.createDirectory(at: thumbnailsDirectory, withIntermediateDirectories: true, attributes: nil)
+
+        let thumbnailURL = thumbnailsDirectory.appendingPathComponent("\(transferUUID)--\(fileUUID).jpeg")
+
+        return thumbnailURL
+    }
+
+    public func generateThumbnailFor(fileUUID: String, transferUUID: String, fileURL: URL?, scale: CGFloat) async -> Image? {
+        guard let thumbnailURL = thumbnailURLFor(fileUUID: fileUUID, transferUUID: transferUUID) else { return nil }
+
+        if FileManager.default.fileExists(atPath: thumbnailURL.path(percentEncoded: false)),
+           let uiImage = UIImage(contentsOfFile: thumbnailURL.path(percentEncoded: false)) {
+            return Image(uiImage: uiImage)
+        } else if let fileURL {
+            try? await generateThumbnailFor(url: fileURL, scale: scale, destinationURL: thumbnailURL)
+            if let uiImage = UIImage(contentsOfFile: thumbnailURL.path(percentEncoded: false)) {
+                return Image(uiImage: uiImage)
+            }
+        }
+
+        return nil
+    }
+
+    public func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws {
+        let filePath = fileURL.path(percentEncoded: false)
+        guard FileManager.default.fileExists(atPath: filePath) else {
+            return
+        }
+
+        let uiImage: UIImage = try await generateThumbnail(fileURL: fileURL, scale: scale)
+
+        guard let imageData = uiImage.jpegData(compressionQuality: 1) else {
+            throw DomainError.invalidData
+        }
+
+        try imageData.write(to: destinationURL)
+
+        Logger.general.debug("Wrote thumbnail to \(destinationURL.path(percentEncoded: true))")
+    }
+
+    public func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)] {
+        let uuidsWithThumbnail: [(String, URL)] = await uploadSession.files.asyncCompactMap { file in
+            guard let remoteFileUUID = file.remoteUploadFile?.uuid,
+                  let generatedThumbnailURL = await generateTemporaryThumbnailFor(file: file, scale: scale)
+            else {
+                return nil
+            }
+
+            return (remoteFileUUID, generatedThumbnailURL)
+        }
+
+        return uuidsWithThumbnail
+    }
+
+    private func generateTemporaryThumbnailFor(file: SendableUploadFileSession, scale: CGFloat) async -> URL? {
+        guard let fileLocalURL = URL(string: file.localPath) else { return nil }
+
+        let tmpDirectoryURL = FileManager.default.temporaryDirectory.appending(path: "thumbnails", directoryHint: .isDirectory)
+
+        do {
+            try FileManager.default.createDirectory(at: tmpDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+
+            let tmpThumbnail = tmpDirectoryURL.appending(path: "\(UUID().uuidString).jpeg")
+
+            try await generateThumbnailFor(url: fileLocalURL, scale: scale, destinationURL: tmpThumbnail)
+
+            return tmpThumbnail
+        } catch {
+            return nil
+        }
+    }
+
+    public func moveTemporaryThumbnails(uuidsWithThumbnail: [(String, URL)], transferUUID: String) {
+        let thumbnailProvider = ThumbnailProvider()
+        for (uuid, temporaryThumbnailURL) in uuidsWithThumbnail {
+            guard let thumbnailURL = thumbnailProvider.thumbnailURLFor(fileUUID: uuid, transferUUID: transferUUID) else {
+                continue
+            }
+
+            try? FileManager.default.moveItem(at: temporaryThumbnailURL, to: thumbnailURL)
+        }
+    }
+
+    private func generateThumbnail(fileURL: URL, scale: CGFloat) async throws -> UIImage {
         let request = QLThumbnailGenerator.Request(
-            fileAt: url,
-            size: size,
+            fileAt: fileURL,
+            size: CGSize(width: 256, height: 256),
             scale: scale,
             representationTypes: .thumbnail
         )
 
-        do {
-            let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
-            return Image(uiImage: thumbnail.uiImage)
-        } catch {
-            Logger.general.error("An error occurred while generating a thumbnail: \(error)")
-        }
-        return nil
+        let thumbnail = try await QLThumbnailGenerator.shared.generateBestRepresentation(for: request)
+
+        return thumbnail.uiImage
+    }
+
+    public func generateThumbnail(fileURL: URL, scale: CGFloat) async throws -> Image {
+        let uiImage: UIImage = try await generateThumbnail(fileURL: fileURL, scale: scale)
+        return Image(uiImage: uiImage)
     }
 }

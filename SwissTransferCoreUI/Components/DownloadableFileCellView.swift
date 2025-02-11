@@ -35,7 +35,7 @@ struct DownloadableFileCellView: View {
 
     var body: some View {
         Button(action: startOrCancelDownloadIfNeeded) {
-            LargeFileCell(file: file, container: transfer.uuid)
+            LargeFileCell(file: file, transferUUID: transfer.uuid)
         }
         .buttonStyle(.plain)
         .downloadProgressAlertFor(transfer: transfer, file: file) { downloadedFileURL in

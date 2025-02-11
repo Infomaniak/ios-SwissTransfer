@@ -28,14 +28,14 @@ public struct LargeFileCell: View {
     @State private var largeThumbnail: Image?
 
     private let file: (any DisplayableFile)?
-    private let container: String?
+    private let transferUUID: String?
 
     private let removeAction: RemoveFileAction?
     private let fileType: FileType
 
-    public init(file: (any DisplayableFile)? = nil, container: String? = nil, removeAction: RemoveFileAction? = nil) {
+    public init(file: (any DisplayableFile)? = nil, transferUUID: String? = nil, removeAction: RemoveFileAction? = nil) {
         self.file = file
-        self.container = container
+        self.transferUUID = transferUUID
         self.removeAction = removeAction
 
         if file?.isFolder == true {
@@ -61,12 +61,18 @@ public struct LargeFileCell: View {
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .task {
-                    guard let file else { return }
-                    largeThumbnail = await ThumbnailGenerator.generate(
-                        for: file.localURL(in: container ?? ""),
-                        scale: scale,
-                        cgSize: reader.size
-                    )
+                    if let transferUUID,
+                       let file,
+                       let localURL = file.localURLFor(transferUUID: transferUUID) {
+                        largeThumbnail = await ThumbnailProvider().generateThumbnailFor(
+                            fileUUID: file.uid,
+                            transferUUID: transferUUID,
+                            fileURL: localURL,
+                            scale: scale
+                        )
+                    } else if let localURL = file?.localURLFor(transferUUID: "") {
+                        largeThumbnail = try? await ThumbnailProvider().generateThumbnail(fileURL: localURL, scale: scale)
+                    }
                 }
             }
             .frame(height: 96)
@@ -112,11 +118,11 @@ public struct LargeFileCell: View {
 
 #Preview {
     VStack {
-        LargeFileCell(file: PreviewHelper.sampleFile, container: nil)
+        LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
         let removeAction = RemoveFileAction { _ in }
-        LargeFileCell(file: PreviewHelper.sampleFile, container: nil, removeAction: removeAction)
+        LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil, removeAction: removeAction)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

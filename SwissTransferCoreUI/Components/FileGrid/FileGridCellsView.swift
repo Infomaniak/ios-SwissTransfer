@@ -38,7 +38,7 @@ public struct FileGridCellsView: View {
                 NavigationLink(value: file) {
                     LargeFileCell(
                         file: file,
-                        container: transfer?.uuid,
+                        transferUUID: transfer?.uuid,
                         removeAction: removeAction
                     )
                 }
@@ -48,7 +48,7 @@ public struct FileGridCellsView: View {
                 } else {
                     LargeFileCell(
                         file: file,
-                        container: transfer?.uuid,
+                        transferUUID: transfer?.uuid,
                         removeAction: removeAction
                     )
                 }
