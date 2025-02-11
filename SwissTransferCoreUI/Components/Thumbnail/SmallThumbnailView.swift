@@ -63,7 +63,7 @@ public enum ThumbnailType {
 }
 
 public struct SmallThumbnailView: View {
-    @LazyInjectService private var thumbnailProvider: ThumbnailProvider
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Environment(\.displayScale) private var scale
 

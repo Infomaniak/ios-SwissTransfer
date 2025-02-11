@@ -31,7 +31,7 @@ import SwissTransferCoreUI
 public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
-    @LazyInjectService private var thumbnailProvider: ThumbnailProvider
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.displayScale) private var scale

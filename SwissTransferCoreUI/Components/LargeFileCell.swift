@@ -24,7 +24,7 @@ import SwiftUI
 import SwissTransferCore
 
 public struct LargeFileCell: View {
-    @LazyInjectService private var thumbnailProvider: ThumbnailProvider
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Environment(\.displayScale) private var scale
 

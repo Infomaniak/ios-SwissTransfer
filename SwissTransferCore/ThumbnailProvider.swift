@@ -22,7 +22,15 @@ import QuickLookThumbnailing
 import STCore
 import SwiftUI
 
-public struct ThumbnailProvider: Sendable {
+public protocol ThumbnailProvidable: Sendable {
+    func generateThumbnailFor(fileUUID: String, transferUUID: String, fileURL: URL?, scale: CGFloat) async -> Image?
+    func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws
+    func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)]
+    func moveTemporaryThumbnails(uuidsWithThumbnail: [(String, URL)], transferUUID: String)
+    func generateThumbnail(fileURL: URL, scale: CGFloat) async throws -> Image
+}
+
+public struct ThumbnailProvider: ThumbnailProvidable {
     enum DomainError: Error {
         case invalidData
     }
