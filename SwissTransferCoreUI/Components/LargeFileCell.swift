@@ -50,7 +50,7 @@ public struct LargeFileCell: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            GeometryReader { reader in
+            GeometryReader { _ in
                 ZStack {
                     if let largeThumbnail {
                         largeThumbnail
