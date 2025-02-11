@@ -18,11 +18,14 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
 
 public struct LargeFileCell: View {
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvider
+
     @Environment(\.displayScale) private var scale
 
     @State private var largeThumbnail: Image?
@@ -64,14 +67,14 @@ public struct LargeFileCell: View {
                     if let transferUUID,
                        let file,
                        let localURL = file.localURLFor(transferUUID: transferUUID) {
-                        largeThumbnail = await ThumbnailProvider().generateThumbnailFor(
+                        largeThumbnail = await thumbnailProvider.generateThumbnailFor(
                             fileUUID: file.uid,
                             transferUUID: transferUUID,
                             fileURL: localURL,
                             scale: scale
                         )
                     } else if let localURL = file?.localURLFor(transferUUID: "") {
-                        largeThumbnail = try? await ThumbnailProvider().generateThumbnail(fileURL: localURL, scale: scale)
+                        largeThumbnail = try? await thumbnailProvider.generateThumbnail(fileURL: localURL, scale: scale)
                     }
                 }
             }

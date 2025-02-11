@@ -16,11 +16,11 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakConcurrency
 import OSLog
 import QuickLookThumbnailing
 import STCore
 import SwiftUI
-import SwissTransferCore
 
 public struct ThumbnailProvider: Sendable {
     enum DomainError: Error {
@@ -37,7 +37,7 @@ public struct ThumbnailProvider: Sendable {
     private func thumbnailURLFor(fileUUID: String, transferUUID: String) -> URL? {
         guard let thumbnailsDirectory else { return nil }
 
-        try? FileManager.default.createDirectory(at: thumbnailsDirectory, withIntermediateDirectories: true, attributes: nil)
+        try? FileManager.default.createDirectory(at: thumbnailsDirectory, withIntermediateDirectories: true)
 
         let thumbnailURL = thumbnailsDirectory.appendingPathComponent("\(transferUUID)--\(fileUUID).jpeg")
 
@@ -110,9 +110,8 @@ public struct ThumbnailProvider: Sendable {
     }
 
     public func moveTemporaryThumbnails(uuidsWithThumbnail: [(String, URL)], transferUUID: String) {
-        let thumbnailProvider = ThumbnailProvider()
         for (uuid, temporaryThumbnailURL) in uuidsWithThumbnail {
-            guard let thumbnailURL = thumbnailProvider.thumbnailURLFor(fileUUID: uuid, transferUUID: transferUUID) else {
+            guard let thumbnailURL = thumbnailURLFor(fileUUID: uuid, transferUUID: transferUUID) else {
                 continue
             }
 

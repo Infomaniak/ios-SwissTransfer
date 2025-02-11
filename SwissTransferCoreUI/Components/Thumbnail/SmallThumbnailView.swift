@@ -18,8 +18,10 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import SwiftUI
+import SwissTransferCore
 
 public enum SmallThumbnailSize {
     case small
@@ -61,6 +63,8 @@ public enum ThumbnailType {
 }
 
 public struct SmallThumbnailView: View {
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvider
+
     @Environment(\.displayScale) private var scale
 
     @ScaledMetric(wrappedValue: 0, relativeTo: .body) private var size
@@ -146,9 +150,9 @@ public struct SmallThumbnailView: View {
                 .task {
                     switch thumbnailType {
                     case .importedFile(let url):
-                        thumbnail = try? await ThumbnailProvider().generateThumbnail(fileURL: url, scale: scale)
+                        thumbnail = try? await thumbnailProvider.generateThumbnail(fileURL: url, scale: scale)
                     case .file(let fileUUID, let transferUUID, let fileURL):
-                        thumbnail = await ThumbnailProvider().generateThumbnailFor(
+                        thumbnail = await thumbnailProvider.generateThumbnailFor(
                             fileUUID: fileUUID,
                             transferUUID: transferUUID,
                             fileURL: fileURL,

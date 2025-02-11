@@ -52,6 +52,9 @@ open class TargetAssembly {
             Factory(type: DownloadManager.self) { _, _ in
                 DownloadManager()
             },
+            Factory(type: ThumbnailProvider.self) { _, _ in
+                ThumbnailProvider()
+            },
             Factory(type: SwissTransferInjection.self) { _, resolver in
                 let groupPathProvider = try resolver.resolve(type: AppGroupPathProvidable.self,
                                                              forCustomTypeIdentifier: nil,

@@ -31,6 +31,7 @@ import SwissTransferCoreUI
 public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvider
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.displayScale) private var scale
@@ -117,7 +118,6 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
-            let thumbnailProvider = ThumbnailProvider()
             async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
                 uploadSession: uploadSession,
                 scale: scale
