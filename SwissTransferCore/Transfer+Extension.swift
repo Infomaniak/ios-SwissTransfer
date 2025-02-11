@@ -58,7 +58,7 @@ public extension TransferUi {
 
     var localArchiveURL: URL? {
         if files.count == 1,
-           let fileURL = files.first?.localURL(in: self) {
+           let fileURL = files.first?.localURLFor(transfer: self) {
             return fileURL
         }
 

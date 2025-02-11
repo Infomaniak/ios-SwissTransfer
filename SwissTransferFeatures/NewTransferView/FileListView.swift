@@ -71,7 +71,7 @@ struct FileListView: View {
                     FileGridCellsView(
                         files: files,
                         removeAction: RemoveFileAction {
-                            removeFile($0, atFolderURL: folder?.localURL(in: ""))
+                            removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
                         }
                     )
                     .animation(nil, value: files)
@@ -85,7 +85,7 @@ struct FileListView: View {
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
-            files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
+            files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
             filesCount = files.count
         }
         .onChange(of: files) { _ in
@@ -96,7 +96,7 @@ struct FileListView: View {
         .task(id: selectedItems) {
             _ = await newTransferFileManager.addItems(selectedItems)
             withAnimation {
-                files = newTransferFileManager.filesAt(folderURL: folder?.localURL(in: ""))
+                files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
             }
         }
     }

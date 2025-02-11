@@ -25,7 +25,7 @@ public protocol DisplayableFile: Identifiable, Hashable {
     var fileSize: Int64 { get }
     var mimeType: String? { get }
 
-    func localURL(in container: String) -> URL?
+    func localURLFor(transferUUID: String) -> URL?
 }
 
 public extension DisplayableFile {

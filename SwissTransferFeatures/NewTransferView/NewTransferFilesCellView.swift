@@ -77,7 +77,11 @@ struct NewTransferFilesCellView: View {
                                 }
                             } else {
                                 NavigationLink(value: TransferableRootFolder()) {
-                                    SmallThumbnailView(url: file.localURL(in: ""), mimeType: file.mimeType ?? "", size: .medium)
+                                    SmallThumbnailView(
+                                        url: file.localURLFor(transferUUID: ""),
+                                        mimeType: file.mimeType ?? "",
+                                        size: .medium
+                                    )
                                 }
                             }
                         }

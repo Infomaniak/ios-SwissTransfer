@@ -32,7 +32,7 @@ public class TransferableFile: Hashable, DisplayableFile {
     public var isFolder: Bool
     public var addedDate: Date
 
-    public func localURL(in container: String) -> URL? {
+    public func localURLFor(transferUUID: String) -> URL? {
         localURL
     }
 
