@@ -25,14 +25,14 @@ public class TransferableFile: Hashable, DisplayableFile {
         localURL.path()
     }
 
-    public var fileName: String
-    public var fileSize: Int64
-    private var localURL: URL
-    public var mimeType: String?
-    public var isFolder: Bool
-    public var addedDate: Date
+    public let fileName: String
+    public let fileSize: Int64
+    public let localURL: URL
+    public let mimeType: String?
+    public let isFolder: Bool
+    public let addedDate: Date
 
-    public func localURL(in container: String) -> URL? {
+    public func localURLFor(transferUUID: String) -> URL? {
         localURL
     }
 

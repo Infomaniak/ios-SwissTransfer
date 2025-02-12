@@ -31,8 +31,10 @@ import SwissTransferCoreUI
 public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.displayScale) private var scale
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
@@ -116,7 +118,15 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
+            async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
+                uploadSession: uploadSession,
+                scale: scale
+            )
+
             let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
+
+            let uuidsWithThumbnail = await thumbnailGenerationTask
+            thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
 
             rootTransferViewState.transition(to: .success(transferUUID))
         } catch UploadManager.DomainError.deviceCheckFailed {

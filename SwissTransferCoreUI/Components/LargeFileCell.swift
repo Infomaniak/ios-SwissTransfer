@@ -18,24 +18,27 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
 
 public struct LargeFileCell: View {
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
+
     @Environment(\.displayScale) private var scale
 
     @State private var largeThumbnail: Image?
 
     private let file: (any DisplayableFile)?
-    private let container: String?
+    private let transferUUID: String?
 
     private let removeAction: RemoveFileAction?
     private let fileType: FileType
 
-    public init(file: (any DisplayableFile)? = nil, container: String? = nil, removeAction: RemoveFileAction? = nil) {
+    public init(file: (any DisplayableFile)? = nil, transferUUID: String? = nil, removeAction: RemoveFileAction? = nil) {
         self.file = file
-        self.container = container
+        self.transferUUID = transferUUID
         self.removeAction = removeAction
 
         if file?.isFolder == true {
@@ -46,31 +49,22 @@ public struct LargeFileCell: View {
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
-            GeometryReader { reader in
-                ZStack {
+        VStack(alignment: .leading, spacing: 0) {
+            FileIconView(fileType: fileType, type: .large)
+                .opacity(largeThumbnail == nil ? 1 : 0)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.ST.cardBackground)
+                .task {
+                    await generateThumbnail()
+                }
+                .overlay {
                     if let largeThumbnail {
                         largeThumbnail
                             .resizable()
                             .scaledToFill()
-                    } else {
-                        FileIconView(fileType: fileType, type: .large)
                     }
                 }
-                .frame(height: 96)
-                .frame(maxWidth: .infinity)
                 .clipped()
-                .task {
-                    guard let file else { return }
-                    largeThumbnail = await ThumbnailGenerator.generate(
-                        for: file.localURL(in: container ?? ""),
-                        scale: scale,
-                        cgSize: reader.size
-                    )
-                }
-            }
-            .frame(height: 96)
-            .frame(maxWidth: .infinity)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(file?.fileName ?? "-")
@@ -81,10 +75,16 @@ public struct LargeFileCell: View {
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .font(.ST.callout)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(value: .mini)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.ST.background)
         }
+        .aspectRatio(164 / 152, contentMode: .fit)
+        .clipShape(.rect(cornerRadius: 8))
+        .overlay(
+            RoundedRectangle(cornerRadius: IKRadius.medium)
+                .stroke(Color.ST.cardBorder)
+        )
         .overlay(alignment: .topTrailing) {
             if let removeAction {
                 Button {
@@ -101,22 +101,39 @@ public struct LargeFileCell: View {
                 }
             }
         }
-        .background(Color.ST.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: IKRadius.medium))
-        .overlay(
-            RoundedRectangle(cornerRadius: IKRadius.medium)
-                .stroke(Color.ST.cardBorder)
-        )
+    }
+
+    private func generateThumbnail() async {
+        if let transferUUID,
+           let file,
+           let localURL = file.localURLFor(transferUUID: transferUUID) {
+            largeThumbnail = await thumbnailProvider.generateThumbnailFor(
+                fileUUID: file.uid,
+                transferUUID: transferUUID,
+                fileURL: localURL,
+                scale: scale
+            )
+        } else if let localURL = file?.localURLFor(transferUUID: "") {
+            largeThumbnail = try? await thumbnailProvider.generateThumbnail(fileURL: localURL, scale: scale)
+        }
     }
 }
 
 #Preview {
-    VStack {
-        LargeFileCell(file: PreviewHelper.sampleFile, container: nil)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    VStack(spacing: 32) {
+        LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil)
+            .frame(width: 164, height: 152)
 
         let removeAction = RemoveFileAction { _ in }
-        LargeFileCell(file: PreviewHelper.sampleFile, container: nil, removeAction: removeAction)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil, removeAction: removeAction)
+            .frame(width: 164, height: 152)
     }
+}
+
+@available(iOS 17.0, *)
+#Preview {
+    @Previewable @State var di = PreviewThumbnailProvider_TargetAssembly()
+    LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil)
+        .frame(maxWidth: 164)
+        .frame(height: 152)
 }

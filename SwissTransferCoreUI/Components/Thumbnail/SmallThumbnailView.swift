@@ -18,7 +18,10 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import SwiftUI
+import SwissTransferCore
 
 public enum SmallThumbnailSize {
     case small
@@ -52,36 +55,74 @@ public enum SmallThumbnailSize {
     }
 }
 
+public enum ThumbnailType {
+    case importingFile
+    case importedFile(URL)
+    case folder
+    case file(fileUUID: String, transferUUID: String, sourceURL: URL?)
+}
+
 public struct SmallThumbnailView: View {
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
+
     @Environment(\.displayScale) private var scale
 
     @ScaledMetric(wrappedValue: 0, relativeTo: .body) private var size
 
     private let fileType: FileType
-    private let url: URL?
     private let name: String?
     private let thumbnailSize: SmallThumbnailSize
 
+    private let thumbnailType: ThumbnailType
+
     @State private var thumbnail: Image?
 
-    /// File init
-    public init(url: URL?, mimeType: String, size: SmallThumbnailSize) {
-        self.url = url
-        name = url?.lastPathComponent
+    /// Importing
+    public init(size: SmallThumbnailSize) {
+        name = nil
+        thumbnailSize = size
+
+        _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
+        fileType = .unknown
+
+        thumbnailType = .importingFile
+    }
+
+    /// Imported file
+    public init(url: URL, mimeType: String, size: SmallThumbnailSize) {
+        name = url.lastPathComponent
         thumbnailSize = size
 
         _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
         fileType = FileTypeProvider(mimeType: mimeType).fileType
+
+        thumbnailType = .importedFile(url)
     }
 
-    /// Folder init
+    /// File
+    public init(fileUI: FileUi, transferUI: TransferUi, size: SmallThumbnailSize) {
+        name = fileUI.fileName
+        thumbnailSize = size
+
+        _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
+        fileType = FileTypeProvider(mimeType: fileUI.mimeType ?? "").fileType
+
+        thumbnailType = .file(
+            fileUUID: fileUI.uid,
+            transferUUID: transferUI.uuid,
+            sourceURL: fileUI.localURLFor(transfer: transferUI)
+        )
+    }
+
+    /// Folder
     public init(name: String? = nil, size: SmallThumbnailSize) {
-        url = nil
         self.name = name
         thumbnailSize = size
 
         _size = ScaledMetric(wrappedValue: size.size, relativeTo: .body)
         fileType = .folder
+
+        thumbnailType = .folder
     }
 
     public var body: some View {
@@ -107,11 +148,19 @@ public struct SmallThumbnailView: View {
                 .frame(width: size, height: size)
                 .background(Color.ST.background)
                 .task {
-                    thumbnail = await ThumbnailGenerator.generate(
-                        for: url,
-                        scale: scale,
-                        cgSize: CGSize(width: size, height: size)
-                    )
+                    switch thumbnailType {
+                    case .importedFile(let url):
+                        thumbnail = try? await thumbnailProvider.generateThumbnail(fileURL: url, scale: scale)
+                    case .file(let fileUUID, let transferUUID, let fileURL):
+                        thumbnail = await thumbnailProvider.generateThumbnailFor(
+                            fileUUID: fileUUID,
+                            transferUUID: transferUUID,
+                            fileURL: fileURL,
+                            scale: scale
+                        )
+                    case .folder, .importingFile:
+                        break
+                    }
                 }
             }
         }

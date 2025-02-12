@@ -23,14 +23,14 @@ import STCore
 extension FileUi: DisplayableFile {}
 
 public extension FileUi {
-    func localURL(in container: String) -> URL? {
+    func localURLFor(transferUUID: String) -> URL? {
         return try? URL.tmpDownloadsDirectory()
-            .appendingPathComponent("\(container)/")
+            .appendingPathComponent("\(transferUUID)/")
             .appendingPathComponent("\(uid)/")
             .appendingPathComponent(fileName)
     }
 
-    func localURL(in transfer: TransferUi) -> URL? {
-        localURL(in: transfer.uuid)
+    func localURLFor(transfer: TransferUi) -> URL? {
+        localURLFor(transferUUID: transfer.uuid)
     }
 }
