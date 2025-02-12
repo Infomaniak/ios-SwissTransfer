@@ -16,9 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import STResources
 import SwiftUI
-import InfomaniakDI
 
 struct PreviewThumbnailProvider: ThumbnailProvidable {
     func generateThumbnailFor(fileUUID: String, transferUUID: String, fileURL: URL?, scale: CGFloat) async -> Image? {
@@ -29,15 +29,13 @@ struct PreviewThumbnailProvider: ThumbnailProvidable {
         return STResourcesAsset.Images.boxes.swiftUIImage
     }
 
-    func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws {
-    }
+    func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws {}
 
     func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)] {
         return []
     }
 
-    func moveTemporaryThumbnails(uuidsWithThumbnail: [(String, URL)], transferUUID: String) {
-    }
+    func moveTemporaryThumbnails(uuidsWithThumbnail: [(String, URL)], transferUUID: String) {}
 }
 
 public struct PreviewThumbnailProvider_TargetAssembly {

@@ -51,6 +51,7 @@ public struct LargeFileCell: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             FileIconView(fileType: fileType, type: .large)
+                .opacity(largeThumbnail == nil ? 1 : 0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.ST.cardBackground)
                 .task {
@@ -63,6 +64,7 @@ public struct LargeFileCell: View {
                             .scaledToFill()
                     }
                 }
+                .clipped()
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(file?.fileName ?? "-")
