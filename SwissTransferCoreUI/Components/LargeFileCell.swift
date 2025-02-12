@@ -85,6 +85,22 @@ public struct LargeFileCell: View {
             RoundedRectangle(cornerRadius: IKRadius.medium)
                 .stroke(Color.ST.cardBorder)
         )
+        .overlay(alignment: .topTrailing) {
+            if let removeAction {
+                Button {
+                    guard let transferableFile = file as? TransferableFile else { return }
+                    removeAction(file: transferableFile)
+                } label: {
+                    Image(systemName: "xmark")
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .frame(width: 8, height: 8)
+                        .padding(value: .mini)
+                        .background(.black.opacity(0.5), in: .circle)
+                        .padding(value: .mini)
+                }
+            }
+        }
     }
 
     private func generateThumbnail() async {
