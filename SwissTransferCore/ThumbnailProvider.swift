@@ -24,7 +24,6 @@ import SwiftUI
 
 public protocol ThumbnailProvidable: Sendable {
     func generateThumbnailFor(fileUUID: String, transferUUID: String, fileURL: URL?, scale: CGFloat) async -> Image?
-    func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws
     func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)]
     func moveTemporaryThumbnails(uuidsWithThumbnail: [(String, URL)], transferUUID: String)
     func generateThumbnail(fileURL: URL, scale: CGFloat) async throws -> Image
@@ -42,14 +41,18 @@ public struct ThumbnailProvider: ThumbnailProvidable {
         thumbnailsDirectory = cacheURL?.appendingPathComponent("thumbnails")
     }
 
-    private func thumbnailURLFor(fileUUID: String, transferUUID: String) -> URL? {
-        guard let thumbnailsDirectory else { return nil }
+    public func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)] {
+        let uuidsWithThumbnail: [(String, URL)] = await uploadSession.files.asyncCompactMap { file in
+            guard let remoteFileUUID = file.remoteUploadFile?.uuid,
+                  let generatedThumbnailURL = await generateTemporaryThumbnailFor(file: file, scale: scale)
+            else {
+                return nil
+            }
 
-        try? FileManager.default.createDirectory(at: thumbnailsDirectory, withIntermediateDirectories: true)
+            return (remoteFileUUID, generatedThumbnailURL)
+        }
 
-        let thumbnailURL = thumbnailsDirectory.appendingPathComponent("\(transferUUID)--\(fileUUID).jpeg")
-
-        return thumbnailURL
+        return uuidsWithThumbnail
     }
 
     public func generateThumbnailFor(fileUUID: String, transferUUID: String, fileURL: URL?, scale: CGFloat) async -> Image? {
@@ -68,7 +71,17 @@ public struct ThumbnailProvider: ThumbnailProvidable {
         return nil
     }
 
-    public func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws {
+    private func thumbnailURLFor(fileUUID: String, transferUUID: String) -> URL? {
+        guard let thumbnailsDirectory else { return nil }
+
+        try? FileManager.default.createDirectory(at: thumbnailsDirectory, withIntermediateDirectories: true)
+
+        let thumbnailURL = thumbnailsDirectory.appendingPathComponent("\(transferUUID)--\(fileUUID).jpeg")
+
+        return thumbnailURL
+    }
+
+    private func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws {
         let filePath = fileURL.path(percentEncoded: false)
         guard FileManager.default.fileExists(atPath: filePath) else {
             return
@@ -83,20 +96,6 @@ public struct ThumbnailProvider: ThumbnailProvidable {
         try imageData.write(to: destinationURL)
 
         Logger.general.debug("Wrote thumbnail to \(destinationURL.path(percentEncoded: true))")
-    }
-
-    public func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)] {
-        let uuidsWithThumbnail: [(String, URL)] = await uploadSession.files.asyncCompactMap { file in
-            guard let remoteFileUUID = file.remoteUploadFile?.uuid,
-                  let generatedThumbnailURL = await generateTemporaryThumbnailFor(file: file, scale: scale)
-            else {
-                return nil
-            }
-
-            return (remoteFileUUID, generatedThumbnailURL)
-        }
-
-        return uuidsWithThumbnail
     }
 
     private func generateTemporaryThumbnailFor(file: SendableUploadFileSession, scale: CGFloat) async -> URL? {

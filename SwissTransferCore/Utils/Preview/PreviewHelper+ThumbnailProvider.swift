@@ -29,8 +29,6 @@ struct PreviewThumbnailProvider: ThumbnailProvidable {
         return STResourcesAsset.Images.boxes.swiftUIImage
     }
 
-    func generateThumbnailFor(url fileURL: URL, scale: CGFloat, destinationURL: URL) async throws {}
-
     func generateTemporaryThumbnailsFor(uploadSession: SendableUploadSession, scale: CGFloat) async -> [(String, URL)] {
         return []
     }
