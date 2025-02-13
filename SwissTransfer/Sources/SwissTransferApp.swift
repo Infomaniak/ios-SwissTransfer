@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
@@ -24,6 +25,7 @@ import STRootView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+import VersionChecker
 
 @main
 struct SwissTransferApp: App {
@@ -38,9 +40,11 @@ struct SwissTransferApp: App {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @LazyInjectService private var platformDetector: PlatformDetectable
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
+    @StateObject private var rootViewState = RootViewState()
 
     private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
@@ -56,6 +60,8 @@ struct SwissTransferApp: App {
         _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
 
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
+
+        checkAppVersion()
     }
 
     var body: some Scene {
@@ -87,6 +93,31 @@ struct SwissTransferApp: App {
             }
 
             try await currentManager.tryUpdatingAllTransfers()
+        }
+    }
+
+    func checkAppVersion() {
+        Task {
+            do {
+                let platform: Platform = platformDetector.isMacCatalyst ? .macOS : .ios
+                let versionStatus = try await VersionChecker.standard.checkAppVersionStatus(platform: platform)
+
+                switch versionStatus {
+                case .updateIsRequired:
+                    rootViewState.state = .updateRequired
+                case .canBeUpdated:
+                    if case .mainView(let mainViewState) = rootViewState.state {
+                        mainViewState.isShowingUpdateAvailable = true
+                    }
+                case .isUpToDate:
+                    if rootViewState.state == .updateRequired {
+                        await rootViewState.state.transitionToMainViewIfPossible(
+                            accountManager: accountManager,
+                            rootViewState: rootViewState
+                        )
+                    }
+                }
+            }
         }
     }
 

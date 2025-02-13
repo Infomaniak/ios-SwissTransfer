@@ -31,6 +31,7 @@ public final class MainViewState: ObservableObject {
 
     public var isSplitView = false
 
+    @ModalPublished public var isShowingUpdateAvailable = false
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
 
     public var selectedDestination: NavigationDestination? {
