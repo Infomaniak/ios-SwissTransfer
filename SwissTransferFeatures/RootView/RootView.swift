@@ -19,8 +19,10 @@
 import STCore
 import STMainView
 import STOnboardingView
+import STResources
 import SwiftUI
 import SwissTransferCoreUI
+import VersionChecker
 
 public struct RootView: View {
     @StateObject private var rootViewState = RootViewState()
@@ -31,12 +33,16 @@ public struct RootView: View {
         ZStack {
             switch rootViewState.state {
             case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
+                STUpdateRequiredView()
+
+//                MainView()
+//                    .environmentObject(mainViewState)
             case .preloading:
                 PreloadingView()
             case .onboarding:
                 OnboardingView()
+            case .updateRequired:
+                STUpdateRequiredView()
             }
         }
         .environmentObject(rootViewState)
