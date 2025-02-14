@@ -16,35 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import DesignSystem
-import InfomaniakCoreCommonUI
+import Foundation
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
-import SwissTransferCore
 import VersionChecker
 
-public enum UpdateLink: Sendable {
-    public static let appStore = URL(string: "https://infomaniak.com")!
-    public static let testFlight = URL(string: "https://testflight.apple.com/join/bnHmqCvT")!
-}
-
-public struct STUpdateRequiredView: View {
-    @Environment(\.openURL) private var openURL
-
-    public init() {}
-
-    public var body: some View {
-        UpdateRequiredView(
-            image: STResourcesAsset.Images.documentStarsRocket.swiftUIImage,
-            sharedStyle: TemplateSharedStyle.swissTransfer
-        ) {
-            let url: URL = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
-            openURL(url)
-        }
-    }
-}
-
-#Preview {
-    STUpdateRequiredView()
+public extension TemplateSharedStyle {
+    static let swissTransfer = TemplateSharedStyle(
+        background: STResourcesAsset.Colors.white.swiftUIColor,
+        titleTextStyle: .init(font: .body, color: STResourcesAsset.Colors.dark0.swiftUIColor),
+        descriptionTextStyle: .init(font: .body, color: STResourcesAsset.Colors.dark0.swiftUIColor),
+        buttonStyle: .init(
+            background: STResourcesAsset.Colors.greenMain.swiftUIColor,
+            textStyle: .init(font: .headline, color: Color.white),
+            height: IKButtonHeight.large,
+            radius: 16
+        )
+    )
 }
