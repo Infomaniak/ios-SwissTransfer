@@ -25,8 +25,8 @@ import VersionChecker
 public extension TemplateSharedStyle {
     static let swissTransfer = TemplateSharedStyle(
         background: STResourcesAsset.Colors.white.swiftUIColor,
-        titleTextStyle: .init(font: .body, color: STResourcesAsset.Colors.dark0.swiftUIColor),
-        descriptionTextStyle: .init(font: .body, color: STResourcesAsset.Colors.dark0.swiftUIColor),
+        titleTextStyle: .init(font: .ST.title2, color: STResourcesAsset.Colors.greyOrca.swiftUIColor),
+        descriptionTextStyle: .init(font: .body, color: STResourcesAsset.Colors.greyElephant.swiftUIColor),
         buttonStyle: .init(
             background: STResourcesAsset.Colors.greenMain.swiftUIColor,
             textStyle: .init(font: .headline, color: Color.white),
