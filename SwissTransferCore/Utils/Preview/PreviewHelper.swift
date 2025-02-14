@@ -27,7 +27,8 @@ public enum PreviewHelper {
         isFolder: true,
         fileSize: 8561,
         mimeType: nil,
-        localPath: nil
+        localPath: nil,
+        thumbnailPath: nil
     )
 
     public static let sampleFile = FileUi(
@@ -37,7 +38,8 @@ public enum PreviewHelper {
         isFolder: false,
         fileSize: 8561,
         mimeType: "imge/jpeg",
-        localPath: nil
+        localPath: nil,
+        thumbnailPath: nil
     )
 
     public static let sampleTransfer = TransferUi(
