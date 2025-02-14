@@ -49,7 +49,7 @@ let mainView = Feature(
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakOnboarding"),
-    TargetDependency.external(name: "Lottie"),
+    TargetDependency.external(name: "Lottie")
 ])
 
 let rootView = Feature(
