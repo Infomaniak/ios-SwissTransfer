@@ -60,8 +60,6 @@ struct SwissTransferApp: App {
         _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
 
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
-
-        checkAppVersion()
     }
 
     var body: some Scene {
@@ -70,6 +68,7 @@ struct SwissTransferApp: App {
                 .environmentObject(universalLinksState)
                 .environmentObject(downloadManager)
                 .environmentObject(notificationCenterDelegate)
+                .environmentObject(rootViewState)
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
@@ -93,10 +92,12 @@ struct SwissTransferApp: App {
             }
 
             try await currentManager.tryUpdatingAllTransfers()
+
+            checkAppVersion()
         }
     }
 
-    func checkAppVersion() {
+    private func checkAppVersion() {
         Task {
             do {
                 let platform: Platform = platformDetector.isMacCatalyst ? .macOS : .ios

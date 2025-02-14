@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 import VersionChecker
 
 public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
+    @EnvironmentObject private var rootViewState: RootViewState
 
     public init() {}
 
@@ -33,10 +33,8 @@ public struct RootView: View {
         ZStack {
             switch rootViewState.state {
             case .mainView(let mainViewState):
-                STUpdateRequiredView()
-
-//                MainView()
-//                    .environmentObject(mainViewState)
+                MainView()
+                    .environmentObject(mainViewState)
             case .preloading:
                 PreloadingView()
             case .onboarding:
