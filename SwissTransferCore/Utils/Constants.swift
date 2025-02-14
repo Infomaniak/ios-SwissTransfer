@@ -22,17 +22,3 @@ public enum Constants {
     public static let bundleId = "com.infomaniak.swisstransfer"
     public static let numberOfSecondsInADay: TimeInterval = 86400
 }
-
-public struct URLConstants: Sendable {
-    public static let appStore = URLConstants(urlString: "https://infomaniak.com")
-    public static let testFlight = URLConstants(urlString: "https://testflight.apple.com/join/bnHmqCvT")
-
-    private var urlString: String
-
-    public var url: URL {
-        guard let url = URL(string: urlString) else {
-            fatalError("Invalid URL")
-        }
-        return url
-    }
-}

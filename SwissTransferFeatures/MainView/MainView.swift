@@ -39,18 +39,6 @@ public struct MainView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
 
-    private let sharedStyle = TemplateSharedStyle(
-        background: STResourcesAsset.Colors.white.swiftUIColor,
-        titleTextStyle: .init(font: .body, color: STResourcesAsset.Colors.dark0.swiftUIColor),
-        descriptionTextStyle: .init(font: .body, color: STResourcesAsset.Colors.dark0.swiftUIColor),
-        buttonStyle: .init(
-            background: STResourcesAsset.Colors.greenMain.swiftUIColor,
-            textStyle: .init(font: .headline, color: Color.white),
-            height: IKButtonHeight.large,
-            radius: 16
-        )
-    )
-
     public init() {}
 
     public var body: some View {
@@ -96,11 +84,11 @@ public struct MainView: View {
         }
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(
-                image: STResourcesAsset.Images.documentStarsRocket.swiftUIImage
+                image: STResourcesAsset.Images.documentStarsRocketTiny.swiftUIImage
             ) { willUpdate in
                 if willUpdate {
-                    let url: URLConstants = Bundle.main.isRunningInTestFlight ? .testFlight : .appStore
-                    openURL(url.url)
+                    let url: URL = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
+                    openURL(url)
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverNow")
                 } else {
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverLater")
