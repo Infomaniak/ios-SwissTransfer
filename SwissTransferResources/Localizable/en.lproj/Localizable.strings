@@ -4,7 +4,7 @@
  * Locale: en, English
  * Tagged: ios
  * Exported by: Valentin Perignon
- * Exported at: Fri, 01 Nov 2024 12:42:50 +0100
+ * Exported at: Mon, 17 Feb 2025 07:58:34 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -390,7 +390,7 @@
 "transferExpiredTitle" = "This transfer is no longer available";
 
 /* loco:6791edf4a6f878c7ab05bc22 */
-"transferInitializing" = "Initializing…";
+"transferInitializing" = "Loading…";
 
 /* loco:66c6d0936969c14fab0aec72 */
 "transferListSectionLastWeek" = "Last week";
