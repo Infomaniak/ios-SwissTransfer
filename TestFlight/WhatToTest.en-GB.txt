@@ -1,0 +1,10 @@
+In this version :
+- Thumbnail caching
+- Bug fixes
+
+To be tested:
+- Create a transfer
+- View your transfers
+- Receiving a transfer via a deep-link
+- Share a transfer
+- Download files from a transfer

@@ -1,0 +1,10 @@
+Dans cette version :
+- Mise en cache des vignettes
+- Corrections de bugs
+
+À tester :
+- Créer un transfert
+- Consulter ses transferts
+- Recevoir un transfert via un deep-link
+- Partager un transfert
+- Télécharger les fichiers d'un transfert
