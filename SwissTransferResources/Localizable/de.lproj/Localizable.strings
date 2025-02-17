@@ -109,7 +109,7 @@
 "filesCount-plural-many" = "";
 
 /* loco:669f76984c6fad682900d032 */
-"firstTransferDescription" = "Mache deine erste Überweisung!";
+"firstTransferDescription" = "Mach deinen ersten Transfer!";
 
 /* loco:66a24aee8d282979b007c5d2 */
 "fromHeader" = "Von:";
@@ -136,10 +136,10 @@
 "noFileTitle" = "Keine Datei, keine Übertragung!";
 
 /* loco:66d00a919c37e358f5081dd2 */
-"noTransferReceivedDescription" = "Alle Überweisungen, die du in den letzten 30 Tagen erhältst, werden hier angezeigt.";
+"noTransferReceivedDescription" = "Alle Transfers der letzten 30 Tage, werden hier angezeigt.";
 
 /* loco:66d009adae0a00bb3c011352 */
-"noTransferReceivedTitle" = "Keine Überweisungen erhalten";
+"noTransferReceivedTitle" = "Keinen Transfer erhalten";
 
 /* loco:67482c2dde54f81d2a0824d2 */
 "noTransferSelectedDescription" = "Wähle eine Übertragung aus oder erstelle eine neue.";
@@ -229,7 +229,7 @@
 "settingsCategoryDefaultSettings" = "Standardeinstellungen";
 
 /* loco:66c333f5222777ffd504e5f3 */
-"settingsCategoryGeneral" = "General";
+"settingsCategoryGeneral" = "Allgemein";
 
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Persönlich";
@@ -321,7 +321,7 @@
 "settingsOptionShareIdeas" = "Teile deine Ideen";
 
 /* loco:66c3348f7990bb4f500f8864 */
-"settingsOptionTheme" = "Thema";
+"settingsOptionTheme" = "Design";
 
 /* loco:66c5767075065f6a6f0a55f2 */
 "settingsOptionThemeDark" = "Dunkel";
@@ -378,7 +378,7 @@
 "shareQrCodeTitle" = "Schnelles Teilen";
 
 /* loco:6718df9028c2ea33b001c522 */
-"textFieldOptional" = "(Fakultativ)";
+"textFieldOptional" = "(Optional)";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Inhalt der Übertragung:";
@@ -510,7 +510,7 @@
 "uploadSuccessEmailDescription-plural" = "Der Download-Link wurde an die folgenden Empfänger gesendet:";
 
 /* loco:670f500d0230688d8b0bdf42 */
-"uploadSuccessEmailTitle" = "Hoppla, das ist gesendet!";
+"uploadSuccessEmailTitle" = "Versand ist erfolgt. Cheers!";
 
 /* loco:670f73fb548cd8f1aa016292 */
 "uploadSuccessLinkDescription" = "Lass diesen QR-Code in deiner Umgebung scannen, um deine Dateien weiterzugeben, oder kopiere den untenstehenden Link.";
