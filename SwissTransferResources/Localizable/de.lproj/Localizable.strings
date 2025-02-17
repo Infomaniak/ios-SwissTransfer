@@ -4,7 +4,7 @@
  * Locale: de, German
  * Tagged: ios
  * Exported by: Valentin Perignon
- * Exported at: Fri, 01 Nov 2024 12:42:50 +0100
+ * Exported at: Mon, 17 Feb 2025 07:58:34 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -71,7 +71,7 @@
 "deeplinkPasswordDescription" = "Gib das Passwort ein, das du erhalten hast, um diese Dateien herunterzuladen.";
 
 /* loco:6787727e96fb165b36011422 */
-"deeplinkTransferExpired" = "Diese Überweisung ist abgelaufen";
+"deeplinkTransferExpired" = "Diese Transfer ist abgelaufen";
 
 /* loco:677fbfbeb541dd8a8c0276d2 */
 "deeplinkTransferNotFound" = "Diese Übertragung gibt es nicht";
@@ -390,7 +390,7 @@
 "transferExpiredTitle" = "Diese Übertragung ist nicht mehr verfügbar";
 
 /* loco:6791edf4a6f878c7ab05bc22 */
-"transferInitializing" = "Initialisierung…";
+"transferInitializing" = "Laden…";
 
 /* loco:66c6d0936969c14fab0aec72 */
 "transferListSectionLastWeek" = "Letzte Woche";
@@ -468,7 +468,7 @@
 "transferVirusDetectedTitle" = "Nicht konforme Dateien";
 
 /* loco:672104c0398a368f6308c152 */
-"uploadCancelConfirmBottomSheetTitle" = "Bist du dir sicher, dass du die Überweisung rückgängig machen willst?";
+"uploadCancelConfirmBottomSheetTitle" = "Bist du dir sicher, dass du die Transfer rückgängig machen willst?";
 
 /* loco:6729e40f3f0d68fc7e03bab2 */
 "uploadErrorDescription" = "Die Übertragung hat nicht funktioniert, gib ihr noch eine Chance. Wenn das Problem weiterhin besteht, wende dich an unseren Support.";
@@ -516,7 +516,7 @@
 "uploadSuccessLinkDescription" = "Lass diesen QR-Code in deiner Umgebung scannen, um deine Dateien weiterzugeben, oder kopiere den untenstehenden Link.";
 
 /* loco:670f73c3cfc693ebbc0a1cc2 */
-"uploadSuccessLinkTitle" = "Deine Überweisung ist fertig!";
+"uploadSuccessLinkTitle" = "Deine Transfer ist fertig!";
 
 /* loco:670f6b6c056567b8060089e2 */
 "uploadSuccessQrTitle" = "Dein QR-Code ist fertig!";
