@@ -6,6 +6,7 @@ import ProjectDescription
 
 let packageSettings = PackageSettings(
     productTypes: [
+        "Alamofire": .framework,
         "InfomaniakDI": .framework,
         "InfomaniakCore": .framework,
         "InfomaniakCoreSwiftUI": .framework,
@@ -21,8 +22,8 @@ let packageSettings = PackageSettings(
 let package = Package(
     name: "SwissTransfer",
     dependencies: [
-        .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "14.0.0")),
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "17.2.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "15.0.0")),
+        .package(path: "/Users/matthieu/Developer/Infomaniak/ios-core-ui/"),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "1.0.0")),
@@ -33,6 +34,7 @@ let package = Package(
         .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
         .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),
-        .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMajor(from: "4.5.1"))
+        .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMajor(from: "4.5.1")),
+        .package(path: "/Users/matthieu/Developer/Infomaniak/ios-version-checker")
     ]
 )

@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,37 +16,35 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import STCore
-import STMainView
-import STOnboardingView
+import DesignSystem
+import InfomaniakCoreCommonUI
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
+import SwissTransferCore
 import VersionChecker
 
-public struct RootView: View {
-    @EnvironmentObject private var rootViewState: RootViewState
+public enum UpdateLink: Sendable {
+    public static let appStore = URL(string: "https://infomaniak.com")!
+    public static let testFlight = URL(string: "https://testflight.apple.com/join/bnHmqCvT")!
+}
+
+public struct STUpdateRequiredView: View {
+    @Environment(\.openURL) private var openURL
 
     public init() {}
 
     public var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState):
-                MainView()
-                    .environmentObject(mainViewState)
-            case .preloading:
-                PreloadingView()
-            case .onboarding:
-                OnboardingView()
-            case .updateRequired:
-                STUpdateRequiredView()
-            }
+        UpdateRequiredView(
+            image: STResourcesAsset.Images.documentStarsRocket.swiftUIImage,
+            sharedStyle: TemplateSharedStyle.swissTransfer
+        ) {
+            let url: URL = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
+            openURL(url)
         }
-        .environmentObject(rootViewState)
     }
 }
 
 #Preview {
-    RootView()
+    STUpdateRequiredView()
 }
