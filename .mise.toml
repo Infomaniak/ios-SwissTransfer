@@ -3,3 +3,4 @@ tuist = "4.29.0"
 periphery = '2.21.2'
 swiftformat = '0.54.5'
 swiftlint = '0.57.0'
+sentry-cli = "latest"
