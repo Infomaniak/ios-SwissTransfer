@@ -94,7 +94,7 @@ public final class NewTransferFileManager: ObservableObject {
     /// - FileManager
     /// - Upload list
     /// - Displayable list
-    public func remove(file: TransferableFile) throws {
+    public func remove(file: any DisplayableFile) throws {
         guard let url = file.localURLFor(transferUUID: "") else { return }
         try FileManager.default.removeItem(at: url)
         cleanEmptyParent(of: url)

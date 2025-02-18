@@ -70,7 +70,7 @@ struct FileListView: View {
 
                     FileGridCellsView(
                         files: files,
-                        removeAction: RemoveFileAction {
+                        action: RemoveFileAction {
                             removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
                         }
                     )
@@ -101,7 +101,7 @@ struct FileListView: View {
         }
     }
 
-    func removeFile(_ file: TransferableFile, atFolderURL folderURL: URL?) {
+    func removeFile(_ file: any DisplayableFile, atFolderURL folderURL: URL?) {
         do {
             try newTransferFileManager.remove(file: file)
             let newFiles = newTransferFileManager.filesAt(folderURL: folderURL)
