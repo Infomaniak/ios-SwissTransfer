@@ -39,7 +39,7 @@ public struct STUpdateRequiredView: View {
             image: STResourcesAsset.Images.documentStarsRocket.swiftUIImage,
             sharedStyle: TemplateSharedStyle.swissTransfer
         ) {
-            let url: URL = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
+            let url = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
             openURL(url)
         }
     }
