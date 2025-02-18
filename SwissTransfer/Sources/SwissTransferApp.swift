@@ -85,6 +85,7 @@ struct SwissTransferApp: App {
 
     private func onWillEnterForeground() {
         notificationsHelper.removeAllUploadNotifications()
+        checkAppVersion()
 
         Task {
             guard let currentManager = await accountManager.getCurrentManager() else {
@@ -92,8 +93,6 @@ struct SwissTransferApp: App {
             }
 
             try await currentManager.tryUpdatingAllTransfers()
-
-            checkAppVersion()
         }
     }
 

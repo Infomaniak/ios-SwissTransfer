@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import Foundation
 import InfomaniakCoreSwiftUI
 import STResources
@@ -31,7 +32,7 @@ public extension TemplateSharedStyle {
             background: STResourcesAsset.Colors.greenMain.swiftUIColor,
             textStyle: .init(font: .headline, color: Color.white),
             height: IKButtonHeight.large,
-            radius: 16
+            radius: IKRadius.large
         )
     )
 }
