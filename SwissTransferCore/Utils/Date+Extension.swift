@@ -59,10 +59,13 @@ extension Date {
         Date(timeIntervalSince1970: TimeInterval(timestamp))
     }
 
+    /// Return number of days until expiration
+    /// - Returns: 0 if today, 1 if tomorrow, -1 if expired
     public static func expiresIn(timestamp: Int64) -> Int {
-        let expiresDate = expiresDate(timestamp: timestamp)
         let calendar = Calendar(identifier: .gregorian)
-        let daysBeforeExpire = calendar.dateComponents([.day], from: Date(), to: expiresDate)
+        let expiresDate = calendar.startOfDay(for: expiresDate(timestamp: timestamp))
+        let actualDate = calendar.startOfDay(for: Date())
+        let daysBeforeExpire = calendar.dateComponents([.day], from: actualDate, to: expiresDate)
         return daysBeforeExpire.day ?? 0
     }
 }
