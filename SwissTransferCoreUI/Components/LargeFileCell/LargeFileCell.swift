@@ -91,7 +91,7 @@ public struct LargeFileCell: View {
                 Button {
                     action(file: file)
                 } label: {
-                    action.iconFor(file, transferUUID: transferUUID)
+                    action.icon(for: file, transferUUID: transferUUID)
                         .resizable()
                         .foregroundStyle(.white)
                         .frame(width: 8, height: 8)

@@ -33,11 +33,23 @@ struct DownloadableFileCellView: View {
     let transfer: TransferUi
     let file: FileUi
 
-    var body: some View {
-        Button(action: startOrCancelDownloadIfNeeded) {
-            LargeFileCell(file: file, transferUUID: transfer.uuid)
+    private var downloadFileAction: DownloadFileAction {
+        DownloadFileAction { _ in
+            startOrCancelDownloadIfNeeded()
         }
-        .buttonStyle(.plain)
+    }
+
+    var body: some View {
+        ZStack {
+            if file.isFolder {
+                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
+            } else {
+                Button(action: startOrCancelDownloadIfNeeded) {
+                    LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
+                }
+                .buttonStyle(.plain)
+            }
+        }
         .downloadProgressAlertFor(transfer: transfer, file: file) { downloadedFileURL in
             presentFile(at: downloadedFileURL)
         }
