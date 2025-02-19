@@ -16,18 +16,36 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
 struct ExpiredTransferView: View {
     @Environment(\.dismiss) private var dismiss
+    let status: TransferStatus
+
+    var subtitle: String {
+        switch status {
+        case .expiredDate:
+            return STResourcesStrings.Localizable.transferExpiredDescription
+        case .expiredDownloadQuota:
+            return ""
+            //return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription
+        default:
+            return ""
+        }
+    }
+
+    init(status: TransferStatus) {
+        self.status = status
+    }
 
     var body: some View {
         IllustrationAndTextView(
             image: STResourcesAsset.Images.ghostQuestionMarksShareLink.swiftUIImage,
             title: STResourcesStrings.Localizable.transferExpiredTitle,
-            subtitle: STResourcesStrings.Localizable.transferExpiredDescription,
+            subtitle: subtitle,
             style: .emptyState
         )
         .padding(value: .medium)
@@ -45,5 +63,5 @@ struct ExpiredTransferView: View {
 }
 
 #Preview {
-    ExpiredTransferView()
+    ExpiredTransferView(status: .expiredDate)
 }
