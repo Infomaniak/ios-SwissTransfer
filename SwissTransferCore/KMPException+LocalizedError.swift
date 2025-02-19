@@ -28,9 +28,16 @@ extension STNFetchTransferException.WrongPasswordFetchTransferException: @retroa
     }
 }
 
-extension STNFetchTransferException.ExpiredFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
+extension STNFetchTransferException.ExpiredDateFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
     public var errorDescription: String? {
         return STResourcesStrings.Localizable.deeplinkTransferExpired
+    }
+}
+
+extension STNFetchTransferException.ExpiredDownloadFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
+    public var errorDescription: String? {
+        // return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription
+        return ""
     }
 }
 
