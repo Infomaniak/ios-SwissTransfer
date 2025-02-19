@@ -20,7 +20,7 @@ import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
-struct ExpiredDateTransferView: View {
+struct ExpiredTransferView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -45,5 +45,5 @@ struct ExpiredDateTransferView: View {
 }
 
 #Preview {
-    ExpiredDateTransferView()
+    ExpiredTransferView()
 }
