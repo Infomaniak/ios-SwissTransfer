@@ -47,7 +47,7 @@ public extension Font {
         /// Figma name: *Spécifique 22 Light*
         public static let specificTitleLight = Font.dynamicTypeSizeFont(size: 22, weight: .light, relativeTo: .title)
         /// Figma name: *Spécifique 18 Light*
-        public static let specificTitle2Light = Font.dynamicTypeSizeFont(size: 18, weight: .light, relativeTo: .title2)
+        public static let specificTitle2Light = Font.dynamicTypeSizeFont(size: 20, weight: .light, relativeTo: .title2)
     }
 
     /// Create a custom font with the UIFont preferred font family.
