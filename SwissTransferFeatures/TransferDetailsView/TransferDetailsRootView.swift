@@ -85,7 +85,7 @@ public struct TransferDetailsRootView: View {
             case .ready, .unknown:
                 TransferDetailsView(transfer: viewModel.transfer)
             case .expired:
-                ExpiredTransferView()
+                ExpiredDateTransferView()
             case .waitVirusCheck:
                 VirusCheckView()
             case .virusDetected:
