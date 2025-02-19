@@ -34,12 +34,11 @@ extension STNFetchTransferException.ExpiredDateFetchTransferException: @retroact
     }
 }
 
-extension STNFetchTransferException.ExpiredDownloadFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
-    public var errorDescription: String? {
-        // return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription
-        return ""
-    }
-}
+//extension STNFetchTransferException.ExpiredDownloadFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
+//    public var errorDescription: String? {
+//        return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(<#T##p1: Int##Int#>)
+//    }
+//}
 
 extension STNFetchTransferException.NotFoundFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
     public var errorDescription: String? {
