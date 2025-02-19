@@ -16,22 +16,28 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
+import STResources
 import STRootTransferView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+import VersionChecker
 
 public struct MainView: View {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var matomo: MatomoUtils
 
     @Environment(\.isCompactWindow) private var isCompactWindow
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     public init() {}
 
@@ -75,6 +81,19 @@ public struct MainView: View {
         }
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
             DeepLinkPasswordView(url: identifiableURL)
+        }
+        .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
+            UpdateVersionView(
+                image: STResourcesAsset.Images.documentStarsRocketTiny.swiftUIImage
+            ) { willUpdate in
+                if willUpdate {
+                    let url: URL = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
+                    openURL(url)
+                    matomo.track(eventWithCategory: .appUpdate, name: "discoverNow")
+                } else {
+                    matomo.track(eventWithCategory: .appUpdate, name: "discoverLater")
+                }
+            }
         }
     }
 
