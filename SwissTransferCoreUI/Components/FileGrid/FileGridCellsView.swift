@@ -36,11 +36,16 @@ public struct FileGridCellsView: View {
         ForEach(files, id: \.id) { file in
             if file.isFolder {
                 NavigationLink(value: file) {
-                    LargeFileCell(
-                        file: file,
-                        transferUUID: transfer?.uuid,
-                        action: action
-                    )
+                    if let transfer,
+                       let fileUi = file as? FileUi {
+                        DownloadableFileCellView(transfer: transfer, file: fileUi)
+                    } else {
+                        LargeFileCell(
+                            file: file,
+                            transferUUID: transfer?.uuid,
+                            action: action
+                        )
+                    }
                 }
             } else {
                 if let transfer, let fileUi = file as? FileUi {
