@@ -24,12 +24,12 @@ import SwissTransferCore
 public struct FileGridCellsView: View {
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
-    private let removeAction: RemoveFileAction?
+    private let action: (any LargeFileCellAction)?
 
-    public init(files: [any DisplayableFile], transfer: TransferUi? = nil, removeAction: RemoveFileAction? = nil) {
+    public init(files: [any DisplayableFile], transfer: TransferUi? = nil, action: (any LargeFileCellAction)? = nil) {
         self.files = files
         self.transfer = transfer
-        self.removeAction = removeAction
+        self.action = action
     }
 
     public var body: some View {
@@ -39,7 +39,7 @@ public struct FileGridCellsView: View {
                     LargeFileCell(
                         file: file,
                         transferUUID: transfer?.uuid,
-                        removeAction: removeAction
+                        action: action
                     )
                 }
             } else {
@@ -49,7 +49,7 @@ public struct FileGridCellsView: View {
                     LargeFileCell(
                         file: file,
                         transferUUID: transfer?.uuid,
-                        removeAction: removeAction
+                        action: action
                     )
                 }
             }

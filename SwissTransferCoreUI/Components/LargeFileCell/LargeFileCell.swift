@@ -33,13 +33,13 @@ public struct LargeFileCell: View {
     private let file: (any DisplayableFile)?
     private let transferUUID: String?
 
-    private let removeAction: RemoveFileAction?
+    private let action: (any LargeFileCellAction)?
     private let fileType: FileType
 
-    public init(file: (any DisplayableFile)? = nil, transferUUID: String? = nil, removeAction: RemoveFileAction? = nil) {
+    public init(file: (any DisplayableFile)? = nil, transferUUID: String? = nil, action: (any LargeFileCellAction)? = nil) {
         self.file = file
         self.transferUUID = transferUUID
-        self.removeAction = removeAction
+        self.action = action
 
         if file?.isFolder == true {
             fileType = .folder
@@ -86,12 +86,12 @@ public struct LargeFileCell: View {
                 .stroke(Color.ST.cardBorder)
         )
         .overlay(alignment: .topTrailing) {
-            if let removeAction {
+            if let action,
+               let file {
                 Button {
-                    guard let transferableFile = file as? TransferableFile else { return }
-                    removeAction(file: transferableFile)
+                    action(file: file)
                 } label: {
-                    Image(systemName: "xmark")
+                    action.iconFor(file, transferUUID: transferUUID)
                         .resizable()
                         .foregroundStyle(.white)
                         .frame(width: 8, height: 8)
@@ -125,7 +125,7 @@ public struct LargeFileCell: View {
             .frame(width: 164, height: 152)
 
         let removeAction = RemoveFileAction { _ in }
-        LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil, removeAction: removeAction)
+        LargeFileCell(file: PreviewHelper.sampleFile, transferUUID: nil, action: removeAction)
             .frame(width: 164, height: 152)
     }
 }

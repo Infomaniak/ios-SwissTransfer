@@ -65,15 +65,3 @@ public struct TransferableRootFolder: Identifiable, Hashable {
 
     public init() {}
 }
-
-public struct RemoveFileAction {
-    private let action: (TransferableFile) -> Void
-
-    public init(action: @escaping (TransferableFile) -> Void) {
-        self.action = action
-    }
-
-    public func callAsFunction(file: TransferableFile) {
-        action(file)
-    }
-}
