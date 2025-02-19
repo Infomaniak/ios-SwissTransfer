@@ -46,7 +46,7 @@ struct HeaderView: View {
             DividerView()
 
             Label(
-                title: { Text(expiringTimestamp.formatted(.expiring)) },
+                title: { Text(expiringTimestamp.formatted(.completeExpiring)) },
                 icon: { STResourcesAsset.Images.clock.swiftUIImage }
             )
             .labelStyle(.horizontal)

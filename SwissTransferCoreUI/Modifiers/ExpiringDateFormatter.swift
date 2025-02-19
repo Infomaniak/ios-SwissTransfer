@@ -21,19 +21,56 @@ import SwiftUI
 import SwissTransferCore
 
 public struct ExpiringDateFormat: FormatStyle {
+    let completeDate: Bool
+
     public func format(_ value: Int64) -> AttributedString {
-        let expiresIn = Date.expiresIn(timestamp: value)
-        if expiresIn > 0 {
-            return AttributedString(STResourcesStrings.Localizable.expiresIn(expiresIn))
+        if completeDate {
+            return completeExpiration(value)
+        } else {
+            return shortExpiration(value)
+        }
+    }
+
+    private func completeExpiration(_ value: Int64) -> AttributedString {
+        let expirationDate = Date.expiresDate(timestamp: value)
+        let dateFormatted = expirationDate.formatted(date: .numeric, time: .shortened)
+
+        if expirationDate < Date() {
+            var result = AttributedString(STResourcesStrings.Localizable.expiredThe(dateFormatted))
+            result.foregroundColor = Color.ST.error
+            return result
+        } else {
+            return AttributedString(STResourcesStrings.Localizable.expiresThe(dateFormatted))
+        }
+    }
+
+    private func shortExpiration(_ value: Int64) -> AttributedString {
+        let expirationDate = Date.expiresDate(timestamp: value)
+        let dateFormatted = expirationDate.formatted(date: .numeric, time: .omitted)
+        let timeFormatted = expirationDate.formatted(date: .omitted, time: .shortened)
+
+        let daysBeforeExpiration = Date.expiresIn(timestamp: value)
+        if daysBeforeExpiration > 1 {
+            return AttributedString(STResourcesStrings.Localizable.expiresIn(daysBeforeExpiration))
+        } else if daysBeforeExpiration == 1 {
+            return AttributedString(STResourcesStrings.Localizable.expiresTomorrow)
+        } else if daysBeforeExpiration < 0 {
+            var result = AttributedString(STResourcesStrings.Localizable.expiredThe(dateFormatted))
+            result.foregroundColor = Color.ST.error
+            return result
         }
 
-        let date = Date.expiresDate(timestamp: value).formatted(date: .numeric, time: .omitted)
-        var result = AttributedString(STResourcesStrings.Localizable.expiredThe(date))
-        result.foregroundColor = Color.ST.error
-        return result
+        if expirationDate < Date() {
+            var result = AttributedString(STResourcesStrings.Localizable.expiredAt(timeFormatted))
+            result.foregroundColor = Color.ST.error
+            return result
+        } else {
+            return AttributedString(STResourcesStrings.Localizable.expiresAt(timeFormatted))
+        }
     }
 }
 
 public extension FormatStyle where Self == ExpiringDateFormat {
-    static var expiring: ExpiringDateFormat { .init() }
+    static var expiring: ExpiringDateFormat { .init(completeDate: false) }
+    static var completeExpiring: ExpiringDateFormat { .init(completeDate: true) }
 }

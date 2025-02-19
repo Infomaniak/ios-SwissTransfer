@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: it, Italian
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Mon, 17 Feb 2025 07:58:34 +0100
+ * Exported by: Ambroise Decouttere
+ * Exported at: Tue, 18 Feb 2025 15:20:54 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -34,6 +34,9 @@
 /* loco:67220015101b3de12b0f1f82 */
 "buttonDownload" = "Scarica";
 
+/* loco:672200e4a61b86b8470776e2 */
+"buttonDownloadSelected" = "Scarica la selezione";
+
 /* loco:677e9253d2777f26f5019852 */
 "buttonDownloaded" = "Scaricato";
 
@@ -61,8 +64,14 @@
 /* loco:66c5b8e29f9df1eb920ef483 */
 "contentDescriptionButtonClose" = "Chiudi";
 
+/* loco:6719f3144da70102cb0abc82 */
+"contentDescriptionButtonHidePassword" = "Nascondere la password";
+
 /* loco:66ed1facfdf04647c80a0482 */
 "contentDescriptionButtonRemove" = "Rimuovi il file";
+
+/* loco:6719f30247e142610b08f4f3 */
+"contentDescriptionButtonShowPassword" = "Mostra password";
 
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Nuovo trasferimento";
@@ -88,16 +97,29 @@
 /* loco:6720ec444fa469071a050ee2 */
 "errorGeneratingQRCode" = "Impossibile generare il codice QR";
 
-/* loco:66c725c0834eeac04c0b2ee2 */
-"expiredThe" = "Scaduto il %@";
 /* loco:677cfe305ec5b8afc10db732 */
 "errorIncorrectPassword" = "Password errata";
 
 /* loco:6728e0698584637cc20ef6b2 */
 "errorTransferPasswordLength" = "La password deve essere compresa tra 6 e 24 caratteri";
 
+/* loco:67b488d07f38fc224e03f774 */
+"expiredAt" = "Scaduto al %@";
+
+/* loco:67b48882a2b26d7b12047ef2 */
+"expiredThe" = "Scaduto il %@";
+
+/* loco:67b489ba13ccf8b7ab0e46b3 */
+"expiresAt" = "Scade al %@";
+
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Scade tra %d giorni";
+
+/* loco:67b49607bdcd0286220cea32 */
+"expiresThe" = "Scade il %@";
+
+/* loco:6776640e5e97ee7e550d5b72 */
+"expiresTomorrow" = "Scade domani";
 
 /* loco:66cecf7d39d10277c00c3102 */
 "filesCount" = "%d file";
@@ -129,11 +151,26 @@
 /* loco:673b609c03c82748a509bd92 */
 "networkUnavailable" = "Rete non disponibile";
 
+/* loco:675ae8861595e0ef6b063c92 */
+"newTransferConfirmLeavingDialogTitle" = "Ops, vuoi davvero cancellarti?";
+
+/* loco:675aed225692b5b2fc063e12 */
+"newTransferLeavingDialogDescription" = "Il trasferimento è quasi pronto. Sei sicuro di volerlo annullare?";
+
+/* loco:675aedf9d296e6311c094eb2 */
+"newTransferLeavingDialogNegativeButton" = "No, continua";
+
+/* loco:675aed916909b0ae120a2512 */
+"newTransferLeavingDialogPositiveButton" = "Sì, annulla";
+
 /* loco:66e980bf4e282a19d208a9b2 */
 "noFileDescription" = "Aggiungere fino a 50 GB di file";
 
 /* loco:66e980b10ccf751d4a0910a1 */
 "noFileTitle" = "Nessun file, nessun trasferimento!";
+
+/* loco:674dbabbdd957af5740cf002 */
+"noSettingsSelectedDescription" = "Seleziona un parametro da visualizzare";
 
 /* loco:66d00a919c37e358f5081dd2 */
 "noTransferReceivedDescription" = "Qui appariranno tutti i bonifici ricevuti negli ultimi 30 giorni.";
@@ -162,8 +199,23 @@
 /* loco:678e479bdf4d2ab457051f92 */
 "notificationKeepAppForegroundDescription" = "Mantieni l’app aperta fino al termine del trasferimento.";
 
+/* loco:678630d98c1534fbc50d2cc2 */
+"notificationUploadFailureDescription" = "Si è verificato un problema, riprovare";
+
 /* loco:678630b92eec2a91f00603af */
 "notificationUploadFailureTitle" = "Il trasferimento non è riuscito";
+
+/* loco:67851171fcb1c1349e0f8392 */
+"notificationUploadProgressTitle" = "Trasferimento in corso… (%@%%)";
+
+/* loco:6785135bb4d438d6ca0272a2 */
+"notificationUploadSuccessDescriptionMail" = "Il link per il download è stato inviato ai destinatari";
+
+/* loco:6785134bbb571a28f10994e4 */
+"notificationUploadSuccessDescriptionOther" = "Fare clic per ottenere il link per il download";
+
+/* loco:6785125e391d0459e50fa852 */
+"notificationUploadSuccessTitle" = "Trasferimento completato";
 
 /* loco:6746e8a0396f33e00a0fc393 */
 "onboardingExpirationSubtitleArgument" = "30 giorni.";
@@ -384,8 +436,20 @@
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenuto del trasferimento:";
 
+/* loco:66c725c0834eeac04c0b2ee2 */
+"transferExpired" = "Trasferimento scaduto";
+
+/* loco:6720b962e49b6c46620d30f3 */
+"transferExpiredButton" = "Cancellare dalla cronologia";
+
+/* loco:6720af2aaad13976bb0d7832 */
+"transferExpiredDateReachedDescription" = "Spiacente, questo trasferimento è scaduto il %s. Non è più possibile scaricare o visualizzare i file.";
+
 /* loco:678e7bb990830fe7f1052e92 */
 "transferExpiredDescription" = "Siamo spiacenti, questo trasferimento è scaduto. Non è più possibile scaricare o visualizzare i file.";
+
+/* loco:6720aef59b1991933101caf2 */
+"transferExpiredLimitReachedDescription" = "Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.";
 
 /* loco:6720aec78a4f6e6b0c0d28a2 */
 "transferExpiredTitle" = "Questo trasferimento non è più disponibile";
@@ -531,6 +595,9 @@
 /* loco:6707f8d793cc933d520740f4 */
 "validateMailCodeIncorrectError" = "Il codice inserito non è corretto";
 
+/* loco:677bfb5467b61da0dd035562 */
+"validateMailCodeResentFeedback" = "Il codice è stato inviato all’indirizzo e-mail %@";
+
 /* loco:6707f975b37970cb7704b0c2 */
 "validateMailDescription" = "Abbiamo inviato un codice a %@. Inseriscilo qui sotto per verificare il tuo indirizzo e-mail nell’app:";
 
@@ -545,6 +612,9 @@
 
 /* loco:6707f9ac045804ab200b44f2 */
 "validateMailTitle" = "Controlla la tua e-mail";
+
+/* loco:677bf872ea9c5274c6075542 */
+"validateMailUnknownError" = "Si è verificato un errore. Riprovare tra qualche istante.";
 
 /* loco:66c335b6cb643611950ea795 */
 "version" = "Versione";
