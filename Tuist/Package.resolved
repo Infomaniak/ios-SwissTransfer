@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-device-check",
       "state" : {
-        "revision" : "6f976d791138ff207fa7a6a82ae7b625f5990166",
-        "version" : "1.0.0"
+        "revision" : "15355528c3bc15a3acda78b6b040fde7a743eb8b",
+        "version" : "1.1.0"
       }
     },
     {
