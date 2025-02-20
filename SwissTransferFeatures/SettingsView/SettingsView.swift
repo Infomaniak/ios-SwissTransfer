@@ -34,6 +34,7 @@ enum SettingLinks {
 }
 
 public struct SettingsView: View {
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var mainViewState: MainViewState
 
     @AppStorage(UserDefaults.shared.key(.matomoAuthorized)) private var matomoAuthorized = DefaultPreferences.matomoAuthorized
@@ -138,8 +139,8 @@ public struct SettingsView: View {
                 .settingsCell()
 
                 Button {
-                    @InjectService var reviewManager: ReviewManageable
-                    reviewManager.requestReview()
+                    guard let appStoreReviewURL = Constants.appStoreReviewURL else { return }
+                    openURL(appStoreReviewURL)
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
                                             trailingIcon: STResourcesAsset.Images.export)
