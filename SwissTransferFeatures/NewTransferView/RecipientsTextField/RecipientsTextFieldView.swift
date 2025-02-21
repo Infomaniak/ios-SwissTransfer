@@ -36,7 +36,7 @@ struct RecipientsTextFieldView: View {
 
     @Binding var recipients: OrderedSet<String>
 
-    let submitKeys: [Character] = [" ", ","]
+    private let submitKeys: [Character] = [" ", ","]
 
     private var isFocused: Bool {
         return focusedView != nil
