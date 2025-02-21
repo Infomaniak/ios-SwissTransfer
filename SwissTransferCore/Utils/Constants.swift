@@ -20,5 +20,6 @@ import Foundation
 
 public enum Constants {
     public static let bundleId = "com.infomaniak.swisstransfer"
+    public static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")
     public static let numberOfSecondsInADay: TimeInterval = 86400
 }
