@@ -54,7 +54,7 @@ let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
 
 let rootView = Feature(
     name: "RootView",
-    dependencies: [mainView, onboardingView],
+    dependencies: [mainView, onboardingView, TargetDependency.external(name: "VersionChecker")],
     resources: ["SwissTransfer/Resources/Assets.xcassets"]
 )
 
