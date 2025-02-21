@@ -90,7 +90,7 @@ public final class MainViewState: ObservableObject {
             } else if kotlinException is STNFetchTransferException.ExpiredDateFetchTransferException
                 || kotlinException is STNFetchTransferException.NotFoundFetchTransferException {
                 selectedTransfer = .status(.expiredDate)
-            } else if kotlinException is STNFetchTransferException.ExpiredDownloadFetchTransferException {
+            } else if kotlinException is STNExpiredDownloadFetchTransferException {
                 selectedTransfer = .status(.expiredDownloadQuota)
             } else if kotlinException is STNFetchTransferException.VirusCheckFetchTransferException {
                 selectedTransfer = .status(.waitVirusCheck)
