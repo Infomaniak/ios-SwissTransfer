@@ -31,6 +31,7 @@ enum SettingLinks {
     static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
     static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
     static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
+    static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
 }
 
 public struct SettingsView: View {
@@ -125,6 +126,12 @@ public struct SettingsView: View {
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
+                Link(destination: SettingLinks.termsAndConditions) {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
+                                            trailingIcon: STResourcesAsset.Images.export)
+                }
+                .settingsCell()
+
                 Link(destination: SettingLinks.discoverInfomaniak) {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
                                             trailingIcon: STResourcesAsset.Images.export)

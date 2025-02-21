@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: fr, French
  * Tagged: ios
- * Exported by: Ambroise Decouttere
- * Exported at: Tue, 18 Feb 2025 15:20:54 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Fri, 21 Feb 2025 10:05:05 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -89,7 +89,7 @@
 "downloadInProgressDialogTitle" = "Téléchargement en cours…";
 
 /* loco:66a24a3f3472a720090cfd52 */
-"downloadedTransferLabel" = "Transfert téléchargé : %d/%d ";
+"downloadedTransferLabel" = "Transfert téléchargé : %d/%d";
 
 /* loco:6761311fef0ed7ef9d0a2812 */
 "errorAppIntegrity" = "Votre appareil n’est pas reconnu comme sûr";
@@ -372,6 +372,9 @@
 
 /* loco:66c3356b79627944d00efd88 */
 "settingsOptionShareIdeas" = "Partage tes idées";
+
+/* loco:67b83b2918cbcda68004dd22 */
+"settingsOptionTermsAndConditions" = "Conditions générales";
 
 /* loco:66c3348f7990bb4f500f8864 */
 "settingsOptionTheme" = "Thème";
