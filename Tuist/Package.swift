@@ -13,7 +13,10 @@ let packageSettings = PackageSettings(
         "InfomaniakConcurrency": .framework,
         "SwiftUIIntrospect": .framework,
         "OrderedCollections": .framework,
-        "Lottie": .framework
+        "Lottie": .framework,
+        "SwissTransferCore": .framework,
+        "STSettingsView": .framework,
+        "DesignSystem": .framework,
     ]
 )
 #endif
