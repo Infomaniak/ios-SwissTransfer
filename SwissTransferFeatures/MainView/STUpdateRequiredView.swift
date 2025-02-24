@@ -25,7 +25,7 @@ import SwissTransferCore
 import VersionChecker
 
 public enum UpdateLink: Sendable {
-    public static let appStore = URL(string: "https://infomaniak.com")!
+    public static let appStore = URL(string: "https://apps.apple.com/app/infomaniak-swisstransfer/id6737686335")!
     public static let testFlight = URL(string: "https://testflight.apple.com/join/bnHmqCvT")!
 }
 
