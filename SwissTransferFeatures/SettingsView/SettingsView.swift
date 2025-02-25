@@ -145,11 +145,13 @@ public struct SettingsView: View {
                 }
                 .settingsCell()
 
-                Link(destination: SettingLinks.appStoreReviewURL) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                            trailingIcon: STResourcesAsset.Images.export)
+                if !Bundle.main.isRunningInTestFlight {
+                    Link(destination: SettingLinks.appStoreReviewURL) {
+                        SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                                trailingIcon: STResourcesAsset.Images.export)
+                    }
+                    .settingsCell()
                 }
-                .settingsCell()
 
                 AboutSettingsCell(title: STResourcesStrings.Localizable.version,
                                   subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
