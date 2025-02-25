@@ -32,10 +32,10 @@ enum SettingLinks {
     static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
     static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
     static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
+    static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
 }
 
 public struct SettingsView: View {
-    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var mainViewState: MainViewState
 
     @AppStorage(UserDefaults.shared.key(.matomoAuthorized)) private var matomoAuthorized = DefaultPreferences.matomoAuthorized
@@ -145,10 +145,7 @@ public struct SettingsView: View {
                 }
                 .settingsCell()
 
-                Button {
-                    guard let appStoreReviewURL = Constants.appStoreReviewURL else { return }
-                    openURL(appStoreReviewURL)
-                } label: {
+                Link(destination: SettingLinks.appStoreReviewURL) {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
