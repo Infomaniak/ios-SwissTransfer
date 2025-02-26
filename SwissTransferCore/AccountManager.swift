@@ -30,6 +30,8 @@ public actor AccountManager {
 
     private var managers = [UserId: TransferManager]()
 
+    private var loadUserTask: Task<Void?, Never>?
+
     init() {}
 
     public func createAndSetCurrentAccount() {
@@ -38,11 +40,18 @@ public actor AccountManager {
 
     public func getManager(userId: UserId) async -> TransferManager? {
         assert(userId == AccountManager.guestUserId, "Only guest user is supported")
+
+        _ = await loadUserTask?.result
         if let manager = managers[userId] {
             return manager
         } else {
-            try? await injection.accountManager.loadUser(userId: Int32(userId))
-            managers[userId] = injection.transferManager
+            loadUserTask = Task {
+                try? await injection.accountManager.loadUser(userId: Int32(userId))
+                managers[userId] = injection.transferManager
+            }
+            _ = await loadUserTask?.result
+            loadUserTask = nil
+
             return managers[userId]
         }
     }
