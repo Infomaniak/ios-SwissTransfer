@@ -34,6 +34,12 @@ extension STNFetchTransferException.ExpiredDateFetchTransferException: @retroact
     }
 }
 
+extension STNDownloadQuotaExceededException: @retroactive LocalizedError, @unchecked Sendable {
+    public var errorDescription: String? {
+        return STResourcesStrings.Localizable.deeplinkTransferExpired
+    }
+}
+
 extension STNFetchTransferException.NotFoundFetchTransferException: @retroactive LocalizedError, @unchecked Sendable {
     public var errorDescription: String? {
         return STResourcesStrings.Localizable.deeplinkTransferNotFound
