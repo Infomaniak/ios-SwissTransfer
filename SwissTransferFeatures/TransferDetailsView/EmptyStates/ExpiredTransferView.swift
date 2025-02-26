@@ -22,24 +22,25 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct ExpiredTransferView: View {
+    enum ExpirationType {
+        case date
+        case downloadQuota(Int)
+    }
+
     @Environment(\.dismiss) private var dismiss
-    private let status: TransferStatus
-    private let transfer: TransferUi?
+    private let expirationType: ExpirationType
 
     var subtitle: String {
-        switch status {
-        case .expiredDate:
+        switch expirationType {
+        case .date:
             return STResourcesStrings.Localizable.transferExpiredDescription
-        case .expiredDownloadQuota:
-            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(Int(transfer?.downloadLimit ?? 0))
-        default:
-            return ""
+        case .downloadQuota(let count):
+            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(count)
         }
     }
 
-    init(status: TransferStatus, transfer: TransferUi?) {
-        self.status = status
-        self.transfer = transfer
+    init(expirationType: ExpirationType) {
+        self.expirationType = expirationType
     }
 
     var body: some View {
@@ -64,5 +65,5 @@ struct ExpiredTransferView: View {
 }
 
 #Preview {
-    ExpiredTransferView(status: .expiredDate, transfer: nil)
+    ExpiredTransferView(expirationType: .date)
 }

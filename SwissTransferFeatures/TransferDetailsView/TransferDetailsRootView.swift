@@ -81,13 +81,15 @@ public struct TransferDetailsRootView: View {
 
     public var body: some View {
         NavigationStack {
-            let status = viewModel.status
             let transfer = viewModel.transfer
-            switch status {
+            switch viewModel.status {
             case .ready, .unknown:
                 TransferDetailsView(transfer: transfer)
-            case .expiredDate, .expiredDownloadQuota:
-                ExpiredTransferView(status: status, transfer: transfer)
+            case .expiredDate:
+                ExpiredTransferView(expirationType: .date)
+            case .expiredDownloadQuota:
+                let quota = Int(transfer?.downloadLimit ?? 0)
+                ExpiredTransferView(expirationType: .downloadQuota(quota))
             case .waitVirusCheck:
                 VirusCheckView()
             case .virusDetected:
