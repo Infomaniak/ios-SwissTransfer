@@ -593,7 +593,7 @@
 "urlAbout" = "https://www.infomaniak.com/fr/a-propos";
 
 /* loco:66c5ef608055a7b4f70c4022 */
-"urlUserReport" = "https://feedback.userreport.com/1c462a20-7559-415e-a6e0-4b624dc38877/#ideas/popular";
+"urlUserReport" = "https://feedback.userreport.com/a439bf38-6a53-4038-b47d-3f935a2a410e/";
 
 /* loco:6707f8d793cc933d520740f4 */
 "validateMailCodeIncorrectError" = "Le code saisi est incorrect";
