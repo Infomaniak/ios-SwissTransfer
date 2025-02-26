@@ -35,7 +35,10 @@ struct ExpiredTransferView: View {
         case .date:
             return STResourcesStrings.Localizable.transferExpiredDescription
         case .downloadQuota(let count):
-            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(count)
+            guard count > 1 else {
+                return STResourcesStrings.Localizable.transferExpiredLimitReachedDescriptionPlural(count)
+            }
+            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescriptionPluralMany(count)
         }
     }
 
