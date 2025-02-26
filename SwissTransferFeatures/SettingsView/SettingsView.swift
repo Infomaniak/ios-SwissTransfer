@@ -32,6 +32,7 @@ enum SettingLinks {
     static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
     static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
     static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
+    static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
 }
 
 public struct SettingsView: View {
@@ -144,14 +145,13 @@ public struct SettingsView: View {
                 }
                 .settingsCell()
 
-                Button {
-                    @InjectService var reviewManager: ReviewManageable
-                    reviewManager.requestReview()
-                } label: {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                            trailingIcon: STResourcesAsset.Images.export)
+                if !Bundle.main.isRunningInTestFlight {
+                    Link(destination: SettingLinks.appStoreReviewURL) {
+                        SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                                trailingIcon: STResourcesAsset.Images.export)
+                    }
+                    .settingsCell()
                 }
-                .settingsCell()
 
                 AboutSettingsCell(title: STResourcesStrings.Localizable.version,
                                   subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
