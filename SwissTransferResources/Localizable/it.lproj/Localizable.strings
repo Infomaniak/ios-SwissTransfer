@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: it, Italian
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Fri, 21 Feb 2025 10:05:05 +0100
+ * Exported by: Adrien Coye
+ * Exported at: Wed, 26 Feb 2025 13:09:47 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -451,8 +451,11 @@
 /* loco:678e7bb990830fe7f1052e92 */
 "transferExpiredDescription" = "Siamo spiacenti, questo trasferimento è scaduto. Non è più possibile scaricare o visualizzare i file.";
 
+/* loco:67bf022d6c7399317c0bb7f2 */
+"transferExpiredLimitReachedDescription-plural" = "Spiacenti, questo trasferimento ha raggiunto il limite di %d download possibile.";
+
 /* loco:6720aef59b1991933101caf2 */
-"transferExpiredLimitReachedDescription" = "Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.";
+"transferExpiredLimitReachedDescription-plural-many" = "Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.";
 
 /* loco:6720aec78a4f6e6b0c0d28a2 */
 "transferExpiredTitle" = "Questo trasferimento non è più disponibile";
