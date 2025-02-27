@@ -50,6 +50,12 @@ public struct FileGridCellsView: View {
             } else {
                 if let transfer, let fileUi = file as? FileUi {
                     DownloadableFileCellView(transfer: transfer, file: fileUi)
+                } else if let transferableFile = file as? TransferableFile {
+                    TransferableFileCellView(
+                        file: transferableFile,
+                        transferUUID: transfer?.uuid,
+                        action: action
+                    )
                 } else {
                     LargeFileCell(
                         file: file,
