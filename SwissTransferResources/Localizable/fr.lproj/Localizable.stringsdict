@@ -68,5 +68,21 @@
 			<string>Le lien de téléchargement a été envoyé aux destinataires suivants :</string>
 		</dict>
 	</dict>
+	<key>transferExpiredLimitReachedDescription</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@value@</string>
+		<key>value</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Désolé, ce transfert a atteint la limite de %d téléchargement possible.</string>
+			<key>other</key>
+			<string>Désolé, ce transfert a atteint la limite de %d téléchargements possibles.</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

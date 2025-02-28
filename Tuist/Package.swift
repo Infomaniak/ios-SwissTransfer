@@ -13,7 +13,10 @@ let packageSettings = PackageSettings(
         "InfomaniakConcurrency": .framework,
         "SwiftUIIntrospect": .framework,
         "OrderedCollections": .framework,
-        "Lottie": .framework
+        "Lottie": .framework,
+        "SwissTransferCore": .framework,
+        "STSettingsView": .framework,
+        "DesignSystem": .framework
     ]
 )
 #endif
@@ -25,7 +28,7 @@ let package = Package(
         .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "17.2.0")),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.0")),
-        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "1.0.8")),
         .package(url: "https://github.com/Infomaniak/swift-concurrency", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/swift-modal-presentation", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "8.0.0")),
