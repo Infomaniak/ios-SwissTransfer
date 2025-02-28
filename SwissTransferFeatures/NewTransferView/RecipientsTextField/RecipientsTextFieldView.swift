@@ -36,7 +36,7 @@ struct RecipientsTextFieldView: View {
 
     @Binding var recipients: OrderedSet<String>
 
-    private let submitKeys: [Character] = [" ", ","]
+    private let submitKeys: Set = [" ", ","]
 
     private var isFocused: Bool {
         return focusedView != nil
@@ -68,10 +68,10 @@ struct RecipientsTextFieldView: View {
 
             AdvancedTextField(
                 text: $text,
+                submitKeys: submitKeys,
                 placeholder: placeholder,
                 onSubmit: didSubmitNewRecipient,
-                onBackspace: didBackspace,
-                submitKeys: submitKeys
+                onBackspace: didBackspace
             )
             .focused($focusedView, equals: .textField)
             .frame(minWidth: isFocused ? 40 : nil)
