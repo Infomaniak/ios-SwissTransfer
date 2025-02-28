@@ -10,21 +10,12 @@
       }
     },
     {
-      "identity" : "cocoalumberjack",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CocoaLumberjack/CocoaLumberjack",
-      "state" : {
-        "revision" : "4b8714a7fb84d42393314ce897127b3939885ec3",
-        "version" : "3.8.5"
-      }
-    },
-    {
       "identity" : "ios-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "c3a442b5bd2fb67680aa252638773c4d7d1551ad",
-        "version" : "14.0.0"
+        "revision" : "ac5eb96798ebb687f814d681f66fb3d163e69d21",
+        "version" : "15.0.1"
       }
     },
     {
@@ -32,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "9301c5758508f8a65acc1eb83d0c3168d98991e5",
-        "version" : "17.2.0"
+        "revision" : "0ba26609588d96846ece60882148bdc2adb0dfca",
+        "version" : "18.3.0"
       }
     },
     {
@@ -187,15 +178,6 @@
       "state" : {
         "revision" : "97ae7c9b998a43812d3f57ae106cb447a853bf3b",
         "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "swift-log",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-log",
-      "state" : {
-        "revision" : "96a2f8a0fa41e9e09af4585e2724c4e825410b91",
-        "version" : "1.6.2"
       }
     },
     {

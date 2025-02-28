@@ -36,6 +36,8 @@ struct RecipientsTextFieldView: View {
 
     @Binding var recipients: OrderedSet<String>
 
+    private let submitKeys: Set = [" ", ","]
+
     private var isFocused: Bool {
         return focusedView != nil
     }
@@ -64,13 +66,19 @@ struct RecipientsTextFieldView: View {
                 ExpandedRecipientsFlowView(focusedView: _focusedView, recipients: $recipients)
             }
 
-            AdvancedTextField(text: $text, placeholder: placeholder, onSubmit: didSubmitNewRecipient, onBackspace: didBackspace)
-                .focused($focusedView, equals: .textField)
-                .frame(minWidth: isFocused ? 40 : nil)
-                .onChange(of: focusedView) { newValue in
-                    guard newValue != .textField else { return }
-                    checkAndInsertNewRecipient()
-                }
+            AdvancedTextField(
+                text: $text,
+                placeholder: placeholder,
+                submitKeys: submitKeys,
+                onSubmit: didSubmitNewRecipient,
+                onBackspace: didBackspace
+            )
+            .focused($focusedView, equals: .textField)
+            .frame(minWidth: isFocused ? 40 : nil)
+            .onChange(of: focusedView) { newValue in
+                guard newValue != .textField else { return }
+                checkAndInsertNewRecipient()
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .inputStyle(isFocused: isFocused, error: error)
