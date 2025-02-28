@@ -38,10 +38,8 @@ struct ExpiredTransferView: View {
             guard let count else {
                 return STResourcesStrings.Localizable.deeplinkTransferExpired
             }
-            guard count > 1 else {
-                return STResourcesStrings.Localizable.transferExpiredLimitReachedDescriptionPlural(count)
-            }
-            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescriptionPluralMany(count)
+
+            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(count)
         }
     }
 
