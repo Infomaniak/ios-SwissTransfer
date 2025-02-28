@@ -19,7 +19,6 @@
 import STCore
 import STMainView
 import STOnboardingView
-import STResources
 import SwiftUI
 import SwissTransferCoreUI
 import VersionChecker
