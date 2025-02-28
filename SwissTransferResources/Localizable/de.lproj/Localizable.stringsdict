@@ -66,5 +66,21 @@
 			<string>Der Download-Link wurde an die folgenden Empfänger gesendet:</string>
 		</dict>
 	</dict>
+	<key>transferExpiredLimitReachedDescription</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@value@</string>
+		<key>value</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Entschuldigung, diese Übertragung hat das Limit von %d möglichen Downloads erreicht.</string>
+			<key>other</key>
+			<string>Entschuldigung, diese Übertragung hat die Grenze der %d möglichen Downloads erreicht.</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
