@@ -87,8 +87,7 @@ public struct MainView: View {
                 image: STResourcesAsset.Images.documentStarsRocketTiny.swiftUIImage
             ) { willUpdate in
                 if willUpdate {
-                    let url: URL = Bundle.main.isRunningInTestFlight ? UpdateLink.testFlight : UpdateLink.appStore
-                    openURL(url)
+                    openURL(UpdateLink.getCurrentURL())
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverNow")
                 } else {
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverLater")
