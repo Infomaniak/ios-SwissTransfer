@@ -36,7 +36,6 @@ public struct MainView: View {
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
 
     public init() {}
