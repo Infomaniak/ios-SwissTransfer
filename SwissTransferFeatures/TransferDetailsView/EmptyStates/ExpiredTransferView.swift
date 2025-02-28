@@ -28,7 +28,8 @@ struct ExpiredTransferView: View {
     }
 
     @Environment(\.dismiss) private var dismiss
-    private let expirationType: ExpirationType
+
+    let expirationType: ExpirationType
 
     var subtitle: String {
         switch expirationType {
@@ -41,10 +42,6 @@ struct ExpiredTransferView: View {
 
             return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(Int(count))
         }
-    }
-
-    init(expirationType: ExpirationType) {
-        self.expirationType = expirationType
     }
 
     var body: some View {
