@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "ios-core-ui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-core-ui",
+      "state" : {
+        "revision" : "774ca58ec4998579c5504ed990685291ffe1e850",
+        "version" : "18.2.0"
+      }
+    },
+    {
       "identity" : "ios-dependency-injection",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-dependency-injection",
@@ -52,6 +61,15 @@
       "state" : {
         "revision" : "aeec72fba628a17e868e8fcecea6134c35a0ebf2",
         "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "ios-version-checker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-version-checker",
+      "state" : {
+        "revision" : "51ff7559c7a58675cf3b261612bf9decb327ff20",
+        "version" : "10.1.0"
       }
     },
     {
