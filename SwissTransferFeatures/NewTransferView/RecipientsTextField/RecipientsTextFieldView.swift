@@ -68,8 +68,8 @@ struct RecipientsTextFieldView: View {
 
             AdvancedTextField(
                 text: $text,
-                submitKeys: submitKeys,
                 placeholder: placeholder,
+                submitKeys: submitKeys,
                 onSubmit: didSubmitNewRecipient,
                 onBackspace: didBackspace
             )
