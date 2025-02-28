@@ -88,22 +88,12 @@ public struct TransferDetailsRootView: View {
             case .expiredDate:
                 ExpiredTransferView(expirationType: .date)
             case .expiredDownloadQuota:
-                let downloadLimit = downloadLimit(transfer)
-                ExpiredTransferView(expirationType: .downloadQuota(downloadLimit))
+                ExpiredTransferView(expirationType: .downloadQuota(transfer?.downloadLimit))
             case .waitVirusCheck:
                 VirusCheckView()
             case .virusDetected:
                 VirusDetectedView()
             }
         }
-    }
-
-    private func downloadLimit(_ transfer: TransferUi?) -> Int? {
-        var quota: Int?
-        if let downloadLimit = transfer?.downloadLimit {
-            quota = Int(downloadLimit)
-        }
-
-        return quota
     }
 }

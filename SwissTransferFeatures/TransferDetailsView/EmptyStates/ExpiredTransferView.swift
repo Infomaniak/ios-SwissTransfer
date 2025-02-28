@@ -24,7 +24,7 @@ import SwissTransferCoreUI
 struct ExpiredTransferView: View {
     enum ExpirationType {
         case date
-        case downloadQuota(Int?)
+        case downloadQuota(Int32?)
     }
 
     @Environment(\.dismiss) private var dismiss
@@ -39,7 +39,7 @@ struct ExpiredTransferView: View {
                 return STResourcesStrings.Localizable.deeplinkTransferExpired
             }
 
-            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(count)
+            return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(Int(count))
         }
     }
 
