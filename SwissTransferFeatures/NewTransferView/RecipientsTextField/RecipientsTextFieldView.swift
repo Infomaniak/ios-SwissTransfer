@@ -84,17 +84,30 @@ struct RecipientsTextFieldView: View {
         .inputStyle(isFocused: isFocused, error: error)
     }
 
-    private func didSubmitNewRecipient() {
-        checkAndInsertNewRecipient()
+    private func didSubmitNewRecipient(_ reason: AdvancedTextField.SubmitReason) {
+        checkAndInsertNewRecipient(reason: reason)
         focusedView = .textField
     }
 
-    private func checkAndInsertNewRecipient() {
+    private func checkAndInsertNewRecipient(reason: AdvancedTextField.SubmitReason? = nil) {
         let trimmedRecipient = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedRecipient.isEmpty, EmailChecker(email: trimmedRecipient).validate() else { return }
+        guard !trimmedRecipient.isEmpty else { return }
 
-        recipients.append(trimmedRecipient)
-        text = ""
+        var recipientToCheck = trimmedRecipient
+        var remainingText = ""
+        if case .key(let token) = reason {
+            var components = trimmedRecipient.components(separatedBy: token)
+
+            if components.count >= 1 {
+                recipientToCheck = components.removeFirst()
+                remainingText = components.joined()
+            }
+        }
+
+        guard EmailChecker(email: recipientToCheck).validate() else { return }
+
+        recipients.append(recipientToCheck)
+        text = remainingText
     }
 
     private func didBackspace(_ textFieldIsEmpty: Bool) {
