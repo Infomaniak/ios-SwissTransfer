@@ -17,7 +17,8 @@ let packageSettings = PackageSettings(
         "Lottie": .framework,
         "SwissTransferCore": .framework,
         "STSettingsView": .framework,
-        "DesignSystem": .framework
+        "DesignSystem": .framework,
+        "VersionChecker": .framework
     ]
 )
 #endif
