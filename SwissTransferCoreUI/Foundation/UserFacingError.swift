@@ -43,4 +43,5 @@ public extension UserFacingError {
     static let unknownError = UserFacingError(errorDescription: CoreUILocalizable.anErrorHasOccurred)
     static let deviceInvalidError = UserFacingError(errorDescription: STResourcesStrings.Localizable.errorAppIntegrity)
     static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
+    static let locationRestrictedError = UserFacingError(errorDescription: STResourcesStrings.Localizable.restrictedLocation)
 }
