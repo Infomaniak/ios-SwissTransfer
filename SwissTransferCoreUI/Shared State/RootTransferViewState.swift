@@ -25,7 +25,7 @@ public enum RootTransferViewType {
     case newTransfer
     case uploadProgress(localSessionUUID: String)
     case verifyMail(NewUploadSession)
-    case error(UserFacingError?)
+    case error(UploadError)
     case success(String)
 }
 
