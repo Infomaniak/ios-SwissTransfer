@@ -17,7 +17,8 @@ let packageSettings = PackageSettings(
         "Lottie": .framework,
         "SwissTransferCore": .framework,
         "STSettingsView": .framework,
-        "DesignSystem": .framework
+        "DesignSystem": .framework,
+        "VersionChecker": .framework
     ]
 )
 #endif
@@ -25,8 +26,8 @@ let packageSettings = PackageSettings(
 let package = Package(
     name: "SwissTransfer",
     dependencies: [
-        .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "15.0.0")),
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "18.2.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "15.0.1")),
+        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "18.4.0")),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.0")),
         .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "3.0.0")),

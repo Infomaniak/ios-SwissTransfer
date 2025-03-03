@@ -42,7 +42,8 @@ let mainView = Feature(
         sentView,
         transferDetailsView,
         rootTransferView,
-        TargetDependency.external(name: "InfomaniakCoreUIResources")
+        TargetDependency.external(name: "InfomaniakCoreUIResources"),
+        TargetDependency.external(name: "VersionChecker")
     ]
 )
 
