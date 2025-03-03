@@ -136,6 +136,8 @@ public struct UploadProgressView: View {
                 return
             }
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
+        } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DomainBlockedException {
+            rootTransferViewState.transition(to: .error(.locationRestrictedError))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 

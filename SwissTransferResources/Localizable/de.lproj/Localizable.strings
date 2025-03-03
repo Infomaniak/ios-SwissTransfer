@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Fri, 21 Feb 2025 10:05:05 +0100
+ * Exported by: Philippe Weidmann
+ * Exported at: Mon, 03 Mar 2025 08:56:17 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -256,6 +256,9 @@
 /* loco:66a765a7ec41ffa0250df2d3 */
 "recipientHeader-plural" = "Adressaten:";
 
+/* loco:67bd58877695a8511309f862 */
+"restrictedLocation" = "Infomaniak SwissTransfer ist an Ihrem Standort nicht verfügbar";
+
 /* loco:669f76052093b5a83708e5e4 */
 "sentEmptyTitle" = "Unsere Geschichte beginnt hier";
 
@@ -432,6 +435,9 @@
 
 /* loco:673357ce7a09e445af086eb3 */
 "shareQrCodeTitle" = "Schnelles Teilen";
+
+/* loco:67bd585d873224d0fb0894c2 */
+"sorry" = "Es tut uns leid";
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Optional)";
