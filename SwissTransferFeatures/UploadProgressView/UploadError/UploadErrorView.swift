@@ -33,35 +33,29 @@ public struct UploadErrorView: View {
 
     @State private var isRetryingUpload = false
 
-    private let userFacingError: UserFacingError?
+    private let uploadError: UploadError
 
-    private var errorSubtitle: String {
-        guard let userFacingError else {
-            return STResourcesStrings.Localizable.uploadErrorDescription
-        }
-
-        return userFacingError.errorDescription
-    }
-
-    public init(userFacingError: UserFacingError?) {
-        self.userFacingError = userFacingError
+    public init(uploadError: UploadError) {
+        self.uploadError = uploadError
     }
 
     public var body: some View {
         NavigationStack {
             IllustrationAndTextView(
-                image: STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
-                title: STResourcesStrings.Localizable.uploadErrorTitle,
-                subtitle: errorSubtitle,
+                image: uploadError.image,
+                title: uploadError.title,
+                subtitle: uploadError.subtitle,
                 style: .emptyState
             )
             .padding(value: .medium)
             .scrollableEmptyState()
             .appBackground()
             .safeAreaButtons {
-                Button(CoreUILocalizable.buttonRetry, action: retryTransfer)
-                    .buttonStyle(.ikBorderedProminent)
-                    .ikButtonLoading(isRetryingUpload)
+                if uploadError.canRetry {
+                    Button(CoreUILocalizable.buttonRetry, action: retryTransfer)
+                        .buttonStyle(.ikBorderedProminent)
+                        .ikButtonLoading(isRetryingUpload)
+                }
                 Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
                     .buttonStyle(.ikBordered)
             }
@@ -92,7 +86,7 @@ public struct UploadErrorView: View {
 }
 
 #Preview {
-    UploadErrorView(userFacingError: nil)
+    UploadErrorView(uploadError: UploadError())
         .environmentObject(RootTransferViewState())
         .environmentObject(RootTransferViewModel())
 }
