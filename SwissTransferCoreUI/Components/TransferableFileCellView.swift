@@ -28,18 +28,12 @@ struct TransferableFileCellView: View {
     let action: (any LargeFileCellAction)?
 
     var body: some View {
-        ZStack {
-            if file.isFolder {
-                LargeFileCell(file: file, transferUUID: transferUUID, action: action)
-            } else {
-                Button {
-                    fileToPreviewURL = file.localURL
-                } label: {
-                    LargeFileCell(file: file, transferUUID: transferUUID, action: action)
-                }
-                .buttonStyle(.plain)
-            }
+        Button {
+            fileToPreviewURL = file.localURL
+        } label: {
+            LargeFileCell(file: file, transferUUID: transferUUID, action: action)
         }
+        .buttonStyle(.plain)
         .quickLookPreview($fileToPreviewURL)
     }
 }
