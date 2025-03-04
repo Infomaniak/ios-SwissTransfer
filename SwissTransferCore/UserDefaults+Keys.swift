@@ -28,6 +28,8 @@ public extension UserDefaults.Keys {
     static let notificationsExpiredTransfers = UserDefaults.Keys(rawValue: "notificationsExpiredTransfers")
     static let matomoAuthorized = UserDefaults.Keys(rawValue: "matomoAuthorized")
     static let sentryAuthorized = UserDefaults.Keys(rawValue: "sentryAuthorized")
+    static let transferCountKey = UserDefaults.Keys(rawValue: "transferCount")
+    static let hasReviewedApp = UserDefaults.Keys(rawValue: "hasReviewedApp")
 }
 
 public extension UserDefaults {
@@ -127,6 +129,24 @@ public extension UserDefaults {
         }
         set {
             set(newValue, forKey: key(.sentryAuthorized))
+        }
+    }
+
+    var transferCount: Int {
+        get {
+            integer(forKey: key(.transferCountKey))
+        }
+        set {
+            set(newValue, forKey: key(.transferCountKey))
+        }
+    }
+
+    var hasReviewedApp: Bool {
+        get {
+            bool(forKey: key(.hasReviewedApp))
+        }
+        set {
+            set(newValue, forKey: key(.hasReviewedApp))
         }
     }
 }

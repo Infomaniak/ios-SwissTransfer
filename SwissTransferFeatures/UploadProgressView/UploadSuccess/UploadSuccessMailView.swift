@@ -50,7 +50,10 @@ struct UploadSuccessMailView: View {
         .padding(.horizontal, value: .medium)
         .scrollableEmptyState()
         .safeAreaButtons {
-            Button(action: dismiss.callAsFunction) {
+            Button {
+                UserDefaults.shared.transferCount += 1
+                dismiss()
+            } label: {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)

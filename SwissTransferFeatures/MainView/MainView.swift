@@ -16,9 +16,11 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import SafariServices
 import STCore
 import STResources
 import STRootTransferView
@@ -30,8 +32,10 @@ import VersionChecker
 public struct MainView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var matomo: MatomoUtils
+    @LazyInjectService private var reviewManager: ReviewManageable
 
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
@@ -50,6 +54,11 @@ public struct MainView: View {
         }
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
+        .onAppear {
+            if UserDefaults.shared.transferCount == 2 && UserDefaults.shared.hasReviewedApp == false {
+                mainViewState.isShowingReviewAlert = true
+            }
+        }
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
 
@@ -81,6 +90,26 @@ public struct MainView: View {
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
             DeepLinkPasswordView(url: identifiableURL)
         }
+        .sheet(item: $mainViewState.isShowingSafariWebView) { safariContent in
+            SafariWebView(url: safariContent.url)
+                .ignoresSafeArea()
+        }
+        .customAlert(isPresented: $mainViewState.isShowingReviewAlert) {
+            AskForReviewView(
+                appName: Constants.appName,
+                feedbackURL: STResourcesStrings.Localizable.urlUserReport,
+                reviewManager: reviewManager,
+                onLike: {
+                    matomo.track(eventWithCategory: .appUpdate, name: "like")
+                    UserDefaults.shared.appReview = .readyForReview
+                    UserDefaults.shared.hasReviewedApp = true
+                },
+                onDislike: { userReportURL in
+                    UserDefaults.shared.appReview = .feedback
+                    UserDefaults.shared.hasReviewedApp = true
+                    mainViewState.isShowingSafariWebView = IdentifiableURL(url: userReportURL)
+                }
+            )
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(
                 image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage
