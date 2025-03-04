@@ -33,7 +33,7 @@ public final class MainViewState: ObservableObject {
 
     @ModalPublished public var isShowingUpdateAvailable = false
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
-    @ModalPublished public var isShowingReviewAlert: Bool = false
+    @ModalPublished public var isShowingReviewAlert = false
     @ModalPublished public var isShowingSafariWebView: IdentifiableURL?
 
     public var selectedDestination: NavigationDestination? {

@@ -55,7 +55,7 @@ public struct MainView: View {
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
         .onAppear {
-            if UserDefaults.shared.transferCount == 2 && UserDefaults.shared.hasReviewedApp == false {
+            if UserDefaults.shared.transferCount == 2 && !UserDefaults.shared.hasReviewedApp {
                 mainViewState.isShowingReviewAlert = true
             }
         }
