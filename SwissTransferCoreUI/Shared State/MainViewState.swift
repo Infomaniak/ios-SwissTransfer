@@ -32,6 +32,8 @@ public final class MainViewState: ObservableObject {
     public var isSplitView = false
 
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
+    @ModalPublished public var isShowingReviewAlert: Bool = false
+    @ModalPublished public var isShowingSafariWebView: IdentifiableURL?
 
     public var selectedDestination: NavigationDestination? {
         get {
