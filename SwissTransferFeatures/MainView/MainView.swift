@@ -40,6 +40,8 @@ public struct MainView: View {
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
 
+    private let reviewTriggerCount = 2
+
     public init() {}
 
     public var body: some View {
@@ -53,7 +55,7 @@ public struct MainView: View {
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
         .onAppear {
-            if UserDefaults.shared.transferCount == 2 && !UserDefaults.shared.hasReviewedApp {
+            if UserDefaults.shared.transferCount == reviewTriggerCount && !UserDefaults.shared.hasReviewedApp {
                 mainViewState.isShowingReviewAlert = true
             }
         }
