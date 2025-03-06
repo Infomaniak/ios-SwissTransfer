@@ -27,4 +27,6 @@ public enum DefaultPreferences {
     public static let notificationsExpiredTransfers = true
     public static let matomoAuthorized = true
     public static let sentryAuthorized = true
+    public static let transferCount = 0
+    public static let hasReviewedApp = false
 }
