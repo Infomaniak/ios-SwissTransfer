@@ -36,9 +36,9 @@ enum SettingLinks {
 }
 
 public struct SettingsView: View {
-    @EnvironmentObject private var mainViewState: MainViewState
+    @InjectService private var matomo: MatomoUtils
 
-    @AppStorage(UserDefaults.shared.key(.matomoAuthorized)) private var matomoAuthorized = DefaultPreferences.matomoAuthorized
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
 
@@ -107,7 +107,8 @@ public struct SettingsView: View {
                         userDefaultStore: .shared,
                         userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
                         userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized),
-                        showTitle: false
+                        showTitle: false,
+                        matomo: matomo
                     )
                     .stNavigationTitle(PrivacyManagementView.title)
                     .stNavigationBarStyle()
@@ -116,14 +117,6 @@ public struct SettingsView: View {
                                             leadingIcon: STResourcesAsset.Images.shield)
                 }
                 .settingsCell()
-            }
-            .onChange(of: matomoAuthorized) { newValue in
-                @InjectService var matomo: MatomoUtils
-                #if DEBUG && !TEST
-                matomo.optOut(true)
-                #else
-                matomo.optOut(!newValue)
-                #endif
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
