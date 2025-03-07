@@ -58,6 +58,7 @@ public struct UploadSuccessView: View {
             .background(Color.ST.background)
             .navigationBarBackButtonHidden()
         }
+        .matomoView(view: "UploadSuccessView")
     }
 }
 
