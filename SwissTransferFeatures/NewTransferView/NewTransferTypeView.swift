@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
@@ -50,6 +51,7 @@ struct NewTransferTypeView: View {
     }
 
     private func selectType(_ type: TransferType) {
+        let eventCategory = MatomoUtils.EventCategory(displayName: "NewTransferTypeView")
         withAnimation {
             transferType = type
         }
@@ -57,6 +59,8 @@ struct NewTransferTypeView: View {
         Task {
             @InjectService var settingsManager: AppSettingsManager
             try? await settingsManager.setLastTransferType(transferType: type)
+            @InjectService var matomo: MatomoUtils
+            matomo.track(eventWithCategory: eventCategory, name: transferType.name)
         }
     }
 }

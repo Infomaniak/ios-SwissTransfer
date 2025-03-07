@@ -118,6 +118,7 @@ struct NotificationsSettingsView: View {
         }
         .stNavigationBarStyle()
         .stNavigationTitle(STResourcesStrings.Localizable.settingsOptionNotifications)
+        .matomoView(view: "NotificationsSettingsView")
     }
 
     private func computeAllNotificationsEnabled() -> Bool {
