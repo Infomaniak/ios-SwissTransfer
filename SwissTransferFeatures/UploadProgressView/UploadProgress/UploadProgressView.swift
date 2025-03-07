@@ -97,6 +97,7 @@ public struct UploadProgressView: View {
                 UIApplication.shared.isIdleTimerDisabled = false
             }
         }
+        .matomoView(view: "UploadProgressView")
     }
 
     @Sendable private func startUpload() async {

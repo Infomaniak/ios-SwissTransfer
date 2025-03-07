@@ -98,6 +98,7 @@ public struct VerifyMailView: View {
                     .disabled(isVerifyingCode)
             }
         }
+        .matomoView(view: "VerifyMailView")
     }
 
     private func openMailApp() {
