@@ -106,6 +106,7 @@ public struct NewTransferView: View {
             }
             cancelTasks()
         }
+        .matomoView(view: "NewTransferView")
     }
 
     private func startUpload() {
