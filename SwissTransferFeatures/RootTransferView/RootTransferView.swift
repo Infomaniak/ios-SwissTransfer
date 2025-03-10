@@ -50,8 +50,8 @@ public struct RootTransferView: View {
                 UploadProgressView(localSessionUUID: localSessionUUID)
             case .verifyMail(let newUploadSession):
                 VerifyMailView(newUploadSession: newUploadSession)
-            case .error(let userFacingError):
-                UploadErrorView(userFacingError: userFacingError)
+            case .error(let uploadError):
+                UploadErrorView(uploadError: uploadError)
             case .success(let transferUUID):
                 UploadSuccessView(transferUUID: transferUUID)
             }

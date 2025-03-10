@@ -19,6 +19,7 @@
 import Foundation
 import InfomaniakCoreUIResources
 import STResources
+import SwiftUI
 
 public struct UserFacingError: LocalizedError {
     public let errorDescription: String
@@ -41,6 +42,32 @@ public struct UserFacingError: LocalizedError {
 
 public extension UserFacingError {
     static let unknownError = UserFacingError(errorDescription: CoreUILocalizable.anErrorHasOccurred)
-    static let deviceInvalidError = UserFacingError(errorDescription: STResourcesStrings.Localizable.errorAppIntegrity)
-    static let badTransferURL = UserFacingError(errorDescription: "!Wrong URL")
+}
+
+public struct UploadError: Error {
+    public static let `default` = UploadError()
+    public static let appIntegrity = UploadError(subtitle: STResourcesStrings.Localizable.errorAppIntegrity)
+    public static let restrictedLocation = UploadError(
+        title: STResourcesStrings.Localizable.sorry,
+        subtitle: STResourcesStrings.Localizable.restrictedLocation,
+        image: STResourcesAsset.Images.ghostBinoculars.swiftUIImage,
+        canRetry: false
+    )
+
+    public let title: String
+    public let subtitle: String
+    public let image: Image
+    public let canRetry: Bool
+
+    private init(
+        title: String = STResourcesStrings.Localizable.uploadErrorTitle,
+        subtitle: String = STResourcesStrings.Localizable.uploadErrorDescription,
+        image: Image = STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,
+        canRetry: Bool = true
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.image = image
+        self.canRetry = canRetry
+    }
 }
