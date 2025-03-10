@@ -137,7 +137,7 @@ public struct VerifyMailView: View {
                     self.error = UserFacingError.validateMailCodeIncorrect
                 }
             } catch {
-                rootTransferViewState.transition(to: .error(UploadError()))
+                rootTransferViewState.transition(to: .error(.default))
             }
 
             isVerifyingCode = false

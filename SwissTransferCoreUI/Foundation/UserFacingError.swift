@@ -45,12 +45,21 @@ public extension UserFacingError {
 }
 
 public struct UploadError: Error {
+    public static let `default` = UploadError()
+    public static let appIntegrity = UploadError(subtitle: STResourcesStrings.Localizable.errorAppIntegrity)
+    public static let restrictedLocation = UploadError(
+        title: STResourcesStrings.Localizable.sorry,
+        subtitle: STResourcesStrings.Localizable.restrictedLocation,
+        image: STResourcesAsset.Images.ghostBinoculars.swiftUIImage,
+        canRetry: false
+    )
+
     public let title: String
     public let subtitle: String
     public let image: Image
     public let canRetry: Bool
 
-    public init(
+    private init(
         title: String = STResourcesStrings.Localizable.uploadErrorTitle,
         subtitle: String = STResourcesStrings.Localizable.uploadErrorDescription,
         image: Image = STResourcesAsset.Images.ghostMagnifyingGlassQuestionMark.swiftUIImage,

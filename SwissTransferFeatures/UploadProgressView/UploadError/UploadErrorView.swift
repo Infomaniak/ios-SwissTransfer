@@ -86,7 +86,7 @@ public struct UploadErrorView: View {
 }
 
 #Preview {
-    UploadErrorView(uploadError: UploadError())
+    UploadErrorView(uploadError: .default)
         .environmentObject(RootTransferViewState())
         .environmentObject(RootTransferViewModel())
 }

@@ -130,26 +130,19 @@ public struct UploadProgressView: View {
 
             rootTransferViewState.transition(to: .success(transferUUID))
         } catch UploadManager.DomainError.deviceCheckFailed {
-            rootTransferViewState.transition(to: .error(UploadError(subtitle: STResourcesStrings.Localizable.errorAppIntegrity)))
+            rootTransferViewState.transition(to: .error(.appIntegrity))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
                 return
             }
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DomainBlockedException {
-            rootTransferViewState.transition(to: .error(
-                UploadError(
-                    title: STResourcesStrings.Localizable.sorry,
-                    subtitle: STResourcesStrings.Localizable.restrictedLocation,
-                    image: STResourcesAsset.Images.ghostBinoculars.swiftUIImage,
-                    canRetry: false
-                )
-            ))
+            rootTransferViewState.transition(to: .error(.restrictedLocation))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 
             Logger.general.error("Error trying to start upload: \(error)")
-            rootTransferViewState.transition(to: .error(UploadError()))
+            rootTransferViewState.transition(to: .error(.default))
         }
     }
 
