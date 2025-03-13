@@ -83,7 +83,7 @@ public struct MainView: View {
         }
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(
-                image: STResourcesAsset.Images.documentStarsRocketTiny.swiftUIImage
+                image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage
             ) { willUpdate in
                 if willUpdate {
                     openURL(UpdateLink.getCurrentURL())

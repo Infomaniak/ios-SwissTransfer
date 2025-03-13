@@ -24,12 +24,10 @@ import SwiftUI
 import SwissTransferCore
 import VersionChecker
 
-public struct STUpdateRequiredView: View {
+struct STUpdateRequiredView: View {
     @Environment(\.openURL) private var openURL
 
-    public init() {}
-
-    public var body: some View {
+    var body: some View {
         UpdateRequiredView(
             image: STResourcesAsset.Images.documentStarsRocket.swiftUIImage,
             sharedStyle: TemplateSharedStyle.swissTransfer

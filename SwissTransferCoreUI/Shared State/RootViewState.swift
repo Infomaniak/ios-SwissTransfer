@@ -40,18 +40,19 @@ public enum RootViewType: Equatable {
     case preloading
     case onboarding
     case updateRequired
-
-    public func transitionToMainViewIfPossible(accountManager: AccountManager, rootViewState: RootViewState) async {
-        if let currentManager = await accountManager.getCurrentManager() {
-            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
-        } else {
-            rootViewState.state = .onboarding
-        }
-    }
 }
 
+@MainActor
 public final class RootViewState: ObservableObject {
     @Published public var state: RootViewType = .preloading
 
     public init() {}
+
+    public func transitionToMainViewIfPossible(accountManager: AccountManager) async {
+        if let currentManager = await accountManager.getCurrentManager() {
+            state = .mainView(MainViewState(transferManager: currentManager))
+        } else {
+            state = .onboarding
+        }
+    }
 }
