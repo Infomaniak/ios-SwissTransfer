@@ -23,10 +23,12 @@ import SwiftUI
 public struct SentView: View {
     @EnvironmentObject private var transferManager: TransferManager
 
+    private let direction = TransferDirection.sent
+
     public init() {}
 
     public var body: some View {
-        TransferList(transferManager: transferManager, origin: .sent) {
+        TransferList(transferManager: transferManager, direction: direction) {
             SentEmptyView()
         }
         .matomoView(view: "SentView")

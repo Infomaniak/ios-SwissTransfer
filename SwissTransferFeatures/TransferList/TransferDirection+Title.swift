@@ -19,10 +19,7 @@
 import STCore
 import STResources
 
-public enum TransferOrigin {
-    case sent
-    case received
-
+public extension TransferDirection {
     var title: String {
         switch self {
         case .sent:
@@ -30,9 +27,5 @@ public enum TransferOrigin {
         case .received:
             STResourcesStrings.Localizable.receivedFilesTitle
         }
-    }
-
-    var direction: TransferDirection {
-        self == .sent ? .sent : .received
     }
 }

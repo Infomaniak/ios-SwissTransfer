@@ -44,9 +44,9 @@ final class TransferListViewModel: ObservableObject {
     private let transferManager: TransferManager
     private let transferDirection: TransferDirection
 
-    init(transferManager: TransferManager, transferOrigin: TransferOrigin) {
+    init(transferManager: TransferManager, transferDirection: TransferDirection) {
         self.transferManager = transferManager
-        transferDirection = transferOrigin.direction
+        self.transferDirection = transferDirection
         observeTransfers()
     }
 
