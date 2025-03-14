@@ -184,7 +184,8 @@ struct TransferManagerWorker {
             uploadUUID: uploadUUID,
             fileUUID: remoteUploadFileUUID,
             chunkIndex: Int32(index),
-            isLastChunk: isLastChunk
+            isLastChunk: isLastChunk,
+            isRetry: false
         ) else {
             throw TransferSessionManager.ErrorDomain.invalidUploadChunkURL
         }

@@ -62,6 +62,7 @@ public struct UploadErrorView: View {
             .navigationBarBackButtonHidden()
             .stIconNavigationBar()
         }
+        .matomoView(view: "UploadErrorView")
     }
 
     private func retryTransfer() {

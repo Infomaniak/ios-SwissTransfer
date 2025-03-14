@@ -32,12 +32,15 @@ public struct TransferList<EmptyView: View>: View {
 
     @State private var selectedItems = [ImportedItem]()
 
-    private let origin: TransferOrigin
+    private let direction: TransferDirection
     private let emptyView: EmptyView?
 
-    public init(transferManager: TransferManager, origin: TransferOrigin, @ViewBuilder emptyView: () -> EmptyView) {
-        _viewModel = StateObject(wrappedValue: TransferListViewModel(transferManager: transferManager, transferOrigin: origin))
-        self.origin = origin
+    public init(transferManager: TransferManager, direction: TransferDirection, @ViewBuilder emptyView: () -> EmptyView) {
+        _viewModel = StateObject(wrappedValue: TransferListViewModel(
+            transferManager: transferManager,
+            transferDirection: direction
+        ))
+        self.direction = direction
         self.emptyView = emptyView()
     }
 
@@ -45,7 +48,7 @@ public struct TransferList<EmptyView: View>: View {
         List(selection: $mainViewState.selectedDestination) {
             if let sections = viewModel.sections, !sections.isEmpty {
                 if isCompactWindow {
-                    Text(origin.title)
+                    Text(direction.title)
                         .font(.ST.title)
                         .foregroundStyle(Color.ST.textPrimary)
                         .padding(.horizontal, value: .medium)
@@ -85,7 +88,7 @@ public struct TransferList<EmptyView: View>: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 if !isCompactWindow {
-                    Text(origin.title)
+                    Text(direction.title)
                         .font(.ST.title2)
                         .foregroundStyle(.white)
                 }

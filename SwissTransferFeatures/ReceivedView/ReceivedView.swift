@@ -23,13 +23,15 @@ import SwiftUI
 public struct ReceivedView: View {
     @EnvironmentObject private var transferManager: TransferManager
 
+    private let direction = TransferDirection.received
+
     public init() {}
 
     public var body: some View {
-        TransferList(transferManager: transferManager, origin: .received) {
+        TransferList(transferManager: transferManager, direction: direction) {
             ReceivedEmptyView()
         }
-        .matomoView(view: "ReceivedView")
+        .matomoView(view: "\(direction.matomoValue)View")
     }
 }
 

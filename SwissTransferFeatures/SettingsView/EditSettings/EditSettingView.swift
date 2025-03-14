@@ -29,12 +29,14 @@ struct EditSettingView<T: SettingSelectable>: View {
     let section: String
     let items: [T]
     let selected: T
+    let matomoName: String
 
-    public init(_ type: T.Type, selected: T, title: String, section: String) {
+    public init(_ type: T.Type, selected: T, title: String, section: String, matomoName: String) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
         self.section = section
+        self.matomoName = matomoName
     }
 
     var body: some View {
@@ -54,6 +56,7 @@ struct EditSettingView<T: SettingSelectable>: View {
         .appBackground()
         .stNavigationBarStyle()
         .stNavigationTitle(title)
+        .matomoView(view: matomoName)
     }
 
     private func action(_ item: T) {
@@ -64,5 +67,5 @@ struct EditSettingView<T: SettingSelectable>: View {
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section")
+    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section", matomoName: "ViewName")
 }
