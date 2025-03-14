@@ -21,9 +21,10 @@ import STMainView
 import STOnboardingView
 import SwiftUI
 import SwissTransferCoreUI
+import VersionChecker
 
 public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
+    @EnvironmentObject private var rootViewState: RootViewState
 
     public init() {}
 
@@ -37,6 +38,8 @@ public struct RootView: View {
                 PreloadingView()
             case .onboarding:
                 OnboardingView()
+            case .updateRequired:
+                STUpdateRequiredView()
             }
         }
         .environmentObject(rootViewState)
@@ -45,4 +48,5 @@ public struct RootView: View {
 
 #Preview {
     RootView()
+        .environmentObject(RootViewState())
 }
