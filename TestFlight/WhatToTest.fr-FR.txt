@@ -1,3 +1,2 @@
-- Meilleure gestion de la saisie des adresses e-mail
 - Améliorations de l'interface utilisateurs
 - Corrections de bugs
