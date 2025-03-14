@@ -36,7 +36,10 @@ public struct TransferList<EmptyView: View>: View {
     private let emptyView: EmptyView?
 
     public init(transferManager: TransferManager, direction: TransferDirection, @ViewBuilder emptyView: () -> EmptyView) {
-        _viewModel = StateObject(wrappedValue: TransferListViewModel(transferManager: transferManager, transferDirection: direction))
+        _viewModel = StateObject(wrappedValue: TransferListViewModel(
+            transferManager: transferManager,
+            transferDirection: direction
+        ))
         self.direction = direction
         self.emptyView = emptyView()
     }

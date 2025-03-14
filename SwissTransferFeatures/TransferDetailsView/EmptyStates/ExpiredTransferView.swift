@@ -30,7 +30,7 @@ struct ExpiredTransferView: View {
             switch self {
             case .date:
                 return "Date"
-            case .downloadQuota(let int32):
+            case .downloadQuota:
                 return "DownloadQuota"
             }
         }
