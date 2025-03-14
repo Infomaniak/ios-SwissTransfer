@@ -73,6 +73,7 @@ public struct TransferDetailsView: View {
             }
         }
         .environment(\.dismissModal) { dismiss() }
+        .matomoView(view: "\(transfer?.direction?.matomoValue ?? "")TransferDetailsView")
     }
 }
 

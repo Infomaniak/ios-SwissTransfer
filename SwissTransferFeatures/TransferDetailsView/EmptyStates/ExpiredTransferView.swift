@@ -25,6 +25,15 @@ struct ExpiredTransferView: View {
     enum ExpirationType {
         case date
         case downloadQuota(Int32?)
+
+        var matomoValue: String {
+            switch self {
+            case .date:
+                return "Date"
+            case .downloadQuota(let int32):
+                return "DownloadQuota"
+            }
+        }
     }
 
     @Environment(\.dismiss) private var dismiss
@@ -62,6 +71,7 @@ struct ExpiredTransferView: View {
                 }
             }
         }
+        .matomoView(view: "\(expirationType.matomoValue)ExpiredTransferView")
     }
 }
 

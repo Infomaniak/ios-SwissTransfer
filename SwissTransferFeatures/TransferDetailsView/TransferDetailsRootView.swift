@@ -95,6 +95,5 @@ public struct TransferDetailsRootView: View {
                 VirusDetectedView()
             }
         }
-        .matomoView(view: "TransferDetailsRootView")
     }
 }
