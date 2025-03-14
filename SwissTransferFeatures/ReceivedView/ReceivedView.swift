@@ -31,7 +31,7 @@ public struct ReceivedView: View {
         TransferList(transferManager: transferManager, direction: direction) {
             ReceivedEmptyView()
         }
-        .matomoView(view: "ReceivedView")
+        .matomoView(view: "\(direction.matomoValue)View")
     }
 }
 
