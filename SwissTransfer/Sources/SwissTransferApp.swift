@@ -117,6 +117,8 @@ struct SwissTransferApp: App {
                         )
                     }
                 }
+            } catch {
+                Logger.view.error("Error while checking version status: \(error)")
             }
         }
     }
