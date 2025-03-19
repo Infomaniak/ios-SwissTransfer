@@ -19,5 +19,7 @@ jobs:
           cache: false
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Generate
+        run: tuist install && tuist generate
       - name: Build
-        run: tuist install && tuist build --generate "SwissTransfer"
+        run: tuist build --clean "SwissTransfer"
