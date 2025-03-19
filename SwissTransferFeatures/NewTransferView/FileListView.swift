@@ -99,6 +99,7 @@ struct FileListView: View {
                 files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
             }
         }
+        .matomoView(view: "NewTransferFileListView")
     }
 
     func removeFile(_ file: any DisplayableFile, atFolderURL folderURL: URL?) {
