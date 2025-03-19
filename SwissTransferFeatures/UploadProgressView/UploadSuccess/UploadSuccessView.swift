@@ -57,6 +57,9 @@ public struct UploadSuccessView: View {
             .stIconNavigationBar()
             .background(Color.ST.background)
             .navigationBarBackButtonHidden()
+            .onAppear {
+                UserDefaults.shared.transferCount += 1
+            }
         }
         .matomoView(view: "UploadSuccessView")
     }

@@ -87,7 +87,6 @@ struct UploadSuccessQRCodeView: View {
             }
 
             Button {
-                UserDefaults.shared.transferCount += 1
                 dismiss()
             } label: {
                 Text(STResourcesStrings.Localizable.buttonFinished)

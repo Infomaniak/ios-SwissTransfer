@@ -51,7 +51,6 @@ struct UploadSuccessMailView: View {
         .scrollableEmptyState()
         .safeAreaButtons {
             Button {
-                UserDefaults.shared.transferCount += 1
                 dismiss()
             } label: {
                 Text(STResourcesStrings.Localizable.buttonFinished)
