@@ -35,18 +35,15 @@ public struct MainView: View {
     @LazyInjectService private var reviewManager: ReviewManageable
 
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
     @Environment(\.openURL) private var openURL
 
-    @AppStorage(UserDefaults.Keys.transferCountKey.rawValue,
-                store: UserDefaults.shared) private var transferCount = DefaultPreferences.transferCount
     @AppStorage(UserDefaults.Keys.hasReviewedApp.rawValue,
                 store: UserDefaults.shared) private var hasReviewedApp = DefaultPreferences.hasReviewedApp
-
-    private let reviewTriggerCount = 2
 
     public init() {}
 
@@ -60,12 +57,6 @@ public struct MainView: View {
         }
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
-        .onChange(of: transferCount) { _ in
-            presentReviewAlertIfNeeded()
-        }
-        .onAppear {
-            presentReviewAlertIfNeeded()
-        }
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
 
@@ -97,10 +88,6 @@ public struct MainView: View {
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
             DeepLinkPasswordView(url: identifiableURL)
         }
-        .sheet(item: $mainViewState.isShowingSafariWebView) { safariContent in
-            SafariWebView(url: safariContent.url)
-                .ignoresSafeArea()
-        }
         .customAlert(isPresented: $mainViewState.isShowingReviewAlert) {
             AskForReviewView(
                 appName: Constants.appName,
@@ -111,11 +98,11 @@ public struct MainView: View {
                     UserDefaults.shared.appReview = .readyForReview
                     hasReviewedApp = true
                 },
-                onDislike: { userReportURL in
+                onDislike: { _ in
                     matomo.track(eventWithCategory: .appUpdate, name: "dislike")
                     UserDefaults.shared.appReview = .feedback
                     hasReviewedApp = true
-                    mainViewState.isShowingSafariWebView = IdentifiableURL(url: userReportURL)
+                    dismiss()
                 }
             )
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
@@ -135,12 +122,6 @@ public struct MainView: View {
     private func willEnterForeground() {
         Task {
             try? await injection.transferManager.deleteExpiredTransfers()
-        }
-    }
-
-    private func presentReviewAlertIfNeeded() {
-        if transferCount == reviewTriggerCount && !hasReviewedApp {
-            mainViewState.isShowingReviewAlert = true
         }
     }
 }
