@@ -27,7 +27,7 @@ extension NewUploadSession: @retroactive @unchecked Sendable {}
 
 extension TransferManager: @retroactive @unchecked Sendable {}
 extension UploadManager: @retroactive @unchecked Sendable {}
-extension EmailTokensManager: @retroactive @unchecked Sendable {}
+extension UploadTokensManager: @retroactive @unchecked Sendable {}
 extension SharedApiUrlCreator: @retroactive @unchecked Sendable {}
 extension STCore.AccountManager: @retroactive @unchecked Sendable {}
 extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}

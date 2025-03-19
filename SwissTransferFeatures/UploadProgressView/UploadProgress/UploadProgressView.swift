@@ -151,7 +151,7 @@ public struct UploadProgressView: View {
         guard !uploadSession.authorEmail.isEmpty,
               let authorEmailToken = uploadSession.authorEmailToken else { return }
 
-        try? await injection.emailTokensManager.setEmailToken(email: uploadSession.authorEmail, emailToken: authorEmailToken)
+        try? await injection.uploadTokensManager.setEmailToken(email: uploadSession.authorEmail, emailToken: authorEmailToken)
     }
 
     private func cancelTransfer() {
