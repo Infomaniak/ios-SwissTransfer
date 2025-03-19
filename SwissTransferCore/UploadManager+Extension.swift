@@ -18,6 +18,7 @@
 
 import Foundation
 import InfomaniakDeviceCheck
+import InfomaniakDI
 import STCore
 
 public extension UploadManager {
@@ -31,25 +32,30 @@ public extension UploadManager {
         return SendableUploadSession(uploadSession: uploadSession)
     }
 
-    func initSendableUploadSession(uuid: String, attestationToken: String) async throws -> SendableUploadSession {
+    func initSendableUploadSession(uuid: String, isRetrying: Bool) async throws -> SendableUploadSession {
         guard let uploadSession = try await doInitUploadSession(uuid: uuid,
                                                                 attestationHeaderName: InfomaniakDeviceCheck.tokenHeaderField,
-                                                                attestationToken: attestationToken) else {
+                                                                isRetrying: isRetrying) else {
             throw DomainError.containerNotFound
         }
         return SendableUploadSession(uploadSession: uploadSession)
     }
 
     func createRemoteUploadSession(localSessionUUID: String) async throws -> SendableUploadSession {
-        guard let attestationToken = await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer() else {
-            throw DomainError.deviceCheckFailed
+        do {
+            let uploadSessionWithRemoteContainer = try await initSendableUploadSession(uuid: localSessionUUID, isRetrying: false)
+            return uploadSessionWithRemoteContainer
+        } catch let error as NSError
+            where error.kotlinException is STNAttestationTokenException.InvalidAttestationTokenException {
+            guard let attestationToken = await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer() else {
+                throw DomainError.deviceCheckFailed
+            }
+
+            @InjectService var injection: SwissTransferInjection
+            try await injection.uploadTokensManager.setAttestationToken(attestationToken: attestationToken)
+
+            let uploadSessionWithRemoteContainer = try await initSendableUploadSession(uuid: localSessionUUID, isRetrying: true)
+            return uploadSessionWithRemoteContainer
         }
-
-        let uploadSessionWithRemoteContainer = try await initSendableUploadSession(
-            uuid: localSessionUUID,
-            attestationToken: attestationToken
-        )
-
-        return uploadSessionWithRemoteContainer
     }
 }
