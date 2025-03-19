@@ -90,7 +90,7 @@ public final class RootTransferViewModel: ObservableObject {
         var authorTrimmedEmail = ""
         if transferType == .mail {
             authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-            authorEmailToken = try? await injection.emailTokensManager.getTokenForEmail(email: authorTrimmedEmail)
+            authorEmailToken = try? await injection.uploadTokensManager.getTokenForEmail(email: authorTrimmedEmail)
         }
 
         guard let filesToUpload = try? newTransferFileManager.filesToUpload(),
