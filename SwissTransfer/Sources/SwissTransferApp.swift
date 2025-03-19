@@ -99,7 +99,7 @@ struct SwissTransferApp: App {
     private func checkAppVersion() {
         Task {
             do {
-                let platform: Platform = platformDetector.isMacCatalyst ? .macOS : .ios
+                let platform: Platform = .ios
                 let versionStatus = try await VersionChecker.standard.checkAppVersionStatus(platform: platform)
 
                 switch versionStatus {
