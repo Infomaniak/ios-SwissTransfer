@@ -127,9 +127,6 @@ let project = Project(
             sources: "SwissTransferShareExtension/Sources/**",
             resources: [],
             entitlements: "SwissTransferShareExtension/Resources/SwissTransfer.entitlements",
-            scripts: [
-                Constants.swiftlintScript
-            ],
             dependencies: [
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
