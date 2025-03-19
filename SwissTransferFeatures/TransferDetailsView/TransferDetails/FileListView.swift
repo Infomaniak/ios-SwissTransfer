@@ -63,6 +63,7 @@ struct FileListView: View {
         }
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: title)
+        .matomoView(view: "TransferDetailsFileListView")
     }
 }
 

@@ -26,6 +26,14 @@ public extension MatomoUtils {
     static let siteURL = URL(string: "https://analytics.infomaniak.com/matomo.php")!
 }
 
+// MARK: - Views and Categories
+
+public extension MatomoUtils.EventCategory {
+    static let transferType = MatomoUtils.EventCategory(displayName: "transferType")
+}
+
+// MARK: - Track views
+
 struct MatomoView: ViewModifier {
     @LazyInjectService var matomo: MatomoUtils
 
