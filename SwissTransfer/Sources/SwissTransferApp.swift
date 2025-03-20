@@ -101,20 +101,21 @@ struct SwissTransferApp: App {
             do {
                 let versionStatus = try await VersionChecker.standard.checkAppVersionStatus(platform: .ios)
 
-                switch versionStatus {
-                case .updateIsRequired:
+                guard versionStatus != .updateIsRequired else {
                     rootViewState.state = .updateRequired
-                case .canBeUpdated:
-                    if case .mainView(let mainViewState) = rootViewState.state {
-                        mainViewState.isShowingUpdateAvailable = true
-                    }
-                case .isUpToDate:
-                    if rootViewState.state == .updateRequired {
-                        await rootViewState.state.transitionToMainViewIfPossible(
-                            accountManager: accountManager,
-                            rootViewState: rootViewState
-                        )
-                    }
+                    return
+                }
+
+                if rootViewState.state == .updateRequired {
+                    await rootViewState.transitionToMainViewIfPossible(
+                        accountManager: accountManager,
+                        rootViewState: rootViewState
+                    )
+                }
+
+                if versionStatus == .canBeUpdated,
+                   case .mainView(let mainViewState) = rootViewState.state {
+                    mainViewState.isShowingUpdateAvailable = true
                 }
             } catch {
                 Logger.view.error("Error while checking version status: \(error)")
