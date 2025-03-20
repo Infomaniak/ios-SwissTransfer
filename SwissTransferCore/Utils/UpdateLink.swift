@@ -22,7 +22,7 @@ public enum UpdateLink: Sendable {
     public static let appStore = URL(string: "https://apps.apple.com/app/infomaniak-swisstransfer/id6737686335")!
     public static let testFlight = URL(string: "https://testflight.apple.com/join/bnHmqCvT")!
 
-    public static func getCurrentURL() -> URL {
+    public static func getStoreURL() -> URL {
         Bundle.main.isRunningInTestFlight ? testFlight : appStore
     }
 }

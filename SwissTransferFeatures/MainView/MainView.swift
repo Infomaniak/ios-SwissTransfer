@@ -86,7 +86,7 @@ public struct MainView: View {
                 image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage
             ) { willUpdate in
                 if willUpdate {
-                    openURL(UpdateLink.getCurrentURL())
+                    openURL(UpdateLink.getStoreURL())
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverNow")
                 } else {
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverLater")
