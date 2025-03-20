@@ -1,2 +1,2 @@
-- Améliorations de l'interface utilisateurs
+- Nouveau transfert légèrement plus rapide
 - Corrections de bugs

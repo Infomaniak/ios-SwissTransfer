@@ -1,2 +1,2 @@
-- User interface improvements
+- New transfer slightly faster
 - Bug fixes
