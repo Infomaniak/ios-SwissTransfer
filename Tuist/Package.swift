@@ -6,6 +6,7 @@ import ProjectDescription
 
 let packageSettings = PackageSettings(
     productTypes: [
+        "Alamofire": .framework,
         "InfomaniakDI": .framework,
         "InfomaniakCore": .framework,
         "InfomaniakCoreSwiftUI": .framework,
@@ -16,7 +17,8 @@ let packageSettings = PackageSettings(
         "Lottie": .framework,
         "SwissTransferCore": .framework,
         "STSettingsView": .framework,
-        "DesignSystem": .framework
+        "DesignSystem": .framework,
+        "VersionChecker": .framework
     ]
 )
 #endif
@@ -36,6 +38,7 @@ let package = Package(
         .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
         .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),
-        .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMajor(from: "4.5.1"))
+        .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMajor(from: "4.5.1")),
+        .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "10.1.1"))
     ]
 )

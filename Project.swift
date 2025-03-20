@@ -42,7 +42,8 @@ let mainView = Feature(
         sentView,
         transferDetailsView,
         rootTransferView,
-        TargetDependency.external(name: "InfomaniakCoreUIResources")
+        TargetDependency.external(name: "InfomaniakCoreUIResources"),
+        TargetDependency.external(name: "VersionChecker")
     ]
 )
 
@@ -54,7 +55,7 @@ let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
 
 let rootView = Feature(
     name: "RootView",
-    dependencies: [mainView, onboardingView],
+    dependencies: [mainView, onboardingView, TargetDependency.external(name: "VersionChecker")],
     resources: ["SwissTransfer/Resources/Assets.xcassets"]
 )
 

@@ -23,7 +23,7 @@ import SwiftUI
 import SwissTransferCoreUI
 
 public struct RootView: View {
-    @StateObject private var rootViewState = RootViewState()
+    @EnvironmentObject private var rootViewState: RootViewState
 
     public init() {}
 
@@ -37,6 +37,8 @@ public struct RootView: View {
                 PreloadingView()
             case .onboarding:
                 OnboardingView()
+            case .updateRequired:
+                STUpdateRequiredView()
             }
         }
         .environmentObject(rootViewState)

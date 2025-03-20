@@ -18,6 +18,7 @@
 
 import Foundation
 import SwiftUI
+import SwissTransferCore
 
 public enum RootViewType: Equatable {
     public static func == (lhs: RootViewType, rhs: RootViewType) -> Bool {
@@ -28,6 +29,8 @@ public enum RootViewType: Equatable {
             return true
         case (.mainView(let lhsMainViewState), .mainView(let rhsMainViewState)):
             return lhsMainViewState.transferManager == rhsMainViewState.transferManager
+        case (.updateRequired, .updateRequired):
+            return true
         default:
             return false
         }
@@ -36,10 +39,20 @@ public enum RootViewType: Equatable {
     case mainView(MainViewState)
     case preloading
     case onboarding
+    case updateRequired
 }
 
+@MainActor
 public final class RootViewState: ObservableObject {
     @Published public var state: RootViewType = .preloading
 
     public init() {}
+
+    public func transitionToMainViewIfPossible(accountManager: AccountManager, rootViewState: RootViewState) async {
+        if let currentManager = await accountManager.getCurrentManager() {
+            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+        } else {
+            rootViewState.state = .onboarding
+        }
+    }
 }

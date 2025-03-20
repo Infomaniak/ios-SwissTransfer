@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
@@ -24,6 +25,7 @@ import STRootView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
+import VersionChecker
 
 @main
 struct SwissTransferApp: App {
@@ -38,9 +40,11 @@ struct SwissTransferApp: App {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @LazyInjectService private var platformDetector: PlatformDetectable
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
+    @StateObject private var rootViewState = RootViewState()
 
     private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
@@ -64,6 +68,7 @@ struct SwissTransferApp: App {
                 .environmentObject(universalLinksState)
                 .environmentObject(downloadManager)
                 .environmentObject(notificationCenterDelegate)
+                .environmentObject(rootViewState)
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
@@ -80,6 +85,7 @@ struct SwissTransferApp: App {
 
     private func onWillEnterForeground() {
         notificationsHelper.removeAllUploadNotifications()
+        checkAppVersion()
 
         Task {
             guard let currentManager = await accountManager.getCurrentManager() else {
@@ -87,6 +93,33 @@ struct SwissTransferApp: App {
             }
 
             try await currentManager.tryUpdatingAllTransfers()
+        }
+    }
+
+    private func checkAppVersion() {
+        Task {
+            do {
+                let versionStatus = try await VersionChecker.standard.checkAppVersionStatus(platform: .ios)
+
+                guard versionStatus != .updateIsRequired else {
+                    rootViewState.state = .updateRequired
+                    return
+                }
+
+                if rootViewState.state == .updateRequired {
+                    await rootViewState.transitionToMainViewIfPossible(
+                        accountManager: accountManager,
+                        rootViewState: rootViewState
+                    )
+                }
+
+                if versionStatus == .canBeUpdated,
+                   case .mainView(let mainViewState) = rootViewState.state {
+                    mainViewState.isShowingUpdateAvailable = true
+                }
+            } catch {
+                Logger.view.error("Error while checking version status: \(error)")
+            }
         }
     }
 
