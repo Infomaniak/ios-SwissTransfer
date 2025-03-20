@@ -20,7 +20,6 @@ import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
-import SafariServices
 import STCore
 import STResources
 import STRootTransferView
@@ -35,7 +34,6 @@ public struct MainView: View {
     @LazyInjectService private var reviewManager: ReviewManageable
 
     @Environment(\.isCompactWindow) private var isCompactWindow
-    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
@@ -92,16 +90,19 @@ public struct MainView: View {
                 reviewManager: reviewManager,
                 onLike: {
                     matomo.track(eventWithCategory: .appUpdate, name: "like")
+
                     UserDefaults.shared.appReview = .readyForReview
-                    UserDefaults.shared.set(true, forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
+                    UserDefaults.shared.hasReviewedApp = true
 
                 },
                 onDislike: { _ in
                     matomo.track(eventWithCategory: .appUpdate, name: "dislike")
+
                     UserDefaults.shared.appReview = .feedback
-                    UserDefaults.shared.set(true, forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
+                    UserDefaults.shared.hasReviewedApp = true
                 }
             )
+        }
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(
                 image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage

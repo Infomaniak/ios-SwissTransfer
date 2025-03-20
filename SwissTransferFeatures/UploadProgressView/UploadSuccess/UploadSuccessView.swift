@@ -41,8 +41,6 @@ public struct UploadSuccessView: View {
 
     let transferUUID: String
 
-    let transferCount = UserDefaults.shared.integer(forKey: UserDefaults.shared.key(.transferCountKey))
-
     private let reviewTriggerCount = 2
 
     public init(transferUUID: String) {
@@ -63,11 +61,11 @@ public struct UploadSuccessView: View {
             .background(Color.ST.background)
             .navigationBarBackButtonHidden()
             .onAppear {
-                UserDefaults.shared.set(transferCount + 1, forKey: UserDefaults.shared.key(.transferCountKey))
+                UserDefaults.shared.transferCount += 1
             }
             .onDisappear {
                 let hasReviewedApp = UserDefaults.shared.bool(forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
-                if transferCount >= reviewTriggerCount && !hasReviewedApp {
+                if UserDefaults.shared.transferCount >= reviewTriggerCount && !UserDefaults.shared.hasReviewedApp {
                     mainViewState.isShowingReviewAlert = true
                 }
             }
