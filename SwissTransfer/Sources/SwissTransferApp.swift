@@ -99,8 +99,7 @@ struct SwissTransferApp: App {
     private func checkAppVersion() {
         Task {
             do {
-                let platform: Platform = .ios
-                let versionStatus = try await VersionChecker.standard.checkAppVersionStatus(platform: platform)
+                let versionStatus = try await VersionChecker.standard.checkAppVersionStatus(platform: .ios)
 
                 switch versionStatus {
                 case .updateIsRequired:
