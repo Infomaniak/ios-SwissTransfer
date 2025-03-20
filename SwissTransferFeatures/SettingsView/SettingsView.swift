@@ -88,7 +88,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                                     section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                                    matomoName: "DownloadsLimitSettingView")
+                                    matomoName: "DownloadLimitSettingView")
                 }
                 .settingsCell()
 
@@ -118,7 +118,6 @@ public struct SettingsView: View {
                     )
                     .stNavigationTitle(PrivacyManagementView.title)
                     .stNavigationBarStyle()
-                    .matomoView(view: "PrivacyManagementView")
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
                                             leadingIcon: STResourcesAsset.Images.shield)

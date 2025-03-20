@@ -36,9 +36,12 @@ extension TransferType {
 }
 
 public struct UploadSuccessView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
     let transferUUID: String
+
+    private let reviewTriggerCount = 2
 
     public init(transferUUID: String) {
         self.transferUUID = transferUUID
@@ -57,6 +60,15 @@ public struct UploadSuccessView: View {
             .stIconNavigationBar()
             .background(Color.ST.background)
             .navigationBarBackButtonHidden()
+            .onAppear {
+                UserDefaults.shared.transferCount += 1
+            }
+            .onDisappear {
+                let hasReviewedApp = UserDefaults.shared.bool(forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
+                if UserDefaults.shared.transferCount >= reviewTriggerCount && !UserDefaults.shared.hasReviewedApp {
+                    mainViewState.isShowingReviewAlert = true
+                }
+            }
         }
         .matomoView(view: "UploadSuccessView")
     }

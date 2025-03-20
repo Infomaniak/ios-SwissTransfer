@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
@@ -30,6 +31,7 @@ import VersionChecker
 public struct MainView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var matomo: MatomoUtils
+    @LazyInjectService private var reviewManager: ReviewManageable
 
     @Environment(\.isCompactWindow) private var isCompactWindow
 
@@ -80,6 +82,26 @@ public struct MainView: View {
         }
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
             DeepLinkPasswordView(url: identifiableURL)
+        }
+        .customAlert(isPresented: $mainViewState.isShowingReviewAlert) {
+            AskForReviewView(
+                appName: Constants.appName,
+                feedbackURL: STResourcesStrings.Localizable.urlUserReport,
+                reviewManager: reviewManager,
+                onLike: {
+                    matomo.track(eventWithCategory: .appUpdate, name: "like")
+
+                    UserDefaults.shared.appReview = .readyForReview
+                    UserDefaults.shared.hasReviewedApp = true
+
+                },
+                onDislike: { _ in
+                    matomo.track(eventWithCategory: .appUpdate, name: "dislike")
+
+                    UserDefaults.shared.appReview = .feedback
+                    UserDefaults.shared.hasReviewedApp = true
+                }
+            )
         }
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(
