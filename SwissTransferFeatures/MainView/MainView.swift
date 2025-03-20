@@ -42,9 +42,6 @@ public struct MainView: View {
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
     @Environment(\.openURL) private var openURL
 
-    @AppStorage(UserDefaults.Keys.hasReviewedApp.rawValue,
-                store: UserDefaults.shared) private var hasReviewedApp = DefaultPreferences.hasReviewedApp
-
     public init() {}
 
     public var body: some View {
@@ -96,13 +93,13 @@ public struct MainView: View {
                 onLike: {
                     matomo.track(eventWithCategory: .appUpdate, name: "like")
                     UserDefaults.shared.appReview = .readyForReview
-                    hasReviewedApp = true
+                    UserDefaults.shared.set(true, forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
+
                 },
                 onDislike: { _ in
                     matomo.track(eventWithCategory: .appUpdate, name: "dislike")
                     UserDefaults.shared.appReview = .feedback
-                    hasReviewedApp = true
-                    dismiss()
+                    UserDefaults.shared.set(true, forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
                 }
             )
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {

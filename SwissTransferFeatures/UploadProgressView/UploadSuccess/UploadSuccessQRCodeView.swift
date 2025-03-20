@@ -86,9 +86,7 @@ struct UploadSuccessQRCodeView: View {
                 .frame(maxWidth: IKButtonConstants.maxWidth)
             }
 
-            Button {
-                dismiss()
-            } label: {
+            Button(action: dismiss.callAsFunction) {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)

@@ -143,7 +143,10 @@ public extension UserDefaults {
 
     var hasReviewedApp: Bool {
         get {
-            bool(forKey: key(.hasReviewedApp))
+            if object(forKey: key(.hasReviewedApp)) == nil {
+                set(DefaultPreferences.hasReviewedApp, forKey: key(.hasReviewedApp))
+            }
+            return bool(forKey: key(.hasReviewedApp))
         }
         set {
             set(newValue, forKey: key(.hasReviewedApp))

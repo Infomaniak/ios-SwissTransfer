@@ -39,12 +39,9 @@ public struct UploadSuccessView: View {
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
-    @AppStorage(UserDefaults.Keys.transferCountKey.rawValue,
-                store: UserDefaults.shared) private var transferCount = DefaultPreferences.transferCount
-    @AppStorage(UserDefaults.Keys.hasReviewedApp.rawValue,
-                store: UserDefaults.shared) private var hasReviewedApp = DefaultPreferences.hasReviewedApp
-
     let transferUUID: String
+
+    let transferCount = UserDefaults.shared.integer(forKey: UserDefaults.shared.key(.transferCountKey))
 
     private let reviewTriggerCount = 2
 
@@ -66,9 +63,10 @@ public struct UploadSuccessView: View {
             .background(Color.ST.background)
             .navigationBarBackButtonHidden()
             .onAppear {
-                UserDefaults.shared.transferCount += 1
+                UserDefaults.shared.set(transferCount + 1, forKey: UserDefaults.shared.key(.transferCountKey))
             }
             .onDisappear {
+                let hasReviewedApp = UserDefaults.shared.bool(forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
                 if transferCount >= reviewTriggerCount && !hasReviewedApp {
                     mainViewState.isShowingReviewAlert = true
                 }
