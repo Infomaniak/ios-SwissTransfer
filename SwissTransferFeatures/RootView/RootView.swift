@@ -21,7 +21,6 @@ import STMainView
 import STOnboardingView
 import SwiftUI
 import SwissTransferCoreUI
-import VersionChecker
 
 public struct RootView: View {
     @EnvironmentObject private var rootViewState: RootViewState
