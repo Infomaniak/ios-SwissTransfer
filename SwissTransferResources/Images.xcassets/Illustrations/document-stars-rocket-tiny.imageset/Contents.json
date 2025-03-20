@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "document-stars-rocket-tiny-light.svg",
+      "filename" : "document-stars-rocket-light-tiny.svg",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "document-stars-rocket-tiny-dark.svg",
+      "filename" : "document-stars-rocket-dark-tiny.svg",
       "idiom" : "universal"
     }
   ],
