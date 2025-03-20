@@ -31,7 +31,10 @@ let sentView = Feature(name: "SentView", additionalDependencies: [transferList])
 
 let settingsView = Feature(
     name: "SettingsView",
-    additionalDependencies: [TargetDependency.external(name: "InfomaniakPrivacyManagement")]
+    additionalDependencies: [
+        TargetDependency.external(name: "InfomaniakPrivacyManagement"),
+        TargetDependency.external(name: "InfomaniakCoreUIResources")
+    ]
 )
 
 let mainView = Feature(

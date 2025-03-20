@@ -18,6 +18,7 @@
 
 import InfomaniakCore
 import InfomaniakCoreCommonUI
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import InfomaniakPrivacyManagement
 import STCore
@@ -150,11 +151,9 @@ public struct SettingsView: View {
                                                 trailingIcon: STResourcesAsset.Images.export)
                     }
                     .settingsCell()
-                }
 
-                if !Bundle.main.isRunningInTestFlight {
-                    Link(destination: SettingLinks.appStoreReviewURL) {
-                        SingleLabelSettingsCell(title: STResourcesStrings.Localizable.joinTheBetaButton,
+                    Link(destination: SettingLinks.betaVersionApp) {
+                        SingleLabelSettingsCell(title: CoreUILocalizable.joinTheBetaButton,
                                                 trailingIcon: STResourcesAsset.Images.export)
                     }
                     .settingsCell()
