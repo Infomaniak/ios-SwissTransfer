@@ -34,7 +34,6 @@ enum SettingLinks {
     static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
     static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
     static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
-    static let betaVersionApp = URL(string: "https://testflight.apple.com/join/bnHmqCvT")!
 }
 
 public struct SettingsView: View {
@@ -151,7 +150,7 @@ public struct SettingsView: View {
                     }
                     .settingsCell()
 
-                    Link(destination: SettingLinks.betaVersionApp) {
+                    Link(destination: UpdateLink.testFlight) {
                         SingleLabelSettingsCell(title: CoreUILocalizable.joinTheBetaButton,
                                                 trailingIcon: STResourcesAsset.Images.export)
                     }
