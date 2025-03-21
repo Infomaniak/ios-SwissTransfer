@@ -17,9 +17,7 @@
  */
 
 import DesignSystem
-import Foundation
 import InfomaniakCoreSwiftUI
-import STResources
 import SwiftUI
 import VersionChecker
 

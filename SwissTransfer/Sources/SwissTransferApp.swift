@@ -40,7 +40,6 @@ struct SwissTransferApp: App {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
-    @LazyInjectService private var platformDetector: PlatformDetectable
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
