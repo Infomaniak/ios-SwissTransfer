@@ -46,5 +46,24 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>You will be able to transfer the photos and videos taken with your camera.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Atlantis would use Bonjour Service to discover Proxyman app from your local network.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_Proxyman._tcp</string>
+    </array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>proxyman.debug</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
 </dict>
 </plist>

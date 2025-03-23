@@ -34,12 +34,16 @@ extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
 
 @frozen public struct SendableUploadSession {
     public let uuid: String
+    public let remoteContainerUUID: String?
+    public let uploadHost: String?
     public let authorEmail: String
     public let authorEmailToken: String?
     public let files: [SendableUploadFileSession]
 
     init(uploadSession: any UploadSession) {
         uuid = uploadSession.uuid
+        remoteContainerUUID = uploadSession.remoteContainer?.uuid
+        uploadHost = uploadSession.remoteUploadHost
         authorEmail = uploadSession.authorEmail
         authorEmailToken = uploadSession.authorEmailToken
         files = uploadSession.files.map { SendableUploadFileSession(uploadFileSession: $0) }

@@ -26,6 +26,7 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 import VersionChecker
+import Atlantis
 
 @main
 struct SwissTransferApp: App {
@@ -55,6 +56,7 @@ struct SwissTransferApp: App {
     }
 
     public init() {
+        Atlantis.start()
         @InjectService var settings: AppSettingsManager
         _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
 

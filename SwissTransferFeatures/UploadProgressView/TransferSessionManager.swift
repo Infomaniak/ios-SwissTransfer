@@ -92,8 +92,9 @@ class TransferSessionManager: ObservableObject {
             .asyncForEach { localFile, remoteUploadFile in
                 try await transferManagerWorker.uploadFile(
                     atPath: localFile.localPath,
-                    remoteUploadFileUUID: remoteUploadFile.uuid,
-                    uploadUUID: uploadSession.uuid
+                    host: uploadSession.uploadHost!,
+                    containerUUID: uploadSession.remoteContainerUUID!,
+                    remoteUploadFileUUID: remoteUploadFile.uuid
                 )
             }
 
@@ -128,48 +129,31 @@ struct TransferManagerWorker {
 
     let overallProgress: Progress
 
-    func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: atPath),
-              let chunkReader = ChunkReader(fileURL: fileURL) else {
+    func uploadFile(atPath: String, host: String, containerUUID: String, remoteUploadFileUUID: String) async throws {
+        guard let fileURL = URL(string: atPath) else {
             throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: atPath)
         }
 
-        let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
+        let fileSize = fileURL.size()
+        let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: fileSize)
+        overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(fileSize))
 
-        var ranges = try rangeProvider.allRanges
+        let proxURL =
+            URL(
+                string: "http://proxyman.debug:8080/upload?containerUUID=\(containerUUID)&uploadFileUUID=\(remoteUploadFileUUID)"
+            )!
+        var uploadRequest = URLRequest(url: proxURL)
+        uploadRequest.httpMethod = "POST"
+        uploadRequest.setValue(host, forHTTPHeaderField: "x-upload-host")
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, fromFile: fileURL, delegate: taskDelegate)
 
-        guard let lastRange = ranges.popLast() else {
-            throw TransferSessionManager.ErrorDomain.invalidRange
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw TransferSessionManager.ErrorDomain.invalidResponse
         }
 
-        try await ranges
-            .enumerated()
-            .map { ($0, $1) }
-            .concurrentForEach(customConcurrency: 4) { index, range in
-                guard let chunk = try chunkReader.readChunk(range: range) else {
-                    throw TransferSessionManager.ErrorDomain.invalidChunk
-                }
-
-                try await uploadChunk(
-                    chunk: chunk,
-                    index: index,
-                    isLastChunk: false,
-                    remoteUploadFileUUID: remoteUploadFileUUID,
-                    uploadUUID: uploadUUID
-                )
-            }
-
-        guard let lastChunk = try chunkReader.readChunk(range: lastRange) else {
-            throw TransferSessionManager.ErrorDomain.invalidChunk
+        if httpResponse.statusCode >= 400 {
+            throw TransferSessionManager.ErrorDomain.invalidChunkResponse
         }
-
-        try await uploadChunk(
-            chunk: lastChunk,
-            index: ranges.count,
-            isLastChunk: true,
-            remoteUploadFileUUID: remoteUploadFileUUID,
-            uploadUUID: uploadUUID
-        )
     }
 
     func uploadChunk(

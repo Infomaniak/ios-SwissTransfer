@@ -27,6 +27,7 @@ public extension URLSessionConfiguration {
     static let swissTransfer: URLSessionConfiguration = {
         let configuration = URLSessionConfiguration.default
         configuration.shouldUseExtendedBackgroundIdleMode = true
+        configuration.timeoutIntervalForRequest = 10 * 60
         configuration.httpAdditionalHeaders = ["User-Agent": UserAgentBuilder().userAgent]
 
         return configuration
