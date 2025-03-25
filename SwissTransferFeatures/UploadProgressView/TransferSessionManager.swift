@@ -42,6 +42,7 @@ final class UploadTaskDelegate: NSObject, URLSessionTaskDelegate {
         totalBytesExpectedToSend: Int64
     ) {
         taskProgress.completedUnitCount = totalBytesSent
+        print("Progress: \(taskProgress.fractionCompleted) - \(taskProgress.completedUnitCount) / \(taskProgress.totalUnitCount)")
     }
 }
 
@@ -136,16 +137,66 @@ struct TransferManagerWorker {
 
         let fileSize = fileURL.size()
         let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: fileSize)
+        print("File size: \(fileSize)")
         overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(fileSize))
+
+        let urlSession = URLSession(configuration: .default, delegate: taskDelegate, delegateQueue: nil)
 
         let proxURL =
             URL(
-                string: "http://proxyman.debug:8080/upload?containerUUID=\(containerUUID)&uploadFileUUID=\(remoteUploadFileUUID)"
+                string: "http://proxyman.debug:8080/upload?container_uuid=\(containerUUID)&upload_file_uuid=\(remoteUploadFileUUID)"
             )!
         var uploadRequest = URLRequest(url: proxURL)
         uploadRequest.httpMethod = "POST"
         uploadRequest.setValue(host, forHTTPHeaderField: "x-upload-host")
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, fromFile: fileURL, delegate: taskDelegate)
+        uploadRequest.setValue("\(fileSize)", forHTTPHeaderField: "Content-Length")
+
+        let response: URLResponse = try await withCheckedThrowingContinuation { continuation in
+            let task = urlSession.uploadTask(with: uploadRequest, fromFile: fileURL) { data, response, error in
+                if let error {
+                    print("Error: \(error)")
+                    if #available(iOS 17.0, *) {
+                        if let error = error as? URLError,
+                           let uploadTaskResumeData = error.uploadTaskResumeData {
+                            print("Cancelled with resume data")
+                            DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + 5) {
+                                let newUploadTask = urlSession
+                                    .uploadTask(withResumeData: uploadTaskResumeData) { data, response, error in
+                                        if let error {
+                                            continuation.resume(throwing: error)
+                                        } else if let response {
+                                            continuation.resume(returning: response)
+                                        } else {
+                                            continuation.resume(throwing: URLError(.unknown))
+                                        }
+                                    }
+                                newUploadTask.resume()
+                                print("Resumed upload task after 5 sec")
+                            }
+                            return
+                        }
+                    }
+                    continuation.resume(throwing: error)
+                } else if let response {
+                    continuation.resume(returning: response)
+                } else {
+                    continuation.resume(throwing: URLError(.unknown))
+                }
+            }
+            task.resume()
+
+            Task {
+                print("Waiting 30 seconds before pause")
+                try await Task.sleep(nanoseconds: 30_000_000_000)
+                print("Simulating task pause after 30 seconds")
+
+                if #available(iOS 17.0, *) {
+                    await task.cancelByProducingResumeData()
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
+        }
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw TransferSessionManager.ErrorDomain.invalidResponse
