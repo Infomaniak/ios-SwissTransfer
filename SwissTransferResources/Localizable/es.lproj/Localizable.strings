@@ -76,6 +76,9 @@
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Nueva transferencia";
 
+/* loco:67e54599054e355e4f053752 */
+"dailyTransferLimitReached" = "Ha alcanzado su límite diario de transferencias";
+
 /* loco:677cf4a37658668b1c07d9a2 */
 "deeplinkPasswordDescription" = "Introduzca la contraseña que se le ha dado para descargar estos archivos.";
 

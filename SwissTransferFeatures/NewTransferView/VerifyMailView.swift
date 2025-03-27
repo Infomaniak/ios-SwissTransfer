@@ -137,6 +137,8 @@ public struct VerifyMailView: View {
                 withAnimation {
                     self.error = UserFacingError.validateMailCodeIncorrect
                 }
+            } catch UploadManager.DomainError.dailyQuotaExceeded {
+                rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
             } catch {
                 rootTransferViewState.transition(to: .error(.default))
             }

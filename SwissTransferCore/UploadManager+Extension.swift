@@ -25,11 +25,17 @@ public extension UploadManager {
     enum DomainError: Error {
         case containerNotFound
         case deviceCheckFailed
+        case dailyQuotaExceeded
     }
 
     func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
-        let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
-        return SendableUploadSession(uploadSession: uploadSession)
+        do {
+            let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
+            return SendableUploadSession(uploadSession: uploadSession)
+        } catch let error as NSError
+            where error.kotlinException is STNContainerErrorsException {
+            throw DomainError.dailyQuotaExceeded
+        }
     }
 
     func initSendableUploadSession(uuid: String, isRetrying: Bool) async throws -> SendableUploadSession {
