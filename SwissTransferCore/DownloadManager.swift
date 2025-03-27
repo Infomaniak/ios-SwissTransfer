@@ -80,10 +80,9 @@ public class DownloadManager: ObservableObject {
         case badURL
     }
 
-    public init() {
+    public init(sessionConfiguration: URLSessionConfiguration) {
         let sessionDelegate = DownloadManagerSessionDelegate()
-        session = URLSession(configuration: .swissTransferBackground, delegate: sessionDelegate, delegateQueue: nil)
-
+        session = URLSession(configuration: sessionConfiguration, delegate: sessionDelegate, delegateQueue: nil)
         sessionDelegate.downloadCompletedSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] downloadTaskCompletion in
