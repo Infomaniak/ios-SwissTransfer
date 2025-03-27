@@ -104,6 +104,31 @@ let project = Project(
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
                 .target(name: "SwissTransferShareExtension"),
+                .target(name: "SwissTransfer - App Clip"),
+                rootView.asDependency
+            ],
+            settings: .settings(base: Constants.baseSettings),
+            environmentVariables: [
+                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
+            ]
+        ),
+        .target(
+            name: "SwissTransfer - App Clip",
+            destinations: Set<Destination>([.iPhone, .iPad]),
+            product: .appClip,
+            bundleId: "\(Constants.baseIdentifier).Clip",
+            deploymentTargets: DeploymentTargets.iOS("17.0"),
+            infoPlist: "SwissTransfer - App Clip/Resources/Info.plist",
+            sources: "SwissTransfer/Sources/**",
+            resources: [
+                "SwissTransfer/Resources/LaunchScreen.storyboard",
+                "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon and LaunchScreen
+                "SwissTransfer/Resources/Localizable/**/InfoPlist.strings"
+            ],
+            entitlements: "SwissTransfer - App Clip/Resources/SwissTransfer.entitlements",
+            dependencies: [
+                .target(name: "SwissTransferCore"),
+                .target(name: "SwissTransferCoreUI"),
                 rootView.asDependency
             ],
             settings: .settings(base: Constants.baseSettings),
