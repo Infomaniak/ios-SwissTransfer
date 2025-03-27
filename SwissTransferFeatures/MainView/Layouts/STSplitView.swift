@@ -83,6 +83,7 @@ private struct DetailSplitView: View {
             switch destination {
             case .transfer(let transferData):
                 TransferDetailsRootView(data: transferData)
+                    .id(transferData.id)
             case .settings:
                 Text("TODO: Settings Option.")
             }
