@@ -50,7 +50,8 @@ open class TargetAssembly {
                 AccountManager()
             },
             Factory(type: DownloadManager.self) { _, _ in
-                DownloadManager()
+                let isRunningInAppClip = Bundle.main.bundleIdentifier == "com.infomaniak.swisstransfer.Clip"
+                return DownloadManager(sessionConfiguration: isRunningInAppClip ? .swissTransfer : .swissTransferBackground)
             },
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
