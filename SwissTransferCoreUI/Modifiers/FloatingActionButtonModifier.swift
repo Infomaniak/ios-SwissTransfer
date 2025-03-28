@@ -27,6 +27,7 @@ public enum FloatingActionButtonStyle {
 
 struct FloatingActionButtonModifier: ViewModifier {
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.isRunningInAppClip) private var isRunningInAppClip
 
     @Binding var selection: [ImportedItem]
 
@@ -36,7 +37,7 @@ struct FloatingActionButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .safeAreaInset(edge: .bottom, alignment: .trailing) {
-                if isShowing && isCompactWindow {
+                if isShowing && isCompactWindow && !isRunningInAppClip {
                     Group {
                         switch style {
                         case .newTransfer:

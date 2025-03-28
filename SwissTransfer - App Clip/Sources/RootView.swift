@@ -16,12 +16,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
+import STReceivedView
 import SwiftUI
+import SwissTransferCoreUI
+import STPreloadingView
 
-public typealias DismissModalAction = () -> Void
+struct RootView: View {
+    @EnvironmentObject private var rootViewState: RootViewState
 
-public extension EnvironmentValues {
-    @Entry var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
-    @Entry var shareExtensionContext: ShareExtensionContext?
-    @Entry var isRunningInAppClip: Bool = false
+    var body: some View {
+        ZStack {
+            switch rootViewState.state {
+            case .mainView(let mainViewState):
+                MainView()
+                    .environmentObject(mainViewState)
+            case .preloading, .onboarding, .updateRequired:
+                PreloadingView(skipOnboarding: true)
+            }
+        }
+        .environmentObject(rootViewState)
+    }
+}
+
+#Preview {
+    RootView()
 }
