@@ -17,10 +17,10 @@
  */
 
 import STCore
+import STPreloadingView
 import STReceivedView
 import SwiftUI
 import SwissTransferCoreUI
-import STPreloadingView
 
 struct RootView: View {
     @EnvironmentObject private var rootViewState: RootViewState
