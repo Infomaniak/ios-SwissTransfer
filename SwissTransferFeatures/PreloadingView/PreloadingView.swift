@@ -36,20 +36,30 @@ extension VerticalAlignment {
     static let splashScreenIconAlignment = VerticalAlignment(SplashScreenIconAlignment.self)
 }
 
-struct PreloadingView: View {
+public struct PreloadingView: View {
     @LazyInjectService private var accountManager: AccountManager
 
     @EnvironmentObject private var rootViewState: RootViewState
 
-    var body: some View {
+    private let backgroundImage = Image("splashscreen-background", bundle: .main)
+    private let logoImage = Image("splashscreen-swisstransfer", bundle: .main)
+    private let infomaniakLogoImage = Image("splashscreen-infomaniak", bundle: .main)
+
+    private let skipOnboarding: Bool
+
+    public init(skipOnboarding: Bool = false) {
+        self.skipOnboarding = skipOnboarding
+    }
+
+    public var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .splashScreenIconAlignment)) {
-            STRootViewAsset.splashscreenBackground.swiftUIImage
+            backgroundImage
                 .resizable()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
 
             VStack(spacing: IKPadding.large) {
-                STRootViewAsset.splashscreenSwisstransfer.swiftUIImage
+                logoImage
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 156)
@@ -61,12 +71,20 @@ struct PreloadingView: View {
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            STRootViewAsset.splashscreenInfomaniak.swiftUIImage
+            infomaniakLogoImage
                 .padding(.bottom, value: .medium)
         }
         .task {
             if let currentManager = await accountManager.getCurrentManager() {
                 rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+            } else if skipOnboarding {
+                await accountManager.createAndSetCurrentAccount()
+                if let currentManager = await accountManager.getCurrentManager() {
+                    rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+                } else {
+                    // As a last resort we still go to onboarding
+                    rootViewState.state = .onboarding
+                }
             } else {
                 rootViewState.state = .onboarding
             }

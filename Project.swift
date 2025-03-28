@@ -25,6 +25,7 @@ let rootTransferView = Feature(name: "RootTransferView", dependencies: [newTrans
 
 // MARK: Root
 
+let preloadingView = Feature(name: "PreloadingView")
 let transferDetailsView = Feature(name: "TransferDetailsView")
 let deepLinkPasswordView = Feature(name: "DeepLinkPasswordView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferList])
@@ -60,13 +61,13 @@ let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
 
 let rootView = Feature(
     name: "RootView",
-    dependencies: [mainView, onboardingView, TargetDependency.external(name: "VersionChecker")],
-    resources: ["SwissTransfer/Resources/Assets.xcassets"]
+    dependencies: [mainView, preloadingView, onboardingView, TargetDependency.external(name: "VersionChecker")]
 )
 
 let mainiOSAppFeatures = [
     rootView,
     mainView,
+    preloadingView,
     onboardingView,
     sentView,
     receivedView,

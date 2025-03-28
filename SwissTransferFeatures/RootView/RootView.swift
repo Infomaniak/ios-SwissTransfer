@@ -21,6 +21,7 @@ import STMainView
 import STOnboardingView
 import SwiftUI
 import SwissTransferCoreUI
+import STPreloadingView
 
 public struct RootView: View {
     @EnvironmentObject private var rootViewState: RootViewState
