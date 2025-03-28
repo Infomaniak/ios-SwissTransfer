@@ -123,7 +123,7 @@ let project = Project(
             bundleId: "\(Constants.baseIdentifier).Clip",
             deploymentTargets: DeploymentTargets.iOS("17.0"),
             infoPlist: "SwissTransfer - App Clip/Resources/Info.plist",
-            sources: "SwissTransfer/Sources/**",
+            sources: "SwissTransfer - App Clip/Sources/**",
             resources: [
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon and LaunchScreen
@@ -133,12 +133,13 @@ let project = Project(
             dependencies: [
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
-                rootView.asDependency
+                .external(name: "InfomaniakCoreUIResources"),
+                preloadingView.asDependency,
+                receivedView.asDependency,
+                transferDetailsView.asDependency,
+                deepLinkPasswordView.asDependency
             ],
-            settings: .settings(base: Constants.baseSettings),
-            environmentVariables: [
-                "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
-            ]
+            settings: .settings(base: Constants.baseSettings)
         ),
         .target(
             name: "SwissTransferShareExtension",
