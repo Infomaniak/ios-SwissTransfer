@@ -26,7 +26,7 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-struct DeepLinkPasswordView: View {
+public struct DeepLinkPasswordView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var mainViewState: MainViewState
@@ -36,13 +36,17 @@ struct DeepLinkPasswordView: View {
 
     @FocusState private var isFocused: Bool
 
-    let url: IdentifiableURL
+    private let url: IdentifiableURL
 
     private var isButtonDisabled: Bool {
         return password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    var body: some View {
+    public init(url: IdentifiableURL) {
+        self.url = url
+    }
+
+    public var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: IKPadding.large) {
