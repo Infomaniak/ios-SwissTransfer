@@ -21,6 +21,7 @@ import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
+import STDeepLinkPasswordView
 import STResources
 import STRootTransferView
 import SwiftUI

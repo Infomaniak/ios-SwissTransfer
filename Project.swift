@@ -26,6 +26,7 @@ let rootTransferView = Feature(name: "RootTransferView", dependencies: [newTrans
 // MARK: Root
 
 let transferDetailsView = Feature(name: "TransferDetailsView")
+let deepLinkPasswordView = Feature(name: "DeepLinkPasswordView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferList])
 let sentView = Feature(name: "SentView", additionalDependencies: [transferList])
 
@@ -45,6 +46,7 @@ let mainView = Feature(
         sentView,
         transferDetailsView,
         rootTransferView,
+        deepLinkPasswordView,
         TargetDependency.external(name: "InfomaniakCoreUIResources"),
         TargetDependency.external(name: "VersionChecker")
     ]
@@ -73,7 +75,8 @@ let mainiOSAppFeatures = [
     uploadProgressView,
     newTransferView,
     rootTransferView,
-    transferList
+    transferList,
+    deepLinkPasswordView
 ]
 
 // MARK: - Project
@@ -193,6 +196,7 @@ let project = Project(
                     .external(name: "InfomaniakCoreCommonUI"),
                     .external(name: "InfomaniakCoreSwiftUI"),
                     .external(name: "InfomaniakCoreUIKit"),
+                    .external(name: "InfomaniakConcurrency"),
                     .external(name: "DesignSystem"),
                     .external(name: "InfomaniakDeviceCheck"),
                     .external(name: "STCore"),
