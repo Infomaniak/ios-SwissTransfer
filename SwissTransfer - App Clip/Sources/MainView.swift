@@ -42,7 +42,7 @@ struct MainView: View {
         NavigationStack {
             ReceivedView()
                 .appStoreOverlay(isPresented: $isShowingAppOverlay) {
-                    SKOverlay.AppConfiguration(appIdentifier: "6737686335", position: .bottom)
+                    SKOverlay.AppClipConfiguration(position: .bottom)
                 }
                 .stIconNavigationBar()
                 .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) {
