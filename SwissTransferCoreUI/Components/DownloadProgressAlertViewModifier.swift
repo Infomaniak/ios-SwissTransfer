@@ -134,5 +134,5 @@ struct DownloadProgressAlertViewModifier: ViewModifier {
         downloadTask: DownloadTask(id: "", state: .completed(URL(string: "/")!)),
         downloadCompletedCallback: nil
     )
-    .environmentObject(DownloadManager())
+    .environmentObject(DownloadManager(sessionConfiguration: .swissTransfer))
 }

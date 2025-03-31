@@ -19,6 +19,7 @@
 import STCore
 import STMainView
 import STOnboardingView
+import STPreloadingView
 import SwiftUI
 import SwissTransferCoreUI
 

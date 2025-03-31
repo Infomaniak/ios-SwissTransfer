@@ -25,7 +25,9 @@ let rootTransferView = Feature(name: "RootTransferView", dependencies: [newTrans
 
 // MARK: Root
 
+let preloadingView = Feature(name: "PreloadingView")
 let transferDetailsView = Feature(name: "TransferDetailsView")
+let deepLinkPasswordView = Feature(name: "DeepLinkPasswordView")
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [transferList])
 let sentView = Feature(name: "SentView", additionalDependencies: [transferList])
 
@@ -45,6 +47,7 @@ let mainView = Feature(
         sentView,
         transferDetailsView,
         rootTransferView,
+        deepLinkPasswordView,
         TargetDependency.external(name: "InfomaniakCoreUIResources"),
         TargetDependency.external(name: "VersionChecker")
     ]
@@ -58,13 +61,13 @@ let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
 
 let rootView = Feature(
     name: "RootView",
-    dependencies: [mainView, onboardingView, TargetDependency.external(name: "VersionChecker")],
-    resources: ["SwissTransfer/Resources/Assets.xcassets"]
+    dependencies: [mainView, preloadingView, onboardingView, TargetDependency.external(name: "VersionChecker")]
 )
 
 let mainiOSAppFeatures = [
     rootView,
     mainView,
+    preloadingView,
     onboardingView,
     sentView,
     receivedView,
@@ -73,7 +76,8 @@ let mainiOSAppFeatures = [
     uploadProgressView,
     newTransferView,
     rootTransferView,
-    transferList
+    transferList,
+    deepLinkPasswordView
 ]
 
 // MARK: - Project
@@ -104,12 +108,38 @@ let project = Project(
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
                 .target(name: "SwissTransferShareExtension"),
+                .target(name: "SwissTransfer - App Clip"),
                 rootView.asDependency
             ],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
                 "hostname": .environmentVariable(value: "\(ProcessInfo.processInfo.hostName).", isEnabled: true)
             ]
+        ),
+        .target(
+            name: "SwissTransfer - App Clip",
+            destinations: Set<Destination>([.iPhone, .iPad]),
+            product: .appClip,
+            bundleId: "\(Constants.baseIdentifier).Clip",
+            deploymentTargets: DeploymentTargets.iOS("17.0"),
+            infoPlist: "SwissTransfer - App Clip/Resources/Info.plist",
+            sources: "SwissTransfer - App Clip/Sources/**",
+            resources: [
+                "SwissTransfer/Resources/LaunchScreen.storyboard",
+                "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon and LaunchScreen
+                "SwissTransfer/Resources/Localizable/**/InfoPlist.strings"
+            ],
+            entitlements: "SwissTransfer - App Clip/Resources/SwissTransfer.entitlements",
+            dependencies: [
+                .target(name: "SwissTransferCore"),
+                .target(name: "SwissTransferCoreUI"),
+                .external(name: "InfomaniakCoreUIResources"),
+                preloadingView.asDependency,
+                receivedView.asDependency,
+                transferDetailsView.asDependency,
+                deepLinkPasswordView.asDependency
+            ],
+            settings: .settings(base: Constants.baseSettings)
         ),
         .target(
             name: "SwissTransferShareExtension",
@@ -168,6 +198,7 @@ let project = Project(
                     .external(name: "InfomaniakCoreCommonUI"),
                     .external(name: "InfomaniakCoreSwiftUI"),
                     .external(name: "InfomaniakCoreUIKit"),
+                    .external(name: "InfomaniakConcurrency"),
                     .external(name: "DesignSystem"),
                     .external(name: "InfomaniakDeviceCheck"),
                     .external(name: "STCore"),
