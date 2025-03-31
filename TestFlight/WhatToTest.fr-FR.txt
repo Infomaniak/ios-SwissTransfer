@@ -1,2 +1,2 @@
-- Nouveau transfert légèrement plus rapide
+- App Clip pour découvrir l'app
 - Corrections de bugs
