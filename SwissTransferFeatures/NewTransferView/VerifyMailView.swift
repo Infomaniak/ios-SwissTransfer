@@ -40,7 +40,6 @@ public struct VerifyMailView: View {
 
     @State private var isVerifyingCode = false
     @State private var error: UserFacingError?
-    @State private var clipboardCode = ""
 
     let newUploadSession: NewUploadSession
 
@@ -84,9 +83,7 @@ public struct VerifyMailView: View {
             .stNavigationBarStyle()
             .padding(value: .medium)
             .onAppear(perform: checkClipboardForCode)
-            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-                checkClipboardForCode()
-            }
+            .sceneLifecycle(willEnterForeground: checkClipboardForCode)
             .safeAreaButtons {
                 if let error {
                     Text(error.errorDescription)
@@ -151,13 +148,11 @@ public struct VerifyMailView: View {
     }
 
     private func checkClipboardForCode() {
-        if let clipboardContent = UIPasteboard.general.string {
-            let pattern = "^[0-9]{6}$"
-            if let _ = clipboardContent.range(of: pattern, options: .regularExpression) {
-                clipboardCode = clipboardContent
-                verifyCode(clipboardContent)
-                UIPasteboard.general.string = ""
-            }
+        guard let clipboardContent = UIPasteboard.general.string else { return }
+        let pattern = "^[0-9]{6}$"
+        if clipboardContent.range(of: pattern, options: .regularExpression) != nil {
+            verifyCode(clipboardContent)
+            UIPasteboard.general.string = ""
         }
     }
 }
