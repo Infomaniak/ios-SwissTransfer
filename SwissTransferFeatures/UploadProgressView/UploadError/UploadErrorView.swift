@@ -67,22 +67,17 @@ public struct UploadErrorView: View {
 
     private func retryTransfer() {
         Task {
-            do {
-                isRetryingUpload = true
-                guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(newTransferFileManager) else {
-                    isRetryingUpload = false
-                    return
-                }
-
-                let localUploadSession = try await injection.uploadManager
-                    .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
-
-                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            isRetryingUpload = true
+            guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(newTransferFileManager) else {
                 isRetryingUpload = false
-            } catch UploadManager.DomainError.dailyQuotaExceeded {
-                isRetryingUpload = false
-                rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
+                return
             }
+
+            let localUploadSession = try await injection.uploadManager
+                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+
+            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            isRetryingUpload = false
         }
     }
 

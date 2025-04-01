@@ -29,13 +29,8 @@ public extension UploadManager {
     }
 
     func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
-        do {
-            let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
-            return SendableUploadSession(uploadSession: uploadSession)
-        } catch let error as NSError
-            where error.kotlinException is STNContainerErrorsException {
-            throw DomainError.dailyQuotaExceeded
-        }
+        let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
+        return SendableUploadSession(uploadSession: uploadSession)
     }
 
     func initSendableUploadSession(uuid: String, isRetrying: Bool) async throws -> SendableUploadSession {

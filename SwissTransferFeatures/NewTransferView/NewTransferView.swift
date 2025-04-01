@@ -111,30 +111,26 @@ public struct NewTransferView: View {
 
     private func startUpload() {
         Task {
-            do {
-                isLoadingFileToUpload = true
+            isLoadingFileToUpload = true
 
-                // We need to ensure that we have an account initialized before starting
-                _ = await accountManager.getCurrentManager()
+            // We need to ensure that we have an account initialized before starting
+            _ = await accountManager.getCurrentManager()
 
-                guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
 
-                let localUploadSession = try await injection.uploadManager
-                    .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+            let localUploadSession = try await injection.uploadManager
+                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 
-                if let shareExtensionContext {
-                    let importURL = try injection.sharedApiUrlCreator
-                        .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
-                    openURL(importURL)
-                    shareExtensionContext.dismissShareSheet()
-                } else {
-                    rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
-                }
-
-                isLoadingFileToUpload = false
-            } catch UploadManager.DomainError.dailyQuotaExceeded {
-                rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
+            if let shareExtensionContext {
+                let importURL = try injection.sharedApiUrlCreator
+                    .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
+                openURL(importURL)
+                shareExtensionContext.dismissShareSheet()
+            } else {
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
             }
+
+            isLoadingFileToUpload = false
         }
     }
 
