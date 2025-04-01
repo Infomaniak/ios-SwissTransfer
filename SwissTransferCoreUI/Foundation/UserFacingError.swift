@@ -53,6 +53,10 @@ public struct UploadError: Error {
         image: STResourcesAsset.Images.ghostBinoculars.swiftUIImage,
         canRetry: false
     )
+    public static let dailyQuotaExceeded = UploadError(
+        subtitle: STResourcesStrings.Localizable.dailyTransferLimitReached,
+        canRetry: false
+    )
 
     public let title: String
     public let subtitle: String

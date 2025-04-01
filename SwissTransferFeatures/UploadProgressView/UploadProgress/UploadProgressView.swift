@@ -132,6 +132,8 @@ public struct UploadProgressView: View {
             rootTransferViewState.transition(to: .success(transferUUID))
         } catch UploadManager.DomainError.deviceCheckFailed {
             rootTransferViewState.transition(to: .error(.appIntegrity))
+        } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DailyQuotaExceededException {
+            rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
                 return
