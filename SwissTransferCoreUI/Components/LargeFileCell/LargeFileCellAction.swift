@@ -47,15 +47,11 @@ public struct DownloadFileAction: LargeFileCellAction {
     public var action: (any DisplayableFile) -> Void
 
     public func icon(for file: any DisplayableFile, transferUUID: String?) -> Image {
-        guard let url = file.localURLFor(transferUUID: transferUUID ?? "") else {
+        guard file.existsLocally(transferUUID: transferUUID) else {
             return STResourcesAsset.Images.arrowDownLine.swiftUIImage
         }
 
-        if FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
-            return STResourcesAsset.Images.check.swiftUIImage
-        } else {
-            return STResourcesAsset.Images.arrowDownLine.swiftUIImage
-        }
+        return STResourcesAsset.Images.check.swiftUIImage
     }
 
     public init(action: @escaping (any DisplayableFile) -> Void) {
