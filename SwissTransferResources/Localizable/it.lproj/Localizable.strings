@@ -77,7 +77,7 @@
 "contentDescriptionCreateNewTransferButton" = "Nuovo trasferimento";
 
 /* loco:67e54599054e355e4f053752 */
-"dailyTransferLimitReached" = "Avete raggiunto il vostro limite di trasferimento giornaliero";
+"dailyTransferLimitReached" = "Hai raggiunto il limite giornaliero di trasferimento";
 
 /* loco:677cf4a37658668b1c07d9a2 */
 "deeplinkPasswordDescription" = "Inserite la password che vi è stata fornita per scaricare questi file.";
