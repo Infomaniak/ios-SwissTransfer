@@ -29,5 +29,15 @@ public protocol DisplayableFile: Identifiable, Hashable {
 }
 
 public extension DisplayableFile {
+    func existsLocally(transferUUID: String?) -> Bool {
+        guard let url = localURLFor(transferUUID: transferUUID ?? "") else {
+            return false
+        }
+
+        return FileManager.default.fileExists(atPath: url.path(percentEncoded: false))
+    }
+}
+
+public extension DisplayableFile {
     var id: String { uid }
 }
