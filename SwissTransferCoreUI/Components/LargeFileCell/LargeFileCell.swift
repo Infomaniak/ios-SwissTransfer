@@ -54,7 +54,7 @@ public struct LargeFileCell: View {
                 .opacity(largeThumbnail == nil ? 1 : 0)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.ST.cardBackground)
-                .task {
+                .task(id: file?.existsLocally(transferUUID: transferUUID)) {
                     await generateThumbnail()
                 }
                 .overlay {
