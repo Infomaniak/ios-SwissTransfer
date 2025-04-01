@@ -25,7 +25,6 @@ public extension UploadManager {
     enum DomainError: Error {
         case containerNotFound
         case deviceCheckFailed
-        case dailyQuotaExceeded
     }
 
     func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
