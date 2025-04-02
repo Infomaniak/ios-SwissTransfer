@@ -35,13 +35,7 @@ public struct ExpiringDateFormat: FormatStyle {
         let expirationDate = Date.expiresDate(timestamp: value)
         let dateFormatted = expirationDate.formatted(date: .numeric, time: .shortened)
 
-        if expirationDate < Date() {
-            var result = AttributedString(STResourcesStrings.Localizable.expiredThe(dateFormatted))
-            result.foregroundColor = Color.ST.error
-            return result
-        } else {
-            return AttributedString(STResourcesStrings.Localizable.expiresThe(dateFormatted))
-        }
+        return AttributedString(STResourcesStrings.Localizable.expiresThe(dateFormatted))
     }
 
     private func shortExpiration(_ value: Int64) -> AttributedString {
@@ -60,13 +54,7 @@ public struct ExpiringDateFormat: FormatStyle {
             return result
         }
 
-        if expirationDate < Date() {
-            var result = AttributedString(STResourcesStrings.Localizable.expiredAt(timeFormatted))
-            result.foregroundColor = Color.ST.error
-            return result
-        } else {
-            return AttributedString(STResourcesStrings.Localizable.expiresAt(timeFormatted))
-        }
+        return AttributedString(STResourcesStrings.Localizable.expiresAt(timeFormatted))
     }
 }
 
