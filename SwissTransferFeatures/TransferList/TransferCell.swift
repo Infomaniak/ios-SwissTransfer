@@ -53,7 +53,7 @@ struct TransferCell: View {
                         Text(transfer.expirationDateTimestamp.formatted(.expiring))
                     } else {
                         Text(STResourcesStrings.Localizable.transferExpired)
-                            .foregroundColor(Color(STResourcesColors.Color.red))
+                            .foregroundColor(Color.ST.error)
                     }
                 }
                 .font(.ST.callout)
