@@ -131,8 +131,8 @@ public struct UploadProgressView: View {
             thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
 
             rootTransferViewState.transition(to: .success(transferUUID))
-        } catch UploadManager.DomainError.deviceCheckFailed {
-            sendErrorToSentryIfNeeded(error: UploadManager.DomainError.deviceCheckFailed)
+        } catch let error as STDeviceCheckError {
+            sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DailyQuotaExceededException {
             sendErrorToSentryIfNeeded(error: error)

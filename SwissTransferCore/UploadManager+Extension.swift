@@ -24,7 +24,6 @@ import STCore
 public extension UploadManager {
     enum DomainError: Error {
         case containerNotFound
-        case deviceCheckFailed
     }
 
     func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
@@ -47,9 +46,7 @@ public extension UploadManager {
             return uploadSessionWithRemoteContainer
         } catch let error as NSError
             where error.kotlinException is STNAttestationTokenException.InvalidAttestationTokenException {
-            guard let attestationToken = await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer() else {
-                throw DomainError.deviceCheckFailed
-            }
+            let attestationToken = try await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer()
 
             @InjectService var injection: SwissTransferInjection
             try await injection.uploadTokensManager.setAttestationToken(attestationToken: attestationToken)
