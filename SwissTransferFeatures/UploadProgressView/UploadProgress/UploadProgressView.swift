@@ -21,6 +21,7 @@ import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
 import OSLog
+import Sentry
 import STCore
 import STNetwork
 import STResources
@@ -130,22 +131,40 @@ public struct UploadProgressView: View {
             thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
 
             rootTransferViewState.transition(to: .success(transferUUID))
-        } catch UploadManager.DomainError.deviceCheckFailed {
+        } catch let error as STDeviceCheckError {
+            sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DailyQuotaExceededException {
+            sendErrorToSentryIfNeeded(error: error)
             rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
                 return
             }
+
+            sendErrorToSentryIfNeeded(error: error)
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DomainBlockedException {
+            sendErrorToSentryIfNeeded(error: error)
             rootTransferViewState.transition(to: .error(.restrictedLocation))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 
+            sendErrorToSentryIfNeeded(error: error)
             Logger.general.error("Error trying to start upload: \(error)")
             rootTransferViewState.transition(to: .error(.default))
+        }
+    }
+
+    private func sendErrorToSentryIfNeeded(error: Error) {
+        guard ![NSURLErrorNotConnectedToInternet, NSURLErrorTimedOut].contains((error as NSError).code) else {
+            return
+        }
+
+        SentrySDK.capture(error: error) { scope in
+            if let containerError = (error as NSError).kotlinException as? STNContainerErrorsException {
+                scope.setContext(value: ["requestId": containerError.requestContextId], key: "Container Error")
+            }
         }
     }
 
