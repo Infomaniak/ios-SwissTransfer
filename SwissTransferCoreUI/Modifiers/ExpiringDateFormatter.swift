@@ -23,7 +23,7 @@ import SwissTransferCore
 public struct ExpiringDateFormat: FormatStyle {
     let completeDate: Bool
 
-    public func format(_ value: Int64) -> AttributedString {
+    public func format(_ value: Int64) -> String {
         if completeDate {
             return completeExpiration(value)
         } else {
@@ -31,30 +31,26 @@ public struct ExpiringDateFormat: FormatStyle {
         }
     }
 
-    private func completeExpiration(_ value: Int64) -> AttributedString {
+    private func completeExpiration(_ value: Int64) -> String {
         let expirationDate = Date.expiresDate(timestamp: value)
         let dateFormatted = expirationDate.formatted(date: .numeric, time: .shortened)
 
-        return AttributedString(STResourcesStrings.Localizable.expiresThe(dateFormatted))
+        return STResourcesStrings.Localizable.expiresThe(dateFormatted)
     }
 
-    private func shortExpiration(_ value: Int64) -> AttributedString {
+    private func shortExpiration(_ value: Int64) -> String {
         let expirationDate = Date.expiresDate(timestamp: value)
         let dateFormatted = expirationDate.formatted(date: .numeric, time: .omitted)
         let timeFormatted = expirationDate.formatted(date: .omitted, time: .shortened)
 
         let daysBeforeExpiration = Date.expiresIn(timestamp: value)
         if daysBeforeExpiration > 1 {
-            return AttributedString(STResourcesStrings.Localizable.expiresIn(daysBeforeExpiration))
+            return STResourcesStrings.Localizable.expiresIn(daysBeforeExpiration)
         } else if daysBeforeExpiration == 1 {
-            return AttributedString(STResourcesStrings.Localizable.expiresTomorrow)
-        } else if daysBeforeExpiration < 0 {
-            var result = AttributedString(STResourcesStrings.Localizable.expiredThe(dateFormatted))
-            result.foregroundColor = Color.ST.error
-            return result
+            return STResourcesStrings.Localizable.expiresTomorrow
         }
 
-        return AttributedString(STResourcesStrings.Localizable.expiresAt(timeFormatted))
+        return STResourcesStrings.Localizable.expiresAt(timeFormatted)
     }
 }
 
