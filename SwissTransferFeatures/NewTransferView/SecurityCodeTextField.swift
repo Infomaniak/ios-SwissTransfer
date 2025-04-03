@@ -22,9 +22,16 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct SecurityCodeTextField: View {
+    @State private var fields: [String] = [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ]
     @FocusState private var focusedField: Int?
 
-    @Binding var fields: [String]
     @Binding var error: UserFacingError?
 
     let completion: (String) -> Void
@@ -75,12 +82,25 @@ struct SecurityCodeTextField: View {
             }
         }
         .font(.ST.body)
+        .onAppear(perform: checkClipboardForCode)
+        .sceneLifecycle(willEnterForeground: checkClipboardForCode)
+    }
+
+    private func checkClipboardForCode() {
+        Task {
+            let patterns = try await UIPasteboard.general.detectedPatterns(for: [\.number])
+
+            guard patterns.contains(\.number),
+                  let string = UIPasteboard.general.strings?.first(where: { $0.count == 6 }) else { return }
+
+            self.fields = Array(string).map { String($0) }
+        }
     }
 }
 
 #Preview {
-    SecurityCodeTextField(fields: .constant(["", "", "", "", "", ""]), error: .constant(nil)) { _ in }
-    SecurityCodeTextField(fields: .constant(["", "", "", "", "", ""]), error: .constant(UserFacingError.unknownError)) { _ in }
+    SecurityCodeTextField(error: .constant(nil)) { _ in }
+    SecurityCodeTextField(error: .constant(UserFacingError.unknownError)) { _ in }
 }
 
 struct SecurityCodeTextFieldStyle: TextFieldStyle {

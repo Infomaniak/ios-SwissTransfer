@@ -19,7 +19,6 @@
 import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
-import OSLog
 import STCore
 import STResources
 import SwiftUI
@@ -41,7 +40,6 @@ public struct VerifyMailView: View {
 
     @State private var isVerifyingCode = false
     @State private var error: UserFacingError?
-    @State private var securityCodeFields: [String] = ["", "", "", "", "", ""]
 
     let newUploadSession: NewUploadSession
 
@@ -60,7 +58,7 @@ public struct VerifyMailView: View {
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
 
-                SecurityCodeTextField(fields: $securityCodeFields, error: $error, completion: verifyCode)
+                SecurityCodeTextField(error: $error, completion: verifyCode)
                     .disabled(isVerifyingCode)
                     .opacity(isVerifyingCode ? 0.5 : 1)
                     .overlay {
@@ -84,8 +82,6 @@ public struct VerifyMailView: View {
             }
             .stNavigationBarStyle()
             .padding(value: .medium)
-            .onAppear(perform: checkClipboardForCode)
-            .sceneLifecycle(willEnterForeground: checkClipboardForCode)
             .safeAreaButtons {
                 if let error {
                     Text(error.errorDescription)
@@ -146,20 +142,6 @@ public struct VerifyMailView: View {
             }
 
             isVerifyingCode = false
-        }
-    }
-
-    private func checkClipboardForCode() {
-        UIPasteboard.general.detectPatterns(for: [\.number]) { result in
-            switch result {
-            case .success:
-                if let string = UIPasteboard.general.strings?
-                    .first(where: { $0.count == 6 }) {
-                    self.securityCodeFields = Array(string).map { String($0) }
-                }
-            case .failure(let error):
-                Logger.general.error("Error detecting OTP patterns: \(error)")
-            }
         }
     }
 }
