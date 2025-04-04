@@ -82,6 +82,19 @@ struct SecurityCodeTextField: View {
             }
         }
         .font(.ST.body)
+        .onAppear(perform: checkClipboardForCode)
+        .sceneLifecycle(willEnterForeground: checkClipboardForCode)
+    }
+
+    private func checkClipboardForCode() {
+        Task {
+            let detectedPatterns = try await UIPasteboard.general.detectedPatterns(for: [\.number])
+
+            guard detectedPatterns.contains(\.number),
+                  let possibleOTPCode = UIPasteboard.general.strings?.first(where: { $0.count == 6 }) else { return }
+
+            self.fields = possibleOTPCode.map { String($0) }
+        }
     }
 }
 
