@@ -88,12 +88,12 @@ struct SecurityCodeTextField: View {
 
     private func checkClipboardForCode() {
         Task {
-            let patterns = try await UIPasteboard.general.detectedPatterns(for: [\.number])
+            let detectedPatterns = try await UIPasteboard.general.detectedPatterns(for: [\.number])
 
-            guard patterns.contains(\.number),
-                  let string = UIPasteboard.general.strings?.first(where: { $0.count == 6 }) else { return }
+            guard detectedPatterns.contains(\.number),
+                  let possibleOTPCode = UIPasteboard.general.strings?.first(where: { $0.count == 6 }) else { return }
 
-            self.fields = Array(string).map { String($0) }
+            self.fields = possibleOTPCode.map { String($0) }
         }
     }
 }
