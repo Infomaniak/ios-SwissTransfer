@@ -1,2 +1,3 @@
-- App Clip to discover the app
-- Bug fixes
+- Thumbnail is updated after being downloaded
+- Improved UX ot the OTP with clipboard management
+- Better handling of upload errors
