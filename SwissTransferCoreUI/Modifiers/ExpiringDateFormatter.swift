@@ -40,7 +40,6 @@ public struct ExpiringDateFormat: FormatStyle {
 
     private func shortExpiration(_ value: Int64) -> String {
         let expirationDate = Date.expiresDate(timestamp: value)
-        let dateFormatted = expirationDate.formatted(date: .numeric, time: .omitted)
         let timeFormatted = expirationDate.formatted(date: .omitted, time: .shortened)
 
         let daysBeforeExpiration = Date.expiresIn(timestamp: value)
