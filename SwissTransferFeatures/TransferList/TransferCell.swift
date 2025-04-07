@@ -49,11 +49,11 @@ struct TransferCell: View {
                 SeparatedItemsView {
                     Text(transfer.sizeUploaded, format: .defaultByteCount)
                 } rhs: {
-                    if transfer.transferStatus == .ready || transfer.transferStatus == .unknown {
-                        Text(transfer.expirationDateTimestamp.formatted(.expiring))
-                    } else {
+                    if transfer.transferStatus == .expiredDate || transfer.transferStatus == .expiredDownloadQuota {
                         Text(STResourcesStrings.Localizable.transferExpired)
                             .foregroundColor(Color.ST.error)
+                    } else {
+                        Text(transfer.expirationDateTimestamp.formatted(.expiring))
                     }
                 }
                 .font(.ST.callout)
