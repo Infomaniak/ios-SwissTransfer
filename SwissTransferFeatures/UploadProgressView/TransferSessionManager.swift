@@ -87,15 +87,7 @@ class TransferSessionManager: ObservableObject {
 
         let transferManagerWorker = TransferManagerWorker(overallProgress: overallProgress)
 
-        try await remoteUploadFiles.enumerated()
-            .map { (uploadSession.files[$0.offset], $0.element) }
-            .asyncForEach { localFile, remoteUploadFile in
-                try await transferManagerWorker.uploadFile(
-                    atPath: localFile.localPath,
-                    remoteUploadFileUUID: remoteUploadFile.uuid,
-                    uploadUUID: uploadSession.uuid
-                )
-            }
+        try await transferManagerWorker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
 
         let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
@@ -128,7 +120,19 @@ struct TransferManagerWorker {
 
     let overallProgress: Progress
 
-    func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
+    func uploadFiles(for uploadSession: SendableUploadSession, remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
+        try await remoteUploadFiles.enumerated()
+            .map { (uploadSession.files[$0.offset], $0.element) }
+            .asyncForEach { localFile, remoteUploadFile in
+                try await uploadFile(
+                    atPath: localFile.localPath,
+                    remoteUploadFileUUID: remoteUploadFile.uuid,
+                    uploadUUID: uploadSession.uuid
+                )
+            }
+    }
+
+    private func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
         guard let fileURL = URL(string: atPath),
               let chunkReader = ChunkReader(fileURL: fileURL) else {
             throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: atPath)
