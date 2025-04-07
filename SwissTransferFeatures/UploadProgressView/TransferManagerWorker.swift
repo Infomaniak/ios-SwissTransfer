@@ -27,7 +27,7 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
-struct TransferManagerWorker {
+actor TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let uploadURLSession: URLSession = .sharedSwissTransfer
 
@@ -42,11 +42,15 @@ struct TransferManagerWorker {
 
     let overallProgress: Progress
 
+    init(overallProgress: Progress) {
+        self.overallProgress = overallProgress
+    }
+
     func uploadFiles(for uploadSession: SendableUploadSession, remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
-                try await uploadFile(
+                try await self.uploadFile(
                     atPath: localFile.localPath,
                     remoteUploadFileUUID: remoteUploadFile.uuid,
                     uploadUUID: uploadSession.uuid
@@ -76,7 +80,7 @@ struct TransferManagerWorker {
                     throw TransferSessionManager.ErrorDomain.invalidChunk
                 }
 
-                try await uploadChunk(
+                try await self.uploadChunk(
                     chunk: chunk,
                     index: index,
                     isLastChunk: false,
