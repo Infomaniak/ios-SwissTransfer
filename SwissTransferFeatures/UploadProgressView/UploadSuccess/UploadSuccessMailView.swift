@@ -39,13 +39,8 @@ struct UploadSuccessMailView: View {
                 style: .emptyState
             )
 
-            FlowLayout(verticalSpacing: IKPadding.mini, horizontalSpacing: IKPadding.mini) {
-                ForEach(recipients, id: \.self) { recipient in
-                    Text(recipient)
-                        .stChip()
-                }
-            }
-            .frame(maxWidth: 800)
+            ListOfRecipientsView(recipients: recipients)
+                .frame(maxWidth: 800)
         }
         .padding(.horizontal, value: .medium)
         .scrollableEmptyState()
