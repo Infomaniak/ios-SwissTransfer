@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Philippe Weidmann
- * Exported at: Mon, 03 Mar 2025 08:56:17 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 08 Apr 2025 08:32:47 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -106,11 +106,8 @@
 /* loco:6728e0698584637cc20ef6b2 */
 "errorTransferPasswordLength" = "Das Passwort muss zwischen 6 und 25 Zeichen lang sein";
 
-/* loco:67b488d07f38fc224e03f774 */
-"expiredAt" = "Abgelaufen bei %@";
-
-/* loco:67b48882a2b26d7b12047ef2 */
-"expiredThe" = "Abgelaufen am %@";
+/* loco:67b8749b3c6e5f744d0bcc82 */
+"expired" = "Abgelaufen";
 
 /* loco:67b489ba13ccf8b7ab0e46b3 */
 "expiresAt" = "Läuft ab bei %@";
@@ -123,15 +120,6 @@
 
 /* loco:6776640e5e97ee7e550d5b72 */
 "expiresTomorrow" = "Läuft morgen ab";
-
-/* loco:66cecf7d39d10277c00c3102 */
-"filesCount" = "%d Datei";
-
-/* loco:6707db753b5b9ca70b07ef42 */
-"filesCount-plural" = "%d Dateien";
-
-/* loco:67120291a1c637c0cc0d0242 */
-"filesCount-plural-many" = "";
 
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Mach deinen ersten Transfer!";
@@ -253,12 +241,6 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Empfangen";
 
-/* loco:66a24aaccbb152954307a612 */
-"recipientHeader" = "Empfänger:";
-
-/* loco:66a765a7ec41ffa0250df2d3 */
-"recipientHeader-plural" = "Adressaten:";
-
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer ist an Ihrem Standort nicht verfügbar";
 
@@ -292,9 +274,6 @@
 
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Persönlich";
-
-/* loco:6708e556a393fdf47d05e272 */
-"settingsDataManagementDescription" = "Sie können die Nutzungs- und Betriebsdaten, die Infomaniak abruft, individuell anpassen, um Fehler zu beheben und die Anwendung zu verbessern. Beide Tools werden ausschliesslich von uns gehostet und verwaltet.\n\nInfomaniak respektiert Ihre Privatsphäre: Der Quellcode dieser Anwendung kann überprüft werden, die gesammelten Informationen sind anonym und Ihre persönlichen Daten werden streng vertraulich behandelt und niemals an Dritte weitergegeben.";
 
 /* loco:6708fc46d154f71d5501a3d5 */
 "settingsDataManagementSourceCode" = "Siehe Quellcode";
@@ -418,12 +397,6 @@
 /* loco:66c587e4067064f587099c02 */
 "settingsValidityPeriodTitle" = "Legt eine Standardgültigkeitsdauer für deine Transfers fest";
 
-/* loco:66c58d0c6d764a6df404ade2 */
-"settingsValidityPeriodValue" = "%d Tag";
-
-/* loco:66c58d32b754b5821b0b2c22 */
-"settingsValidityPeriodValue-plural" = "%d Tage";
-
 /* loco:67335c646d95d56ce00c77b2 */
 "sharePasswordButton" = "Kopieren des Passworts";
 
@@ -448,9 +421,6 @@
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Inhalt der Übertragung:";
 
-/* loco:66c725c0834eeac04c0b2ee2 */
-"transferExpired" = "Transfer abgelaufen";
-
 /* loco:6720b962e49b6c46620d30f3 */
 "transferExpiredButton" = "Aus dem Verlauf löschen";
 
@@ -459,9 +429,6 @@
 
 /* loco:678e7bb990830fe7f1052e92 */
 "transferExpiredDescription" = "Diese Übertragung ist leider abgelaufen. Du kannst die Dateien nicht mehr herunterladen oder ansehen.";
-
-/* loco:6720aef59b1991933101caf2 */
-"transferExpiredLimitReachedDescription" = "Entschuldigung, diese Übertragung hat die Grenze der %d möglichen Downloads erreicht.";
 
 /* loco:6720aec78a4f6e6b0c0d28a2 */
 "transferExpiredTitle" = "Diese Übertragung ist nicht mehr verfügbar";
@@ -579,12 +546,6 @@
 
 /* loco:671f96c0560f1de88c0f7e02 */
 "uploadProgressTitleTemplate" = "Was %@?";
-
-/* loco:670f50568faef3642e0316d2 */
-"uploadSuccessEmailDescription" = "Der Download-Link wurde erfolgreich an den folgenden Empfänger gesendet:";
-
-/* loco:6718bd5a1e9716eeff066f12 */
-"uploadSuccessEmailDescription-plural" = "Der Download-Link wurde an die folgenden Empfänger gesendet:";
 
 /* loco:670f500d0230688d8b0bdf42 */
 "uploadSuccessEmailTitle" = "Versand ist erfolgt. Cheers!";

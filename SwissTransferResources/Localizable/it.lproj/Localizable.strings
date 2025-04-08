@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: it, Italian
  * Tagged: ios
- * Exported by: Philippe Weidmann
- * Exported at: Mon, 03 Mar 2025 08:56:17 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 08 Apr 2025 08:32:47 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -106,11 +106,8 @@
 /* loco:6728e0698584637cc20ef6b2 */
 "errorTransferPasswordLength" = "La password deve essere compresa tra 6 e 24 caratteri";
 
-/* loco:67b488d07f38fc224e03f774 */
-"expiredAt" = "Scaduto al %@";
-
-/* loco:67b48882a2b26d7b12047ef2 */
-"expiredThe" = "Scaduto il %@";
+/* loco:67b8749b3c6e5f744d0bcc82 */
+"expired" = "Scaduto";
 
 /* loco:67b489ba13ccf8b7ab0e46b3 */
 "expiresAt" = "Scade al %@";
@@ -123,15 +120,6 @@
 
 /* loco:6776640e5e97ee7e550d5b72 */
 "expiresTomorrow" = "Scade domani";
-
-/* loco:66cecf7d39d10277c00c3102 */
-"filesCount" = "%d file";
-
-/* loco:6707db753b5b9ca70b07ef42 */
-"filesCount-plural" = "%d file";
-
-/* loco:67120291a1c637c0cc0d0242 */
-"filesCount-plural-many" = "";
 
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Effettua il tuo primo trasferimento!";
@@ -253,12 +241,6 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Ricevuto";
 
-/* loco:66a24aaccbb152954307a612 */
-"recipientHeader" = "A:";
-
-/* loco:66a765a7ec41ffa0250df2d3 */
-"recipientHeader-plural" = "A:";
-
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer non è disponibile nella tua località";
 
@@ -293,9 +275,6 @@
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Personalizzato";
 
-/* loco:6708e556a393fdf47d05e272 */
-"settingsDataManagementDescription" = "È possibile personalizzare i dati di utilizzo e operativi che Infomaniak recupera per correggere i bug e migliorare l’applicazione. Entrambi gli strumenti sono ospitati e gestiti esclusivamente da noi.\n\nInfomaniak rispetta la vostra privacy: il codice sorgente di questa applicazione può essere verificato, le informazioni raccolte sono anonime e i vostri dati personali rimangono strettamente confidenziali e non vengono mai condivisi con terze parti.";
-
 /* loco:6708fc46d154f71d5501a3d5 */
 "settingsDataManagementSourceCode" = "Vedi il codice sorgente";
 
@@ -303,7 +282,7 @@
 "settingsDownloadsLimitTitle" = "Impostare un limite di download predefinito per i trasferimenti";
 
 /* loco:66c6beb4953867da65029872 */
-"settingsEmailLanguageTitle" = "Impostare una lingua predefinita per i trasferimenti di e-mail";
+"settingsEmailLanguageTitle" = "Imposta una lingua predefinita per i trasferimenti di e-mail";
 
 /* loco:66c6bfb72d51f3e429025a82 */
 "settingsEmailLanguageValueEnglish" = "Inglese";
@@ -418,12 +397,6 @@
 /* loco:66c587e4067064f587099c02 */
 "settingsValidityPeriodTitle" = "Imposta un periodo di validità predefinito per i trasferimenti";
 
-/* loco:66c58d0c6d764a6df404ade2 */
-"settingsValidityPeriodValue" = "%d giorno";
-
-/* loco:66c58d32b754b5821b0b2c22 */
-"settingsValidityPeriodValue-plural" = "%d giorni";
-
 /* loco:67335c646d95d56ce00c77b2 */
 "sharePasswordButton" = "Copia la password";
 
@@ -448,9 +421,6 @@
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenuto del trasferimento:";
 
-/* loco:66c725c0834eeac04c0b2ee2 */
-"transferExpired" = "Trasferimento scaduto";
-
 /* loco:6720b962e49b6c46620d30f3 */
 "transferExpiredButton" = "Cancellare dalla cronologia";
 
@@ -459,9 +429,6 @@
 
 /* loco:678e7bb990830fe7f1052e92 */
 "transferExpiredDescription" = "Siamo spiacenti, questo trasferimento è scaduto. Non è più possibile scaricare o visualizzare i file.";
-
-/* loco:6720aef59b1991933101caf2 */
-"transferExpiredLimitReachedDescription" = "Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.";
 
 /* loco:6720aec78a4f6e6b0c0d28a2 */
 "transferExpiredTitle" = "Questo trasferimento non è più disponibile";
@@ -579,12 +546,6 @@
 
 /* loco:671f96c0560f1de88c0f7e02 */
 "uploadProgressTitleTemplate" = "Cosa ci rende %@?";
-
-/* loco:670f50568faef3642e0316d2 */
-"uploadSuccessEmailDescription" = "Il link per il download è stato inviato al seguente destinatario:";
-
-/* loco:6718bd5a1e9716eeff066f12 */
-"uploadSuccessEmailDescription-plural" = "Il link per il download è stato inviato ai seguenti destinatari:";
 
 /* loco:670f500d0230688d8b0bdf42 */
 "uploadSuccessEmailTitle" = "E si parte!";

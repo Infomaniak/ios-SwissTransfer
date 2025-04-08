@@ -1,88 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+ Loco ios export: Xcode Stringsdict (legacy)
+ Project: SwissTransfer
+ Locale: fr, French
+ Tagged: ios-stringdict
+ Exported by: Valentin Perignon
+ Exported at: Tue, 08 Apr 2025 08:43:17 +0200
+-->
 <plist version="1.0">
-<dict>
-	<key>recipientHeader</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@value@</string>
-		<key>value</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>Destinataire :</string>
-			<key>other</key>
-			<string>Destinataires :</string>
-		</dict>
-	</dict>
-	<key>settingsValidityPeriodValue</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@value@</string>
-		<key>value</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d jour</string>
-			<key>other</key>
-			<string>%d jours</string>
-		</dict>
-	</dict>
-	<key>filesCount</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@value@</string>
-		<key>value</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d fichier</string>
-			<key>other</key>
-			<string>%d fichiers</string>
-			<key>many</key>
-			<string>% de fichiers</string>
-		</dict>
-	</dict>
-	<key>uploadSuccessEmailDescription</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@value@</string>
-		<key>value</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>Le lien de téléchargement a bien été envoyé au destinataire suivant :</string>
-			<key>other</key>
-			<string>Le lien de téléchargement a été envoyé aux destinataires suivants :</string>
-		</dict>
-	</dict>
-	<key>transferExpiredLimitReachedDescription</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@value@</string>
-		<key>value</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>Désolé, ce transfert a atteint la limite de %d téléchargement possible.</string>
-			<key>other</key>
-			<string>Désolé, ce transfert a atteint la limite de %d téléchargements possibles.</string>
-		</dict>
-	</dict>
-</dict>
+  <dict>
+    <key>filesCount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d fichier</string>
+        <key>other</key>
+        <string>%d fichiers</string>
+        <key>many</key>
+        <string>% de fichiers</string>
+      </dict>
+    </dict>
+    <key>recipientHeader</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Destinataire :</string>
+        <key>other</key>
+        <string>Destinataires :</string>
+      </dict>
+    </dict>
+    <key>settingsValidityPeriodValue</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d jour</string>
+        <key>other</key>
+        <string>%d jours</string>
+      </dict>
+    </dict>
+    <key>transferExpiredLimitReachedDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Désolé, ce transfert a atteint la limite de %d téléchargement possible.</string>
+        <key>other</key>
+        <string>Désolé, ce transfert a atteint la limite de %d téléchargements possibles.</string>
+        <key>many</key>
+        <string>Désolé, ce transfert a atteint la limite de %d téléchargement possible.</string>
+      </dict>
+    </dict>
+    <key>uploadSuccessEmailDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Le lien de téléchargement a bien été envoyé au destinataire suivant :</string>
+        <key>other</key>
+        <string>Le lien de téléchargement a été envoyé aux destinataires suivants :</string>
+      </dict>
+    </dict>
+  </dict>
 </plist>
