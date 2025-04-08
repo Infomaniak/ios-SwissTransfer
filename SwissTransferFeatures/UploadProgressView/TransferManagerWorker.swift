@@ -27,21 +27,35 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
-struct UploadChunk: Hashable {
+struct UploadChunkInFile: Equatable, Sendable {
+    let file: UploadFile
+    let chunk: UploadChunk
+    var task: Task<Void, Error>?
+
+    public static func == (lhs: UploadChunkInFile, rhs: UploadChunkInFile) -> Bool {
+        lhs.chunk == rhs.chunk
+    }
+}
+
+struct UploadChunk: Hashable, Equatable, Sendable {
     let fileURL: URL
     let remoteUploadFileUUID: String
     let uploadUUID: String
     let range: DataRange
-    let chunkIndex: Int
+    let index: Int
     let isLast: Bool
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(fileURL)
-        hasher.combine(chunkIndex)
+        hasher.combine(index)
+    }
+
+    public static func == (lhs: UploadChunk, rhs: UploadChunk) -> Bool {
+        lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
     }
 }
 
-struct UploadFile: Equatable {
+struct UploadFile: Equatable, Sendable {
     let fileURL: URL
     let uploadChunks: [UploadChunk]
     let lastChunk: UploadChunk
@@ -51,12 +65,19 @@ struct UploadFile: Equatable {
     }
 }
 
-actor TransferManagerWorker {
+actor TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
+    func backgroundActivityExpiring() {
+        cancelAllTasks()
+    }
+
     private static let maxParallelUploads = 4
     private let uploadURLSession: URLSession = .sharedSwissTransfer
 
-    private var uploadingFiles: [UploadFile] = []
-    private var uploadingChunkTasks: [UploadChunk: Task<Void, Never>] = [:]
+    private var uploadingFiles = [UploadFile]()
+    private var uploadedFiles = [UploadFile]()
+
+    private var uploadingChunks = [UploadChunkInFile]()
+    private var uploadedChunks = [UploadChunkInFile]()
 
     private let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -73,7 +94,12 @@ actor TransferManagerWorker {
         self.overallProgress = overallProgress
     }
 
-    func uploadFiles(for uploadSession: SendableUploadSession, remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
+    deinit {
+        cancelAllTasks()
+    }
+
+    public func uploadFiles(for uploadSession: SendableUploadSession,
+                            remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
@@ -103,7 +129,7 @@ actor TransferManagerWorker {
                                              remoteUploadFileUUID: remoteUploadFileUUID,
                                              uploadUUID: uploadUUID,
                                              range: range,
-                                             chunkIndex: index,
+                                             index: index,
                                              isLast: isLast)
             return uploadingChunk
         }
@@ -119,19 +145,55 @@ actor TransferManagerWorker {
     }
 
     private func uploadAllFiles() async throws {
-        try await uploadingFiles.asyncForEach { uploadFile in
+        let expiringActivity = ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
+        expiringActivity.start()
+
+        let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
+        try await allFiles.asyncForEach { uploadFile in
             try await self.uploadAllChunks(forFile: uploadFile)
+        }
+
+        expiringActivity.endAll()
+    }
+
+    private func retryAllFiles() async throws {
+        cancelAllTasks()
+        try await uploadAllFiles()
+    }
+
+    private func cancelAllTasks() {
+        uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
+        uploadingChunks.removeAll()
+    }
+
+    private func setStartUploading(chunk: UploadChunk, inFile file: UploadFile, task: Task<Void, Error>) {
+        uploadingChunks.append(UploadChunkInFile(file: file, chunk: chunk, task: task))
+    }
+
+    private func setDoneUploading(chunk: UploadChunk, inFile file: UploadFile) {
+        let chunkInFile = UploadChunkInFile(file: file, chunk: chunk)
+        uploadedChunks.append(chunkInFile)
+        uploadingChunks.removeAll { chunkInFile in
+            chunkInFile.chunk == chunk
         }
     }
 
     private func uploadAllChunks(forFile uploadFile: UploadFile) async throws {
         try await uploadFile.uploadChunks.concurrentForEach(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
             guard let self else { return }
-            async let _ = try await self.getTask(withChunk: chunk).value
+            let task = await self.getTask(withChunk: chunk)
+            await self.setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
+            _ = try await task.value
+            await self.setDoneUploading(chunk: chunk, inFile: uploadFile)
         }
 
         // last chunk to close session
-        async let _ = try await getTask(withChunk: uploadFile.lastChunk).value
+        let lastChunk = uploadFile.lastChunk
+        let task = getTask(withChunk: lastChunk)
+        setStartUploading(chunk: lastChunk, inFile: uploadFile, task: task)
+        _ = try await task.value
+        setDoneUploading(chunk: lastChunk, inFile: uploadFile)
+        uploadedFiles.append(uploadFile)
     }
 
     func uploadChunk(
@@ -186,7 +248,7 @@ actor TransferManagerWorker {
 
             try await self.uploadChunk(
                 chunk: chunkData,
-                index: chunk.chunkIndex,
+                index: chunk.index,
                 isLastChunk: chunk.isLast,
                 remoteUploadFileUUID: chunk.remoteUploadFileUUID,
                 uploadUUID: chunk.uploadUUID
