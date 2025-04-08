@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
@@ -107,6 +108,8 @@ public struct UploadProgressView: View {
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
+            reportTransferToMatomo()
+
             let uploadManager = injection.uploadManager
 
             if viewModel.initializedFromShare,
@@ -178,6 +181,11 @@ public struct UploadProgressView: View {
     private func cancelTransfer() {
         guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
         rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: currentUploadSessionUUID)
+    }
+
+    private func reportTransferToMatomo() {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: .newTransferData, action: .data, name: viewModel.transferType.matomoValue)
     }
 }
 

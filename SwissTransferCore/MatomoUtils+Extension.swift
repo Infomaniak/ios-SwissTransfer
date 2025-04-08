@@ -30,6 +30,7 @@ public extension MatomoUtils {
 
 public extension MatomoUtils.EventCategory {
     static let transferType = MatomoUtils.EventCategory(displayName: "transferType")
+    static let newTransferData = MatomoUtils.EventCategory(displayName: "newTransferData")
 }
 
 // MARK: - Track views
