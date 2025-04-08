@@ -27,9 +27,36 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
+struct UploadChunk: Hashable {
+    let fileURL: URL
+    let remoteUploadFileUUID: String
+    let uploadUUID: String
+    let range: DataRange
+    let chunkIndex: Int
+    let isLast: Bool
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(fileURL)
+        hasher.combine(chunkIndex)
+    }
+}
+
+struct UploadFile: Equatable {
+    let fileURL: URL
+    let uploadChunks: [UploadChunk]
+    let lastChunk: UploadChunk
+
+    public static func == (lhs: UploadFile, rhs: UploadFile) -> Bool {
+        lhs.fileURL == rhs.fileURL
+    }
+}
+
 actor TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let uploadURLSession: URLSession = .sharedSwissTransfer
+
+    private var uploadingFiles: [UploadFile] = []
+    private var uploadingChunkTasks: [UploadChunk: Task<Void, Never>] = [:]
 
     private let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -50,56 +77,61 @@ actor TransferManagerWorker {
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
-                try await self.uploadFile(
-                    atPath: localFile.localPath,
-                    remoteUploadFileUUID: remoteUploadFile.uuid,
-                    uploadUUID: uploadSession.uuid
-                )
+                try await self.buildAllUploadTasks(forFileAtPath: localFile.localPath,
+                                                   remoteUploadFileUUID: remoteUploadFile.uuid,
+                                                   uploadUUID: uploadSession.uuid)
             }
+
+        let totalChunks = uploadingFiles.reduce(0) { partialResult, uploadFile in
+            partialResult + uploadFile.uploadChunks.count + 1
+        }
+        try await uploadAllFiles()
     }
 
-    private func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: atPath),
-              let chunkReader = ChunkReader(fileURL: fileURL) else {
-            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: atPath)
+    private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
+        guard let fileURL = URL(string: path) else {
+            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: path)
         }
 
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
 
-        var ranges = try rangeProvider.allRanges
-
-        guard let lastRange = ranges.popLast() else {
-            throw TransferSessionManager.ErrorDomain.invalidRange
+        let ranges = try rangeProvider.allRanges
+        let indexedRanges = ranges.enumerated().map { ($0, $1) }
+        var chunks = indexedRanges.map { index, range in
+            let isLast = index == ranges.count - 1
+            let uploadingChunk = UploadChunk(fileURL: fileURL,
+                                             remoteUploadFileUUID: remoteUploadFileUUID,
+                                             uploadUUID: uploadUUID,
+                                             range: range,
+                                             chunkIndex: index,
+                                             isLast: isLast)
+            return uploadingChunk
         }
 
-        try await ranges
-            .enumerated()
-            .map { ($0, $1) }
-            .concurrentForEach(customConcurrency: 4) { index, range in
-                guard let chunk = try chunkReader.readChunk(range: range) else {
-                    throw TransferSessionManager.ErrorDomain.invalidChunk
-                }
-
-                try await self.uploadChunk(
-                    chunk: chunk,
-                    index: index,
-                    isLastChunk: false,
-                    remoteUploadFileUUID: remoteUploadFileUUID,
-                    uploadUUID: uploadUUID
-                )
-            }
-
-        guard let lastChunk = try chunkReader.readChunk(range: lastRange) else {
+        guard let lastChunk = chunks.popLast() else {
             throw TransferSessionManager.ErrorDomain.invalidChunk
         }
 
-        try await uploadChunk(
-            chunk: lastChunk,
-            index: ranges.count,
-            isLastChunk: true,
-            remoteUploadFileUUID: remoteUploadFileUUID,
-            uploadUUID: uploadUUID
-        )
+        assert(lastChunk.isLast, "should be last")
+
+        let uploadingFile = UploadFile(fileURL: fileURL, uploadChunks: chunks, lastChunk: lastChunk)
+        uploadingFiles.append(uploadingFile)
+    }
+
+    private func uploadAllFiles() async throws {
+        try await uploadingFiles.asyncForEach { uploadFile in
+            try await self.uploadAllChunks(forFile: uploadFile)
+        }
+    }
+
+    private func uploadAllChunks(forFile uploadFile: UploadFile) async throws {
+        try await uploadFile.uploadChunks.concurrentForEach(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
+            guard let self else { return }
+            async let _ = try await self.getTask(withChunk: chunk).value
+        }
+
+        // last chunk to close session
+        async let _ = try await getTask(withChunk: uploadFile.lastChunk).value
     }
 
     func uploadChunk(
@@ -137,6 +169,28 @@ actor TransferManagerWorker {
 
         if httpResponse.statusCode >= 400 {
             throw TransferSessionManager.ErrorDomain.invalidChunkResponse
+        }
+    }
+
+    func getTask(withChunk chunk: UploadChunk) -> Task<Void, Error> {
+        return Task { [weak self] in
+            guard let self else { return }
+
+            guard let chunkReader = ChunkReader(fileURL: chunk.fileURL) else {
+                throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: chunk.fileURL.path)
+            }
+
+            guard let chunkData = try chunkReader.readChunk(range: chunk.range) else {
+                throw TransferSessionManager.ErrorDomain.invalidChunk
+            }
+
+            try await self.uploadChunk(
+                chunk: chunkData,
+                index: chunk.chunkIndex,
+                isLastChunk: chunk.isLast,
+                remoteUploadFileUUID: chunk.remoteUploadFileUUID,
+                uploadUUID: chunk.uploadUUID
+            )
         }
     }
 }
