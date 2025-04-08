@@ -1,3 +1,3 @@
-- Mise à jour de la vignette d'un fichier après son téléchargement
-- Amélioration de l'UX de l'OTP avec la gestion du presse papier
-- Meilleure gestion des erreurs d'upload
+- Affichage du status expiré d'un transfert dont la limite de téléchargement est atteinte
+- Affichage de la liste des adresses mails d'un transfert envoyé
+- Correction d'un bug concernant les transferts par mail
