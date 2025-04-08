@@ -28,6 +28,12 @@ public struct TransferDetailsView: View {
 
     private let transfer: TransferUi?
 
+    private var shouldDisplayRecipientsOrMessage: Bool {
+        let shouldDisplayRecipients = transfer?.recipientsEmails.isEmpty == false
+        let shouldDisplayMessage = transfer?.trimmedMessage != nil && transfer?.trimmedMessage?.isEmpty == false
+        return shouldDisplayRecipients || shouldDisplayMessage
+    }
+
     public init(transfer: TransferUi?) {
         self.transfer = transfer
     }
@@ -35,7 +41,7 @@ public struct TransferDetailsView: View {
     public var body: some View {
         ScrollView {
             if let transfer {
-                VStack(spacing: IKPadding.large) {
+                VStack(alignment: .leading, spacing: IKPadding.large) {
                     HeaderView(
                         filesCount: transfer.files.count,
                         transferSize: transfer.sizeUploaded,
@@ -45,8 +51,15 @@ public struct TransferDetailsView: View {
                         transferDirection: transfer.direction
                     )
 
-                    if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
-                        MessageView(message: trimmedMessage)
+                    if shouldDisplayRecipientsOrMessage {
+                        VStack(alignment: .leading, spacing: IKPadding.medium) {
+                            if !transfer.recipientsEmails.isEmpty {
+                                RecipientsView(recipients: Array(transfer.recipientsEmails))
+                            }
+                            if let trimmedMessage = transfer.trimmedMessage, !trimmedMessage.isEmpty {
+                                MessageView(message: trimmedMessage)
+                            }
+                        }
                     }
 
                     ContentView(transfer: transfer)

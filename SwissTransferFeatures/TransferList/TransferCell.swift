@@ -50,7 +50,7 @@ struct TransferCell: View {
                     Text(transfer.sizeUploaded, format: .defaultByteCount)
                 } rhs: {
                     if transfer.transferStatus == .expiredDate || transfer.transferStatus == .expiredDownloadQuota {
-                        Text(STResourcesStrings.Localizable.transferExpired)
+                        Text(STResourcesStrings.Localizable.expired)
                             .foregroundColor(Color.ST.error)
                     } else {
                         Text(transfer.expirationDateTimestamp.formatted(.expiring))

@@ -82,11 +82,6 @@ public final class RootTransferViewModel: ObservableObject {
     public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
         @InjectService var injection: SwissTransferInjection
 
-        var transformedRecipients = [String]()
-        if transferType == .mail {
-            transformedRecipients = recipientsEmail.map { "\"" + $0 + "\"" }
-        }
-
         var authorTrimmedEmail = ""
         if transferType == .mail {
             authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -106,7 +101,7 @@ public final class RootTransferViewModel: ObservableObject {
             message: message.trimmingCharacters(in: .whitespacesAndNewlines),
             numberOfDownload: downloadLimit,
             language: emailLanguage,
-            recipientsEmails: Set(transformedRecipients),
+            recipientsEmails: Set(recipientsEmail),
             files: filesToUpload
         )
 
