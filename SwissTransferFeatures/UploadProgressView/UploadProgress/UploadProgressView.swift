@@ -123,17 +123,19 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
-            async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
-                uploadSession: uploadSession,
-                scale: scale
-            )
+            let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession) { transferUUID in
+                Task {
+                    async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
+                        uploadSession: uploadSession,
+                        scale: scale
+                    )
+                    
+                    let uuidsWithThumbnail = await thumbnailGenerationTask
+                    thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
 
-            let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
-
-            let uuidsWithThumbnail = await thumbnailGenerationTask
-            thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
-
-            rootTransferViewState.transition(to: .success(transferUUID))
+                    rootTransferViewState.transition(to: .success(transferUUID))
+                }
+            }
         } catch let error as STDeviceCheckError {
             sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))

@@ -69,6 +69,7 @@ actor TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let uploadURLSession: URLSession = .sharedSwissTransfer
     private let appStateObserver = AppStateObserver()
+    private var successCallback: (() -> Void)?
 
     private var uploadingFiles = [UploadFile]()
     private var uploadedFiles = [UploadFile]()
@@ -100,11 +101,13 @@ actor TransferManagerWorker {
 
     deinit {
         uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
-        uploadingChunks.removeAll()
     }
 
     public func uploadFiles(for uploadSession: SendableUploadSession,
-                            remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
+                            remoteUploadFiles: [SendableRemoteUploadFile],
+                            success: (() -> Void)? = nil) async throws {
+        successCallback = success
+
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
@@ -113,9 +116,6 @@ actor TransferManagerWorker {
                                                    uploadUUID: uploadSession.uuid)
             }
 
-        let totalChunks = uploadingFiles.reduce(0) { partialResult, uploadFile in
-            partialResult + uploadFile.uploadChunks.count + 1
-        }
         try await uploadAllFiles()
     }
 
@@ -157,6 +157,9 @@ actor TransferManagerWorker {
         try await allFiles.asyncForEach { uploadFile in
             try await self.uploadAllChunks(forFile: uploadFile)
         }
+
+        successCallback?()
+        successCallback = nil
 
         expiringActivity.endAll()
     }
