@@ -65,11 +65,7 @@ struct UploadFile: Equatable, Sendable {
     }
 }
 
-actor TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
-    func backgroundActivityExpiring() {
-        cancelAllTasks()
-    }
-
+actor TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let uploadURLSession: URLSession = .sharedSwissTransfer
 
@@ -254,5 +250,20 @@ actor TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
                 uploadUUID: chunk.uploadUUID
             )
         }
+    }
+}
+
+extension TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
+    func backgroundActivityExpiring() {
+        cancelAllTasks()
+    }
+}
+
+extension TransferManagerWorker: AppStateObserverDelegate {
+    nonisolated func appDidBecomeActive() {
+        guard suspendedUploads else {
+            return
+        }
+        retryAllFiles()
     }
 }
