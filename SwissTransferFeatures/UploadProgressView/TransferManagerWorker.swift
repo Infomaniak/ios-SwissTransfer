@@ -193,7 +193,12 @@ actor TransferManagerWorker {
     }
 
     private func uploadAllChunks(forFile uploadFile: UploadFile) async throws {
-        try await uploadFile.uploadChunks.concurrentForEach(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
+        let uploadedChunksInFile = uploadedChunks.filter { chunkInFile in
+            chunkInFile.file == uploadFile
+        }.map(\.chunk)
+        let chunksToUpload = uploadFile.uploadChunks.filter { !uploadedChunksInFile.contains($0) }
+
+        try await chunksToUpload.concurrentForEach(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
             guard let self else { return }
             let task = await self.getTask(withChunk: chunk)
             await self.setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
