@@ -53,6 +53,7 @@ class TransferSessionManager: ObservableObject {
     @Published var totalBytes: Int64 = 0
 
     private var cancellables: Set<AnyCancellable> = []
+    private var transferManagerWorker: TransferManagerWorker?
 
     enum ErrorDomain: Error {
         case remoteContainerNotFound
@@ -85,9 +86,9 @@ class TransferSessionManager: ObservableObject {
         let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
-        let transferManagerWorker = TransferManagerWorker(overallProgress: overallProgress)
-
-        try await transferManagerWorker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
+        let worker = TransferManagerWorker(overallProgress: overallProgress)
+        transferManagerWorker = worker
+        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
 
         let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
