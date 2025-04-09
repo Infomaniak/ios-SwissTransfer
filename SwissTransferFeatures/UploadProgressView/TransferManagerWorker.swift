@@ -27,7 +27,7 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
-struct UploadChunkInFile: Equatable, Sendable {
+private struct UploadChunkInFile: Equatable, Sendable {
     let file: UploadFile
     let chunk: UploadChunk
     var task: Task<Void, Error>?
@@ -37,7 +37,7 @@ struct UploadChunkInFile: Equatable, Sendable {
     }
 }
 
-struct UploadChunk: Hashable, Equatable, Sendable {
+private struct UploadChunk: Hashable, Equatable, Sendable {
     let fileURL: URL
     let remoteUploadFileUUID: String
     let uploadUUID: String
@@ -55,7 +55,7 @@ struct UploadChunk: Hashable, Equatable, Sendable {
     }
 }
 
-struct UploadFile: Equatable, Sendable {
+private struct UploadFile: Equatable, Sendable {
     let fileURL: URL
     let uploadChunks: [UploadChunk]
     let lastChunk: UploadChunk
@@ -245,7 +245,7 @@ actor TransferManagerWorker {
         }
     }
 
-    func getTask(withChunk chunk: UploadChunk) -> Task<Void, Error> {
+    private func getTask(withChunk chunk: UploadChunk) -> Task<Void, Error> {
         return Task { [weak self] in
             guard let self else { return }
 
