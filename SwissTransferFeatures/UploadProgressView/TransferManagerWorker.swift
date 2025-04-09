@@ -68,12 +68,19 @@ struct UploadFile: Equatable, Sendable {
 actor TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let uploadURLSession: URLSession = .sharedSwissTransfer
+    private let appStateObserver = AppStateObserver()
 
     private var uploadingFiles = [UploadFile]()
     private var uploadedFiles = [UploadFile]()
 
+    private var doneUploading: Bool {
+        uploadingFiles.count == uploadedFiles.count
+    }
+
     private var uploadingChunks = [UploadChunkInFile]()
     private var uploadedChunks = [UploadChunkInFile]()
+
+    private var suspendedUploads = false
 
     private let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -88,10 +95,12 @@ actor TransferManagerWorker {
 
     init(overallProgress: Progress) {
         self.overallProgress = overallProgress
+        appStateObserver.delegate = self
     }
 
     deinit {
-        cancelAllTasks()
+        uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
+        uploadingChunks.removeAll()
     }
 
     public func uploadFiles(for uploadSession: SendableUploadSession,
@@ -152,14 +161,20 @@ actor TransferManagerWorker {
         expiringActivity.endAll()
     }
 
-    private func retryAllFiles() async throws {
-        cancelAllTasks()
+    private func retryRemainingFiles() async throws {
+        guard suspendedUploads, !doneUploading else {
+            return
+        }
+
+        uploadingChunks.removeAll()
+        suspendedUploads = false
         try await uploadAllFiles()
     }
 
     private func cancelAllTasks() {
         uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
         uploadingChunks.removeAll()
+        suspendedUploads = true
     }
 
     private func setStartUploading(chunk: UploadChunk, inFile file: UploadFile, task: Task<Void, Error>) {
@@ -261,9 +276,8 @@ extension TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
 
 extension TransferManagerWorker: AppStateObserverDelegate {
     nonisolated func appDidBecomeActive() {
-        guard suspendedUploads else {
-            return
+        Task {
+            try await retryRemainingFiles()
         }
-        retryAllFiles()
     }
 }
