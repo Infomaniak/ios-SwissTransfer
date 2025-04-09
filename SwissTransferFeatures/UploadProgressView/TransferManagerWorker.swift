@@ -67,7 +67,6 @@ private struct UploadFile: Equatable, Sendable {
 
 actor TransferManagerWorker {
     private static let maxParallelUploads = 4
-    private let uploadURLSession: URLSession = .sharedSwissTransfer
     private let appStateObserver = AppStateObserver()
     private var successCallback: (() -> Void)?
 
@@ -93,6 +92,7 @@ actor TransferManagerWorker {
     )
 
     let overallProgress: Progress
+    let uploadURLSession: URLSession = .sharedSwissTransfer
 
     init(overallProgress: Progress) {
         self.overallProgress = overallProgress
@@ -208,44 +208,6 @@ actor TransferManagerWorker {
         _ = try await task.value
         setDoneUploading(chunk: lastChunk, inFile: uploadFile)
         uploadedFiles.append(uploadFile)
-    }
-
-    func uploadChunk(
-        chunk: Data,
-        index: Int,
-        isLastChunk: Bool,
-        remoteUploadFileUUID: String,
-        uploadUUID: String
-    ) async throws {
-        @InjectService var injection: SwissTransferInjection
-        guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
-            uploadUUID: uploadUUID,
-            fileUUID: remoteUploadFileUUID,
-            chunkIndex: Int32(index),
-            isLastChunk: isLastChunk,
-            isRetry: false
-        ) else {
-            throw TransferSessionManager.ErrorDomain.invalidUploadChunkURL
-        }
-
-        guard let chunkURL = URL(string: rawChunkURL) else {
-            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: rawChunkURL)
-        }
-
-        var uploadRequest = URLRequest(url: chunkURL)
-        uploadRequest.httpMethod = Method.POST.rawValue
-
-        let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
-        overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
-
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw TransferSessionManager.ErrorDomain.invalidResponse
-        }
-
-        if httpResponse.statusCode >= 400 {
-            throw TransferSessionManager.ErrorDomain.invalidChunkResponse
-        }
     }
 
     private func getTask(withChunk chunk: UploadChunk) -> Task<Void, Error> {
