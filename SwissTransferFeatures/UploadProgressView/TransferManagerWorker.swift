@@ -37,18 +37,13 @@ private struct UploadChunkInFile: Equatable, Sendable {
     }
 }
 
-private struct UploadChunk: Hashable, Equatable, Sendable {
+private struct UploadChunk: Equatable, Sendable {
     let fileURL: URL
     let remoteUploadFileUUID: String
     let uploadUUID: String
     let range: DataRange
     let index: Int
     let isLast: Bool
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(fileURL)
-        hasher.combine(index)
-    }
 
     public static func == (lhs: UploadChunk, rhs: UploadChunk) -> Bool {
         lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
