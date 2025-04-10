@@ -24,6 +24,7 @@ public protocol AppStateObserverDelegate: AnyObject {
 
 public final class AppStateObserver {
     weak var delegate: AppStateObserverDelegate?
+
     init() {
         NotificationCenter.default.addObserver(
             self,
