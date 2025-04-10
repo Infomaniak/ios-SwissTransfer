@@ -26,7 +26,7 @@ struct ReceivedEmptyView: View {
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var transferManager: TransferManager
 
-    @State private var selection = [ImportedItem]()
+    @State private var selectedItems = [ImportedItem]()
     @State private var hasAlreadyMadeTransfers = false
 
     private var fabStyle: FloatingActionButtonStyle {
@@ -42,10 +42,8 @@ struct ReceivedEmptyView: View {
         )
         .padding(value: .medium)
         .scrollableEmptyState()
-        .emptyStateFloatingButton(selection: $selection, style: fabStyle)
-        .onChange(of: selection) { newSelectedItems in
-            mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
-        }
+        .emptyStateFloatingButton(selection: $selectedItems, style: fabStyle)
+        .onChangeOfSelectedItems($selectedItems)
         .appBackground()
         .task {
             guard let sentTransfers = try? transferManager.getTransfers(transferDirection: .sent) else { return }

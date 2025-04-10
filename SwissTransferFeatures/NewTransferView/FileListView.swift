@@ -94,10 +94,14 @@ struct FileListView: View {
             }
         }
         .task(id: selectedItems) {
+            guard !selectedItems.isEmpty else { return }
+
             _ = await newTransferFileManager.addItems(selectedItems)
             withAnimation {
                 files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
             }
+
+            selectedItems = []
         }
         .matomoView(view: "NewTransferFileListView")
     }
