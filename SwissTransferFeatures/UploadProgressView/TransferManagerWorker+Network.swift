@@ -39,11 +39,11 @@ extension TransferManagerWorker {
             isLastChunk: isLastChunk,
             isRetry: false
         ) else {
-            throw TransferSessionManager.ErrorDomain.invalidUploadChunkURL
+            throw ErrorDomain.invalidUploadChunkURL
         }
 
         guard let chunkURL = URL(string: rawChunkURL) else {
-            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: rawChunkURL)
+            throw ErrorDomain.invalidURL(rawURL: rawChunkURL)
         }
 
         var uploadRequest = URLRequest(url: chunkURL)
@@ -54,11 +54,11 @@ extension TransferManagerWorker {
 
         let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw TransferSessionManager.ErrorDomain.invalidResponse
+            throw ErrorDomain.invalidResponse
         }
 
         if httpResponse.statusCode >= 400 {
-            throw TransferSessionManager.ErrorDomain.invalidChunkResponse
+            throw ErrorDomain.invalidChunkResponse
         }
     }
 }

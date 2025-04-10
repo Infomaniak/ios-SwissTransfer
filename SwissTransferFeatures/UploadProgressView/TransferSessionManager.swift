@@ -55,16 +55,6 @@ class TransferSessionManager: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
 
-    enum ErrorDomain: Error {
-        case remoteContainerNotFound
-        case invalidURL(rawURL: String)
-        case invalidUploadChunkURL
-        case invalidChunk
-        case invalidRange
-        case invalidResponse
-        case invalidChunkResponse
-    }
-
     func uploadFiles(
         for uploadSession: SendableUploadSession,
         completion: @escaping (Result<String, Error>) async -> Void
