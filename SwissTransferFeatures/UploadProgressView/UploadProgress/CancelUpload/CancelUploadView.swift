@@ -52,7 +52,6 @@ public struct CancelUploadView: View {
     }
 
     private func cancelUpload() {
-        // todo call cancel
         dismiss()
         rootTransferViewState.transition(to: .newTransfer)
 
