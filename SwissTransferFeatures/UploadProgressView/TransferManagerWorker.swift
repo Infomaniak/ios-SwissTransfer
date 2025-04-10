@@ -216,7 +216,6 @@ actor TransferManagerWorker {
             try await trackAndPerformUploadTask(withChunk: chunk, inFile: uploadFile)
         }
 
-        // last chunk to close session
         let lastChunk = uploadFile.lastChunk
         try await trackAndPerformUploadTask(withChunk: lastChunk, inFile: uploadFile)
 
