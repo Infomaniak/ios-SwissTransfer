@@ -65,7 +65,10 @@ class TransferSessionManager: ObservableObject {
         case invalidChunkResponse
     }
 
-    func uploadFiles(for uploadSession: SendableUploadSession, success: @escaping (_ transferUUID: String) -> Void) async throws {
+    func uploadFiles(
+        for uploadSession: SendableUploadSession,
+        completion: @escaping (Result<String, Error>) async -> Void
+    ) async throws {
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
 
@@ -86,10 +89,17 @@ class TransferSessionManager: ObservableObject {
         let worker = TransferManagerWorker(overallProgress: overallProgress)
         transferManagerWorker = worker
 
-        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles) {
-            Task {
-                let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
-                success(transferUUID)
+        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles) { result in
+            switch result {
+            case .success:
+                do {
+                    let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
+                    await completion(.success(transferUUID))
+                } catch {
+                    await completion(.failure(error))
+                }
+            case .failure(let error):
+                await completion(.failure(error))
             }
         }
     }
