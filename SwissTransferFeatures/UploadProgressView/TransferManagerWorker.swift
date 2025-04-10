@@ -159,6 +159,8 @@ actor TransferManagerWorker {
 
             await completionCallback?(.success(()))
             completionCallback = nil
+        } catch let error as URLError where error.code == .cancelled {
+            // silent catching, the uploads are suspended
         } catch {
             await completionCallback?(.failure(error))
             completionCallback = nil
