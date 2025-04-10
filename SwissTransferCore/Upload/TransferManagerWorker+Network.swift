@@ -21,7 +21,6 @@ import InfomaniakCore
 import InfomaniakDI
 import STCore
 import STNetwork
-import SwissTransferCore
 
 extension TransferManagerWorker {
     func uploadChunk(
@@ -49,7 +48,7 @@ extension TransferManagerWorker {
         var uploadRequest = URLRequest(url: chunkURL)
         uploadRequest.httpMethod = Method.POST.rawValue
 
-        let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
+        let taskDelegate = UploadTaskProgressTracker(totalBytesExpectedToSend: chunk.count)
         overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
 
         let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)

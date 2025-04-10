@@ -25,21 +25,20 @@ import OSLog
 import Sentry
 import STCore
 import STNetwork
-import SwissTransferCore
 
 extension Result: Sendable where Success: Sendable, Failure: Sendable {}
 
-private struct UploadChunkInFile: Equatable, Sendable {
-    let file: UploadFile
-    let chunk: UploadChunk
+private struct WorkerChunkInFile: Equatable, Sendable {
+    let file: WorkerFile
+    let chunk: WorkerChunk
     var task: Task<Void, Error>?
 
-    public static func == (lhs: UploadChunkInFile, rhs: UploadChunkInFile) -> Bool {
+    public static func == (lhs: WorkerChunkInFile, rhs: WorkerChunkInFile) -> Bool {
         lhs.chunk == rhs.chunk
     }
 }
 
-private struct UploadChunk: Equatable, Sendable {
+private struct WorkerChunk: Equatable, Sendable {
     let fileURL: URL
     let remoteUploadFileUUID: String
     let uploadUUID: String
@@ -47,26 +46,26 @@ private struct UploadChunk: Equatable, Sendable {
     let index: Int
     let isLast: Bool
 
-    public static func == (lhs: UploadChunk, rhs: UploadChunk) -> Bool {
+    public static func == (lhs: WorkerChunk, rhs: WorkerChunk) -> Bool {
         lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
     }
 }
 
-private struct UploadFile: Equatable, Sendable {
+private struct WorkerFile: Equatable, Sendable {
     let fileURL: URL
-    let uploadChunks: [UploadChunk]
-    let lastChunk: UploadChunk
+    let uploadChunks: [WorkerChunk]
+    let lastChunk: WorkerChunk
 
-    public static func == (lhs: UploadFile, rhs: UploadFile) -> Bool {
+    public static func == (lhs: WorkerFile, rhs: WorkerFile) -> Bool {
         lhs.fileURL == rhs.fileURL
     }
 }
 
-protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
+public protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
     @MainActor func uploadDidComplete(result: Result<String, Error>)
 }
 
-actor TransferManagerWorker {
+public actor TransferManagerWorker {
     @LazyInjectService private var injection: SwissTransferInjection
 
     private static let maxParallelUploads = 4
@@ -75,15 +74,15 @@ actor TransferManagerWorker {
     private let uploadSession: SendableUploadSession
     private weak var delegate: TransferManagerWorkerDelegate?
 
-    private var uploadingFiles = [UploadFile]()
-    private var uploadedFiles = [UploadFile]()
+    private var uploadingFiles = [WorkerFile]()
+    private var uploadedFiles = [WorkerFile]()
 
     private var doneUploading: Bool {
         uploadingFiles.count == uploadedFiles.count
     }
 
-    private var uploadingChunks = [UploadChunkInFile]()
-    private var uploadedChunks = [UploadChunkInFile]()
+    private var uploadingChunks = [WorkerChunkInFile]()
+    private var uploadedChunks = [WorkerChunkInFile]()
 
     private var suspendedUploads = false
 
@@ -99,7 +98,7 @@ actor TransferManagerWorker {
     let overallProgress: Progress
     let uploadURLSession: URLSession = .sharedSwissTransfer
 
-    init(overallProgress: Progress, uploadSession: SendableUploadSession, delegate: TransferManagerWorkerDelegate) {
+    public init(overallProgress: Progress, uploadSession: SendableUploadSession, delegate: TransferManagerWorkerDelegate) {
         self.overallProgress = overallProgress
         self.uploadSession = uploadSession
         self.delegate = delegate
@@ -140,7 +139,7 @@ actor TransferManagerWorker {
         let indexedRanges = ranges.enumerated().map { ($0, $1) }
         var chunks = indexedRanges.map { index, range in
             let isLast = index == ranges.count - 1
-            let uploadingChunk = UploadChunk(fileURL: fileURL,
+            let uploadingChunk = WorkerChunk(fileURL: fileURL,
                                              remoteUploadFileUUID: remoteUploadFileUUID,
                                              uploadUUID: uploadUUID,
                                              range: range,
@@ -155,7 +154,7 @@ actor TransferManagerWorker {
 
         assert(lastChunk.isLast, "expecting isLast flag to match the last in collection")
 
-        let uploadingFile = UploadFile(fileURL: fileURL, uploadChunks: chunks, lastChunk: lastChunk)
+        let uploadingFile = WorkerFile(fileURL: fileURL, uploadChunks: chunks, lastChunk: lastChunk)
         uploadingFiles.append(uploadingFile)
     }
 
@@ -194,19 +193,19 @@ actor TransferManagerWorker {
         await uploadAllFiles()
     }
 
-    private func setStartUploading(chunk: UploadChunk, inFile file: UploadFile, task: Task<Void, Error>) {
-        uploadingChunks.append(UploadChunkInFile(file: file, chunk: chunk, task: task))
+    private func setStartUploading(chunk: WorkerChunk, inFile file: WorkerFile, task: Task<Void, Error>) {
+        uploadingChunks.append(WorkerChunkInFile(file: file, chunk: chunk, task: task))
     }
 
-    private func setDoneUploading(chunk: UploadChunk, inFile file: UploadFile) {
-        let chunkInFile = UploadChunkInFile(file: file, chunk: chunk)
+    private func setDoneUploading(chunk: WorkerChunk, inFile file: WorkerFile) {
+        let chunkInFile = WorkerChunkInFile(file: file, chunk: chunk)
         uploadedChunks.append(chunkInFile)
         uploadingChunks.removeAll { chunkInFile in
             chunkInFile.chunk == chunk
         }
     }
 
-    private func uploadAllChunks(forFile uploadFile: UploadFile) async throws {
+    private func uploadAllChunks(forFile uploadFile: WorkerFile) async throws {
         let uploadedChunksInFile = uploadedChunks.filter { chunkInFile in
             chunkInFile.file == uploadFile
         }.map(\.chunk)
@@ -223,14 +222,14 @@ actor TransferManagerWorker {
         uploadedFiles.append(uploadFile)
     }
 
-    private func trackAndPerformUploadTask(withChunk chunk: UploadChunk, inFile uploadFile: UploadFile) async throws {
+    private func trackAndPerformUploadTask(withChunk chunk: WorkerChunk, inFile uploadFile: WorkerFile) async throws {
         let task = getTask(withChunk: chunk)
         setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
         _ = try await task.value
         setDoneUploading(chunk: chunk, inFile: uploadFile)
     }
 
-    private func getTask(withChunk chunk: UploadChunk) -> Task<Void, Error> {
+    private func getTask(withChunk chunk: WorkerChunk) -> Task<Void, Error> {
         return Task { [weak self] in
             guard let self else { return }
 
@@ -254,13 +253,13 @@ actor TransferManagerWorker {
 }
 
 extension TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
-    func backgroundActivityExpiring() {
+    public func backgroundActivityExpiring() {
         suspendAllTasks()
     }
 }
 
 extension TransferManagerWorker: AppStateObserverDelegate {
-    nonisolated func appDidBecomeActive() {
+    public nonisolated func appDidBecomeActive() {
         Task {
             try await retryRemainingFiles()
         }

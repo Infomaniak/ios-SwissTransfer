@@ -20,11 +20,11 @@ import Combine
 import InfomaniakDI
 import STCore
 
-public protocol TransferCancellable: Sendable {
+public protocol UploadCancellable: Sendable {
     func cancelUploads() async
 }
 
-public final class DummyTransferCancellable: TransferCancellable {
+public final class DummyUploadCancellable: UploadCancellable {
     public func cancelUploads() async {}
     public init() {}
 }
@@ -32,9 +32,9 @@ public final class DummyTransferCancellable: TransferCancellable {
 public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
-    public let uploadsCancellable: TransferCancellable
+    public let uploadsCancellable: UploadCancellable
 
-    public init(uuid: String, uploadsCancellable: TransferCancellable) {
+    public init(uuid: String, uploadsCancellable: UploadCancellable) {
         self.uuid = uuid
         self.uploadsCancellable = uploadsCancellable
     }

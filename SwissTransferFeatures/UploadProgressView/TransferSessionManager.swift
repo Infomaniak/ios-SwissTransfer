@@ -27,24 +27,6 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
-final class UploadTaskDelegate: NSObject, URLSessionTaskDelegate {
-    let taskProgress: Progress
-
-    init(totalBytesExpectedToSend: Int) {
-        taskProgress = Progress(totalUnitCount: Int64(totalBytesExpectedToSend))
-    }
-
-    func urlSession(
-        _ session: URLSession,
-        task: URLSessionTask,
-        didSendBodyData bytesSent: Int64,
-        totalBytesSent: Int64,
-        totalBytesExpectedToSend: Int64
-    ) {
-        taskProgress.completedUnitCount = totalBytesSent
-    }
-}
-
 @MainActor
 final class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
@@ -82,7 +64,7 @@ final class TransferSessionManager: ObservableObject {
     }
 }
 
-extension TransferSessionManager: TransferCancellable {
+extension TransferSessionManager: UploadCancellable {
     public func cancelUploads() async {
         print("cancelAllUploads")
         await transferManagerWorker?.suspendAllTasks()
