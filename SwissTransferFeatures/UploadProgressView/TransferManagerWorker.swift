@@ -195,19 +195,21 @@ actor TransferManagerWorker {
 
         try await chunksToUpload.concurrentForEach(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
             guard let self else { return }
-            let task = await self.getTask(withChunk: chunk)
-            await self.setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
-            _ = try await task.value
-            await self.setDoneUploading(chunk: chunk, inFile: uploadFile)
+            try await trackAndPerformUploadTask(withChunk: chunk, inFile: uploadFile)
         }
 
         // last chunk to close session
         let lastChunk = uploadFile.lastChunk
-        let task = getTask(withChunk: lastChunk)
-        setStartUploading(chunk: lastChunk, inFile: uploadFile, task: task)
-        _ = try await task.value
-        setDoneUploading(chunk: lastChunk, inFile: uploadFile)
+        try await trackAndPerformUploadTask(withChunk: lastChunk, inFile: uploadFile)
+
         uploadedFiles.append(uploadFile)
+    }
+
+    private func trackAndPerformUploadTask(withChunk chunk: UploadChunk, inFile uploadFile: UploadFile) async throws {
+        let task = getTask(withChunk: chunk)
+        setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
+        _ = try await task.value
+        setDoneUploading(chunk: chunk, inFile: uploadFile)
     }
 
     private func getTask(withChunk chunk: UploadChunk) -> Task<Void, Error> {
