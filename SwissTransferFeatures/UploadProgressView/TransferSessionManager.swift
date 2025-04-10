@@ -51,6 +51,8 @@ class TransferSessionManager: ObservableObject {
 
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
+    @Published var transferSuccessUUID: String?
+    @Published var transferError: Error?
 
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
@@ -85,9 +87,9 @@ extension TransferSessionManager: TransferManagerWorkerDelegate {
     @MainActor func uploadDidComplete(result: Result<String, any Error>) {
         switch result {
         case .success(let transferUUID):
-            print("• success \(transferUUID)")
+            transferSuccessUUID = transferUUID
         case .failure(let error):
-            print("• fail:\(error)")
+            transferError = error
         }
     }
 }
