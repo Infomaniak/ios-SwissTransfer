@@ -16,20 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
 import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct CancelUploadView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
 
-    private let uploadSessionUUID: String
+    private let uploadContainer: CurrentUploadContainer
 
-    public init(uploadSessionUUID: String) {
-        self.uploadSessionUUID = uploadSessionUUID
+    public init(uploadContainer: CurrentUploadContainer) {
+        self.uploadContainer = uploadContainer
     }
 
     public var body: some View {
@@ -50,17 +52,15 @@ public struct CancelUploadView: View {
     }
 
     private func cancelUpload() {
+        // todo call cancel
         dismiss()
         rootTransferViewState.transition(to: .newTransfer)
 
-        Task {
-            @InjectService var injection: SwissTransferInjection
-            let uploadManager = injection.uploadManager
-            try? await uploadManager.cancelUploadSession(uuid: uploadSessionUUID)
-        }
+        uploadContainer.cancel()
     }
 }
 
 #Preview {
-    CancelUploadView(uploadSessionUUID: "")
+    let container = CurrentUploadContainer(uuid: "", uploadsCancellable: DummyTransferCancellable())
+    CancelUploadView(uploadContainer: container)
 }

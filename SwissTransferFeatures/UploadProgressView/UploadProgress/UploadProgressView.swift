@@ -209,7 +209,10 @@ public struct UploadProgressView: View {
 
     private func cancelTransfer() {
         guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
-        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: currentUploadSessionUUID)
+        rootTransferViewState.cancelUploadContainer = CurrentUploadContainer(
+            uuid: currentUploadSessionUUID,
+            uploadsCancellable: transferSessionManager
+        )
     }
 
     private func reportTransferToMatomo() {

@@ -33,7 +33,7 @@ public enum RootTransferViewType {
 public final class RootTransferViewState: ObservableObject {
     @Published public private(set) var state: RootTransferViewType
 
-    @Published public var cancelUploadUUID: CurrentUploadContainer?
+    @Published public var cancelUploadContainer: CurrentUploadContainer?
 
     public init(initialState: RootTransferViewType = .newTransfer) {
         state = initialState
