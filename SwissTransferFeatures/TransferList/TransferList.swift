@@ -81,9 +81,7 @@ public struct TransferList<EmptyView: View>: View {
         .task {
             try? await transferManager.fetchWaitingTransfers()
         }
-        .onChange(of: selectedItems) { newSelectedItems in
-            mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
-        }
+        .onChangeOfSelectedItems($selectedItems)
         .appBackground()
         .toolbar {
             ToolbarItem(placement: .principal) {

@@ -43,9 +43,7 @@ struct SentEmptyView: View {
             }
 
             FirstTransferButton(selection: $selectedItems, style: .big)
-                .onChange(of: selectedItems) { newSelectedItems in
-                    mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
-                }
+                .onChangeOfSelectedItems($selectedItems)
         }
         .padding(value: .medium)
         .scrollableEmptyState()
