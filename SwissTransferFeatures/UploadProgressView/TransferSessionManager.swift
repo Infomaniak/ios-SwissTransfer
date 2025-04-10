@@ -57,7 +57,7 @@ final class TransferSessionManager: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
 
-    func uploadFiles(
+    public func uploadFiles(
         for uploadSession: SendableUploadSession
     ) async throws {
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
@@ -79,6 +79,14 @@ final class TransferSessionManager: ObservableObject {
         transferManagerWorker = worker
 
         try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
+    }
+}
+
+extension TransferSessionManager: TransferCancellable {
+    public func cancelUploads() async {
+        print("cancelAllUploads")
+        await transferManagerWorker?.suspendAllTasks()
+        transferManagerWorker = nil
     }
 }
 

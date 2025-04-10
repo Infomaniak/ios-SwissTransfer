@@ -123,6 +123,12 @@ actor TransferManagerWorker {
         await uploadAllFiles()
     }
 
+    public func suspendAllTasks() {
+        uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
+        uploadingChunks.removeAll()
+        suspendedUploads = true
+    }
+
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
         guard let fileURL = URL(string: path) else {
             throw ErrorDomain.invalidURL(rawURL: path)
@@ -162,6 +168,7 @@ actor TransferManagerWorker {
             }
 
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
+
             try await allFiles.asyncForEach { uploadFile in
                 try await self.uploadAllChunks(forFile: uploadFile)
             }
@@ -185,12 +192,6 @@ actor TransferManagerWorker {
         uploadingChunks.removeAll()
         suspendedUploads = false
         await uploadAllFiles()
-    }
-
-    private func cancelAllTasks() {
-        uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
-        uploadingChunks.removeAll()
-        suspendedUploads = true
     }
 
     private func setStartUploading(chunk: UploadChunk, inFile file: UploadFile, task: Task<Void, Error>) {
@@ -254,7 +255,7 @@ actor TransferManagerWorker {
 
 extension TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
     func backgroundActivityExpiring() {
-        cancelAllTasks()
+        suspendAllTasks()
     }
 }
 
