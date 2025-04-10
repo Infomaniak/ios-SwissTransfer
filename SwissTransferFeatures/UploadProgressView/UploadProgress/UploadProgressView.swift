@@ -103,7 +103,7 @@ public struct UploadProgressView: View {
     }
 
     @Sendable private func startUpload() async {
-        do {
+        await catchingUploadErrors {
             Task { @MainActor in
                 await notificationsHelper.requestPermissionIfNeeded()
             }
@@ -123,19 +123,33 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
-            let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession) { transferUUID in
-                Task {
-                    async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
-                        uploadSession: uploadSession,
-                        scale: scale
-                    )
-                    
-                    let uuidsWithThumbnail = await thumbnailGenerationTask
-                    thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
+            try await transferSessionManager.uploadFiles(for: uploadSession) { result in
+                await catchingUploadErrors {
+                    switch result {
+                    case .success(let transferUUID):
+                        async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
+                            uploadSession: uploadSession,
+                            scale: scale
+                        )
 
-                    rootTransferViewState.transition(to: .success(transferUUID))
+                        let uuidsWithThumbnail = await thumbnailGenerationTask
+                        thumbnailProvider.moveTemporaryThumbnails(
+                            uuidsWithThumbnail: uuidsWithThumbnail,
+                            transferUUID: transferUUID
+                        )
+
+                        rootTransferViewState.transition(to: .success(transferUUID))
+                    case .failure(let error):
+                        throw error
+                    }
                 }
             }
+        }
+    }
+
+    private func catchingUploadErrors(_ task: () async throws -> Void) async {
+        do {
+            try await task()
         } catch let error as STDeviceCheckError {
             sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))

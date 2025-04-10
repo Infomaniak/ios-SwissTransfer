@@ -63,7 +63,7 @@ private struct UploadFile: Equatable, Sendable {
 actor TransferManagerWorker {
     private static let maxParallelUploads = 4
     private let appStateObserver = AppStateObserver()
-    private var successCallback: (() -> Void)?
+    private var completionCallback: ((Result<Void, Error>) async -> Void)?
 
     private var uploadingFiles = [UploadFile]()
     private var uploadedFiles = [UploadFile]()
@@ -100,8 +100,8 @@ actor TransferManagerWorker {
 
     public func uploadFiles(for uploadSession: SendableUploadSession,
                             remoteUploadFiles: [SendableRemoteUploadFile],
-                            success: (() -> Void)? = nil) async throws {
-        successCallback = success
+                            completion: ((Result<Void, Error>) async -> Void)? = nil) async throws {
+        completionCallback = completion
 
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
@@ -111,7 +111,7 @@ actor TransferManagerWorker {
                                                    uploadUUID: uploadSession.uuid)
             }
 
-        try await uploadAllFiles()
+        await uploadAllFiles()
     }
 
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
@@ -144,19 +144,25 @@ actor TransferManagerWorker {
         uploadingFiles.append(uploadingFile)
     }
 
-    private func uploadAllFiles() async throws {
-        let expiringActivity = ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
-        expiringActivity.start()
+    private func uploadAllFiles() async {
+        do {
+            let expiringActivity = ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
+            expiringActivity.start()
+            defer {
+                expiringActivity.endAll()
+            }
 
-        let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
-        try await allFiles.asyncForEach { uploadFile in
-            try await self.uploadAllChunks(forFile: uploadFile)
+            let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
+            try await allFiles.asyncForEach { uploadFile in
+                try await self.uploadAllChunks(forFile: uploadFile)
+            }
+
+            await completionCallback?(.success(()))
+            completionCallback = nil
+        } catch {
+            await completionCallback?(.failure(error))
+            completionCallback = nil
         }
-
-        successCallback?()
-        successCallback = nil
-
-        expiringActivity.endAll()
     }
 
     private func retryRemainingFiles() async throws {
@@ -166,7 +172,7 @@ actor TransferManagerWorker {
 
         uploadingChunks.removeAll()
         suspendedUploads = false
-        try await uploadAllFiles()
+        await uploadAllFiles()
     }
 
     private func cancelAllTasks() {
