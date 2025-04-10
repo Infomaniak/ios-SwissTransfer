@@ -125,7 +125,7 @@ actor TransferManagerWorker {
 
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
         guard let fileURL = URL(string: path) else {
-            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: path)
+            throw ErrorDomain.invalidURL(rawURL: path)
         }
 
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
@@ -144,7 +144,7 @@ actor TransferManagerWorker {
         }
 
         guard let lastChunk = chunks.popLast() else {
-            throw TransferSessionManager.ErrorDomain.invalidChunk
+            throw ErrorDomain.invalidChunk
         }
 
         assert(lastChunk.isLast, "expecting isLast flag to match the last in collection")
@@ -235,11 +235,11 @@ actor TransferManagerWorker {
             guard let self else { return }
 
             guard let chunkReader = ChunkReader(fileURL: chunk.fileURL) else {
-                throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: chunk.fileURL.path)
+                throw ErrorDomain.invalidURL(rawURL: chunk.fileURL.path)
             }
 
             guard let chunkData = try chunkReader.readChunk(range: chunk.range) else {
-                throw TransferSessionManager.ErrorDomain.invalidChunk
+                throw ErrorDomain.invalidChunk
             }
 
             try await self.uploadChunk(
