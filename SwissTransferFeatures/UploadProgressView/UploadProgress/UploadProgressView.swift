@@ -98,6 +98,14 @@ public struct UploadProgressView: View {
             .onDisappear {
                 UIApplication.shared.isIdleTimerDisabled = false
             }
+            .onChange(of: transferSessionManager.transferSuccessUUID) { transferUUID in
+                guard let transferUUID, let currentUploadSession else { return }
+                uploadFinished(transferUUID: transferUUID, uploadSession: currentUploadSession)
+            }
+            .onChange(of: transferSessionManager.transferError) { error in
+                guard let error else { return }
+                handleUploadError(error)
+            }
         }
         .matomoView(view: "UploadProgressView")
     }
@@ -123,27 +131,24 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
-            try await transferSessionManager.uploadFiles(for: uploadSession) { result in
-                await catchingUploadErrors {
-                    switch result {
-                    case .success(let transferUUID):
-                        async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
-                            uploadSession: uploadSession,
-                            scale: scale
-                        )
+            try await transferSessionManager.uploadFiles(for: uploadSession)
+        }
+    }
 
-                        let uuidsWithThumbnail = await thumbnailGenerationTask
-                        thumbnailProvider.moveTemporaryThumbnails(
-                            uuidsWithThumbnail: uuidsWithThumbnail,
-                            transferUUID: transferUUID
-                        )
+    private func uploadFinished(transferUUID: String, uploadSession: SendableUploadSession) {
+        Task {
+            async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
+                uploadSession: uploadSession,
+                scale: scale
+            )
 
-                        rootTransferViewState.transition(to: .success(transferUUID))
-                    case .failure(let error):
-                        throw error
-                    }
-                }
-            }
+            let uuidsWithThumbnail = await thumbnailGenerationTask
+            thumbnailProvider.moveTemporaryThumbnails(
+                uuidsWithThumbnail: uuidsWithThumbnail,
+                transferUUID: transferUUID
+            )
+
+            rootTransferViewState.transition(to: .success(transferUUID))
         }
     }
 
@@ -172,6 +177,14 @@ public struct UploadProgressView: View {
             sendErrorToSentryIfNeeded(error: error)
             Logger.general.error("Error trying to start upload: \(error)")
             rootTransferViewState.transition(to: .error(.default))
+        }
+    }
+
+    private func handleUploadError(_ error: NSError) {
+        Task {
+            await catchingUploadErrors {
+                throw error
+            }
         }
     }
 

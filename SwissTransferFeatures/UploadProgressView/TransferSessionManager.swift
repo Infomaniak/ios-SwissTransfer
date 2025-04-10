@@ -46,20 +46,19 @@ final class UploadTaskDelegate: NSObject, URLSessionTaskDelegate {
 }
 
 @MainActor
-class TransferSessionManager: ObservableObject {
+final class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
 
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
     @Published var transferSuccessUUID: String?
-    @Published var transferError: Error?
+    @Published var transferError: NSError?
 
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
 
     func uploadFiles(
-        for uploadSession: SendableUploadSession,
-        completion: @escaping (Result<String, Error>) async -> Void
+        for uploadSession: SendableUploadSession
     ) async throws {
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
@@ -89,7 +88,7 @@ extension TransferSessionManager: TransferManagerWorkerDelegate {
         case .success(let transferUUID):
             transferSuccessUUID = transferUUID
         case .failure(let error):
-            transferError = error
+            transferError = error as NSError
         }
     }
 }
