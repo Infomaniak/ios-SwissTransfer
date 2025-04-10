@@ -24,8 +24,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct SentEmptyView: View {
-    @EnvironmentObject private var mainViewState: MainViewState
-
     @State private var selectedItems = [ImportedItem]()
 
     var body: some View {
@@ -43,9 +41,7 @@ struct SentEmptyView: View {
             }
 
             FirstTransferButton(selection: $selectedItems, style: .big)
-                .onChange(of: selectedItems) { newSelectedItems in
-                    mainViewState.newTransferContainer = NewTransferContainer(importedItems: newSelectedItems)
-                }
+                .onChangeOfSelectedItems($selectedItems)
         }
         .padding(value: .medium)
         .scrollableEmptyState()
