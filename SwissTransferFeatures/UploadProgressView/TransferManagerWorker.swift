@@ -27,6 +27,8 @@ import STCore
 import STNetwork
 import SwissTransferCore
 
+extension Result: Sendable where Success: Sendable, Failure: Sendable {}
+
 private struct UploadChunkInFile: Equatable, Sendable {
     let file: UploadFile
     let chunk: UploadChunk
@@ -60,10 +62,18 @@ private struct UploadFile: Equatable, Sendable {
     }
 }
 
+protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
+    @MainActor func uploadDidComplete(result: Result<String, Error>)
+}
+
 actor TransferManagerWorker {
+    @LazyInjectService private var injection: SwissTransferInjection
+
     private static let maxParallelUploads = 4
+
     private let appStateObserver = AppStateObserver()
-    private var completionCallback: ((Result<Void, Error>) async -> Void)?
+    private let uploadSession: SendableUploadSession
+    private weak var delegate: TransferManagerWorkerDelegate?
 
     private var uploadingFiles = [UploadFile]()
     private var uploadedFiles = [UploadFile]()
@@ -89,8 +99,10 @@ actor TransferManagerWorker {
     let overallProgress: Progress
     let uploadURLSession: URLSession = .sharedSwissTransfer
 
-    init(overallProgress: Progress) {
+    init(overallProgress: Progress, uploadSession: SendableUploadSession, delegate: TransferManagerWorkerDelegate) {
         self.overallProgress = overallProgress
+        self.uploadSession = uploadSession
+        self.delegate = delegate
         appStateObserver.delegate = self
     }
 
@@ -99,10 +111,7 @@ actor TransferManagerWorker {
     }
 
     public func uploadFiles(for uploadSession: SendableUploadSession,
-                            remoteUploadFiles: [SendableRemoteUploadFile],
-                            completion: ((Result<Void, Error>) async -> Void)? = nil) async throws {
-        completionCallback = completion
-
+                            remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
@@ -138,7 +147,7 @@ actor TransferManagerWorker {
             throw TransferSessionManager.ErrorDomain.invalidChunk
         }
 
-        assert(lastChunk.isLast, "should be last")
+        assert(lastChunk.isLast, "expecting isLast flag to match the last in collection")
 
         let uploadingFile = UploadFile(fileURL: fileURL, uploadChunks: chunks, lastChunk: lastChunk)
         uploadingFiles.append(uploadingFile)
@@ -157,13 +166,14 @@ actor TransferManagerWorker {
                 try await self.uploadAllChunks(forFile: uploadFile)
             }
 
-            await completionCallback?(.success(()))
-            completionCallback = nil
+            let uploadManager = injection.uploadManager
+            let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
+
+            await delegate?.uploadDidComplete(result: .success(transferUUID))
         } catch let error as URLError where error.code == .cancelled {
-            // silent catching, the uploads are suspended
+            // silent catching, uploads are suspending
         } catch {
-            await completionCallback?(.failure(error))
-            completionCallback = nil
+            await delegate?.uploadDidComplete(result: .failure(error))
         }
     }
 
