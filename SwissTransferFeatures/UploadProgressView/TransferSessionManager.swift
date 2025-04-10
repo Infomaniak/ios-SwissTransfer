@@ -81,26 +81,23 @@ class TransferSessionManager: ObservableObject {
             }
             .store(in: &cancellables)
 
-        let uploadManager = injection.uploadManager
-
         let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
-        let worker = TransferManagerWorker(overallProgress: overallProgress)
+        let worker = TransferManagerWorker(overallProgress: overallProgress, uploadSession: uploadSession, delegate: self)
         transferManagerWorker = worker
 
-        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles) { result in
-            switch result {
-            case .success:
-                do {
-                    let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
-                    await completion(.success(transferUUID))
-                } catch {
-                    await completion(.failure(error))
-                }
-            case .failure(let error):
-                await completion(.failure(error))
-            }
+        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
+    }
+}
+
+extension TransferSessionManager: TransferManagerWorkerDelegate {
+    @MainActor func uploadDidComplete(result: Result<String, any Error>) {
+        switch result {
+        case .success(let transferUUID):
+            print("• success \(transferUUID)")
+        case .failure(let error):
+            print("• fail:\(error)")
         }
     }
 }
