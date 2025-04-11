@@ -98,13 +98,15 @@ public struct UploadProgressView: View {
             .onDisappear {
                 UIApplication.shared.isIdleTimerDisabled = false
             }
-            .onChange(of: transferSessionManager.transferSuccessUUID) { transferUUID in
-                guard let transferUUID, let currentUploadSession else { return }
-                uploadFinished(transferUUID: transferUUID, uploadSession: currentUploadSession)
-            }
-            .onChange(of: transferSessionManager.transferError) { error in
-                guard let error else { return }
-                handleUploadError(error)
+            .onChange(of: transferSessionManager.transferResult) { transferResult in
+                guard let transferResult else { return }
+                switch transferResult {
+                case .success(let transferUUID):
+                    guard let currentUploadSession else { return }
+                    uploadFinished(transferUUID: transferUUID, uploadSession: currentUploadSession)
+                case .failure(let error):
+                    handleUploadError(error)
+                }
             }
         }
         .matomoView(view: "UploadProgressView")

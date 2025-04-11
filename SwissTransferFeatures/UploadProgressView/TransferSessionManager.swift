@@ -33,8 +33,7 @@ final class TransferSessionManager: ObservableObject {
 
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
-    @Published var transferSuccessUUID: String?
-    @Published var transferError: NSError?
+    @Published var transferResult: Result<String, NSError>?
 
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
@@ -73,12 +72,7 @@ extension TransferSessionManager: UploadCancellable {
 }
 
 extension TransferSessionManager: TransferManagerWorkerDelegate {
-    @MainActor func uploadDidComplete(result: Result<String, any Error>) {
-        switch result {
-        case .success(let transferUUID):
-            transferSuccessUUID = transferUUID
-        case .failure(let error):
-            transferError = error as NSError
-        }
+    @MainActor func uploadDidComplete(result: Result<String, NSError>) {
+        self.transferResult = result
     }
 }
