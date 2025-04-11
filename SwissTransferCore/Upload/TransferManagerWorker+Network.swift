@@ -28,7 +28,8 @@ extension TransferManagerWorker {
         index: Int,
         isLastChunk: Bool,
         remoteUploadFileUUID: String,
-        uploadUUID: String
+        uploadUUID: String,
+        progressTracker: UploadTaskProgressTracker
     ) async throws {
         @InjectService var injection: SwissTransferInjection
         guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
@@ -48,10 +49,7 @@ extension TransferManagerWorker {
         var uploadRequest = URLRequest(url: chunkURL)
         uploadRequest.httpMethod = Method.POST.rawValue
 
-        let taskDelegate = UploadTaskProgressTracker(totalBytesExpectedToSend: chunk.count)
-        overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
-
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: progressTracker)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ErrorDomain.invalidResponse
         }
