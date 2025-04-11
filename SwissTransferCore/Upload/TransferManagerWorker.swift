@@ -237,17 +237,7 @@ public actor TransferManagerWorker {
     }
 
     private func getTask(withChunk chunk: WorkerChunk) -> Task<Void, Error> {
-        let progressTracker: UploadTaskProgressTracker
-        if let progress = chunkProgress[chunk] {
-            progressTracker = progress
-        } else {
-            let chunkSize = chunk.range.count
-            let progress = UploadTaskProgressTracker(totalBytesExpectedToSend: chunkSize)
-            overallProgress.addChild(progress.taskProgress, withPendingUnitCount: Int64(chunkSize))
-            chunkProgress[chunk] = progress
-            progressTracker = progress
-        }
-
+        let progressTracker = getProgressTracker(withChunk: chunk)
         return Task { [weak self] in
             guard let self else { return }
 
@@ -268,6 +258,18 @@ public actor TransferManagerWorker {
                 progressTracker: progressTracker
             )
         }
+    }
+
+    private func getProgressTracker(withChunk chunk: WorkerChunk) -> UploadTaskProgressTracker {
+        guard let progress = chunkProgress[chunk] else {
+            let chunkSize = chunk.range.count
+            let progress = UploadTaskProgressTracker(totalBytesExpectedToSend: chunkSize)
+            overallProgress.addChild(progress.taskProgress, withPendingUnitCount: Int64(chunkSize))
+            chunkProgress[chunk] = progress
+            return progress
+        }
+
+        return progress
     }
 }
 
