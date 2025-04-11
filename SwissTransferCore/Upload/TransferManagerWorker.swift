@@ -62,7 +62,7 @@ private struct WorkerFile: Equatable, Sendable {
 }
 
 public protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
-    @MainActor func uploadDidComplete(result: Result<String, Error>)
+    @MainActor func uploadDidComplete(result: Result<String, NSError>)
 }
 
 public actor TransferManagerWorker {
@@ -179,7 +179,7 @@ public actor TransferManagerWorker {
         } catch let error as URLError where error.code == .cancelled {
             // silent catching, uploads are suspending
         } catch {
-            await delegate?.uploadDidComplete(result: .failure(error))
+            await delegate?.uploadDidComplete(result: .failure(error as NSError))
         }
     }
 
