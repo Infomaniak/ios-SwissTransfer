@@ -38,13 +38,18 @@ private struct WorkerChunkInFile: Equatable, Sendable {
     }
 }
 
-private struct WorkerChunk: Equatable, Sendable {
+private struct WorkerChunk: Equatable, Hashable, Sendable {
     let fileURL: URL
     let remoteUploadFileUUID: String
     let uploadUUID: String
     let range: DataRange
     let index: Int
     let isLast: Bool
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(fileURL)
+        hasher.combine(index)
+    }
 
     public static func == (lhs: WorkerChunk, rhs: WorkerChunk) -> Bool {
         lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
@@ -83,6 +88,8 @@ public actor TransferManagerWorker {
 
     private var uploadingChunks = [WorkerChunkInFile]()
     private var uploadedChunks = [WorkerChunkInFile]()
+
+    private var chunkProgress = [WorkerChunk: UploadTaskProgressTracker]()
 
     private var suspendedUploads = false
 
@@ -230,6 +237,17 @@ public actor TransferManagerWorker {
     }
 
     private func getTask(withChunk chunk: WorkerChunk) -> Task<Void, Error> {
+        let progressTracker: UploadTaskProgressTracker
+        if let progress = chunkProgress[chunk] {
+            progressTracker = progress
+        } else {
+            let chunkSize = chunk.range.count
+            let progress = UploadTaskProgressTracker(totalBytesExpectedToSend: chunkSize)
+            overallProgress.addChild(progress.taskProgress, withPendingUnitCount: Int64(chunkSize))
+            chunkProgress[chunk] = progress
+            progressTracker = progress
+        }
+
         return Task { [weak self] in
             guard let self else { return }
 
@@ -246,7 +264,8 @@ public actor TransferManagerWorker {
                 index: chunk.index,
                 isLastChunk: chunk.isLast,
                 remoteUploadFileUUID: chunk.remoteUploadFileUUID,
-                uploadUUID: chunk.uploadUUID
+                uploadUUID: chunk.uploadUUID,
+                progressTracker: progressTracker
             )
         }
     }
