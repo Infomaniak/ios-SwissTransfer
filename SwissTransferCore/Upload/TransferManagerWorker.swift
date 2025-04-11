@@ -38,7 +38,7 @@ private struct WorkerChunkInFile: Equatable, Sendable {
     }
 }
 
-private struct WorkerChunk: Equatable, Hashable, Sendable {
+struct WorkerChunk: Equatable, Hashable, Sendable {
     let fileURL: URL
     let remoteUploadFileUUID: String
     let uploadUUID: String
@@ -249,14 +249,9 @@ public actor TransferManagerWorker {
                 throw ErrorDomain.invalidChunk
             }
 
-            try await self.uploadChunk(
-                chunk: chunkData,
-                index: chunk.index,
-                isLastChunk: chunk.isLast,
-                remoteUploadFileUUID: chunk.remoteUploadFileUUID,
-                uploadUUID: chunk.uploadUUID,
-                progressTracker: progressTracker
-            )
+            try await self.uploadChunk(chunkData: chunkData,
+                                       chunk: chunk,
+                                       progressTracker: progressTracker)
         }
     }
 

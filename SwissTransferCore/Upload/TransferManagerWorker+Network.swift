@@ -23,20 +23,13 @@ import STCore
 import STNetwork
 
 extension TransferManagerWorker {
-    func uploadChunk(
-        chunk: Data,
-        index: Int,
-        isLastChunk: Bool,
-        remoteUploadFileUUID: String,
-        uploadUUID: String,
-        progressTracker: UploadTaskProgressTracker
-    ) async throws {
+    func uploadChunk(chunkData: Data, chunk: WorkerChunk, progressTracker: UploadTaskProgressTracker) async throws {
         @InjectService var injection: SwissTransferInjection
         guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
-            uploadUUID: uploadUUID,
-            fileUUID: remoteUploadFileUUID,
-            chunkIndex: Int32(index),
-            isLastChunk: isLastChunk,
+            uploadUUID: chunk.uploadUUID,
+            fileUUID: chunk.remoteUploadFileUUID,
+            chunkIndex: Int32(chunk.index),
+            isLastChunk: chunk.isLast,
             isRetry: false
         ) else {
             throw ErrorDomain.invalidUploadChunkURL
@@ -49,7 +42,7 @@ extension TransferManagerWorker {
         var uploadRequest = URLRequest(url: chunkURL)
         uploadRequest.httpMethod = Method.POST.rawValue
 
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: progressTracker)
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunkData, delegate: progressTracker)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ErrorDomain.invalidResponse
         }
