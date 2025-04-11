@@ -98,12 +98,22 @@ public struct UploadProgressView: View {
             .onDisappear {
                 UIApplication.shared.isIdleTimerDisabled = false
             }
+            .onChange(of: transferSessionManager.transferResult) { transferResult in
+                guard let transferResult else { return }
+                switch transferResult {
+                case .success(let transferUUID):
+                    guard let currentUploadSession else { return }
+                    uploadFinished(transferUUID: transferUUID, uploadSession: currentUploadSession)
+                case .failure(let error):
+                    handleUploadError(error)
+                }
+            }
         }
         .matomoView(view: "UploadProgressView")
     }
 
     @Sendable private func startUpload() async {
-        do {
+        await catchingUploadErrors {
             Task { @MainActor in
                 await notificationsHelper.requestPermissionIfNeeded()
             }
@@ -123,17 +133,30 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
+            try await transferSessionManager.uploadFiles(for: uploadSession)
+        }
+    }
+
+    private func uploadFinished(transferUUID: String, uploadSession: SendableUploadSession) {
+        Task {
             async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
                 uploadSession: uploadSession,
                 scale: scale
             )
 
-            let transferUUID = try await transferSessionManager.uploadFiles(for: uploadSession)
-
             let uuidsWithThumbnail = await thumbnailGenerationTask
-            thumbnailProvider.moveTemporaryThumbnails(uuidsWithThumbnail: uuidsWithThumbnail, transferUUID: transferUUID)
+            thumbnailProvider.moveTemporaryThumbnails(
+                uuidsWithThumbnail: uuidsWithThumbnail,
+                transferUUID: transferUUID
+            )
 
             rootTransferViewState.transition(to: .success(transferUUID))
+        }
+    }
+
+    private func catchingUploadErrors(_ task: () async throws -> Void) async {
+        do {
+            try await task()
         } catch let error as STDeviceCheckError {
             sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))
@@ -159,6 +182,14 @@ public struct UploadProgressView: View {
         }
     }
 
+    private func handleUploadError(_ error: NSError) {
+        Task {
+            await catchingUploadErrors {
+                throw error
+            }
+        }
+    }
+
     private func sendErrorToSentryIfNeeded(error: Error) {
         guard ![NSURLErrorNotConnectedToInternet, NSURLErrorTimedOut].contains((error as NSError).code) else {
             return
@@ -180,7 +211,10 @@ public struct UploadProgressView: View {
 
     private func cancelTransfer() {
         guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
-        rootTransferViewState.cancelUploadUUID = CurrentUploadContainer(uuid: currentUploadSessionUUID)
+        rootTransferViewState.cancelUploadContainer = CurrentUploadContainer(
+            uuid: currentUploadSessionUUID,
+            uploadsCancellable: transferSessionManager
+        )
     }
 
     private func reportTransferToMatomo() {

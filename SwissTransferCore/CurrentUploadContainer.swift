@@ -16,11 +16,38 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
+import InfomaniakDI
+import STCore
+
+public protocol UploadCancellable: Sendable {
+    func cancelUploads() async
+}
+
+public final class DummyUploadCancellable: UploadCancellable {
+    public func cancelUploads() async {}
+    public init() {}
+}
+
 public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
+    public let uploadsCancellable: UploadCancellable
 
-    public init(uuid: String) {
+    public init(uuid: String, uploadsCancellable: UploadCancellable) {
         self.uuid = uuid
+        self.uploadsCancellable = uploadsCancellable
+    }
+}
+
+extension CurrentUploadContainer: Cancellable {
+    public func cancel() {
+        Task {
+            await uploadsCancellable.cancelUploads()
+
+            @InjectService var injection: SwissTransferInjection
+            let uploadManager = injection.uploadManager
+            try? await uploadManager.cancelUploadSession(uuid: uuid)
+        }
     }
 }
