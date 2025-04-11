@@ -20,11 +20,9 @@ import Foundation
 
 extension TransferManagerWorker {
     enum ErrorDomain: Error {
-        case remoteContainerNotFound
         case invalidURL(rawURL: String)
         case invalidUploadChunkURL
         case invalidChunk
-        case invalidRange
         case invalidResponse
         case invalidChunkResponse
     }
