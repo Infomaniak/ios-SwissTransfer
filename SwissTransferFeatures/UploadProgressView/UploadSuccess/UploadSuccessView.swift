@@ -64,7 +64,6 @@ public struct UploadSuccessView: View {
                 UserDefaults.shared.transferCount += 1
             }
             .onDisappear {
-                let hasReviewedApp = UserDefaults.shared.bool(forKey: UserDefaults.Keys.hasReviewedApp.rawValue)
                 if UserDefaults.shared.transferCount >= reviewTriggerCount && !UserDefaults.shared.hasReviewedApp {
                     mainViewState.isShowingReviewAlert = true
                 }
