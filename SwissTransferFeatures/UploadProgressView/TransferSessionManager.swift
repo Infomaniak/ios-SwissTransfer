@@ -65,7 +65,6 @@ final class TransferSessionManager: ObservableObject {
 
 extension TransferSessionManager: UploadCancellable {
     public func cancelUploads() async {
-        print("cancelAllUploads")
         await transferManagerWorker?.suspendAllTasks()
         transferManagerWorker = nil
     }
@@ -73,6 +72,6 @@ extension TransferSessionManager: UploadCancellable {
 
 extension TransferSessionManager: TransferManagerWorkerDelegate {
     @MainActor func uploadDidComplete(result: Result<String, NSError>) {
-        self.transferResult = result
+        transferResult = result
     }
 }
