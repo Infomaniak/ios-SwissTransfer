@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 
 enum ProgressStatus {
     case initializing
-    case uploading(completedBytes: Int64, totalBytes: Int64)
+    case uploading(fractionCompleted: Double, totalBytes: Int64)
 }
 
 struct UploadProgressIndicationView: View {
@@ -37,9 +37,9 @@ struct UploadProgressIndicationView: View {
         switch status {
         case .initializing:
             return 0
-        case .uploading(completedBytes: let completedBytes, totalBytes: let totalBytes):
+        case .uploading(let fractionCompleted, let totalBytes):
             guard totalBytes > 0 else { return 0 }
-            return Double(completedBytes) / Double(totalBytes)
+            return fractionCompleted
         }
     }
 
@@ -60,12 +60,12 @@ struct UploadProgressIndicationView: View {
                         switch status {
                         case .initializing:
                             Text(STResourcesStrings.Localizable.transferInitializing)
-                        case .uploading(completedBytes: let completedBytes, totalBytes: let totalBytes):
+                        case .uploading(let fractionCompleted, let totalBytes):
                             HStack(spacing: IKPadding.micro) {
                                 Text(percentCompleted, format: .defaultPercent)
                                 Text("-")
                                 HStack(spacing: 2) {
-                                    Text(completedBytes, format: .progressByteCount)
+                                    Text(Int64(fractionCompleted * Double(totalBytes)), format: .progressByteCount)
                                     Text("/")
                                     Text(totalBytes, format: .progressByteCount)
                                 }
@@ -90,7 +90,7 @@ struct UploadProgressIndicationView: View {
 }
 
 #Preview {
-    UploadProgressIndicationView(status: .uploading(completedBytes: 12, totalBytes: 42))
+    UploadProgressIndicationView(status: .uploading(fractionCompleted: 0.5, totalBytes: 42))
 }
 
 #Preview {

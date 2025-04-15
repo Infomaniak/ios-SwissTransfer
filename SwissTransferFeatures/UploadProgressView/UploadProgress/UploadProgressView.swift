@@ -53,7 +53,7 @@ public struct UploadProgressView: View {
         }
 
         return .uploading(
-            completedBytes: transferSessionManager.completedBytes,
+            fractionCompleted: transferSessionManager.fractionCompleted,
             totalBytes: transferSessionManager.totalBytes
         )
     }

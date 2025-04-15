@@ -33,7 +33,7 @@ final class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
-    @Published var completedBytes: Int64 = 0
+    @Published var fractionCompleted: Double = 0
     @Published var totalBytes: Int64 = 0
     @Published var transferResult: Result<String, NSError>?
 
@@ -52,10 +52,10 @@ final class TransferSessionManager: ObservableObject {
 
         let overallProgress = Progress(totalUnitCount: filesSize)
         overallProgress
-            .publisher(for: \.completedUnitCount)
-            .receive(on: RunLoop.main)
-            .sink { [weak self] completedUnitCount in
-                self?.completedBytes = completedUnitCount
+            .publisher(for: \.fractionCompleted)
+            .throttle(for: .milliseconds(500), scheduler: RunLoop.main, latest: true)
+            .sink { [weak self] fractionCompleted in
+                self?.fractionCompleted = fractionCompleted
             }
             .store(in: &cancellables)
 
