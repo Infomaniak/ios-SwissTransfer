@@ -26,10 +26,12 @@ import Sentry
 import STCore
 import STNetwork
 import SwissTransferCore
+import UIKit
 
 @MainActor
 final class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
@@ -37,10 +39,14 @@ final class TransferSessionManager: ObservableObject {
 
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
+    private var thumbnailTask: Task<[(String, URL)], Never>?
+    private let displayScale = UIScreen.main.scale
 
     public func uploadFiles(
         for uploadSession: SendableUploadSession
     ) async throws {
+        startThumbnailGeneration(uploadSession: uploadSession)
+
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
 
@@ -61,6 +67,27 @@ final class TransferSessionManager: ObservableObject {
 
         try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
     }
+
+    func startThumbnailGeneration(uploadSession: SendableUploadSession) {
+        thumbnailTask = Task {
+            await thumbnailProvider.generateTemporaryThumbnailsFor(
+                uploadSession: uploadSession,
+                scale: displayScale
+            )
+        }
+    }
+
+    func finishThumbnailGeneration(transferUUID: String) async {
+        guard let thumbnailTask else {
+            return
+        }
+
+        let uuidsWithThumbnail = await thumbnailTask.value
+        thumbnailProvider.moveTemporaryThumbnails(
+            uuidsWithThumbnail: uuidsWithThumbnail,
+            transferUUID: transferUUID
+        )
+    }
 }
 
 extension TransferSessionManager: UploadCancellable {
@@ -72,6 +99,12 @@ extension TransferSessionManager: UploadCancellable {
 
 extension TransferSessionManager: TransferManagerWorkerDelegate {
     @MainActor func uploadDidComplete(result: Result<String, NSError>) {
-        transferResult = result
+        Task {
+            if case .success(let transferUUID) = result {
+                await finishThumbnailGeneration(transferUUID: transferUUID)
+            }
+
+            transferResult = result
+        }
     }
 }
