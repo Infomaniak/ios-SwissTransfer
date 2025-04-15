@@ -36,7 +36,6 @@ public struct UploadProgressView: View {
     @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.displayScale) private var scale
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
@@ -102,8 +101,7 @@ public struct UploadProgressView: View {
                 guard let transferResult else { return }
                 switch transferResult {
                 case .success(let transferUUID):
-                    guard let currentUploadSession else { return }
-                    uploadFinished(transferUUID: transferUUID, uploadSession: currentUploadSession)
+                    uploadFinished(transferUUID: transferUUID)
                 case .failure(let error):
                     handleUploadError(error)
                 }
@@ -137,21 +135,8 @@ public struct UploadProgressView: View {
         }
     }
 
-    private func uploadFinished(transferUUID: String, uploadSession: SendableUploadSession) {
-        Task {
-            async let thumbnailGenerationTask = thumbnailProvider.generateTemporaryThumbnailsFor(
-                uploadSession: uploadSession,
-                scale: scale
-            )
-
-            let uuidsWithThumbnail = await thumbnailGenerationTask
-            thumbnailProvider.moveTemporaryThumbnails(
-                uuidsWithThumbnail: uuidsWithThumbnail,
-                transferUUID: transferUUID
-            )
-
-            rootTransferViewState.transition(to: .success(transferUUID))
-        }
+    private func uploadFinished(transferUUID: String) {
+        rootTransferViewState.transition(to: .success(transferUUID))
     }
 
     private func catchingUploadErrors(_ task: () async throws -> Void) async {
