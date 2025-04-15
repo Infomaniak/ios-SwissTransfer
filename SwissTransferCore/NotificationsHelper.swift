@@ -118,17 +118,4 @@ public struct NotificationsHelper: Sendable {
             try? await UNUserNotificationCenter.current().add(request)
         }
     }
-
-    public func sendUploadFailedExpiredNotificationForUploadSession() {
-        Task { @MainActor in
-            let content = UNMutableNotificationContent()
-            content.categoryIdentifier = CategoryIdentifier.upload
-            content.sound = .default
-            content.title = STResourcesStrings.Localizable.notificationUploadFailureTitle
-            content.body = STResourcesStrings.Localizable.notificationKeepAppForegroundDescription
-
-            let request = UNNotificationRequest(identifier: "upload_failed", content: content, trigger: immediateTrigger)
-            try? await UNUserNotificationCenter.current().add(request)
-        }
-    }
 }

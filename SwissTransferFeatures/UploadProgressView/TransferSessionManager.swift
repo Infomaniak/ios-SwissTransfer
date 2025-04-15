@@ -26,47 +26,26 @@ import Sentry
 import STCore
 import STNetwork
 import SwissTransferCore
-
-final class UploadTaskDelegate: NSObject, URLSessionTaskDelegate {
-    let taskProgress: Progress
-
-    init(totalBytesExpectedToSend: Int) {
-        taskProgress = Progress(totalUnitCount: Int64(totalBytesExpectedToSend))
-    }
-
-    func urlSession(
-        _ session: URLSession,
-        task: URLSessionTask,
-        didSendBodyData bytesSent: Int64,
-        totalBytesSent: Int64,
-        totalBytesExpectedToSend: Int64
-    ) {
-        taskProgress.completedUnitCount = totalBytesSent
-    }
-}
+import UIKit
 
 @MainActor
-class TransferSessionManager: ObservableObject {
+final class TransferSessionManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Published var completedBytes: Int64 = 0
     @Published var totalBytes: Int64 = 0
+    @Published var transferResult: Result<String, NSError>?
 
     private var cancellables: Set<AnyCancellable> = []
+    private var transferManagerWorker: TransferManagerWorker?
+    private var thumbnailTask: Task<[(String, URL)], Never>?
+    private let displayScale = UIScreen.main.scale
 
-    enum ErrorDomain: Error {
-        case remoteContainerNotFound
-        case invalidURL(rawURL: String)
-        case invalidUploadChunkURL
-        case invalidChunk
-        case invalidRange
-        case invalidResponse
-        case invalidChunkResponse
-    }
-
-    func uploadFiles(for uploadSession: SendableUploadSession) async throws -> String {
-        let expiringActivity = ExpiringActivity(id: "uploadSession-\(uploadSession.uuid)", delegate: self)
-        expiringActivity.start()
+    public func uploadFiles(
+        for uploadSession: SendableUploadSession
+    ) async throws {
+        startThumbnailGeneration(uploadSession: uploadSession)
 
         let filesSize = uploadSession.files.reduce(0) { $0 + $1.size }
         totalBytes = filesSize
@@ -80,133 +59,52 @@ class TransferSessionManager: ObservableObject {
             }
             .store(in: &cancellables)
 
-        let uploadManager = injection.uploadManager
-
         let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
-        let transferManagerWorker = TransferManagerWorker(overallProgress: overallProgress)
+        let worker = TransferManagerWorker(overallProgress: overallProgress, uploadSession: uploadSession, delegate: self)
+        transferManagerWorker = worker
 
-        try await remoteUploadFiles.enumerated()
-            .map { (uploadSession.files[$0.offset], $0.element) }
-            .asyncForEach { localFile, remoteUploadFile in
-                try await transferManagerWorker.uploadFile(
-                    atPath: localFile.localPath,
-                    remoteUploadFileUUID: remoteUploadFile.uuid,
-                    uploadUUID: uploadSession.uuid
-                )
-            }
-
-        let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
-
-        expiringActivity.endAll()
-        return transferUUID
+        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
     }
-}
 
-extension TransferSessionManager: ExpiringActivityDelegate {
-    nonisolated func backgroundActivityExpiring() {
-        @InjectService var notificationsHelper: NotificationsHelper
-        notificationsHelper.sendUploadFailedExpiredNotificationForUploadSession()
-
-        SentrySDK.capture(message: "Upload couldn't complete because the app went in the background")
+    func startThumbnailGeneration(uploadSession: SendableUploadSession) {
+        thumbnailTask = Task {
+            await thumbnailProvider.generateTemporaryThumbnailsFor(
+                uploadSession: uploadSession,
+                scale: displayScale
+            )
+        }
     }
-}
 
-struct TransferManagerWorker {
-    private static let maxParallelUploads = 4
-    private let uploadURLSession: URLSession = .sharedSwissTransfer
-
-    private let rangeProviderConfig = RangeProvider.Config(
-        chunkMinSize: 50 * 1024 * 1024,
-        chunkMaxSizeClient: 50 * 1024 * 1024,
-        chunkMaxSizeServer: 50 * 1024 * 1024,
-        optimalChunkCount: 200,
-        maxTotalChunks: 10000,
-        minTotalChunks: 1
-    )
-
-    let overallProgress: Progress
-
-    func uploadFile(atPath: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: atPath),
-              let chunkReader = ChunkReader(fileURL: fileURL) else {
-            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: atPath)
+    func finishThumbnailGeneration(transferUUID: String) async {
+        guard let thumbnailTask else {
+            return
         }
 
-        let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
-
-        var ranges = try rangeProvider.allRanges
-
-        guard let lastRange = ranges.popLast() else {
-            throw TransferSessionManager.ErrorDomain.invalidRange
-        }
-
-        try await ranges
-            .enumerated()
-            .map { ($0, $1) }
-            .concurrentForEach(customConcurrency: 4) { index, range in
-                guard let chunk = try chunkReader.readChunk(range: range) else {
-                    throw TransferSessionManager.ErrorDomain.invalidChunk
-                }
-
-                try await uploadChunk(
-                    chunk: chunk,
-                    index: index,
-                    isLastChunk: false,
-                    remoteUploadFileUUID: remoteUploadFileUUID,
-                    uploadUUID: uploadUUID
-                )
-            }
-
-        guard let lastChunk = try chunkReader.readChunk(range: lastRange) else {
-            throw TransferSessionManager.ErrorDomain.invalidChunk
-        }
-
-        try await uploadChunk(
-            chunk: lastChunk,
-            index: ranges.count,
-            isLastChunk: true,
-            remoteUploadFileUUID: remoteUploadFileUUID,
-            uploadUUID: uploadUUID
+        let uuidsWithThumbnail = await thumbnailTask.value
+        thumbnailProvider.moveTemporaryThumbnails(
+            uuidsWithThumbnail: uuidsWithThumbnail,
+            transferUUID: transferUUID
         )
     }
+}
 
-    func uploadChunk(
-        chunk: Data,
-        index: Int,
-        isLastChunk: Bool,
-        remoteUploadFileUUID: String,
-        uploadUUID: String
-    ) async throws {
-        @InjectService var injection: SwissTransferInjection
-        guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
-            uploadUUID: uploadUUID,
-            fileUUID: remoteUploadFileUUID,
-            chunkIndex: Int32(index),
-            isLastChunk: isLastChunk,
-            isRetry: false
-        ) else {
-            throw TransferSessionManager.ErrorDomain.invalidUploadChunkURL
-        }
+extension TransferSessionManager: UploadCancellable {
+    public func cancelUploads() async {
+        await transferManagerWorker?.suspendAllTasks()
+        transferManagerWorker = nil
+    }
+}
 
-        guard let chunkURL = URL(string: rawChunkURL) else {
-            throw TransferSessionManager.ErrorDomain.invalidURL(rawURL: rawChunkURL)
-        }
+extension TransferSessionManager: TransferManagerWorkerDelegate {
+    @MainActor func uploadDidComplete(result: Result<String, NSError>) {
+        Task {
+            if case .success(let transferUUID) = result {
+                await finishThumbnailGeneration(transferUUID: transferUUID)
+            }
 
-        var uploadRequest = URLRequest(url: chunkURL)
-        uploadRequest.httpMethod = Method.POST.rawValue
-
-        let taskDelegate = UploadTaskDelegate(totalBytesExpectedToSend: chunk.count)
-        overallProgress.addChild(taskDelegate.taskProgress, withPendingUnitCount: Int64(chunk.count))
-
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunk, delegate: taskDelegate)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw TransferSessionManager.ErrorDomain.invalidResponse
-        }
-
-        if httpResponse.statusCode >= 400 {
-            throw TransferSessionManager.ErrorDomain.invalidChunkResponse
+            transferResult = result
         }
     }
 }
