@@ -1,3 +1,2 @@
-- Affichage du status expiré d'un transfert dont la limite de téléchargement est atteinte
-- Affichage de la liste des adresses mails d'un transfert envoyé
-- Correction d'un bug concernant les transferts par mail
+- Reprise de l'upload si possible
+- Correction de l'affichage de la quantité transférée dans la vue de progression
