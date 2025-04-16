@@ -1,3 +1,2 @@
-- Display the expired status of a transfer whose download limit has been reached
-- Display the list of email addresses for a sent transfer
-- Fixed a bug affecting transfers by mail
+- Resume upload if possible
+- Fix upload size during progress
