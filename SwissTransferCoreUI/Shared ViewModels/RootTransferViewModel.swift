@@ -110,7 +110,7 @@ public final class RootTransferViewModel: ObservableObject {
 
     public func restoreWith(uploadSession: any UploadSession) {
         authorEmail = uploadSession.authorEmail
-        recipientsEmail = OrderedSet(uploadSession.recipientsEmails.map { String($0.dropFirst().dropLast()) })
+        recipientsEmail = OrderedSet(uploadSession.recipientsEmails)
 
         if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
             transferType = .mail
