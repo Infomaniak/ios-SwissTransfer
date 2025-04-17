@@ -41,7 +41,7 @@ struct NewTransferFilesCellView: View {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 HStack {
                     FilesCountAndSizeView(
-                        count: files.count + newTransferFileManager.importedItems.count,
+                        count: newTransferFileManager.filesCount + newTransferFileManager.importedItems.count,
                         size: files.filesSize()
                     )
                     .font(.ST.callout)
