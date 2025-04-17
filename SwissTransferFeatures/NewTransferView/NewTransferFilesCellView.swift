@@ -41,7 +41,7 @@ struct NewTransferFilesCellView: View {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
                 HStack {
                     FilesCountAndSizeView(
-                        count: files.count + newTransferFileManager.importedItems.count,
+                        count: newTransferFileManager.filesCount + newTransferFileManager.importedItems.count,
                         size: files.filesSize()
                     )
                     .font(.ST.callout)
@@ -55,7 +55,11 @@ struct NewTransferFilesCellView: View {
 
                 ScrollView(.horizontal) {
                     HStack(spacing: IKPadding.medium) {
-                        AddFilesMenu(selection: $selectedItems) {
+                        AddFilesMenu(
+                            selection: $selectedItems,
+                            maxSelectionCount: Constants.maxFileCount - newTransferFileManager.filesCount,
+                            sizeExceeded: files.filesSize() >= Constants.maxFileSize
+                        ) {
                             STResourcesAsset.Images.plus.swiftUIImage
                                 .iconSize(.large)
                                 .foregroundStyle(Color.ST.primary)
