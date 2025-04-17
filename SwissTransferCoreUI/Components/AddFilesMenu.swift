@@ -31,10 +31,16 @@ public struct AddFilesMenu<Content: View>: View {
 
     @Binding var selection: [ImportedItem]
 
+    private let maxSelectionCount: Int
     private let label: Content
 
-    public init(selection: Binding<[ImportedItem]>, @ViewBuilder label: () -> Content) {
+    public init(
+        selection: Binding<[ImportedItem]>,
+        maxSelectionCount: Int = Constants.maxFileCount,
+        @ViewBuilder label: () -> Content
+    ) {
         _selection = selection
+        self.maxSelectionCount = maxSelectionCount
         self.label = label()
     }
 
@@ -76,7 +82,12 @@ public struct AddFilesMenu<Content: View>: View {
                 }
             }
         }
-        .photosPicker(isPresented: $isShowingPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
+        .photosPicker(
+            isPresented: $isShowingPhotoLibrary,
+            selection: $selectedPhotos,
+            maxSelectionCount: maxSelectionCount,
+            photoLibrary: .shared()
+        )
         .onChange(of: selectedPhotos) { _ in
             didSelectFromPhotoLibrary()
         }
