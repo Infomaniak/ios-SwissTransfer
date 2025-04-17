@@ -54,6 +54,7 @@ public struct AddFilesMenu<Content: View>: View {
                     icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
                 )
             }
+            .disabled(maxSelectionCount <= 0)
             Button {
                 isShowingPhotoLibrary = true
             } label: {
@@ -62,6 +63,7 @@ public struct AddFilesMenu<Content: View>: View {
                     icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
                 )
             }
+            .disabled(maxSelectionCount <= 0)
             Button {
                 isShowingCamera = true
             } label: {
@@ -72,6 +74,7 @@ public struct AddFilesMenu<Content: View>: View {
                     icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
                 )
             }
+            .disabled(maxSelectionCount <= 0)
         } label: {
             if #available(iOS 17.0, *) {
                 label
