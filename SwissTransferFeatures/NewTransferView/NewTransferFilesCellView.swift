@@ -57,7 +57,8 @@ struct NewTransferFilesCellView: View {
                     HStack(spacing: IKPadding.medium) {
                         AddFilesMenu(
                             selection: $selectedItems,
-                            maxSelectionCount: Constants.maxFileCount - newTransferFileManager.filesCount
+                            maxSelectionCount: Constants.maxFileCount - newTransferFileManager.filesCount,
+                            sizeExceeded: files.filesSize() >= Constants.maxFileSize
                         ) {
                             STResourcesAsset.Images.plus.swiftUIImage
                                 .iconSize(.large)
