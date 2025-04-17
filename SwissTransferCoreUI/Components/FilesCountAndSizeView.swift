@@ -24,6 +24,17 @@ public struct FilesCountAndSizeView: View {
     private let count: Int
     private let size: Int64
 
+    private var filesCountText: String {
+        if count > Constants.maxFileCount {
+            return STResourcesStrings.Localizable.fileCountOverDisplayOnly(count, Constants.maxFileCount)
+        }
+        return STResourcesStrings.Localizable.filesCount(count)
+    }
+
+    private var filesCountColor: Color {
+        return count > Constants.maxFileCount ? Color.ST.error : Color.ST.textSecondary
+    }
+
     public init(count: Int, size: Int64) {
         self.size = size
         self.count = count
@@ -31,9 +42,10 @@ public struct FilesCountAndSizeView: View {
 
     public var body: some View {
         SeparatedItemsView {
-            Text(STResourcesStrings.Localizable.filesCount(count))
+            Text(filesCountText)
                 .monospacedDigit()
                 .contentTransition(.numericText())
+                .foregroundStyle(filesCountColor)
         } rhs: {
             Text(size, format: .defaultByteCount)
                 .monospacedDigit()

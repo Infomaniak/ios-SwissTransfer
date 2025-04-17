@@ -44,6 +44,10 @@ public struct NewTransferView: View {
     @State private var isLoadingFileToUpload = false
     @State private var importFilesTasks = [Task<Void, Never>]()
 
+    private var isNewTransferValid: Bool {
+        viewModel.isNewTransferValid && newTransferFileManager.isNewTransferValid
+    }
+
     public init() {}
 
     public var body: some View {
@@ -83,7 +87,7 @@ public struct NewTransferView: View {
                 }
                 .buttonStyle(.ikBorderedProminent)
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
-                .disabled(!viewModel.isNewTransferValid)
+                .disabled(!isNewTransferValid)
             }
             .scrollDismissesKeyboard(.immediately)
             .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
