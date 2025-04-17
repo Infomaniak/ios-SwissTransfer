@@ -35,6 +35,20 @@ public struct FilesCountAndSizeView: View {
         return count > Constants.maxFileCount ? Color.ST.error : Color.ST.textSecondary
     }
 
+    private var filesSizeText: String {
+        if size > Constants.maxFileSize {
+            return STResourcesStrings.Localizable.fileSizeOverDisplayOnly(
+                size.formatted(.defaultByteCount),
+                Constants.maxFileSize.formatted(.defaultByteCount)
+            )
+        }
+        return size.formatted(.defaultByteCount)
+    }
+
+    private var filesSizeColor: Color {
+        return size > Constants.maxFileSize ? Color.ST.error : Color.ST.textSecondary
+    }
+
     public init(count: Int, size: Int64) {
         self.size = size
         self.count = count
@@ -47,9 +61,10 @@ public struct FilesCountAndSizeView: View {
                 .contentTransition(.numericText())
                 .foregroundStyle(filesCountColor)
         } rhs: {
-            Text(size, format: .defaultByteCount)
+            Text(filesSizeText)
                 .monospacedDigit()
                 .contentTransition(.numericText())
+                .foregroundStyle(filesSizeColor)
         }
     }
 }

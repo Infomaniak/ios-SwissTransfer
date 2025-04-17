@@ -49,7 +49,7 @@ public final class NewTransferFileManager: ObservableObject {
     @Published public var filesCount = 0
 
     private var shouldDoInitialClean: Bool
-    
+
     public var isNewTransferValid: Bool {
         return filesCount <= Constants.maxFileCount
     }

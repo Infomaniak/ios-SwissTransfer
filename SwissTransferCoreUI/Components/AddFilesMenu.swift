@@ -32,15 +32,22 @@ public struct AddFilesMenu<Content: View>: View {
     @Binding var selection: [ImportedItem]
 
     private let maxSelectionCount: Int
+    private let sizeExceeded: Bool
     private let label: Content
+
+    private var buttonIsEnabled: Bool {
+        return !sizeExceeded && maxSelectionCount > 0
+    }
 
     public init(
         selection: Binding<[ImportedItem]>,
         maxSelectionCount: Int = Constants.maxFileCount,
+        sizeExceeded: Bool = false,
         @ViewBuilder label: () -> Content
     ) {
         _selection = selection
         self.maxSelectionCount = maxSelectionCount
+        self.sizeExceeded = sizeExceeded
         self.label = label()
     }
 
@@ -54,7 +61,7 @@ public struct AddFilesMenu<Content: View>: View {
                     icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
                 )
             }
-            .disabled(maxSelectionCount <= 0)
+            .disabled(!buttonIsEnabled)
             Button {
                 isShowingPhotoLibrary = true
             } label: {
@@ -63,7 +70,7 @@ public struct AddFilesMenu<Content: View>: View {
                     icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
                 )
             }
-            .disabled(maxSelectionCount <= 0)
+            .disabled(!buttonIsEnabled)
             Button {
                 isShowingCamera = true
             } label: {
@@ -74,7 +81,7 @@ public struct AddFilesMenu<Content: View>: View {
                     icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
                 )
             }
-            .disabled(maxSelectionCount <= 0)
+            .disabled(!buttonIsEnabled)
         } label: {
             if #available(iOS 17.0, *) {
                 label
