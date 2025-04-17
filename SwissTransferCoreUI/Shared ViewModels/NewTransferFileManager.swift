@@ -46,6 +46,7 @@ enum TmpDirType: String {
 @MainActor
 public final class NewTransferFileManager: ObservableObject {
     @Published public private(set) var importedItems: [ImportedItem] = []
+    @Published public var filesCount = 0
 
     private var shouldDoInitialClean: Bool
 
@@ -70,6 +71,7 @@ public final class NewTransferFileManager: ObservableObject {
         }
 
         withAnimation {
+            filesCount += itemsToImport.count // fast count update
             importedItems.append(contentsOf: itemsToImport)
         }
 
@@ -82,6 +84,8 @@ public final class NewTransferFileManager: ObservableObject {
         } catch {
             Logger.general.error("An error occurred while importing item: \(error)")
         }
+
+        await updateCountFilesToImport()
 
         await NewTransferFileManager.cleanTmpDir(type: .cache)
 
@@ -98,6 +102,9 @@ public final class NewTransferFileManager: ObservableObject {
         guard let url = file.localURLFor(transferUUID: "") else { return }
         try FileManager.default.removeItem(at: url)
         cleanEmptyParent(of: url)
+        Task {
+            await updateCountFilesToImport()
+        }
     }
 }
 
@@ -198,5 +205,22 @@ public extension NewTransferFileManager {
             Logger.general.error("An error occurred while getting files from: \(folderURL?.path() ?? "") \(error)")
         }
         return []
+    }
+
+    func updateCountFilesToImport() async {
+        var counter = 0
+        let resourceKeys: [URLResourceKey] = [.isDirectoryKey]
+        guard let enumerator = try? FileManager.default.enumerator(
+            at: URL.tmpUploadDirectory(),
+            includingPropertiesForKeys: resourceKeys
+        ) else { return }
+
+        for case let fileURL as URL in enumerator {
+            let resourceValues = try? fileURL.resourceValues(forKeys: Set(resourceKeys))
+            if resourceValues?.isDirectory == false {
+                counter += 1
+            }
+        }
+        filesCount = counter
     }
 }
