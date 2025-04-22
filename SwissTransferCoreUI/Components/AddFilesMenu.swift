@@ -53,33 +53,33 @@ public struct AddFilesMenu<Content: View>: View {
 
     public var body: some View {
         Menu {
-            Button {
-                isShowingImportFile = true
-            } label: {
-                Label(
-                    title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
-                    icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
-                )
-            }
-            .disabled(!buttonIsEnabled)
-            Button {
-                isShowingPhotoLibrary = true
-            } label: {
-                Label(
-                    title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
-                    icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
-                )
-            }
-            .disabled(!buttonIsEnabled)
-            Button {
-                isShowingCamera = true
-            } label: {
-                Label(
-                    title: {
-                        Text(STResourcesStrings.Localizable.transferUploadSourceChoiceCamera)
-                    },
-                    icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
-                )
+            Group {
+                Button {
+                    isShowingImportFile = true
+                } label: {
+                    Label(
+                        title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
+                        icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
+                    )
+                }
+                Button {
+                    isShowingPhotoLibrary = true
+                } label: {
+                    Label(
+                        title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
+                        icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
+                    )
+                }
+                Button {
+                    isShowingCamera = true
+                } label: {
+                    Label(
+                        title: {
+                            Text(STResourcesStrings.Localizable.transferUploadSourceChoiceCamera)
+                        },
+                        icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
+                    )
+                }
             }
             .disabled(!buttonIsEnabled)
         } label: {
