@@ -21,26 +21,22 @@ import Sentry
 import STCore
 
 public final class SentryKMPWrapper: CrashReportInterface {
-    public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, metadata: [String: Any]?) {
+    public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, data: [String: Any]?) {
         Task {
             let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
             let breadcrumb = Breadcrumb(level: sentryLevel, category: category)
             breadcrumb.message = message
-            breadcrumb.data = metadata
+            breadcrumb.data = data
             SentrySDK.addBreadcrumb(breadcrumb)
         }
     }
 
-    public func capture(error: KotlinThrowable, context: [String: Any]?, contextKey: String?, extras: [String: Any]?) {
+    public func capture(error: KotlinThrowable, context: [String: Any]?, contextKey: String?) {
         Task {
             let errorWrapper = KotlinThrowableWrapper(kotlinThrowable: error)
             SentrySDK.capture(error: errorWrapper) { scope in
                 if let context, let contextKey {
                     scope.setContext(value: context, key: contextKey)
-                }
-
-                if let extras {
-                    scope.setExtras(extras)
                 }
             }
         }
@@ -50,8 +46,7 @@ public final class SentryKMPWrapper: CrashReportInterface {
         message: String,
         context: [String: Any]?,
         contextKey: String?,
-        level: STCore.CrashReportLevel?,
-        extras: [String: Any]?
+        level: STCore.CrashReportLevel?
     ) {
         Task {
             SentrySDK.capture(message: message) { scope in
@@ -62,10 +57,6 @@ public final class SentryKMPWrapper: CrashReportInterface {
                 if let level {
                     let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
                     scope.setLevel(sentryLevel)
-                }
-
-                if let extras {
-                    scope.setExtras(extras)
                 }
             }
         }
