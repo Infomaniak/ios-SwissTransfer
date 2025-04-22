@@ -62,6 +62,8 @@ open class TargetAssembly {
                                                              factoryParameters: nil,
                                                              resolver: resolver)
 
+                let sentryWrapper = SentryKMPWrapper()
+
                 let realmRootDirectory = groupPathProvider.realmRootURL.path()
                 Logger.general.info("Realm group directory \(realmRootDirectory)")
 
@@ -69,13 +71,15 @@ open class TargetAssembly {
                 return SwissTransferInjection(
                     environment: STCore.ApiEnvironment.Preprod(),
                     userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory
+                    databaseRootDirectory: realmRootDirectory,
+                    crashReport: sentryWrapper
                 )
                 #else
                 return SwissTransferInjection(
                     environment: STCore.ApiEnvironment.Prod(),
                     userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory
+                    databaseRootDirectory: realmRootDirectory,
+                    crashReport: sentryWrapper
                 )
                 #endif
             },
