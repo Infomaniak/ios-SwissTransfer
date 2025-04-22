@@ -20,45 +20,6 @@ import Foundation
 import Sentry
 import STCore
 
-public struct CrashLevelWrapper {
-    init(crashReportLevel: STCore.CrashReportLevel) {
-        switch crashReportLevel {
-        case .debug:
-            sentryLevel = .debug
-        case .info:
-            sentryLevel = .info
-        case .warning:
-            sentryLevel = .warning
-        case .error:
-            sentryLevel = .error
-        case .fatal:
-            sentryLevel = .fatal
-        }
-    }
-
-    let sentryLevel: SentryLevel
-}
-
-public final class KotlinThrowableWrapper: NSError, @unchecked Sendable {
-    public init(kotlinThrowable: KotlinThrowable) {
-        let errorMessage = kotlinThrowable.message ?? ""
-        let userInfo: [String: Any]
-        if let cause = kotlinThrowable.cause {
-            let underlyingError = [KotlinThrowableWrapper(kotlinThrowable: cause)]
-            userInfo = [NSLocalizedDescriptionKey: errorMessage, NSUnderlyingErrorKey: underlyingError]
-        } else {
-            userInfo = [NSLocalizedDescriptionKey: errorMessage]
-        }
-
-        super.init(domain: "kmp.infomaniak.com", code: -666, userInfo: userInfo)
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 public final class SentryKMPWrapper: CrashReportInterface {
     public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, metadata: [String: Any]?) {
         Task {
