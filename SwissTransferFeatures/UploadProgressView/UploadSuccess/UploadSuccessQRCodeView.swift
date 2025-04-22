@@ -34,6 +34,7 @@ struct UploadSuccessQRCodeView: View {
 
     let type: TransferType
     let transferUUID: String
+    @State private var isShowingSheet = false
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -91,6 +92,21 @@ struct UploadSuccessQRCodeView: View {
             }
             .buttonStyle(.ikBorderedProminent)
         }
+        .onAppear {
+            NotificationCenter.default.addObserver(
+                forName: UIApplication.userDidTakeScreenshotNotification,
+                object: nil,
+                queue: .main
+            ) { _ in
+                Task { @MainActor in
+                    isShowingSheet = true
+                }
+            }
+        }
+        .discoveryPresenter(isPresented: $isShowingSheet) {
+            ScreenshotSheetView()
+        }
+        .matomoView(view: "ScreenshotQrCodeView")
     }
 
     private func copyLinkToClipboard() {
