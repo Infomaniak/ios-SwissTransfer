@@ -29,12 +29,12 @@ struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
     @Environment(\.dismiss) private var dismiss
+    @State private var isShowingShareTipSheet = false
 
     @LazyInjectService private var injection: SwissTransferInjection
 
     let type: TransferType
     let transferUUID: String
-    @State private var isShowingSheet = false
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -99,14 +99,13 @@ struct UploadSuccessQRCodeView: View {
                 queue: .main
             ) { _ in
                 Task { @MainActor in
-                    isShowingSheet = true
+                    isShowingShareTipSheet = true
                 }
             }
         }
-        .discoveryPresenter(isPresented: $isShowingSheet) {
-            ScreenshotSheetView()
+        .discoveryPresenter(isPresented: $isShowingShareTipSheet) {
+            ScreenshotQrBottomSheetView()
         }
-        .matomoView(view: "ScreenshotQrCodeView")
     }
 
     private func copyLinkToClipboard() {

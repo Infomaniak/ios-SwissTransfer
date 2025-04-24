@@ -24,18 +24,32 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
     let image: Image
     let title: String
     let subtitle: String?
+    let attributedSubtitle: AttributedString?
     let buttons: () -> Buttons
 
-    public init(image: Image, title: String, subtitle: String? = nil, @ViewBuilder buttons: @escaping () -> Buttons) {
+    public init(
+        image: Image,
+        title: String,
+        subtitle: String? = nil,
+        attributedSubtitle: AttributedString? = nil,
+        @ViewBuilder buttons: @escaping () -> Buttons
+    ) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
+        self.attributedSubtitle = attributedSubtitle
         self.buttons = buttons
     }
 
     public var body: some View {
         VStack(spacing: IKPadding.huge) {
-            IllustrationAndTextView(image: image, title: title, subtitle: subtitle, style: .bottomSheet)
+            IllustrationAndTextView(
+                image: image,
+                title: title,
+                subtitle: subtitle,
+                attributedSubtitle: attributedSubtitle,
+                style: .bottomSheet
+            )
             BottomButtonsView(buttons: buttons)
         }
     }

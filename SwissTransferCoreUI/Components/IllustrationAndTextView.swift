@@ -41,12 +41,20 @@ public struct IllustrationAndTextView: View {
     let image: Image?
     let title: String
     let subtitle: String?
+    let attributedSubtitle: AttributedString?
     let style: Style
 
-    public init(image: Image?, title: String, subtitle: String? = nil, style: Style) {
+    public init(
+        image: Image?,
+        title: String,
+        subtitle: String? = nil,
+        attributedSubtitle: AttributedString? = nil,
+        style: Style
+    ) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
+        self.attributedSubtitle = attributedSubtitle
         self.style = style
     }
 
@@ -64,6 +72,12 @@ public struct IllustrationAndTextView: View {
 
                 if let subtitle {
                     Text(subtitle)
+                        .font(.ST.body)
+                        .foregroundStyle(Color.ST.textSecondary)
+                }
+
+                if let attributedSubtitle {
+                    Text(attributedSubtitle)
                         .font(.ST.body)
                         .foregroundStyle(Color.ST.textSecondary)
                 }
