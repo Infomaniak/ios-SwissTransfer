@@ -22,8 +22,7 @@ import STCore
 
 public final class SentryKMPWrapper: CrashReportInterface {
     public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, data: [String: Any]?) {
-        let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
-        let breadcrumb = Breadcrumb(level: sentryLevel, category: category)
+        let breadcrumb = Breadcrumb(level: level.sentryLevel, category: category)
         breadcrumb.message = message
         breadcrumb.data = data
         SentrySDK.addBreadcrumb(breadcrumb)
@@ -50,8 +49,7 @@ public final class SentryKMPWrapper: CrashReportInterface {
             }
 
             if let level {
-                let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
-                scope.setLevel(sentryLevel)
+                scope.setLevel(level.sentryLevel)
             }
         }
     }

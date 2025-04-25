@@ -20,21 +20,19 @@ import Foundation
 import Sentry
 import STCore
 
-public struct CrashLevelWrapper {
-    init(crashReportLevel: STCore.CrashReportLevel) {
-        switch crashReportLevel {
+public extension STCore.CrashReportLevel {
+    var sentryLevel: SentryLevel {
+        switch self {
         case .debug:
-            sentryLevel = .debug
+            return .debug
         case .info:
-            sentryLevel = .info
+            return .info
         case .warning:
-            sentryLevel = .warning
+            return .warning
         case .error:
-            sentryLevel = .error
+            return .error
         case .fatal:
-            sentryLevel = .fatal
+            return .fatal
         }
     }
-
-    let sentryLevel: SentryLevel
 }
