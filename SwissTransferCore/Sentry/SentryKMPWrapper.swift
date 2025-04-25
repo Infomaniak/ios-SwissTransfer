@@ -31,7 +31,7 @@ public final class SentryKMPWrapper: CrashReportInterface {
         }
     }
 
-    public func capture(error: KotlinThrowable, context: [String: Any]?, contextKey: String?) {
+    public func capture(error: KotlinThrowable, data context: [String: Any]?, category contextKey: String?) {
         Task {
             let errorWrapper = KotlinThrowableWrapper(kotlinThrowable: error)
             SentrySDK.capture(error: errorWrapper) { scope in
@@ -44,8 +44,8 @@ public final class SentryKMPWrapper: CrashReportInterface {
 
     public func capture(
         message: String,
-        context: [String: Any]?,
-        contextKey: String?,
+        data context: [String: Any]?,
+        category contextKey: String?,
         level: STCore.CrashReportLevel?
     ) {
         Task {
