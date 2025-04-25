@@ -22,22 +22,18 @@ import STCore
 
 public final class SentryKMPWrapper: CrashReportInterface {
     public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, data: [String: Any]?) {
-        Task {
-            let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
-            let breadcrumb = Breadcrumb(level: sentryLevel, category: category)
-            breadcrumb.message = message
-            breadcrumb.data = data
-            SentrySDK.addBreadcrumb(breadcrumb)
-        }
+        let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
+        let breadcrumb = Breadcrumb(level: sentryLevel, category: category)
+        breadcrumb.message = message
+        breadcrumb.data = data
+        SentrySDK.addBreadcrumb(breadcrumb)
     }
 
     public func capture(error: KotlinThrowable, data context: [String: Any]?, category contextKey: String?) {
-        Task {
-            let errorWrapper = KotlinThrowableWrapper(kotlinThrowable: error)
-            SentrySDK.capture(error: errorWrapper) { scope in
-                if let context, let contextKey {
-                    scope.setContext(value: context, key: contextKey)
-                }
+        let errorWrapper = KotlinThrowableWrapper(kotlinThrowable: error)
+        SentrySDK.capture(error: errorWrapper) { scope in
+            if let context, let contextKey {
+                scope.setContext(value: context, key: contextKey)
             }
         }
     }
@@ -48,16 +44,14 @@ public final class SentryKMPWrapper: CrashReportInterface {
         category contextKey: String?,
         level: STCore.CrashReportLevel?
     ) {
-        Task {
-            SentrySDK.capture(message: message) { scope in
-                if let context, let contextKey {
-                    scope.setContext(value: context, key: contextKey)
-                }
+        SentrySDK.capture(message: message) { scope in
+            if let context, let contextKey {
+                scope.setContext(value: context, key: contextKey)
+            }
 
-                if let level {
-                    let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
-                    scope.setLevel(sentryLevel)
-                }
+            if let level {
+                let sentryLevel = CrashLevelWrapper(crashReportLevel: level).sentryLevel
+                scope.setLevel(sentryLevel)
             }
         }
     }
