@@ -23,21 +23,30 @@ import SwiftUI
 public struct EmptyStateFloatingPanelView<Buttons: View>: View {
     let image: Image
     let title: String
-    let subtitle: String?
     let attributedSubtitle: AttributedString?
     let buttons: () -> Buttons
 
     public init(
         image: Image,
         title: String,
-        subtitle: String? = nil,
         attributedSubtitle: AttributedString? = nil,
         @ViewBuilder buttons: @escaping () -> Buttons
     ) {
         self.image = image
         self.title = title
-        self.subtitle = subtitle
         self.attributedSubtitle = attributedSubtitle
+        self.buttons = buttons
+    }
+
+    public init(
+        image: Image,
+        title: String,
+        attributedSubtitle: String?,
+        @ViewBuilder buttons: @escaping () -> Buttons
+    ) {
+        self.image = image
+        self.title = title
+        self.attributedSubtitle = AttributedString(attributedSubtitle ?? "")
         self.buttons = buttons
     }
 
@@ -46,8 +55,7 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
             IllustrationAndTextView(
                 image: image,
                 title: title,
-                subtitle: subtitle,
-                attributedSubtitle: attributedSubtitle,
+                attributedSubtitle: attributedSubtitle ?? "",
                 style: .bottomSheet
             )
             BottomButtonsView(buttons: buttons)
@@ -59,7 +67,7 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
     EmptyStateFloatingPanelView(
         image: STResourcesAsset.Images.paperPlanesCrossOctagon.swiftUIImage,
         title: STResourcesStrings.Localizable.uploadCancelConfirmBottomSheetTitle,
-        subtitle: nil
+        attributedSubtitle: ""
     ) {
         Button(STResourcesStrings.Localizable.buttonCloseAndContinue) {}
             .buttonStyle(.ikBorderedProminent)

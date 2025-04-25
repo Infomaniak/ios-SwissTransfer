@@ -44,7 +44,7 @@ public struct UploadErrorView: View {
             IllustrationAndTextView(
                 image: uploadError.image,
                 title: uploadError.title,
-                subtitle: uploadError.subtitle,
+                attributedSubtitle: uploadError.subtitle,
                 style: .emptyState
             )
             .padding(value: .medium)

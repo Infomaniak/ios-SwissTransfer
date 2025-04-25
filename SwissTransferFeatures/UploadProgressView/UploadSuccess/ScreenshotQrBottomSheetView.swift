@@ -47,17 +47,15 @@ struct ScreenshotQrBottomSheetView: View {
     }
 
     var body: some View {
-        VStack(spacing: IKPadding.huge) {
-            EmptyStateFloatingPanelView(
-                image: STResourcesAsset.Images.bulb.swiftUIImage,
-                title: STResourcesStrings.Localizable.oneClickSharing,
-                attributedSubtitle: description
-            ) {
-                Button(STResourcesStrings.Localizable.understandTitleButton) {
-                    dismiss()
-                }
-                .buttonStyle(.ikBorderedProminent)
+        EmptyStateFloatingPanelView(
+            image: STResourcesAsset.Images.bulb.swiftUIImage,
+            title: STResourcesStrings.Localizable.oneClickSharing,
+            attributedSubtitle: description
+        ) {
+            Button(STResourcesStrings.Localizable.understandTitleButton) {
+                dismiss()
             }
+            .buttonStyle(.ikBorderedProminent)
         }
         .padding(.horizontal, value: .large)
         .padding(.top, value: .medium)

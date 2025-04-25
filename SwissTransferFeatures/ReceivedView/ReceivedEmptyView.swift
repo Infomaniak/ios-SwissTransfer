@@ -36,7 +36,7 @@ struct ReceivedEmptyView: View {
         IllustrationAndTextView(
             image: STResourcesAsset.Images.ghostBinoculars.swiftUIImage,
             title: STResourcesStrings.Localizable.noTransferReceivedTitle,
-            subtitle: STResourcesStrings.Localizable.noTransferReceivedDescription,
+            attributedSubtitle: STResourcesStrings.Localizable.noTransferReceivedDescription,
             style: .emptyState
         )
         .padding(value: .medium)

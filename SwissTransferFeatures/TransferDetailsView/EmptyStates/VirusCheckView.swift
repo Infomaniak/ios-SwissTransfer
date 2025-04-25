@@ -27,7 +27,7 @@ struct VirusCheckView: View {
         IllustrationAndTextView(
             image: STResourcesAsset.Images.ghostScanningSquare.swiftUIImage,
             title: STResourcesStrings.Localizable.transferVirusCheckTitle,
-            subtitle: STResourcesStrings.Localizable.transferVirusCheckDescription,
+            attributedSubtitle: STResourcesStrings.Localizable.transferVirusCheckDescription,
             style: .emptyState
         )
         .padding(value: .medium)
