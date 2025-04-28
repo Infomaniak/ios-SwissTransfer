@@ -18,6 +18,7 @@
 
 import Foundation
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 
@@ -33,6 +34,12 @@ struct DateSection: Identifiable, Equatable {
     init(sectionKey: String, transfers: [TransferUi]) {
         id = sectionKey
         title = ReferenceDate.titleFromRawSectionKey(sectionKey)
+        self.transfers = transfers
+    }
+
+    init(title: String, transfers: [TransferUi]) {
+        id = title
+        self.title = title
         self.transfers = transfers
     }
 }
@@ -52,14 +59,29 @@ final class TransferListViewModel: ObservableObject {
 
     private func observeTransfers() {
         Task {
-            let transfersFlow = try transferManager.getTransfers(transferDirection: transferDirection)
+            let transfersFlow = try transferManager.getSortedTransfers(transferDirection: transferDirection)
             for await transfers in transfersFlow {
-                await mapSections(from: transfers)
+                await mapTransfers(from: transfers)
             }
         }
     }
 
-    private func mapSections(from transfers: [TransferUi]) async {
+    private func mapTransfers(from pair: KotlinPair<NSArray, NSArray>) async {
+        var mappedSections = [DateSection]()
+        if let validTransfers = pair.first as? [TransferUi] {
+            mappedSections.append(contentsOf: mapSections(from: validTransfers))
+            }
+        if let expiredTransfers = pair.second as? [TransferUi] {
+            let expiredSection = DateSection(title: STResourcesStrings.Localizable.expired, transfers: expiredTransfers)
+            mappedSections.append(expiredSection)
+        }
+
+        withAnimation {
+            self.sections = mappedSections
+        }
+    }
+
+    private func mapSections(from transfers: [TransferUi]) -> [DateSection] {
         let results = Dictionary(grouping: transfers) { $0.sectionDate }
             .sorted {
                 guard let firstDate = $0.value.first?.date,
@@ -72,8 +94,6 @@ final class TransferListViewModel: ObservableObject {
             return DateSection(sectionKey: $0.key, transfers: sectionTransfers)
         }
 
-        withAnimation {
-            self.sections = mappedSections
-        }
+        return mappedSections
     }
 }
