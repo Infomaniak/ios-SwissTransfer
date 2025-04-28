@@ -61,8 +61,11 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
                 subtitle: subtitle,
                 style: .bottomSheet
             )
+            .padding(.horizontal, value: .medium)
+
             BottomButtonsView(buttons: buttons)
         }
+        .padding(.top, value: .medium)
     }
 }
 
