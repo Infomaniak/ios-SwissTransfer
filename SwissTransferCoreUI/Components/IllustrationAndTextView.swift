@@ -46,7 +46,7 @@ public struct IllustrationAndTextView: View {
     public init(
         image: Image?,
         title: String,
-        subtitle: AttributedString,
+        subtitle: AttributedString?,
         style: Style
     ) {
         self.image = image
@@ -58,13 +58,16 @@ public struct IllustrationAndTextView: View {
     public init(
         image: Image?,
         title: String,
-        subtitle: String,
+        subtitle: String?,
         style: Style
     ) {
-        self.image = image
-        self.title = title
-        self.subtitle = AttributedString(subtitle)
-        self.style = style
+        let attributedSubtitle: AttributedString?
+        if let subtitle {
+            attributedSubtitle = AttributedString(subtitle)
+        } else {
+            attributedSubtitle = nil
+        }
+        self.init(image: image, title: title, subtitle: attributedSubtitle, style: style)
     }
 
     public var body: some View {

@@ -44,10 +44,13 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
         subtitle: String?,
         @ViewBuilder buttons: @escaping () -> Buttons
     ) {
-        self.image = image
-        self.title = title
-        self.subtitle = AttributedString(subtitle ?? "")
-        self.buttons = buttons
+        let attributedSubtitle: AttributedString?
+        if let subtitle {
+            attributedSubtitle = AttributedString(subtitle)
+        } else {
+            attributedSubtitle = nil
+        }
+        self.init(image: image, title: title, subtitle: attributedSubtitle, buttons: buttons)
     }
 
     public var body: some View {
@@ -55,7 +58,7 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
             IllustrationAndTextView(
                 image: image,
                 title: title,
-                subtitle: subtitle ?? "",
+                subtitle: subtitle,
                 style: .bottomSheet
             )
             BottomButtonsView(buttons: buttons)
@@ -66,8 +69,7 @@ public struct EmptyStateFloatingPanelView<Buttons: View>: View {
 #Preview {
     EmptyStateFloatingPanelView(
         image: STResourcesAsset.Images.paperPlanesCrossOctagon.swiftUIImage,
-        title: STResourcesStrings.Localizable.uploadCancelConfirmBottomSheetTitle,
-        subtitle: ""
+        title: STResourcesStrings.Localizable.uploadCancelConfirmBottomSheetTitle
     ) {
         Button(STResourcesStrings.Localizable.buttonCloseAndContinue) {}
             .buttonStyle(.ikBorderedProminent)
