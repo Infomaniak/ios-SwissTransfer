@@ -50,7 +50,7 @@ struct ScreenshotQrBottomSheetView: View {
         EmptyStateFloatingPanelView(
             image: STResourcesAsset.Images.bulb.swiftUIImage,
             title: STResourcesStrings.Localizable.oneClickSharing,
-            attributedSubtitle: description
+            subtitle: description
         ) {
             Button(STResourcesStrings.Localizable.understandTitleButton) {
                 dismiss()

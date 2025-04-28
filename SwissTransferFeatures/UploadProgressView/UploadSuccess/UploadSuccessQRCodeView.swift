@@ -28,10 +28,9 @@ import SwissTransferCoreUI
 struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
+    @LazyInjectService private var injection: SwissTransferInjection
     @Environment(\.dismiss) private var dismiss
     @State private var isShowingShareTipSheet = false
-
-    @LazyInjectService private var injection: SwissTransferInjection
 
     let type: TransferType
     let transferUUID: String

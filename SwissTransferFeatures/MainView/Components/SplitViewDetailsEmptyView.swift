@@ -25,7 +25,7 @@ struct SplitViewDetailsEmptyView: View {
         IllustrationAndTextView(
             image: nil,
             title: STResourcesStrings.Localizable.noTransferSelectedTitle,
-            attributedSubtitle: STResourcesStrings.Localizable.noTransferSelectedDescription,
+            subtitle: STResourcesStrings.Localizable.noTransferSelectedDescription,
             style: .emptyState
         )
         .padding(value: .medium)

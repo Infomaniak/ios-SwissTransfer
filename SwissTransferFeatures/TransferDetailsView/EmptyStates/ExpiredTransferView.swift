@@ -57,7 +57,7 @@ struct ExpiredTransferView: View {
         IllustrationAndTextView(
             image: STResourcesAsset.Images.ghostQuestionMarksShareLink.swiftUIImage,
             title: STResourcesStrings.Localizable.transferExpiredTitle,
-            attributedSubtitle: subtitle,
+            subtitle: subtitle,
             style: .emptyState
         )
         .padding(value: .medium)

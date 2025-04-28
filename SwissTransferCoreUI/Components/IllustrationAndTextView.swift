@@ -40,30 +40,30 @@ public extension IllustrationAndTextView {
 public struct IllustrationAndTextView: View {
     let image: Image?
     let title: String
-    let attributedSubtitle: AttributedString?
+    let subtitle: AttributedString?
     let style: Style
 
     public init(
         image: Image?,
         title: String,
-        attributedSubtitle: AttributedString,
+        subtitle: AttributedString,
         style: Style
     ) {
         self.image = image
         self.title = title
-        self.attributedSubtitle = attributedSubtitle
+        self.subtitle = subtitle
         self.style = style
     }
 
     public init(
         image: Image?,
         title: String,
-        attributedSubtitle: String,
+        subtitle: String,
         style: Style
     ) {
         self.image = image
         self.title = title
-        self.attributedSubtitle = AttributedString(attributedSubtitle)
+        self.subtitle = AttributedString(subtitle)
         self.style = style
     }
 
@@ -79,8 +79,8 @@ public struct IllustrationAndTextView: View {
                     .font(.ST.title)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                if let attributedSubtitle {
-                    Text(attributedSubtitle)
+                if let subtitle {
+                    Text(subtitle)
                         .font(.ST.body)
                         .foregroundStyle(Color.ST.textSecondary)
                 }
@@ -95,7 +95,7 @@ public struct IllustrationAndTextView: View {
     IllustrationAndTextView(
         image: STResourcesAsset.Images.beers.swiftUIImage,
         title: "Empty State Title",
-        attributedSubtitle: "Consequat magna cupidatat aute fugiat quis dolore ea labore nisi velit. Culpa deserunt adipisicing velit consequat.",
+        subtitle: "Consequat magna cupidatat aute fugiat quis dolore ea labore nisi velit. Culpa deserunt adipisicing velit consequat.",
         style: .emptyState
     )
 }

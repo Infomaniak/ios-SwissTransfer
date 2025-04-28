@@ -35,7 +35,7 @@ struct UploadSuccessMailView: View {
             IllustrationAndTextView(
                 image: STResourcesAsset.Images.beers.swiftUIImage,
                 title: TransferType.mail.successTitle,
-                attributedSubtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription(recipients.count),
+                subtitle: STResourcesStrings.Localizable.uploadSuccessEmailDescription(recipients.count),
                 style: .emptyState
             )
 
