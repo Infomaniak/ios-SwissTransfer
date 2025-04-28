@@ -23,29 +23,56 @@ import SwiftUI
 public struct EmptyStateFloatingPanelView<Buttons: View>: View {
     let image: Image
     let title: String
-    let subtitle: String?
+    let subtitle: AttributedString?
     let buttons: () -> Buttons
 
-    public init(image: Image, title: String, subtitle: String? = nil, @ViewBuilder buttons: @escaping () -> Buttons) {
+    public init(
+        image: Image,
+        title: String,
+        subtitle: AttributedString? = nil,
+        @ViewBuilder buttons: @escaping () -> Buttons
+    ) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
         self.buttons = buttons
     }
 
+    public init(
+        image: Image,
+        title: String,
+        subtitle: String?,
+        @ViewBuilder buttons: @escaping () -> Buttons
+    ) {
+        let attributedSubtitle: AttributedString?
+        if let subtitle {
+            attributedSubtitle = AttributedString(subtitle)
+        } else {
+            attributedSubtitle = nil
+        }
+        self.init(image: image, title: title, subtitle: attributedSubtitle, buttons: buttons)
+    }
+
     public var body: some View {
         VStack(spacing: IKPadding.huge) {
-            IllustrationAndTextView(image: image, title: title, subtitle: subtitle, style: .bottomSheet)
+            IllustrationAndTextView(
+                image: image,
+                title: title,
+                subtitle: subtitle,
+                style: .bottomSheet
+            )
+            .padding(.horizontal, value: .medium)
+
             BottomButtonsView(buttons: buttons)
         }
+        .padding(.top, value: .medium)
     }
 }
 
 #Preview {
     EmptyStateFloatingPanelView(
         image: STResourcesAsset.Images.paperPlanesCrossOctagon.swiftUIImage,
-        title: STResourcesStrings.Localizable.uploadCancelConfirmBottomSheetTitle,
-        subtitle: nil
+        title: STResourcesStrings.Localizable.uploadCancelConfirmBottomSheetTitle
     ) {
         Button(STResourcesStrings.Localizable.buttonCloseAndContinue) {}
             .buttonStyle(.ikBorderedProminent)

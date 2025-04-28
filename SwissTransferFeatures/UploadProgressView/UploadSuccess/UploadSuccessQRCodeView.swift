@@ -28,9 +28,11 @@ import SwissTransferCoreUI
 struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
+    @LazyInjectService private var injection: SwissTransferInjection
+
     @Environment(\.dismiss) private var dismiss
 
-    @LazyInjectService private var injection: SwissTransferInjection
+    @State private var isShowingShareTipSheet = false
 
     let type: TransferType
     let transferUUID: String
@@ -90,6 +92,20 @@ struct UploadSuccessQRCodeView: View {
                 Text(STResourcesStrings.Localizable.buttonFinished)
             }
             .buttonStyle(.ikBorderedProminent)
+        }
+        .onAppear {
+            NotificationCenter.default.addObserver(
+                forName: UIApplication.userDidTakeScreenshotNotification,
+                object: nil,
+                queue: .main
+            ) { _ in
+                Task { @MainActor in
+                    isShowingShareTipSheet = true
+                }
+            }
+        }
+        .discoveryPresenter(isPresented: $isShowingShareTipSheet, bottomPadding: 0) {
+            ScreenshotQrBottomSheetView()
         }
     }
 

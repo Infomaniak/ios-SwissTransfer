@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Tue, 08 Apr 2025 08:32:47 +0200
+ * Exported by: Baptiste Griva
+ * Exported at: Tue, 22 Apr 2025 15:55:46 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -234,6 +234,12 @@
 
 /* loco:6745d761b427af1ed8084c32 */
 "onboardingStorageTitle" = "Hau richtig rein!";
+
+/* loco:67ff96fe53fc54f951079062 */
+"oneClickSharing" = "Teilen mit 1 Klick!";
+
+/* loco:68079d4b17b8e06966072592 */
+"quickSharingDescription" = "Zum schnellen Teilen verwenden Sie die Schaltfläche %s oder %s unter dem QR.\nDas ist einfacher als das Erfassen des Bildschirms.";
 
 /* loco:66fa5ce7eb184f21290154a2 */
 "receivedFilesTitle" = "Empfangene Dateien";
@@ -510,6 +516,9 @@
 
 /* loco:678f4a42026090be7200ee62 */
 "transferVirusDetectedTitle" = "Nicht konforme Dateien";
+
+/* loco:6800aa6d8135c915920188b2 */
+"understandTitleButton" = "Ich habe verstanden!";
 
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Bist du dir sicher, dass du die Transfer rückgängig machen willst?";

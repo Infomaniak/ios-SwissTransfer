@@ -40,14 +40,34 @@ public extension IllustrationAndTextView {
 public struct IllustrationAndTextView: View {
     let image: Image?
     let title: String
-    let subtitle: String?
+    let subtitle: AttributedString?
     let style: Style
 
-    public init(image: Image?, title: String, subtitle: String? = nil, style: Style) {
+    public init(
+        image: Image?,
+        title: String,
+        subtitle: AttributedString?,
+        style: Style
+    ) {
         self.image = image
         self.title = title
         self.subtitle = subtitle
         self.style = style
+    }
+
+    public init(
+        image: Image?,
+        title: String,
+        subtitle: String?,
+        style: Style
+    ) {
+        let attributedSubtitle: AttributedString?
+        if let subtitle {
+            attributedSubtitle = AttributedString(subtitle)
+        } else {
+            attributedSubtitle = nil
+        }
+        self.init(image: image, title: title, subtitle: attributedSubtitle, style: style)
     }
 
     public var body: some View {
