@@ -1,2 +1,1 @@
-- Reprise de l'upload si possible
-- Correction de l'affichage de la quantité transférée dans la vue de progression
+- Affichage d'une astuce si l'utilisateur fait une capture d'écran d'un QR Code

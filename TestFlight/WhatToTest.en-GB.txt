@@ -1,2 +1,1 @@
-- Resume upload if possible
-- Fix upload size during progress
+- Display a tip if the user takes a screenshot of a QR Code
