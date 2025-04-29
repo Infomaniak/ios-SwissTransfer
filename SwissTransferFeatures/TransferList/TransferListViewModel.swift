@@ -17,7 +17,7 @@
  */
 
 import Foundation
-import STCore
+@preconcurrency import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
