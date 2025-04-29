@@ -66,13 +66,13 @@ final class TransferListViewModel: ObservableObject {
         }
     }
 
-    private func mapTransfers(from pair: KotlinPair<NSArray, NSArray>) async {
-        var mappedSections = [DateSection]()
-        if let validTransfers = pair.first as? [TransferUi] {
-            mappedSections.append(contentsOf: mapSections(from: validTransfers))
-            }
-        if let expiredTransfers = pair.second as? [TransferUi] {
-            let expiredSection = DateSection(title: STResourcesStrings.Localizable.expired, transfers: expiredTransfers)
+    private func mapTransfers(from sortedTransfers: TransferManager.SortedTransfers) async {
+        var mappedSections = mapSections(from: sortedTransfers.normalTransfers)
+        if !sortedTransfers.expiredTransfers.isEmpty {
+            let expiredSection = DateSection(
+                title: STResourcesStrings.Localizable.expired,
+                transfers: sortedTransfers.expiredTransfers
+            )
             mappedSections.append(expiredSection)
         }
 
