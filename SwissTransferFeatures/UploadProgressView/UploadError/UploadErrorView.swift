@@ -57,7 +57,7 @@ public struct UploadErrorView: View {
                         .ikButtonLoading(isRetryingUpload)
                 }
                 Button(STResourcesStrings.Localizable.buttonEditTransfer, action: editTransfer)
-                    .buttonStyle(.ikBordered)
+                    .buttonStyle(.ikBorderless)
             }
             .navigationBarBackButtonHidden()
             .stIconNavigationBar()
