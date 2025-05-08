@@ -24,6 +24,36 @@ public struct FilesCountAndSizeView: View {
     private let count: Int
     private let size: Int64
 
+    private var filesCountText: Text {
+        if count > Constants.maxFileCount {
+            return Text(STResourcesStrings.Localizable.fileCountOverDisplayOnly(count, Constants.maxFileCount))
+                .accessibilityLabel(
+                    Text(STResourcesStrings.Localizable.fileCountOverTtsFriendly(count, Constants.maxFileCount))
+                )
+        }
+        return Text(STResourcesStrings.Localizable.filesCount(count))
+    }
+
+    private var filesCountColor: Color {
+        return count > Constants.maxFileCount ? Color.ST.error : Color.ST.textSecondary
+    }
+
+    private var filesSizeText: Text {
+        let sizeFormatted = size.formatted(.defaultByteCount)
+        if size > Constants.maxFileSize {
+            let maxSizeFormatted = Constants.maxFileSize.formatted(.defaultByteCount)
+            return Text(STResourcesStrings.Localizable.fileSizeOverDisplayOnly(sizeFormatted, maxSizeFormatted))
+                .accessibilityLabel(
+                    Text(STResourcesStrings.Localizable.fileSizeOverTtsFriendly(sizeFormatted, maxSizeFormatted))
+                )
+        }
+        return Text(sizeFormatted)
+    }
+
+    private var filesSizeColor: Color {
+        return size > Constants.maxFileSize ? Color.ST.error : Color.ST.textSecondary
+    }
+
     public init(count: Int, size: Int64) {
         self.size = size
         self.count = count
@@ -31,13 +61,15 @@ public struct FilesCountAndSizeView: View {
 
     public var body: some View {
         SeparatedItemsView {
-            Text(STResourcesStrings.Localizable.filesCount(count))
+            filesCountText
                 .monospacedDigit()
                 .contentTransition(.numericText())
+                .foregroundStyle(filesCountColor)
         } rhs: {
-            Text(size, format: .defaultByteCount)
+            filesSizeText
                 .monospacedDigit()
                 .contentTransition(.numericText())
+                .foregroundStyle(filesSizeColor)
         }
     }
 }
