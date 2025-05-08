@@ -90,14 +90,14 @@ public struct MainView: View {
                 feedbackURL: STResourcesStrings.Localizable.urlUserReport,
                 reviewManager: reviewManager,
                 onLike: {
-                    matomo.track(eventWithCategory: .appUpdate, name: "like")
+                    matomo.track(eventWithCategory: .appReview, name: "like")
 
                     UserDefaults.shared.appReview = .readyForReview
                     UserDefaults.shared.hasReviewedApp = true
 
                 },
                 onDislike: { _ in
-                    matomo.track(eventWithCategory: .appUpdate, name: "dislike")
+                    matomo.track(eventWithCategory: .appReview, name: "dislike")
 
                     UserDefaults.shared.appReview = .feedback
                     UserDefaults.shared.hasReviewedApp = true
@@ -105,9 +105,7 @@ public struct MainView: View {
             )
         }
         .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
-            UpdateVersionView(
-                image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage
-            ) { willUpdate in
+            UpdateVersionView(image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage) { willUpdate in
                 if willUpdate {
                     openURL(UpdateLink.getStoreURL())
                     matomo.track(eventWithCategory: .appUpdate, name: "discoverNow")
