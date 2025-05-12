@@ -121,6 +121,18 @@
 /* loco:6776640e5e97ee7e550d5b72 */
 "expiresTomorrow" = "Scade domani";
 
+/* loco:67fe654051b0931bec0d5b42 */
+"fileCountOverDisplayOnly" = "%1$d/%2$d file";
+
+/* loco:67fe6950a9aa76a7670a9112 */
+"fileCountOverTtsFriendly" = "%1$d su %2$d file";
+
+/* loco:67ffa893e821c9e3a80af462 */
+"fileSizeOverDisplayOnly" = "%1$@/%2$@";
+
+/* loco:67ffa9059ea861506908e942 */
+"fileSizeOverTtsFriendly" = "%1$@ su %2$@";
+
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Effettua il tuo primo trasferimento!";
 

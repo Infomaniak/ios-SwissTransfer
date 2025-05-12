@@ -31,41 +31,57 @@ public struct AddFilesMenu<Content: View>: View {
 
     @Binding var selection: [ImportedItem]
 
+    private let maxSelectionCount: Int
+    private let sizeExceeded: Bool
     private let label: Content
 
-    public init(selection: Binding<[ImportedItem]>, @ViewBuilder label: () -> Content) {
+    private var buttonIsEnabled: Bool {
+        return !sizeExceeded && maxSelectionCount > 0
+    }
+
+    public init(
+        selection: Binding<[ImportedItem]>,
+        maxSelectionCount: Int = Constants.maxFileCount,
+        sizeExceeded: Bool = false,
+        @ViewBuilder label: () -> Content
+    ) {
         _selection = selection
+        self.maxSelectionCount = maxSelectionCount
+        self.sizeExceeded = sizeExceeded
         self.label = label()
     }
 
     public var body: some View {
         Menu {
-            Button {
-                isShowingImportFile = true
-            } label: {
-                Label(
-                    title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
-                    icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
-                )
+            Group {
+                Button {
+                    isShowingImportFile = true
+                } label: {
+                    Label(
+                        title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
+                        icon: { STResourcesAsset.Images.Menu.folder.swiftUIImage }
+                    )
+                }
+                Button {
+                    isShowingPhotoLibrary = true
+                } label: {
+                    Label(
+                        title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
+                        icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
+                    )
+                }
+                Button {
+                    isShowingCamera = true
+                } label: {
+                    Label(
+                        title: {
+                            Text(STResourcesStrings.Localizable.transferUploadSourceChoiceCamera)
+                        },
+                        icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
+                    )
+                }
             }
-            Button {
-                isShowingPhotoLibrary = true
-            } label: {
-                Label(
-                    title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
-                    icon: { STResourcesAsset.Images.Menu.image.swiftUIImage }
-                )
-            }
-            Button {
-                isShowingCamera = true
-            } label: {
-                Label(
-                    title: {
-                        Text(STResourcesStrings.Localizable.transferUploadSourceChoiceCamera)
-                    },
-                    icon: { STResourcesAsset.Images.Menu.camera.swiftUIImage }
-                )
-            }
+            .disabled(!buttonIsEnabled)
         } label: {
             if #available(iOS 17.0, *) {
                 label
@@ -76,7 +92,12 @@ public struct AddFilesMenu<Content: View>: View {
                 }
             }
         }
-        .photosPicker(isPresented: $isShowingPhotoLibrary, selection: $selectedPhotos, photoLibrary: .shared())
+        .photosPicker(
+            isPresented: $isShowingPhotoLibrary,
+            selection: $selectedPhotos,
+            maxSelectionCount: maxSelectionCount,
+            photoLibrary: .shared()
+        )
         .onChange(of: selectedPhotos) { _ in
             didSelectFromPhotoLibrary()
         }
