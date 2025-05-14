@@ -53,6 +53,9 @@ public struct STTextEditor: View {
         }
         .frame(minHeight: size, alignment: .top)
         .inputStyle(isFocused: isFocused)
+        .onTapGesture {
+            isFocused = true
+        }
     }
 }
 
