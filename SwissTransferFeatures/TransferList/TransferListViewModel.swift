@@ -67,7 +67,7 @@ final class TransferListViewModel: ObservableObject {
     }
 
     private func mapTransfers(from sortedTransfers: TransferManager.SortedTransfers) async {
-        var mappedSections = mapSections(from: sortedTransfers.normalTransfers)
+        var mappedSections = mapSections(from: sortedTransfers.validTransfers)
         if !sortedTransfers.expiredTransfers.isEmpty {
             let expiredSection = DateSection(
                 title: STResourcesStrings.Localizable.expired,
