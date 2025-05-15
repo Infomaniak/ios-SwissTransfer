@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "e1117c6990429c9302931754c0103eb6dc114728",
-        "version" : "4.0.0"
+        "revision" : "be643e9d2a29922b3b1a8cb1a01cd25a4932ee57",
+        "version" : "4.1.0"
       }
     },
     {
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "dd30b39839f28a9c3cb88ac9cb27cc0eca33e661",
-        "version" : "8.49.1"
+        "revision" : "6c81e671154e63464dd6749b7ba3279dd390a146",
+        "version" : "8.50.1"
       }
     },
     {
