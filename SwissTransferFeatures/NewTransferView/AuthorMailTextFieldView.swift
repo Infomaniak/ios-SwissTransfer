@@ -46,6 +46,9 @@ struct AuthorMailTextFieldView: View {
         .keyboardType(.emailAddress)
         .textContentType(.emailAddress)
         .textInputAutocapitalization(.never)
+        .onTapGesture {
+            isFocused = true
+        }
     }
 
     private func saveAuthorMailAddress() {
