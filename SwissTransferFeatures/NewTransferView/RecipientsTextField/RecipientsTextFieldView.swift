@@ -82,6 +82,9 @@ struct RecipientsTextFieldView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .inputStyle(isFocused: isFocused, error: error)
+        .onTapGesture {
+            focusedView = .textField
+        }
     }
 
     private func didSubmitNewRecipient(_ reason: AdvancedTextField.SubmitReason) {
