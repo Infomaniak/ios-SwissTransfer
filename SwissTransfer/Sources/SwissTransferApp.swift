@@ -114,6 +114,9 @@ struct SwissTransferApp: App {
 
                 if versionStatus == .canBeUpdated,
                    case .mainView(let mainViewState) = rootViewState.state {
+                    guard mainViewState.allModalAreHidden else {
+                        return
+                    }
                     mainViewState.isShowingUpdateAvailable = true
                 }
             } catch {

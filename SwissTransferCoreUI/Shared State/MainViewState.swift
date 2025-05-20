@@ -35,6 +35,14 @@ public final class MainViewState: ObservableObject {
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
     @ModalPublished public var isShowingReviewAlert = false
 
+    public var allModalAreHidden: Bool {
+        newTransferContainer == nil
+            && selectedFullscreenTransfer == nil
+            && isShowingUpdateAvailable == false
+            && isShowingProtectedDeepLink == nil
+            && isShowingReviewAlert == false
+    }
+
     public var selectedDestination: NavigationDestination? {
         get {
             guard let selectedTab else { return nil }
