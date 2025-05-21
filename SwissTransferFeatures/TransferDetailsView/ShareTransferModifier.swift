@@ -20,12 +20,12 @@ import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 struct ShareTransferModifier: ViewModifier {
     @LazyInjectService private var injection: SwissTransferInjection
     let transfer: TransferUi
 
-    @State private var isShowingQRCode = false
     @State private var isShowingPassword = false
 
     private var transferURL: URL? {
@@ -53,22 +53,12 @@ struct ShareTransferModifier: ViewModifier {
                         }
 
                         Spacer()
+                    }
 
-                        Button {
-                            isShowingQRCode = true
-                        } label: {
-                            VStack {
-                                STResourcesAsset.Images.qrCode.swiftUIImage
-                                    .iconSize(.large)
-
-                                Text(STResourcesStrings.Localizable.transferTypeQrCode)
-                                    .font(.ST.caption)
-                            }
-                            .frame(width: 100)
-                        }
-                        .floatingPanel(isPresented: $isShowingQRCode, bottomPadding: .zero) {
-                            QRCodePanelView(url: transferURL)
-                        }
+                    if transfer.direction == .sent {
+                        QRCodePanelButton(transfer: transfer, vertical: true)
+                    } else {
+                        DownloadButton(transfer: transfer, vertical: true)
                     }
 
                     Spacer()
