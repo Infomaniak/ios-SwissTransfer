@@ -81,7 +81,11 @@ public struct TransferDetailsView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if let transfer {
-                    DownloadButton(transfer: transfer)
+                    if transfer.direction == .sent {
+                        DownloadButton(transfer: transfer)
+                    } else {
+                        QRCodePanelButton(transfer: transfer, vertical: false)
+                    }
                 }
             }
         }

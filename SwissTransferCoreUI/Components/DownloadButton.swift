@@ -45,20 +45,33 @@ public struct DownloadButton: View {
     @State private var downloadedTransferURL: IdentifiableURL?
 
     let transfer: TransferUi
+    let vertical: Bool
 
-    public init(transfer: TransferUi) {
+    public init(transfer: TransferUi, vertical: Bool = false) {
         self.transfer = transfer
+        self.vertical = vertical
     }
 
     public var body: some View {
         Button(action: startOrCancelDownloadIfNeeded) {
-            Label(
-                title: {
+            if vertical {
+                VStack {
+                    STResourcesAsset.Images.arrowDownLine.swiftUIImage
+                        .iconSize(.large)
+
                     Text(STResourcesStrings.Localizable.buttonDownload)
-                },
-                icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
-            )
-            .labelStyle(.iconOnly)
+                        .font(.ST.caption)
+                }
+                .frame(width: 100)
+            } else {
+                Label(
+                    title: {
+                        Text(STResourcesStrings.Localizable.buttonDownload)
+                    },
+                    icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
+                )
+                .labelStyle(.iconOnly)
+            }
         }
         .downloadProgressAlertFor(transfer: transfer) { downloadedFileURL in
             self.downloadedTransferURL = IdentifiableURL(url: downloadedFileURL)
