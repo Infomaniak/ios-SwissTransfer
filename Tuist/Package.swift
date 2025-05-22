@@ -7,17 +7,18 @@ import ProjectDescription
 let packageSettings = PackageSettings(
     productTypes: [
         "Alamofire": .framework,
-        "InfomaniakDI": .framework,
-        "InfomaniakCore": .framework,
+        "DesignSystem": .framework,
+        "InfomaniakConcurrency": .framework,
+        "InfomaniakCoreCommonUI": .framework,
         "InfomaniakCoreSwiftUI": .framework,
         "InfomaniakCoreUIResources": .framework,
-        "InfomaniakConcurrency": .framework,
-        "SwiftUIIntrospect": .framework,
-        "OrderedCollections": .framework,
+        "InfomaniakCore": .framework,
+        "InfomaniakDI": .framework,
         "Lottie": .framework,
-        "SwissTransferCore": .framework,
+        "OrderedCollections": .framework,
         "STSettingsView": .framework,
-        "DesignSystem": .framework,
+        "SwiftUIIntrospect": .framework,
+        "SwissTransferCore": .framework,
         "VersionChecker": .framework
     ]
 )
@@ -26,8 +27,8 @@ let packageSettings = PackageSettings(
 let package = Package(
     name: "SwissTransfer",
     dependencies: [
-        .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "15.0.1")),
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "18.7.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "15.3.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "18.8.0")),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.0")),
         .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "4.0.0")),
