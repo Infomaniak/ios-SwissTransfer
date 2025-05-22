@@ -1,1 +1,3 @@
-- Affichage d'une astuce si l'utilisateur fait une capture d'écran d'un QR Code
+- Meilleure gestion des limites d'un transfert
+- Ajout d'une section pour les transfers expirés
+- Améliorations et corrections de bugs
