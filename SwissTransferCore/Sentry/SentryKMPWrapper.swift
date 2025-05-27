@@ -21,33 +21,30 @@ import Sentry
 import STCore
 
 public final class SentryKMPWrapper: CrashReportInterface {
-    public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, data: [String: Any]?) {
+    public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, data: [String: String]?) {
         let breadcrumb = Breadcrumb(level: level.sentryLevel, category: category)
         breadcrumb.message = message
         breadcrumb.data = data
         SentrySDK.addBreadcrumb(breadcrumb)
     }
 
-    public func capture(error: KotlinThrowable, data context: [String: Any]?, category contextKey: String?) {
-        let errorWrapper = KotlinThrowableWrapper(kotlinThrowable: error)
-        SentrySDK.capture(error: errorWrapper) { scope in
-            if let context, let contextKey {
-                scope.setContext(value: context, key: contextKey)
+    public func capture(message: String, error: KotlinThrowable, data: [String: String]?) {
+        let event = Event()
+        event.message = SentryMessage(formatted: message)
+        event.error = KotlinThrowableWrapper(kotlinThrowable: error)
+
+        SentrySDK.capture(event: event) { scope in
+            if let data {
+                scope.setExtras(data)
             }
         }
     }
 
-    public func capture(
-        message: String,
-        data context: [String: Any]?,
-        category contextKey: String?,
-        level: STCore.CrashReportLevel?
-    ) {
+    public func capture(message: String, data: [String: String]?, level: STCore.CrashReportLevel?) {
         SentrySDK.capture(message: message) { scope in
-            if let context, let contextKey {
-                scope.setContext(value: context, key: contextKey)
+            if let data {
+                scope.setExtras(data)
             }
-
             if let level {
                 scope.setLevel(level.sentryLevel)
             }
