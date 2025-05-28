@@ -39,15 +39,15 @@ public struct FilesCountAndSizeView: View {
     }
 
     private var filesSizeText: Text {
-        let sizeFormatted = size.formatted(.defaultByteCount)
         if size > Constants.maxFileSize {
+            let sizeFormatted = size.formatted(.defaultByteCount)
             let maxSizeFormatted = Constants.maxFileSize.formatted(.defaultByteCount)
             return Text(STResourcesStrings.Localizable.fileSizeOverDisplayOnly(sizeFormatted, maxSizeFormatted))
                 .accessibilityLabel(
                     Text(STResourcesStrings.Localizable.fileSizeOverTtsFriendly(sizeFormatted, maxSizeFormatted))
                 )
         }
-        return Text(sizeFormatted)
+        return Text(STResourcesStrings.Localizable.transferSpaceLeft((Constants.maxFileSize - size).formatted(.defaultByteCount)))
     }
 
     private var filesSizeColor: Color {
