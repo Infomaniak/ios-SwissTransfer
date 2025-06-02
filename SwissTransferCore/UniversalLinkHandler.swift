@@ -64,6 +64,22 @@ public struct UniversalLinkHandler {
             return UniversalLinkResult(link: url, result: .failure(error))
         }
     }
+
+    public func handlePossibleDeleteURL(_ url: URL) async -> URL? {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              components.path.starts(with: "/d/"),
+              let uuid = components.path.split(separator: "/").last.map(String.init),
+              !uuid.isEmpty,
+              let token = components.queryItems?.first(where: { $0.name == "delete" })?.value,
+              !token.isEmpty
+        else {
+            return nil
+        }
+
+        await createAccountIfNeeded()
+
+        return url
+    }
 }
 
 public struct UniversalLinkResult: Identifiable, Equatable, Sendable {

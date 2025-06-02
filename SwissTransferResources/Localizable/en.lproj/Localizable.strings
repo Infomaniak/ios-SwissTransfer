@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: en, English
  * Tagged: ios
- * Exported by: Baptiste Griva
- * Exported at: Tue, 22 Apr 2025 15:55:46 +0200
+ * Exported by: Matthieu Déglon
+ * Exported at: Tue, 27 May 2025 14:44:11 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -30,6 +30,9 @@
 
 /* loco:67616ea394ffdbb7e5071e36 */
 "buttonDeleteTransfer" = "Delete transfer";
+
+/* loco:68359d4126ae0a9eed0c68a2 */
+"buttonDeleteYes" = "Yes, delete";
 
 /* loco:67220015101b3de12b0f1f82 */
 "buttonDownload" = "Download";
@@ -87,6 +90,12 @@
 
 /* loco:677fbfbeb541dd8a8c0276d2 */
 "deeplinkTransferNotFound" = "This transfer does not exist";
+
+/* loco:68359c6b15da309c25045492 */
+"deleteThisTransferDescription" = "This transfer and the files it contains will be deleted.";
+
+/* loco:68359bf65101e64968042602 */
+"deleteThisTransferTitle" = "Delete this transfer ?";
 
 /* loco:67852070453d66cb9a0033c2 */
 "downloadInProgressDialogTitle" = "Download in progress…";
