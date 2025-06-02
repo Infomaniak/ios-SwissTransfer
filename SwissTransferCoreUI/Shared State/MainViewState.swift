@@ -60,6 +60,7 @@ public final class MainViewState: ObservableObject {
     @ModalPublished public var isShowingUpdateAvailable = false
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
     @ModalPublished public var isShowingReviewAlert = false
+    @ModalPublished public var isShowingDeleteTransferDeeplink = false
 
     public var selectedDestination: NavigationDestination? {
         get {

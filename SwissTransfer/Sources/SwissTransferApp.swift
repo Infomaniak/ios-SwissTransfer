@@ -127,6 +127,8 @@ struct SwissTransferApp: App {
             let linkHandler = UniversalLinkHandler()
             if let importSessionUUID = await linkHandler.handlePossibleImportURL(url) {
                 universalLinksState.linkedImportUUID = importSessionUUID
+            } else if let deleteSuccess = await linkHandler.handlePossibleDeleteURL(url) {
+                universalLinksState.linkedDeleteTransfer = deleteSuccess
             } else if let result = await linkHandler.handlePossibleTransferURL(url) {
                 universalLinksState.linkedTransfer = result
             }

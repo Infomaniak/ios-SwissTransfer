@@ -33,6 +33,7 @@ public struct MainView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var matomo: MatomoUtils
     @LazyInjectService private var reviewManager: ReviewManageable
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @Environment(\.isCompactWindow) private var isCompactWindow
 
@@ -71,6 +72,11 @@ public struct MainView: View {
 
             mainViewState.selectedTransfer = .transfer(tappedTransfer)
         }
+        .onChange(of: universalLinksState.linkedDeleteTransfer) { linkedDeleteTransfer in
+            guard linkedDeleteTransfer != nil else { return }
+
+            mainViewState.isShowingDeleteTransferDeeplink = true
+        }
         .task(id: isCompactWindow) {
             mainViewState.isSplitView = !isCompactWindow
         }
@@ -105,6 +111,27 @@ public struct MainView: View {
                 }
             )
         }
+        .customAlert(isPresented: $mainViewState.isShowingDeleteTransferDeeplink) {
+            if let deleteLink = universalLinksState.linkedDeleteTransfer,
+               let components = URLComponents(url: deleteLink, resolvingAgainstBaseURL: false),
+               let uuid = components.path.split(separator: "/").last.map(String.init),
+               let token = components.queryItems?.first(where: { $0.name == "delete" })?.value {
+                DeleteTransferAlertView(
+                    primaryButtonAction: {
+                        Task {
+                            let defaultTransferManager = await accountManager.getCurrentManager()
+                            try await defaultTransferManager?.deleteTransfer(transferUUID: uuid, token: token)
+                            universalLinksState.linkedDeleteTransfer = nil
+                            mainViewState.isShowingDeleteTransferDeeplink = false
+                        }
+                    }, secondaryButtonAction: {
+                        universalLinksState.linkedDeleteTransfer = nil
+                        mainViewState.isShowingDeleteTransferDeeplink = false
+                    }
+                )
+            }
+        }
+        .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
         .stDiscoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage) { willUpdate in
                 if willUpdate {

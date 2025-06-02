@@ -31,6 +31,9 @@
 /* loco:67616ea394ffdbb7e5071e36 */
 "buttonDeleteTransfer" = "Übertragung löschen";
 
+/* loco:68359d4126ae0a9eed0c68a2 */
+"buttonDeleteYes" = "Ja, löschen";
+
 /* loco:67220015101b3de12b0f1f82 */
 "buttonDownload" = "Download";
 
@@ -87,6 +90,12 @@
 
 /* loco:677fbfbeb541dd8a8c0276d2 */
 "deeplinkTransferNotFound" = "Diese Übertragung gibt es nicht";
+
+/* loco:68359c6b15da309c25045492 */
+"deleteThisTransferDescription" = "Diese Übertragung und die darin enthaltenen Dateien werden gelöscht.";
+
+/* loco:68359bf65101e64968042602 */
+"deleteThisTransferTitle" = "Diese Übertragung löschen?";
 
 /* loco:67852070453d66cb9a0033c2 */
 "downloadInProgressDialogTitle" = "Herunterladen läuft…";
