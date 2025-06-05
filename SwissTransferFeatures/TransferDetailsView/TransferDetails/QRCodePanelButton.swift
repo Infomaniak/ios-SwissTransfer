@@ -58,7 +58,7 @@ struct QRCodePanelButton: View {
                     }
                 }
             }
-            .floatingPanel(isPresented: $isShowingQRCode, bottomPadding: .zero) {
+            .stFloatingPanel(isPresented: $isShowingQRCode, bottomPadding: .zero) {
                 QRCodePanelView(url: transferURL)
             }
         }

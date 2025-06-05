@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "23ca340bedafa8505c9e20ab0fbf2a11df890319",
-        "version" : "18.8.0"
+        "branch" : "feat/add-background-color-on-alert-presenter",
+        "revision" : "ef337d3e8fa8c89dda7dcef3c53bde9a23680482"
       }
     },
     {

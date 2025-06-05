@@ -55,7 +55,7 @@ struct NewTransferSettingsView: View {
                 ) {
                     isShowingValiditySetting = true
                 }
-                .floatingPanel(
+                .stFloatingPanel(
                     isPresented: $isShowingValiditySetting,
                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod
                 ) {
@@ -71,7 +71,7 @@ struct NewTransferSettingsView: View {
                 ) {
                     isShowingDownloadLimitSetting = true
                 }
-                .floatingPanel(
+                .stFloatingPanel(
                     isPresented: $isShowingDownloadLimitSetting,
                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit
                 ) {
@@ -98,7 +98,7 @@ struct NewTransferSettingsView: View {
                     ) {
                         isShowingLanguageSetting = true
                     }
-                    .floatingPanel(
+                    .stFloatingPanel(
                         isPresented: $isShowingLanguageSetting,
                         title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
                     ) {

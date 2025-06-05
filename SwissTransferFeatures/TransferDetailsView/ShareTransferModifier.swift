@@ -76,7 +76,7 @@ struct ShareTransferModifier: ViewModifier {
                             }
                             .frame(width: 100)
                         }
-                        .floatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
+                        .stFloatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
                             PasswordPanelView(password: password)
                         }
 

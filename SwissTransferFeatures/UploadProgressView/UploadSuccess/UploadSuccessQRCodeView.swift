@@ -104,7 +104,7 @@ struct UploadSuccessQRCodeView: View {
                 }
             }
         }
-        .discoveryPresenter(isPresented: $isShowingShareTipSheet, bottomPadding: 0) {
+        .stDiscoveryPresenter(isPresented: $isShowingShareTipSheet, bottomPadding: 0) {
             ScreenshotQrBottomSheetView()
         }
     }
