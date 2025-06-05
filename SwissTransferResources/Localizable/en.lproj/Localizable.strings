@@ -4,7 +4,7 @@
  * Locale: en, English
  * Tagged: ios
  * Exported by: Matthieu Déglon
- * Exported at: Tue, 27 May 2025 14:44:11 +0200
+ * Exported at: Thu, 05 Jun 2025 13:54:26 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -95,7 +95,7 @@
 "deleteThisTransferDescription" = "This transfer and the files it contains will be deleted.";
 
 /* loco:68359bf65101e64968042602 */
-"deleteThisTransferTitle" = "Delete this transfer ?";
+"deleteThisTransferTitle" = "Delete this transfer?";
 
 /* loco:67852070453d66cb9a0033c2 */
 "downloadInProgressDialogTitle" = "Download in progress…";
