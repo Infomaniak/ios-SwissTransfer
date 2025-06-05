@@ -19,17 +19,19 @@
 import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
+import InfomaniakDI
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 public struct DeleteTransferAlertView: View {
-    private let primaryButtonAction: () -> Void
-    private var secondaryButtonAction: (() -> Void)?
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @EnvironmentObject private var universalLinksState: UniversalLinksState
 
-    public init(primaryButtonAction: @escaping () -> Void,
-                secondaryButtonAction: (() -> Void)? = nil) {
-        self.primaryButtonAction = primaryButtonAction
-        self.secondaryButtonAction = secondaryButtonAction
+    private let deleteLink: DeleteTransferLinkResult
+
+    public init(deleteLink: DeleteTransferLinkResult) {
+        self.deleteLink = deleteLink
     }
 
     public var body: some View {
@@ -46,17 +48,27 @@ public struct DeleteTransferAlertView: View {
             ModalButtonsView(
                 primaryButtonTitle: STResourcesStrings.Localizable.buttonDeleteYes,
                 secondaryButtonTitle: CoreUILocalizable.buttonCancel,
-                primaryButtonAction: { primaryButtonAction() },
-                secondaryButtonAction: { secondaryButtonAction?() },
+                primaryButtonAction: {
+                    handleDelete()
+                    universalLinksState.linkedDeleteTransfer = nil
+                },
+                secondaryButtonAction: {
+                    universalLinksState.linkedDeleteTransfer = nil
+                },
                 primaryButtonRole: .destructive
             )
             .padding(.leading)
         }
     }
+
+    private func handleDelete() {
+        Task {
+            let defaultTransferManager = await accountManager.getCurrentManager()
+            try? await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
+        }
+    }
 }
 
 #Preview {
-    DeleteTransferAlertView {
-        /* Preview */
-    }
+    DeleteTransferAlertView(deleteLink: DeleteTransferLinkResult(uuid: "", token: ""))
 }
