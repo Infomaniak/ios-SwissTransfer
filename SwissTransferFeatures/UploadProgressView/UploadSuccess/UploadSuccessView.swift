@@ -27,8 +27,6 @@ extension TransferType {
         switch self {
         case .link:
             return STResourcesStrings.Localizable.uploadSuccessLinkTitle
-        case .qrCode, .proximity:
-            return STResourcesStrings.Localizable.uploadSuccessQrTitle
         case .mail:
             return STResourcesStrings.Localizable.uploadSuccessEmailTitle
         }
@@ -51,7 +49,7 @@ public struct UploadSuccessView: View {
         NavigationStack {
             Group {
                 switch viewModel.transferType {
-                case .link, .qrCode, .proximity:
+                case .link:
                     UploadSuccessQRCodeView(type: viewModel.transferType, transferUUID: transferUUID)
                 case .mail:
                     UploadSuccessMailView(recipients: viewModel.recipientsEmail)
