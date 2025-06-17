@@ -37,10 +37,12 @@ struct NewTransferTypeView: View {
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(TransferType.allCases, id: \.name) { type in
-                        Button {
-                            selectType(type)
-                        } label: {
-                            TransferTypeCell(type: type, isSelected: transferType == type)
+                        if type == .link || type == .mail {
+                            Button {
+                                selectType(type)
+                            } label: {
+                                TransferTypeCell(type: type, isSelected: transferType == type)
+                            }
                         }
                     }
                 }
