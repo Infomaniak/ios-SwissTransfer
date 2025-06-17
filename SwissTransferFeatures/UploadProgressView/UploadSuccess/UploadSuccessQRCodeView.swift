@@ -59,12 +59,10 @@ struct UploadSuccessQRCodeView: View {
                     .frame(width: Self.qrCodeSize, height: Self.qrCodeSize)
             }
 
-            if type != .qrCode {
-                Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
-                    .font(.ST.body)
-                    .foregroundStyle(Color.ST.textSecondary)
-                    .frame(maxWidth: IllustrationAndTextView.Style.emptyState.textMaxWidth)
-            }
+            Text(STResourcesStrings.Localizable.uploadSuccessLinkDescription)
+                .font(.ST.body)
+                .foregroundStyle(Color.ST.textSecondary)
+                .frame(maxWidth: IllustrationAndTextView.Style.emptyState.textMaxWidth)
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, value: .medium)
@@ -116,7 +114,7 @@ struct UploadSuccessQRCodeView: View {
 }
 
 #Preview("QR Code") {
-    UploadSuccessQRCodeView(type: .qrCode, transferUUID: PreviewHelper.sampleTransfer.uuid)
+    UploadSuccessQRCodeView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
 
 #Preview("Link") {
