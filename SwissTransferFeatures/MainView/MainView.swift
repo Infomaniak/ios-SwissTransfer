@@ -66,13 +66,16 @@ public struct MainView: View {
             mainViewState.newTransferContainer = NewTransferContainer(localSessionUUID: linkedLocalSessionUUID)
             universalLinksState.linkedImportUUID = nil
         }
+        .onChange(of: universalLinksState.linkedDeleteTransfer) { linkedDeleteTransfer in
+            guard let linkedDeleteTransfer else { return }
+
+            mainViewState.isShowingDeleteTransferDeeplink = linkedDeleteTransfer
+            universalLinksState.linkedDeleteTransfer = nil
+        }
         .onChange(of: notificationCenterDelegate.tappedTransfer) { tappedTransfer in
             guard let tappedTransfer else { return }
 
             mainViewState.selectedTransfer = .transfer(tappedTransfer)
-        }
-        .onChange(of: universalLinksState.linkedDeleteTransfer) { linkedDeleteTransfer in
-            mainViewState.isShowingDeleteTransferDeeplink = linkedDeleteTransfer
         }
         .task(id: isCompactWindow) {
             mainViewState.isSplitView = !isCompactWindow
