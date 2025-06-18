@@ -113,10 +113,6 @@ struct UploadSuccessQRCodeView: View {
     }
 }
 
-#Preview("QR Code") {
-    UploadSuccessQRCodeView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid)
-}
-
 #Preview("Link") {
     UploadSuccessQRCodeView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid)
 }
