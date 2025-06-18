@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreSwiftUI
 import OSLog
 import PhotosUI
 import STResources
