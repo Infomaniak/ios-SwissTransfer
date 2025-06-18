@@ -18,7 +18,7 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
-import SwiftUICore
+import SwiftUI
 
 public extension View {
     func stCustomAlert<Item, Content>(
@@ -28,7 +28,7 @@ public extension View {
         where Item: Identifiable, Content: View {
         customAlert(
             item: item,
-            backgroundColor: .ST.cardBackground,
+            backgroundColor: .ST.modalBackground,
             content: content
         )
     }
@@ -39,7 +39,7 @@ public extension View {
     ) -> some View {
         customAlert(
             isPresented: isPresented,
-            backgroundColor: .ST.cardBackground,
+            backgroundColor: .ST.modalBackground,
             content: content
         )
     }
@@ -54,8 +54,8 @@ public extension View {
         discoveryPresenter(
             isPresented: isPresented,
             bottomPadding: bottomPadding,
-            alertBackgroundColor: .ST.cardBackground,
-            sheetBackgroundColor: .ST.cardBackground,
+            alertBackgroundColor: .ST.modalBackground,
+            sheetBackgroundColor: .ST.modalBackground,
             modalContent: modalContent
         )
     }
@@ -71,7 +71,7 @@ public extension View {
         floatingPanel(
             isPresented: isPresented,
             title: title,
-            backgroundColor: .ST.cardBackground,
+            backgroundColor: .ST.modalBackground,
             bottomPadding: bottomPadding,
             content: content
         )
@@ -85,7 +85,7 @@ public extension View {
     ) -> some View {
         floatingPanel(
             item: item,
-            backgroundColor: .ST.cardBackground,
+            backgroundColor: .ST.modalBackground,
             title: title,
             bottomPadding: bottomPadding,
             content: content

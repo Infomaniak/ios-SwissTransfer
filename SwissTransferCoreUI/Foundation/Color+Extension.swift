@@ -108,6 +108,12 @@ public extension Color {
             dark: STResourcesAsset.Colors.greenDark
         )
 
+        /// light: white / dark: dark1
+        public static let modalBackground = Color(
+            light: STResourcesAsset.Colors.white,
+            dark: STResourcesAsset.Colors.dark1
+        )
+
         // MARK: TextFields
 
         /// light: greyMouse / dark: dark2
