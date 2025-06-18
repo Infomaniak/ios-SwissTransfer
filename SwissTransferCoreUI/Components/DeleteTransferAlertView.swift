@@ -50,14 +50,10 @@ public struct DeleteTransferAlertView: View {
                 secondaryButtonTitle: CoreUILocalizable.buttonCancel,
                 primaryButtonAction: {
                     handleDelete()
-                    universalLinksState.linkedDeleteTransfer = nil
-                },
-                secondaryButtonAction: {
-                    universalLinksState.linkedDeleteTransfer = nil
                 },
                 primaryButtonRole: .destructive
             )
-            .padding(.leading)
+            .padding(.leading, IKPadding.large)
         }
     }
 
