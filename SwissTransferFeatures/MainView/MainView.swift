@@ -111,10 +111,9 @@ public struct MainView: View {
                 }
             )
         }
-        .customAlert(item: $mainViewState.isShowingDeleteTransferDeeplink) { deleteLinkResult in
+        .stCustomAlert(item: $mainViewState.isShowingDeleteTransferDeeplink) { deleteLinkResult in
             DeleteTransferAlertView(deleteLink: deleteLinkResult)
         }
-        .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
         .stDiscoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage) { willUpdate in
                 if willUpdate {
