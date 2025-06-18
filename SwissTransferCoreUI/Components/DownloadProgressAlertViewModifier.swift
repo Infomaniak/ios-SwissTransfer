@@ -123,7 +123,7 @@ struct DownloadProgressAlertViewModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .customAlert(item: downloadTask) { downloadTask in
+            .stCustomAlert(item: downloadTask) { downloadTask in
                 DownloadProgressAlert(downloadTask: downloadTask, downloadCompletedCallback: downloadCompletedCallback)
             }
     }

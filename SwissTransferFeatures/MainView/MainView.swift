@@ -84,7 +84,7 @@ public struct MainView: View {
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in
             DeepLinkPasswordView(url: identifiableURL)
         }
-        .customAlert(isPresented: $mainViewState.isShowingReviewAlert) {
+        .stCustomAlert(isPresented: $mainViewState.isShowingReviewAlert) {
             AskForReviewView(
                 appName: Constants.appName,
                 feedbackURL: STResourcesStrings.Localizable.urlUserReport,
@@ -104,7 +104,7 @@ public struct MainView: View {
                 }
             )
         }
-        .discoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
+        .stDiscoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage) { willUpdate in
                 if willUpdate {
                     openURL(UpdateLink.getStoreURL())
