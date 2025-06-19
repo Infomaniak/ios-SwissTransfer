@@ -29,7 +29,7 @@ public struct AddFilesMenu<Content: View>: View {
     @State private var isShowingCamera = false
     @State private var isShowingPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
-    @State private var selectedCameraImage: UIImage? = nil
+    @State private var selectedCameraImage: UIImage?
 
     @Binding var selection: [ImportedItem]
 
