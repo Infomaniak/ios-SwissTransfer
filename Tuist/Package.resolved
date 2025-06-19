@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "df97b17e5a4f0117b53ea76c847831745e0d862c",
-        "version" : "15.3.0"
+        "revision" : "37a2e5ae289d6e68a2661efef1a0364383a66cfe",
+        "version" : "15.4.1"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
         "branch" : "refactor/move-camera-picker-to-core-ui",
-        "revision" : "f2930efdc4b038a2c197ac331f1d514bb874dc1b"
+        "revision" : "da7a1af0dd1254675b82d189b8e4efa4cd72f541"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-onboarding",
       "state" : {
-        "revision" : "aeec72fba628a17e868e8fcecea6134c35a0ebf2",
-        "version" : "1.2.2"
+        "revision" : "4852806cba8001d56ded1d305f6427851ec74a48",
+        "version" : "1.2.4"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/lottie-spm.git",
       "state" : {
-        "revision" : "8c6edf4f0fa84fe9c058600a4295eb0c01661c69",
-        "version" : "4.5.1"
+        "revision" : "04f2fd18cc9404a0a0917265a449002674f24ec9",
+        "version" : "4.5.2"
       }
     },
     {
@@ -140,8 +140,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift",
       "state" : {
-        "revision" : "d94d44781167fbb8d7a46fb181e784a6446ca5c1",
-        "version" : "10.54.4"
+        "revision" : "54eebd2b5e7a4a8055a7a8b55ac859a48462d722",
+        "version" : "10.54.5"
       }
     },
     {
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "6c81e671154e63464dd6749b7ba3279dd390a146",
-        "version" : "8.50.1"
+        "revision" : "930b78a63f47549c81e6e63c9172584f7d3dfdd6",
+        "version" : "8.52.1"
       }
     },
     {
@@ -176,8 +176,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
-        "version" : "1.1.4"
+        "revision" : "c1805596154bb3a265fd91b8ac0c4433b4348fb0",
+        "version" : "1.2.0"
       }
     },
     {
