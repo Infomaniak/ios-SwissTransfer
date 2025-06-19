@@ -26,9 +26,22 @@ import SwissTransferCoreUI
 
 struct STTabView: View {
     @EnvironmentObject private var mainViewState: MainViewState
+    @SceneStorage("selectedTab") private var storedTabRawValue: String = STTab.sentTransfers.rawValue
+
+    private var selectionBinding: Binding<STTab> {
+        Binding<STTab>(
+            get: {
+                STTab(rawValue: storedTabRawValue) ?? .sentTransfers
+            },
+            set: {
+                storedTabRawValue = $0.rawValue
+                mainViewState.selectedTab = $0
+            }
+        )
+    }
 
     var body: some View {
-        TabView(selection: $mainViewState.selectedTab) {
+        TabView(selection: selectionBinding) {
             SentView()
                 .stTab(.sentTransfers)
 
