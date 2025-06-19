@@ -42,6 +42,7 @@ public struct TransferList<EmptyView: View>: View {
         ))
         self.direction = direction
         self.emptyView = emptyView()
+        UICollectionViewCell.appearance().focusEffect = .none
     }
 
     public var body: some View {
