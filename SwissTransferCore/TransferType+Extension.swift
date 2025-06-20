@@ -27,10 +27,6 @@ public extension TransferType {
             STResourcesStrings.Localizable.transferTypeLink
         case .mail:
             STResourcesStrings.Localizable.transferTypeEmail
-        case .qrCode:
-            STResourcesStrings.Localizable.transferTypeQrCode
-        case .proximity:
-            STResourcesStrings.Localizable.transferTypeProximity
         }
     }
 
@@ -40,10 +36,6 @@ public extension TransferType {
             STResourcesAsset.Images.hyperlink.swiftUIImage
         case .mail:
             STResourcesAsset.Images.envelope.swiftUIImage
-        case .qrCode:
-            STResourcesAsset.Images.qrCode.swiftUIImage
-        case .proximity:
-            STResourcesAsset.Images.wifi.swiftUIImage
         }
     }
 }

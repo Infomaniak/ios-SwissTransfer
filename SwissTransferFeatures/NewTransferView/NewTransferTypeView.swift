@@ -66,5 +66,5 @@ struct NewTransferTypeView: View {
 }
 
 #Preview {
-    NewTransferTypeView(transferType: .constant(.qrCode))
+    NewTransferTypeView(transferType: .constant(.link))
 }
