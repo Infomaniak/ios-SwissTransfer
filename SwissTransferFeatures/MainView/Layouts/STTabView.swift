@@ -26,9 +26,10 @@ import SwissTransferCoreUI
 
 struct STTabView: View {
     @EnvironmentObject private var mainViewState: MainViewState
+    @SceneStorage("selectedTab") private var selectedTab: STTab = .sentTransfers
 
     var body: some View {
-        TabView(selection: $mainViewState.selectedTab) {
+        TabView(selection: $selectedTab) {
             SentView()
                 .stTab(.sentTransfers)
 
@@ -40,6 +41,12 @@ struct STTabView: View {
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
             TransferDetailsRootView(data: transferData)
+        }
+        .onChange(of: selectedTab) {
+            mainViewState.selectedTab = $0
+        }
+        .onAppear {
+            mainViewState.selectedTab = selectedTab
         }
     }
 }
