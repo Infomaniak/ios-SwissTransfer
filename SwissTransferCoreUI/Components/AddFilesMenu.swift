@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreSwiftUI
 import OSLog
 import PhotosUI
 import STResources
@@ -28,6 +29,7 @@ public struct AddFilesMenu<Content: View>: View {
     @State private var isShowingCamera = false
     @State private var isShowingPhotoLibrary = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
+    @State private var selectedCameraImage: UIImage?
 
     @Binding var selection: [ImportedItem]
 
@@ -102,8 +104,13 @@ public struct AddFilesMenu<Content: View>: View {
             didSelectFromPhotoLibrary()
         }
         .fullScreenCover(isPresented: $isShowingCamera) {
-            CameraPickerView(onImagePicked: didTakePicture)
+            CameraPickerView(selectedImage: $selectedCameraImage)
                 .ignoresSafeArea()
+        }
+        .onChange(of: selectedCameraImage) { image in
+            guard let image else { return }
+            didTakePicture(uiImage: image)
+            selectedCameraImage = nil
         }
         .fileImporter(
             isPresented: $isShowingImportFile,
