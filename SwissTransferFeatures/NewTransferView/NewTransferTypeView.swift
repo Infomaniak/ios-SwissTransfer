@@ -34,19 +34,17 @@ struct NewTransferTypeView: View {
                 .foregroundStyle(Color.ST.textPrimary)
                 .padding(.horizontal, value: .medium)
 
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(TransferType.allCases, id: \.name) { type in
-                        Button {
-                            selectType(type)
-                        } label: {
-                            TransferTypeCell(type: type, isSelected: transferType == type)
-                        }
+            HStack {
+                ForEach(TransferType.allCases, id: \.name) { type in
+                    Button {
+                        selectType(type)
+                    } label: {
+                        TransferTypeCell(type: type, isSelected: transferType == type)
                     }
                 }
-                .padding(.horizontal, value: .medium)
             }
-            .scrollIndicators(.hidden)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, value: .medium)
         }
     }
 
