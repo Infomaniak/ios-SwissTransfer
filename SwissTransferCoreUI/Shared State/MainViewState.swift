@@ -21,6 +21,28 @@ import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
 
+public struct SavedMainViewState: Codable, Equatable {
+    public let selectedTab: STTab
+
+    init(state: MainViewState) {
+        selectedTab = state.selectedTab ?? .sentTransfers
+    }
+
+    public init() {
+        selectedTab = .sentTransfers
+    }
+}
+
+extension MainViewState: StateRestorable {
+    public func restore(from savedState: SavedMainViewState) {
+        selectedTab = savedState.selectedTab
+    }
+
+    public var savedState: SavedMainViewState {
+        return SavedMainViewState(state: self)
+    }
+}
+
 public final class MainViewState: ObservableObject {
     @Published public var selectedTab: STTab? = .sentTransfers
     @Published public var paths = [STTab: [NavigationDestination]]()
