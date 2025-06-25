@@ -28,6 +28,8 @@ public struct DeleteTransferAlertView: View {
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
+    @State private var error: UserFacingError?
+
     private let deleteLink: DeleteTransferLinkResult
 
     public init(deleteLink: DeleteTransferLinkResult) {
@@ -37,27 +39,42 @@ public struct DeleteTransferAlertView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(STResourcesStrings.Localizable.deleteThisTransferTitle)
-                .padding(.bottom, IKPadding.large)
+                .padding(.bottom, value: .large)
                 .font(.ST.headline)
                 .foregroundStyle(Color.ST.textPrimary)
             Text(STResourcesStrings.Localizable.deleteThisTransferDescription)
-                .padding(.bottom, IKPadding.large)
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
+
+            if let error {
+                Text(error.errorDescription)
+                    .font(.ST.caption)
+                    .foregroundStyle(Color.ST.error)
+                    .padding(.top, value: .mini)
+            }
 
             ModalButtonsView(
                 primaryButtonTitle: STResourcesStrings.Localizable.buttonDeleteYes,
                 secondaryButtonTitle: CoreUILocalizable.buttonCancel,
-                primaryButtonAction: handleDelete,
+                primaryButtonAction: deleteTransfer,
                 primaryButtonRole: .destructive
             )
+            .padding(.top, value: .large)
             .padding(.leading, IKPadding.large)
         }
     }
 
-    private func handleDelete() async {
+    private func deleteTransfer() async throws {
         let defaultTransferManager = await accountManager.getCurrentManager()
-        try? await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
+
+        do {
+            try await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
+
+            throw UserFacingError.unknownError
+        } catch {
+            self.error = .unknownError
+            throw error // Re-throw error for ModalButtonsView component
+        }
     }
 }
 
