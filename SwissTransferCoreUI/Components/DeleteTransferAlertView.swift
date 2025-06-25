@@ -68,9 +68,12 @@ public struct DeleteTransferAlertView: View {
         let defaultTransferManager = await accountManager.getCurrentManager()
 
         do {
+            let feedback = UINotificationFeedbackGenerator()
+            feedback.prepare()
+
             try await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
 
-            throw UserFacingError.unknownError
+            feedback.notificationOccurred(.success)
         } catch {
             self.error = .unknownError
             throw error // Re-throw error for ModalButtonsView component
