@@ -53,6 +53,7 @@ public struct MainView: View {
         }
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
+        .stateRestorable(mainViewState)
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
 

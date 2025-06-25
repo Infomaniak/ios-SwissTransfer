@@ -41,6 +41,5 @@ struct STTabView: View {
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
             TransferDetailsRootView(data: transferData)
         }
-        .stateRestorable(key: "STTabView.mainViewState", mainViewState)
     }
 }
