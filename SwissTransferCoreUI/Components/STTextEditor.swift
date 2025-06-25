@@ -46,7 +46,7 @@ public struct STTextEditor: View {
                 .foregroundStyle(Color.ST.textPrimary)
                 .scrollContentBackground(.hidden)
                 .focused($isFocused)
-                .introspect(.textEditor, on: .iOS(.v16, .v17, .v18)) { textView in
+                .introspect(.textEditor, on: .iOS(.v16, .v17, .v18, .v26)) { textView in
                     textView.textContainerInset = .zero
                     textView.textContainer.lineFragmentPadding = .zero
                 }
