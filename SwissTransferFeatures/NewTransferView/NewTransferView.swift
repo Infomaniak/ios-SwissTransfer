@@ -55,6 +55,7 @@ public struct NewTransferView: View {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferTypeView(transferType: $viewModel.transferType)
+                        .padding(.horizontal, value: .medium)
 
                     NavigationLink(value: TransferableRootFolder()) {
                         NewTransferFilesCellView(files: $viewModel.files, importFilesTasks: $importFilesTasks)
