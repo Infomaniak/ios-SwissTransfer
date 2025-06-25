@@ -4,7 +4,7 @@
  * Locale: fr, French
  * Tagged: ios
  * Exported by: Baptiste Griva
- * Exported at: Tue, 22 Apr 2025 15:55:46 +0200
+ * Exported at: Tue, 17 Jun 2025 14:53:26 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -496,9 +496,6 @@
 /* loco:66c4aa6548c80af1df099483 */
 "transferTypeLink" = "Lien";
 
-/* loco:66c4aaa49a27ecc26f0d67d3 */
-"transferTypeProximity" = "A proximité";
-
 /* loco:66c4aa8cf1945b5bd70ed563 */
 "transferTypeQrCode" = "QR Code";
 
@@ -576,9 +573,6 @@
 
 /* loco:670f73c3cfc693ebbc0a1cc2 */
 "uploadSuccessLinkTitle" = "Ton transfert est prêt !";
-
-/* loco:670f6b6c056567b8060089e2 */
-"uploadSuccessQrTitle" = "Ton QR code est prêt !";
 
 /* loco:66c5ef9c409f7ef5ca058e34 */
 "urlAbout" = "https://www.infomaniak.com/fr/a-propos";

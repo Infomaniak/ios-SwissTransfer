@@ -128,6 +128,6 @@ struct NewTransferSettingsView: View {
         limit: .constant(.oneHundred),
         language: .constant(.french),
         password: .constant(""),
-        transferType: .qrCode
+        transferType: .link
     )
 }

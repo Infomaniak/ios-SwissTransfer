@@ -38,6 +38,7 @@ struct TransferTypeCell: View {
         }
         .labelStyle(.horizontal)
         .padding(value: .medium)
+        .frame(maxWidth: .infinity)
         .overlay(
             RoundedRectangle(cornerRadius: IKRadius.medium)
                 .strokeBorder(isSelected ? Color.ST.primary : Color.ST.cardBorder, lineWidth: 1)
