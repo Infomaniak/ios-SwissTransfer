@@ -32,7 +32,6 @@ struct NewTransferTypeView: View {
             Text(STResourcesStrings.Localizable.transferTypeTitle)
                 .font(.ST.callout)
                 .foregroundStyle(Color.ST.textPrimary)
-                .padding(.horizontal, value: .medium)
 
             HStack {
                 ForEach(TransferType.allCases, id: \.name) { type in
@@ -43,8 +42,6 @@ struct NewTransferTypeView: View {
                     }
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, value: .medium)
         }
     }
 

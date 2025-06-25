@@ -106,11 +106,6 @@ struct UploadSuccessQRCodeView: View {
             ScreenshotQrBottomSheetView()
         }
     }
-
-    private func copyLinkToClipboard() {
-        guard let transferURL else { return }
-        UIPasteboard.general.string = transferURL.absoluteString
-    }
 }
 
 #Preview {
