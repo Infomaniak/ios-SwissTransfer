@@ -60,8 +60,10 @@ struct StateRestorableContainer<Data: Codable>: Codable, RawRepresentable, Equat
     }
 }
 
-public protocol StateRestorable: ObservableObject {
+public protocol StateRestorable {
     associatedtype StateSavable: Codable & Equatable
+
+    static var restorationKey: String { get }
 
     func restore(from savedState: StateSavable)
     var savedState: StateSavable { get }
@@ -69,7 +71,7 @@ public protocol StateRestorable: ObservableObject {
 
 public extension View {
     func stateRestorable<State: StateRestorable>(
-        key: String,
+        key: String? = nil,
         _ restorableState: State
     ) -> some View {
         modifier(StateRestorableViewModifier(key: key, restorableState: restorableState))
@@ -81,8 +83,11 @@ public struct StateRestorableViewModifier<State: StateRestorable>: ViewModifier 
 
     private let restorableState: State
 
-    public init(key: String, restorableState: State) {
-        _savedState = SceneStorage(wrappedValue: StateRestorableContainer(restorableState.savedState), key)
+    public init(key: String? = nil, restorableState: State) {
+        _savedState = SceneStorage(
+            wrappedValue: StateRestorableContainer(restorableState.savedState),
+            key ?? State.restorationKey
+        )
         self.restorableState = restorableState
     }
 

@@ -34,6 +34,10 @@ public struct SavedMainViewState: Codable, Equatable {
 }
 
 extension MainViewState: StateRestorable {
+    public static var restorationKey: String {
+        "MainView.mainViewState"
+    }
+
     public func restore(from savedState: SavedMainViewState) {
         selectedTab = savedState.selectedTab
     }
