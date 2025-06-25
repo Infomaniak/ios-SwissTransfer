@@ -21,6 +21,8 @@ import STResources
 import SwiftUI
 
 public extension TransferType {
+    static let defaultChoice = TransferType.link
+
     var title: String {
         switch self {
         case .link:

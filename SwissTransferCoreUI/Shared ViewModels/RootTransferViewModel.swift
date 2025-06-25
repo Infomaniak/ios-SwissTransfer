@@ -28,7 +28,7 @@ public final class RootTransferViewModel: ObservableObject {
     public static let minPasswordLength = 6
     public static let maxPasswordLength = 25
 
-    @Published public var transferType = TransferType.link
+    @Published public var transferType = TransferType.defaultChoice
     @Published public var authorEmail = ""
     public var authorEmailToken: String?
     @Published public var recipientsEmail = OrderedSet<String>()
