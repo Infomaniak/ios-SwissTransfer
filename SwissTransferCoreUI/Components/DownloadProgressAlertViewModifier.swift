@@ -74,7 +74,7 @@ struct DownloadProgressAlert: View {
                 .monospacedDigit()
                 .font(.ST.callout)
                 .foregroundStyle(.secondary)
-            case .error(let error):
+            case .error:
                 Text(STResourcesStrings.Localizable.notificationDownloadErrorNotificationTitle)
                     .font(.ST.headline)
 

@@ -66,6 +66,12 @@ public struct MainView: View {
             mainViewState.newTransferContainer = NewTransferContainer(localSessionUUID: linkedLocalSessionUUID)
             universalLinksState.linkedImportUUID = nil
         }
+        .onChange(of: universalLinksState.linkedDeleteTransfer) { linkedDeleteTransfer in
+            guard let linkedDeleteTransfer else { return }
+
+            mainViewState.isShowingDeleteTransferDeeplink = linkedDeleteTransfer
+            universalLinksState.linkedDeleteTransfer = nil
+        }
         .onChange(of: notificationCenterDelegate.tappedTransfer) { tappedTransfer in
             guard let tappedTransfer else { return }
 
@@ -104,6 +110,9 @@ public struct MainView: View {
                     UserDefaults.shared.hasReviewedApp = true
                 }
             )
+        }
+        .stCustomAlert(item: $mainViewState.isShowingDeleteTransferDeeplink) { deleteLinkResult in
+            DeleteTransferAlertView(deleteLink: deleteLinkResult)
         }
         .stDiscoveryPresenter(isPresented: $mainViewState.isShowingUpdateAvailable) {
             UpdateVersionView(image: STResourcesAsset.Images.documentStarsRocketSmall.swiftUIImage) { willUpdate in

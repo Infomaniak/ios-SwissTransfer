@@ -23,6 +23,7 @@ import SwissTransferCore
 public class UniversalLinksState: ObservableObject {
     @Published public var linkedImportUUID: String?
     @Published public var linkedTransfer: UniversalLinkResult?
+    @Published public var linkedDeleteTransfer: DeleteTransferLinkResult?
 
     public init() {}
 }

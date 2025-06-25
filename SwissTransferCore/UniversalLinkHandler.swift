@@ -64,6 +64,24 @@ public struct UniversalLinkHandler {
             return UniversalLinkResult(link: url, result: .failure(error))
         }
     }
+
+    public func handlePossibleDeleteURL(_ url: URL) async -> DeleteTransferLinkResult? {
+        let uuid = url.pathComponents[2]
+
+        guard url.pathComponents.count >= 3,
+              url.pathComponents[1] == "d",
+              !uuid.isEmpty,
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let token = components.queryItems?.first(where: { $0.name == "delete" })?.value,
+              !token.isEmpty
+        else {
+            return nil
+        }
+
+        await createAccountIfNeeded()
+
+        return DeleteTransferLinkResult(uuid: uuid, token: token)
+    }
 }
 
 public struct UniversalLinkResult: Identifiable, Equatable, Sendable {
@@ -78,5 +96,19 @@ public struct UniversalLinkResult: Identifiable, Equatable, Sendable {
 
     public static func == (lhs: UniversalLinkResult, rhs: UniversalLinkResult) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+public struct DeleteTransferLinkResult: Identifiable, Equatable, Sendable {
+    public var id: String {
+        return uuid
+    }
+
+    public let uuid: String
+    public let token: String
+
+    public init(uuid: String, token: String) {
+        self.uuid = uuid
+        self.token = token
     }
 }
