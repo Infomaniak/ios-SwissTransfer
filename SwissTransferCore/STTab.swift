@@ -19,7 +19,7 @@
 import STResources
 import SwiftUI
 
-public enum STTab: String, CaseIterable, Identifiable {
+public enum STTab: String, CaseIterable, Identifiable, Codable {
     case sentTransfers
     case receivedTransfers
     case settings
