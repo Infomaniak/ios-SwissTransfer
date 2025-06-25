@@ -1,3 +1,5 @@
-- Better management of transfer limits
-- New section for expired transfers
-- Improvements and bug fixes
+- Laid the groundwork for State Restoration
+- Removed QR Code and Proximity options
+- Prepared the app for iOS 26
+- Removed a transfer via deeplink
+- Minor fixes and improvements
