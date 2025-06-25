@@ -73,6 +73,7 @@ public struct VerifyMailView: View {
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .frame(maxHeight: .infinity, alignment: .top)
+            .background(Color.ST.background)
             .toolbar {
                 ToolbarItem(placement: .navigation) {
                     Button(STResourcesStrings.Localizable.contentDescriptionButtonBack, systemImage: "chevron.backward") {
