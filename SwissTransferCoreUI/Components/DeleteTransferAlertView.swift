@@ -26,7 +26,6 @@ import SwissTransferCore
 
 public struct DeleteTransferAlertView: View {
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
-    @EnvironmentObject private var universalLinksState: UniversalLinksState
 
     @State private var error: UserFacingError?
 
