@@ -48,20 +48,16 @@ public struct DeleteTransferAlertView: View {
             ModalButtonsView(
                 primaryButtonTitle: STResourcesStrings.Localizable.buttonDeleteYes,
                 secondaryButtonTitle: CoreUILocalizable.buttonCancel,
-                primaryButtonAction: {
-                    handleDelete()
-                },
+                primaryButtonAction: handleDelete,
                 primaryButtonRole: .destructive
             )
             .padding(.leading, IKPadding.large)
         }
     }
 
-    private func handleDelete() {
-        Task {
-            let defaultTransferManager = await accountManager.getCurrentManager()
-            try? await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
-        }
+    private func handleDelete() async {
+        let defaultTransferManager = await accountManager.getCurrentManager()
+        try? await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
     }
 }
 
