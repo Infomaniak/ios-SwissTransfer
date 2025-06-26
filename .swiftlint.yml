@@ -38,6 +38,7 @@ excluded:
  - DerivedData/
  - Derived/
  - Tuist/.build/
+ - Tuist/DerivedData/
 custom_rules:
   private_state:
     included:
