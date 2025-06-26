@@ -24,10 +24,8 @@ import STCore
 import STDeepLinkPasswordView
 import StoreKit
 import STReceivedView
-import STResources
 import STTransferDetailsView
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct MainView: View {

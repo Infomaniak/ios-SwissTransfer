@@ -25,7 +25,6 @@ import OSLog
 import Sentry
 import STCore
 import STNetwork
-import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -33,9 +32,6 @@ import SwissTransferCoreUI
 public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
-    @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
-
-    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
