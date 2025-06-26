@@ -16,30 +16,75 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import OSLog
 import STCore
 import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
 
+public enum SavedNavigationDestination: Codable, Equatable {
+    case transfer(id: String)
+    case settings(SettingDetailUI)
+
+    public init(from destination: NavigationDestination) {
+        switch destination {
+        case .transfer(let transferData):
+            self = .transfer(id: transferData.id)
+        case .settings(let setting):
+            self = .settings(setting)
+        }
+    }
+}
+
 public struct SavedMainViewState: Codable, Equatable {
     public let selectedTab: STTab
+    public let savedDestination: SavedNavigationDestination?
 
+    @MainActor
     init(state: MainViewState) {
         selectedTab = state.selectedTab ?? .sentTransfers
+        savedDestination = state.selectedDestination.flatMap { SavedNavigationDestination(from: $0) }
     }
 
     public init() {
         selectedTab = .sentTransfers
+        savedDestination = nil
     }
 }
 
-extension MainViewState: StateRestorable {
+extension MainViewState: @preconcurrency StateRestorable {
     public static var restorationKey: String {
         "MainView.mainViewState"
     }
 
     public func restore(from savedState: SavedMainViewState) {
         selectedTab = savedState.selectedTab
+        if let saved = savedState.savedDestination {
+            switch saved {
+            case .transfer(let id):
+                Task {
+                    do {
+                        if let transfer = try await transferManager.getTransferByUUID(transferUUID: id) {
+                            Task { @MainActor in
+                                guard let selectedTab else { return }
+                                switch selectedTab {
+                                case .sentTransfers:
+                                    paths[.sentTransfers] = [.transfer(.transfer(transfer))]
+                                case .receivedTransfers:
+                                    paths[.receivedTransfers] = [.transfer(.transfer(transfer))]
+                                case .settings:
+                                    break
+                                }
+                            }
+                        }
+                    } catch {
+                        Logger.general.error("Failed to restore transfer by UUID: \(error)")
+                    }
+                }
+            case .settings(let setting):
+                paths[.settings] = [.settings(setting)]
+            }
+        }
     }
 
     public var savedState: SavedMainViewState {
@@ -47,6 +92,7 @@ extension MainViewState: StateRestorable {
     }
 }
 
+@MainActor
 public final class MainViewState: ObservableObject {
     @Published public var selectedTab: STTab? = .sentTransfers
     @Published public var paths = [STTab: [NavigationDestination]]()
