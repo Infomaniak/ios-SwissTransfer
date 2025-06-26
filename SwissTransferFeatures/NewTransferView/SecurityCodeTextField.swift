@@ -93,7 +93,7 @@ struct SecurityCodeTextField: View {
             guard detectedPatterns.contains(\.number),
                   let possibleOTPCode = UIPasteboard.general.strings?.first(where: { $0.count == 6 }) else { return }
 
-            self.fields = possibleOTPCode.map { String($0) }
+            fields = possibleOTPCode.map { String($0) }
         }
     }
 }

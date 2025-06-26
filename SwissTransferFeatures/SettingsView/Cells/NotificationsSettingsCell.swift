@@ -78,9 +78,9 @@ struct NotificationsSettingsCell<Content: View>: View {
                 ]) { newValue in
                     let allEnabled = newValue.allSatisfy { $0 }
                     if allEnabled {
-                        self.subtitle = STResourcesStrings.Localizable.settingsAllNotifications
+                        subtitle = STResourcesStrings.Localizable.settingsAllNotifications
                     } else {
-                        self.subtitle = STResourcesStrings.Localizable.settingsCustomizedNotifications
+                        subtitle = STResourcesStrings.Localizable.settingsCustomizedNotifications
                     }
                 }
             }

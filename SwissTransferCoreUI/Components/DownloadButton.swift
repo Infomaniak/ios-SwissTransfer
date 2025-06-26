@@ -74,7 +74,7 @@ public struct DownloadButton: View {
             }
         }
         .downloadProgressAlertFor(transfer: transfer) { downloadedFileURL in
-            self.downloadedTransferURL = IdentifiableURL(url: downloadedFileURL)
+            downloadedTransferURL = IdentifiableURL(url: downloadedFileURL)
         }
         .sheet(item: $downloadedTransferURL) { downloadedFileURL in
             ActivityView(sharedFileURL: downloadedFileURL.url)

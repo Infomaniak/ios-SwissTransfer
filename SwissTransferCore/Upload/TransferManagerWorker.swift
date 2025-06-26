@@ -249,9 +249,9 @@ public actor TransferManagerWorker {
                 throw ErrorDomain.invalidChunk
             }
 
-            try await self.uploadChunk(chunkData: chunkData,
-                                       chunk: chunk,
-                                       progressTracker: progressTracker)
+            try await uploadChunk(chunkData: chunkData,
+                                  chunk: chunk,
+                                  progressTracker: progressTracker)
         }
     }
 
