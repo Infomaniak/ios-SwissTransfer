@@ -1,20 +1,4 @@
-retain_objc_accessible: true
+project: SwissTransfer.xcworkspace
 retain_public: true
 schemes:
 - SwissTransfer
-targets:
-- STMainView
-- STNewTransferView
-- STOnboardingView
-- STReceivedView
-- STResources
-- STRootView
-- STSentView
-- STSettingsView
-- STTransferDetailsView
-- STTransferList
-- SwissTransfer
-- SwissTransferCore
-- SwissTransferCoreUI
-- SwissTransferTests
-workspace: SwissTransfer.xcworkspace
