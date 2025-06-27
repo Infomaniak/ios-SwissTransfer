@@ -75,7 +75,7 @@ public struct NotificationsHelper: Sendable {
             let content = UNMutableNotificationContent()
             content.categoryIdentifier = CategoryIdentifier.download
             content.userInfo = [UserInfoKeys.transferUUID: transferUUID]
-            if let fileUUID = fileUUID {
+            if let fileUUID {
                 content.userInfo[UserInfoKeys.fileUUID] = fileUUID
             }
             content.sound = .default
@@ -94,7 +94,7 @@ public struct NotificationsHelper: Sendable {
             let content = UNMutableNotificationContent()
             content.categoryIdentifier = CategoryIdentifier.download
             content.userInfo = [UserInfoKeys.transferUUID: transferUUID]
-            if let fileUUID = fileUUID {
+            if let fileUUID {
                 content.userInfo[UserInfoKeys.fileUUID] = fileUUID
             }
             content.sound = .default

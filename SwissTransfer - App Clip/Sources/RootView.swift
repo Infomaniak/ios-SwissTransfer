@@ -18,7 +18,6 @@
 
 import STCore
 import STPreloadingView
-import STReceivedView
 import SwiftUI
 import SwissTransferCoreUI
 

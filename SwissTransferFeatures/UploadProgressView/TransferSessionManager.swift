@@ -30,7 +30,6 @@ import UIKit
 
 @MainActor
 final class TransferSessionManager: ObservableObject {
-    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var thumbnailProvider: ThumbnailProvidable
 
     @Published var fractionCompleted: Double = 0
