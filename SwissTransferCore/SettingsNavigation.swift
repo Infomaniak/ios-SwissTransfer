@@ -18,7 +18,7 @@
 
 import Foundation
 
-public enum SettingDetailUI: Hashable {
+public enum SettingDetailUI: Hashable, Codable {
     case theme
     case notifications
     case validityPeriod
