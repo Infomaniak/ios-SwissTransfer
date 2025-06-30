@@ -63,23 +63,7 @@ extension MainViewState: @preconcurrency StateRestorable {
             switch saved {
             case .transfer(let id):
                 Task {
-                    do {
-                        if let transfer = try await transferManager.getTransferByUUID(transferUUID: id) {
-                            Task { @MainActor in
-                                guard let selectedTab else { return }
-                                switch selectedTab {
-                                case .sentTransfers:
-                                    paths[.sentTransfers] = [.transfer(.transfer(transfer))]
-                                case .receivedTransfers:
-                                    paths[.receivedTransfers] = [.transfer(.transfer(transfer))]
-                                case .settings:
-                                    break
-                                }
-                            }
-                        }
-                    } catch {
-                        Logger.general.error("Failed to restore transfer by UUID: \(error)")
-                    }
+                    await restoreTransfer(with: id)
                 }
             case .settings(let setting):
                 paths[.settings] = [.settings(setting)]
@@ -89,6 +73,25 @@ extension MainViewState: @preconcurrency StateRestorable {
 
     public var savedState: SavedMainViewState {
         return SavedMainViewState(state: self)
+    }
+
+    @MainActor
+    func restoreTransfer(with id: String) async {
+        do {
+            if let transfer = try await transferManager.getTransferByUUID(transferUUID: id) {
+                guard let selectedTab else { return }
+                switch selectedTab {
+                case .sentTransfers:
+                    paths[.sentTransfers] = [.transfer(.transfer(transfer))]
+                case .receivedTransfers:
+                    paths[.receivedTransfers] = [.transfer(.transfer(transfer))]
+                case .settings:
+                    break
+                }
+            }
+        } catch {
+            Logger.general.error("Failed to restore transfer by UUID: \(error)")
+        }
     }
 }
 
