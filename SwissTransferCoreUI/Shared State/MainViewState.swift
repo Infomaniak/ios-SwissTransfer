@@ -52,7 +52,7 @@ public struct SavedMainViewState: Codable, Equatable {
     }
 }
 
-extension MainViewState: @preconcurrency StateRestorable {
+extension MainViewState: StateRestorable {
     public static var restorationKey: String {
         "MainView.mainViewState"
     }
@@ -75,18 +75,16 @@ extension MainViewState: @preconcurrency StateRestorable {
         return SavedMainViewState(state: self)
     }
 
-    @MainActor
     func restoreTransfer(with id: String) async {
         do {
             if let transfer = try await transferManager.getTransferByUUID(transferUUID: id) {
                 guard let selectedTab else { return }
-                switch selectedTab {
-                case .sentTransfers:
-                    paths[.sentTransfers] = [.transfer(.transfer(transfer))]
-                case .receivedTransfers:
-                    paths[.receivedTransfers] = [.transfer(.transfer(transfer))]
-                case .settings:
-                    break
+                let destination = NavigationDestination.transfer(.transfer(transfer))
+
+                if isSplitView {
+                    paths[selectedTab] = [destination]
+                } else {
+                    selectedFullscreenTransfer = .transfer(transfer)
                 }
             }
         } catch {
