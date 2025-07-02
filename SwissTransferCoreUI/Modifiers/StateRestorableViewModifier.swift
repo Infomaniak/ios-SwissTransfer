@@ -60,6 +60,7 @@ struct StateRestorableContainer<Data: Codable>: Codable, RawRepresentable, Equat
     }
 }
 
+@MainActor
 public protocol StateRestorable {
     associatedtype StateSavable: Codable & Equatable
 
