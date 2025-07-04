@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
@@ -29,6 +30,7 @@ struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
     @LazyInjectService private var injection: SwissTransferInjection
+    @InjectService private var matomo: MatomoUtils
 
     @Environment(\.dismiss) private var dismiss
 
@@ -78,6 +80,9 @@ struct UploadSuccessQRCodeView: View {
                             STResourcesAsset.Images.personBadgeShare.swiftUIImage
                         }
                         .labelStyle(.verticalButton)
+                    }
+                    .onTapGesture {
+                        matomo.track(eventWithCategory: .newTransfer, name: "share")
                     }
 
                     CopyToClipboardButton(
