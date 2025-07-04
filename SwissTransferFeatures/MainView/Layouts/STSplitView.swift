@@ -42,7 +42,7 @@ struct STSplitView: View {
             .stIconNavigationBar()
             .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.mini)
             .safeAreaInset(edge: .bottom) {
-                SidebarNewTransferButton(selection: $selectedItems)
+                SidebarNewTransferButton(selection: $selectedItems, matomoCategory: .importFromSidebar)
                     .padding(value: .medium)
                     .onChangeOfSelectedItems($selectedItems)
             }

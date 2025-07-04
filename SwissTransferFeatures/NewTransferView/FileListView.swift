@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import OSLog
 import STResources
@@ -81,7 +82,7 @@ struct FileListView: View {
             .padding(value: .medium)
         }
         .appBackground()
-        .floatingActionButton(isShowing: folder == nil, selection: $selectedItems, style: .newTransfer)
+        .floatingActionButton(isShowing: folder == nil, selection: $selectedItems, style: .newTransfer, matomoCategory: .importFromFileList)
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
