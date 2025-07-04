@@ -28,8 +28,8 @@ public struct SentView: View {
     public init() {}
 
     public var body: some View {
-        TransferList(transferManager: transferManager, direction: direction) {
-            SentEmptyView()
+        TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
+            SentEmptyView(matomoCategory: .importFileFromSent)
         }
         .matomoView(view: "\(direction.matomoValue)View")
     }

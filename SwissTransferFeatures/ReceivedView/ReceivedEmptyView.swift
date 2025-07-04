@@ -57,7 +57,7 @@ extension View {
     @ViewBuilder func emptyStateFloatingButton(selection: Binding<[ImportedItem]>,
                                                style: FloatingActionButtonStyle) -> some View {
         if #available(iOS 18.2, *) {
-            self.floatingActionButton(selection: selection, style: style)
+            self.floatingActionButton(selection: selection, style: style, matomoCategory: .importFileFromReceived)
         } else {
             self
         }

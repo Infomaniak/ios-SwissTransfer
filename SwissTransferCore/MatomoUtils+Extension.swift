@@ -28,9 +28,45 @@ public extension MatomoUtils {
 
 // MARK: - Views and Categories
 
+@MainActor
 public extension MatomoUtils.EventCategory {
     static let transferType = MatomoUtils.EventCategory(displayName: "transferType")
     static let newTransferData = MatomoUtils.EventCategory(displayName: "newTransferData")
+
+    // MARK: - New Transfer
+
+    static let newTransfer = MatomoUtils.EventCategory(displayName: "newTransfer")
+
+    // MARK: - Transfer
+
+    static let transfer = MatomoUtils.EventCategory(displayName: "transfer")
+
+    // MARK: - Transfer errors
+
+    static let newTransferError = MatomoUtils.EventCategory(displayName: "newTransferError")
+
+    // MARK: - Import File Type
+
+    static let importFileFromSent = MatomoUtils.EventCategory(displayName: "importFileFromSent")
+    static let importFileFromReceived = MatomoUtils.EventCategory(displayName: "importFileFromReceived")
+    static let importFromNewTransfer = MatomoUtils.EventCategory(displayName: "importFromNewTransfer")
+    static let importFromFileList = MatomoUtils.EventCategory(displayName: "importFromFileList")
+    static let importFromSidebar = MatomoUtils.EventCategory(displayName: "importFromSidebar")
+
+    // MARK: - General and Local Settings
+
+    static let generalSettingsValidity = MatomoUtils.EventCategory(displayName: "generalSettingsValidity")
+    static let generalSettingsDownloadLimit = MatomoUtils.EventCategory(displayName: "generalSettingsDownloadLimit")
+    static let generalSettingsEmailLanguage = MatomoUtils.EventCategory(displayName: "generalSettingsEmailLanguage")
+
+    static let localSettingsValidity = MatomoUtils.EventCategory(displayName: "localSettingsValidity")
+    static let localSettingsDownloadLimit = MatomoUtils.EventCategory(displayName: "localSettingsDownloadLimit")
+    static let localSettingsEmailLanguage = MatomoUtils.EventCategory(displayName: "localSettingsEmailLanguage")
+
+    // MARK: - General Settings
+
+    static let settingsTheme = MatomoUtils.EventCategory(displayName: "settingsTheme")
+    static let settingsNotifications = MatomoUtils.EventCategory(displayName: "settingsNotifications")
 }
 
 // MARK: - Track views
