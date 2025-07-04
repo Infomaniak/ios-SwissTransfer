@@ -58,7 +58,8 @@ struct NewTransferFilesCellView: View {
                         AddFilesMenu(
                             selection: $selectedItems,
                             maxSelectionCount: Constants.maxFileCount - newTransferFileManager.filesCount,
-                            sizeExceeded: files.filesSize() >= Constants.maxFileSize
+                            sizeExceeded: files.filesSize() >= Constants.maxFileSize,
+                            matomoCategory: .importFromNewTransfer
                         ) {
                             STResourcesAsset.Images.plus.swiftUIImage
                                 .iconSize(.large)
