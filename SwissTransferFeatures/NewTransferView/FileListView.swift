@@ -19,6 +19,7 @@
 import DesignSystem
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import OSLog
 import STResources
 import SwiftUI
@@ -26,6 +27,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct FileListView: View {
+    @InjectService private var matomo: MatomoUtils
+
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
@@ -73,6 +76,7 @@ struct FileListView: View {
                         files: files,
                         action: RemoveFileAction {
                             removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
+                            matomo.track(eventWithCategory: .newTransfer, name: "deleteFile")
                         }
                     )
                     .animation(nil, value: files)

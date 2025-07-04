@@ -16,11 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 
 public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
+    @InjectService private var matomo: MatomoUtils
+
     @State private var isCopying = false
 
     private let animation = Animation.default.speed(1.5)
@@ -36,7 +40,10 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     }
 
     public var body: some View {
-        Button(action: copyToClipboard) {
+        Button {
+            copyToClipboard()
+            matomo.track(eventWithCategory: .newTransfer, name: "copyLink")
+        } label: {
             Label {
                 Text(text)
             } icon: {
