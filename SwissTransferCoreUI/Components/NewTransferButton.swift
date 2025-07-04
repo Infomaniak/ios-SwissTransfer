@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreSwiftUI
+import InfomaniakCoreCommonUI
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -39,14 +40,16 @@ struct NewTransferButton: View {
     @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
+    private let matomoCategory: MatomoUtils.EventCategory
 
-    init(selection: Binding<[ImportedItem]>, style: NewTransferStyle = .small) {
+    init(selection: Binding<[ImportedItem]>, style: NewTransferStyle = .small, matomoCategory: MatomoUtils.EventCategory) {
         _selection = selection
         self.style = style
+        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
-        AddFilesMenu(selection: $selection) {
+        AddFilesMenu(selection: $selection, matomoCategory: matomoCategory) {
             STResourcesAsset.Images.plus.swiftUIImage
                 .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
         }
@@ -57,12 +60,15 @@ struct NewTransferButton: View {
 public struct SidebarNewTransferButton: View {
     @Binding var selection: [ImportedItem]
 
-    public init(selection: Binding<[ImportedItem]>) {
+    private let matomoCategory: MatomoUtils.EventCategory
+
+    public init(selection: Binding<[ImportedItem]>, matomoCategory: MatomoUtils.EventCategory) {
         _selection = selection
+        self.matomoCategory = matomoCategory
     }
 
     public var body: some View {
-        AddFilesMenu(selection: $selection) {
+        AddFilesMenu(selection: $selection, matomoCategory: matomoCategory) {
             Label {
                 Text(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
             } icon: {
@@ -80,9 +86,9 @@ public struct SidebarNewTransferButton: View {
     @Previewable @State var selection = [ImportedItem]()
 
     VStack {
-        NewTransferButton(selection: $selection, style: .small)
-        NewTransferButton(selection: $selection, style: .big)
+        NewTransferButton(selection: $selection, style: .small, matomoCategory: .importFileFromSent)
+        NewTransferButton(selection: $selection, style: .big, matomoCategory: .importFileFromSent)
 
-        SidebarNewTransferButton(selection: $selection)
+        SidebarNewTransferButton(selection: $selection, matomoCategory: .importFileFromSent)
     }
 }

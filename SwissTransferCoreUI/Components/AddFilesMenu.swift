@@ -17,7 +17,9 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import OSLog
 import PhotosUI
 import STResources
@@ -25,6 +27,8 @@ import SwiftUI
 import SwissTransferCore
 
 public struct AddFilesMenu<Content: View>: View {
+    @InjectService private var matomo: MatomoUtils
+
     @State private var isShowingImportFile = false
     @State private var isShowingCamera = false
     @State private var isShowingPhotoLibrary = false
@@ -35,6 +39,7 @@ public struct AddFilesMenu<Content: View>: View {
 
     private let maxSelectionCount: Int
     private let sizeExceeded: Bool
+    private let matomoCategory: MatomoUtils.EventCategory
     private let label: Content
 
     private var buttonIsEnabled: Bool {
@@ -45,11 +50,13 @@ public struct AddFilesMenu<Content: View>: View {
         selection: Binding<[ImportedItem]>,
         maxSelectionCount: Int = Constants.maxFileCount,
         sizeExceeded: Bool = false,
+        matomoCategory: MatomoUtils.EventCategory,
         @ViewBuilder label: () -> Content
     ) {
         _selection = selection
         self.maxSelectionCount = maxSelectionCount
         self.sizeExceeded = sizeExceeded
+        self.matomoCategory = matomoCategory
         self.label = label()
     }
 
@@ -58,6 +65,8 @@ public struct AddFilesMenu<Content: View>: View {
             Group {
                 Button {
                     isShowingImportFile = true
+                    print(matomoCategory.displayName)
+                    matomo.track(eventWithCategory: matomoCategory, name: "addFromDocumentPicker")
                 } label: {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
@@ -66,6 +75,8 @@ public struct AddFilesMenu<Content: View>: View {
                 }
                 Button {
                     isShowingPhotoLibrary = true
+                    print(matomoCategory.displayName)
+                    matomo.track(eventWithCategory: matomoCategory, name: "addFromGallery")
                 } label: {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
@@ -74,6 +85,8 @@ public struct AddFilesMenu<Content: View>: View {
                 }
                 Button {
                     isShowingCamera = true
+                    print(matomoCategory.displayName)
+                    matomo.track(eventWithCategory: matomoCategory, name: "addFromCamera")
                 } label: {
                     Label(
                         title: {
@@ -155,5 +168,5 @@ public struct AddFilesMenu<Content: View>: View {
 @available(iOS 17.0, *)
 #Preview {
     @Previewable @State var selection = [ImportedItem]()
-    AddFilesMenu(selection: $selection) {}
+    AddFilesMenu(selection: $selection, matomoCategory: .importFileFromSent) {}
 }
