@@ -59,7 +59,7 @@ struct NewTransferSettingsView: View {
                     isPresented: $isShowingValiditySetting,
                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod
                 ) {
-                    SettingSelectableList(ValidityPeriod.self, selected: duration) {
+                    SettingSelectableList(ValidityPeriod.self, selected: duration, matomoCategory: .settingsLocalValidityPeriod) {
                         duration = $0
                     }
                 }
@@ -75,7 +75,7 @@ struct NewTransferSettingsView: View {
                     isPresented: $isShowingDownloadLimitSetting,
                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit
                 ) {
-                    SettingSelectableList(DownloadLimit.self, selected: limit) {
+                    SettingSelectableList(DownloadLimit.self, selected: limit, matomoCategory: .settingsLocalDownloadLimit) {
                         limit = $0
                     }
                 }
@@ -102,7 +102,11 @@ struct NewTransferSettingsView: View {
                         isPresented: $isShowingLanguageSetting,
                         title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
                     ) {
-                        SettingSelectableList(EmailLanguage.self, selected: language) {
+                        SettingSelectableList(
+                            EmailLanguage.self,
+                            selected: language,
+                            matomoCategory: .settingsLocalEmailLanguage
+                        ) {
                             language = $0
                         }
                     }

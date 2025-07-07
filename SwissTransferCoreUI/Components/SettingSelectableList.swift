@@ -16,21 +16,32 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
 
 public struct SettingSelectableList<T: SettingSelectable>: View {
+    @InjectService private var matomo: MatomoUtils
+
     @Environment(\.dismiss) private var dismiss
 
     let items: [T]
     let selected: T
+    let matomoCategory: MatomoUtils.EventCategory
     let onSelection: (T) -> Void
 
-    public init(_ type: T.Type, selected: T, onSelection: @escaping (T) -> Void) {
+    public init(
+        _ type: T.Type,
+        selected: T,
+        matomoCategory: MatomoUtils.EventCategory,
+        onSelection: @escaping (T) -> Void
+    ) {
         items = Array(type.allCases)
         self.selected = selected
+        self.matomoCategory = matomoCategory
         self.onSelection = onSelection
     }
 
@@ -39,6 +50,7 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
             ForEach(items, id: \.self) { item in
                 Button {
                     onSelection(item)
+                    matomo.track(eventWithCategory: matomoCategory, name: item.matomo)
                     dismiss()
                 } label: {
                     SettingSelectableCell(item: item, selectedItem: selected)
@@ -55,5 +67,9 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 }
 
 #Preview {
-    SettingSelectableList(ValidityPeriod.self, selected: ValidityPeriod.one) { _ in }
+    SettingSelectableList(
+        ValidityPeriod.self,
+        selected: ValidityPeriod.one,
+        matomoCategory: .settingsLocalDownloadLimit
+    ) { _ in }
 }

@@ -29,6 +29,19 @@ extension DownloadLimit: SettingSelectable {
         nil
     }
 
+    public var matomo: String {
+        switch self {
+        case .one:
+            return "1download"
+        case .twenty:
+            return "20downloads"
+        case .oneHundred:
+            return "100downloads"
+        case .twoHundredFifty:
+            return "250downloads"
+        }
+    }
+
     public func setSelected() async {
         @InjectService var settingsManager: AppSettingsManager
         _ = try? await settingsManager.setDownloadLimit(downloadLimit: self)

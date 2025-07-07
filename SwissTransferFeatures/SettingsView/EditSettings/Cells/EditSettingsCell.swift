@@ -17,18 +17,27 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 
 struct EditSettingCell: View {
+    @InjectService private var matomo: MatomoUtils
+
     let selected: Bool
     let label: String
     var leftImage: Image?
+    let matomoCategory: MatomoUtils.EventCategory
+    let matomoName: String
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            action()
+            matomo.track(eventWithCategory: matomoCategory, name: matomoName)
+        } label: {
             HStack(spacing: IKPadding.small) {
                 if let leftImage {
                     leftImage
@@ -52,7 +61,7 @@ struct EditSettingCell: View {
 }
 
 #Preview {
-    EditSettingCell(selected: true, label: "EditSettingsView") {
+    EditSettingCell(selected: true, label: "EditSettingsView", matomoCategory: .settingsGlobalTheme, matomoName: "editSettings") {
         print("EditSettingsView action")
     }
 }

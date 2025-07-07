@@ -44,6 +44,17 @@ extension Theme: SettingSelectable {
         }
     }
 
+    public var matomo: String {
+        switch self {
+        case .dark:
+            return "darkTheme"
+        case .light:
+            return"lightTheme"
+        case .system:
+            return "systemTheme"
+        }
+    }
+
     public func setSelected() async {
         @InjectService var settingsManager: AppSettingsManager
         _ = try? await settingsManager.setTheme(theme: self)
