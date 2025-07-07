@@ -17,12 +17,16 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
 struct PasswordSettingView: View {
+    @InjectService private var matomo: MatomoUtils
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn: Bool
@@ -64,6 +68,9 @@ struct PasswordSettingView: View {
                             .foregroundStyle(Color.ST.textPrimary)
                     }
                     .onChange(of: isOn, perform: didUpdateToggle)
+                    .onChange(of: isOn) { newValue in
+                        matomo.track(eventWithCategory: .settingsLocalPassword, name: "togglePassword", value: newValue ? 1 : 0)
+                    }
 
                     if isOn {
                         TogglableSecureTextField(password: $password, error: error)

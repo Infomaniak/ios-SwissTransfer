@@ -65,7 +65,6 @@ public struct AddFilesMenu<Content: View>: View {
             Group {
                 Button {
                     isShowingImportFile = true
-                    print(matomoCategory.displayName)
                     matomo.track(eventWithCategory: matomoCategory, name: "addFromDocumentPicker")
                 } label: {
                     Label(
@@ -75,7 +74,6 @@ public struct AddFilesMenu<Content: View>: View {
                 }
                 Button {
                     isShowingPhotoLibrary = true
-                    print(matomoCategory.displayName)
                     matomo.track(eventWithCategory: matomoCategory, name: "addFromGallery")
                 } label: {
                     Label(
@@ -85,7 +83,6 @@ public struct AddFilesMenu<Content: View>: View {
                 }
                 Button {
                     isShowingCamera = true
-                    print(matomoCategory.displayName)
                     matomo.track(eventWithCategory: matomoCategory, name: "addFromCamera")
                 } label: {
                     Label(

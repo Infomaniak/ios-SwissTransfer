@@ -36,7 +36,12 @@ struct FloatingActionButtonModifier: ViewModifier {
     let style: FloatingActionButtonStyle
     private let matomoCategory: MatomoUtils.EventCategory
 
-    init(selection: Binding<[ImportedItem]>, isShowing: Bool, style: FloatingActionButtonStyle, matomoCategory: MatomoUtils.EventCategory) {
+    init(
+        selection: Binding<[ImportedItem]>,
+        isShowing: Bool,
+        style: FloatingActionButtonStyle,
+        matomoCategory: MatomoUtils.EventCategory
+    ) {
         _selection = selection
         self.isShowing = isShowing
         self.style = style
