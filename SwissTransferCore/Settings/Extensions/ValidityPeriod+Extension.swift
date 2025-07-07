@@ -40,6 +40,19 @@ extension ValidityPeriod: SettingSelectable {
         nil
     }
 
+    public var matomo: String {
+        switch self {
+        case .one:
+            return "1day"
+        case .seven:
+            return "7days"
+        case .fifteen:
+            return "15days"
+        case .thirty:
+            return "30days"
+        }
+    }
+
     public func setSelected() async {
         @InjectService var settingsManager: AppSettingsManager
         _ = try? await settingsManager.setValidityPeriod(validityPeriod: self)

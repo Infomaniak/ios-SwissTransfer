@@ -21,6 +21,7 @@ import SwiftUI
 public protocol SettingSelectable: CaseIterable, Hashable {
     var title: String { get }
     var leftImage: Image? { get }
+    var matomo: String { get }
 
     /// Call this function on a conforming type to serialise a setting
     func setSelected() async

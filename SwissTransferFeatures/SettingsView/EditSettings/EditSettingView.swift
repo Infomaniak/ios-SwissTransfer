@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import SwiftUI
@@ -30,13 +31,22 @@ struct EditSettingView<T: SettingSelectable>: View {
     let items: [T]
     let selected: T
     let matomoName: String
+    let matomoCategory: MatomoUtils.EventCategory
 
-    public init(_ type: T.Type, selected: T, title: String, section: String, matomoName: String) {
+    public init(
+        _ type: T.Type,
+        selected: T,
+        title: String,
+        section: String,
+        matomoName: String,
+        matomoCategory: MatomoUtils.EventCategory
+    ) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
         self.section = section
         self.matomoName = matomoName
+        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
@@ -45,7 +55,9 @@ struct EditSettingView<T: SettingSelectable>: View {
                 ForEach(items, id: \.self) { item in
                     EditSettingCell(selected: item == selected,
                                     label: item.title,
-                                    leftImage: item.leftImage) {
+                                    leftImage: item.leftImage,
+                                    matomoCategory: matomoCategory,
+                                    matomoName: item.matomo) {
                         action(item)
                     }
                     .settingsCell()
@@ -67,5 +79,12 @@ struct EditSettingView<T: SettingSelectable>: View {
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section", matomoName: "ViewName")
+    EditSettingView(
+        Theme.self,
+        selected: .dark,
+        title: "Title",
+        section: "Section",
+        matomoName: "ViewName",
+        matomoCategory: .settingsGlobalTheme
+    )
 }

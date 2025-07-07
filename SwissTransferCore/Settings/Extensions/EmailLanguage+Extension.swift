@@ -47,6 +47,21 @@ extension EmailLanguage: SettingSelectable {
         }
     }
 
+    public var matomo: String {
+        switch self {
+        case .english:
+            return "englishLanguage"
+        case .french:
+            return "frenchLanguage"
+        case .german:
+            return "germanLanguage"
+        case .italian:
+            return "italianLanguage"
+        case .spanish:
+            return "spanishLanguage"
+        }
+    }
+
     public func setSelected() async {
         @InjectService var settingsManager: AppSettingsManager
         _ = try? await settingsManager.setEmailLanguage(emailLanguage: self)

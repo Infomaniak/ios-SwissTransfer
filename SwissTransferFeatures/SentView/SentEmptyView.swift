@@ -17,8 +17,8 @@
  */
 
 import DesignSystem
-import InfomaniakCoreSwiftUI
 import InfomaniakCoreCommonUI
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 import SwissTransferCore

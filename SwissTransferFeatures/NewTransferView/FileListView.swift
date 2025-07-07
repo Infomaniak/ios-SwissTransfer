@@ -86,7 +86,12 @@ struct FileListView: View {
             .padding(value: .medium)
         }
         .appBackground()
-        .floatingActionButton(isShowing: folder == nil, selection: $selectedItems, style: .newTransfer, matomoCategory: .importFromFileList)
+        .floatingActionButton(
+            isShowing: folder == nil,
+            selection: $selectedItems,
+            style: .newTransfer,
+            matomoCategory: .importFromFileList
+        )
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
