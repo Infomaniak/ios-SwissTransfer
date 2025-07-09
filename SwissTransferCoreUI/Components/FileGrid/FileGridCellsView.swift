@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import STCore
 import SwiftUI
@@ -25,11 +26,18 @@ public struct FileGridCellsView: View {
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
     private let action: (any LargeFileCellAction)?
+    private let matomoCategory: MatomoUtils.EventCategory?
 
-    public init(files: [any DisplayableFile], transfer: TransferUi? = nil, action: (any LargeFileCellAction)? = nil) {
+    public init(
+        files: [any DisplayableFile],
+        transfer: TransferUi? = nil,
+        action: (any LargeFileCellAction)? = nil,
+        matomoCategory: MatomoUtils.EventCategory?
+    ) {
         self.files = files
         self.transfer = transfer
         self.action = action
+        self.matomoCategory = matomoCategory
     }
 
     public var body: some View {
@@ -37,8 +45,12 @@ public struct FileGridCellsView: View {
             if file.isFolder {
                 NavigationLink(value: file) {
                     if let transfer,
-                       let fileUi = file as? FileUi {
-                        DownloadableFileCellView(transfer: transfer, file: fileUi)
+                       let fileUi = file as? FileUi, let matomoCategory {
+                        DownloadableFileCellView(
+                            transfer: transfer,
+                            file: fileUi,
+                            matomoCategory: matomoCategory
+                        )
                     } else {
                         LargeFileCell(
                             file: file,
@@ -48,8 +60,8 @@ public struct FileGridCellsView: View {
                     }
                 }
             } else {
-                if let transfer, let fileUi = file as? FileUi {
-                    DownloadableFileCellView(transfer: transfer, file: fileUi)
+                if let transfer, let fileUi = file as? FileUi, let matomoCategory {
+                    DownloadableFileCellView(transfer: transfer, file: fileUi, matomoCategory: matomoCategory)
                 } else if let transferableFile = file as? TransferableFile {
                     TransferableFileCellView(
                         file: transferableFile,
@@ -69,5 +81,5 @@ public struct FileGridCellsView: View {
 }
 
 #Preview {
-    FileGridCellsView(files: [], transfer: nil)
+    FileGridCellsView(files: [], transfer: nil, matomoCategory: .sentTransfer)
 }
