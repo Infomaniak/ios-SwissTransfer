@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import OSLog
 import STCore
@@ -24,6 +25,7 @@ import SwissTransferCore
 
 struct DownloadableFileCellView: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
+    @InjectService private var matomo: MatomoUtils
 
     @EnvironmentObject private var downloadManager: DownloadManager
 
@@ -32,6 +34,7 @@ struct DownloadableFileCellView: View {
 
     let transfer: TransferUi
     let file: FileUi
+    let matomoCategory: MatomoUtils.EventCategory
 
     private var downloadFileAction: DownloadFileAction {
         DownloadFileAction { _ in
@@ -44,7 +47,10 @@ struct DownloadableFileCellView: View {
             if file.isFolder {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
-                Button(action: startOrCancelDownloadIfNeeded) {
+                Button {
+                    startOrCancelDownloadIfNeeded()
+                    matomo.track(eventWithCategory: matomoCategory, name: "consultOneFile")
+                } label: {
                     LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
                 }
                 .buttonStyle(.plain)
@@ -90,5 +96,9 @@ struct DownloadableFileCellView: View {
 }
 
 #Preview {
-    DownloadableFileCellView(transfer: PreviewHelper.sampleTransfer, file: PreviewHelper.sampleFile)
+    DownloadableFileCellView(
+        transfer: PreviewHelper.sampleTransfer,
+        file: PreviewHelper.sampleFile,
+        matomoCategory: .sentTransfer
+    )
 }

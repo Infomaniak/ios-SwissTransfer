@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -23,10 +24,13 @@ import SwiftUI
 
 struct QRCodePanelButton: View {
     @LazyInjectService var injection: SwissTransferInjection
+    @InjectService private var matomo: MatomoUtils
+
     @State private var isShowingQRCode = false
 
     let transfer: TransferUi
     let vertical: Bool
+    let matomoCategory: MatomoUtils.EventCategory
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -38,6 +42,7 @@ struct QRCodePanelButton: View {
         if let transferURL {
             Button {
                 isShowingQRCode = true
+                matomo.track(eventWithCategory: matomoCategory, name: "showQRCode")
             } label: {
                 if vertical {
                     VStack {

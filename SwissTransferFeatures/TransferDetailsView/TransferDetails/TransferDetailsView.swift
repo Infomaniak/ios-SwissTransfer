@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import STCore
 import SwiftUI
@@ -27,6 +28,10 @@ public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
 
     private let transfer: TransferUi?
+
+    private var matomoCategory: MatomoUtils.EventCategory {
+        transfer?.direction == .received ? .receivedTransfer : .sentTransfer
+    }
 
     private var shouldDisplayRecipientsOrMessage: Bool {
         let shouldDisplayRecipients = transfer?.recipientsEmails.isEmpty == false
@@ -62,11 +67,11 @@ public struct TransferDetailsView: View {
                         }
                     }
 
-                    ContentView(transfer: transfer)
+                    ContentView(transfer: transfer, matomoCategory: matomoCategory)
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
-                .shareTransferToolbar(transfer: transfer)
+                .shareTransferToolbar(transfer: transfer, matomoCategory: matomoCategory)
             } else {
                 ProgressView()
             }
@@ -76,15 +81,15 @@ public struct TransferDetailsView: View {
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: transfer?.name ?? "")
         .navigationDestination(for: FileUi.self) { file in
-            FileListView(folder: file, transfer: transfer)
+            FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 if let transfer {
                     if transfer.direction == .sent {
-                        DownloadButton(transfer: transfer)
+                        DownloadButton(transfer: transfer, matomoCategory: matomoCategory)
                     } else {
-                        QRCodePanelButton(transfer: transfer, vertical: false)
+                        QRCodePanelButton(transfer: transfer, vertical: false, matomoCategory: matomoCategory)
                     }
                 }
             }

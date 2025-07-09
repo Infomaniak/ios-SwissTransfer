@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
@@ -27,6 +28,7 @@ import SwissTransferCoreUI
 
 struct ContentView: View {
     let transfer: TransferUi
+    let matomoCategory: MatomoUtils.EventCategory
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -34,12 +36,12 @@ struct ContentView: View {
                 .sectionHeader()
 
             FileGridLayoutView {
-                FileGridCellsView(files: transfer.files, transfer: transfer)
+                FileGridCellsView(files: transfer.files, transfer: transfer, matomoCategory: matomoCategory)
             }
         }
     }
 }
 
 #Preview {
-    ContentView(transfer: PreviewHelper.sampleTransfer)
+    ContentView(transfer: PreviewHelper.sampleTransfer, matomoCategory: .sentTransfer)
 }

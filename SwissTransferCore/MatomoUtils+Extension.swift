@@ -28,7 +28,6 @@ public extension MatomoUtils {
 
 // MARK: - Views and Categories
 
-@MainActor
 public extension MatomoUtils.EventCategory {
     static let transferType = MatomoUtils.EventCategory(displayName: "transferType")
     static let newTransferData = MatomoUtils.EventCategory(displayName: "newTransferData")
