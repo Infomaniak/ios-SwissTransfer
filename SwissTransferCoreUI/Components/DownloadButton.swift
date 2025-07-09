@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
@@ -39,6 +40,7 @@ struct ActivityView: UIViewControllerRepresentable {
 
 public struct DownloadButton: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
+    @InjectService private var matomo: MatomoUtils
 
     @EnvironmentObject private var downloadManager: DownloadManager
 
@@ -46,14 +48,19 @@ public struct DownloadButton: View {
 
     let transfer: TransferUi
     let vertical: Bool
+    let matomoCategory: MatomoUtils.EventCategory
 
-    public init(transfer: TransferUi, vertical: Bool = false) {
+    public init(transfer: TransferUi, vertical: Bool = false, matomoCategory: MatomoUtils.EventCategory) {
         self.transfer = transfer
         self.vertical = vertical
+        self.matomoCategory = matomoCategory
     }
 
     public var body: some View {
-        Button(action: startOrCancelDownloadIfNeeded) {
+        Button {
+            matomo.track(eventWithCategory: matomoCategory, name: "downloadTransfer")
+            startOrCancelDownloadIfNeeded()
+        } label: {
             if vertical {
                 VStack {
                     STResourcesAsset.Images.arrowDownLine.swiftUIImage

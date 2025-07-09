@@ -17,17 +17,22 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
 
 struct PasswordPanelView: View {
+    @InjectService private var matomo: MatomoUtils
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var isShowingPassword = false
 
     let password: String
+    let matomoCategory: MatomoUtils.EventCategory
 
     private var passwordValue: String {
         isShowingPassword ? password : String(repeating: "*", count: password.count)
@@ -51,6 +56,7 @@ struct PasswordPanelView: View {
                 Button {
                     withAnimation {
                         isShowingPassword.toggle()
+                        matomo.track(eventWithCategory: matomoCategory, name: "showPassword")
                     }
                 } label: {
                     isShowingPassword ? STResourcesAsset.Images.eyeSlash.swiftUIImage : STResourcesAsset.Images.eye.swiftUIImage
@@ -84,5 +90,5 @@ struct PasswordPanelView: View {
 }
 
 #Preview {
-    PasswordPanelView(password: "Password")
+    PasswordPanelView(password: "Password", matomoCategory: .sentTransfer)
 }

@@ -37,6 +37,7 @@ struct FileListView: View {
     @State private var filesCount = 0
 
     private let folder: TransferableFile?
+    private let matomoCategory: MatomoUtils.EventCategory?
 
     private var navigationTitle: String {
         guard let folder else {
@@ -45,8 +46,9 @@ struct FileListView: View {
         return folder.fileName
     }
 
-    init(parentFolder: TransferableFile?) {
+    init(parentFolder: TransferableFile?, matomoCategory: MatomoUtils.EventCategory? = nil) {
         folder = parentFolder
+        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
@@ -77,7 +79,8 @@ struct FileListView: View {
                         action: RemoveFileAction {
                             removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
                             matomo.track(eventWithCategory: .newTransfer, name: "deleteFile")
-                        }
+                        },
+                        matomoCategory: matomoCategory
                     )
                     .animation(nil, value: files)
                 }
@@ -131,5 +134,5 @@ struct FileListView: View {
 }
 
 #Preview {
-    FileListView(parentFolder: nil)
+    FileListView(parentFolder: nil, matomoCategory: .sentTransfer)
 }
