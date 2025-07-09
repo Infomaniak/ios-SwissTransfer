@@ -25,7 +25,6 @@ import SwissTransferCoreUI
 
 struct ShareTransferModifier: ViewModifier {
     @LazyInjectService private var injection: SwissTransferInjection
-    @InjectService private var matomo: MatomoUtils
 
     let transfer: TransferUi
 
@@ -57,6 +56,7 @@ struct ShareTransferModifier: ViewModifier {
                             .frame(width: 100)
                         }
                         .simultaneousGesture(TapGesture().onEnded {
+                            @InjectService var matomo: MatomoUtils
                             matomo.track(eventWithCategory: matomoCategory, name: "share")
                         })
 

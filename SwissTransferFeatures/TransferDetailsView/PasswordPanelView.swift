@@ -25,8 +25,6 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct PasswordPanelView: View {
-    @InjectService private var matomo: MatomoUtils
-
     @Environment(\.dismiss) private var dismiss
 
     @State private var isShowingPassword = false
@@ -55,8 +53,9 @@ struct PasswordPanelView: View {
 
                 Button {
                     withAnimation {
-                        isShowingPassword.toggle()
+                        @InjectService var matomo: MatomoUtils
                         matomo.track(eventWithCategory: matomoCategory, name: "showPassword")
+                        isShowingPassword.toggle()
                     }
                 } label: {
                     isShowingPassword ? STResourcesAsset.Images.eyeSlash.swiftUIImage : STResourcesAsset.Images.eye.swiftUIImage

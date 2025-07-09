@@ -40,7 +40,6 @@ struct ActivityView: UIViewControllerRepresentable {
 
 public struct DownloadButton: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
-    @InjectService private var matomo: MatomoUtils
 
     @EnvironmentObject private var downloadManager: DownloadManager
 
@@ -58,6 +57,7 @@ public struct DownloadButton: View {
 
     public var body: some View {
         Button {
+            @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: matomoCategory, name: "downloadTransfer")
             startOrCancelDownloadIfNeeded()
         } label: {

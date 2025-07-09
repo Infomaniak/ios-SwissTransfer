@@ -24,7 +24,6 @@ import SwiftUI
 
 struct QRCodePanelButton: View {
     @LazyInjectService var injection: SwissTransferInjection
-    @InjectService private var matomo: MatomoUtils
 
     @State private var isShowingQRCode = false
 
@@ -41,8 +40,9 @@ struct QRCodePanelButton: View {
     var body: some View {
         if let transferURL {
             Button {
-                isShowingQRCode = true
+                @InjectService var matomo: MatomoUtils
                 matomo.track(eventWithCategory: matomoCategory, name: "showQRCode")
+                isShowingQRCode = true
             } label: {
                 if vertical {
                     VStack {
