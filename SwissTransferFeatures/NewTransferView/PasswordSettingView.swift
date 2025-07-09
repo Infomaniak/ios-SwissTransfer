@@ -25,8 +25,6 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct PasswordSettingView: View {
-    @InjectService private var matomo: MatomoUtils
-
     @Environment(\.dismiss) private var dismiss
 
     @State private var isOn: Bool
@@ -69,6 +67,7 @@ struct PasswordSettingView: View {
                     }
                     .onChange(of: isOn, perform: didUpdateToggle)
                     .onChange(of: isOn) { newValue in
+                        @InjectService var matomo: MatomoUtils
                         matomo.track(eventWithCategory: .settingsLocalPassword, name: "togglePassword", value: newValue ? 1 : 0)
                     }
 

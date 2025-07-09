@@ -24,8 +24,6 @@ import STResources
 import SwiftUI
 
 struct EditSettingCell: View {
-    @InjectService private var matomo: MatomoUtils
-
     let selected: Bool
     let label: String
     var leftImage: Image?
@@ -35,8 +33,9 @@ struct EditSettingCell: View {
 
     var body: some View {
         Button {
-            action()
+            @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: matomoCategory, name: matomoName)
+            action()
         } label: {
             HStack(spacing: IKPadding.small) {
                 if let leftImage {

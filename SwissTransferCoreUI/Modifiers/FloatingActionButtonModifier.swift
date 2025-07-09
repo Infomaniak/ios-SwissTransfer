@@ -34,19 +34,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 
     let isShowing: Bool
     let style: FloatingActionButtonStyle
-    private let matomoCategory: MatomoUtils.EventCategory
-
-    init(
-        selection: Binding<[ImportedItem]>,
-        isShowing: Bool,
-        style: FloatingActionButtonStyle,
-        matomoCategory: MatomoUtils.EventCategory
-    ) {
-        _selection = selection
-        self.isShowing = isShowing
-        self.style = style
-        self.matomoCategory = matomoCategory
-    }
+    let matomoCategory: MatomoUtils.EventCategory
 
     func body(content: Content) -> some View {
         content

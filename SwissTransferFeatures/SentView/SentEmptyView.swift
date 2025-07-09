@@ -27,11 +27,7 @@ import SwissTransferCoreUI
 struct SentEmptyView: View {
     @State private var selectedItems = [ImportedItem]()
 
-    private let matomoCategory: MatomoUtils.EventCategory
-
-    init(matomoCategory: MatomoUtils.EventCategory) {
-        self.matomoCategory = matomoCategory
-    }
+    let matomoCategory: MatomoUtils.EventCategory
 
     var body: some View {
         VStack(spacing: 40) {
