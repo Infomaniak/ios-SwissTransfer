@@ -25,7 +25,6 @@ import SwissTransferCore
 
 struct DownloadableFileCellView: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
-    @InjectService private var matomo: MatomoUtils
 
     @EnvironmentObject private var downloadManager: DownloadManager
 
@@ -48,8 +47,9 @@ struct DownloadableFileCellView: View {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
                 Button {
-                    startOrCancelDownloadIfNeeded()
+                    @InjectService var matomo: MatomoUtils
                     matomo.track(eventWithCategory: matomoCategory, name: "consultOneFile")
+                    startOrCancelDownloadIfNeeded()
                 } label: {
                     LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
                 }

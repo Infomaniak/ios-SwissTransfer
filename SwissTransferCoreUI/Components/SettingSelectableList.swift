@@ -24,8 +24,6 @@ import SwiftUI
 import SwissTransferCore
 
 public struct SettingSelectableList<T: SettingSelectable>: View {
-    @InjectService private var matomo: MatomoUtils
-
     @Environment(\.dismiss) private var dismiss
 
     let items: [T]
@@ -49,8 +47,9 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
         VStack(spacing: 0) {
             ForEach(items, id: \.self) { item in
                 Button {
-                    onSelection(item)
+                    @InjectService var matomo: MatomoUtils
                     matomo.track(eventWithCategory: matomoCategory, name: item.matomo)
+                    onSelection(item)
                     dismiss()
                 } label: {
                     SettingSelectableCell(item: item, selectedItem: selected)

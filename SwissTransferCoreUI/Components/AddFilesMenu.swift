@@ -27,8 +27,6 @@ import SwiftUI
 import SwissTransferCore
 
 public struct AddFilesMenu<Content: View>: View {
-    @InjectService private var matomo: MatomoUtils
-
     @State private var isShowingImportFile = false
     @State private var isShowingCamera = false
     @State private var isShowingPhotoLibrary = false
@@ -64,8 +62,9 @@ public struct AddFilesMenu<Content: View>: View {
         Menu {
             Group {
                 Button {
-                    isShowingImportFile = true
+                    @InjectService var matomo: MatomoUtils
                     matomo.track(eventWithCategory: matomoCategory, name: "addFromDocumentPicker")
+                    isShowingImportFile = true
                 } label: {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceFiles) },
@@ -73,8 +72,9 @@ public struct AddFilesMenu<Content: View>: View {
                     )
                 }
                 Button {
-                    isShowingPhotoLibrary = true
+                    @InjectService var matomo: MatomoUtils
                     matomo.track(eventWithCategory: matomoCategory, name: "addFromGallery")
+                    isShowingPhotoLibrary = true
                 } label: {
                     Label(
                         title: { Text(STResourcesStrings.Localizable.transferUploadSourceChoiceGallery) },
@@ -82,8 +82,9 @@ public struct AddFilesMenu<Content: View>: View {
                     )
                 }
                 Button {
-                    isShowingCamera = true
+                    @InjectService var matomo: MatomoUtils
                     matomo.track(eventWithCategory: matomoCategory, name: "addFromCamera")
+                    isShowingCamera = true
                 } label: {
                     Label(
                         title: {

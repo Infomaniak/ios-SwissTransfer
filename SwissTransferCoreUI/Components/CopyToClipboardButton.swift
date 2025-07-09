@@ -23,8 +23,6 @@ import STResources
 import SwiftUI
 
 public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
-    @InjectService private var matomo: MatomoUtils
-
     @State private var isCopying = false
 
     private let animation = Animation.default.speed(1.5)
@@ -41,8 +39,9 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
 
     public var body: some View {
         Button {
-            copyToClipboard()
+            @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: .newTransfer, name: "copyLink")
+            copyToClipboard()
         } label: {
             Label {
                 Text(text)

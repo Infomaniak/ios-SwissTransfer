@@ -27,8 +27,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct FileListView: View {
-    @InjectService private var matomo: MatomoUtils
-
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
@@ -77,8 +75,9 @@ struct FileListView: View {
                     FileGridCellsView(
                         files: files,
                         action: RemoveFileAction {
-                            removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
+                            @InjectService var matomo: MatomoUtils
                             matomo.track(eventWithCategory: .newTransfer, name: "deleteFile")
+                            removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
                         },
                         matomoCategory: matomoCategory
                     )
