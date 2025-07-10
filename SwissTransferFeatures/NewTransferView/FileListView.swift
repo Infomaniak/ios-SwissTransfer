@@ -35,7 +35,7 @@ struct FileListView: View {
     @State private var filesCount = 0
 
     private let folder: TransferableFile?
-    private let matomoCategory: MatomoUtils.EventCategory?
+    private let matomoCategory: MatomoUtils.EventCategory
 
     private var navigationTitle: String {
         guard let folder else {
@@ -44,7 +44,7 @@ struct FileListView: View {
         return folder.fileName
     }
 
-    init(parentFolder: TransferableFile?, matomoCategory: MatomoUtils.EventCategory? = nil) {
+    init(parentFolder: TransferableFile?, matomoCategory: MatomoUtils.EventCategory) {
         folder = parentFolder
         self.matomoCategory = matomoCategory
     }

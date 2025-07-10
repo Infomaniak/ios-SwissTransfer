@@ -58,8 +58,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.theme ?? .system,
                                     title: STResourcesStrings.Localizable.settingsOptionTheme,
                                     section: STResourcesStrings.Localizable.settingsThemeTitle,
-                                    matomoName: "ThemeSettingView",
-                                    matomoCategory: .settingsGlobalTheme)
+                                    matomoName: "ThemeSettingView")
                 }
                 .settingsCell()
 
@@ -77,8 +76,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
                                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                                     section: STResourcesStrings.Localizable.settingsValidityPeriodTitle,
-                                    matomoName: "ValidityPeriodSettingView",
-                                    matomoCategory: .settingsGlobalValidityPeriod)
+                                    matomoName: "ValidityPeriodSettingView")
                 }
                 .settingsCell()
 
@@ -89,8 +87,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                                     section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                                    matomoName: "DownloadLimitSettingView",
-                                    matomoCategory: .settingsGlobalDownloadLimit)
+                                    matomoName: "DownloadLimitSettingView")
                 }
                 .settingsCell()
 
@@ -101,8 +98,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.emailLanguage ?? .french,
                                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                                     section: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
-                                    matomoName: "EmailLanguageSettingView",
-                                    matomoCategory: .settingsGlobalEmailLanguage)
+                                    matomoName: "EmailLanguageSettingView")
                 }
                 .settingsCell()
             }

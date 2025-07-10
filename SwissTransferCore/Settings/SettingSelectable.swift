@@ -16,12 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import SwiftUI
 
 public protocol SettingSelectable: CaseIterable, Hashable {
     var title: String { get }
     var leftImage: Image? { get }
-    var matomo: String { get }
+    var matomoName: String { get }
+    static var matomoCategoryLocal: MatomoUtils.EventCategory? { get }
+    static var matomoCategoryGlobal: MatomoUtils.EventCategory? { get }
 
     /// Call this function on a conforming type to serialise a setting
     func setSelected() async
