@@ -77,7 +77,7 @@ struct SwissTransferAppClip: App {
     func handleURL(_ url: URL) {
         Task {
             let linkHandler = UniversalLinkHandler()
-            guard let universalLinkType = await linkHandler.handlePossibleDeepLink(url: url) else { return }
+            guard let universalLinkType = await linkHandler.handlePossibleUniversalLink(url: url) else { return }
 
             switch universalLinkType {
             case .importTransferFromExtension(let uuid):

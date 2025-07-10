@@ -19,6 +19,7 @@
 import Foundation
 import InfomaniakDI
 import OSLog
+import Sentry
 import STCore
 
 public struct UniversalLinkHandler {
@@ -30,7 +31,9 @@ public struct UniversalLinkHandler {
 
     public init() {}
 
-    public func handlePossibleDeepLink(url: URL) async -> UniversalLinkType? {
+    public func handlePossibleUniversalLink(url: URL) async -> UniversalLinkType? {
+        addReceivedUniversalLinkBreadcrumb()
+
         guard let deepLinkType = DeepLinkType.companion.fromURL(url: url.absoluteString) else {
             return nil
         }
@@ -40,7 +43,7 @@ public struct UniversalLinkHandler {
         if let importTransferFromExtension = deepLinkType as? DeepLinkType.ImportTransferFromExtension {
             return .importTransferFromExtension(uuid: importTransferFromExtension.uuid)
         }
-        if let openTransfer = deepLinkType as? DeepLinkType.OpenTransfer {
+        if deepLinkType is DeepLinkType.OpenTransfer {
             guard let linkedTransfer = await handleTransferDeepLink(url: url, transferManager: defaultTransferManager) else {
                 return nil
             }
@@ -78,6 +81,14 @@ public struct UniversalLinkHandler {
         }
 
         return defaultTransferManager
+    }
+
+    private func addReceivedUniversalLinkBreadcrumb() {
+        let crumb = Breadcrumb(level: .info, category: "UniversalLink")
+        crumb.type = "info"
+        crumb.message = "App received Universal Link"
+
+        SentrySDK.addBreadcrumb(crumb)
     }
 }
 
