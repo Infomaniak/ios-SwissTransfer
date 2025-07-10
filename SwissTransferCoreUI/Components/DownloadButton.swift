@@ -57,8 +57,6 @@ public struct DownloadButton: View {
 
     public var body: some View {
         Button {
-            @InjectService var matomo: MatomoUtils
-            matomo.track(eventWithCategory: matomoCategory, name: "downloadTransfer")
             startOrCancelDownloadIfNeeded()
         } label: {
             if vertical {
@@ -89,6 +87,9 @@ public struct DownloadButton: View {
     }
 
     private func startOrCancelDownloadIfNeeded() {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: matomoCategory, name: "downloadTransfer")
+
         Task {
             if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
                 await downloadManager.removeDownloadTask(id: downloadTask.id)
