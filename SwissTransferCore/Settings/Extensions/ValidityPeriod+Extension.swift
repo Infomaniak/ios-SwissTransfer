@@ -16,7 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -40,7 +40,7 @@ extension ValidityPeriod: SettingSelectable {
         nil
     }
 
-    public var matomo: String {
+    public var matomoName: String {
         switch self {
         case .one:
             return "1day"
@@ -51,6 +51,14 @@ extension ValidityPeriod: SettingSelectable {
         case .thirty:
             return "30days"
         }
+    }
+
+    public static var matomoCategoryLocal: MatomoUtils.EventCategory? {
+        return .settingsLocalValidityPeriod
+    }
+
+    public static var matomoCategoryGlobal: MatomoUtils.EventCategory? {
+        return .settingsGlobalValidityPeriod
     }
 
     public func setSelected() async {

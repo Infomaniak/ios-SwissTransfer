@@ -28,18 +28,15 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 
     let items: [T]
     let selected: T
-    let matomoCategory: MatomoUtils.EventCategory
     let onSelection: (T) -> Void
 
     public init(
         _ type: T.Type,
         selected: T,
-        matomoCategory: MatomoUtils.EventCategory,
         onSelection: @escaping (T) -> Void
     ) {
         items = Array(type.allCases)
         self.selected = selected
-        self.matomoCategory = matomoCategory
         self.onSelection = onSelection
     }
 
@@ -48,7 +45,9 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
             ForEach(items, id: \.self) { item in
                 Button {
                     @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: matomoCategory, name: item.matomo)
+                    if let category = T.matomoCategoryLocal {
+                        matomo.track(eventWithCategory: category, name: item.matomoName)
+                    }
                     onSelection(item)
                     dismiss()
                 } label: {
@@ -68,7 +67,6 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 #Preview {
     SettingSelectableList(
         ValidityPeriod.self,
-        selected: ValidityPeriod.one,
-        matomoCategory: .settingsLocalDownloadLimit
+        selected: ValidityPeriod.one
     ) { _ in }
 }

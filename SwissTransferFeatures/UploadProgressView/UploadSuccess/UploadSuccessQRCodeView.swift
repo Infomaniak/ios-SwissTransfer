@@ -85,7 +85,7 @@ struct UploadSuccessQRCodeView: View {
                         matomo.track(eventWithCategory: .newTransfer, name: "share")
                     })
 
-                    CopyToClipboardButton(item: transferURL, labelStyle: .verticalButton)
+                    CopyToClipboardButton(item: transferURL, labelStyle: .verticalButton, matomoCategory: .newTransfer)
                 }
                 .buttonStyle(.ikBordered)
                 .frame(maxWidth: IKButtonConstants.maxWidth)

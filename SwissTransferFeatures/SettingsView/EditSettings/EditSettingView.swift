@@ -31,7 +31,6 @@ struct EditSettingView<T: SettingSelectable>: View {
     let items: [T]
     let selected: T
     let matomoName: String
-    let matomoCategory: MatomoUtils.EventCategory
 
     public init(
         _ type: T.Type,
@@ -39,28 +38,28 @@ struct EditSettingView<T: SettingSelectable>: View {
         title: String,
         section: String,
         matomoName: String,
-        matomoCategory: MatomoUtils.EventCategory
     ) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
         self.section = section
         self.matomoName = matomoName
-        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(section)) {
-                ForEach(items, id: \.self) { item in
-                    EditSettingCell(selected: item == selected,
-                                    label: item.title,
-                                    leftImage: item.leftImage,
-                                    matomoCategory: matomoCategory,
-                                    matomoName: item.matomo) {
-                        action(item)
+                if let category = T.matomoCategoryGlobal {
+                    ForEach(items, id: \.self) { item in
+                        EditSettingCell(selected: item == selected,
+                                        label: item.title,
+                                        leftImage: item.leftImage,
+                                        matomoCategory: category,
+                                        matomoName: item.matomoName) {
+                            action(item)
+                        }
+                        .settingsCell()
                     }
-                    .settingsCell()
                 }
             }
         }
@@ -84,7 +83,6 @@ struct EditSettingView<T: SettingSelectable>: View {
         selected: .dark,
         title: "Title",
         section: "Section",
-        matomoName: "ViewName",
-        matomoCategory: .settingsGlobalTheme
+        matomoName: "ViewName"
     )
 }

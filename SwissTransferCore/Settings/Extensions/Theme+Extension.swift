@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -44,15 +45,23 @@ extension Theme: SettingSelectable {
         }
     }
 
-    public var matomo: String {
+    public var matomoName: String {
         switch self {
         case .dark:
-            return "darkTheme"
+            return "dark"
         case .light:
-            return"lightTheme"
+            return"light"
         case .system:
-            return "systemTheme"
+            return "system"
         }
+    }
+
+    public static var matomoCategoryLocal: MatomoUtils.EventCategory? {
+        return nil
+    }
+
+    public static var matomoCategoryGlobal: MatomoUtils.EventCategory? {
+        return .settingsGlobalTheme
     }
 
     public func setSelected() async {
