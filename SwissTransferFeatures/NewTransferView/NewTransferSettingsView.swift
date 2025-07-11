@@ -102,7 +102,10 @@ struct NewTransferSettingsView: View {
                         isPresented: $isShowingLanguageSetting,
                         title: STResourcesStrings.Localizable.settingsOptionEmailLanguage
                     ) {
-                        SettingSelectableList(EmailLanguage.self, selected: language) {
+                        SettingSelectableList(
+                            EmailLanguage.self,
+                            selected: language
+                        ) {
                             language = $0
                         }
                     }

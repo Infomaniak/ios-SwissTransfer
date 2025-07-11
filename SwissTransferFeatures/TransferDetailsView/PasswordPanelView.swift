@@ -17,7 +17,9 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -28,6 +30,7 @@ struct PasswordPanelView: View {
     @State private var isShowingPassword = false
 
     let password: String
+    let matomoCategory: MatomoUtils.EventCategory
 
     private var passwordValue: String {
         isShowingPassword ? password : String(repeating: "*", count: password.count)
@@ -50,6 +53,8 @@ struct PasswordPanelView: View {
 
                 Button {
                     withAnimation {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: matomoCategory, name: "showPassword")
                         isShowingPassword.toggle()
                     }
                 } label: {
@@ -62,7 +67,7 @@ struct PasswordPanelView: View {
             .padding(.bottom, 30)
 
             BottomButtonsView {
-                CopyToClipboardButton(item: password, labelStyle: .ikLabel)
+                CopyToClipboardButton(item: password, labelStyle: .ikLabel, matomoCategory: matomoCategory, matomoName: "copyPassword")
                     .buttonStyle(.ikBorderedProminent)
 
                 Button {
@@ -80,5 +85,5 @@ struct PasswordPanelView: View {
 }
 
 #Preview {
-    PasswordPanelView(password: "Password")
+    PasswordPanelView(password: "Password", matomoCategory: .sentTransfer)
 }

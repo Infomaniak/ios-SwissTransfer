@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
@@ -25,6 +26,8 @@ import SwissTransferCoreUI
 
 struct SentEmptyView: View {
     @State private var selectedItems = [ImportedItem]()
+
+    let matomoCategory: MatomoUtils.EventCategory
 
     var body: some View {
         VStack(spacing: 40) {
@@ -40,7 +43,7 @@ struct SentEmptyView: View {
                     .multilineTextAlignment(.center)
             }
 
-            FirstTransferButton(selection: $selectedItems, style: .big)
+            FirstTransferButton(selection: $selectedItems, style: .big, matomoCategory: matomoCategory)
                 .onChangeOfSelectedItems($selectedItems)
         }
         .padding(value: .medium)
@@ -50,5 +53,5 @@ struct SentEmptyView: View {
 }
 
 #Preview {
-    SentEmptyView()
+    SentEmptyView(matomoCategory: MatomoUtils.EventCategory.importFromFileList)
 }

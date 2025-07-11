@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import STCore
 import STDatabase
 import SwiftUI
@@ -33,14 +34,21 @@ public struct TransferList<EmptyView: View>: View {
     @State private var selectedItems = [ImportedItem]()
 
     private let direction: TransferDirection
+    private let matomoCategory: MatomoUtils.EventCategory
     private let emptyView: EmptyView?
 
-    public init(transferManager: TransferManager, direction: TransferDirection, @ViewBuilder emptyView: () -> EmptyView) {
+    public init(
+        transferManager: TransferManager,
+        direction: TransferDirection,
+        matomoCategory: MatomoUtils.EventCategory,
+        @ViewBuilder emptyView: () -> EmptyView
+    ) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(
             transferManager: transferManager,
             transferDirection: direction
         ))
         self.direction = direction
+        self.matomoCategory = matomoCategory
         self.emptyView = emptyView()
         UICollectionViewCell.appearance().focusEffect = .none
     }
@@ -78,7 +86,12 @@ public struct TransferList<EmptyView: View>: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .floatingActionButton(isShowing: viewModel.sections?.isEmpty == false, selection: $selectedItems, style: .newTransfer)
+        .floatingActionButton(
+            isShowing: viewModel.sections?.isEmpty == false,
+            selection: $selectedItems,
+            style: .newTransfer,
+            matomoCategory: matomoCategory
+        )
         .task {
             try? await transferManager.fetchWaitingTransfers()
         }

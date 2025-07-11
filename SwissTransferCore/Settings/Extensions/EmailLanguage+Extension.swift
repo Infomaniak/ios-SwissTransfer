@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -45,6 +46,29 @@ extension EmailLanguage: SettingSelectable {
         case .spanish:
             return STResourcesAsset.Images.flagEs.swiftUIImage
         }
+    }
+
+    public var matomoName: String {
+        switch self {
+        case .english:
+            return "english"
+        case .french:
+            return "french"
+        case .german:
+            return "german"
+        case .italian:
+            return "italian"
+        case .spanish:
+            return "spanish"
+        }
+    }
+
+    public static var matomoCategoryLocal: MatomoUtils.EventCategory? {
+        return .settingsLocalEmailLanguage
+    }
+
+    public static var matomoCategoryGlobal: MatomoUtils.EventCategory? {
+        return .settingsGlobalEmailLanguage
     }
 
     public func setSelected() async {

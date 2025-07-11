@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import SwiftUI
@@ -31,7 +32,13 @@ struct EditSettingView<T: SettingSelectable>: View {
     let selected: T
     let matomoName: String
 
-    public init(_ type: T.Type, selected: T, title: String, section: String, matomoName: String) {
+    public init(
+        _ type: T.Type,
+        selected: T,
+        title: String,
+        section: String,
+        matomoName: String,
+    ) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
@@ -42,13 +49,17 @@ struct EditSettingView<T: SettingSelectable>: View {
     var body: some View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(section)) {
-                ForEach(items, id: \.self) { item in
-                    EditSettingCell(selected: item == selected,
-                                    label: item.title,
-                                    leftImage: item.leftImage) {
-                        action(item)
+                if let category = T.matomoCategoryGlobal {
+                    ForEach(items, id: \.self) { item in
+                        EditSettingCell(selected: item == selected,
+                                        label: item.title,
+                                        leftImage: item.leftImage,
+                                        matomoCategory: category,
+                                        matomoName: item.matomoName) {
+                            action(item)
+                        }
+                        .settingsCell()
                     }
-                    .settingsCell()
                 }
             }
         }
@@ -67,5 +78,11 @@ struct EditSettingView<T: SettingSelectable>: View {
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section", matomoName: "ViewName")
+    EditSettingView(
+        Theme.self,
+        selected: .dark,
+        title: "Title",
+        section: "Section",
+        matomoName: "ViewName"
+    )
 }
