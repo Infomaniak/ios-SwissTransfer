@@ -25,10 +25,12 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
 
     private let animation = Animation.default.speed(1.5)
 
+    let text: String
     let item: Item
     let labelStyle: Style
 
-    public init(item: Item, labelStyle: Style) {
+    public init(text: String, item: Item, labelStyle: Style) {
+        self.text = text
         self.item = item
         self.labelStyle = labelStyle
     }
@@ -36,7 +38,7 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     public var body: some View {
         Button(action: copyToClipboard) {
             Label {
-                Text(STResourcesStrings.Localizable.buttonCopyLink)
+                Text(text)
             } icon: {
                 Group {
                     if isCopying {
@@ -77,5 +79,9 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
 }
 
 #Preview {
-    CopyToClipboardButton(item: URL(string: "https://www.infomaniak.com")!, labelStyle: .verticalButton)
+    CopyToClipboardButton(
+        text: STResourcesStrings.Localizable.buttonCopyLink,
+        item: URL(string: "https://www.infomaniak.com")!,
+        labelStyle: .verticalButton
+    )
 }

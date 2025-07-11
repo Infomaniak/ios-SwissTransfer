@@ -80,7 +80,11 @@ struct UploadSuccessQRCodeView: View {
                         .labelStyle(.verticalButton)
                     }
 
-                    CopyToClipboardButton(item: transferURL, labelStyle: .verticalButton)
+                    CopyToClipboardButton(
+                        text: STResourcesStrings.Localizable.buttonCopyLink,
+                        item: transferURL,
+                        labelStyle: .verticalButton
+                    )
                 }
                 .buttonStyle(.ikBordered)
                 .frame(maxWidth: IKButtonConstants.maxWidth)

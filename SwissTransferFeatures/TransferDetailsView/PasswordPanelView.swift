@@ -62,8 +62,12 @@ struct PasswordPanelView: View {
             .padding(.bottom, 30)
 
             BottomButtonsView {
-                CopyToClipboardButton(item: password, labelStyle: .ikLabel)
-                    .buttonStyle(.ikBorderedProminent)
+                CopyToClipboardButton(
+                    text: STResourcesStrings.Localizable.sharePasswordButton,
+                    item: password,
+                    labelStyle: .ikLabel
+                )
+                .buttonStyle(.ikBorderedProminent)
 
                 Button {
                     dismiss()
