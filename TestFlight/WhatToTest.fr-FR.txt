@@ -1,5 +1,1 @@
-- Mise en place des fondations nécessaires à la State Restoration
-- Retrait des options QR Code et Proximité
-- Préparation à iOS 26
-- Suppression d'un transfert via deeplink
-- Corrections mineures et améliorations
+- Correction d'un crash concernant la gestion des deeplinks

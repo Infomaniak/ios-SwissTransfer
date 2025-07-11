@@ -1,5 +1,1 @@
-- Laid the groundwork for State Restoration
-- Removed QR Code and Proximity options
-- Prepared the app for iOS 26
-- Removed a transfer via deeplink
-- Minor fixes and improvements
+- Fix a crash related to deeplink handling
