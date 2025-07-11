@@ -77,10 +77,15 @@ struct SwissTransferAppClip: App {
     func handleURL(_ url: URL) {
         Task {
             let linkHandler = UniversalLinkHandler()
-            if let importSessionUUID = await linkHandler.handlePossibleImportURL(url) {
-                universalLinksState.linkedImportUUID = importSessionUUID
-            } else if let result = await linkHandler.handlePossibleTransferURL(url) {
-                universalLinksState.linkedTransfer = result
+            guard let universalLinkType = await linkHandler.handlePossibleUniversalLink(url: url) else { return }
+
+            switch universalLinkType {
+            case .importTransferFromExtension(let uuid):
+                universalLinksState.linkedImportUUID = uuid
+            case .openTransfer(let linkedTransfer):
+                universalLinksState.linkedTransfer = linkedTransfer
+            case .deleteTransfer(let linkedDeleteTransfer):
+                universalLinksState.linkedDeleteTransfer = linkedDeleteTransfer
             }
         }
     }

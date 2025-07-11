@@ -19,12 +19,57 @@
 import Foundation
 import InfomaniakDI
 import OSLog
+import Sentry
 import STCore
 
 public struct UniversalLinkHandler {
+    public enum UniversalLinkType {
+        case importTransferFromExtension(uuid: String)
+        case openTransfer(linkedTransfer: UniversalLinkResult)
+        case deleteTransfer(linkedDeleteTransfer: DeleteTransferLinkResult)
+    }
+
     public init() {}
 
-    @discardableResult
+    public func handlePossibleUniversalLink(url: URL) async -> UniversalLinkType? {
+        addReceivedUniversalLinkBreadcrumb()
+
+        guard let deepLinkType = DeepLinkType.companion.fromURL(url: url.absoluteString) else {
+            return nil
+        }
+
+        let defaultTransferManager = await createAccountIfNeeded()
+
+        if let importTransferFromExtension = deepLinkType as? DeepLinkType.ImportTransferFromExtension {
+            return .importTransferFromExtension(uuid: importTransferFromExtension.uuid)
+        }
+        if deepLinkType is DeepLinkType.OpenTransfer {
+            guard let linkedTransfer = await handleTransferDeepLink(url: url, transferManager: defaultTransferManager) else {
+                return nil
+            }
+            return .openTransfer(linkedTransfer: linkedTransfer)
+        }
+        if let deleteTransfer = deepLinkType as? DeepLinkType.DeleteTransfer {
+            let linkedDeleteTransfer = DeleteTransferLinkResult(uuid: deleteTransfer.uuid, token: deleteTransfer.token)
+            return .deleteTransfer(linkedDeleteTransfer: linkedDeleteTransfer)
+        }
+        return nil
+    }
+
+    private func handleTransferDeepLink(url: URL, transferManager: TransferManager?) async -> UniversalLinkResult? {
+        guard let transferManager else { return nil }
+
+        do {
+            guard let transferUUID = try await transferManager.addTransferByUrl(url: url.path, password: nil),
+                  let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
+            else { return nil }
+
+            return UniversalLinkResult(link: url, result: .success(transfer))
+        } catch {
+            return UniversalLinkResult(link: url, result: .failure(error))
+        }
+    }
+
     private func createAccountIfNeeded() async -> TransferManager? {
         @InjectService var accountManager: AccountManager
 
@@ -38,49 +83,12 @@ public struct UniversalLinkHandler {
         return defaultTransferManager
     }
 
-    public func handlePossibleImportURL(_ url: URL) async -> String? {
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        guard components?.path == "/import",
-              let localSessionUUID = components?.queryItems?.first(where: { $0.name == "uuid" })?.value
-        else {
-            return nil
-        }
+    private func addReceivedUniversalLinkBreadcrumb() {
+        let crumb = Breadcrumb(level: .info, category: "UniversalLink")
+        crumb.type = "info"
+        crumb.message = "App received Universal Link"
 
-        await createAccountIfNeeded()
-
-        return localSessionUUID
-    }
-
-    public func handlePossibleTransferURL(_ url: URL) async -> UniversalLinkResult? {
-        var defaultTransferManager = await createAccountIfNeeded()
-
-        do {
-            guard let transferUUID = try await defaultTransferManager?.addTransferByUrl(url: url.path, password: nil),
-                  let transfer = try await defaultTransferManager?.getTransferByUUID(transferUUID: transferUUID)
-            else { return nil }
-
-            return UniversalLinkResult(link: url, result: .success(transfer))
-        } catch {
-            return UniversalLinkResult(link: url, result: .failure(error))
-        }
-    }
-
-    public func handlePossibleDeleteURL(_ url: URL) async -> DeleteTransferLinkResult? {
-        let uuid = url.pathComponents[2]
-
-        guard url.pathComponents.count >= 3,
-              url.pathComponents[1] == "d",
-              !uuid.isEmpty,
-              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              let token = components.queryItems?.first(where: { $0.name == "delete" })?.value,
-              !token.isEmpty
-        else {
-            return nil
-        }
-
-        await createAccountIfNeeded()
-
-        return DeleteTransferLinkResult(uuid: uuid, token: token)
+        SentrySDK.addBreadcrumb(crumb)
     }
 }
 
