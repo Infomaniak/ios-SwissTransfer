@@ -30,11 +30,13 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     let item: Item
     let labelStyle: Style
     let matomoCategory: MatomoUtils.EventCategory
+    let matomoName: String
 
-    public init(item: Item, labelStyle: Style, matomoCategory: MatomoUtils.EventCategory) {
+    public init(item: Item, labelStyle: Style, matomoCategory: MatomoUtils.EventCategory, matomoName: String) {
         self.item = item
         self.labelStyle = labelStyle
         self.matomoCategory = matomoCategory
+        self.matomoName = matomoName
     }
 
     public var body: some View {
@@ -57,7 +59,7 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
 
     private func copyToClipboard() {
         @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: matomoCategory, name: "copyLink")
+        matomo.track(eventWithCategory: matomoCategory, name: matomoName)
 
         if let url = item as? URL {
             UIPasteboard.general.url = url
@@ -87,6 +89,7 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     CopyToClipboardButton(
         item: URL(string: "https://www.infomaniak.com")!,
         labelStyle: .verticalButton,
-        matomoCategory: .newTransfer
+        matomoCategory: .newTransfer,
+        matomoName: "copyLink"
     )
 }

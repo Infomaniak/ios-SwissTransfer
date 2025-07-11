@@ -67,7 +67,7 @@ struct PasswordPanelView: View {
             .padding(.bottom, 30)
 
             BottomButtonsView {
-                CopyToClipboardButton(item: password, labelStyle: .ikLabel, matomoCategory: matomoCategory)
+                CopyToClipboardButton(item: password, labelStyle: .ikLabel, matomoCategory: matomoCategory, matomoName: "copyPassword")
                     .buttonStyle(.ikBorderedProminent)
 
                 Button {
