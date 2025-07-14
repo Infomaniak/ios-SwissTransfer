@@ -83,7 +83,7 @@ struct FileListView: View {
         .appBackground()
         .floatingActionButton(isShowing: folder == nil, selection: $selectedItems, style: .newTransfer)
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: navigationTitle)
+        .stNavigationBarFullScreen(title: navigationTitle, showButton: true)
         .onAppear {
             files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
             filesCount = files.count

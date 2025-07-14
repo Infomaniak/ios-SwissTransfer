@@ -20,15 +20,20 @@ import SwiftUI
 
 struct STNavigationBarFullScreenModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismiss
-    @Environment(\.isCompactWindow) private var isCompactWindow
 
     let title: String
+    let showButton: Bool
+
+    public init(title: String, showButton: Bool = true) {
+        self.title = title
+        self.showButton = showButton
+    }
 
     func body(content: Content) -> some View {
         content
             .stNavigationTitle(title)
             .toolbar {
-                if isCompactWindow {
+                if showButton {
                     ToolbarItem(placement: .destructiveAction) {
                         Button {
                             dismiss()
@@ -42,7 +47,7 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
 }
 
 public extension View {
-    func stNavigationBarFullScreen(title: String = "Transfer") -> some View {
-        modifier(STNavigationBarFullScreenModifier(title: title))
+    func stNavigationBarFullScreen(title: String = "Transfer", showButton: Bool) -> some View {
+        modifier(STNavigationBarFullScreenModifier(title: title, showButton: showButton))
     }
 }
