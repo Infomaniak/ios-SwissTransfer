@@ -26,6 +26,7 @@ import SwissTransferCoreUI
 
 public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isCompactWindow) private var isCompactWindow
 
     private let transfer: TransferUi?
 
@@ -79,7 +80,7 @@ public struct TransferDetailsView: View {
         .toolbarBackground(.visible, for: .bottomBar)
         .appBackground()
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: transfer?.name ?? "")
+        .stNavigationBarFullScreen(title: transfer?.name ?? "", showButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
         }
