@@ -62,7 +62,7 @@ struct FileListView: View {
             .padding(value: .medium)
         }
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: title)
+        .stNavigationBarFullScreen(title: title, showButton: true)
         .matomoView(view: "TransferDetailsFileListView")
     }
 }
