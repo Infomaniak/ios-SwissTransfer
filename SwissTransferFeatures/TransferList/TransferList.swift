@@ -78,7 +78,11 @@ public struct TransferList<EmptyView: View>: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
-        .floatingActionButton(isShowing: viewModel.sections?.isEmpty == false, selection: $selectedItems, style: .newTransfer)
+        .floatingActionButton(
+            isShowing: isCompactWindow && (viewModel.sections?.isEmpty == false),
+            selection: $selectedItems,
+            style: .newTransfer
+        )
         .task {
             try? await transferManager.fetchWaitingTransfers()
         }
