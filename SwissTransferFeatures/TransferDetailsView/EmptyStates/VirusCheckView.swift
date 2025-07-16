@@ -41,7 +41,7 @@ struct VirusCheckView: View {
                 }
             }
         }
-        .matomoView(view: "VirusCheckView")
+        .matomoView(view: .virusCheck)
     }
 }
 

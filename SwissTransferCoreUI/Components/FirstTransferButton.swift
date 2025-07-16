@@ -16,6 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -24,6 +26,7 @@ public struct FirstTransferButton: View {
     @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
+    private let matomoCategory: MatomoCategory
 
     private var offset: CGSize {
         switch style {
@@ -34,9 +37,10 @@ public struct FirstTransferButton: View {
         }
     }
 
-    public init(selection: Binding<[ImportedItem]>, style: NewTransferStyle) {
+    public init(selection: Binding<[ImportedItem]>, style: NewTransferStyle, matomoCategory: MatomoCategory) {
         _selection = selection
         self.style = style
+        self.matomoCategory = matomoCategory
     }
 
     public var body: some View {
@@ -54,11 +58,11 @@ public struct FirstTransferButton: View {
                 }
                 .offset(offset)
 
-                NewTransferButton(selection: $selection, style: style)
+                NewTransferButton(selection: $selection, style: style, matomoCategory: matomoCategory)
             }
         } else {
             ZStack {
-                NewTransferButton(selection: $selection, style: style)
+                NewTransferButton(selection: $selection, style: style, matomoCategory: matomoCategory)
 
                 STResourcesAsset.Images.arrow.swiftUIImage
                     .resizable()
@@ -73,7 +77,7 @@ public struct FirstTransferButton: View {
 #Preview {
     @Previewable @State var selection = [ImportedItem]()
     VStack {
-        FirstTransferButton(selection: $selection, style: .small)
-        FirstTransferButton(selection: $selection, style: .big)
+        FirstTransferButton(selection: $selection, style: .small, matomoCategory: .importFileFromSent)
+        FirstTransferButton(selection: $selection, style: .big, matomoCategory: .importFileFromSent)
     }
 }

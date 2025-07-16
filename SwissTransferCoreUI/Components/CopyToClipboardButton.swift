@@ -16,7 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 
@@ -28,11 +31,15 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     let text: String
     let item: Item
     let labelStyle: Style
+    let matomoCategory: MatomoCategory
+    let matomoName: MatomoName
 
-    public init(text: String, item: Item, labelStyle: Style) {
+    public init(text: String, item: Item, labelStyle: Style, matomoCategory: MatomoCategory, matomoName: MatomoName) {
         self.text = text
         self.item = item
         self.labelStyle = labelStyle
+        self.matomoCategory = matomoCategory
+        self.matomoName = matomoName
     }
 
     public var body: some View {
@@ -54,6 +61,9 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     }
 
     private func copyToClipboard() {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: matomoCategory, name: matomoName)
+
         if let url = item as? URL {
             UIPasteboard.general.url = url
         } else if let text = item as? String {
@@ -82,6 +92,8 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     CopyToClipboardButton(
         text: STResourcesStrings.Localizable.buttonCopyLink,
         item: URL(string: "https://www.infomaniak.com")!,
-        labelStyle: .verticalButton
+        labelStyle: .verticalButton,
+        matomoCategory: .newTransfer,
+        matomoName: .copyLink
     )
 }

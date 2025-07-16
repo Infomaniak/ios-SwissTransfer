@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -24,9 +25,12 @@ import SwissTransferCoreUI
 
 struct ShareTransferModifier: ViewModifier {
     @LazyInjectService private var injection: SwissTransferInjection
+
     let transfer: TransferUi
 
     @State private var isShowingPassword = false
+
+    let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -51,14 +55,18 @@ struct ShareTransferModifier: ViewModifier {
                             }
                             .frame(width: 100)
                         }
+                        .simultaneousGesture(TapGesture().onEnded {
+                            @InjectService var matomo: MatomoUtils
+                            matomo.track(eventWithCategory: matomoCategory, name: .share)
+                        })
 
                         Spacer()
                     }
 
                     if transfer.direction == .sent {
-                        QRCodePanelButton(transfer: transfer, vertical: true)
+                        QRCodePanelButton(transfer: transfer, vertical: true, matomoCategory: .sentTransfer)
                     } else {
-                        DownloadButton(transfer: transfer, vertical: true)
+                        DownloadButton(transfer: transfer, vertical: true, matomoCategory: .receivedTransfer)
                     }
 
                     Spacer()
@@ -77,7 +85,7 @@ struct ShareTransferModifier: ViewModifier {
                             .frame(width: 100)
                         }
                         .stFloatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
-                            PasswordPanelView(password: password)
+                            PasswordPanelView(password: password, matomoCategory: matomoCategory)
                         }
 
                         Spacer()
@@ -88,7 +96,7 @@ struct ShareTransferModifier: ViewModifier {
 }
 
 public extension View {
-    func shareTransferToolbar(transfer: TransferUi) -> some View {
-        modifier(ShareTransferModifier(transfer: transfer))
+    func shareTransferToolbar(transfer: TransferUi, matomoCategory: MatomoCategory) -> some View {
+        modifier(ShareTransferModifier(transfer: transfer, matomoCategory: matomoCategory))
     }
 }

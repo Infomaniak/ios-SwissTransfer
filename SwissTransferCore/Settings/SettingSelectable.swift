@@ -16,11 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import SwiftUI
 
 public protocol SettingSelectable: CaseIterable, Hashable {
     var title: String { get }
     var leftImage: Image? { get }
+    var matomoName: MatomoName { get }
+    static var matomoCategoryLocal: MatomoCategory? { get }
+    static var matomoCategoryGlobal: MatomoCategory? { get }
 
     /// Call this function on a conforming type to serialise a setting
     func setSelected() async

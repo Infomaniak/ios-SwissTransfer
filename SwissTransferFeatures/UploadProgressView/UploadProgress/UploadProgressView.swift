@@ -103,7 +103,7 @@ public struct UploadProgressView: View {
                 }
             }
         }
-        .matomoView(view: "UploadProgressView")
+        .matomoView(view: .uploadProgress)
     }
 
     @Sendable private func startUpload() async {
@@ -200,7 +200,7 @@ public struct UploadProgressView: View {
 
     private func reportTransferToMatomo() {
         @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: .newTransferData, action: .data, name: viewModel.transferType.matomoValue)
+        matomo.track(eventWithCategory: .newTransferData, action: .data, name: viewModel.transferType.matomoName)
     }
 }
 

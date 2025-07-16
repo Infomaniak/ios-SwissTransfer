@@ -19,18 +19,16 @@
 import Foundation
 import InfomaniakCoreCommonUI
 import InfomaniakDI
+import STCore
 import SwiftUI
 
 public extension MatomoUtils {
     static let siteID = "24"
     static let siteURL = URL(string: "https://analytics.infomaniak.com/matomo.php")!
-}
 
-// MARK: - Views and Categories
-
-public extension MatomoUtils.EventCategory {
-    static let transferType = MatomoUtils.EventCategory(displayName: "transferType")
-    static let newTransferData = MatomoUtils.EventCategory(displayName: "newTransferData")
+    func track(eventWithCategory category: MatomoCategory, action: UserAction = .click, name: MatomoName, value: Float? = nil) {
+        track(eventWithCategory: category.value, action: action, name: name.value, value: value)
+    }
 }
 
 // MARK: - Track views
@@ -40,12 +38,8 @@ struct MatomoView: ViewModifier {
 
     let path: [String]
 
-    init(path: [String]) {
-        self.path = path
-    }
-
-    init(view: String) {
-        path = [view]
+    init(view: MatomoScreen) {
+        path = [view.value]
     }
 
     func body(content: Content) -> some View {
@@ -57,11 +51,7 @@ struct MatomoView: ViewModifier {
 }
 
 public extension View {
-    func matomoView(path: [String]) -> some View {
-        modifier(MatomoView(path: path))
-    }
-
-    func matomoView(view: String) -> some View {
+    func matomoView(view: MatomoScreen) -> some View {
         modifier(MatomoView(view: view))
     }
 }

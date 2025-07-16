@@ -57,7 +57,7 @@ struct ScreenshotQrBottomSheetView: View {
             }
             .buttonStyle(.ikBorderedProminent)
         }
-        .matomoView(view: "ScreenshotQrCodeView")
+        .matomoView(view: .screenshotQrCode)
     }
 }
 
