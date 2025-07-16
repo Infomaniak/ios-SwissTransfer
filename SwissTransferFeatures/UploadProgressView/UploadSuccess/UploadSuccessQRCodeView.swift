@@ -82,7 +82,7 @@ struct UploadSuccessQRCodeView: View {
                     }
                     .simultaneousGesture(TapGesture().onEnded {
                         @InjectService var matomo: MatomoUtils
-                        matomo.track(eventWithCategory: .newTransfer, name: "share")
+                        matomo.track(eventWithCategory: .newTransfer, name: .share)
                     })
 
                     CopyToClipboardButton(
@@ -90,7 +90,7 @@ struct UploadSuccessQRCodeView: View {
                         item: transferURL,
                         labelStyle: .verticalButton,
                         matomoCategory: .newTransfer,
-                        matomoName: "copyLink"
+                        matomoName: .copyLink
                     )
                 }
                 .buttonStyle(.ikBordered)

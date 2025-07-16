@@ -21,6 +21,7 @@ import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -35,7 +36,7 @@ struct FileListView: View {
     @State private var filesCount = 0
 
     private let folder: TransferableFile?
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
 
     private var navigationTitle: String {
         guard let folder else {
@@ -44,7 +45,7 @@ struct FileListView: View {
         return folder.fileName
     }
 
-    init(parentFolder: TransferableFile?, matomoCategory: MatomoUtils.EventCategory) {
+    init(parentFolder: TransferableFile?, matomoCategory: MatomoCategory) {
         folder = parentFolder
         self.matomoCategory = matomoCategory
     }
@@ -76,7 +77,7 @@ struct FileListView: View {
                         files: files,
                         action: RemoveFileAction {
                             @InjectService var matomo: MatomoUtils
-                            matomo.track(eventWithCategory: .newTransfer, name: "deleteFile")
+                            matomo.track(eventWithCategory: .newTransfer, name: .deleteFile)
                             removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
                         },
                         matomoCategory: matomoCategory
@@ -92,7 +93,7 @@ struct FileListView: View {
             isShowing: folder == nil,
             selection: $selectedItems,
             style: .newTransfer,
-            matomoCategory: .importFromFileList
+            matomoCategory: .importFileFromFileList
         )
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
@@ -115,7 +116,7 @@ struct FileListView: View {
 
             selectedItems = []
         }
-        .matomoView(view: "NewTransferFileListView")
+        .matomoView(view: .newTransferFileList)
     }
 
     func removeFile(_ file: any DisplayableFile, atFolderURL folderURL: URL?) {

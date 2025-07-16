@@ -26,13 +26,13 @@ public struct FileGridCellsView: View {
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
     private let action: (any LargeFileCellAction)?
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
 
     public init(
         files: [any DisplayableFile],
         transfer: TransferUi? = nil,
         action: (any LargeFileCellAction)? = nil,
-        matomoCategory: MatomoUtils.EventCategory
+        matomoCategory: MatomoCategory
     ) {
         self.files = files
         self.transfer = transfer

@@ -19,6 +19,7 @@
 import DesignSystem
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -27,7 +28,7 @@ import SwissTransferCoreUI
 struct SentEmptyView: View {
     @State private var selectedItems = [ImportedItem]()
 
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
     var body: some View {
         VStack(spacing: 40) {
@@ -53,5 +54,5 @@ struct SentEmptyView: View {
 }
 
 #Preview {
-    SentEmptyView(matomoCategory: MatomoUtils.EventCategory.importFromFileList)
+    SentEmptyView(matomoCategory: .importFileFromFileList)
 }

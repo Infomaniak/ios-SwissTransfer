@@ -47,9 +47,9 @@ public struct DownloadButton: View {
 
     let transfer: TransferUi
     let vertical: Bool
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
-    public init(transfer: TransferUi, vertical: Bool = false, matomoCategory: MatomoUtils.EventCategory) {
+    public init(transfer: TransferUi, vertical: Bool = false, matomoCategory: MatomoCategory) {
         self.transfer = transfer
         self.vertical = vertical
         self.matomoCategory = matomoCategory
@@ -88,7 +88,7 @@ public struct DownloadButton: View {
 
     private func startOrCancelDownloadIfNeeded() {
         @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: matomoCategory, name: "downloadTransfer")
+        matomo.track(eventWithCategory: matomoCategory, name: .downloadTransfer)
 
         Task {
             if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {

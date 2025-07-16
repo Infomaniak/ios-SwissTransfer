@@ -22,6 +22,7 @@ import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import OSLog
 import PhotosUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -37,7 +38,7 @@ public struct AddFilesMenu<Content: View>: View {
 
     private let maxSelectionCount: Int
     private let sizeExceeded: Bool
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
     private let label: Content
 
     private var buttonIsEnabled: Bool {
@@ -48,7 +49,7 @@ public struct AddFilesMenu<Content: View>: View {
         selection: Binding<[ImportedItem]>,
         maxSelectionCount: Int = Constants.maxFileCount,
         sizeExceeded: Bool = false,
-        matomoCategory: MatomoUtils.EventCategory,
+        matomoCategory: MatomoCategory,
         @ViewBuilder label: () -> Content
     ) {
         _selection = selection
@@ -63,7 +64,7 @@ public struct AddFilesMenu<Content: View>: View {
             Group {
                 Button {
                     @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: matomoCategory, name: "addFromDocumentPicker")
+                    matomo.track(eventWithCategory: matomoCategory, name: .addFromDocumentPicker)
                     isShowingImportFile = true
                 } label: {
                     Label(
@@ -73,7 +74,7 @@ public struct AddFilesMenu<Content: View>: View {
                 }
                 Button {
                     @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: matomoCategory, name: "addFromGallery")
+                    matomo.track(eventWithCategory: matomoCategory, name: .addFromGallery)
                     isShowingPhotoLibrary = true
                 } label: {
                     Label(
@@ -83,7 +84,7 @@ public struct AddFilesMenu<Content: View>: View {
                 }
                 Button {
                     @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: matomoCategory, name: "addFromCamera")
+                    matomo.track(eventWithCategory: matomoCategory, name: .addFromCamera)
                     isShowingCamera = true
                 } label: {
                     Label(

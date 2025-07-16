@@ -47,7 +47,7 @@ struct NewTransferTypeView: View {
 
     private func selectType(_ type: TransferType) {
         @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: .transferType, name: type.matomoValue)
+        matomo.track(eventWithCategory: .transferType, name: type.matomoName)
 
         withAnimation {
             transferType = type

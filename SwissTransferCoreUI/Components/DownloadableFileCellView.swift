@@ -33,7 +33,7 @@ struct DownloadableFileCellView: View {
 
     let transfer: TransferUi
     let file: FileUi
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
     private var downloadFileAction: DownloadFileAction {
         DownloadFileAction { _ in
@@ -48,7 +48,7 @@ struct DownloadableFileCellView: View {
             } else {
                 Button {
                     @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: matomoCategory, name: "consultOneFile")
+                    matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
                     startOrCancelDownloadIfNeeded()
                 } label: {
                     LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)

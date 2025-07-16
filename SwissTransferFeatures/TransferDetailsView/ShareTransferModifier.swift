@@ -30,7 +30,7 @@ struct ShareTransferModifier: ViewModifier {
 
     @State private var isShowingPassword = false
 
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -57,7 +57,7 @@ struct ShareTransferModifier: ViewModifier {
                         }
                         .simultaneousGesture(TapGesture().onEnded {
                             @InjectService var matomo: MatomoUtils
-                            matomo.track(eventWithCategory: matomoCategory, name: "share")
+                            matomo.track(eventWithCategory: matomoCategory, name: .share)
                         })
 
                         Spacer()
@@ -96,7 +96,7 @@ struct ShareTransferModifier: ViewModifier {
 }
 
 public extension View {
-    func shareTransferToolbar(transfer: TransferUi, matomoCategory: MatomoUtils.EventCategory) -> some View {
+    func shareTransferToolbar(transfer: TransferUi, matomoCategory: MatomoCategory) -> some View {
         modifier(ShareTransferModifier(transfer: transfer, matomoCategory: matomoCategory))
     }
 }

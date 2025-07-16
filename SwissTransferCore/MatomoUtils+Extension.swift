@@ -31,70 +31,12 @@ public extension MatomoUtils {
     }
 }
 
-// MARK: - Views and Categories
-
-public extension MatomoUtils.EventCategory {
-    static let transferType = MatomoUtils.EventCategory(displayName: "transferType")
-    static let newTransferData = MatomoUtils.EventCategory(displayName: "newTransferData")
-
-    // MARK: - New Transfer
-
-    static let newTransfer = MatomoUtils.EventCategory(displayName: "newTransfer")
-
-    // MARK: - Transfer
-
-    static let sentTransfer = MatomoUtils.EventCategory(displayName: "sentTransfer")
-    static let receivedTransfer = MatomoUtils.EventCategory(displayName: "receivedTransfer")
-
-    // MARK: - Transfer errors
-
-    static let newTransferError = MatomoUtils.EventCategory(displayName: "newTransferError")
-
-    // MARK: - Import File Type
-
-    static let importFileFromSent = MatomoUtils.EventCategory(displayName: "importFileFromSent")
-    static let importFileFromReceived = MatomoUtils.EventCategory(displayName: "importFileFromReceived")
-    static let importFromNewTransfer = MatomoUtils.EventCategory(displayName: "importFromNewTransfer")
-    static let importFromFileList = MatomoUtils.EventCategory(displayName: "importFromFileList")
-    static let importFromSidebar = MatomoUtils.EventCategory(displayName: "importFromSidebar")
-
-    // MARK: - General and Local Settings
-
-    static let settingsGlobalValidityPeriod = MatomoUtils.EventCategory(displayName: "settingsGlobalValidityPeriod")
-    static let settingsGlobalDownloadLimit = MatomoUtils.EventCategory(displayName: "settingsGlobalDownloadLimit")
-    static let settingsGlobalEmailLanguage = MatomoUtils.EventCategory(displayName: "settingsGlobalEmailLanguage")
-
-    static let settingsLocalValidityPeriod = MatomoUtils.EventCategory(displayName: "settingsLocalValidityPeriod")
-    static let settingsLocalDownloadLimit = MatomoUtils.EventCategory(displayName: "settingsLocalDownloadLimit")
-    static let settingsLocalEmailLanguage = MatomoUtils.EventCategory(displayName: "settingsLocalEmailLanguage")
-
-    // MARK: - Local settings
-
-    static let settingsLocalPassword = MatomoUtils.EventCategory(displayName: "settingsLocalPassword")
-
-    // MARK: - Global Settings
-
-    static let settingsGlobalTheme = MatomoUtils.EventCategory(displayName: "settingsTheme")
-    static let settingsGlobalNotifications = MatomoUtils.EventCategory(displayName: "settingsNotifications")
-}
-
 // MARK: - Track views
 
 struct MatomoView: ViewModifier {
     @LazyInjectService var matomo: MatomoUtils
 
     let path: [String]
-
-    // TODO: Remove these inits when you're done
-    init(path: [String]) {
-        self.path = path
-    }
-
-    init(view: String) {
-        path = [view]
-    }
-
-    // TODO: -- End
 
     init(view: MatomoScreen) {
         path = [view.value]
@@ -110,11 +52,6 @@ struct MatomoView: ViewModifier {
 
 public extension View {
     func matomoView(view: MatomoScreen) -> some View {
-        modifier(MatomoView(view: view))
-    }
-
-    // TODO: Remove this func when you're done
-    func matomoView(view: String) -> some View {
         modifier(MatomoView(view: view))
     }
 }

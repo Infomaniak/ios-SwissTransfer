@@ -111,7 +111,7 @@ public struct NewTransferView: View {
             }
             cancelTasks()
         }
-        .matomoView(view: "NewTransferView")
+        .matomoView(view: .newTransfer)
     }
 
     private func startUpload() {

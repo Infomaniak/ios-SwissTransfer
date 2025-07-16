@@ -16,8 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -40,9 +40,9 @@ struct NewTransferButton: View {
     @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
 
-    init(selection: Binding<[ImportedItem]>, style: NewTransferStyle = .small, matomoCategory: MatomoUtils.EventCategory) {
+    init(selection: Binding<[ImportedItem]>, style: NewTransferStyle = .small, matomoCategory: MatomoCategory) {
         _selection = selection
         self.style = style
         self.matomoCategory = matomoCategory
@@ -60,9 +60,9 @@ struct NewTransferButton: View {
 public struct SidebarNewTransferButton: View {
     @Binding var selection: [ImportedItem]
 
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
 
-    public init(selection: Binding<[ImportedItem]>, matomoCategory: MatomoUtils.EventCategory) {
+    public init(selection: Binding<[ImportedItem]>, matomoCategory: MatomoCategory) {
         _selection = selection
         self.matomoCategory = matomoCategory
     }

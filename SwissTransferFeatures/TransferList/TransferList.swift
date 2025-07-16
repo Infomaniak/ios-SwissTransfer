@@ -34,13 +34,13 @@ public struct TransferList<EmptyView: View>: View {
     @State private var selectedItems = [ImportedItem]()
 
     private let direction: TransferDirection
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
     private let emptyView: EmptyView?
 
     public init(
         transferManager: TransferManager,
         direction: TransferDirection,
-        matomoCategory: MatomoUtils.EventCategory,
+        matomoCategory: MatomoCategory,
         @ViewBuilder emptyView: () -> EmptyView
     ) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(

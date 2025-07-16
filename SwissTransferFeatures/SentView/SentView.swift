@@ -31,7 +31,7 @@ public struct SentView: View {
         TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
             SentEmptyView(matomoCategory: .importFileFromSent)
         }
-        .matomoView(view: "\(direction.matomoValue)View")
+        .matomoView(view: .sent)
     }
 }
 

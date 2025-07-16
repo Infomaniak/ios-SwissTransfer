@@ -29,7 +29,7 @@ struct QRCodePanelButton: View {
 
     let transfer: TransferUi
     let vertical: Bool
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
         let apiURLCreator = injection.sharedApiUrlCreator
@@ -41,7 +41,7 @@ struct QRCodePanelButton: View {
         if let transferURL {
             Button {
                 @InjectService var matomo: MatomoUtils
-                matomo.track(eventWithCategory: matomoCategory, name: "showQRCode")
+                matomo.track(eventWithCategory: matomoCategory, name: .showQrcode)
                 isShowingQRCode = true
             } label: {
                 if vertical {

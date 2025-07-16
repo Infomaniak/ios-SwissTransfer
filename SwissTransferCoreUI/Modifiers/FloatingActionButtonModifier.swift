@@ -18,6 +18,7 @@
 
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import STCore
 import SwiftUI
 import SwissTransferCore
 
@@ -34,7 +35,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 
     let isShowing: Bool
     let style: FloatingActionButtonStyle
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
     func body(content: Content) -> some View {
         content
@@ -56,7 +57,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 
 public extension View {
     func floatingActionButton(isShowing: Bool = true, selection: Binding<[ImportedItem]>,
-                              style: FloatingActionButtonStyle, matomoCategory: MatomoUtils.EventCategory) -> some View {
+                              style: FloatingActionButtonStyle, matomoCategory: MatomoCategory) -> some View {
         modifier(FloatingActionButtonModifier(
             selection: selection,
             isShowing: isShowing,
