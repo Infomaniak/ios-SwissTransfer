@@ -68,7 +68,7 @@ struct PasswordSettingView: View {
                     .onChange(of: isOn, perform: didUpdateToggle)
                     .onChange(of: isOn) { newValue in
                         @InjectService var matomo: MatomoUtils
-                        matomo.track(eventWithCategory: .settingsLocalPassword, name: "togglePassword", value: newValue ? 1 : 0)
+                        matomo.track(eventWithCategory: .settingsLocalPassword, name: .togglePassword, value: newValue ? 1 : 0)
                     }
 
                     if isOn {

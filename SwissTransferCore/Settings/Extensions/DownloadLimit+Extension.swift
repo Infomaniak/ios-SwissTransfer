@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import SwiftUI
@@ -30,24 +29,24 @@ extension DownloadLimit: SettingSelectable {
         nil
     }
 
-    public var matomoName: String {
+    public var matomoName: MatomoName {
         switch self {
         case .one:
-            return "1download"
+            return .oneDownload
         case .twenty:
-            return "20downloads"
+            return .twentyDownloads
         case .oneHundred:
-            return "100downloads"
+            return .oneHundredDownloads
         case .twoHundredFifty:
-            return "250downloads"
+            return .twoHundredAndFiftyDownloads
         }
     }
 
-    public static var matomoCategoryLocal: MatomoUtils.EventCategory? {
+    public static var matomoCategoryLocal: STCore.MatomoCategory? {
         return .settingsLocalDownloadLimit
     }
 
-    public static var matomoCategoryGlobal: MatomoUtils.EventCategory? {
+    public static var matomoCategoryGlobal: STCore.MatomoCategory? {
         return .settingsGlobalValidityPeriod
     }
 

@@ -30,14 +30,14 @@ struct EditSettingView<T: SettingSelectable>: View {
     let section: String
     let items: [T]
     let selected: T
-    let matomoName: String
+    let matomoName: MatomoScreen
 
     public init(
         _ type: T.Type,
         selected: T,
         title: String,
         section: String,
-        matomoName: String,
+        matomoName: MatomoScreen,
     ) {
         items = Array(type.allCases)
         self.selected = selected
@@ -83,6 +83,6 @@ struct EditSettingView<T: SettingSelectable>: View {
         selected: .dark,
         title: "Title",
         section: "Section",
-        matomoName: "ViewName"
+        matomoName: .themeSetting
     )
 }

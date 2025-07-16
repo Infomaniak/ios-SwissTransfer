@@ -28,7 +28,7 @@ import SwissTransferCoreUI
 
 struct ContentView: View {
     let transfer: TransferUi
-    let matomoCategory: MatomoUtils.EventCategory
+    let matomoCategory: MatomoCategory
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {

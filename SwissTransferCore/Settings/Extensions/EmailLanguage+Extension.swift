@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import STResources
@@ -48,26 +47,26 @@ extension EmailLanguage: SettingSelectable {
         }
     }
 
-    public var matomoName: String {
+    public var matomoName: MatomoName {
         switch self {
         case .english:
-            return "english"
+            return .english
         case .french:
-            return "french"
+            return .french
         case .german:
-            return "german"
+            return .german
         case .italian:
-            return "italian"
+            return .italian
         case .spanish:
-            return "spanish"
+            return .spanish
         }
     }
 
-    public static var matomoCategoryLocal: MatomoUtils.EventCategory? {
+    public static var matomoCategoryLocal: MatomoCategory? {
         return .settingsLocalEmailLanguage
     }
 
-    public static var matomoCategoryGlobal: MatomoUtils.EventCategory? {
+    public static var matomoCategoryGlobal: MatomoCategory? {
         return .settingsGlobalEmailLanguage
     }
 

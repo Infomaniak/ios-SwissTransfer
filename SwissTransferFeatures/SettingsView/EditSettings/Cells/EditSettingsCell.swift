@@ -20,6 +20,7 @@ import DesignSystem
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 
@@ -27,8 +28,8 @@ struct EditSettingCell: View {
     let selected: Bool
     let label: String
     var leftImage: Image?
-    let matomoCategory: MatomoUtils.EventCategory
-    let matomoName: String
+    let matomoCategory: MatomoCategory
+    let matomoName: MatomoName
     let action: () -> Void
 
     var body: some View {
@@ -60,7 +61,7 @@ struct EditSettingCell: View {
 }
 
 #Preview {
-    EditSettingCell(selected: true, label: "EditSettingsView", matomoCategory: .settingsGlobalTheme, matomoName: "editSettings") {
+    EditSettingCell(selected: true, label: "EditSettingsView", matomoCategory: .settingsGlobalTheme, matomoName: .light) {
         print("EditSettingsView action")
     }
 }

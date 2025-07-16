@@ -19,6 +19,7 @@
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 
@@ -30,10 +31,10 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
     let text: String
     let item: Item
     let labelStyle: Style
-    let matomoCategory: MatomoUtils.EventCategory
-    let matomoName: String
+    let matomoCategory: MatomoCategory
+    let matomoName: MatomoName
 
-    public init(text: String, item: Item, labelStyle: Style, matomoCategory: MatomoUtils.EventCategory, matomoName: String) {
+    public init(text: String, item: Item, labelStyle: Style, matomoCategory: MatomoCategory, matomoName: MatomoName) {
         self.text = text
         self.item = item
         self.labelStyle = labelStyle
@@ -93,6 +94,6 @@ public struct CopyToClipboardButton<Item, Style: LabelStyle>: View {
         item: URL(string: "https://www.infomaniak.com")!,
         labelStyle: .verticalButton,
         matomoCategory: .newTransfer,
-        matomoName: "copyLink"
+        matomoName: .copyLink
     )
 }

@@ -58,7 +58,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.theme ?? .system,
                                     title: STResourcesStrings.Localizable.settingsOptionTheme,
                                     section: STResourcesStrings.Localizable.settingsThemeTitle,
-                                    matomoName: "ThemeSettingView")
+                                    matomoName: .themeSetting)
                 }
                 .settingsCell()
 
@@ -76,7 +76,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
                                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                                     section: STResourcesStrings.Localizable.settingsValidityPeriodTitle,
-                                    matomoName: "ValidityPeriodSettingView")
+                                    matomoName: .validityPeriodSetting)
                 }
                 .settingsCell()
 
@@ -87,7 +87,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                                     section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                                    matomoName: "DownloadLimitSettingView")
+                                    matomoName: .downloadLimitSetting)
                 }
                 .settingsCell()
 
@@ -98,7 +98,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.emailLanguage ?? .french,
                                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                                     section: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
-                                    matomoName: "EmailLanguageSettingView")
+                                    matomoName: .emailLanguageSetting)
                 }
                 .settingsCell()
             }
@@ -165,7 +165,7 @@ public struct SettingsView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .appBackground()
-        .matomoView(view: "SettingsView")
+        .matomoView(view: .settings)
     }
 }
 

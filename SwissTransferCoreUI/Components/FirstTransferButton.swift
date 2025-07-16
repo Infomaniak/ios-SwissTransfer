@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCoreCommonUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -25,7 +26,7 @@ public struct FirstTransferButton: View {
     @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
-    private let matomoCategory: MatomoUtils.EventCategory
+    private let matomoCategory: MatomoCategory
 
     private var offset: CGSize {
         switch style {
@@ -36,7 +37,7 @@ public struct FirstTransferButton: View {
         }
     }
 
-    public init(selection: Binding<[ImportedItem]>, style: NewTransferStyle, matomoCategory: MatomoUtils.EventCategory) {
+    public init(selection: Binding<[ImportedItem]>, style: NewTransferStyle, matomoCategory: MatomoCategory) {
         _selection = selection
         self.style = style
         self.matomoCategory = matomoCategory

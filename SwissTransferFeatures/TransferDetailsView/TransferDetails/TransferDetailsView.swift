@@ -29,7 +29,7 @@ public struct TransferDetailsView: View {
 
     private let transfer: TransferUi?
 
-    private var matomoCategory: MatomoUtils.EventCategory {
+    private var matomoCategory: MatomoCategory {
         transfer?.direction == .received ? .receivedTransfer : .sentTransfer
     }
 
@@ -95,7 +95,7 @@ public struct TransferDetailsView: View {
             }
         }
         .environment(\.dismissModal) { dismiss() }
-        .matomoView(view: "\(transfer?.direction?.matomoValue ?? "")TransferDetailsView")
+        .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)
     }
 }
 
