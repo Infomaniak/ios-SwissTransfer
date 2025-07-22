@@ -63,7 +63,7 @@ struct ShareTransferModifier: ViewModifier {
 
                     Spacer()
 
-                    if let password = transfer.password, !password.isEmpty {
+                    if let password = transfer.password, !password.isEmpty, transfer.direction == .sent {
                         Button {
                             isShowingPassword = true
                         } label: {
