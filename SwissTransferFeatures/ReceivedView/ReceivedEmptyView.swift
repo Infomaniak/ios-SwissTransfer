@@ -23,6 +23,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ReceivedEmptyView: View {
+    @Environment(\.isCompactWindow) private var isCompactWindow
+
     @EnvironmentObject private var transferManager: TransferManager
 
     @State private var selectedItems = [ImportedItem]()
@@ -41,7 +43,7 @@ struct ReceivedEmptyView: View {
         )
         .padding(value: .medium)
         .scrollableEmptyState()
-        .emptyStateFloatingButton(selection: $selectedItems, style: fabStyle)
+        .emptyStateFloatingButton(isShowing: isCompactWindow, selection: $selectedItems, style: fabStyle)
         .onChangeOfSelectedItems($selectedItems)
         .appBackground()
         .task {
@@ -54,10 +56,18 @@ struct ReceivedEmptyView: View {
 }
 
 extension View {
-    @ViewBuilder func emptyStateFloatingButton(selection: Binding<[ImportedItem]>,
-                                               style: FloatingActionButtonStyle) -> some View {
+    @ViewBuilder func emptyStateFloatingButton(
+        isShowing: Bool,
+        selection: Binding<[ImportedItem]>,
+        style: FloatingActionButtonStyle
+    ) -> some View {
         if #available(iOS 18.2, *) {
-            self.floatingActionButton(selection: selection, style: style, matomoCategory: .importFileFromReceived)
+            self.floatingActionButton(
+                isShowing: isShowing,
+                selection: selection,
+                style: style,
+                matomoCategory: .importFileFromReceived
+            )
         } else {
             self
         }
