@@ -1,1 +1,1 @@
-- Fix a crash related to deeplink handling
+- Bug fixes and improvements
