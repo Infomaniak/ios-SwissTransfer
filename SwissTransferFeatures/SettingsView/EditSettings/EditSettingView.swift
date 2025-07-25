@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 import SwiftUI
@@ -29,26 +30,36 @@ struct EditSettingView<T: SettingSelectable>: View {
     let section: String
     let items: [T]
     let selected: T
-    let matomoName: String
+    let matomoScreen: MatomoScreen
 
-    public init(_ type: T.Type, selected: T, title: String, section: String, matomoName: String) {
+    public init(
+        _ type: T.Type,
+        selected: T,
+        title: String,
+        section: String,
+        matomoScreen: MatomoScreen,
+    ) {
         items = Array(type.allCases)
         self.selected = selected
         self.title = title
         self.section = section
-        self.matomoName = matomoName
+        self.matomoScreen = matomoScreen
     }
 
     var body: some View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(section)) {
-                ForEach(items, id: \.self) { item in
-                    EditSettingCell(selected: item == selected,
-                                    label: item.title,
-                                    leftImage: item.leftImage) {
-                        action(item)
+                if let category = T.matomoCategoryGlobal {
+                    ForEach(items, id: \.self) { item in
+                        EditSettingCell(selected: item == selected,
+                                        label: item.title,
+                                        leftImage: item.leftImage,
+                                        matomoCategory: category,
+                                        matomoName: item.matomoName) {
+                            action(item)
+                        }
+                        .settingsCell()
                     }
-                    .settingsCell()
                 }
             }
         }
@@ -56,7 +67,7 @@ struct EditSettingView<T: SettingSelectable>: View {
         .appBackground()
         .stNavigationBarStyle()
         .stNavigationTitle(title)
-        .matomoView(view: matomoName)
+        .matomoView(view: matomoScreen)
     }
 
     private func action(_ item: T) {
@@ -67,5 +78,11 @@ struct EditSettingView<T: SettingSelectable>: View {
 }
 
 #Preview {
-    EditSettingView(Theme.self, selected: .dark, title: "Title", section: "Section", matomoName: "ViewName")
+    EditSettingView(
+        Theme.self,
+        selected: .dark,
+        title: "Title",
+        section: "Section",
+        matomoScreen: .themeSetting
+    )
 }

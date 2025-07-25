@@ -17,7 +17,9 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 import SwissTransferCoreUI
@@ -100,6 +102,9 @@ struct PasswordSettingView: View {
     }
 
     private func didUpdateToggle(_ isOn: Bool) {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: .settingsLocalPassword, name: .togglePassword, value: isOn ? 1 : 0)
+
         if isOn {
             isFocused = true
         } else {

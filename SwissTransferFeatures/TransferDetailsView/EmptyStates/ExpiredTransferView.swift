@@ -26,12 +26,12 @@ struct ExpiredTransferView: View {
         case date
         case downloadQuota(Int32?)
 
-        var matomoValue: String {
+        var matomoScreen: MatomoScreen {
             switch self {
             case .date:
-                return "Date"
+                return .dateExpiredTransfer
             case .downloadQuota:
-                return "DownloadQuota"
+                return .downloadQuotasExpiredTransfer
             }
         }
     }
@@ -71,7 +71,7 @@ struct ExpiredTransferView: View {
                 }
             }
         }
-        .matomoView(view: "\(expirationType.matomoValue)ExpiredTransferView")
+        .matomoView(view: expirationType.matomoScreen)
     }
 }
 

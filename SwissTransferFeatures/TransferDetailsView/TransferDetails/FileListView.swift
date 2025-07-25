@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
@@ -38,7 +39,9 @@ struct FileListView: View {
         files.value?.filesSize() ?? 0
     }
 
-    init(folder: FileUi, transfer: TransferUi?) {
+    private let matomoCategory: MatomoCategory
+
+    init(folder: FileUi, transfer: TransferUi?, matomoCategory: MatomoCategory) {
         @LazyInjectService var injection: SwissTransferInjection
         let children = injection.fileManager.getFilesFromTransfer(folderUuid: folder.uid)
 
@@ -46,6 +49,7 @@ struct FileListView: View {
         _files = StateObject(wrappedValue: FlowObserver(flow: children))
 
         self.transfer = transfer
+        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
@@ -56,17 +60,17 @@ struct FileListView: View {
                     .font(.ST.callout)
 
                 FileGridLayoutView {
-                    FileGridCellsView(files: files.value ?? [], transfer: transfer)
+                    FileGridCellsView(files: files.value ?? [], transfer: transfer, matomoCategory: matomoCategory)
                 }
             }
             .padding(value: .medium)
         }
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: title)
-        .matomoView(view: "TransferDetailsFileListView")
+        .matomoView(view: .transferDetailsFileList)
     }
 }
 
 #Preview {
-    FileListView(folder: PreviewHelper.sampleFolder, transfer: nil)
+    FileListView(folder: PreviewHelper.sampleFolder, transfer: nil, matomoCategory: .sentTransfer)
 }

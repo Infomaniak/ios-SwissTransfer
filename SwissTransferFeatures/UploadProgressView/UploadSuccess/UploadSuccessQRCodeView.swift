@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STCore
@@ -79,11 +80,17 @@ struct UploadSuccessQRCodeView: View {
                         }
                         .labelStyle(.verticalButton)
                     }
+                    .simultaneousGesture(TapGesture().onEnded {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .newTransfer, name: .share)
+                    })
 
                     CopyToClipboardButton(
                         text: STResourcesStrings.Localizable.buttonCopyLink,
                         item: transferURL,
-                        labelStyle: .verticalButton
+                        labelStyle: .verticalButton,
+                        matomoCategory: .newTransfer,
+                        matomoName: .copyLink
                     )
                 }
                 .buttonStyle(.ikBordered)

@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import OSLog
 import STCore
@@ -32,6 +33,7 @@ struct DownloadableFileCellView: View {
 
     let transfer: TransferUi
     let file: FileUi
+    let matomoCategory: MatomoCategory
 
     private var downloadFileAction: DownloadFileAction {
         DownloadFileAction { _ in
@@ -60,6 +62,9 @@ struct DownloadableFileCellView: View {
     }
 
     private func startOrCancelDownloadIfNeeded() {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
+
         Task {
             if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
                 await downloadManager.removeDownloadTask(id: downloadTask.id)
@@ -90,5 +95,9 @@ struct DownloadableFileCellView: View {
 }
 
 #Preview {
-    DownloadableFileCellView(transfer: PreviewHelper.sampleTransfer, file: PreviewHelper.sampleFile)
+    DownloadableFileCellView(
+        transfer: PreviewHelper.sampleTransfer,
+        file: PreviewHelper.sampleFile,
+        matomoCategory: .sentTransfer
+    )
 }

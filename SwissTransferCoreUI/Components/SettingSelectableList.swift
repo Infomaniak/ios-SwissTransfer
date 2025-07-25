@@ -16,7 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
@@ -28,7 +30,11 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
     let selected: T
     let onSelection: (T) -> Void
 
-    public init(_ type: T.Type, selected: T, onSelection: @escaping (T) -> Void) {
+    public init(
+        _ type: T.Type,
+        selected: T,
+        onSelection: @escaping (T) -> Void
+    ) {
         items = Array(type.allCases)
         self.selected = selected
         self.onSelection = onSelection
@@ -38,6 +44,10 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
         VStack(spacing: 0) {
             ForEach(items, id: \.self) { item in
                 Button {
+                    @InjectService var matomo: MatomoUtils
+                    if let category = T.matomoCategoryLocal {
+                        matomo.track(eventWithCategory: category, name: item.matomoName)
+                    }
                     onSelection(item)
                     dismiss()
                 } label: {
@@ -55,5 +65,8 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 }
 
 #Preview {
-    SettingSelectableList(ValidityPeriod.self, selected: ValidityPeriod.one) { _ in }
+    SettingSelectableList(
+        ValidityPeriod.self,
+        selected: ValidityPeriod.one
+    ) { _ in }
 }

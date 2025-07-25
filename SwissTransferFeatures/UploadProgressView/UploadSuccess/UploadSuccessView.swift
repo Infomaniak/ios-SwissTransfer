@@ -67,7 +67,7 @@ public struct UploadSuccessView: View {
                 }
             }
         }
-        .matomoView(view: "UploadSuccessView")
+        .matomoView(view: .uploadSuccess)
     }
 }
 

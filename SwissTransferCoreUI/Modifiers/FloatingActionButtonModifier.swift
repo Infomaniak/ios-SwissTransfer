@@ -16,7 +16,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import STCore
 import SwiftUI
 import SwissTransferCore
 
@@ -33,6 +35,7 @@ struct FloatingActionButtonModifier: ViewModifier {
 
     let isShowing: Bool
     let style: FloatingActionButtonStyle
+    let matomoCategory: MatomoCategory
 
     func body(content: Content) -> some View {
         content
@@ -41,9 +44,9 @@ struct FloatingActionButtonModifier: ViewModifier {
                     Group {
                         switch style {
                         case .newTransfer:
-                            NewTransferButton(selection: $selection)
+                            NewTransferButton(selection: $selection, matomoCategory: matomoCategory)
                         case .firstTransfer:
-                            FirstTransferButton(selection: $selection, style: .small)
+                            FirstTransferButton(selection: $selection, style: .small, matomoCategory: matomoCategory)
                         }
                     }
                     .padding([.trailing, .bottom], value: .medium)
@@ -54,7 +57,12 @@ struct FloatingActionButtonModifier: ViewModifier {
 
 public extension View {
     func floatingActionButton(isShowing: Bool = true, selection: Binding<[ImportedItem]>,
-                              style: FloatingActionButtonStyle) -> some View {
-        modifier(FloatingActionButtonModifier(selection: selection, isShowing: isShowing, style: style))
+                              style: FloatingActionButtonStyle, matomoCategory: MatomoCategory) -> some View {
+        modifier(FloatingActionButtonModifier(
+            selection: selection,
+            isShowing: isShowing,
+            style: style,
+            matomoCategory: matomoCategory
+        ))
     }
 }

@@ -29,6 +29,27 @@ extension DownloadLimit: SettingSelectable {
         nil
     }
 
+    public var matomoName: MatomoName {
+        switch self {
+        case .one:
+            return .oneDownload
+        case .twenty:
+            return .twentyDownloads
+        case .oneHundred:
+            return .oneHundredDownloads
+        case .twoHundredFifty:
+            return .twoHundredAndFiftyDownloads
+        }
+    }
+
+    public static var matomoCategoryLocal: STCore.MatomoCategory? {
+        return .settingsLocalDownloadLimit
+    }
+
+    public static var matomoCategoryGlobal: STCore.MatomoCategory? {
+        return .settingsGlobalDownloadLimit
+    }
+
     public func setSelected() async {
         @InjectService var settingsManager: AppSettingsManager
         _ = try? await settingsManager.setDownloadLimit(downloadLimit: self)

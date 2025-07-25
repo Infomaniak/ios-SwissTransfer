@@ -17,7 +17,9 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -40,7 +42,7 @@ struct SentEmptyView: View {
                     .multilineTextAlignment(.center)
             }
 
-            FirstTransferButton(selection: $selectedItems, style: .big)
+            FirstTransferButton(selection: $selectedItems, style: .big, matomoCategory: .importFileFromSent)
                 .onChangeOfSelectedItems($selectedItems)
         }
         .padding(value: .medium)

@@ -17,8 +17,11 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import OSLog
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -33,6 +36,7 @@ struct FileListView: View {
     @State private var filesCount = 0
 
     private let folder: TransferableFile?
+    private let matomoCategory: MatomoCategory
 
     private var navigationTitle: String {
         guard let folder else {
@@ -41,8 +45,9 @@ struct FileListView: View {
         return folder.fileName
     }
 
-    init(parentFolder: TransferableFile?) {
+    init(parentFolder: TransferableFile?, matomoCategory: MatomoCategory) {
         folder = parentFolder
+        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
@@ -71,8 +76,11 @@ struct FileListView: View {
                     FileGridCellsView(
                         files: files,
                         action: RemoveFileAction {
+                            @InjectService var matomo: MatomoUtils
+                            matomo.track(eventWithCategory: .newTransfer, name: .deleteFile)
                             removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
-                        }
+                        },
+                        matomoCategory: matomoCategory
                     )
                     .animation(nil, value: files)
                 }
@@ -81,7 +89,12 @@ struct FileListView: View {
             .padding(value: .medium)
         }
         .appBackground()
-        .floatingActionButton(isShowing: folder == nil, selection: $selectedItems, style: .newTransfer)
+        .floatingActionButton(
+            isShowing: folder == nil,
+            selection: $selectedItems,
+            style: .newTransfer,
+            matomoCategory: .importFileFromFileList
+        )
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
@@ -103,7 +116,7 @@ struct FileListView: View {
 
             selectedItems = []
         }
-        .matomoView(view: "NewTransferFileListView")
+        .matomoView(view: .newTransferFileList)
     }
 
     func removeFile(_ file: any DisplayableFile, atFolderURL folderURL: URL?) {
@@ -121,5 +134,5 @@ struct FileListView: View {
 }
 
 #Preview {
-    FileListView(parentFolder: nil)
+    FileListView(parentFolder: nil, matomoCategory: .sentTransfer)
 }
