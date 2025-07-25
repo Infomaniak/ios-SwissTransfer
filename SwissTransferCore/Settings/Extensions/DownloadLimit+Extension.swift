@@ -47,7 +47,7 @@ extension DownloadLimit: SettingSelectable {
     }
 
     public static var matomoCategoryGlobal: STCore.MatomoCategory? {
-        return .settingsGlobalValidityPeriod
+        return .settingsGlobalDownloadLimit
     }
 
     public func setSelected() async {

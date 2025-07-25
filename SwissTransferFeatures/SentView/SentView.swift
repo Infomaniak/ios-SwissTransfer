@@ -29,7 +29,7 @@ public struct SentView: View {
 
     public var body: some View {
         TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
-            SentEmptyView(matomoCategory: .importFileFromSent)
+            SentEmptyView()
         }
         .matomoView(view: .sent)
     }

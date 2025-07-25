@@ -58,7 +58,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.theme ?? .system,
                                     title: STResourcesStrings.Localizable.settingsOptionTheme,
                                     section: STResourcesStrings.Localizable.settingsThemeTitle,
-                                    matomoName: .themeSetting)
+                                    matomoScreen: .themeSetting)
                 }
                 .settingsCell()
 
@@ -76,7 +76,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.validityPeriod ?? .thirty,
                                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                                     section: STResourcesStrings.Localizable.settingsValidityPeriodTitle,
-                                    matomoName: .validityPeriodSetting)
+                                    matomoScreen: .validityPeriodSetting)
                 }
                 .settingsCell()
 
@@ -87,7 +87,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
                                     title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                                     section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                                    matomoName: .downloadLimitSetting)
+                                    matomoScreen: .downloadLimitSetting)
                 }
                 .settingsCell()
 
@@ -98,7 +98,7 @@ public struct SettingsView: View {
                                     selected: appSettings.value?.emailLanguage ?? .french,
                                     title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                                     section: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
-                                    matomoName: .emailLanguageSetting)
+                                    matomoScreen: .emailLanguageSetting)
                 }
                 .settingsCell()
             }

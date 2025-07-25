@@ -46,11 +46,7 @@ struct DownloadableFileCellView: View {
             if file.isFolder {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
-                Button {
-                    @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
-                    startOrCancelDownloadIfNeeded()
-                } label: {
+                Button(action: startOrCancelDownloadIfNeeded) {
                     LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
                 }
                 .buttonStyle(.plain)
@@ -66,6 +62,9 @@ struct DownloadableFileCellView: View {
     }
 
     private func startOrCancelDownloadIfNeeded() {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
+
         Task {
             if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
                 await downloadManager.removeDownloadTask(id: downloadTask.id)

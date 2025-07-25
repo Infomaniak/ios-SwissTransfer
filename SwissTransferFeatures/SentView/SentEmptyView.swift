@@ -28,8 +28,6 @@ import SwissTransferCoreUI
 struct SentEmptyView: View {
     @State private var selectedItems = [ImportedItem]()
 
-    let matomoCategory: MatomoCategory
-
     var body: some View {
         VStack(spacing: 40) {
             VStack(spacing: IKPadding.medium) {
@@ -44,7 +42,7 @@ struct SentEmptyView: View {
                     .multilineTextAlignment(.center)
             }
 
-            FirstTransferButton(selection: $selectedItems, style: .big, matomoCategory: matomoCategory)
+            FirstTransferButton(selection: $selectedItems, style: .big, matomoCategory: .importFileFromSent)
                 .onChangeOfSelectedItems($selectedItems)
         }
         .padding(value: .medium)
@@ -54,5 +52,5 @@ struct SentEmptyView: View {
 }
 
 #Preview {
-    SentEmptyView(matomoCategory: .importFileFromFileList)
+    SentEmptyView()
 }

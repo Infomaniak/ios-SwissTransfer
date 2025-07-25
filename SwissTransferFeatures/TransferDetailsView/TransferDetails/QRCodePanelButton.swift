@@ -23,7 +23,7 @@ import STResources
 import SwiftUI
 
 struct QRCodePanelButton: View {
-    @LazyInjectService var injection: SwissTransferInjection
+    @LazyInjectService private var injection: SwissTransferInjection
 
     @State private var isShowingQRCode = false
 

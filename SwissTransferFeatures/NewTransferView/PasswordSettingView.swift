@@ -66,10 +66,6 @@ struct PasswordSettingView: View {
                             .foregroundStyle(Color.ST.textPrimary)
                     }
                     .onChange(of: isOn, perform: didUpdateToggle)
-                    .onChange(of: isOn) { newValue in
-                        @InjectService var matomo: MatomoUtils
-                        matomo.track(eventWithCategory: .settingsLocalPassword, name: .togglePassword, value: newValue ? 1 : 0)
-                    }
 
                     if isOn {
                         TogglableSecureTextField(password: $password, error: error)
@@ -106,6 +102,9 @@ struct PasswordSettingView: View {
     }
 
     private func didUpdateToggle(_ isOn: Bool) {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: .settingsLocalPassword, name: .togglePassword, value: isOn ? 1 : 0)
+
         if isOn {
             isFocused = true
         } else {
