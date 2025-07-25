@@ -22,18 +22,18 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismiss
 
     let title: String
-    let showButton: Bool
+    let showCloseButton: Bool
 
-    public init(title: String, showButton: Bool = true) {
+    public init(title: String, showCloseButton: Bool = true) {
         self.title = title
-        self.showButton = showButton
+        self.showCloseButton = showCloseButton
     }
 
     func body(content: Content) -> some View {
         content
             .stNavigationTitle(title)
             .toolbar {
-                if showButton {
+                if showCloseButton {
                     ToolbarItem(placement: .destructiveAction) {
                         Button {
                             dismiss()
@@ -47,7 +47,7 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
 }
 
 public extension View {
-    func stNavigationBarFullScreen(title: String = "Transfer", showButton: Bool) -> some View {
-        modifier(STNavigationBarFullScreenModifier(title: title, showButton: showButton))
+    func stNavigationBarFullScreen(title: String = "Transfer", showCloseButton: Bool = true) -> some View {
+        modifier(STNavigationBarFullScreenModifier(title: title, showCloseButton: showCloseButton))
     }
 }

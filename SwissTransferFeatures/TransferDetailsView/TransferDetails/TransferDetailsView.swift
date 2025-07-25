@@ -80,7 +80,7 @@ public struct TransferDetailsView: View {
         .toolbarBackground(.visible, for: .bottomBar)
         .appBackground()
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: transfer?.name ?? "", showButton: isCompactWindow)
+        .stNavigationBarFullScreen(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
         }

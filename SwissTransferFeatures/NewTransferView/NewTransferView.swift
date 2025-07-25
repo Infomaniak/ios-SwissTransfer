@@ -91,7 +91,7 @@ public struct NewTransferView: View {
                 .disabled(!isNewTransferValid)
             }
             .scrollDismissesKeyboard(.immediately)
-            .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle, showButton: true)
+            .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: TransferableFile.self) { file in
                 FileListView(parentFolder: file, matomoCategory: .newTransfer)

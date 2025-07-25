@@ -96,7 +96,7 @@ struct FileListView: View {
             matomoCategory: .importFileFromFileList
         )
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: navigationTitle, showButton: true)
+        .stNavigationBarFullScreen(title: navigationTitle)
         .onAppear {
             files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
             filesCount = files.count

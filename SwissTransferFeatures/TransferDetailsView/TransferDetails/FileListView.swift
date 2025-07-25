@@ -67,7 +67,7 @@ struct FileListView: View {
         }
         .stNavigationBarStyle()
         .matomoView(view: .transferDetailsFileList)
-        .stNavigationBarFullScreen(title: title, showButton: true)
+        .stNavigationBarFullScreen(title: title)
     }
 }
 
