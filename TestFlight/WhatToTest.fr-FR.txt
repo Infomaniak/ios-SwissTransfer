@@ -1,1 +1,1 @@
-- Correction d'un crash concernant la gestion des deeplinks
+- Corrections de bugs et améliorations
