@@ -18,7 +18,6 @@
 
 import Foundation
 import InfomaniakCoreCommonUI
-import InfomaniakDI
 import STCore
 import SwiftUI
 
@@ -33,25 +32,8 @@ public extension MatomoUtils {
 
 // MARK: - Track views
 
-struct MatomoView: ViewModifier {
-    @LazyInjectService var matomo: MatomoUtils
-
-    let path: [String]
-
-    init(view: MatomoScreen) {
-        path = [view.value]
-    }
-
-    func body(content: Content) -> some View {
-        content
-            .onAppear {
-                matomo.track(view: path)
-            }
-    }
-}
-
 public extension View {
     func matomoView(view: MatomoScreen) -> some View {
-        modifier(MatomoView(view: view))
+        modifier(MatomoView(view: [view.value]))
     }
 }
