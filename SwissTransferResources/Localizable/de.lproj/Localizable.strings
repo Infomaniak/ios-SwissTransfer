@@ -4,7 +4,7 @@
  * Locale: de, German
  * Tagged: ios
  * Exported by: Matthieu Déglon
- * Exported at: Wed, 30 Jul 2025 09:41:38 +0200
+ * Exported at: Wed, 30 Jul 2025 11:02:47 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -493,13 +493,13 @@
 /* loco:66c4a98a0aee7eb62404ec62 */
 "transferTypeTitle" = "Schicken per";
 
-/* loco:66c2f780c0a809339808e802 */
+/* loco:6889de6a89343a80ff014992 */
 "transferUploadSourceChoiceCamera" = "Kamera";
 
-/* loco:66c2f7d6c0a809339808e804 */
+/* loco:6889df37c9b6166238093af2 */
 "transferUploadSourceChoiceFiles" = "Dateien durchsuchen";
 
-/* loco:66c2f7b4302dbac2e60ec512 */
+/* loco:6889df8b6973de8abd0616a2 */
 "transferUploadSourceChoiceGallery" = "Foto- und Videogalerie";
 
 /* loco:678e7b3b30ca99c9690c7c92 */
