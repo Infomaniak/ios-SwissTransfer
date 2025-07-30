@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: en, English
  * Tagged: ios
- * Exported by: Baptiste Griva
- * Exported at: Tue, 17 Jun 2025 14:53:26 +0200
+ * Exported by: Matthieu Déglon
+ * Exported at: Wed, 30 Jul 2025 09:41:38 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -12,9 +12,6 @@
 
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "Waiting for network";
-
-/* loco:66bf172f88dce506ed0a5ce2 */
-"buttonAddFiles" = "Add files";
 
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Cancel the transfer";
@@ -95,7 +92,7 @@
 "deleteThisTransferDescription" = "This transfer and the files it contains will be deleted.";
 
 /* loco:68359bf65101e64968042602 */
-"deleteThisTransferTitle" = "Delete this transfer ?";
+"deleteThisTransferTitle" = "Delete this transfer?";
 
 /* loco:67852070453d66cb9a0033c2 */
 "downloadInProgressDialogTitle" = "Download in progress…";
@@ -145,9 +142,6 @@
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Make your first transfer!";
 
-/* loco:66a24aee8d282979b007c5d2 */
-"fromHeader" = "From:";
-
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Files to transfer";
 
@@ -174,12 +168,6 @@
 
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Yes, cancel";
-
-/* loco:66e980bf4e282a19d208a9b2 */
-"noFileDescription" = "Add up to 50 GB of files";
-
-/* loco:66e980b10ccf751d4a0910a1 */
-"noFileTitle" = "No file, no transfer!";
 
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Select a parameter to display it";
@@ -284,9 +272,6 @@
  * Notifications settings */
 "settingsAllNotifications" = "All notifications";
 
-/* loco:670e22c9e91567b93601c852 */
-"settingsAuthorizeTracking" = "Authorize tracking";
-
 /* loco:66c3345d68555c9cec08bd35 */
 "settingsCategoryAbout" = "About";
 
@@ -301,9 +286,6 @@
 
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Customized";
-
-/* loco:6708fc46d154f71d5501a3d5 */
-"settingsDataManagementSourceCode" = "See source code";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Set a default download limit for your transfers";
@@ -411,9 +393,6 @@
 
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Activate protection";
-
-/* loco:670e0d7654540016f4096dc2 */
-"settingsSentryDescription" = "Sentry is a tool hosted and managed exclusively by Infomaniak to monitor the stability of the application in real time and automatically report any technical errors to our developers.\n\nThis data enables our team to quickly correct and optimise the application, resulting in a better user experience for you.";
 
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Select a theme";
