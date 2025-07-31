@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: fr, French
  * Tagged: ios
- * Exported by: Baptiste Griva
- * Exported at: Tue, 17 Jun 2025 14:53:26 +0200
+ * Exported by: Matthieu Déglon
+ * Exported at: Wed, 30 Jul 2025 11:02:47 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -12,9 +12,6 @@
 
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "En attente de réseau";
-
-/* loco:66bf172f88dce506ed0a5ce2 */
-"buttonAddFiles" = "Ajouter des fichiers";
 
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Annuler le transfert";
@@ -92,7 +89,7 @@
 "deeplinkTransferNotFound" = "Ce transfert n’existe pas";
 
 /* loco:68359c6b15da309c25045492 */
-"deleteThisTransferDescription" = "Ce transfert et les fichiers qu'il contient seront supprimés.";
+"deleteThisTransferDescription" = "Ce transfert et les fichiers qu’il contient seront supprimés.";
 
 /* loco:68359bf65101e64968042602 */
 "deleteThisTransferTitle" = "Supprimer ce transfert ?";
@@ -145,9 +142,6 @@
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Fais ton premier transfert !";
 
-/* loco:66a24aee8d282979b007c5d2 */
-"fromHeader" = "De :";
-
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Fichiers à transférer";
 
@@ -174,12 +168,6 @@
 
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Oui, annuler";
-
-/* loco:66e980bf4e282a19d208a9b2 */
-"noFileDescription" = "Ajoute jusqu’à 50 Go de fichiers";
-
-/* loco:66e980b10ccf751d4a0910a1 */
-"noFileTitle" = "Pas de fichier, pas de transfert !";
 
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Sélectionne un paramètre pour l’afficher";
@@ -284,9 +272,6 @@
  * Notifications settings */
 "settingsAllNotifications" = "Toutes les notifications";
 
-/* loco:670e22c9e91567b93601c852 */
-"settingsAuthorizeTracking" = "Autoriser le suivi";
-
 /* loco:66c3345d68555c9cec08bd35 */
 "settingsCategoryAbout" = "À propos";
 
@@ -301,9 +286,6 @@
 
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Personnalisé";
-
-/* loco:6708fc46d154f71d5501a3d5 */
-"settingsDataManagementSourceCode" = "Voir le code source";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Défini une limite de téléchargements par défaut pour tes transferts";
@@ -412,9 +394,6 @@
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Activer la protection";
 
-/* loco:670e0d7654540016f4096dc2 */
-"settingsSentryDescription" = "Sentry est un outil hébergé et géré exclusivement par Infomaniak pour surveiller en temps réel la stabilité de l’application et signaler automatiquement d’éventuelles erreurs techniques à nos développeurs.\n\nCes données permettent à notre équipe de rapidement corriger et optimiser l’application, ce qui se traduit par une meilleure expérience d’utilisation pour vous.";
-
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Sélectionne un thème";
 
@@ -514,13 +493,13 @@
 /* loco:66c4a98a0aee7eb62404ec62 */
 "transferTypeTitle" = "Envoyer par";
 
-/* loco:66c2f780c0a809339808e802 */
+/* loco:6889de6a89343a80ff014992 */
 "transferUploadSourceChoiceCamera" = "Appareil photo";
 
-/* loco:66c2f7d6c0a809339808e804 */
+/* loco:6889df37c9b6166238093af2 */
 "transferUploadSourceChoiceFiles" = "Parcourir les fichiers";
 
-/* loco:66c2f7b4302dbac2e60ec512 */
+/* loco:6889df8b6973de8abd0616a2 */
 "transferUploadSourceChoiceGallery" = "Galerie photos et vidéos";
 
 /* loco:678e7b3b30ca99c9690c7c92 */

@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Baptiste Griva
- * Exported at: Tue, 17 Jun 2025 14:53:26 +0200
+ * Exported by: Matthieu Déglon
+ * Exported at: Wed, 30 Jul 2025 11:02:47 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -12,9 +12,6 @@
 
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "Auf Netzwerk warten";
-
-/* loco:66bf172f88dce506ed0a5ce2 */
-"buttonAddFiles" = "Dateien hinzufügen";
 
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Übertragung abbrechen";
@@ -145,9 +142,6 @@
 /* loco:669f76984c6fad682900d032 */
 "firstTransferDescription" = "Mach deinen ersten Transfer!";
 
-/* loco:66a24aee8d282979b007c5d2 */
-"fromHeader" = "Von:";
-
 /* loco:66c5b683919c7a5f1b024142 */
 "importFilesScreenTitle" = "Zu übertragende Dateien";
 
@@ -174,12 +168,6 @@
 
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Ja, abbrechen";
-
-/* loco:66e980bf4e282a19d208a9b2 */
-"noFileDescription" = "Fügt bis zu 50 GB an Dateien hinzu";
-
-/* loco:66e980b10ccf751d4a0910a1 */
-"noFileTitle" = "Keine Datei, keine Übertragung!";
 
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Wählt einen Parameter zur Anzeige aus";
@@ -284,9 +272,6 @@
  * Notifications settings */
 "settingsAllNotifications" = "Alle Benachrichtigungen";
 
-/* loco:670e22c9e91567b93601c852 */
-"settingsAuthorizeTracking" = "Verfolgung genehmigen";
-
 /* loco:66c3345d68555c9cec08bd35 */
 "settingsCategoryAbout" = "Über";
 
@@ -301,9 +286,6 @@
 
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Persönlich";
-
-/* loco:6708fc46d154f71d5501a3d5 */
-"settingsDataManagementSourceCode" = "Siehe Quellcode";
 
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Lege ein Standardlimit für deine Uploads fest";
@@ -412,9 +394,6 @@
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Schutz aktivieren";
 
-/* loco:670e0d7654540016f4096dc2 */
-"settingsSentryDescription" = "Sentry ist ein Tool, das ausschliesslich von Infomaniak gehostet und verwaltet wird, um die Stabilität der Anwendung in Echtzeit zu überwachen und unseren Entwicklern automatisch alle technischen Fehler zu melden.\n\nAnhand dieser Daten kann unser Team die Anwendung schnell korrigieren und optimieren, was zu einem besseren Nutzererlebnis für Sie führt.";
-
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Wähle ein Thema aus";
 
@@ -514,13 +493,13 @@
 /* loco:66c4a98a0aee7eb62404ec62 */
 "transferTypeTitle" = "Schicken per";
 
-/* loco:66c2f780c0a809339808e802 */
+/* loco:6889de6a89343a80ff014992 */
 "transferUploadSourceChoiceCamera" = "Kamera";
 
-/* loco:66c2f7d6c0a809339808e804 */
+/* loco:6889df37c9b6166238093af2 */
 "transferUploadSourceChoiceFiles" = "Dateien durchsuchen";
 
-/* loco:66c2f7b4302dbac2e60ec512 */
+/* loco:6889df8b6973de8abd0616a2 */
 "transferUploadSourceChoiceGallery" = "Foto- und Videogalerie";
 
 /* loco:678e7b3b30ca99c9690c7c92 */
