@@ -32,7 +32,7 @@ struct EditSettingView<T: SettingSelectable>: View {
     let selected: T
     let matomoScreen: MatomoScreen
 
-    public init(
+    init(
         _ type: T.Type,
         selected: T,
         title: String,

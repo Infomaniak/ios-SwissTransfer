@@ -54,7 +54,7 @@ struct SwissTransferApp: App {
         return storedColorScheme
     }
 
-    public init() {
+    init() {
         @InjectService var settings: AppSettingsManager
         _appSettings = StateObject(wrappedValue: FlowObserver(flow: settings.appSettings))
 

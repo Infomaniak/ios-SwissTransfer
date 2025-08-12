@@ -41,7 +41,7 @@ final class TransferSessionManager: ObservableObject {
     private var thumbnailTask: Task<[(String, URL)], Never>?
     private let displayScale = UIScreen.main.scale
 
-    public func uploadFiles(
+    func uploadFiles(
         for uploadSession: SendableUploadSession
     ) async throws {
         startThumbnailGeneration(uploadSession: uploadSession)
@@ -90,7 +90,7 @@ final class TransferSessionManager: ObservableObject {
 }
 
 extension TransferSessionManager: UploadCancellable {
-    public func cancelUploads() async {
+    func cancelUploads() async {
         await transferManagerWorker?.suspendAllTasks()
         transferManagerWorker = nil
     }

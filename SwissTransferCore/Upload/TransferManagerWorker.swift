@@ -51,7 +51,7 @@ struct WorkerChunk: Equatable, Hashable, Sendable {
         hasher.combine(index)
     }
 
-    public static func == (lhs: WorkerChunk, rhs: WorkerChunk) -> Bool {
+    static func == (lhs: WorkerChunk, rhs: WorkerChunk) -> Bool {
         lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
     }
 }
