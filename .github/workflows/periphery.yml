@@ -19,17 +19,7 @@ jobs:
           cache: false
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Generate
+        run: tuist install && tuist generate
       - name: Periphery
-        id: periphery
-        run: ./Scripts/periphery.sh --clean
-      - uses: mshick/add-pr-comment@v2
-        with:
-          message: |
-            Found ${{ steps.periphery.outputs.unused_count }} unused code occurences
-            <details>
-              <summary>Expand</summary>
-              
-              ```
-              ${{ steps.periphery.outputs.detailed_output }}
-              ```
-            </details>
+        run: periphery scan --retain-codable-properties --format github-actions --relative-results --strict

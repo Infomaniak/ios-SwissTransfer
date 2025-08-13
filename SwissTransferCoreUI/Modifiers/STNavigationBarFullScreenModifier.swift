@@ -24,7 +24,7 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
     let title: String
     let showCloseButton: Bool
 
-    public init(title: String, showCloseButton: Bool = true) {
+    init(title: String, showCloseButton: Bool = true) {
         self.title = title
         self.showCloseButton = showCloseButton
     }

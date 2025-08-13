@@ -39,7 +39,7 @@ struct SwissTransferAppClip: App {
     @StateObject private var universalLinksState = UniversalLinksState()
     @StateObject private var rootViewState = RootViewState()
 
-    public init() {
+    init() {
         UNUserNotificationCenter.current().delegate = notificationCenterDelegate
     }
 
