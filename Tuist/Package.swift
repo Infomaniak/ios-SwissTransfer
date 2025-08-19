@@ -16,7 +16,6 @@ let packageSettings = PackageSettings(
         "InfomaniakDI": .framework,
         "Lottie": .framework,
         "OrderedCollections": .framework,
-        "STSettingsView": .framework,
         "SwiftUIIntrospect": .framework,
         "SwissTransferCore": .framework,
         "VersionChecker": .framework
