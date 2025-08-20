@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: it, Italian
  * Tagged: ios
- * Exported by: Matthieu Déglon
- * Exported at: Wed, 30 Jul 2025 11:02:47 +0200
+ * Exported by: Philippe Weidmann
+ * Exported at: Tue, 19 Aug 2025 14:45:14 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -248,7 +248,7 @@
 "oneClickSharing" = "Condividi in 1 click!";
 
 /* loco:68079d4b17b8e06966072592 */
-"quickSharingDescription" = "Per condividere rapidamente, utilizzare il pulsante %s o %s sotto il QR.\nÈ più facile che catturare lo schermo.";
+"quickSharingDescription" = "Per condividere rapidamente, utilizzare il pulsante %1$@ o %2$@ sotto il QR.\nÈ più facile che catturare lo schermo.";
 
 /* loco:66fa5ce7eb184f21290154a2 */
 "receivedFilesTitle" = "File ricevuti";
@@ -431,7 +431,7 @@
 "transferExpiredButton" = "Cancellare dalla cronologia";
 
 /* loco:6720af2aaad13976bb0d7832 */
-"transferExpiredDateReachedDescription" = "Spiacente, questo trasferimento è scaduto il %s. Non è più possibile scaricare o visualizzare i file.";
+"transferExpiredDateReachedDescription" = "Spiacente, questo trasferimento è scaduto il %@. Non è più possibile scaricare o visualizzare i file.";
 
 /* loco:678e7bb990830fe7f1052e92 */
 "transferExpiredDescription" = "Siamo spiacenti, questo trasferimento è scaduto. Non è più possibile scaricare o visualizzare i file.";

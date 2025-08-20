@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: en, English
  * Tagged: ios
- * Exported by: Matthieu Déglon
- * Exported at: Wed, 30 Jul 2025 11:02:47 +0200
+ * Exported by: Philippe Weidmann
+ * Exported at: Tue, 19 Aug 2025 14:45:14 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -248,7 +248,7 @@
 "oneClickSharing" = "Share in 1 click!";
 
 /* loco:68079d4b17b8e06966072592 */
-"quickSharingDescription" = "To quickly share, use the %s or %s button below the QR.\nIt’s easier than capturing the screen.";
+"quickSharingDescription" = "To quickly share, use the %1$@ or %2$@ button below the QR.\nIt’s easier than capturing the screen.";
 
 /* loco:66fa5ce7eb184f21290154a2 */
 "receivedFilesTitle" = "Received files";
@@ -431,7 +431,7 @@
 "transferExpiredButton" = "Delete from history";
 
 /* loco:6720af2aaad13976bb0d7832 */
-"transferExpiredDateReachedDescription" = "Sorry, this transfer expired on %s. You can no longer download or view the files.";
+"transferExpiredDateReachedDescription" = "Sorry, this transfer expired on %@. You can no longer download or view the files.";
 
 /* loco:678e7bb990830fe7f1052e92 */
 "transferExpiredDescription" = "Sorry, this transfer has expired. You can no longer download or view the files.";
