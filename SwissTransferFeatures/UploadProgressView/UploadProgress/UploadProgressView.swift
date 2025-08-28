@@ -79,6 +79,8 @@ public struct UploadProgressView: View {
                     )
                 }
                 .playing(loopMode: .autoReverse)
+                .frame(maxHeight: .infinity)
+                .id(scheme)
             }
             .padding(.horizontal, value: .medium)
             .padding(.top, value: .large)
