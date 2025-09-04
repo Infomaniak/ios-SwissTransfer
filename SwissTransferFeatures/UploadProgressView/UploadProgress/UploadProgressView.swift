@@ -21,10 +21,12 @@ import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
+import Lottie
 import OSLog
 import Sentry
 import STCore
 import STNetwork
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -32,6 +34,8 @@ import SwissTransferCoreUI
 public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
+
+    @Environment(\.colorScheme) private var colorScheme
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
@@ -66,9 +70,14 @@ public struct UploadProgressView: View {
                 UploadProgressHeaderView(subtitle: uploadProgressAd.description)
                     .frame(maxWidth: IllustrationAndTextView.Style.emptyState.textMaxWidth)
 
-                uploadProgressAd.image
-                    .imageThatFits()
-                    .frame(maxHeight: .infinity)
+                LottieView {
+                    try await LottieAnimationSource.dotLottieFile(
+                        .named(uploadProgressAd.animation.name(for: colorScheme), bundle: STResourcesResources.bundle)
+                    )
+                }
+                .playing(loopMode: .autoReverse)
+                .frame(maxHeight: .infinity)
+                .id(colorScheme)
             }
             .padding(.horizontal, value: .medium)
             .padding(.top, value: .large)

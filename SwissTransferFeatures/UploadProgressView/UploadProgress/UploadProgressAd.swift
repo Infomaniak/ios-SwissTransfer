@@ -16,17 +16,41 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Lottie
 import STResources
 import SwiftUI
 
+struct ThemedLottieAnimation: Sendable {
+    let light: String
+    let dark: String
+
+    func name(for scheme: ColorScheme) -> String {
+        return scheme == .light ? light : dark
+    }
+}
+
 enum UploadProgressAd: CaseIterable {
-    case confidentiality
     case energy
     case independence
 
     static func getRandomElement() -> UploadProgressAd {
         let allCases = Self.allCases
-        return allCases.randomElement() ?? .confidentiality
+        return allCases.randomElement() ?? energy
+    }
+
+    var animation: ThemedLottieAnimation {
+        switch self {
+        case .energy:
+            return ThemedLottieAnimation(
+                light: "mountainGondola",
+                dark: "mountainGondolaDark"
+            )
+        case .independence:
+            return ThemedLottieAnimation(
+                light: "swissWithFlag",
+                dark: "swissWithFlagDark"
+            )
+        }
     }
 
     var description: AttributedString {
@@ -40,21 +64,8 @@ enum UploadProgressAd: CaseIterable {
         return result
     }
 
-    var image: Image {
-        switch self {
-        case .confidentiality:
-            return STResourcesAsset.Images.metallicSafe.swiftUIImage
-        case .energy:
-            return STResourcesAsset.Images.mountainGondola.swiftUIImage
-        case .independence:
-            return STResourcesAsset.Images.swissWithFlag.swiftUIImage
-        }
-    }
-
     private var template: (Any) -> String {
         switch self {
-        case .confidentiality:
-            return STResourcesStrings.Localizable.uploadProgressDescriptionTemplateConfidentiality
         case .energy:
             return STResourcesStrings.Localizable.uploadProgressDescriptionTemplateEnergy
         case .independence:
@@ -64,8 +75,6 @@ enum UploadProgressAd: CaseIterable {
 
     private var argument: String {
         switch self {
-        case .confidentiality:
-            return STResourcesStrings.Localizable.uploadProgressDescriptionArgumentConfidentiality
         case .energy:
             return STResourcesStrings.Localizable.uploadProgressDescriptionArgumentEnergy
         case .independence:
