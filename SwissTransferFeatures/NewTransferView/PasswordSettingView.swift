@@ -93,9 +93,7 @@ struct PasswordSettingView: View {
             .stNavigationBarStyle()
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(action: dismiss.callAsFunction) {
-                        Image(systemName: "xmark")
-                    }
+                    ToolbarCloseButton(dismiss: dismiss)
                 }
             }
         }
