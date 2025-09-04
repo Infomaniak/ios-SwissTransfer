@@ -35,7 +35,7 @@ public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
-    @Environment(\.colorScheme) private var scheme
+    @Environment(\.colorScheme) private var colorScheme
 
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
@@ -72,15 +72,12 @@ public struct UploadProgressView: View {
 
                 LottieView {
                     try await LottieAnimationSource.dotLottieFile(
-                        .named(
-                            uploadProgressAd.lottieName(for: scheme),
-                            bundle: STResourcesResources.bundle
-                        )
+                        .named(uploadProgressAd.animation.name(for: colorScheme), bundle: STResourcesResources.bundle)
                     )
                 }
                 .playing(loopMode: .autoReverse)
                 .frame(maxHeight: .infinity)
-                .id(scheme)
+                .id(colorScheme)
             }
             .padding(.horizontal, value: .medium)
             .padding(.top, value: .large)

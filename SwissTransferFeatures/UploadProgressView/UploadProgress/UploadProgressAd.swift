@@ -20,7 +20,7 @@ import Lottie
 import STResources
 import SwiftUI
 
-struct ColoredLottieAnimation {
+struct ThemedLottieAnimation: Sendable {
     let light: String
     let dark: String
 
@@ -38,18 +38,18 @@ enum UploadProgressAd: CaseIterable {
         return allCases.randomElement() ?? energy
     }
 
-    func lottieName(for scheme: ColorScheme) -> String {
+    var animation: ThemedLottieAnimation {
         switch self {
         case .energy:
-            return ColoredLottieAnimation(
+            return ThemedLottieAnimation(
                 light: "mountainGondola",
                 dark: "mountainGondolaDark"
-            ).name(for: scheme)
+            )
         case .independence:
-            return ColoredLottieAnimation(
+            return ThemedLottieAnimation(
                 light: "swissWithFlag",
                 dark: "swissWithFlagDark"
-            ).name(for: scheme)
+            )
         }
     }
 
