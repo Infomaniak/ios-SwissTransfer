@@ -233,7 +233,8 @@ let project = Project(
                     "SwissTransferResources/**/*.xcassets",
                     "SwissTransferResources/**/*.strings",
                     "SwissTransferResources/**/*.stringsdict",
-                    "SwissTransferResources/**/*.json"
+                    "SwissTransferResources/**/*.json",
+                    "SwissTransferResources/**/*.lottie"
                 ],
                 settings: .settings(base: Constants.baseSettings))
     ],
