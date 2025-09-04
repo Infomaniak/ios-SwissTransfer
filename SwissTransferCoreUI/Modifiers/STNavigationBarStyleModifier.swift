@@ -33,4 +33,12 @@ public extension View {
     func stNavigationBarStyle() -> some View {
         modifier(STNavigationBarStyleModifier())
     }
+
+    @ViewBuilder func hardScrollTopEdgeEffect() -> some View {
+        if #available(iOS 26.0, *) {
+            scrollEdgeEffectStyle(.hard, for: .top)
+        } else {
+            self
+        }
+    }
 }

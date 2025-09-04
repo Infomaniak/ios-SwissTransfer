@@ -68,7 +68,6 @@ struct SwissTransferApp: App {
                 .environmentObject(downloadManager)
                 .environmentObject(notificationCenterDelegate)
                 .environmentObject(rootViewState)
-                .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
                 .preferredColorScheme(savedColorScheme)

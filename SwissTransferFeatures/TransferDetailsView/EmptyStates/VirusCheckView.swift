@@ -35,10 +35,8 @@ struct VirusCheckView: View {
         .appBackground()
         .stNavigationBarStyle()
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: dismiss.callAsFunction) {
-                    Image(systemName: "xmark")
-                }
+            ToolbarItem(placement: .cancellationAction) {
+                ToolbarCloseButton(dismiss: dismiss)
             }
         }
         .matomoView(view: .virusCheck)

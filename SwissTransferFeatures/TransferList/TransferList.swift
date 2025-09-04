@@ -86,6 +86,7 @@ public struct TransferList<EmptyView: View>: View {
         }
         .listRowSpacing(0)
         .listStyle(.plain)
+        .hardScrollTopEdgeEffect()
         .floatingActionButton(
             isShowing: isCompactWindow && (viewModel.sections?.isEmpty == false),
             selection: $selectedItems,

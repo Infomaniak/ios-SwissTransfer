@@ -46,12 +46,10 @@ public struct DownloadButton: View {
     @State private var downloadedTransferURL: IdentifiableURL?
 
     let transfer: TransferUi
-    let vertical: Bool
     let matomoCategory: MatomoCategory
 
-    public init(transfer: TransferUi, vertical: Bool = false, matomoCategory: MatomoCategory) {
+    public init(transfer: TransferUi, matomoCategory: MatomoCategory) {
         self.transfer = transfer
-        self.vertical = vertical
         self.matomoCategory = matomoCategory
     }
 
@@ -59,23 +57,10 @@ public struct DownloadButton: View {
         Button {
             startOrCancelDownloadIfNeeded()
         } label: {
-            if vertical {
-                VStack {
-                    STResourcesAsset.Images.arrowDownLine.swiftUIImage
-                        .iconSize(.large)
-
-                    Text(STResourcesStrings.Localizable.buttonDownload)
-                        .font(.ST.caption)
-                }
-                .frame(width: 100)
-            } else {
-                Label(
-                    title: {
-                        Text(STResourcesStrings.Localizable.buttonDownload)
-                    },
-                    icon: { STResourcesAsset.Images.arrowDownLine.swiftUIImage }
-                )
-                .labelStyle(.iconOnly)
+            Label {
+                Text(STResourcesStrings.Localizable.buttonDownload)
+            } icon: {
+                STResourcesAsset.Images.arrowDownLine.swiftUIImage
             }
         }
         .downloadProgressAlertFor(transfer: transfer) { downloadedFileURL in
