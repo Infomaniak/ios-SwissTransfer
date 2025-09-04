@@ -34,12 +34,8 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
             .stNavigationTitle(title)
             .toolbar {
                 if showCloseButton {
-                    ToolbarItem(placement: .destructiveAction) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                        }
+                    ToolbarItem(placement: .cancellationAction) {
+                        ToolbarCloseButton(completion: dismiss)
                     }
                 }
             }

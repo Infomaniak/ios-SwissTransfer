@@ -77,23 +77,12 @@ public struct TransferDetailsView: View {
                 ProgressView()
             }
         }
-        .toolbarBackground(.visible, for: .bottomBar)
+        .scrollBounceBehavior(.basedOnSize)
         .appBackground()
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                if let transfer {
-                    if transfer.direction == .sent {
-                        DownloadButton(transfer: transfer, matomoCategory: matomoCategory)
-                    } else {
-                        QRCodePanelButton(transfer: transfer, vertical: false, matomoCategory: matomoCategory)
-                    }
-                }
-            }
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)
