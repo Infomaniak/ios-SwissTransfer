@@ -23,10 +23,12 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
 
     let title: String
     let showCloseButton: Bool
+    let closeButtonPlacement: ToolbarItemPlacement
 
-    init(title: String, showCloseButton: Bool = true) {
+    init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement) {
         self.title = title
         self.showCloseButton = showCloseButton
+        self.closeButtonPlacement = closeButtonPlacement
     }
 
     func body(content: Content) -> some View {
@@ -34,7 +36,7 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
             .stNavigationTitle(title)
             .toolbar {
                 if showCloseButton {
-                    ToolbarItem(placement: .cancellationAction) {
+                    ToolbarItem(placement: closeButtonPlacement) {
                         ToolbarCloseButton(completion: dismiss)
                     }
                 }
@@ -43,7 +45,17 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
 }
 
 public extension View {
-    func stNavigationBarFullScreen(title: String = "Transfer", showCloseButton: Bool = true) -> some View {
-        modifier(STNavigationBarFullScreenModifier(title: title, showCloseButton: showCloseButton))
+    func stNavigationBarFullScreen(
+        title: String = "Transfer",
+        showCloseButton: Bool = true,
+        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction
+    ) -> some View {
+        modifier(
+            STNavigationBarFullScreenModifier(
+                title: title,
+                showCloseButton: showCloseButton,
+                closeButtonPlacement: closeButtonPlacement
+            )
+        )
     }
 }
