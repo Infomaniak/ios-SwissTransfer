@@ -177,7 +177,8 @@ public struct UploadProgressView: View {
     }
 
     private func sendErrorToSentryIfNeeded(error: Error) {
-        guard ![NSURLErrorNotConnectedToInternet, NSURLErrorTimedOut].contains((error as NSError).code) else {
+        guard ![NSURLErrorNotConnectedToInternet, NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost]
+            .contains((error as NSError).code) else {
             return
         }
 
