@@ -151,17 +151,13 @@ public struct UploadProgressView: View {
             sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DailyQuotaExceededException {
-            sendErrorToSentryIfNeeded(error: error)
             rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
                 return
             }
-
-            sendErrorToSentryIfNeeded(error: error)
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DomainBlockedException {
-            sendErrorToSentryIfNeeded(error: error)
             rootTransferViewState.transition(to: .error(.restrictedLocation))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
