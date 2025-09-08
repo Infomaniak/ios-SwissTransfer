@@ -43,5 +43,5 @@ public struct ToolbarCloseButton: View {
 
 @available(iOS 17.0, *)
 #Preview {
-    ToolbarCloseButton(completion: {})
+    ToolbarCloseButton {}
 }

@@ -31,13 +31,12 @@ struct LegacyToolbarSpacing: View {
     }
 }
 
-struct ShareTransferModifier: ViewModifier {
+struct ShareTransferToolbarModifier: ViewModifier {
     @LazyInjectService private var injection: SwissTransferInjection
-
-    let transfer: TransferUi
 
     @State private var isShowingPassword = false
 
+    let transfer: TransferUi
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
@@ -50,16 +49,19 @@ struct ShareTransferModifier: ViewModifier {
         content
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    if let transferURL {
-                        LegacyToolbarSpacing()
+                    LegacyToolbarSpacing()
 
+                    QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
+
+                    LegacyToolbarSpacing()
+
+                    if let transferURL {
                         ShareLink(item: transferURL) {
                             Label {
                                 Text(STResourcesStrings.Localizable.buttonShare)
                             } icon: {
                                 STResourcesAsset.Images.squareArrowUp.swiftUIImage
                             }
-
                         }
                         .simultaneousGesture(TapGesture().onEnded {
                             @InjectService var matomo: MatomoUtils
@@ -68,15 +70,13 @@ struct ShareTransferModifier: ViewModifier {
 
                         LegacyToolbarSpacing()
                     }
+                }
 
-                    if transfer.direction == .sent {
-                        QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
-                    } else {
-                        DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
-                    }
+                if #available(iOS 26.0, *) {
+                    ToolbarSpacer(.flexible, placement: .bottomBar)
+                }
 
-                    LegacyToolbarSpacing()
-
+                ToolbarItemGroup(placement: .bottomBar) {
                     if let password = transfer.password, !password.isEmpty, transfer.direction == .sent {
                         Button {
                             isShowingPassword = true
@@ -96,15 +96,11 @@ struct ShareTransferModifier: ViewModifier {
                 }
 
                 if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.flexible, placement: .bottomBar)
+                    ToolbarSpacer(.fixed, placement: .bottomBar)
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
-                    if transfer.direction == .sent {
-                        DownloadButton(transfer: transfer, matomoCategory: matomoCategory)
-                    } else {
-                        QRCodePanelButton(transfer: transfer, matomoCategory: matomoCategory)
-                    }
+                    DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
 
                     LegacyToolbarSpacing()
                 }
@@ -114,6 +110,6 @@ struct ShareTransferModifier: ViewModifier {
 
 public extension View {
     func shareTransferToolbar(transfer: TransferUi, matomoCategory: MatomoCategory) -> some View {
-        modifier(ShareTransferModifier(transfer: transfer, matomoCategory: matomoCategory))
+        modifier(ShareTransferToolbarModifier(transfer: transfer, matomoCategory: matomoCategory))
     }
 }
