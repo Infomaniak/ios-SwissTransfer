@@ -49,8 +49,6 @@ struct ShareTransferToolbarModifier: ViewModifier {
         content
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    LegacyToolbarSpacing()
-
                     QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
 
                     LegacyToolbarSpacing()
@@ -101,8 +99,6 @@ struct ShareTransferToolbarModifier: ViewModifier {
 
                 ToolbarItemGroup(placement: .bottomBar) {
                     DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
-
-                    LegacyToolbarSpacing()
                 }
             }
     }
