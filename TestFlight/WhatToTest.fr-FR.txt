@@ -1,1 +1,1 @@
-- Nouvelles animations lors d'un transfert
+- Amélioration de l'interface utilisateur

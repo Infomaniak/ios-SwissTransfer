@@ -1,1 +1,1 @@
-- New animations while uploading
+- Improvement of the user interface
