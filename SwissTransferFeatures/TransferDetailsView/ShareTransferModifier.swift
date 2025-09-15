@@ -71,7 +71,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
                 }
 
                 if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.flexible, placement: .bottomBar)
+                    ToolbarSpacer(.fixed, placement: .bottomBar)
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -94,7 +94,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
                 }
 
                 if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.fixed, placement: .bottomBar)
+                    ToolbarSpacer(.flexible, placement: .bottomBar)
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
