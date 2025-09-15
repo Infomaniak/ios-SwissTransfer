@@ -80,6 +80,8 @@ public struct NewTransferView: View {
                     .padding(.horizontal, value: .medium)
                 }
                 .padding(.vertical, value: .medium)
+                .frame(maxWidth: 700)
+                .frame(maxWidth: .infinity)
             }
             .background(Color.ST.background)
             .safeAreaButtons {

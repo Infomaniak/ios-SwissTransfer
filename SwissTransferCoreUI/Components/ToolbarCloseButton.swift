@@ -18,31 +18,30 @@
 
 import STResources
 import SwiftUI
-import SwissTransferCoreUI
 
-struct VirusDetectedView: View {
-    @Environment(\.dismiss) private var dismiss
+public struct ToolbarCloseButton: View {
+    let completion: () -> Void
 
-    var body: some View {
-        IllustrationAndTextView(
-            image: STResourcesAsset.Images.ghostPointingReport.swiftUIImage,
-            title: STResourcesStrings.Localizable.transferVirusDetectedTitle,
-            subtitle: STResourcesStrings.Localizable.transferVirusDetectedDescription,
-            style: .emptyState
-        )
-        .padding(value: .medium)
-        .scrollableEmptyState()
-        .appBackground()
-        .stNavigationBarStyle()
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                ToolbarCloseButton(dismiss: dismiss)
+    public init(dismiss: DismissAction) {
+        completion = dismiss.callAsFunction
+    }
+
+    public init(completion: @escaping () -> Void) {
+        self.completion = completion
+    }
+
+    public var body: some View {
+        if #available(iOS 26.0, *) {
+            Button(role: .close, action: completion)
+        } else {
+            Button(action: completion) {
+                Label(STResourcesStrings.Localizable.contentDescriptionButtonClose, systemImage: "xmark")
             }
         }
-        .matomoView(view: .virusDetected)
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
-    VirusDetectedView()
+    ToolbarCloseButton {}
 }

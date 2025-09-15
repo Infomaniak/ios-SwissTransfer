@@ -73,9 +73,7 @@ public struct DeepLinkPasswordView: View {
             .stNavigationTitle(STResourcesStrings.Localizable.sharePasswordTitle)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(action: dismiss.callAsFunction) {
-                        Image(systemName: "xmark")
-                    }
+                    ToolbarCloseButton(dismiss: dismiss)
                 }
             }
         }

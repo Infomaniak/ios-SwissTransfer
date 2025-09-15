@@ -28,7 +28,6 @@ struct QRCodePanelButton: View {
     @State private var isShowingQRCode = false
 
     let transfer: TransferUi
-    let vertical: Bool
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
@@ -44,23 +43,10 @@ struct QRCodePanelButton: View {
                 matomo.track(eventWithCategory: matomoCategory, name: .showQrcode)
                 isShowingQRCode = true
             } label: {
-                if vertical {
-                    VStack {
-                        STResourcesAsset.Images.qrCode.swiftUIImage
-                            .iconSize(.large)
-
-                        Text(STResourcesStrings.Localizable.transferTypeQrCode)
-                            .font(.ST.caption)
-                    }
-                    .frame(width: 100)
-                } else {
-                    Label {
-                        Text(STResourcesStrings.Localizable.transferTypeQrCode)
-                            .font(.ST.caption)
-                    } icon: {
-                        STResourcesAsset.Images.qrCode.swiftUIImage
-                            .iconSize(.large)
-                    }
+                Label {
+                    Text(STResourcesStrings.Localizable.transferTypeQrCode)
+                } icon: {
+                    STResourcesAsset.Images.qrCode.swiftUIImage
                 }
             }
             .stFloatingPanel(isPresented: $isShowingQRCode, bottomPadding: .zero) {
