@@ -1,1 +1,1 @@
-- Amélioration de l'interface utilisateur
+- Corrections de bugs
