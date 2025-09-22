@@ -98,7 +98,7 @@ let project = Project(
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for LaunchScreen
                 "SwissTransfer/Resources/PrivacyInfo.xcprivacy",
                 "SwissTransfer/Resources/Localizable/**/InfoPlist.strings",
-                "SwissTransfer/Resources/AppIcon.icon"
+                "SwissTransfer/Resources/AppIcon.icon/**"
             ],
             entitlements: "SwissTransfer/Resources/SwissTransfer.entitlements",
             scripts: [
@@ -129,7 +129,7 @@ let project = Project(
                 "SwissTransfer/Resources/LaunchScreen.storyboard",
                 "SwissTransfer/Resources/Assets.xcassets", // Needed for AppIcon and LaunchScreen
                 "SwissTransfer/Resources/Localizable/**/InfoPlist.strings",
-                "SwissTransfer/Resources/AppIcon.icon"
+                "SwissTransfer/Resources/AppIcon.icon/**"
             ],
             entitlements: "SwissTransfer - App Clip/Resources/SwissTransfer.entitlements",
             dependencies: [
