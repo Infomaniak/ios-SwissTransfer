@@ -67,7 +67,7 @@ struct NewTransferFilesCellView: View {
                                 .frame(width: 80, height: 80)
                                 .background(Color.ST.background, in: .rect(cornerRadius: IKRadius.large))
                         }
-                        .onAppear { addItems() }
+                        .onAppear { addInitialItems() }
                         .onChange(of: selectedItems, perform: addItems)
 
                         ForEach(newTransferFileManager.importedItems) { _ in
@@ -105,6 +105,12 @@ struct NewTransferFilesCellView: View {
                 }
             }
         }
+    }
+
+    private func addInitialItems() {
+        guard !newTransferFileManager.initialImportedItems.isEmpty else { return }
+        addItems(newTransferFileManager.initialImportedItems)
+        newTransferFileManager.initialImportedItems = []
     }
 
     private func addItems(_ items: [ImportedItem] = []) {

@@ -46,6 +46,7 @@ enum TmpDirType: String {
 @MainActor
 public final class NewTransferFileManager: ObservableObject {
     @Published public private(set) var importedItems: [ImportedItem] = []
+    public var initialImportedItems: [ImportedItem]
     @Published public var filesCount = 0
 
     private var shouldDoInitialClean: Bool
@@ -56,7 +57,7 @@ public final class NewTransferFileManager: ObservableObject {
     }
 
     public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {
-        importedItems = initialItems
+        initialImportedItems = initialItems
         self.shouldDoInitialClean = shouldDoInitialClean
     }
 
@@ -80,7 +81,7 @@ public final class NewTransferFileManager: ObservableObject {
         }
 
         do {
-            let importedItemUrls = try await importedItems.asyncMap { importedItem in
+            let importedItemUrls = try await itemsToImport.asyncMap { importedItem in
                 try await importedItem.importItem()
             }
 
@@ -94,7 +95,7 @@ public final class NewTransferFileManager: ObservableObject {
         await NewTransferFileManager.cleanTmpDir(type: .cache)
 
         let files = filesAt(folderURL: nil)
-        importedItems.removeAll()
+        importedItems.removeAll { itemsToImport.contains($0) }
         return files
     }
 
