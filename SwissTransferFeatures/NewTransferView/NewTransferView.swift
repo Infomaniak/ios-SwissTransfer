@@ -42,7 +42,7 @@ public struct NewTransferView: View {
 
     @State private var rootNavigationPath = NavigationPath()
     @State private var isLoadingFileToUpload = false
-    @State private var importFilesTasks = [Task<Void, Never>]()
+    @State private var importFilesTasks = [ImportTask]()
 
     private var isNewTransferValid: Bool {
         viewModel.isNewTransferValid && newTransferFileManager.isNewTransferValid
@@ -142,8 +142,8 @@ public struct NewTransferView: View {
     }
 
     private func cancelTasks() {
-        for task in importFilesTasks {
-            task.cancel()
+        for importTask in importFilesTasks {
+            importTask.task.cancel()
         }
     }
 }
