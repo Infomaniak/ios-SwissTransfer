@@ -21,15 +21,12 @@ import Foundation
 import SwissTransferCore
 
 struct ImportTask {
-    let id: UUID
+    let id: Int
     let task: Task<Void, Never>
 
-    static func taskIdFor(items: [ImportedItem]) -> UUID {
-        let data = Data(items.flatMap { withUnsafeBytes(of: $0.id, Array.init) })
-        let hash = SHA256.hash(data: data)
-        let uuidBytes = hash.prefix(16)
-        return withUnsafeBytes(of: uuidBytes) {
-            UUID(uuid: $0.load(as: uuid_t.self))
-        }
+    static func taskIdFor(items: [ImportedItem]) -> Int {
+        var hasher = Hasher()
+        items.forEach { hasher.combine($0.id) }
+        return hasher.finalize()
     }
 }
