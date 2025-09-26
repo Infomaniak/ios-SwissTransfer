@@ -20,7 +20,8 @@ let packageSettings = PackageSettings(
         "SwiftModalPresentation": .framework,
         "SwiftUIIntrospect": .framework,
         "SwissTransferCore": .framework,
-        "VersionChecker": .framework
+        "VersionChecker": .framework,
+        "_LottieStub": .framework
     ]
 )
 #endif
