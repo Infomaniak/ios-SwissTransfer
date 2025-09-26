@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
- ./check_preconditions.sh
+./check_preconditions.sh
 
 cd ..
 
@@ -10,7 +10,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 mise install
 eval "$(mise activate bash --shims)"
-
 
 if [[ -n $CI_ARCHIVE_PATH ]]; then
     retries=0
@@ -30,3 +29,5 @@ if [[ -n $CI_ARCHIVE_PATH ]]; then
 else
     echo "Archive path isn't available. Unable to run dSYMs uploading script."
 fi
+
+ci_scripts/push_tag.sh
