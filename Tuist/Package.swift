@@ -34,7 +34,7 @@ let package = Package(
         .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0")),
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "8.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "17.0.0")),
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "23.0.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "23.1.1")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.1")),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "15.0.0")),
