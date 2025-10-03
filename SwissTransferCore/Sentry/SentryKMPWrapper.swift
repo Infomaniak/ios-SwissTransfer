@@ -21,10 +21,17 @@ import Sentry
 import STCore
 
 public final class SentryKMPWrapper: CrashReportInterface {
-    public func addBreadcrumb(message: String, category: String, level: STCore.CrashReportLevel, data: [String: String]?) {
+    public func addBreadcrumb(
+        message: String,
+        category: String,
+        level: CrashReportLevel,
+        type: BreadcrumbType,
+        data: [String: String]?
+    ) {
         let breadcrumb = Breadcrumb(level: level.sentryLevel, category: category)
         breadcrumb.message = message
         breadcrumb.data = data
+        breadcrumb.type = type.value
         SentrySDK.addBreadcrumb(breadcrumb)
     }
 
