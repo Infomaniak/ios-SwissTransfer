@@ -136,7 +136,7 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
-            try await transferSessionManager.uploadFiles(for: uploadSession)
+            try await BackgroundUploadHelper().startBackgroundUpload(with: transferSessionManager, uploadSession: uploadSession)
         }
     }
 

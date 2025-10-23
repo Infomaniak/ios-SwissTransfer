@@ -1,0 +1,109 @@
+/*
+ Infomaniak SwissTransfer - iOS App
+ Copyright (C) 2025 Infomaniak Network SA
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import BackgroundTasks
+import Combine
+import Foundation
+import OSLog
+import SwissTransferCore
+
+struct BackgroundUploadHelper {
+    private let taskIdentifier = "\(Constants.bundleId).background-upload"
+
+    init() {}
+
+    func startBackgroundUpload(
+        with transferSessionManager: TransferSessionManager,
+        uploadSession: SendableUploadSession
+    ) async throws {
+        guard #available(iOS 26.0, *) else {
+            try await transferSessionManager.uploadFiles(for: uploadSession)
+            return
+        }
+
+        let request = BGContinuedProcessingTaskRequest(
+            identifier: taskIdentifier,
+            title: "Uploading your transfer",
+            subtitle: "Upload starting ...",
+        )
+
+        let _: Void = try await withCheckedThrowingContinuation { continuation in
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: taskIdentifier, using: nil) { task in
+                guard let task = task as? BGContinuedProcessingTask else {
+                    fallbackUploadInForeground(
+                        with: transferSessionManager,
+                        uploadSession: uploadSession,
+                        continuation: continuation
+                    )
+                    return
+                }
+
+                task.expirationHandler = {
+                    Task { @MainActor in
+                        await transferSessionManager.cancelUploads()
+                        task.setTaskCompleted(success: false)
+                    }
+                }
+
+                Task {
+                    let cancellable: AnyCancellable
+                    do {
+                        task.progress.totalUnitCount = 100
+                        cancellable = transferSessionManager.$fractionCompleted.sink { progress in
+                            let percent = Int64(progress * 100)
+                            task.progress.completedUnitCount = percent
+                            task.updateTitle("Uploading your transfer", subtitle: "Progress \(percent)%")
+                        }
+                        try await transferSessionManager.uploadFiles(for: uploadSession)
+                        continuation.resume()
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                    cancellable.cancel()
+                    task.setTaskCompleted(success: true)
+                }
+            }
+
+            do {
+                try BGTaskScheduler.shared.submit(request)
+            } catch {
+                Logger.general.info("Failed to submit request: \(error)")
+                fallbackUploadInForeground(
+                    with: transferSessionManager,
+                    uploadSession: uploadSession,
+                    continuation: continuation
+                )
+            }
+        }
+    }
+
+    private func fallbackUploadInForeground(
+        with transferSessionManager: TransferSessionManager,
+        uploadSession: SendableUploadSession,
+        continuation: CheckedContinuation<Void, any Error>
+    ) {
+        Task {
+            do {
+                try await transferSessionManager.uploadFiles(for: uploadSession)
+                continuation.resume()
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+}
