@@ -17,32 +17,38 @@
  */
 
 import BackgroundTasks
-import Combine
+@preconcurrency import Combine
 import Foundation
 import OSLog
 import SwissTransferCore
 
 struct BackgroundUploadHelper {
-    private let taskIdentifier = "\(Constants.bundleId).background-upload"
+    private enum DomainError: Error {
+        case expiredTask
+    }
 
-    init() {}
+    private let taskIdentifier: String
+
+    init() {
+        taskIdentifier = "\(Constants.bundleId).background-upload.\(UUID().uuidString)"
+    }
 
     func startBackgroundUpload(
         with transferSessionManager: TransferSessionManager,
         uploadSession: SendableUploadSession
     ) async throws {
-        guard #available(iOS 26.0, *) else {
-            try await transferSessionManager.uploadFiles(for: uploadSession)
-            return
-        }
-
-        let request = BGContinuedProcessingTaskRequest(
-            identifier: taskIdentifier,
-            title: "Uploading your transfer",
-            subtitle: "Upload starting ...",
-        )
-
         let _: Void = try await withCheckedThrowingContinuation { continuation in
+            guard #available(iOS 26.0, *) else {
+                fallbackUploadInForeground(with: transferSessionManager, uploadSession: uploadSession, continuation: continuation)
+                return
+            }
+
+            let request = BGContinuedProcessingTaskRequest(
+                identifier: taskIdentifier,
+                title: "Uploading your transfer",
+                subtitle: "Upload starting ...",
+            )
+
             BGTaskScheduler.shared.register(forTaskWithIdentifier: taskIdentifier, using: nil) { task in
                 guard let task = task as? BGContinuedProcessingTask else {
                     fallbackUploadInForeground(
@@ -53,9 +59,13 @@ struct BackgroundUploadHelper {
                     return
                 }
 
+                var continuation: CheckedContinuation<Void, any Error>? = continuation
+
                 task.expirationHandler = {
                     Task { @MainActor in
                         await transferSessionManager.cancelUploads()
+                        continuation?.resume(throwing: DomainError.expiredTask)
+                        continuation = nil
                         task.setTaskCompleted(success: false)
                     }
                 }
@@ -64,18 +74,21 @@ struct BackgroundUploadHelper {
                     let cancellable: AnyCancellable
                     do {
                         task.progress.totalUnitCount = 100
-                        cancellable = transferSessionManager.$fractionCompleted.sink { progress in
+                        cancellable = await transferSessionManager.$fractionCompleted.sink { progress in
                             let percent = Int64(progress * 100)
                             task.progress.completedUnitCount = percent
                             task.updateTitle("Uploading your transfer", subtitle: "Progress \(percent)%")
                         }
                         try await transferSessionManager.uploadFiles(for: uploadSession)
-                        continuation.resume()
+                        continuation?.resume()
+                        continuation = nil
+                        task.setTaskCompleted(success: true)
                     } catch {
-                        continuation.resume(throwing: error)
+                        continuation?.resume(throwing: error)
+                        continuation = nil
+                        task.setTaskCompleted(success: false)
                     }
                     cancellable.cancel()
-                    task.setTaskCompleted(success: true)
                 }
             }
 

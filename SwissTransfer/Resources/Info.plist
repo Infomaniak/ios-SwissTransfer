@@ -6,7 +6,7 @@
 	<string>$(AppIdentifierPrefix)</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.infomaniak.swisstransfer.background-upload</string>
+		<string>com.infomaniak.swisstransfer.background-upload.*</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
