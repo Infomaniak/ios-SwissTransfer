@@ -19,6 +19,8 @@
 import BackgroundTasks
 @preconcurrency import Combine
 import Foundation
+import InfomaniakDI
+import NotificationCenter
 import OSLog
 import SwissTransferCore
 
@@ -111,12 +113,22 @@ struct BackgroundUploadHelper {
         continuation: CheckedContinuation<Void, any Error>
     ) {
         Task {
+            let observationToken: NSObjectProtocol = NotificationCenter.default.addObserver(
+                forName: UIScene.didEnterBackgroundNotification,
+                object: nil,
+                queue: .main
+            ) { _ in
+                @InjectService var notificationsHelper: NotificationsHelper
+                notificationsHelper.sendBackgroundUploadNotificationForUploadSession()
+            }
+
             do {
                 try await transferSessionManager.uploadFiles(for: uploadSession)
                 continuation.resume()
             } catch {
                 continuation.resume(throwing: error)
             }
+            NotificationCenter.default.removeObserver(observationToken)
         }
     }
 }
