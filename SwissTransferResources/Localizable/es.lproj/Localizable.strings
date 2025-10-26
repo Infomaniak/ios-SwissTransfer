@@ -4,7 +4,7 @@
  * Locale: es, Spanish
  * Tagged: ios
  * Exported by: Philippe Weidmann
- * Exported at: Tue, 19 Aug 2025 14:45:14 +0200
+ * Exported at: Sun, 26 Oct 2025 18:35:29 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -198,6 +198,9 @@
 
 /* loco:678e479bdf4d2ab457051f92 */
 "notificationKeepAppForegroundDescription" = "Mantén la aplicación abierta hasta el final de la transferencia.";
+
+/* loco:68fe59d91ce32740c80377c2 */
+"notificationProgressSubtitle" = "Progreso %@";
 
 /* loco:678630d98c1534fbc50d2cc2 */
 "notificationUploadFailureDescription" = "Se ha producido un problema, inténtelo de nuevo";

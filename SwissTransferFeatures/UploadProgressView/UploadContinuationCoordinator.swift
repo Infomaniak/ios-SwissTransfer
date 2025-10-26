@@ -22,6 +22,7 @@ import Foundation
 import InfomaniakDI
 import NotificationCenter
 import OSLog
+import STResources
 import SwissTransferCore
 
 struct UploadContinuationCoordinator {
@@ -47,8 +48,8 @@ struct UploadContinuationCoordinator {
 
             let request = BGContinuedProcessingTaskRequest(
                 identifier: taskIdentifier,
-                title: "Uploading your transfer",
-                subtitle: "Upload starting ...",
+                title: STResourcesStrings.Localizable.uploadProgressIndication,
+                subtitle: STResourcesStrings.Localizable.notificationProgressSubtitle(0.formatted(.defaultPercent))
             )
 
             BGTaskScheduler.shared.register(forTaskWithIdentifier: taskIdentifier, using: nil) { task in
@@ -77,9 +78,12 @@ struct UploadContinuationCoordinator {
                     do {
                         task.progress.totalUnitCount = 100
                         cancellable = await transferSessionManager.$fractionCompleted.sink { progress in
-                            let percent = Int64(progress * 100)
-                            task.progress.completedUnitCount = percent
-                            task.updateTitle("Uploading your transfer", subtitle: "Progress \(percent)%")
+                            task.progress.completedUnitCount = Int64(progress * 100)
+                            task.updateTitle(
+                                STResourcesStrings.Localizable.uploadProgressIndication,
+                                subtitle: STResourcesStrings.Localizable
+                                    .notificationProgressSubtitle(progress.formatted(.defaultPercent))
+                            )
                         }
                         try await transferSessionManager.uploadFiles(for: uploadSession)
                         continuation?.resume()
