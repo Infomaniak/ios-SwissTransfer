@@ -24,7 +24,7 @@ import NotificationCenter
 import OSLog
 import SwissTransferCore
 
-struct BackgroundUploadHelper {
+struct UploadContinuationCoordinator {
     private enum DomainError: Error {
         case expiredTask
     }
@@ -35,7 +35,7 @@ struct BackgroundUploadHelper {
         taskIdentifier = "\(Constants.bundleId).background-upload.\(UUID().uuidString)"
     }
 
-    func startBackgroundUpload(
+    func startUploadWithBackgroundContinuation(
         with transferSessionManager: TransferSessionManager,
         uploadSession: SendableUploadSession
     ) async throws {
