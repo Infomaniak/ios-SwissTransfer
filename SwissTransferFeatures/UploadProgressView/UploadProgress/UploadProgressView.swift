@@ -33,7 +33,6 @@ import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
     @LazyInjectService private var injection: SwissTransferInjection
-    @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @Environment(\.colorScheme) private var colorScheme
 
@@ -92,10 +91,6 @@ public struct UploadProgressView: View {
             .stIconNavigationBar()
             .navigationBarBackButtonHidden()
             .task(startUpload)
-            .sceneLifecycle(
-                willEnterForeground: nil,
-                didEnterBackground: notificationsHelper.sendBackgroundUploadNotificationForUploadSession
-            )
             .onAppear {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
@@ -118,6 +113,7 @@ public struct UploadProgressView: View {
     @Sendable private func startUpload() async {
         await catchingUploadErrors {
             Task { @MainActor in
+                @InjectService var notificationsHelper: NotificationsHelper
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
@@ -136,7 +132,11 @@ public struct UploadProgressView: View {
 
             currentUploadSession = uploadSession
 
-            try await transferSessionManager.uploadFiles(for: uploadSession)
+            try await UploadContinuationCoordinator()
+                .startUploadWithBackgroundContinuation(
+                    with: transferSessionManager,
+                    uploadSession: uploadSession
+                )
         }
     }
 
