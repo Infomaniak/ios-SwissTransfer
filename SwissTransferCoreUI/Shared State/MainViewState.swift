@@ -170,6 +170,8 @@ public final class MainViewState: ObservableObject {
                 selectedTransfer = .status(.expiredDownloadQuota)
             } else if kotlinException is STNFetchTransferException.VirusCheckFetchTransferException {
                 selectedTransfer = .status(.waitVirusCheck)
+            } else if kotlinException is STNFetchTransferException.VirusDetectedFetchTransferException {
+                selectedTransfer = .status(.virusDetected)
             }
         }
     }
