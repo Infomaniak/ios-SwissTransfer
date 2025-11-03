@@ -24,8 +24,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct EditSettingView<T: SettingSelectable>: View {
-    @EnvironmentObject private var mainViewState: MainViewState
-
     let title: String
     let section: String
     let items: [T]
@@ -47,15 +45,17 @@ struct EditSettingView<T: SettingSelectable>: View {
     }
 
     var body: some View {
-        List(selection: $mainViewState.selectedDestination) {
+        List {
             Section(header: Text(section)) {
                 if let category = T.matomoCategoryGlobal {
                     ForEach(items, id: \.self) { item in
-                        EditSettingCell(selected: item == selected,
-                                        label: item.title,
-                                        leftImage: item.leftImage,
-                                        matomoCategory: category,
-                                        matomoName: item.matomoName) {
+                        EditSettingCell(
+                            selected: item == selected,
+                            label: item.title,
+                            leftImage: item.leftImage,
+                            matomoCategory: category,
+                            matomoName: item.matomoName
+                        ) {
                             action(item)
                         }
                         .settingsCell()
