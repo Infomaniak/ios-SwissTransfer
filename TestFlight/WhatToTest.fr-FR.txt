@@ -1,2 +1,1 @@
-- Vous pouvez téléverser des fichiers pendant que l'application est en arrière-plan avec iOS 26
 - Corrections de bugs
