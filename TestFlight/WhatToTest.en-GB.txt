@@ -1,2 +1,1 @@
-- You can upload files while the app is in the background in iOS 26
 - Bug fixes
