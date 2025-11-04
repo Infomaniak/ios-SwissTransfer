@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
 import InfomaniakCoreCommonUI
 import STCore
 import STDatabase
@@ -84,7 +85,7 @@ public struct TransferList<EmptyView: View>: View {
                 }
             }
         }
-        .listRowSpacing(0)
+        .listRowSpacing(IKPadding.mini)
         .listStyle(.plain)
         .hardScrollTopEdgeEffect()
         .floatingActionButton(
