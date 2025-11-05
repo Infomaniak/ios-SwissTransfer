@@ -118,7 +118,7 @@ extension NewTransferFileManager {
     private func moveToTmp(files: [URL]) {
         for file in files {
             do {
-                let destination = try destinationURLFor(source: file)
+                let destination = try FileManager.destinationURLFor(source: file, to: URL.tmpUploadDirectory())
                 _ = file.startAccessingSecurityScopedResource()
                 try FileManager.default.copyItem(at: file, to: destination)
             } catch {
@@ -126,24 +126,6 @@ extension NewTransferFileManager {
             }
             file.stopAccessingSecurityScopedResource()
         }
-    }
-
-    /// Find a valid name if a file/folder already exist with the same name
-    public func destinationURLFor(source: URL) throws -> URL {
-        let allFiles = try FileManager.default.contentsOfDirectory(at: URL.tmpUploadDirectory(), includingPropertiesForKeys: nil)
-            .map(\.lastPathComponent)
-
-        let shortName = source.deletingPathExtension().lastPathComponent
-        var increment = 0
-        var testName = source.lastPathComponent
-        while allFiles.contains(where: { $0 == testName }) {
-            increment += 1
-            testName = shortName.appending("(\(increment))")
-            if !source.pathExtension.isEmpty {
-                testName.append(".\(source.pathExtension)")
-            }
-        }
-        return try URL.tmpUploadDirectory().appending(path: testName)
     }
 
     /// Empty the temporary directory
