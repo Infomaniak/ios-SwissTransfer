@@ -25,14 +25,14 @@ public struct PhotoLibraryContent: Transferable {
         FileRepresentation(contentType: .movie) {
             SentTransferredFile($0.url)
         } importing: {
-            let cacheURL = try URL.tmpCacheDirectory().appendingPathComponent($0.file.lastPathComponent)
+            let cacheURL = try FileManager.destinationURLFor(source: $0.file, to: URL.tmpCacheDirectory())
             try FileManager.default.copyItem(at: $0.file, to: cacheURL)
             return Self(url: cacheURL)
         }
         FileRepresentation(contentType: .image) {
             SentTransferredFile($0.url)
         } importing: {
-            let cacheURL = try URL.tmpCacheDirectory().appendingPathComponent($0.file.lastPathComponent)
+            let cacheURL = try FileManager.destinationURLFor(source: $0.file, to: URL.tmpCacheDirectory())
             try FileManager.default.copyItem(at: $0.file, to: cacheURL)
             return Self(url: cacheURL)
         }
