@@ -36,7 +36,7 @@ final class SwissTransferTests: XCTestCase {
             let expectedResult = try URL.tmpUploadDirectory().appendingPathComponent(fileName)
 
             // WHEN
-            let result = try newTransferManager.destinationURLFor(source: sourcePath)
+            let result = try FileManager.destinationURLFor(source: sourcePath, to: URL.tmpUploadDirectory())
 
             // THEN
             XCTAssertEqual(result, expectedResult)
@@ -56,7 +56,7 @@ final class SwissTransferTests: XCTestCase {
             FileManager.default.createFile(atPath: firstURL.path(), contents: nil)
 
             // WHEN
-            let result = try newTransferManager.destinationURLFor(source: sourcePath)
+            let result = try FileManager.destinationURLFor(source: sourcePath, to: URL.tmpUploadDirectory())
 
             // THEN
             XCTAssertEqual(result, expectedResult)
