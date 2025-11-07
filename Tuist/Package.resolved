@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "9bf39543128f71d8c84e4e9e3801283815d55b21",
-        "version" : "5.3.5"
+        "revision" : "4cecdfbf985dd58334f1ca56ae1ab818278f505b",
+        "version" : "5.3.6"
       }
     },
     {

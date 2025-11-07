@@ -86,13 +86,13 @@ public struct TransferDetailsRootView: View {
             case .ready, .unknown:
                 TransferDetailsView(transfer: transfer)
             case .expiredDate:
-                ExpiredTransferView(expirationType: .date)
+                ExpiredTransferView(transfer: transfer, expirationType: .date)
             case .expiredDownloadQuota:
-                ExpiredTransferView(expirationType: .downloadQuota(transfer?.downloadLimit))
+                ExpiredTransferView(transfer: transfer, expirationType: .downloadQuota(transfer?.downloadLimit))
             case .waitVirusCheck:
                 VirusCheckView()
             case .virusDetected:
-                VirusDetectedView()
+                VirusDetectedView(transfer: transfer)
             }
         }
     }

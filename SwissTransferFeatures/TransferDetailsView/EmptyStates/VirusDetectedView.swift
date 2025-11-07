@@ -16,12 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct VirusDetectedView: View {
     @Environment(\.dismiss) private var dismiss
+
+    let transfer: TransferUi?
 
     var body: some View {
         IllustrationAndTextView(
@@ -32,6 +36,7 @@ struct VirusDetectedView: View {
         )
         .padding(value: .medium)
         .scrollableEmptyState()
+        .deleteLocalTransferSafeAreaButton(transfer: transfer, origin: .virusDetected)
         .appBackground()
         .stNavigationBarStyle()
         .toolbar {
@@ -44,5 +49,5 @@ struct VirusDetectedView: View {
 }
 
 #Preview {
-    VirusDetectedView()
+    VirusDetectedView(transfer: PreviewHelper.sampleTransfer)
 }

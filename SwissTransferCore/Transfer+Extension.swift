@@ -56,26 +56,42 @@ public extension TransferUi {
         return message?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    var localContainerURL: URL? {
+        guard let transferContainerURL = try? URL.tmpDownloadsDirectory().appendingPathComponent("\(uuid)/") else {
+            return nil
+        }
+
+        return transferContainerURL
+    }
+
     var localArchiveURL: URL? {
         if files.count == 1,
            let fileURL = files.first?.localURLFor(transfer: self) {
             return fileURL
         }
 
-        guard let transferContainerURL = try? URL.tmpDownloadsDirectory().appendingPathComponent("\(uuid)/") else {
+        guard let localContainerURL else {
             return nil
         }
 
-        let filePaths = (try? FileManager.default.contentsOfDirectory(atPath: transferContainerURL.path())) ?? []
+        let filePaths = (try? FileManager.default.contentsOfDirectory(atPath: localContainerURL.path())) ?? []
         for filePath in filePaths {
             guard (filePath as NSString).pathExtension == "zip" else {
                 continue
             }
 
-            return transferContainerURL.appending(path: filePath)
+            return localContainerURL.appending(path: filePath)
         }
 
         return nil
+    }
+
+    func removeLocalContainer() {
+        guard let localContainerURL else {
+            return
+        }
+
+        try? FileManager.default.removeItem(at: localContainerURL)
     }
 }
 

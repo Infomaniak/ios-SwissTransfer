@@ -16,13 +16,15 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct ExpiredTransferView: View {
-    enum ExpirationType {
+    enum ExpirationType: Equatable {
         case date
         case downloadQuota(Int32?)
 
@@ -38,6 +40,7 @@ struct ExpiredTransferView: View {
 
     @Environment(\.dismiss) private var dismiss
 
+    let transfer: TransferUi?
     let expirationType: ExpirationType
 
     var subtitle: String {
@@ -62,6 +65,7 @@ struct ExpiredTransferView: View {
         )
         .padding(value: .medium)
         .scrollableEmptyState()
+        .deleteLocalTransferSafeAreaButton(transfer: transfer, origin: expirationType == .date ? .expiredDate : .expiredDownloads)
         .appBackground()
         .stNavigationBarStyle()
         .toolbar {
@@ -74,5 +78,5 @@ struct ExpiredTransferView: View {
 }
 
 #Preview {
-    ExpiredTransferView(expirationType: .date)
+    ExpiredTransferView(transfer: PreviewHelper.sampleTransfer, expirationType: .date)
 }
