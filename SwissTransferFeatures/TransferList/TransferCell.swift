@@ -84,8 +84,6 @@ struct TransferCell: View {
             }
         }
         .padding(.horizontal, value: .medium)
-        .padding(.vertical, value: .micro)
-        .appBackground()
     }
 }
 
