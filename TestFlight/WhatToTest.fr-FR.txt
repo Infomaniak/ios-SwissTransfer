@@ -1,1 +1,2 @@
-- Corrections de bugs
+- Corrections d'un bug lors de l'upload de photo
+- Correction d'un bug à l'affichage de la liste de transferts
