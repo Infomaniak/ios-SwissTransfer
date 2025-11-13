@@ -1,2 +1,2 @@
-- Fix a bug when uploading photos
-- Fix a bug when displaying the transfer list
+What's new:
+ - You can remove a transfer when it has expired
