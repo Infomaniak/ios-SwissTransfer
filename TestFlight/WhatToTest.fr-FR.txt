@@ -1,2 +1,2 @@
-- Corrections d'un bug lors de l'upload de photo
-- Correction d'un bug à l'affichage de la liste de transferts
+Quoi de neuf :
+ - Vous pouvez supprimer un transfert lorsqu'il a expiré
