@@ -54,11 +54,7 @@ public struct SettingsView: View {
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionTheme,
                              subtitle: appSettings.value?.theme.title ?? "",
                              icon: STResourcesAsset.Images.brush) {
-                    EditSettingView(Theme.self,
-                                    selected: appSettings.value?.theme ?? .system,
-                                    title: STResourcesStrings.Localizable.settingsOptionTheme,
-                                    section: STResourcesStrings.Localizable.settingsThemeTitle,
-                                    matomoScreen: .themeSetting)
+                    SettingDetailsRootView(setting: .theme)
                 }
                 .settingsCell()
 
@@ -72,51 +68,28 @@ public struct SettingsView: View {
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                              subtitle: appSettings.value?.validityPeriod.title ?? "",
                              icon: STResourcesAsset.Images.clock) {
-                    EditSettingView(ValidityPeriod.self,
-                                    selected: appSettings.value?.validityPeriod ?? .thirty,
-                                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                                    section: STResourcesStrings.Localizable.settingsValidityPeriodTitle,
-                                    matomoScreen: .validityPeriodSetting)
+                    SettingDetailsRootView(setting: .validityPeriod)
                 }
                 .settingsCell()
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                              subtitle: appSettings.value?.downloadLimit.title ?? "",
                              icon: STResourcesAsset.Images.fileDownload) {
-                    EditSettingView(DownloadLimit.self,
-                                    selected: appSettings.value?.downloadLimit ?? .twoHundredFifty,
-                                    title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
-                                    section: STResourcesStrings.Localizable.settingsDownloadsLimitTitle,
-                                    matomoScreen: .downloadLimitSetting)
+                    SettingDetailsRootView(setting: .downloadLimit)
                 }
                 .settingsCell()
 
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
                              subtitle: appSettings.value?.emailLanguage.title ?? "",
                              icon: STResourcesAsset.Images.bubble) {
-                    EditSettingView(EmailLanguage.self,
-                                    selected: appSettings.value?.emailLanguage ?? .french,
-                                    title: STResourcesStrings.Localizable.settingsOptionEmailLanguage,
-                                    section: STResourcesStrings.Localizable.settingsEmailLanguageTitle,
-                                    matomoScreen: .emailLanguageSetting)
+                    SettingDetailsRootView(setting: .emailLanguage)
                 }
                 .settingsCell()
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
                 NavigationLink {
-                    PrivacyManagementView(
-                        urlRepository: SettingLinks.githubRepository,
-                        backgroundColor: Color.ST.background,
-                        illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
-                        userDefaultStore: .shared,
-                        userDefaultKeyMatomo: UserDefaults.shared.key(.matomoAuthorized),
-                        userDefaultKeySentry: UserDefaults.shared.key(.sentryAuthorized),
-                        showTitle: false,
-                        matomo: matomo
-                    )
-                    .stNavigationTitle(PrivacyManagementView.title)
-                    .stNavigationBarStyle()
+                    SettingDetailsRootView(setting: .dataManagement)
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDataManagement,
                                             leadingIcon: STResourcesAsset.Images.shield)

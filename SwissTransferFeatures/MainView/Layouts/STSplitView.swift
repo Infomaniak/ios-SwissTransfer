@@ -82,8 +82,8 @@ private struct DetailSplitView: View {
             case .transfer(let transferData):
                 TransferDetailsRootView(data: transferData)
                     .id(transferData.id)
-            case .settings:
-                Text("TODO: Settings Option.")
+            case .settings(let settingDetailUI):
+                SettingDetailsRootView(setting: settingDetailUI)
             }
         } else {
             SplitViewDetailsEmptyView()
