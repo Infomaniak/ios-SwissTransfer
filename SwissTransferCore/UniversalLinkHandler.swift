@@ -27,6 +27,7 @@ public struct UniversalLinkHandler {
         case importTransferFromExtension(uuid: String)
         case openTransfer(linkedTransfer: UniversalLinkResult)
         case deleteTransfer(linkedDeleteTransfer: DeleteTransferLinkResult)
+        case openSettingDetails(linkedSetting: SettingDetailUI)
     }
 
     public init() {}
@@ -53,6 +54,9 @@ public struct UniversalLinkHandler {
             let linkedDeleteTransfer = DeleteTransferLinkResult(uuid: deleteTransfer.uuid, token: deleteTransfer.token)
             return .deleteTransfer(linkedDeleteTransfer: linkedDeleteTransfer)
         }
+
+        // TODO: Add case top open settings
+
         return nil
     }
 

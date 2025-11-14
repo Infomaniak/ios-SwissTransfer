@@ -133,6 +133,8 @@ struct SwissTransferApp: App {
                 universalLinksState.linkedTransfer = linkedTransfer
             case .deleteTransfer(let linkedDeleteTransfer):
                 universalLinksState.linkedDeleteTransfer = linkedDeleteTransfer
+            case .openSettingDetails(let linkedSetting):
+                universalLinksState.linkedSetting = linkedSetting
             }
         }
     }

@@ -72,6 +72,12 @@ public struct MainView: View {
             mainViewState.isShowingDeleteTransferDeeplink = linkedDeleteTransfer
             universalLinksState.linkedDeleteTransfer = nil
         }
+        .onChange(of: universalLinksState.linkedSetting) { linkedSetting in
+            guard let linkedSetting else { return }
+
+            mainViewState.handleSettingsNavigation(linkedSetting)
+            universalLinksState.linkedSetting = nil
+        }
         .onChange(of: notificationCenterDelegate.tappedTransfer) { tappedTransfer in
             guard let tappedTransfer else { return }
 

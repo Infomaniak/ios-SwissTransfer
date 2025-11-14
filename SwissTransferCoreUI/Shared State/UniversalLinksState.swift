@@ -24,6 +24,7 @@ public class UniversalLinksState: ObservableObject {
     @Published public var linkedImportUUID: String?
     @Published public var linkedTransfer: UniversalLinkResult?
     @Published public var linkedDeleteTransfer: DeleteTransferLinkResult?
+    @Published public var linkedSetting: SettingDetailUI?
 
     public init() {}
 }

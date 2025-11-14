@@ -175,4 +175,21 @@ public final class MainViewState: ObservableObject {
             }
         }
     }
+
+    public func handleSettingsNavigation(_ linkSetting: SettingDetailUI) {
+        switch linkSetting {
+        case .theme:
+            selectedDestination = .settings(.theme)
+        case .notifications:
+            selectedDestination = .settings(.notifications)
+        case .validityPeriod:
+            selectedDestination = .settings(.validityPeriod)
+        case .downloadLimit:
+            selectedDestination = .settings(.downloadLimit)
+        case .emailLanguage:
+            selectedDestination = .settings(.emailLanguage)
+        case .dataManagement:
+            selectedDestination = .settings(.dataManagement)
+        }
+    }
 }
