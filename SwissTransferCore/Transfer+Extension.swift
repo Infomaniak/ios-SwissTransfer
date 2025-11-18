@@ -34,6 +34,10 @@ public extension TransferUi {
         Date(timeIntervalSince1970: TimeInterval(createdDateTimestamp))
     }
 
+    var expirationDate: Date {
+        return Date(timeIntervalSince1970: TimeInterval(expirationDateTimestamp))
+    }
+
     var sectionDate: String {
         if let sectionDateInterval = (ReferenceDate.allCases.first { $0.dateInterval.contains(date) }) {
             return sectionDateInterval.rawValue
