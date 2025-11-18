@@ -33,7 +33,7 @@ private struct WorkerChunkInFile: Equatable, Sendable {
     let chunk: WorkerChunk
     var task: Task<Void, Error>?
 
-    public static func == (lhs: WorkerChunkInFile, rhs: WorkerChunkInFile) -> Bool {
+    static func == (lhs: WorkerChunkInFile, rhs: WorkerChunkInFile) -> Bool {
         lhs.chunk == rhs.chunk
     }
 }
@@ -61,7 +61,7 @@ private struct WorkerFile: Equatable, Sendable {
     let uploadChunks: [WorkerChunk]
     let lastChunk: WorkerChunk
 
-    public static func == (lhs: WorkerFile, rhs: WorkerFile) -> Bool {
+    static func == (lhs: WorkerFile, rhs: WorkerFile) -> Bool {
         lhs.fileURL == rhs.fileURL
     }
 }
