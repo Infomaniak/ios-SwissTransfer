@@ -86,7 +86,7 @@ public struct TransferDetailsRootView: View {
             case .ready, .unknown:
                 TransferDetailsView(transfer: transfer)
             case .expiredDate:
-                ExpiredTransferView(transfer: transfer, expirationType: .date)
+                ExpiredTransferView(transfer: transfer, expirationType: .date(transfer?.expirationDate))
             case .expiredDownloadQuota:
                 ExpiredTransferView(transfer: transfer, expirationType: .downloadQuota(transfer?.downloadLimit))
             case .waitVirusCheck:

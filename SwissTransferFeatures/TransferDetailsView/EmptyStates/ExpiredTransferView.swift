@@ -25,7 +25,7 @@ import SwissTransferCoreUI
 
 struct ExpiredTransferView: View {
     enum ExpirationType: Equatable {
-        case date
+        case date(Date?)
         case downloadQuota(Int32?)
 
         var matomoScreen: MatomoScreen {
@@ -45,14 +45,26 @@ struct ExpiredTransferView: View {
 
     var subtitle: String {
         switch expirationType {
-        case .date:
-            return STResourcesStrings.Localizable.transferExpiredDescription
+        case .date(let date):
+            guard let date else {
+                return STResourcesStrings.Localizable.transferExpiredDescription
+            }
+            return STResourcesStrings.Localizable
+                .transferExpiredDateReachedDescription(date.formatted(.prettyDate))
         case .downloadQuota(let count):
             guard let count else {
                 return STResourcesStrings.Localizable.deeplinkTransferExpired
             }
 
             return STResourcesStrings.Localizable.transferExpiredLimitReachedDescription(Int(count))
+        }
+    }
+
+    var deleteLocalTransferOrigin: DeleteLocalTransferViewModifier.Origin {
+        if case .date = expirationType {
+            return .expiredDate
+        } else {
+            return .expiredDownloads
         }
     }
 
@@ -65,7 +77,7 @@ struct ExpiredTransferView: View {
         )
         .padding(value: .medium)
         .scrollableEmptyState()
-        .deleteLocalTransferSafeAreaButton(transfer: transfer, origin: expirationType == .date ? .expiredDate : .expiredDownloads)
+        .deleteLocalTransferSafeAreaButton(transfer: transfer, origin: deleteLocalTransferOrigin)
         .appBackground()
         .stNavigationBarStyle()
         .toolbar {
@@ -78,5 +90,5 @@ struct ExpiredTransferView: View {
 }
 
 #Preview {
-    ExpiredTransferView(transfer: PreviewHelper.sampleTransfer, expirationType: .date)
+    ExpiredTransferView(transfer: PreviewHelper.sampleTransfer, expirationType: .date(.now))
 }
