@@ -69,6 +69,9 @@ struct NewTransferFilesCellView: View {
                         }
                         .onAppear { addInitialItems() }
                         .onChange(of: selectedItems, perform: addItems)
+                        .onChange(of: newTransferFileManager.filesCount) { _ in
+                            files = newTransferFileManager.filesAt(folderURL: nil)
+                        }
 
                         ForEach(newTransferFileManager.importedItems) { _ in
                             SmallThumbnailView(size: .medium)
