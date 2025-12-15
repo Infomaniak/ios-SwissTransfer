@@ -73,7 +73,6 @@ public struct VerifyMailView: View {
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .frame(maxHeight: .infinity, alignment: .top)
-            .background(Color.ST.background)
             .toolbar {
                 ToolbarItem(placement: .navigation) {
                     Button(STResourcesStrings.Localizable.contentDescriptionButtonBack, systemImage: "chevron.backward") {
@@ -98,6 +97,7 @@ public struct VerifyMailView: View {
                 ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
                     .disabled(isVerifyingCode)
             }
+            .appBackground()
         }
         .matomoView(view: .verifyMail)
     }
