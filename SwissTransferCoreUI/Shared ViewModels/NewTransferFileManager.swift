@@ -45,6 +45,7 @@ enum TmpDirType: String {
 
 @MainActor
 public final class NewTransferFileManager: ObservableObject {
+    @Published public private(set) var files: [TransferableFile] = []
     @Published public private(set) var importedItems: [ImportedItem] = []
     public var initialImportedItems: [ImportedItem]
     @Published public var filesCount = 0
@@ -52,13 +53,15 @@ public final class NewTransferFileManager: ObservableObject {
     private var shouldDoInitialClean: Bool
 
     public var isNewTransferValid: Bool {
-        guard filesCount > 0 else { return false }
+        guard filesCount > 0,
+              files.filesSize() <= Constants.maxFileSize else { return false }
         return filesCount <= Constants.maxFileCount
     }
 
     public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {
         initialImportedItems = initialItems
         self.shouldDoInitialClean = shouldDoInitialClean
+        updateFiles()
     }
 
     deinit {
@@ -95,6 +98,8 @@ public final class NewTransferFileManager: ObservableObject {
         await NewTransferFileManager.cleanTmpDir(type: .cache)
 
         let files = filesAt(folderURL: nil)
+        updateFiles()
+
         importedItems.removeAll { itemsToImport.contains($0) }
         return files
     }
@@ -109,6 +114,7 @@ public final class NewTransferFileManager: ObservableObject {
         cleanEmptyParent(of: url)
         Task {
             await updateCountFilesToImport()
+            updateFiles()
         }
     }
 }
@@ -209,5 +215,11 @@ public extension NewTransferFileManager {
             }
         }
         filesCount = counter
+    }
+}
+
+private extension NewTransferFileManager {
+    func updateFiles(folderURL: URL? = nil) {
+        files = filesAt(folderURL: folderURL)
     }
 }

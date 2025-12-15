@@ -28,8 +28,6 @@ struct NewTransferFilesCellView: View {
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @State private var selectedItems = [ImportedItem]()
-
-    @Binding var files: [TransferableFile]
     @Binding var importFilesTasks: [ImportTask]
 
     var body: some View {
@@ -42,7 +40,7 @@ struct NewTransferFilesCellView: View {
                 HStack {
                     FilesCountAndSizeView(
                         count: newTransferFileManager.filesCount + newTransferFileManager.importedItems.count,
-                        size: files.filesSize()
+                        size: newTransferFileManager.files.filesSize()
                     )
                     .font(.ST.callout)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,7 +56,7 @@ struct NewTransferFilesCellView: View {
                         AddFilesMenu(
                             selection: $selectedItems,
                             maxSelectionCount: Constants.maxFileCount - newTransferFileManager.filesCount,
-                            sizeExceeded: files.filesSize() >= Constants.maxFileSize,
+                            sizeExceeded: newTransferFileManager.files.filesSize() >= Constants.maxFileSize,
                             matomoCategory: .importFileFromNewTransfer
                         ) {
                             STResourcesAsset.Images.plus.swiftUIImage
@@ -69,16 +67,13 @@ struct NewTransferFilesCellView: View {
                         }
                         .onAppear { addInitialItems() }
                         .onChange(of: selectedItems, perform: addItems)
-                        .onChange(of: newTransferFileManager.filesCount) { _ in
-                            files = newTransferFileManager.filesAt(folderURL: nil)
-                        }
 
                         ForEach(newTransferFileManager.importedItems) { _ in
                             SmallThumbnailView(size: .medium)
                                 .importingItem(controlSize: .small)
                         }
 
-                        ForEach(files) { file in
+                        ForEach(newTransferFileManager.files) { file in
                             if file.isFolder {
                                 NavigationLink(value: file) {
                                     SmallThumbnailView(name: file.fileName, size: .medium)
@@ -120,12 +115,12 @@ struct NewTransferFilesCellView: View {
         let id = ImportTask.taskIdFor(items: items)
         guard !importFilesTasks.contains(where: { $0.id == id }) else { return }
         let task = Task {
-            files = await newTransferFileManager.addItems(items)
+            _ = await newTransferFileManager.addItems(items)
         }
         importFilesTasks.append(ImportTask(id: id, task: task))
     }
 }
 
 #Preview {
-    NewTransferFilesCellView(files: .constant([]), importFilesTasks: .constant([]))
+    NewTransferFilesCellView(importFilesTasks: .constant([]))
 }

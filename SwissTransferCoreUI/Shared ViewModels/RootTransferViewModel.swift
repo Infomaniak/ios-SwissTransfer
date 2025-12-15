@@ -37,14 +37,10 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var validityPeriod = ValidityPeriod.thirty
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
     @Published public var emailLanguage = EmailLanguage.french
-    @Published public var files = [TransferableFile]()
 
     public private(set) var initializedFromShare: Bool
 
     public var isNewTransferValid: Bool {
-        guard !files.isEmpty else { return false }
-        guard files.filesSize() <= Constants.maxFileSize else { return false }
-
         if !password.isEmpty && (password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength) {
             return false
         }

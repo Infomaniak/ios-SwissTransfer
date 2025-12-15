@@ -58,7 +58,7 @@ public struct NewTransferView: View {
                         .padding(.horizontal, value: .medium)
 
                     NavigationLink(value: TransferableRootFolder()) {
-                        NewTransferFilesCellView(files: $viewModel.files, importFilesTasks: $importFilesTasks)
+                        NewTransferFilesCellView(importFilesTasks: $importFilesTasks)
                     }
                     .padding(.horizontal, value: .medium)
 
