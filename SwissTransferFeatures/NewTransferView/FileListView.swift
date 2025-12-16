@@ -62,12 +62,13 @@ struct FileListView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .onChange(of: files) { newFiles in
                         withAnimation {
-                            filesCount = newFiles.count + newTransferFileManager.importedItems.count
+                            filesCount = newFiles.count +
+                                newTransferFileManager.importedItems[localFolderURL ?? .importRoot, default: []].count
                         }
                     }
                     .onChange(of: newTransferFileManager.importedItems) { newImportedItems in
                         withAnimation {
-                            filesCount = files.count + newImportedItems.count
+                            filesCount = files.count + newImportedItems[localFolderURL ?? .importRoot, default: []].count
                         }
                     }
 
