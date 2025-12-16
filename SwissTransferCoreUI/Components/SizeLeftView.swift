@@ -21,15 +21,22 @@ import SwiftUI
 import SwissTransferCore
 
 public struct SizeLeftView: View {
-    private let size: Int64
+    private let sizeOccupied: Int64
 
-    private var filesSizeText: Text {
-        return Text(STResourcesStrings.Localizable.transferSpaceLeft((NewTransferConstants.maxFileSize - size)
-                .formatted(.defaultByteCount)))
+    private var remainingSize: Int64 {
+        max(0, NewTransferConstants.maxFileSize - sizeOccupied)
     }
 
-    public init(size: Int64) {
-        self.size = size
+    private var filesSizeText: Text {
+        return Text(
+            STResourcesStrings.Localizable.transferSpaceLeft(
+                remainingSize.formatted(.defaultByteCount)
+            )
+        )
+    }
+
+    public init(sizeOccupied: Int64) {
+        self.sizeOccupied = sizeOccupied
     }
 
     public var body: some View {

@@ -74,7 +74,7 @@ struct FileListView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     if folder == nil {
-                        SizeLeftView(size: files.filesSize())
+                        SizeLeftView(sizeOccupied: files.filesSize())
                             .font(.ST.callout)
                             .foregroundStyle(Color.ST.textPrimary)
                     }
