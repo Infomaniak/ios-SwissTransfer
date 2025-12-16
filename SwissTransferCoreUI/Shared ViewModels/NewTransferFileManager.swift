@@ -43,17 +43,24 @@ enum TmpDirType: String {
     }
 }
 
+public extension URL {
+    static let importRoot = URL(filePath: "/")
+}
+
 @MainActor
 public final class NewTransferFileManager: ObservableObject {
-    @Published public private(set) var importedItems: [ImportedItem] = []
-    public var initialImportedItems: [ImportedItem]
+    @Published public private(set) var files: [TransferableFile] = []
+    @Published public private(set) var importedItems: [URL: [ImportedItem]] = [:]
     @Published public var filesCount = 0
 
+    public var initialImportedItems: [ImportedItem]
     private var shouldDoInitialClean: Bool
 
-    public var isNewTransferValid: Bool {
-        guard filesCount > 0 else { return false }
-        return filesCount <= Constants.maxFileCount
+    public var importedFilesAreValid: Bool {
+        guard filesCount > 0 && filesCount <= NewTransferConstants.maxFileCount else {
+            return false
+        }
+        return files.filesSize() <= NewTransferConstants.maxFileSize
     }
 
     public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {
@@ -68,16 +75,14 @@ public final class NewTransferFileManager: ObservableObject {
     }
 
     /// Add files to Upload Folder
-    /// Return the content of the folder
-    @discardableResult
-    public func addItems(_ itemsToImport: [ImportedItem]) async -> [TransferableFile] {
+    public func addItems(_ itemsToImport: [ImportedItem], to folderURL: URL? = nil) async {
         if shouldDoInitialClean {
             await NewTransferFileManager.cleanTmpDir(type: .upload)
             shouldDoInitialClean = false
         }
 
         withAnimation {
-            importedItems.append(contentsOf: itemsToImport)
+            importedItems[folderURL ?? .importRoot, default: []].append(contentsOf: itemsToImport)
         }
 
         do {
@@ -94,9 +99,13 @@ public final class NewTransferFileManager: ObservableObject {
 
         await NewTransferFileManager.cleanTmpDir(type: .cache)
 
-        let files = filesAt(folderURL: nil)
-        importedItems.removeAll { itemsToImport.contains($0) }
-        return files
+        files = filesAt(folderURL: nil)
+        for folder in importedItems.keys {
+            importedItems[folder]?.removeAll { itemsToImport.contains($0) }
+            if importedItems[folder]?.isEmpty == true {
+                importedItems.removeValue(forKey: folder)
+            }
+        }
     }
 
     /// Removes completely the given file and his children from :
@@ -107,6 +116,8 @@ public final class NewTransferFileManager: ObservableObject {
         guard let url = file.localURLFor(transferUUID: "") else { return }
         try FileManager.default.removeItem(at: url)
         cleanEmptyParent(of: url)
+
+        files = filesAt(folderURL: nil)
         Task {
             await updateCountFilesToImport()
         }

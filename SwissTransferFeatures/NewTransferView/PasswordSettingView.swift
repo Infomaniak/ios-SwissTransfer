@@ -39,8 +39,8 @@ struct PasswordSettingView: View {
     }
 
     private var isPasswordValid: Bool {
-        return password.count >= RootTransferViewModel.minPasswordLength
-            && password.count <= RootTransferViewModel.maxPasswordLength
+        return password.count >= NewTransferConstants.minPasswordLength
+            && password.count <= NewTransferConstants.maxPasswordLength
     }
 
     init(password: Binding<String>) {

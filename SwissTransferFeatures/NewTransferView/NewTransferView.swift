@@ -45,7 +45,7 @@ public struct NewTransferView: View {
     @State private var importFilesTasks = [ImportTask]()
 
     private var isNewTransferValid: Bool {
-        viewModel.isNewTransferValid && newTransferFileManager.isNewTransferValid
+        viewModel.isTransferConfigurationValid && newTransferFileManager.importedFilesAreValid
     }
 
     public init() {}
@@ -58,7 +58,7 @@ public struct NewTransferView: View {
                         .padding(.horizontal, value: .medium)
 
                     NavigationLink(value: TransferableRootFolder()) {
-                        NewTransferFilesCellView(files: $viewModel.files, importFilesTasks: $importFilesTasks)
+                        NewTransferFilesCellView(importFilesTasks: $importFilesTasks, files: newTransferFileManager.files)
                     }
                     .padding(.horizontal, value: .medium)
 
