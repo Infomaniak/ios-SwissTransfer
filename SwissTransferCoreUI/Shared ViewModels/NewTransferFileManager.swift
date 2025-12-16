@@ -43,8 +43,8 @@ enum TmpDirType: String {
     }
 }
 
-extension URL {
-    public static let importRoot = URL(filePath: "/")
+public extension URL {
+    static let importRoot = URL(filePath: "/")
 }
 
 @MainActor
@@ -56,8 +56,11 @@ public final class NewTransferFileManager: ObservableObject {
     public var initialImportedItems: [ImportedItem]
     private var shouldDoInitialClean: Bool
 
-    public var isFilesCountValid: Bool {
-        return filesCount > 0 && filesCount <= NewTransferConstants.maxFileCount
+    public var importedFilesArevalid: Bool {
+        guard filesCount > 0 && filesCount <= NewTransferConstants.maxFileCount else {
+            return false
+        }
+        return files.filesSize() <= NewTransferConstants.maxFileSize
     }
 
     public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {
