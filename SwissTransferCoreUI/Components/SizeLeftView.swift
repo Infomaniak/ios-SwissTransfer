@@ -24,7 +24,8 @@ public struct SizeLeftView: View {
     private let size: Int64
 
     private var filesSizeText: Text {
-        return Text(STResourcesStrings.Localizable.transferSpaceLeft((NewTransferConstants.maxFileSize - size).formatted(.defaultByteCount)))
+        return Text(STResourcesStrings.Localizable.transferSpaceLeft((NewTransferConstants.maxFileSize - size)
+                .formatted(.defaultByteCount)))
     }
 
     public init(size: Int64) {
