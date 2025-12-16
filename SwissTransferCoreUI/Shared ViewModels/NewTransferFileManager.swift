@@ -43,10 +43,14 @@ enum TmpDirType: String {
     }
 }
 
+extension URL {
+    public static let importRoot = URL(filePath: "/")
+}
+
 @MainActor
 public final class NewTransferFileManager: ObservableObject {
     @Published public private(set) var files: [TransferableFile] = []
-    @Published public private(set) var importedItems: [ImportedItem] = []
+    @Published public private(set) var importedItems: [URL: [ImportedItem]] = [:]
     @Published public var filesCount = 0
 
     public var initialImportedItems: [ImportedItem]
@@ -68,14 +72,14 @@ public final class NewTransferFileManager: ObservableObject {
     }
 
     /// Add files to Upload Folder
-    public func addItems(_ itemsToImport: [ImportedItem]) async {
+    public func addItems(_ itemsToImport: [ImportedItem], to folderURL: URL? = nil) async {
         if shouldDoInitialClean {
             await NewTransferFileManager.cleanTmpDir(type: .upload)
             shouldDoInitialClean = false
         }
 
         withAnimation {
-            importedItems.append(contentsOf: itemsToImport)
+            importedItems[folderURL ?? .importRoot, default: []].append(contentsOf: itemsToImport)
         }
 
         do {
@@ -93,7 +97,12 @@ public final class NewTransferFileManager: ObservableObject {
         await NewTransferFileManager.cleanTmpDir(type: .cache)
 
         files = filesAt(folderURL: nil)
-        importedItems.removeAll { itemsToImport.contains($0) }
+        for folder in importedItems.keys {
+            importedItems[folder]?.removeAll { itemsToImport.contains($0) }
+            if importedItems[folder]?.isEmpty == true {
+                importedItems.removeValue(forKey: folder)
+            }
+        }
     }
 
     /// Removes completely the given file and his children from :

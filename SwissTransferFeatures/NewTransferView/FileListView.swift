@@ -45,6 +45,10 @@ struct FileListView: View {
         return folder.fileName
     }
 
+    private var localFolderURL: URL? {
+        return folder?.localURLFor(transferUUID: "")
+    }
+
     init(parentFolder: TransferableFile?, matomoCategory: MatomoCategory) {
         folder = parentFolder
         self.matomoCategory = matomoCategory
@@ -68,7 +72,7 @@ struct FileListView: View {
                     }
 
                 FileGridLayoutView {
-                    ForEach(newTransferFileManager.importedItems) { _ in
+                    ForEach(newTransferFileManager.importedItems[localFolderURL ?? .importRoot, default: []]) { _ in
                         LargeFileCell()
                             .importingItem(controlSize: .regular)
                     }
@@ -78,7 +82,7 @@ struct FileListView: View {
                         action: RemoveFileAction {
                             @InjectService var matomo: MatomoUtils
                             matomo.track(eventWithCategory: .newTransfer, name: .deleteFile)
-                            removeFile($0, atFolderURL: folder?.localURLFor(transferUUID: ""))
+                            removeFile($0, atFolderURL: localFolderURL)
                         },
                         matomoCategory: matomoCategory
                     )
@@ -98,7 +102,7 @@ struct FileListView: View {
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: navigationTitle, closeButtonPlacement: .topBarTrailing)
         .onAppear {
-            files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
+            files = newTransferFileManager.filesAt(folderURL: localFolderURL)
             filesCount = files.count
         }
         .onChange(of: files) { _ in
@@ -109,9 +113,9 @@ struct FileListView: View {
         .task(id: selectedItems) {
             guard !selectedItems.isEmpty else { return }
 
-            await newTransferFileManager.addItems(selectedItems)
+            await newTransferFileManager.addItems(selectedItems, to: localFolderURL)
             withAnimation {
-                files = newTransferFileManager.filesAt(folderURL: folder?.localURLFor(transferUUID: ""))
+                files = newTransferFileManager.filesAt(folderURL: localFolderURL)
             }
 
             selectedItems = []

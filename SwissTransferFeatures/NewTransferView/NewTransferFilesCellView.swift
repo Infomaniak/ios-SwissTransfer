@@ -71,7 +71,7 @@ struct NewTransferFilesCellView: View {
                         .onAppear { addInitialItems() }
                         .onChange(of: selectedItems, perform: addItems)
 
-                        ForEach(newTransferFileManager.importedItems) { _ in
+                        ForEach(newTransferFileManager.importedItems[.importRoot, default: []]) { _ in
                             SmallThumbnailView(size: .medium)
                                 .importingItem(controlSize: .small)
                         }
