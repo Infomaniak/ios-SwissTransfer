@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-onboarding",
       "state" : {
-        "revision" : "a4591b91d977c33a5e2dd361dca2799a8815ce82",
-        "version" : "1.4.3"
+        "revision" : "ca793dc5613ae4fd67b209e3f5f0222e00a6da4d",
+        "version" : "1.4.4"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/matomo-org/matomo-sdk-ios",
       "state" : {
-        "revision" : "82a1f3b18215381e2133d98b7cc09b5a855ff99d",
-        "version" : "7.7.0"
+        "revision" : "f140afcb7cedebdcbf8b8230fdd822b4b61e3685",
+        "version" : "7.8.0"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "4cecdfbf985dd58334f1ca56ae1ab818278f505b",
-        "version" : "5.3.6"
+        "revision" : "20b57d8e24bbda542ec25adf73b862fd1f65ba1a",
+        "version" : "5.3.7"
       }
     },
     {
