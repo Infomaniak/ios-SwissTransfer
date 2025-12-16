@@ -23,11 +23,16 @@ import OrderedCollections
 import STCore
 import SwissTransferCore
 
-@MainActor
-public final class RootTransferViewModel: ObservableObject {
+public enum NewTransferConstants: Sendable {
     public static let minPasswordLength = 6
     public static let maxPasswordLength = 25
 
+    public static let maxFileSize = STCore.FileUtils().MAX_FILES_SIZE
+    public static let maxFileCount = Int(STCore.FileUtils().MAX_FILE_COUNT)
+}
+
+@MainActor
+public final class RootTransferViewModel: ObservableObject {
     @Published public var transferType = TransferType.defaultChoice
     @Published public var authorEmail = ""
     public var authorEmailToken: String?
@@ -43,9 +48,10 @@ public final class RootTransferViewModel: ObservableObject {
 
     public var isNewTransferValid: Bool {
         guard !files.isEmpty else { return false }
-        guard files.filesSize() <= Constants.maxFileSize else { return false }
+        guard files.filesSize() <= NewTransferConstants.maxFileSize else { return false }
 
-        if !password.isEmpty && (password.count < Self.minPasswordLength || password.count > Self.maxPasswordLength) {
+        if !password.isEmpty,
+           (password.count < NewTransferConstants.minPasswordLength || password.count > NewTransferConstants.maxPasswordLength) {
             return false
         }
 

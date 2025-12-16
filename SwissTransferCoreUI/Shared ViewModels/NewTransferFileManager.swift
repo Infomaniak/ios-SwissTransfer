@@ -47,13 +47,14 @@ enum TmpDirType: String {
 public final class NewTransferFileManager: ObservableObject {
     @Published public private(set) var importedItems: [ImportedItem] = []
     public var initialImportedItems: [ImportedItem]
+
     @Published public var filesCount = 0
 
     private var shouldDoInitialClean: Bool
 
     public var isNewTransferValid: Bool {
         guard filesCount > 0 else { return false }
-        return filesCount <= Constants.maxFileCount
+        return filesCount <= NewTransferConstants.maxFileCount
     }
 
     public init(initialItems: [ImportedItem] = [], shouldDoInitialClean: Bool = true) {

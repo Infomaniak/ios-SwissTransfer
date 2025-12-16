@@ -25,33 +25,33 @@ public struct FilesCountAndSizeView: View {
     private let size: Int64
 
     private var filesCountText: Text {
-        if count > Constants.maxFileCount {
-            return Text(STResourcesStrings.Localizable.fileCountOverDisplayOnly(count, Constants.maxFileCount))
+        if count > NewTransferConstants.maxFileCount {
+            return Text(STResourcesStrings.Localizable.fileCountOverDisplayOnly(count, NewTransferConstants.maxFileCount))
                 .accessibilityLabel(
-                    Text(STResourcesStrings.Localizable.fileCountOverTtsFriendly(count, Constants.maxFileCount))
+                    Text(STResourcesStrings.Localizable.fileCountOverTtsFriendly(count, NewTransferConstants.maxFileCount))
                 )
         }
         return Text(STResourcesStrings.Localizable.filesCount(count))
     }
 
     private var filesCountColor: Color {
-        return count > Constants.maxFileCount ? Color.ST.error : Color.ST.textSecondary
+        return count > NewTransferConstants.maxFileCount ? Color.ST.error : Color.ST.textSecondary
     }
 
     private var filesSizeText: Text {
-        if size > Constants.maxFileSize {
+        if size > NewTransferConstants.maxFileSize {
             let sizeFormatted = size.formatted(.defaultByteCount)
-            let maxSizeFormatted = Constants.maxFileSize.formatted(.defaultByteCount)
+            let maxSizeFormatted = NewTransferConstants.maxFileSize.formatted(.defaultByteCount)
             return Text(STResourcesStrings.Localizable.fileSizeOverDisplayOnly(sizeFormatted, maxSizeFormatted))
                 .accessibilityLabel(
                     Text(STResourcesStrings.Localizable.fileSizeOverTtsFriendly(sizeFormatted, maxSizeFormatted))
                 )
         }
-        return Text(STResourcesStrings.Localizable.transferSpaceLeft((Constants.maxFileSize - size).formatted(.defaultByteCount)))
+        return Text(STResourcesStrings.Localizable.transferSpaceLeft((NewTransferConstants.maxFileSize - size).formatted(.defaultByteCount)))
     }
 
     private var filesSizeColor: Color {
-        return size > Constants.maxFileSize ? Color.ST.error : Color.ST.textSecondary
+        return size > NewTransferConstants.maxFileSize ? Color.ST.error : Color.ST.textSecondary
     }
 
     public init(count: Int, size: Int64) {

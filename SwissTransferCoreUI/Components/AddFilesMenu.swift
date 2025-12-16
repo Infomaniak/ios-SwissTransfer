@@ -47,7 +47,7 @@ public struct AddFilesMenu<Content: View>: View {
 
     public init(
         selection: Binding<[ImportedItem]>,
-        maxSelectionCount: Int = Constants.maxFileCount,
+        maxSelectionCount: Int = NewTransferConstants.maxFileCount,
         sizeExceeded: Bool = false,
         matomoCategory: MatomoCategory,
         @ViewBuilder label: () -> Content
