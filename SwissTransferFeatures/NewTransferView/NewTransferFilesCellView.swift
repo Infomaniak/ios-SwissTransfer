@@ -29,8 +29,9 @@ struct NewTransferFilesCellView: View {
 
     @State private var selectedItems = [ImportedItem]()
 
-    @Binding var files: [TransferableFile]
     @Binding var importFilesTasks: [ImportTask]
+
+    let files: [TransferableFile]
 
     var body: some View {
         VStack(alignment: .leading, spacing: IKPadding.medium) {
@@ -117,12 +118,12 @@ struct NewTransferFilesCellView: View {
         let id = ImportTask.taskIdFor(items: items)
         guard !importFilesTasks.contains(where: { $0.id == id }) else { return }
         let task = Task {
-            files = await newTransferFileManager.addItems(items)
+            await newTransferFileManager.addItems(items)
         }
         importFilesTasks.append(ImportTask(id: id, task: task))
     }
 }
 
 #Preview {
-    NewTransferFilesCellView(files: .constant([]), importFilesTasks: .constant([]))
+    NewTransferFilesCellView(importFilesTasks: .constant([]), files: [])
 }

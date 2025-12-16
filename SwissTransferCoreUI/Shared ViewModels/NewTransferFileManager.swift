@@ -68,9 +68,7 @@ public final class NewTransferFileManager: ObservableObject {
     }
 
     /// Add files to Upload Folder
-    /// Return the content of the folder
-    @discardableResult
-    public func addItems(_ itemsToImport: [ImportedItem]) async -> [TransferableFile] {
+    public func addItems(_ itemsToImport: [ImportedItem]) async {
         if shouldDoInitialClean {
             await NewTransferFileManager.cleanTmpDir(type: .upload)
             shouldDoInitialClean = false
@@ -94,9 +92,8 @@ public final class NewTransferFileManager: ObservableObject {
 
         await NewTransferFileManager.cleanTmpDir(type: .cache)
 
-        let files = filesAt(folderURL: nil)
+        files = filesAt(folderURL: nil)
         importedItems.removeAll { itemsToImport.contains($0) }
-        return files
     }
 
     /// Removes completely the given file and his children from :
@@ -107,6 +104,8 @@ public final class NewTransferFileManager: ObservableObject {
         guard let url = file.localURLFor(transferUUID: "") else { return }
         try FileManager.default.removeItem(at: url)
         cleanEmptyParent(of: url)
+
+        files = filesAt(folderURL: nil)
         Task {
             await updateCountFilesToImport()
         }

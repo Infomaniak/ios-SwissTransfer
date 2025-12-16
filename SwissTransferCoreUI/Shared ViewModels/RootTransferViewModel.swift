@@ -48,7 +48,7 @@ public final class RootTransferViewModel: ObservableObject {
 
     public var isTransferConfigurationValid: Bool {
         if !password.isEmpty,
-           (password.count < NewTransferConstants.minPasswordLength || password.count > NewTransferConstants.maxPasswordLength) {
+           password.count < NewTransferConstants.minPasswordLength || password.count > NewTransferConstants.maxPasswordLength {
             return false
         }
 
