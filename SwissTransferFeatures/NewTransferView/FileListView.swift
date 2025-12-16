@@ -57,20 +57,28 @@ struct FileListView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                FilesCountAndSizeView(count: filesCount, size: files.filesSize())
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textPrimary)
-                    .onChange(of: files) { newFiles in
-                        withAnimation {
-                            filesCount = newFiles.count +
-                                newTransferFileManager.importedItems[localFolderURL ?? .importRoot, default: []].count
+                HStack {
+                    FilesCountAndSizeView(count: filesCount, size: files.filesSize())
+                        .font(.ST.callout)
+                        .foregroundStyle(Color.ST.textPrimary)
+                        .onChange(of: files) { newFiles in
+                            withAnimation {
+                                filesCount = newFiles.count + newTransferFileManager.importedItems.count
+                            }
                         }
-                    }
-                    .onChange(of: newTransferFileManager.importedItems) { newImportedItems in
-                        withAnimation {
-                            filesCount = files.count + newImportedItems[localFolderURL ?? .importRoot, default: []].count
+                        .onChange(of: newTransferFileManager.importedItems) { newImportedItems in
+                            withAnimation {
+                                filesCount = files.count + newImportedItems.count
+                            }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    if folder == nil {
+                        SizeLeftView(size: files.filesSize())
+                            .font(.ST.callout)
+                            .foregroundStyle(Color.ST.textPrimary)
                     }
+                }
 
                 FileGridLayoutView {
                     ForEach(newTransferFileManager.importedItems[localFolderURL ?? .importRoot, default: []]) { _ in
