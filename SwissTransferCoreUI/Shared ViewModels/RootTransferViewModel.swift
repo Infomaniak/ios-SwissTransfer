@@ -46,10 +46,7 @@ public final class RootTransferViewModel: ObservableObject {
 
     public private(set) var initializedFromShare: Bool
 
-    public var isNewTransferValid: Bool {
-        guard !files.isEmpty else { return false }
-        guard files.filesSize() <= NewTransferConstants.maxFileSize else { return false }
-
+    public var isTransferConfigurationValid: Bool {
         if !password.isEmpty,
            (password.count < NewTransferConstants.minPasswordLength || password.count > NewTransferConstants.maxPasswordLength) {
             return false
