@@ -1,2 +1,1 @@
-Quoi de neuf :
- - Vous pouvez supprimer un transfert lorsqu'il a expiré
+Améliorations et corrections diverses
