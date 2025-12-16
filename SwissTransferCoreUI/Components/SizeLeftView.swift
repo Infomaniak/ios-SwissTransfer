@@ -20,32 +20,28 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-public struct FilesCountAndSizeView: View {
-    private let count: Int
-    private let size: Int64
+public struct SizeLeftView: View {
+    private let sizeOccupied: Int64
 
-    private var filesCountText: Text {
-        return Text(STResourcesStrings.Localizable.filesCount(count))
+    private var remainingSize: Int64 {
+        max(0, NewTransferConstants.maxFileSize - sizeOccupied)
     }
 
     private var filesSizeText: Text {
-        return Text(size.formatted(.defaultByteCount))
+        return Text(
+            STResourcesStrings.Localizable.transferSpaceLeft(
+                remainingSize.formatted(.defaultByteCount)
+            )
+        )
     }
 
-    public init(count: Int, size: Int64) {
-        self.size = size
-        self.count = count
+    public init(sizeOccupied: Int64) {
+        self.sizeOccupied = sizeOccupied
     }
 
     public var body: some View {
-        SeparatedItemsView {
-            filesCountText
-                .monospacedDigit()
-                .contentTransition(.numericText())
-        } rhs: {
-            filesSizeText
-                .monospacedDigit()
-                .contentTransition(.numericText())
-        }
+        filesSizeText
+            .monospacedDigit()
+            .contentTransition(.numericText())
     }
 }
