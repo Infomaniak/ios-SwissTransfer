@@ -56,7 +56,7 @@ public final class NewTransferFileManager: ObservableObject {
     public var initialImportedItems: [ImportedItem]
     private var shouldDoInitialClean: Bool
 
-    public var importedFilesArevalid: Bool {
+    public var importedFilesAreValid: Bool {
         guard filesCount > 0 && filesCount <= NewTransferConstants.maxFileCount else {
             return false
         }

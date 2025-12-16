@@ -45,7 +45,7 @@ public struct NewTransferView: View {
     @State private var importFilesTasks = [ImportTask]()
 
     private var isNewTransferValid: Bool {
-        viewModel.isTransferConfigurationValid && newTransferFileManager.importedFilesArevalid
+        viewModel.isTransferConfigurationValid && newTransferFileManager.importedFilesAreValid
     }
 
     public init() {}
