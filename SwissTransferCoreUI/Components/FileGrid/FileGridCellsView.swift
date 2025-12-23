@@ -28,6 +28,9 @@ public struct FileGridCellsView: View {
     private let action: (any LargeFileCellAction)?
     private let matomoCategory: MatomoCategory
 
+    @State private var isMultiSelectionEnabled = false
+    @State private var selection = Set<FileUi>()
+
     public init(
         files: [any DisplayableFile],
         transfer: TransferUi? = nil,
@@ -46,11 +49,17 @@ public struct FileGridCellsView: View {
                 NavigationLink(value: file) {
                     if let transfer,
                        let fileUi = file as? FileUi {
+                        let isMultiSelected = selection.contains(fileUi)
                         DownloadableFileCellView(
                             transfer: transfer,
                             file: fileUi,
+                            isMultiSelectionEnabled: isMultiSelectionEnabled,
+                            isSelected: isMultiSelected,
                             matomoCategory: matomoCategory
                         )
+                        .onLongPressGesture {
+                            turnOnMultipleSelection(with: fileUi)
+                        }
                     } else {
                         LargeFileCell(
                             file: file,
@@ -61,7 +70,17 @@ public struct FileGridCellsView: View {
                 }
             } else {
                 if let transfer, let fileUi = file as? FileUi {
-                    DownloadableFileCellView(transfer: transfer, file: fileUi, matomoCategory: matomoCategory)
+                    let isMultiSelected = selection.contains(fileUi)
+                    DownloadableFileCellView(
+                        transfer: transfer,
+                        file: fileUi,
+                        isMultiSelectionEnabled: isMultiSelectionEnabled,
+                        isSelected: isMultiSelected,
+                        matomoCategory: matomoCategory
+                    )
+                    .onLongPressGesture {
+                        turnOnMultipleSelection(with: fileUi)
+                    }
                 } else if let transferableFile = file as? TransferableFile {
                     TransferableFileCellView(
                         file: transferableFile,
@@ -77,6 +96,12 @@ public struct FileGridCellsView: View {
                 }
             }
         }
+    }
+
+    func turnOnMultipleSelection(with file: FileUi) {
+        guard !isMultiSelectionEnabled else { return }
+        isMultiSelectionEnabled = true
+        selection.insert(file)
     }
 }
 
