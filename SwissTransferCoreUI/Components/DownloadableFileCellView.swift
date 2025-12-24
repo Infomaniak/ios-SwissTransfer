@@ -34,7 +34,7 @@ struct DownloadableFileCellView: View {
     let transfer: TransferUi
     let file: FileUi
     let isMultiSelectionEnabled: Bool
-    let isSelected: Bool
+    @Binding var isSelected: Bool
     let matomoCategory: MatomoCategory
 
     private var downloadFileAction: DownloadFileAction {
@@ -48,11 +48,11 @@ struct DownloadableFileCellView: View {
             if file.isFolder {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
-                    LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
+                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
                     .onTapGesture {
                         fileTapped()
                     }
-                }
+            }
             if isMultiSelectionEnabled {
                 MultipleSelectionCheckboxView(isSelected: isSelected)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -106,11 +106,7 @@ struct DownloadableFileCellView: View {
             return
         }
 
-        if isSelected {
-            // Deselect
-        } else {
-            // Select
-        }
+        isSelected.toggle()
     }
 }
 
@@ -119,7 +115,7 @@ struct DownloadableFileCellView: View {
         transfer: PreviewHelper.sampleTransfer,
         file: PreviewHelper.sampleFile,
         isMultiSelectionEnabled: false,
-        isSelected: false,
+        isSelected: .constant(false),
         matomoCategory: .sentTransfer
     )
 }

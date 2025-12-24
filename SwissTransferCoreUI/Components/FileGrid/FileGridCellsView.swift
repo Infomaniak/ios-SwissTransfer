@@ -49,7 +49,15 @@ public struct FileGridCellsView: View {
                 NavigationLink(value: file) {
                     if let transfer,
                        let fileUi = file as? FileUi {
-                        let isMultiSelected = selection.contains(fileUi)
+                        let isMultiSelected = Binding {
+                            selection.contains(fileUi)
+                        } set: { selected in
+                            if selected {
+                                selection.insert(fileUi)
+                            } else {
+                                selection.remove(fileUi)
+                            }
+                        }
                         DownloadableFileCellView(
                             transfer: transfer,
                             file: fileUi,
@@ -70,7 +78,15 @@ public struct FileGridCellsView: View {
                 }
             } else {
                 if let transfer, let fileUi = file as? FileUi {
-                    let isMultiSelected = selection.contains(fileUi)
+                    let isMultiSelected = Binding {
+                        selection.contains(fileUi)
+                    } set: { selected in
+                        if selected {
+                            selection.insert(fileUi)
+                        } else {
+                            selection.remove(fileUi)
+                        }
+                    }
                     DownloadableFileCellView(
                         transfer: transfer,
                         file: fileUi,
