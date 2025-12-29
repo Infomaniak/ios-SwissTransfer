@@ -45,7 +45,7 @@ struct DownloadableFileCellView: View {
 
     var body: some View {
         ZStack {
-            if file.isFolder {
+            if file.isFolder && !isMultiSelectionEnabled {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
