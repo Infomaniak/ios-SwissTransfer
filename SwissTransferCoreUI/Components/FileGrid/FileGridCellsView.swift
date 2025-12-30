@@ -23,23 +23,24 @@ import SwiftUI
 import SwissTransferCore
 
 public struct FileGridCellsView: View {
+    @ObservedObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
     private let action: (any LargeFileCellAction)?
     private let matomoCategory: MatomoCategory
 
-    @State private var isMultiSelectionEnabled = false
-    @State private var selection = Set<FileUi>()
-
     public init(
         files: [any DisplayableFile],
         transfer: TransferUi? = nil,
         action: (any LargeFileCellAction)? = nil,
+        multipleSelectionViewModel: MultipleSelectionViewModel = MultipleSelectionViewModel(),
         matomoCategory: MatomoCategory
     ) {
         self.files = files
         self.transfer = transfer
         self.action = action
+        self.multipleSelectionViewModel = multipleSelectionViewModel
         self.matomoCategory = matomoCategory
     }
 
@@ -50,23 +51,19 @@ public struct FileGridCellsView: View {
                     if let transfer,
                        let fileUi = file as? FileUi {
                         let isMultiSelected = Binding {
-                            selection.contains(fileUi)
-                        } set: { selected in
-                            if selected {
-                                selection.insert(fileUi)
-                            } else {
-                                selection.remove(fileUi)
-                            }
+                            multipleSelectionViewModel.isSelected(file: fileUi)
+                        } set: { _ in
+                            multipleSelectionViewModel.toggleSelection(of: fileUi)
                         }
                         DownloadableFileCellView(
                             transfer: transfer,
                             file: fileUi,
-                            isMultiSelectionEnabled: isMultiSelectionEnabled,
+                            isMultiSelectionEnabled: multipleSelectionViewModel.isEnabled,
                             isSelected: isMultiSelected,
                             matomoCategory: matomoCategory
                         )
                         .onLongPressGesture {
-                            turnOnMultipleSelection(with: fileUi)
+                            multipleSelectionViewModel.toggleSelection(of: fileUi)
                         }
                     } else {
                         LargeFileCell(
@@ -79,23 +76,19 @@ public struct FileGridCellsView: View {
             } else {
                 if let transfer, let fileUi = file as? FileUi {
                     let isMultiSelected = Binding {
-                        selection.contains(fileUi)
-                    } set: { selected in
-                        if selected {
-                            selection.insert(fileUi)
-                        } else {
-                            selection.remove(fileUi)
-                        }
+                        multipleSelectionViewModel.isSelected(file: fileUi)
+                    } set: { _ in
+                        multipleSelectionViewModel.toggleSelection(of: fileUi)
                     }
                     DownloadableFileCellView(
                         transfer: transfer,
                         file: fileUi,
-                        isMultiSelectionEnabled: isMultiSelectionEnabled,
+                        isMultiSelectionEnabled: multipleSelectionViewModel.isEnabled,
                         isSelected: isMultiSelected,
                         matomoCategory: matomoCategory
                     )
                     .onLongPressGesture {
-                        turnOnMultipleSelection(with: fileUi)
+                        multipleSelectionViewModel.toggleSelection(of: fileUi)
                     }
                 } else if let transferableFile = file as? TransferableFile {
                     TransferableFileCellView(
@@ -112,12 +105,6 @@ public struct FileGridCellsView: View {
                 }
             }
         }
-    }
-
-    func turnOnMultipleSelection(with file: FileUi) {
-        guard !isMultiSelectionEnabled else { return }
-        isMultiSelectionEnabled = true
-        selection.insert(file)
     }
 }
 
