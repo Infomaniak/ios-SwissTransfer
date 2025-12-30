@@ -28,6 +28,8 @@ public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isCompactWindow) private var isCompactWindow
 
+    @StateObject private var multipleSelectionViewModel = MultipleSelectionViewModel()
+
     private let transfer: TransferUi?
 
     private var matomoCategory: MatomoCategory {
@@ -68,7 +70,7 @@ public struct TransferDetailsView: View {
                         }
                     }
 
-                    ContentView(transfer: transfer, matomoCategory: matomoCategory)
+                    ContentView(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)

@@ -28,6 +28,7 @@ import SwissTransferCoreUI
 
 struct ContentView: View {
     let transfer: TransferUi
+    let multipleSelectionViewModel: MultipleSelectionViewModel
     let matomoCategory: MatomoCategory
 
     var body: some View {
@@ -36,12 +37,12 @@ struct ContentView: View {
                 .sectionHeader()
 
             FileGridLayoutView {
-                FileGridCellsView(files: transfer.files, transfer: transfer, matomoCategory: matomoCategory)
+                FileGridCellsView(files: transfer.files, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
             }
         }
     }
 }
 
 #Preview {
-    ContentView(transfer: PreviewHelper.sampleTransfer, matomoCategory: .sentTransfer)
+    ContentView(transfer: PreviewHelper.sampleTransfer, multipleSelectionViewModel: MultipleSelectionViewModel(), matomoCategory: .sentTransfer)
 }
