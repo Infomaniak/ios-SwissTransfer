@@ -25,10 +25,12 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
 
     let title: String
     let showCloseButton: Bool
+    let closeButtonPlacement: ToolbarItemPlacement
 
-    init(title: String, showCloseButton: Bool, multipleSelectionViewModel: MultipleSelectionViewModel) {
+    init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement = .cancellationAction, multipleSelectionViewModel: MultipleSelectionViewModel) {
         self.title = title
         self.showCloseButton = showCloseButton
+        self.closeButtonPlacement = closeButtonPlacement
         self.multipleSelectionViewModel = multipleSelectionViewModel
     }
 
@@ -53,9 +55,10 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
                         }
                     }
                 }
+                .navigationBarBackButtonHidden()
         } else {
             content
-                .stNavigationBarFullScreen(title: title, showCloseButton: showCloseButton)
+                .stNavigationBarFullScreen(title: title, showCloseButton: showCloseButton, closeButtonPlacement: closeButtonPlacement)
         }
     }
 }
@@ -64,12 +67,14 @@ public extension View {
     func stNavigationBarMultipleSelection(
         title: String = "Transfer",
         showCloseButton: Bool = true,
+        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction,
         multipleSelectionViewModel: MultipleSelectionViewModel
     ) -> some View {
         modifier(
             STNavigationBarMultipleSelectionModifier(
                 title: title,
                 showCloseButton: showCloseButton,
+                closeButtonPlacement: closeButtonPlacement,
                 multipleSelectionViewModel: multipleSelectionViewModel
             )
         )
