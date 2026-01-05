@@ -47,7 +47,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
 
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            multipleSelectionViewModel.toggleSelectAll.toggle()
+                            multipleSelectionViewModel.selectAll()
                         } label: {
                             Text("Tout")
                         }

@@ -22,7 +22,7 @@ import SwiftUI
 public class MultipleSelectionViewModel: ObservableObject {
     @Published var isEnabled = false
     @Published var selectedItems = Set<FileUi>()
-    @Published var toggleSelectAll = false
+    var allSelectable = [FileUi]()
 
     public init() {}
 
@@ -42,7 +42,11 @@ public class MultipleSelectionViewModel: ObservableObject {
         }
     }
 
-    func selectAll(files: [FileUi]) {
+    func selectAll() {
+        selectAll(files: allSelectable)
+    }
+    
+    private func selectAll(files: [FileUi]) {
         if files.count == selectedItems.count {
             selectedItems.removeAll()
             isEnabled = false
