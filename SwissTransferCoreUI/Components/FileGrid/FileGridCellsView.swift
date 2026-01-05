@@ -105,6 +105,10 @@ public struct FileGridCellsView: View {
                 }
             }
         }
+        .onChange(of: multipleSelectionViewModel.toggleSelectAll) { _ in
+            let filesUi: [FileUi] = self.files.compactMap { $0 as? FileUi }
+            multipleSelectionViewModel.selectAll(files: filesUi)
+        }
     }
 }
 
