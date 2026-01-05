@@ -22,6 +22,7 @@ import SwiftUI
 public class MultipleSelectionViewModel: ObservableObject {
     @Published var isEnabled = false
     @Published var selectedItems = Set<FileUi>()
+    @Published var toggleSelectAll = false
 
     public init() {}
 
