@@ -84,7 +84,7 @@ public struct TransferDetailsView: View {
         .stNavigationBarStyle()
         .stNavigationBarMultipleSelection(title: transfer?.name ?? "", showCloseButton: isCompactWindow, multipleSelectionViewModel: multipleSelectionViewModel)
         .navigationDestination(for: FileUi.self) { file in
-            FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
+            FileListView(folder: file, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
                 .environment(\.dismissModal) { dismiss() }
         }
         .environment(\.dismissModal) { dismiss() }
