@@ -20,7 +20,7 @@ import STCore
 import SwiftUI
 
 public class MultipleSelectionViewModel: ObservableObject {
-    @Published var isEnabled = false
+    @Published public var isEnabled = false
     @Published var selectedItems = Set<FileUi>()
     var allSelectable = [FileUi]()
 
