@@ -74,7 +74,7 @@ public struct TransferDetailsView: View {
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
-                .shareTransferToolbar(transfer: transfer, matomoCategory: matomoCategory)
+                .shareTransferToolbar(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
             } else {
                 ProgressView()
             }
@@ -85,6 +85,7 @@ public struct TransferDetailsView: View {
         .stNavigationBarMultipleSelection(title: transfer?.name ?? "", showCloseButton: isCompactWindow, multipleSelectionViewModel: multipleSelectionViewModel)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
+                .downloadSelectionToolbar(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel)
                 .environment(\.dismissModal) { dismiss() }
         }
         .environment(\.dismissModal) { dismiss() }

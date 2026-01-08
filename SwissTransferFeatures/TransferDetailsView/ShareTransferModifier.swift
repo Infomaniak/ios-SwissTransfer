@@ -37,6 +37,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
     @State private var isShowingPassword = false
 
     let transfer: TransferUi
+    @ObservedObject var multipleSelectionViewModel: MultipleSelectionViewModel
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
@@ -48,48 +49,50 @@ struct ShareTransferToolbarModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
-
-                    LegacyToolbarSpacing()
-
-                    if let transferURL {
-                        ShareLink(item: transferURL) {
-                            Label {
-                                Text(STResourcesStrings.Localizable.buttonShare)
-                            } icon: {
-                                STResourcesAsset.Images.squareArrowUp.swiftUIImage
-                            }
-                        }
-                        .simultaneousGesture(TapGesture().onEnded {
-                            @InjectService var matomo: MatomoUtils
-                            matomo.track(eventWithCategory: matomoCategory, name: .share)
-                        })
+                if !multipleSelectionViewModel.isEnabled {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
 
                         LegacyToolbarSpacing()
+
+                        if let transferURL {
+                            ShareLink(item: transferURL) {
+                                Label {
+                                    Text(STResourcesStrings.Localizable.buttonShare)
+                                } icon: {
+                                    STResourcesAsset.Images.squareArrowUp.swiftUIImage
+                                }
+                            }
+                            .simultaneousGesture(TapGesture().onEnded {
+                                @InjectService var matomo: MatomoUtils
+                                matomo.track(eventWithCategory: matomoCategory, name: .share)
+                            })
+
+                            LegacyToolbarSpacing()
+                        }
                     }
-                }
 
-                if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.fixed, placement: .bottomBar)
-                }
+                    if #available(iOS 26.0, *) {
+                        ToolbarSpacer(.fixed, placement: .bottomBar)
+                    }
 
-                ToolbarItemGroup(placement: .bottomBar) {
-                    if let password = transfer.password, !password.isEmpty, transfer.direction == .sent {
-                        Button {
-                            isShowingPassword = true
-                        } label: {
-                            Label {
-                                Text(STResourcesStrings.Localizable.settingsOptionPassword)
-                            } icon: {
-                                STResourcesAsset.Images.textfieldLock.swiftUIImage
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        if let password = transfer.password, !password.isEmpty, transfer.direction == .sent {
+                            Button {
+                                isShowingPassword = true
+                            } label: {
+                                Label {
+                                    Text(STResourcesStrings.Localizable.settingsOptionPassword)
+                                } icon: {
+                                    STResourcesAsset.Images.textfieldLock.swiftUIImage
+                                }
                             }
-                        }
-                        .stFloatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
-                            PasswordPanelView(password: password, matomoCategory: matomoCategory)
-                        }
+                            .stFloatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
+                                PasswordPanelView(password: password, matomoCategory: matomoCategory)
+                            }
 
-                        LegacyToolbarSpacing()
+                            LegacyToolbarSpacing()
+                        }
                     }
                 }
 
@@ -98,14 +101,14 @@ struct ShareTransferToolbarModifier: ViewModifier {
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
-                    DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
+                    DownloadButton(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: .receivedTransfer)
                 }
             }
     }
 }
 
 public extension View {
-    func shareTransferToolbar(transfer: TransferUi, matomoCategory: MatomoCategory) -> some View {
-        modifier(ShareTransferToolbarModifier(transfer: transfer, matomoCategory: matomoCategory))
+    func shareTransferToolbar(transfer: TransferUi, multipleSelectionViewModel: MultipleSelectionViewModel, matomoCategory: MatomoCategory) -> some View {
+        modifier(ShareTransferToolbarModifier(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory))
     }
 }
