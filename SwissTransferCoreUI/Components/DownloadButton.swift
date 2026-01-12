@@ -25,11 +25,16 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
+struct DownloadResult: Identifiable {
+    let id = UUID().uuidString
+    let urls: [URL]
+}
+
 struct ActivityView: UIViewControllerRepresentable {
-    let sharedFileURL: URL
+    let sharedFileURLs: [URL]
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: [sharedFileURL], applicationActivities: nil)
+        return UIActivityViewController(activityItems: sharedFileURLs, applicationActivities: nil)
     }
 
     func updateUIViewController(
@@ -43,19 +48,21 @@ public struct DownloadButton: View {
 
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var downloadedTransferURL: IdentifiableURL?
+    @State private var downloadedTransferURL: DownloadResult?
+    @ObservedObject private var multipleSelectionViewModel: MultipleSelectionViewModel
 
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
 
-    public init(transfer: TransferUi, matomoCategory: MatomoCategory) {
+    public init(transfer: TransferUi, multipleSelectionViewModel: MultipleSelectionViewModel, matomoCategory: MatomoCategory) {
         self.transfer = transfer
+        self.multipleSelectionViewModel = multipleSelectionViewModel
         self.matomoCategory = matomoCategory
     }
 
     public var body: some View {
         Button {
-            startOrCancelDownloadIfNeeded()
+            download()
         } label: {
             Label {
                 Text(STResourcesStrings.Localizable.buttonDownload)
@@ -63,11 +70,16 @@ public struct DownloadButton: View {
                 STResourcesAsset.Images.arrowDownLine.swiftUIImage
             }
         }
-        .downloadProgressAlertFor(transfer: transfer) { downloadedFileURL in
-            downloadedTransferURL = IdentifiableURL(url: downloadedFileURL)
+        .downloadProgressAlertFor(transfer: transfer) { downloadedFileURLs in
+            print("completion transfer")
+            downloadedTransferURL = DownloadResult(urls: downloadedFileURLs)
         }
-        .sheet(item: $downloadedTransferURL) { downloadedFileURL in
-            ActivityView(sharedFileURL: downloadedFileURL.url)
+        .downloadProgressAlertFor(transfer: transfer, files: Array(multipleSelectionViewModel.selectedItems)) { downloadedFileURLs in
+            print("completion multi \(downloadedFileURLs.count)")
+            downloadedTransferURL = DownloadResult(urls: downloadedFileURLs)
+        }
+        .sheet(item: $downloadedTransferURL) { downloadResult in
+            ActivityView(sharedFileURLs: downloadResult.urls)
         }
     }
 
@@ -76,14 +88,16 @@ public struct DownloadButton: View {
         matomo.track(eventWithCategory: matomoCategory, name: .downloadTransfer)
 
         Task {
-            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
-                await downloadManager.removeDownloadTask(id: downloadTask.id)
+            if let multiDownloadTask = downloadManager.getMultiDownloadTaskFor(transfer: transfer, files: []) {
+//            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
+//                await downloadManager.removeDownloadTask(id: downloadTask.id)
+                await downloadManager.removeMultiDownloadTask()
                 return
             }
 
             if let localURL = transfer.localArchiveURL,
                FileManager.default.fileExists(atPath: localURL.path()) {
-                downloadedTransferURL = IdentifiableURL(url: localURL)
+                downloadedTransferURL = DownloadResult(urls: [localURL]) // Changer ca c'est pas une liste
                 return
             }
 
@@ -92,6 +106,48 @@ public struct DownloadButton: View {
             }
 
             try? await downloadManager.startDownload(transfer: transfer)
+        }
+    }
+
+    // TODO: - Peut mieux faire
+    /// Pour chaque file chercher si il est en local avant de download ?
+    private func startOrCancelDownloadIfNeeded(files: [FileUi]) {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: matomoCategory, name: .downloadTransfer)
+
+        Task {
+            // TODO: - C'est utile ca ?
+            if downloadManager.getMultiDownloadTaskFor(transfer: transfer, files: files) != nil {
+                await downloadManager.removeMultiDownloadTask()
+                return
+            }
+
+            let localURLs: [URL] = files.compactMap {
+                guard let localURL = $0.localURLFor(transfer: transfer),
+                      FileManager.default.fileExists(atPath: localURL.path()) else { return nil }
+                return localURL
+            }
+
+            print("local count: \(localURLs.count)")
+            if localURLs.count == files.count {
+                print("find all locally")
+                downloadedTransferURL = DownloadResult(urls: localURLs)
+                return
+            }
+
+            Task {
+                await notificationsHelper.requestPermissionIfNeeded()
+            }
+
+            try? await downloadManager.startDownload(files: files, in: transfer)
+        }
+    }
+
+    private func download() {
+        if multipleSelectionViewModel.isEnabled {
+            startOrCancelDownloadIfNeeded(files: Array(multipleSelectionViewModel.selectedItems))
+        } else {
+            startOrCancelDownloadIfNeeded()
         }
     }
 }

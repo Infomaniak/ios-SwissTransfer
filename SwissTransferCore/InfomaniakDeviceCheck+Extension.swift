@@ -31,7 +31,7 @@ public extension InfomaniakDeviceCheck {
         do {
             @InjectService var injection: SwissTransferInjection
             #if DEBUG
-            let attestationToken = try await InfomaniakDeviceCheck(environment: .preprod).generateAttestationFor(
+            let attestationToken = try await InfomaniakDeviceCheck(environment: .prod).generateAttestationFor(
                 targetUrl: URL(string: injection.sharedApiUrlCreator.createUploadContainerUrl)!,
                 bundleId: Constants.bundleId,
                 bypassValidation: true

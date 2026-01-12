@@ -27,12 +27,12 @@ import SwissTransferCore
 extension View {
     func downloadProgressAlertFor(
         transfer: TransferUi,
-        file: FileUi? = nil,
-        downloadCompletedCallback: ((URL) -> Void)? = nil
+        files: [FileUi] = [FileUi](),
+        downloadCompletedCallback: (([URL]) -> Void)? = nil
     ) -> some View {
         modifier(DownloadProgressAlertViewModifier(
             transfer: transfer,
-            file: file,
+            files: files,
             downloadCompletedCallback: downloadCompletedCallback
         ))
     }
@@ -49,16 +49,17 @@ struct DownloadProgressAlert: View {
 
     @State private var state: DownloadProgressAlertState = .idle
 
-    let downloadTask: DownloadTask
-    let downloadCompletedCallback: ((URL) -> Void)?
+    @ObservedObject var multiDownloadTask: MultiDownloadTask
+    let downloadCompletedCallback: (([URL]) -> Void)?
 
     var body: some View {
+        let _ = Self._printChanges()
         VStack(alignment: .leading, spacing: IKPadding.mini) {
             switch state {
             case .idle:
                 Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                     .font(.ST.headline)
-            case .running(let currentProgress, let totalProgress):
+            case let .running(currentProgress, totalProgress):
                 Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                     .font(.ST.headline)
 
@@ -85,20 +86,22 @@ struct DownloadProgressAlert: View {
 
             Button(CoreUILocalizable.buttonCancel) {
                 Task {
-                    await downloadManager.removeDownloadTask(id: downloadTask.id)
+                    await downloadManager.removeMultiDownloadTask()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
             .buttonStyle(.ikBorderless(isInlined: true))
         }
-        .task(id: downloadTask.state) {
-            switch downloadTask.state {
-            case .completed(let url):
-                await downloadManager.removeDownloadTask(id: downloadTask.id)
-                downloadCompletedCallback?(url)
-            case .running(let current, let total):
+        .task(id: multiDownloadTask.state) {
+            switch multiDownloadTask.state {
+            case let .completed(urls):
+                print("IT IS COMPLETED \(urls.count)")
+                await downloadManager.removeMultiDownloadTask()
+                downloadCompletedCallback?(urls)
+            case let .running(current, total):
+                print("IT IS RUNNING \(current)")
                 state = .running(currentProgress: current, totalProgress: total)
-            case .error(let error):
+            case let .error(error):
                 state = .error(error)
             }
         }
@@ -109,13 +112,15 @@ struct DownloadProgressAlertViewModifier: ViewModifier {
     @EnvironmentObject private var downloadManager: DownloadManager
 
     let transfer: TransferUi
-    let file: FileUi?
-    let downloadCompletedCallback: ((URL) -> Void)?
+    let files: [FileUi]
+    let downloadCompletedCallback: (([URL]) -> Void)?
 
-    private var downloadTask: Binding<DownloadTask?> {
+    private var multiDownloadTask: Binding<MultiDownloadTask?> {
         Binding(
             get: {
-                downloadManager.getDownloadTaskFor(transfer: transfer, file: file)
+                let mdt = downloadManager.getMultiDownloadTaskFor(transfer: transfer, files: files)
+                print(files.count, mdt)
+                return mdt
             }, set: { _ in
             }
         )
@@ -123,15 +128,15 @@ struct DownloadProgressAlertViewModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .stCustomAlert(item: downloadTask) { downloadTask in
-                DownloadProgressAlert(downloadTask: downloadTask, downloadCompletedCallback: downloadCompletedCallback)
+            .stCustomAlert(item: multiDownloadTask) { multiDownloadTask in
+                DownloadProgressAlert(multiDownloadTask: multiDownloadTask, downloadCompletedCallback: downloadCompletedCallback)
             }
     }
 }
 
 #Preview {
     DownloadProgressAlert(
-        downloadTask: DownloadTask(id: "", state: .completed(URL(string: "/")!)),
+        multiDownloadTask: MultiDownloadTask(id: "", size: 0)!,
         downloadCompletedCallback: nil
     )
     .environmentObject(DownloadManager(sessionConfiguration: .swissTransfer))

@@ -47,7 +47,13 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
         self.size = size
     }
 
+    // Ne pas gérer les erreurs pour l'instant
+
     public var state: DownloadTaskState {
+        guard !trackedDownloadTasks.isEmpty else {
+            return .running(current: 0, total: size)
+        }
+        
         guard !trackedDownloadTasks.values.filter(\.state.isRunning).isEmpty else {
             var urls = [URL]()
             for task in trackedDownloadTasks.values {
@@ -55,6 +61,7 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
                     urls += url
                 }
             }
+            print("Return completed of \(urls.count)")
             return .completed(urls)
         }
 
@@ -164,25 +171,29 @@ public class DownloadManager: ObservableObject {
     }
 
     public func getMultiDownloadTaskFor(transfer: TransferUi, files: [FileUi]) -> MultiDownloadTask? {
-        let multiTaskId = multiTaskId(filesUUID: files.map(\.id))
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.id))
 
+        // TODO: - Contains only ?
         guard trackedMultiDownloadTask?.id == multiTaskId else { return nil }
         return trackedMultiDownloadTask
     }
 
     private func updateDownloadTask(id: String, state: DownloadTaskState) {
+        print("update")
         trackedMultiDownloadTask?.trackedDownloadTasks[id] = DownloadTask(id: id, state: state)
     }
 
     public func removeMultiDownloadTask() async {
+        print("Remove multi download task")
         guard let trackedMultiDownloadTask else { return }
+        self.trackedMultiDownloadTask = nil
         for task in trackedMultiDownloadTask.trackedDownloadTasks.values {
             await removeDownloadTask(id: task.id)
         }
-        self.trackedMultiDownloadTask = nil
     }
 
     private func removeDownloadTask(id: String) async {
+        print("remove task")
         if let task = await session.allTasks.first(where: { $0.taskDescription == id }) {
             task.cancel()
         }
@@ -191,7 +202,8 @@ public class DownloadManager: ObservableObject {
     }
 
     public func startDownload(files: [FileUi], in transfer: TransferUi) async throws {
-        let multiTaskId = multiTaskId(filesUUID: files.map(\.uid))
+        print("start download of \(files.count)")
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
         let multiDownloadTask = MultiDownloadTask(
             id: multiTaskId,
             size: files.filesSize()
@@ -204,6 +216,7 @@ public class DownloadManager: ObservableObject {
     }
 
     public func startDownload(file: FileUi, in transfer: TransferUi) async throws {
+        print("Start download")
         let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
@@ -219,8 +232,8 @@ public class DownloadManager: ObservableObject {
         "\(transferUUID)__\(fileUUID ?? "")"
     }
 
-    private func multiTaskId(filesUUID: [String]) -> String {
-        return filesUUID.sorted().joined(separator: "-")
+    private func multiTaskId(transferUUID: String, filesUUID: [String]) -> String {
+        return "\(transferUUID)__\(filesUUID.sorted().joined(separator: "-"))"
     }
 
     private func getDownloadURLFor(file: FileUi, in transfer: TransferUi) async throws -> URL {

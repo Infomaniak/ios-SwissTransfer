@@ -59,27 +59,35 @@ struct DownloadableFileCellView: View {
                     .padding(12)
             }
         }
-        .downloadProgressAlertFor(transfer: transfer, file: file) { downloadedFileURL in
-            presentFile(at: downloadedFileURL)
+        // TODO: - Monter ca dans TransferDetailsView
+        .downloadProgressAlertFor(transfer: transfer, files: [file]) { downloadedFileURLs in
+            print("simple completion done")
+            // TODO: - Temporary
+            // Temporary
+            guard let firstUrl = downloadedFileURLs.first else { return }
+            presentFile(at: firstUrl)
         }
         .quickLookPreview($downloadedFilePreviewURL)
         .sheet(item: $downloadedDirectoryURL) { downloadedFileURL in
-            ActivityView(sharedFileURL: downloadedFileURL.url)
+            ActivityView(sharedFileURLs: [downloadedFileURL.url])
         }
     }
 
     private func startOrCancelDownloadIfNeeded() {
         @InjectService var matomo: MatomoUtils
         matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
+        print("Start")
 
         Task {
-            if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
-                await downloadManager.removeDownloadTask(id: downloadTask.id)
+            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer, file: file) {
+//                await downloadManager.removeDownloadTask(id: downloadTask.id)
+                await downloadManager.removeMultiDownloadTask()
                 return
             }
 
             if let localURL = file.localURLFor(transfer: transfer),
                FileManager.default.fileExists(atPath: localURL.path()) {
+                print("inside local url")
                 presentFile(at: localURL)
                 return
             }
@@ -88,7 +96,7 @@ struct DownloadableFileCellView: View {
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
-            try await downloadManager.startDownload(file: file, in: transfer)
+            try await downloadManager.startDownload(files: [file], in: transfer)
         }
     }
 
