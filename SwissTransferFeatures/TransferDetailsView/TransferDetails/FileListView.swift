@@ -61,9 +61,7 @@ struct FileListView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .font(.ST.callout)
 
-                FileGridLayoutView {
-                    FileGridCellsView(files: files.value ?? [], transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
-                }
+                FileGridView(files: files.value ?? [], transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
             }
             .padding(value: .medium)
         }

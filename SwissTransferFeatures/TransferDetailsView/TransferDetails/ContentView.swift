@@ -36,9 +36,7 @@ struct ContentView: View {
             Text(STResourcesStrings.Localizable.transferContentHeader)
                 .sectionHeader()
 
-            FileGridLayoutView {
-                FileGridCellsView(files: transfer.files, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
-            }
+            FileGridView(files: transfer.files, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
         }
     }
 }
