@@ -69,7 +69,7 @@ open class TargetAssembly {
 
                 #if DEBUG
                 return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Prod(),
+                    environment: STCore.ApiEnvironment.Preprod(),
                     userAgent: UserAgentBuilder().userAgent,
                     databaseRootDirectory: realmRootDirectory,
                     crashReport: sentryWrapper
