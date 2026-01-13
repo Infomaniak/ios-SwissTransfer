@@ -28,9 +28,6 @@ struct DownloadableFileCellView: View {
 
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var downloadedFilePreviewURL: URL?
-    @State private var downloadedDirectoryURL: IdentifiableURL?
-
     let transfer: TransferUi
     let file: FileUi
     let isMultiSelectionEnabled: Bool
@@ -39,7 +36,7 @@ struct DownloadableFileCellView: View {
 
     private var downloadFileAction: DownloadFileAction {
         DownloadFileAction { _ in
-            startOrCancelDownloadIfNeeded()
+            downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
         }
     }
 
@@ -59,58 +56,11 @@ struct DownloadableFileCellView: View {
                     .padding(12)
             }
         }
-        // TODO: - Monter ca dans TransferDetailsView
-        .downloadProgressAlertFor(transfer: transfer, files: [file]) { downloadedFileURLs in
-            print("simple completion done")
-            // TODO: - Temporary
-            // Temporary
-            guard let firstUrl = downloadedFileURLs.first else { return }
-            presentFile(at: firstUrl)
-        }
-        .quickLookPreview($downloadedFilePreviewURL)
-        .sheet(item: $downloadedDirectoryURL) { downloadedFileURL in
-            ActivityView(sharedFileURLs: [downloadedFileURL.url])
-        }
-    }
-
-    private func startOrCancelDownloadIfNeeded() {
-        @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
-        print("Start")
-
-        Task {
-            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer, file: file) {
-//                await downloadManager.removeDownloadTask(id: downloadTask.id)
-                await downloadManager.removeMultiDownloadTask()
-                return
-            }
-
-            if let localURL = file.localURLFor(transfer: transfer),
-               FileManager.default.fileExists(atPath: localURL.path()) {
-                print("inside local url")
-                presentFile(at: localURL)
-                return
-            }
-
-            Task {
-                await notificationsHelper.requestPermissionIfNeeded()
-            }
-
-            try await downloadManager.startDownload(files: [file], in: transfer)
-        }
-    }
-
-    private func presentFile(at url: URL) {
-        if file.isFolder {
-            downloadedDirectoryURL = IdentifiableURL(url: url)
-        } else {
-            downloadedFilePreviewURL = url
-        }
     }
 
     private func fileTapped() {
         guard isMultiSelectionEnabled else {
-            startOrCancelDownloadIfNeeded()
+            downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
             return
         }
 

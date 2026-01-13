@@ -24,17 +24,9 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-extension View {
-    func downloadProgressAlertFor(
-        transfer: TransferUi,
-        files: [FileUi] = [FileUi](),
-        downloadCompletedCallback: (([URL]) -> Void)? = nil
-    ) -> some View {
-        modifier(DownloadProgressAlertViewModifier(
-            transfer: transfer,
-            files: files,
-            downloadCompletedCallback: downloadCompletedCallback
-        ))
+public extension View {
+    func downloadProgressAlert(downloadCompletedCallback: (([URL]) -> Void)? = nil) -> some View {
+        modifier(DownloadProgressAlertViewModifier(downloadCompletedCallback: downloadCompletedCallback))
     }
 }
 
@@ -53,7 +45,6 @@ struct DownloadProgressAlert: View {
     let downloadCompletedCallback: (([URL]) -> Void)?
 
     var body: some View {
-        let _ = Self._printChanges()
         VStack(alignment: .leading, spacing: IKPadding.mini) {
             switch state {
             case .idle:
@@ -95,11 +86,9 @@ struct DownloadProgressAlert: View {
         .task(id: multiDownloadTask.state) {
             switch multiDownloadTask.state {
             case let .completed(urls):
-                print("IT IS COMPLETED \(urls.count)")
-                await downloadManager.removeMultiDownloadTask()
                 downloadCompletedCallback?(urls)
+                await downloadManager.removeMultiDownloadTask()
             case let .running(current, total):
-                print("IT IS RUNNING \(current)")
                 state = .running(currentProgress: current, totalProgress: total)
             case let .error(error):
                 state = .error(error)
@@ -111,25 +100,16 @@ struct DownloadProgressAlert: View {
 struct DownloadProgressAlertViewModifier: ViewModifier {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    let transfer: TransferUi
-    let files: [FileUi]
+    @State private var multiDownloadTask: MultiDownloadTask? = nil
     let downloadCompletedCallback: (([URL]) -> Void)?
-
-    private var multiDownloadTask: Binding<MultiDownloadTask?> {
-        Binding(
-            get: {
-                let mdt = downloadManager.getMultiDownloadTaskFor(transfer: transfer, files: files)
-                print(files.count, mdt)
-                return mdt
-            }, set: { _ in
-            }
-        )
-    }
 
     func body(content: Content) -> some View {
         content
-            .stCustomAlert(item: multiDownloadTask) { multiDownloadTask in
+            .stCustomAlert(item: $multiDownloadTask) { multiDownloadTask in
                 DownloadProgressAlert(multiDownloadTask: multiDownloadTask, downloadCompletedCallback: downloadCompletedCallback)
+            }
+            .onChange(of: downloadManager.trackedMultiDownloadTask) { _ in
+                multiDownloadTask = downloadManager.trackedMultiDownloadTask
             }
     }
 }
