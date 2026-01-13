@@ -26,6 +26,6 @@ jobs:
           LOCO_KEY: ${{ secrets.LOCO_KEY }}
         run: |
           touch ${GITHUB_WORKSPACE}/.import_loco
-          echo -e "[mail]\nlocalizable_path = ${GITHUB_WORKSPACE}/SwissTransferResources/Localizable\nmain_target_localizable_path = ${GITHUB_WORKSPACE}/SwissTransfer/Resources/Localizable\nloco_key = $LOCO_KEY" > ${GITHUB_WORKSPACE}/.import_loco
+          echo -e "[swisstransfer]\nlocalizable_path = ${GITHUB_WORKSPACE}/SwissTransferResources/Localizable\nmain_target_localizable_path = ${GITHUB_WORKSPACE}/SwissTransfer/Resources/Localizable\nloco_key = $LOCO_KEY" > ${GITHUB_WORKSPACE}/.import_loco
       - name: Validate
-        run: import_loco mail -c --config-file ${GITHUB_WORKSPACE}/.import_loco
+        run: import_loco swisstransfer -c --config-file ${GITHUB_WORKSPACE}/.import_loco
