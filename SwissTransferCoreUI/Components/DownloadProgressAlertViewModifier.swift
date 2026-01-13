@@ -100,7 +100,7 @@ struct DownloadProgressAlert: View {
 struct DownloadProgressAlertViewModifier: ViewModifier {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var multiDownloadTask: MultiDownloadTask? = nil
+    @State private var multiDownloadTask: MultiDownloadTask?
     let downloadCompletedCallback: (([URL]) -> Void)?
 
     func body(content: Content) -> some View {
