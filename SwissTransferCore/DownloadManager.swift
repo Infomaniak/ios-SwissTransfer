@@ -160,19 +160,6 @@ public class DownloadManager: ObservableObject {
         }
     }
 
-    public func getDownloadTaskFor(transfer: TransferUi) -> DownloadTask? {
-        return getDownloadTaskFor(transfer: transfer, file: nil)
-    }
-
-    public func getDownloadTaskFor(transfer: TransferUi, file: FileUi?) -> DownloadTask? {
-        guard let file, let multiTask = getMultiDownloadTaskFor(transfer: transfer, files: [file]) else {
-            return nil
-        }
-
-        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
-        return multiTask.trackedDownloadTasks[taskId]
-    }
-
     public func getMultiDownloadTaskFor(transfer: TransferUi, files: [FileUi]) -> MultiDownloadTask? {
         let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.id))
 
@@ -200,7 +187,7 @@ public class DownloadManager: ObservableObject {
         trackedMultiDownloadTask?.trackedDownloadTasks[id] = nil
     }
 
-    func startOrCancelDownload(transfer: TransferUi, files: [FileUi], matomoCategory: MatomoCategory) {
+    public func startOrCancelDownload(transfer: TransferUi, files: [FileUi], matomoCategory: MatomoCategory) {
         @InjectService var matomo: MatomoUtils
         let matomoName: MatomoName = files.count == 1 ? .consultOneFile : .downloadTransfer
         matomo.track(eventWithCategory: matomoCategory, name: matomoName)
@@ -259,7 +246,7 @@ public class DownloadManager: ObservableObject {
         try? await startDownload(files: filesToDownload, in: transfer)
     }
 
-    public func startDownload(files: [FileUi], in transfer: TransferUi) async throws {
+    private func startDownload(files: [FileUi], in transfer: TransferUi) async throws {
         let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
         let multiDownloadTask = MultiDownloadTask(
             id: multiTaskId,
@@ -272,13 +259,13 @@ public class DownloadManager: ObservableObject {
         }
     }
 
-    public func startDownload(file: FileUi, in transfer: TransferUi) async throws {
+    private func startDownload(file: FileUi, in transfer: TransferUi) async throws {
         let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
     }
 
-    public func startDownload(transfer: TransferUi) async throws {
+    private func startDownload(transfer: TransferUi) async throws {
         let downloadURL = try await getDownloadURLFor(transfer: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
