@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
 
 struct STNavigationBarMultipleSelectionModifier: ViewModifier {
@@ -37,13 +38,13 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
     func body(content: Content) -> some View {
         if multipleSelectionViewModel.isEnabled {
             content
-                .stNavigationTitle("1 sélectionné")
+                .stNavigationTitle(STResourcesStrings.Localizable.multipleSelectionTitle(multipleSelectionViewModel.selectedItems.count))
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
                             multipleSelectionViewModel.disable()
                         } label: {
-                            Text("Annuler")
+                            Text(STResourcesStrings.Localizable.buttonCancel)
                         }
                     }
 
@@ -51,7 +52,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
                         Button {
                             multipleSelectionViewModel.selectAll()
                         } label: {
-                            Text("Tout")
+                            Text(STResourcesStrings.Localizable.buttonAll)
                         }
                     }
                 }
