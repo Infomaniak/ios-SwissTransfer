@@ -21,6 +21,7 @@ import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import STCore
 import STResources
+import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
 
@@ -100,7 +101,7 @@ struct DownloadProgressAlert: View {
 struct DownloadProgressAlertViewModifier: ViewModifier {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @State private var multiDownloadTask: MultiDownloadTask?
+    @ModalState(wrappedValue: nil, context: ContextKeys.downloadProgress) private var multiDownloadTask: MultiDownloadTask?
     let downloadCompletedCallback: (([URL]) -> Void)?
 
     func body(content: Content) -> some View {
