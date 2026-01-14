@@ -45,7 +45,7 @@ public class MultipleSelectionViewModel: ObservableObject {
     func selectAll() {
         selectAll(files: allSelectable)
     }
-    
+
     private func selectAll(files: [FileUi]) {
         if files.count == selectedItems.count {
             selectedItems.removeAll()
@@ -57,7 +57,7 @@ public class MultipleSelectionViewModel: ObservableObject {
         }
     }
 
-    func disable() {
+    public func disable() {
         selectedItems.removeAll()
         isEnabled = false
     }

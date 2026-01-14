@@ -116,8 +116,8 @@ public class DownloadManager: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
     @Published public var trackedMultiDownloadTask: MultiDownloadTask?
+    @Published public var localDownloadOnly = false
 
-    public var localDownloadOnly = false
     public var localURLs = [URL]()
 
     public var backgroundDownloadCompletionCallback: (() -> Void)? {
