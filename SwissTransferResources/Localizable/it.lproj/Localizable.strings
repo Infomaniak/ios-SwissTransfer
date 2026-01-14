@@ -13,6 +13,12 @@
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "In attesa della rete";
 
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Tutti";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Annullamento";
+
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Annullamento del trasferimento";
 
