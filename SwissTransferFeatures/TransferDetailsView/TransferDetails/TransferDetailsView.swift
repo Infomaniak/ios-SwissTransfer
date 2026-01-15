@@ -80,9 +80,10 @@ public struct TransferDetailsView: View {
         .scrollBounceBehavior(.basedOnSize)
         .appBackground()
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
+        .stNavigationBarMultipleSelection(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
+                .downloadSelectionToolbar(transfer: transfer)
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)

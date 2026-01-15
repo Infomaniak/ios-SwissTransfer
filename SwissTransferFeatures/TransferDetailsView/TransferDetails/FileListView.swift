@@ -59,15 +59,13 @@ struct FileListView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .font(.ST.callout)
 
-                FileGridLayoutView {
-                    FileGridCellsView(files: files.value ?? [], transfer: transfer, matomoCategory: matomoCategory)
-                }
+                FileGridView(files: files.value ?? [], transfer: transfer, matomoCategory: matomoCategory)
             }
             .padding(value: .medium)
         }
         .stNavigationBarStyle()
         .matomoView(view: .transferDetailsFileList)
-        .stNavigationBarFullScreen(title: title, closeButtonPlacement: .topBarTrailing)
+        .stNavigationBarMultipleSelection(title: title, closeButtonPlacement: .topBarTrailing)
     }
 }
 

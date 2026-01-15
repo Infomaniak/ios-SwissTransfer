@@ -53,6 +53,9 @@ open class TargetAssembly {
                 let isRunningInAppClip = Bundle.main.bundleIdentifier == "com.infomaniak.swisstransfer.Clip"
                 return DownloadManager(sessionConfiguration: isRunningInAppClip ? .swissTransfer : .swissTransferBackground)
             },
+            Factory(type: MultipleSelectionManager.self) { _, _ in
+                MultipleSelectionManager()
+            },
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
             },
