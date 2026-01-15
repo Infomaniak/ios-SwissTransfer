@@ -27,11 +27,10 @@ struct DownloadableFileCellView: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @EnvironmentObject private var downloadManager: DownloadManager
+    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
 
     let transfer: TransferUi
     let file: FileUi
-    let isMultiSelectionEnabled: Bool
-    @Binding var isSelected: Bool
     let matomoCategory: MatomoCategory
 
     private var downloadFileAction: DownloadFileAction {
@@ -42,7 +41,7 @@ struct DownloadableFileCellView: View {
 
     var body: some View {
         ZStack {
-            if file.isFolder && !isMultiSelectionEnabled {
+            if file.isFolder && !multipleSelectionViewModel.isEnabled {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
@@ -50,21 +49,24 @@ struct DownloadableFileCellView: View {
                         fileTapped()
                     }
             }
-            if isMultiSelectionEnabled {
-                MultipleSelectionCheckboxView(isSelected: isSelected)
+            if multipleSelectionViewModel.isEnabled {
+                MultipleSelectionCheckboxView(isSelected: multipleSelectionViewModel.isSelected(file: file))
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding(12)
             }
         }
+        .onLongPressGesture {
+            multipleSelectionViewModel.toggleSelection(of: file)
+        }
     }
 
     private func fileTapped() {
-        guard isMultiSelectionEnabled else {
+        guard multipleSelectionViewModel.isEnabled else {
             downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
             return
         }
 
-        isSelected.toggle()
+        multipleSelectionViewModel.toggleSelection(of: file)
     }
 }
 
@@ -72,8 +74,6 @@ struct DownloadableFileCellView: View {
     DownloadableFileCellView(
         transfer: PreviewHelper.sampleTransfer,
         file: PreviewHelper.sampleFile,
-        isMultiSelectionEnabled: false,
-        isSelected: .constant(false),
         matomoCategory: .sentTransfer
     )
 }

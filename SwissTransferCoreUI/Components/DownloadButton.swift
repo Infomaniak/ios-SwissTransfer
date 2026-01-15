@@ -29,15 +29,13 @@ public struct DownloadButton: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @EnvironmentObject private var downloadManager: DownloadManager
-
-    @ObservedObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
 
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
 
-    public init(transfer: TransferUi, multipleSelectionViewModel: MultipleSelectionViewModel, matomoCategory: MatomoCategory) {
+    public init(transfer: TransferUi, matomoCategory: MatomoCategory) {
         self.transfer = transfer
-        self.multipleSelectionViewModel = multipleSelectionViewModel
         self.matomoCategory = matomoCategory
     }
 

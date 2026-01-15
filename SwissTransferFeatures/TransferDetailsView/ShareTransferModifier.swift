@@ -21,6 +21,7 @@ import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct LegacyToolbarSpacing: View {
@@ -34,10 +35,11 @@ struct LegacyToolbarSpacing: View {
 struct ShareTransferToolbarModifier: ViewModifier {
     @LazyInjectService private var injection: SwissTransferInjection
 
+    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+
     @State private var isShowingPassword = false
 
     let transfer: TransferUi
-    @ObservedObject var multipleSelectionViewModel: MultipleSelectionViewModel
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
@@ -101,14 +103,14 @@ struct ShareTransferToolbarModifier: ViewModifier {
                 }
 
                 ToolbarItemGroup(placement: .bottomBar) {
-                    DownloadButton(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: .receivedTransfer)
+                    DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
                 }
             }
     }
 }
 
 public extension View {
-    func shareTransferToolbar(transfer: TransferUi, multipleSelectionViewModel: MultipleSelectionViewModel, matomoCategory: MatomoCategory) -> some View {
-        modifier(ShareTransferToolbarModifier(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory))
+    func shareTransferToolbar(transfer: TransferUi, matomoCategory: MatomoCategory) -> some View {
+        modifier(ShareTransferToolbarModifier(transfer: transfer, matomoCategory: matomoCategory))
     }
 }

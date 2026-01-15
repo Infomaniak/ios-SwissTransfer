@@ -37,6 +37,7 @@ struct SwissTransferApp: App {
     @UIApplicationDelegateAdaptor private var appDelegateAdaptor: AppDelegate
 
     @LazyInjectService private var downloadManager: DownloadManager
+    @LazyInjectService private var multipleSelectionViewModel: MultipleSelectionViewModel
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
@@ -66,6 +67,7 @@ struct SwissTransferApp: App {
             RootView()
                 .environmentObject(universalLinksState)
                 .environmentObject(downloadManager)
+                .environmentObject(multipleSelectionViewModel)
                 .environmentObject(notificationCenterDelegate)
                 .environmentObject(rootViewState)
                 .ikButtonTheme(.swissTransfer)

@@ -18,13 +18,12 @@
 
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
 
 public struct FileGridCellsView: View {
-    @ObservedObject private var multipleSelectionViewModel: MultipleSelectionViewModel
-
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
     private let action: (any LargeFileCellAction)?
@@ -34,13 +33,11 @@ public struct FileGridCellsView: View {
         files: [any DisplayableFile],
         transfer: TransferUi? = nil,
         action: (any LargeFileCellAction)? = nil,
-        multipleSelectionViewModel: MultipleSelectionViewModel = MultipleSelectionViewModel(),
         matomoCategory: MatomoCategory
     ) {
         self.files = files
         self.transfer = transfer
         self.action = action
-        self.multipleSelectionViewModel = multipleSelectionViewModel
         self.matomoCategory = matomoCategory
     }
 
@@ -50,21 +47,11 @@ public struct FileGridCellsView: View {
                 NavigationLink(value: file) {
                     if let transfer,
                        let fileUi = file as? FileUi {
-                        let isMultiSelected = Binding {
-                            multipleSelectionViewModel.isSelected(file: fileUi)
-                        } set: { _ in
-                            multipleSelectionViewModel.toggleSelection(of: fileUi)
-                        }
                         DownloadableFileCellView(
                             transfer: transfer,
                             file: fileUi,
-                            isMultiSelectionEnabled: multipleSelectionViewModel.isEnabled,
-                            isSelected: isMultiSelected,
                             matomoCategory: matomoCategory
                         )
-                        .onLongPressGesture {
-                            multipleSelectionViewModel.toggleSelection(of: fileUi)
-                        }
                     } else {
                         LargeFileCell(
                             file: file,
@@ -75,21 +62,11 @@ public struct FileGridCellsView: View {
                 }
             } else {
                 if let transfer, let fileUi = file as? FileUi {
-                    let isMultiSelected = Binding {
-                        multipleSelectionViewModel.isSelected(file: fileUi)
-                    } set: { _ in
-                        multipleSelectionViewModel.toggleSelection(of: fileUi)
-                    }
                     DownloadableFileCellView(
                         transfer: transfer,
                         file: fileUi,
-                        isMultiSelectionEnabled: multipleSelectionViewModel.isEnabled,
-                        isSelected: isMultiSelected,
                         matomoCategory: matomoCategory
                     )
-                    .onLongPressGesture {
-                        multipleSelectionViewModel.toggleSelection(of: fileUi)
-                    }
                 } else if let transferableFile = file as? TransferableFile {
                     TransferableFileCellView(
                         file: transferableFile,
@@ -106,6 +83,7 @@ public struct FileGridCellsView: View {
             }
         }
         .onAppear {
+            @LazyInjectService var multipleSelectionViewModel: MultipleSelectionViewModel
             let filesUi: [FileUi] = self.files.compactMap { $0 as? FileUi }
             multipleSelectionViewModel.allSelectable = filesUi
         }

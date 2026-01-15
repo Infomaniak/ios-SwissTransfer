@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import QuickLook
 import STCore
 import SwiftUI
@@ -28,11 +29,11 @@ struct DownloadResult: Identifiable {
 }
 
 struct FileGridView: View {
-    @EnvironmentObject private var downloadManager: DownloadManager
+    @LazyInjectService private var downloadManager: DownloadManager
+    @LazyInjectService private var multipleSelectionViewModel: MultipleSelectionViewModel
 
     let files: [FileUi]
     let transfer: TransferUi?
-    let multipleSelectionViewModel: MultipleSelectionViewModel
     let matomoCategory: MatomoCategory
 
     @State private var shareResult: DownloadResult?
@@ -40,7 +41,7 @@ struct FileGridView: View {
 
     var body: some View {
         FileGridLayoutView {
-            FileGridCellsView(files: files, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
+            FileGridCellsView(files: files, transfer: transfer, matomoCategory: matomoCategory)
         }
         .downloadProgressAlert { urls in
             manageDownloadedURLs(urls: urls)
@@ -52,6 +53,9 @@ struct FileGridView: View {
         }
         .sheet(item: $shareResult) { downloadResult in
             ActivityView(sharedFileURLs: downloadResult.urls)
+                .onAppear {
+                    multipleSelectionViewModel.disable()
+                }
         }
         .quickLookPreview($previewResult)
     }
@@ -71,5 +75,5 @@ struct FileGridView: View {
 }
 
 #Preview {
-    FileGridView(files: [PreviewHelper.sampleFile], transfer: PreviewHelper.sampleTransfer, multipleSelectionViewModel: MultipleSelectionViewModel(), matomoCategory: .sentTransfer)
+    FileGridView(files: [PreviewHelper.sampleFile], transfer: PreviewHelper.sampleTransfer, matomoCategory: .sentTransfer)
 }

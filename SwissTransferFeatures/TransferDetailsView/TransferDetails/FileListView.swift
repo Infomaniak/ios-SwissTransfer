@@ -30,7 +30,6 @@ struct FileListView: View {
 
     private let title: String
     private let transfer: TransferUi?
-    private let multipleSelectionViewModel: MultipleSelectionViewModel
 
     private var filesCount: Int {
         files.value?.count ?? 0
@@ -42,7 +41,7 @@ struct FileListView: View {
 
     private let matomoCategory: MatomoCategory
 
-    init(folder: FileUi, transfer: TransferUi?, multipleSelectionViewModel: MultipleSelectionViewModel = MultipleSelectionViewModel(), matomoCategory: MatomoCategory) {
+    init(folder: FileUi, transfer: TransferUi?, matomoCategory: MatomoCategory) {
         @LazyInjectService var injection: SwissTransferInjection
         let children = injection.fileManager.getFilesFromTransfer(folderUuid: folder.uid)
 
@@ -50,7 +49,6 @@ struct FileListView: View {
         _files = StateObject(wrappedValue: FlowObserver(flow: children))
 
         self.transfer = transfer
-        self.multipleSelectionViewModel = multipleSelectionViewModel
         self.matomoCategory = matomoCategory
     }
 
@@ -61,13 +59,13 @@ struct FileListView: View {
                     .foregroundStyle(Color.ST.textPrimary)
                     .font(.ST.callout)
 
-                FileGridView(files: files.value ?? [], transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
+                FileGridView(files: files.value ?? [], transfer: transfer, matomoCategory: matomoCategory)
             }
             .padding(value: .medium)
         }
         .stNavigationBarStyle()
         .matomoView(view: .transferDetailsFileList)
-        .stNavigationBarMultipleSelection(title: title, closeButtonPlacement: .topBarTrailing, multipleSelectionViewModel: multipleSelectionViewModel)
+        .stNavigationBarMultipleSelection(title: title, closeButtonPlacement: .topBarTrailing)
     }
 }
 

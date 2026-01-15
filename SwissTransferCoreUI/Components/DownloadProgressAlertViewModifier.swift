@@ -101,15 +101,26 @@ struct DownloadProgressAlert: View {
 struct DownloadProgressAlertViewModifier: ViewModifier {
     @EnvironmentObject private var downloadManager: DownloadManager
 
-    @ModalState(wrappedValue: nil, context: ContextKeys.downloadProgress) private var multiDownloadTask: MultiDownloadTask?
+    // TODO: - Temporary using isActive
+//    @ModalState(wrappedValue: nil, context: ContextKeys.downloadProgress) private var multiDownloadTask: MultiDownloadTask?
+    @State private var multiDownloadTask: MultiDownloadTask?
     let downloadCompletedCallback: (([URL]) -> Void)?
+
+    @State private var isActive = false
 
     func body(content: Content) -> some View {
         content
             .stCustomAlert(item: $multiDownloadTask) { multiDownloadTask in
                 DownloadProgressAlert(multiDownloadTask: multiDownloadTask, downloadCompletedCallback: downloadCompletedCallback)
             }
+            .onAppear {
+                isActive = true
+            }
+            .onDisappear {
+                isActive = false
+            }
             .onChange(of: downloadManager.trackedMultiDownloadTask) { _ in
+                guard isActive else { return }
                 multiDownloadTask = downloadManager.trackedMultiDownloadTask
             }
     }

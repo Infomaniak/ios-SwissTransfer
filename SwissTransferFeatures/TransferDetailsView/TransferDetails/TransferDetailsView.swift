@@ -28,8 +28,6 @@ public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isCompactWindow) private var isCompactWindow
 
-    @StateObject private var multipleSelectionViewModel = MultipleSelectionViewModel()
-
     private let transfer: TransferUi?
 
     private var matomoCategory: MatomoCategory {
@@ -70,11 +68,11 @@ public struct TransferDetailsView: View {
                         }
                     }
 
-                    ContentView(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
+                    ContentView(transfer: transfer, matomoCategory: matomoCategory)
                 }
                 .padding(.vertical, value: .large)
                 .padding(.horizontal, value: .medium)
-                .shareTransferToolbar(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
+                .shareTransferToolbar(transfer: transfer, matomoCategory: matomoCategory)
             } else {
                 ProgressView()
             }
@@ -82,10 +80,10 @@ public struct TransferDetailsView: View {
         .scrollBounceBehavior(.basedOnSize)
         .appBackground()
         .stNavigationBarStyle()
-        .stNavigationBarMultipleSelection(title: transfer?.name ?? "", showCloseButton: isCompactWindow, multipleSelectionViewModel: multipleSelectionViewModel)
+        .stNavigationBarMultipleSelection(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
-            FileListView(folder: file, transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: matomoCategory)
-                .downloadSelectionToolbar(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel)
+            FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
+                .downloadSelectionToolbar(transfer: transfer)
                 .environment(\.dismissModal) { dismiss() }
         }
         .environment(\.dismissModal) { dismiss() }

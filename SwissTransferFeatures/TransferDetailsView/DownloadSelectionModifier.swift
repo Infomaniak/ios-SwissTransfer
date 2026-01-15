@@ -18,17 +18,18 @@
 
 import STCore
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
-struct DowloadSelectionModifier: ViewModifier {
+struct DownloadSelectionModifier: ViewModifier {
     let transfer: TransferUi?
-    @ObservedObject var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
 
     func body(content: Content) -> some View {
         content.toolbar {
             if let transfer, multipleSelectionViewModel.isEnabled {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    DownloadButton(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel, matomoCategory: .receivedTransfer)
+                    DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
                 }
             }
         }
@@ -36,7 +37,7 @@ struct DowloadSelectionModifier: ViewModifier {
 }
 
 public extension View {
-    func downloadSelectionToolbar(transfer: TransferUi?, multipleSelectionViewModel: MultipleSelectionViewModel) -> some View {
-        modifier(DowloadSelectionModifier(transfer: transfer, multipleSelectionViewModel: multipleSelectionViewModel))
+    func downloadSelectionToolbar(transfer: TransferUi?) -> some View {
+        modifier(DownloadSelectionModifier(transfer: transfer))
     }
 }

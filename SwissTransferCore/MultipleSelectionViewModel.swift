@@ -21,16 +21,16 @@ import SwiftUI
 
 public class MultipleSelectionViewModel: ObservableObject {
     @Published public var isEnabled = false
-    @Published var selectedItems = Set<FileUi>()
-    var allSelectable = [FileUi]()
+    @Published public var selectedItems = Set<FileUi>()
+    public var allSelectable = [FileUi]()
 
     public init() {}
 
-    func isSelected(file: FileUi) -> Bool {
+    public func isSelected(file: FileUi) -> Bool {
         return selectedItems.contains(file)
     }
 
-    func toggleSelection(of file: FileUi) {
+    public func toggleSelection(of file: FileUi) {
         withAnimation(.default.speed(2)) {
             if selectedItems.contains(file) {
                 selectedItems.remove(file)
@@ -42,7 +42,7 @@ public class MultipleSelectionViewModel: ObservableObject {
         }
     }
 
-    func selectAll() {
+    public func selectAll() {
         selectAll(files: allSelectable)
     }
 
