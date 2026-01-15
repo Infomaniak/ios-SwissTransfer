@@ -18,28 +18,31 @@
 
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 struct STNavigationBarMultipleSelectionModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismiss
-
-    @ObservedObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
 
     let title: String
     let showCloseButton: Bool
     let closeButtonPlacement: ToolbarItemPlacement
 
-    init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement = .cancellationAction, multipleSelectionViewModel: MultipleSelectionViewModel) {
+    private var navigationTitle: String {
+        multipleSelectionViewModel.isEnabled ? STResourcesStrings.Localizable.multipleSelectionTitle(multipleSelectionViewModel.selectedItems.count) : title
+    }
+
+    init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement = .cancellationAction) {
         self.title = title
         self.showCloseButton = showCloseButton
         self.closeButtonPlacement = closeButtonPlacement
-        self.multipleSelectionViewModel = multipleSelectionViewModel
     }
 
     func body(content: Content) -> some View {
-        if multipleSelectionViewModel.isEnabled {
-            content
-                .stNavigationTitle(STResourcesStrings.Localizable.multipleSelectionTitle(multipleSelectionViewModel.selectedItems.count))
-                .toolbar {
+        content
+            .stNavigationTitle(navigationTitle)
+            .toolbar {
+                if multipleSelectionViewModel.isEnabled {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
                             multipleSelectionViewModel.disable()
@@ -55,12 +58,13 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
                             Text(STResourcesStrings.Localizable.buttonAll)
                         }
                     }
+                } else if showCloseButton {
+                    ToolbarItem(placement: closeButtonPlacement) {
+                        ToolbarCloseButton(completion: dismiss)
+                    }
                 }
-                .navigationBarBackButtonHidden()
-        } else {
-            content
-                .stNavigationBarFullScreen(title: title, showCloseButton: showCloseButton, closeButtonPlacement: closeButtonPlacement)
-        }
+            }
+            .navigationBarBackButtonHidden(multipleSelectionViewModel.isEnabled)
     }
 }
 
@@ -68,15 +72,13 @@ public extension View {
     func stNavigationBarMultipleSelection(
         title: String = "Transfer",
         showCloseButton: Bool = true,
-        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction,
-        multipleSelectionViewModel: MultipleSelectionViewModel
+        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction
     ) -> some View {
         modifier(
             STNavigationBarMultipleSelectionModifier(
                 title: title,
                 showCloseButton: showCloseButton,
-                closeButtonPlacement: closeButtonPlacement,
-                multipleSelectionViewModel: multipleSelectionViewModel
+                closeButtonPlacement: closeButtonPlacement
             )
         )
     }
