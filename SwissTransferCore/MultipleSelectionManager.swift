@@ -19,15 +19,25 @@
 import STCore
 import SwiftUI
 
+@MainActor
 public class MultipleSelectionManager: ObservableObject {
     @Published public var isEnabled = false
     @Published public var selectedItems = Set<FileUi>()
     public var allSelectable = [FileUi]()
 
+    private let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+
     public init() {}
 
     public func isSelected(file: FileUi) -> Bool {
         return selectedItems.contains(file)
+    }
+
+    public func toggleMultipleSelection(of file: FileUi) {
+        feedbackGenerator.prepare()
+        feedbackGenerator.impactOccurred()
+
+        toggleSelection(of: file)
     }
 
     public func toggleSelection(of file: FileUi) {
@@ -47,6 +57,9 @@ public class MultipleSelectionManager: ObservableObject {
     }
 
     private func selectAll(files: [FileUi]) {
+        feedbackGenerator.prepare()
+        feedbackGenerator.impactOccurred(intensity: 0.6)
+
         if files.count == selectedItems.count {
             selectedItems.removeAll()
             isEnabled = false
@@ -58,8 +71,10 @@ public class MultipleSelectionManager: ObservableObject {
     }
 
     public func disable() {
-        selectedItems.removeAll()
-        isEnabled = false
+        withAnimation {
+            selectedItems.removeAll()
+            isEnabled = false
+        }
     }
 
     private func updateEnableState() {
