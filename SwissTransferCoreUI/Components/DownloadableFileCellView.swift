@@ -56,7 +56,7 @@ struct DownloadableFileCellView: View {
             }
         }
         .onLongPressGesture {
-            multipleSelectionManager.toggleSelection(of: file)
+            multipleSelectionManager.toggleMultipleSelection(of: file)
         }
     }
 
