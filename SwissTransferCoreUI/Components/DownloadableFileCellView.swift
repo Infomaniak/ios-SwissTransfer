@@ -27,7 +27,7 @@ struct DownloadableFileCellView: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @EnvironmentObject private var downloadManager: DownloadManager
-    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let transfer: TransferUi
     let file: FileUi
@@ -41,7 +41,7 @@ struct DownloadableFileCellView: View {
 
     var body: some View {
         ZStack {
-            if file.isFolder && !multipleSelectionViewModel.isEnabled {
+            if file.isFolder && !multipleSelectionManager.isEnabled {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
@@ -49,24 +49,24 @@ struct DownloadableFileCellView: View {
                         fileTapped()
                     }
             }
-            if multipleSelectionViewModel.isEnabled {
-                MultipleSelectionCheckboxView(isSelected: multipleSelectionViewModel.isSelected(file: file))
+            if multipleSelectionManager.isEnabled {
+                MultipleSelectionCheckboxView(isSelected: multipleSelectionManager.isSelected(file: file))
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding(12)
             }
         }
         .onLongPressGesture {
-            multipleSelectionViewModel.toggleSelection(of: file)
+            multipleSelectionManager.toggleSelection(of: file)
         }
     }
 
     private func fileTapped() {
-        guard multipleSelectionViewModel.isEnabled else {
+        guard multipleSelectionManager.isEnabled else {
             downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
             return
         }
 
-        multipleSelectionViewModel.toggleSelection(of: file)
+        multipleSelectionManager.toggleSelection(of: file)
     }
 }
 

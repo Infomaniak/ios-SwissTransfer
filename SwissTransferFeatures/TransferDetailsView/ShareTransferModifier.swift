@@ -35,7 +35,7 @@ struct LegacyToolbarSpacing: View {
 struct ShareTransferToolbarModifier: ViewModifier {
     @LazyInjectService private var injection: SwissTransferInjection
 
-    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     @State private var isShowingPassword = false
 
@@ -51,7 +51,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if !multipleSelectionViewModel.isEnabled {
+                if !multipleSelectionManager.isEnabled {
                     ToolbarItemGroup(placement: .bottomBar) {
                         QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
 
