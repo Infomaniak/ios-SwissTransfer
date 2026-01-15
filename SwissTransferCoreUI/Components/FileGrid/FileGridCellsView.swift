@@ -83,9 +83,9 @@ public struct FileGridCellsView: View {
             }
         }
         .onAppear {
-            @LazyInjectService var multipleSelectionViewModel: MultipleSelectionViewModel
+            @LazyInjectService var multipleSelectionManager: MultipleSelectionManager
             let filesUi: [FileUi] = self.files.compactMap { $0 as? FileUi }
-            multipleSelectionViewModel.allSelectable = filesUi
+            multipleSelectionManager.allSelectable = filesUi
         }
     }
 }

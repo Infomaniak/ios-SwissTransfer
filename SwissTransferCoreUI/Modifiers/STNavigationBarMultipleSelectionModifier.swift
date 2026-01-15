@@ -22,14 +22,14 @@ import SwissTransferCore
 
 struct STNavigationBarMultipleSelectionModifier: ViewModifier {
     @Environment(\.dismissModal) private var dismiss
-    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let title: String
     let showCloseButton: Bool
     let closeButtonPlacement: ToolbarItemPlacement
 
     private var navigationTitle: String {
-        multipleSelectionViewModel.isEnabled ? STResourcesStrings.Localizable.multipleSelectionTitle(multipleSelectionViewModel.selectedItems.count) : title
+        multipleSelectionManager.isEnabled ? STResourcesStrings.Localizable.multipleSelectionTitle(multipleSelectionManager.selectedItems.count) : title
     }
 
     init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement = .cancellationAction) {
@@ -42,10 +42,10 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
         content
             .stNavigationTitle(navigationTitle)
             .toolbar {
-                if multipleSelectionViewModel.isEnabled {
+                if multipleSelectionManager.isEnabled {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
-                            multipleSelectionViewModel.disable()
+                            multipleSelectionManager.disable()
                         } label: {
                             Text(STResourcesStrings.Localizable.buttonCancel)
                         }
@@ -53,7 +53,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
 
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            multipleSelectionViewModel.selectAll()
+                            multipleSelectionManager.selectAll()
                         } label: {
                             Text(STResourcesStrings.Localizable.buttonAll)
                         }
@@ -64,7 +64,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
                     }
                 }
             }
-            .navigationBarBackButtonHidden(multipleSelectionViewModel.isEnabled)
+            .navigationBarBackButtonHidden(multipleSelectionManager.isEnabled)
     }
 }
 

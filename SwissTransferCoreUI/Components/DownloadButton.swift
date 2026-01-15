@@ -29,7 +29,7 @@ public struct DownloadButton: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @EnvironmentObject private var downloadManager: DownloadManager
-    @EnvironmentObject private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
@@ -41,7 +41,7 @@ public struct DownloadButton: View {
 
     public var body: some View {
         Button {
-            downloadManager.startOrCancelDownload(transfer: transfer, files: Array(multipleSelectionViewModel.selectedItems), matomoCategory: matomoCategory)
+            downloadManager.startOrCancelDownload(transfer: transfer, files: Array(multipleSelectionManager.selectedItems), matomoCategory: matomoCategory)
         } label: {
             Label {
                 Text(STResourcesStrings.Localizable.buttonDownload)
