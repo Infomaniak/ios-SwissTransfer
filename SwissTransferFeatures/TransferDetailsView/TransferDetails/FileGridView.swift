@@ -30,7 +30,7 @@ struct DownloadResult: Identifiable {
 
 struct FileGridView: View {
     @LazyInjectService private var downloadManager: DownloadManager
-    @LazyInjectService private var multipleSelectionViewModel: MultipleSelectionViewModel
+    @LazyInjectService private var multipleSelectionManager: MultipleSelectionManager
 
     let files: [FileUi]
     let transfer: TransferUi?
@@ -54,7 +54,7 @@ struct FileGridView: View {
         .sheet(item: $shareResult) { downloadResult in
             ActivityView(sharedFileURLs: downloadResult.urls)
                 .onAppear {
-                    multipleSelectionViewModel.disable()
+                    multipleSelectionManager.disable()
                 }
         }
         .quickLookPreview($previewResult)
