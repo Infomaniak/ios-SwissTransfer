@@ -48,8 +48,6 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
         self.size = size
     }
 
-    // TODO: - Gérer les erreurs
-
     public var state: DownloadTaskState {
         guard !trackedDownloadTasks.isEmpty else {
             return .running(current: 0, total: size)
@@ -57,10 +55,17 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
 
         guard !trackedDownloadTasks.values.filter(\.state.isRunning).isEmpty else {
             var urls = [URL]()
+            var errors = [Error]()
             for task in trackedDownloadTasks.values {
                 if case .completed(let url) = task.state {
                     urls += url
+                } else if case .error(let error) = task.state {
+                    errors.append(error)
                 }
+            }
+
+            if urls.isEmpty, let error = errors.first {
+                return .error(error)
             }
             return .completed(urls)
         }
