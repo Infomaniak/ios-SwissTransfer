@@ -41,7 +41,11 @@ public struct DownloadButton: View {
 
     public var body: some View {
         Button {
-            downloadManager.startOrCancelDownload(transfer: transfer, files: Array(multipleSelectionManager.selectedItems), matomoCategory: matomoCategory)
+            downloadManager.startOrCancelDownload(
+                transfer: transfer,
+                files: Array(multipleSelectionManager.selectedItems),
+                matomoCategory: matomoCategory
+            )
         } label: {
             Label {
                 Text(STResourcesStrings.Localizable.buttonDownload)

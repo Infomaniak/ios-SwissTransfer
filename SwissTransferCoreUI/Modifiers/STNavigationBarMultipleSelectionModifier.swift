@@ -29,7 +29,8 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
     let closeButtonPlacement: ToolbarItemPlacement
 
     private var navigationTitle: String {
-        multipleSelectionManager.isEnabled ? STResourcesStrings.Localizable.multipleSelectionTitle(multipleSelectionManager.selectedItems.count) : title
+        multipleSelectionManager.isEnabled ? STResourcesStrings.Localizable
+            .multipleSelectionTitle(multipleSelectionManager.selectedItems.count) : title
     }
 
     init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement = .cancellationAction) {

@@ -58,7 +58,7 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
         guard !trackedDownloadTasks.values.filter(\.state.isRunning).isEmpty else {
             var urls = [URL]()
             for task in trackedDownloadTasks.values {
-                if case let .completed(url) = task.state {
+                if case .completed(let url) = task.state {
                     urls += url
                 }
             }
@@ -67,7 +67,7 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
 
         var percentage: Int64 = 0
         for task in trackedDownloadTasks.values {
-            if case let .running(current, total) = task.state {
+            if case .running(let current, let total) = task.state {
                 percentage += current * 100 / total
             } else {
                 percentage += 100
@@ -86,11 +86,11 @@ public enum DownloadTaskState: Equatable, Sendable {
 
     public static func == (lhs: DownloadTaskState, rhs: DownloadTaskState) -> Bool {
         switch (lhs, rhs) {
-        case let (.running(lhsCurrent, lhsTotal), .running(rhsCurrent, rhsTotal)):
+        case (.running(let lhsCurrent, let lhsTotal), .running(let rhsCurrent, let rhsTotal)):
             return lhsCurrent == rhsCurrent && lhsTotal == rhsTotal
-        case let (.completed(lhs), .completed(rhs)):
+        case (.completed(let lhs), .completed(let rhs)):
             return lhs == rhs
-        case let (.error(lhs), .error(rhs)):
+        case (.error(let lhs), .error(let rhs)):
             return lhs.localizedDescription == rhs.localizedDescription
         default: return false
         }
@@ -144,7 +144,8 @@ public class DownloadManager: ObservableObject {
         sessionDelegate.downloadRunningSubject
             .throttle(for: .milliseconds(500), scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] downloadTaskProgress in
-                guard self?.trackedMultiDownloadTask?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true else { return }
+                guard self?.trackedMultiDownloadTask?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true
+                else { return }
                 self?.updateDownloadTask(
                     id: downloadTaskProgress.id,
                     state: .running(current: downloadTaskProgress.current, total: downloadTaskProgress.total)
@@ -324,7 +325,7 @@ public class DownloadManager: ObservableObject {
         let fileUUID = transferUUIDAndFileUUID.count > 1 ? String(transferUUIDAndFileUUID[1]) : nil
 
         switch downloadTaskCompletion.result {
-        case let .success(downloadedFile):
+        case .success(let downloadedFile):
             do {
                 let resultURL = try handleDownloadedFile(
                     transferUUID: transferUUID,
@@ -348,7 +349,7 @@ public class DownloadManager: ObservableObject {
                 )
                 updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
             }
-        case let .failure(error):
+        case .failure(let error):
             notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded(
                 transferUUID: transferUUID,
                 fileUUID: fileUUID

@@ -51,7 +51,7 @@ struct DownloadProgressAlert: View {
             case .idle:
                 Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                     .font(.ST.headline)
-            case let .running(currentProgress, totalProgress):
+            case .running(let currentProgress, let totalProgress):
                 Text(STResourcesStrings.Localizable.downloadInProgressDialogTitle)
                     .font(.ST.headline)
 
@@ -86,12 +86,12 @@ struct DownloadProgressAlert: View {
         }
         .task(id: multiDownloadTask.state) {
             switch multiDownloadTask.state {
-            case let .completed(urls):
+            case .completed(let urls):
                 downloadCompletedCallback?(urls)
                 await downloadManager.removeMultiDownloadTask()
-            case let .running(current, total):
+            case .running(let current, let total):
                 state = .running(currentProgress: current, totalProgress: total)
-            case let .error(error):
+            case .error(let error):
                 state = .error(error)
             }
         }
