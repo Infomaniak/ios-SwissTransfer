@@ -29,7 +29,7 @@ struct DownloadResult: Identifiable {
 }
 
 struct FileGridView: View {
-    @LazyInjectService private var downloadManager: DownloadManager
+    @EnvironmentObject private var downloadManager: DownloadManager
     @LazyInjectService private var multipleSelectionManager: MultipleSelectionManager
 
     let files: [FileUi]
