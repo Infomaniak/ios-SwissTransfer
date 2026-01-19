@@ -173,7 +173,7 @@
 "noSettingsSelectedDescription" = "Seleziona un parametro da visualizzare";
 
 /* loco:66d00a919c37e358f5081dd2 */
-"noTransferReceivedDescription" = "Qui appariranno tutti i bonifici ricevuti negli ultimi 30 giorni.";
+"noTransferReceivedDescription" = "Qui appariranno tutti i trasferimenti ricevuti negli ultimi 30 giorni.";
 
 /* loco:66d009adae0a00bb3c011352 */
 "noTransferReceivedTitle" = "Nessun trasferimento ricevuto";
