@@ -84,6 +84,7 @@ let mainiOSAppFeatures = [
 
 let project = Project(
     name: "SwissTransfer",
+    options: .options(developmentRegion: "en"),
     targets: mainiOSAppFeatures.asTargets + [
         .target(
             name: "SwissTransfer",
