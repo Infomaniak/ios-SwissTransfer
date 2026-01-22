@@ -16,6 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -34,6 +36,8 @@ extension TransferType {
 }
 
 public struct UploadSuccessView: View {
+    @LazyInjectService private var reviewManager: ReviewManageable
+
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
@@ -62,9 +66,8 @@ public struct UploadSuccessView: View {
                 UserDefaults.shared.transferCount += 1
             }
             .onDisappear {
-                if UserDefaults.shared.transferCount >= reviewTriggerCount && !UserDefaults.shared.hasReviewedApp {
-                    mainViewState.isShowingReviewAlert = true
-                }
+                reviewManager.decreaseActionUntilReview()
+                mainViewState.isShowingReviewAlert = reviewManager.shouldRequestReview()
             }
         }
         .matomoView(view: .uploadSuccess)
