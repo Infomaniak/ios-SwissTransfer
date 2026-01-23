@@ -20,6 +20,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
+  check_dependencies:
     uses: infomaniak/.github/.github/workflows/dependent-issues.yml@feat/add-workflows
     secrets: inherit

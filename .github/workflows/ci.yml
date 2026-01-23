@@ -12,16 +12,9 @@ jobs:
     runs-on: [ self-hosted, iOS ]
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.12.1
-        with:
-          access_token: ${{ github.token }}
-      - uses: jdx/mise-action@v2
-        with:
-          cache: false
-          experimental: true
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
+      - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8
       - name: Generate
         run: tuist install && tuist generate
       - name: Build

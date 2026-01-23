@@ -10,7 +10,6 @@ jobs:
   validate:
     uses: infomaniak/.github/.github/workflows/validate-localization.yml@feat/add-workflows
     with:
-      app_name: "swisstransfer"
       localizable_path: "SwissTransferResources/Localizable"
       main_target_localizable_path: "SwissTransfer/Resources/Localizable"
     secrets: inherit

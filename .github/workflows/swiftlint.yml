@@ -7,5 +7,5 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  swiftlint:
+  lint:
     uses: infomaniak/.github/.github/workflows/swiftlint.yml@feat/add-workflows

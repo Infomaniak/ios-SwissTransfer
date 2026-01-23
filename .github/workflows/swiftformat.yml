@@ -7,5 +7,5 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  swiftformat:
+  format:
     uses: infomaniak/.github/.github/workflows/swiftformat.yml@feat/add-workflows
