@@ -64,9 +64,7 @@ public class MultipleSelectionManager: ObservableObject {
         if files.count == selectedItems.count {
             selectedItems.removeAll()
         } else {
-            for file in files {
-                selectedItems.insert(file)
-            }
+            selectedItems.formUnion(files)
         }
     }
 
