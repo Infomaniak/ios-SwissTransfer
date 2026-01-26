@@ -27,16 +27,23 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
     let title: String
     let showCloseButton: Bool
     let closeButtonPlacement: ToolbarItemPlacement
+    let onSelectAll: () -> Void
 
     private var navigationTitle: String {
         multipleSelectionManager.isEnabled ? STResourcesStrings.Localizable
             .multipleSelectionTitle(multipleSelectionManager.selectedItems.count) : title
     }
 
-    init(title: String, showCloseButton: Bool, closeButtonPlacement: ToolbarItemPlacement = .cancellationAction) {
+    init(
+        title: String,
+        showCloseButton: Bool,
+        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction,
+        onSelectAll: @escaping () -> Void
+    ) {
         self.title = title
         self.showCloseButton = showCloseButton
         self.closeButtonPlacement = closeButtonPlacement
+        self.onSelectAll = onSelectAll
     }
 
     func body(content: Content) -> some View {
@@ -54,7 +61,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
 
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            multipleSelectionManager.selectAll()
+                            onSelectAll()
                         } label: {
                             Text(STResourcesStrings.Localizable.buttonAll)
                         }
@@ -73,13 +80,15 @@ public extension View {
     func stNavigationBarMultipleSelection(
         title: String,
         showCloseButton: Bool = true,
-        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction
+        closeButtonPlacement: ToolbarItemPlacement = .cancellationAction,
+        onSelectAll: @escaping () -> Void
     ) -> some View {
         modifier(
             STNavigationBarMultipleSelectionModifier(
                 title: title,
                 showCloseButton: showCloseButton,
-                closeButtonPlacement: closeButtonPlacement
+                closeButtonPlacement: closeButtonPlacement,
+                onSelectAll: onSelectAll
             )
         )
     }

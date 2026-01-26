@@ -22,7 +22,6 @@ import SwiftUI
 @MainActor
 public class MultipleSelectionManager: ObservableObject {
     @Published public var selectedItems = Set<FileUi>()
-    public var allSelectable = [FileUi]()
 
     public var isEnabled: Bool {
         !selectedItems.isEmpty
@@ -53,11 +52,9 @@ public class MultipleSelectionManager: ObservableObject {
         }
     }
 
-    public func selectAll() {
-        selectAll(files: allSelectable)
-    }
+    public func selectAll(files: [FileUi]?) {
+        guard let files else { return }
 
-    private func selectAll(files: [FileUi]) {
         feedbackGenerator.prepare()
         feedbackGenerator.impactOccurred(intensity: 0.6)
 
