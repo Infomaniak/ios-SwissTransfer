@@ -71,7 +71,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
 
 public extension View {
     func stNavigationBarMultipleSelection(
-        title: String = "Transfer",
+        title: String,
         showCloseButton: Bool = true,
         closeButtonPlacement: ToolbarItemPlacement = .cancellationAction
     ) -> some View {
