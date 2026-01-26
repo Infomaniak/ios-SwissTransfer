@@ -1,26 +1,11 @@
-name: CI workflow
+name: Periphery
 
-on:
-  pull_request:
-    branches: [ main ]
+on: pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    name: Scan unused code
-    runs-on: [ self-hosted, iOS ]
-
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.12.1
-        with:
-          access_token: ${{ github.token }}
-      - uses: jdx/mise-action@v2
-        with:
-          cache: false
-          experimental: true
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Generate
-        run: tuist install && tuist generate
-      - name: Periphery
-        run: periphery scan --retain-codable-properties --format github-actions --relative-results --strict
+  periphery:
+    uses: infomaniak/.github/.github/workflows/periphery.yml@v1
