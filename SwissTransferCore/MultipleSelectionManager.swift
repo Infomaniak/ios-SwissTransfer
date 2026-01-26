@@ -21,9 +21,12 @@ import SwiftUI
 
 @MainActor
 public class MultipleSelectionManager: ObservableObject {
-    @Published public var isEnabled = false
     @Published public var selectedItems = Set<FileUi>()
     public var allSelectable = [FileUi]()
+
+    public var isEnabled: Bool {
+        !selectedItems.isEmpty
+    }
 
     private let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
@@ -47,8 +50,6 @@ public class MultipleSelectionManager: ObservableObject {
             } else {
                 selectedItems.insert(file)
             }
-
-            updateEnableState()
         }
     }
 
@@ -62,7 +63,6 @@ public class MultipleSelectionManager: ObservableObject {
 
         if files.count == selectedItems.count {
             selectedItems.removeAll()
-            isEnabled = false
         } else {
             for file in files {
                 selectedItems.insert(file)
@@ -73,11 +73,6 @@ public class MultipleSelectionManager: ObservableObject {
     public func disable() {
         withAnimation {
             selectedItems.removeAll()
-            isEnabled = false
         }
-    }
-
-    private func updateEnableState() {
-        isEnabled = !selectedItems.isEmpty
     }
 }
