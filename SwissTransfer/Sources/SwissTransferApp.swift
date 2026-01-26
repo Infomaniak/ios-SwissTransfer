@@ -37,7 +37,6 @@ struct SwissTransferApp: App {
     @UIApplicationDelegateAdaptor private var appDelegateAdaptor: AppDelegate
 
     @LazyInjectService private var downloadManager: DownloadManager
-    @LazyInjectService private var multipleSelectionManager: MultipleSelectionManager
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
@@ -45,6 +44,7 @@ struct SwissTransferApp: App {
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
     @StateObject private var rootViewState = RootViewState()
+    @StateObject private var multipleSelectionManager = MultipleSelectionManager()
 
     private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
