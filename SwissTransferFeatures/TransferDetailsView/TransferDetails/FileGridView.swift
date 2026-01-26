@@ -30,7 +30,7 @@ struct DownloadResult: Identifiable {
 
 struct FileGridView: View {
     @EnvironmentObject private var downloadManager: DownloadManager
-    @LazyInjectService private var multipleSelectionManager: MultipleSelectionManager
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let files: [FileUi]
     let transfer: TransferUi?
