@@ -26,6 +26,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct FileListView: View {
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
+
     @StateObject private var files: FlowObserver<[FileUi]>
 
     private let title: String
@@ -65,7 +67,9 @@ struct FileListView: View {
         }
         .stNavigationBarStyle()
         .matomoView(view: .transferDetailsFileList)
-        .stNavigationBarMultipleSelection(title: title, closeButtonPlacement: .topBarTrailing)
+        .stNavigationBarMultipleSelection(title: title, closeButtonPlacement: .topBarTrailing) {
+            multipleSelectionManager.selectAll(files: files.value)
+        }
     }
 }
 
