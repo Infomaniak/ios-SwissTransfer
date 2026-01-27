@@ -94,20 +94,13 @@ public struct MainView: View {
         .stCustomAlert(isPresented: $mainViewState.isShowingReviewAlert) {
             AskForReviewView(
                 appName: Constants.appName,
-                feedbackURL: STResourcesStrings.Localizable.urlUserReport,
                 reviewManager: reviewManager,
                 onLike: {
                     matomo.track(eventWithCategory: .appReview, name: "like")
-
-                    UserDefaults.shared.appReview = .readyForReview
-                    UserDefaults.shared.hasReviewedApp = true
-
+                    reviewManager.requestReview()
                 },
-                onDislike: { _ in
+                onDislike: {
                     matomo.track(eventWithCategory: .appReview, name: "dislike")
-
-                    UserDefaults.shared.appReview = .feedback
-                    UserDefaults.shared.hasReviewedApp = true
                 }
             )
         }

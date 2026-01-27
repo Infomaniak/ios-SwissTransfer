@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "1614c4604999356dfb580e1d568ad69e704e374c",
-        "version" : "17.1.0"
+        "revision" : "4360f62b9396075195989a3e31ab5a7daf988977",
+        "version" : "18.5.0"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "298079322ab92798f20e683483693d1aa14c3405",
-        "version" : "23.1.1"
+        "revision" : "d04e30b94a5a8371d6e587128d492733dbdeb788",
+        "version" : "24.4.0"
       }
     },
     {
@@ -68,23 +68,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-version-checker",
       "state" : {
-        "revision" : "f8862031c5201e9a7b69a866abb39295f0f5283a",
-        "version" : "15.0.0"
-      }
-    },
-    {
-      "identity" : "kingfisher",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/onevcat/Kingfisher",
-      "state" : {
-        "revision" : "2ef543ee21d63734e1c004ad6c870255e8716c50",
-        "version" : "7.12.0"
+        "revision" : "ec1b031ef4115e80e79216b9127d3f6d87e949a6",
+        "version" : "16.0.0"
       }
     },
     {
       "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
         "revision" : "69faaefa7721fba9e434a52c16adf4329c9084db",
         "version" : "4.6.0"
@@ -106,6 +97,15 @@
       "state" : {
         "revision" : "9b378e16e6421810dc317ccf0d8acdad9efb67b2",
         "version" : "5.4.0"
+      }
+    },
+    {
+      "identity" : "nuke",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Nuke",
+      "state" : {
+        "revision" : "0ead44350d2737db384908569c012fe67c421e4d",
+        "version" : "12.8.0"
       }
     },
     {
