@@ -43,8 +43,6 @@ public struct UploadSuccessView: View {
 
     let transferUUID: String
 
-    private let reviewTriggerCount = 2
-
     public init(transferUUID: String) {
         self.transferUUID = transferUUID
     }
