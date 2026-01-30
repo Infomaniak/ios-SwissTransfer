@@ -33,14 +33,18 @@ struct DownloadableFileCellView: View {
     let file: FileUi
     let matomoCategory: MatomoCategory
 
-    private var downloadFileAction: DownloadFileAction {
-        DownloadFileAction { _ in
+    private var downloadFileAction: DownloadFileAction? {
+        guard !multipleSelectionManager.isEnabled else {
+            return nil
+        }
+
+        return DownloadFileAction { _ in
             downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
         }
     }
 
     var body: some View {
-        ZStack {
+        Group {
             if file.isFolder && !multipleSelectionManager.isEnabled {
                 LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
             } else {
@@ -48,11 +52,12 @@ struct DownloadableFileCellView: View {
                     .onTapGesture {
                         fileTapped()
                     }
-            }
-            if multipleSelectionManager.isEnabled {
-                MultipleSelectionCheckboxView(isSelected: multipleSelectionManager.isSelected(file: file))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .padding(12)
+                    .overlay(alignment: .topLeading) {
+                        if multipleSelectionManager.isEnabled {
+                            MultipleSelectionCheckboxView(isSelected: multipleSelectionManager.isSelected(file: file))
+                                .padding(12)
+                        }
+                    }
             }
         }
         .onLongPressGesture {
