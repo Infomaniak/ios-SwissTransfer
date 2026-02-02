@@ -24,8 +24,6 @@ import SwiftUI
 import SwissTransferCore
 
 struct DownloadableFileCellView: View {
-    @LazyInjectService private var notificationsHelper: NotificationsHelper
-
     @EnvironmentObject private var downloadManager: DownloadManager
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
