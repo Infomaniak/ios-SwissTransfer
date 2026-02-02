@@ -22,13 +22,14 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct DownloadSelectionModifier: ViewModifier {
-    let transfer: TransferUi?
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
+
+    let transfer: TransferUi?
 
     func body(content: Content) -> some View {
         content.toolbar {
             if let transfer, multipleSelectionManager.isEnabled {
-                ToolbarItemGroup(placement: .bottomBar) {
+                ToolbarItem(placement: .bottomBar) {
                     DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
                 }
             }
