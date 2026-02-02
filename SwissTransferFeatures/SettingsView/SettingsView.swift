@@ -61,11 +61,6 @@ public struct SettingsView: View {
                                     matomoScreen: .themeSetting)
                 }
                 .settingsCell()
-
-                NotificationsSettingsCell {
-                    NotificationsSettingsView()
-                }
-                .settingsCell()
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
