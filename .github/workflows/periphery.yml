@@ -8,4 +8,4 @@ concurrency:
 
 jobs:
   periphery:
-    uses: infomaniak/.github/.github/workflows/periphery.yml@v1
+    uses: infomaniak/.github/.github/workflows/periphery.yml@v2
