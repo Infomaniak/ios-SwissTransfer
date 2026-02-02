@@ -37,25 +37,23 @@ public struct ActivityView: UIViewControllerRepresentable {
 
     class FileShareModel: NSObject, UIActivityItemSource {
         let url: URL
-        let data: Data
         let title: String
 
         init(url: URL) throws {
             self.url = url
             title = url.lastPathComponent
-            data = try Data(contentsOf: url)
             super.init()
         }
 
         func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-            data
+            url
         }
 
         func activityViewController(
             _ activityViewController: UIActivityViewController,
             itemForActivityType activityType: UIActivity.ActivityType?
         ) -> Any? {
-            data
+            try? Data(contentsOf: url)
         }
 
         func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
