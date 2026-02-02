@@ -43,7 +43,7 @@ public final class MultiDownloadTask: Equatable, Sendable, Identifiable, Observa
 
     public var size: Int64
 
-    public init?(id: String, size: Int64) {
+    public init(id: String, size: Int64) {
         self.id = id
         self.size = size
     }

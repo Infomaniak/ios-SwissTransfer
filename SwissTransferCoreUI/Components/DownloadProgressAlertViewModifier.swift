@@ -113,7 +113,7 @@ struct DownloadProgressAlertViewModifier: ViewModifier {
 
 #Preview {
     DownloadProgressAlert(
-        multiDownloadTask: MultiDownloadTask(id: "", size: 0)!,
+        multiDownloadTask: MultiDownloadTask(id: "", size: 0),
         downloadCompletedCallback: nil
     )
     .environmentObject(DownloadManager(sessionConfiguration: .swissTransfer))
