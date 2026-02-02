@@ -167,7 +167,7 @@ public class DownloadManager: ObservableObject {
     }
 
     public func getMultiDownloadTaskFor(transfer: TransferUi, files: [FileUi]) -> MultiDownloadTask? {
-        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.id))
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
 
         guard trackedMultiDownloadTask?.id == multiTaskId else { return nil }
         return trackedMultiDownloadTask
