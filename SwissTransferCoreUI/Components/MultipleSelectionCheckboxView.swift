@@ -25,12 +25,13 @@ struct MultipleSelectionCheckboxView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 2)
-                .foregroundStyle(isSelected ? .green : .white)
+                .foregroundStyle(isSelected ? STResourcesAsset.Colors.greenMain.swiftUIColor : STResourcesAsset.Colors.white
+                    .swiftUIColor)
                 .frame(width: 16, height: 16)
 
             if !isSelected {
                 RoundedRectangle(cornerRadius: 2)
-                    .stroke(.gray)
+                    .stroke(STResourcesAsset.Colors.greyShark.swiftUIColor)
                     .frame(width: 16, height: 16)
             } else {
                 STResourcesAsset.Images.check.swiftUIImage
