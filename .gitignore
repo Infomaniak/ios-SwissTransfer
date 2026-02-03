@@ -69,3 +69,6 @@ release/
 
 ### Tests ###
 SwissTransferTests/Env.swift
+
+### Import Loco ###
+.import_loco_api
