@@ -225,7 +225,20 @@ public class DownloadManager: ObservableObject {
             await notificationsHelper.requestPermissionIfNeeded()
         }
 
-        try? await startDownload(transfer: transfer)
+        try? await startTransferDownload(transfer: transfer)
+    }
+
+    private func startTransferDownload(transfer: TransferUi) async throws {
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: [])
+        let multiDownloadTask = MultiDownloadTask(
+            id: multiTaskId,
+            size: transfer.sizeUploaded
+        )
+        trackedMultiDownloadTask = multiDownloadTask
+
+        let downloadURL = try await getDownloadURLFor(transfer: transfer)
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
+        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
     private func startOrCancelFilesDownload(transfer: TransferUi, files: [FileUi]) async {
@@ -249,10 +262,10 @@ public class DownloadManager: ObservableObject {
 
         let filesToDownload = files.filter { localFiles[$0.uid] == nil }
 
-        try? await startDownload(files: filesToDownload, in: transfer)
+        try? await startFilesDownload(files: filesToDownload, in: transfer)
     }
 
-    private func startDownload(files: [FileUi], in transfer: TransferUi) async throws {
+    private func startFilesDownload(files: [FileUi], in transfer: TransferUi) async throws {
         let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
         let multiDownloadTask = MultiDownloadTask(
             id: multiTaskId,
@@ -269,12 +282,6 @@ public class DownloadManager: ObservableObject {
         let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
-    }
-
-    private func startDownload(transfer: TransferUi) async throws {
-        let downloadURL = try await getDownloadURLFor(transfer: transfer)
-        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
-        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
     private func taskId(transferUUID: String, fileUUID: String?) -> String {
