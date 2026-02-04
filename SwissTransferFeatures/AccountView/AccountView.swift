@@ -45,6 +45,27 @@ public struct AccountView: View {
         List {
             AccountHeaderView(user: PreviewHelper.sampleUser)
                 .frame(maxWidth: .infinity)
+
+            Section {
+                if user != nil {
+                    NavigationLink {} label: { // TODO: Change Navigation
+                        SingleLabelSettingsCell(
+                            title: "Changer de compte", // TODO: Import or create trad
+                            leadingIcon: STResourcesAsset.Images.userChange
+                        )
+                    }
+                    .settingsCell()
+                } else {
+                    NavigationLink {} label: { // TODO: Change Navigation
+                        SingleLabelSettingsCell(
+                            title: "Connexion", // TODO: Import or create trad
+                            leadingIcon: STResourcesAsset.Images.user
+                        )
+                    }
+                    .settingsCell()
+                }
+            }
+
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
                 Link(destination: SettingLinks.termsAndConditions) {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
