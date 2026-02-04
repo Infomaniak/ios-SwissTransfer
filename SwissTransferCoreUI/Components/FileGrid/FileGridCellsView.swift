@@ -24,8 +24,6 @@ import SwiftUI
 import SwissTransferCore
 
 public struct FileGridCellsView: View {
-    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
-
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
     private let action: (any LargeFileCellAction)?

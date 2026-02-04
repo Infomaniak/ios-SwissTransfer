@@ -26,8 +26,6 @@ import SwiftUI
 import SwissTransferCore
 
 public struct DownloadButton: View {
-    @LazyInjectService private var notificationsHelper: NotificationsHelper
-
     @EnvironmentObject private var downloadManager: DownloadManager
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
