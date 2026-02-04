@@ -33,6 +33,7 @@ public enum SettingLinks {
     public static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
     public static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
     public static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
+    public static let helpAndSupport = URL(string: "https://support.infomaniak.com")!
 }
 
 public struct AccountView: View {
@@ -64,6 +65,23 @@ public struct AccountView: View {
                     }
                     .settingsCell()
                 }
+
+                NavigationLink {
+                    SettingsView()
+                        .stNavigationTitle(STResourcesStrings.Localizable.settingsTitle)
+                        .stNavigationBarStyle()
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsTitle,
+                                            leadingIcon: STResourcesAsset.Images.cog)
+                }.settingsCell()
+
+                Link(destination: SettingLinks.helpAndSupport) {
+                    SingleLabelSettingsCell(
+                        title: "Aide et support", // TODO: Import or create trad
+                        leadingIcon: STResourcesAsset.Images.help, trailingIcon: STResourcesAsset.Images.export
+                    )
+                }
+                .settingsCell()
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
