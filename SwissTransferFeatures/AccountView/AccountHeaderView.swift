@@ -26,13 +26,12 @@ public struct AccountHeaderView: View {
     let user: UserProfile?
 
     public var body: some View {
-        VStack(spacing: IKPadding.medium) {
-            ZStack {
-                STResourcesAsset.Images.user.swiftUIImage
-                    .foregroundStyle(Color.ST.onRecipientLabelBackground)
-                    .frame(width: 80, height: 80)
-                    .background(Color.ST.highlighted, in: .circle)
-            }
+        VStack(spacing: IKPadding.micro) {
+            STResourcesAsset.Images.user.swiftUIImage
+                .foregroundStyle(Color.ST.onRecipientLabelBackground)
+                .frame(width: 80, height: 80)
+                .background(Color.ST.highlighted, in: .circle)
+                .padding(IKPadding.small)
 
             Text(user?.displayName ?? "Mon compte")
                 .font(.ST.title)
