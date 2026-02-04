@@ -38,6 +38,8 @@ public enum SettingLinks {
 
 public struct AccountView: View {
     let user: UserProfile?
+    @State private var isShowingLogoutView = false
+
     public init(user: UserProfile? = nil) {
         self.user = user
     }
@@ -82,6 +84,22 @@ public struct AccountView: View {
                     )
                 }
                 .settingsCell()
+
+                if let user = user {
+                    Button {
+                        isShowingLogoutView = true
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: "Se déconnecter", // TODO: Import or create trad
+                            leadingIcon: STResourcesAsset.Images.logout
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .stCustomAlert(isPresented: $isShowingLogoutView) {
+                        LogoutConfirmationView(user: user)
+                    }
+                    .settingsCell()
+                }
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
