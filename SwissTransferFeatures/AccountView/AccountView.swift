@@ -16,13 +16,20 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct AccountView: View {
+    let user: UserProfile?
+    public init(user: UserProfile? = nil) {
+        self.user = user
+    }
+
     public var body: some View {
-        Text("Hello, World!")
+            AccountHeaderView(user: PreviewHelper.sampleUser)
+                .frame(maxWidth: .infinity)
     }
 }
 
