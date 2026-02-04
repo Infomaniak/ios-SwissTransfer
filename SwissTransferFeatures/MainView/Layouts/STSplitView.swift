@@ -20,7 +20,7 @@ import DesignSystem
 import InfomaniakCoreSwiftUI
 import STReceivedView
 import STSentView
-import STSettingsView
+import STAccountView
 import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
@@ -67,8 +67,8 @@ private struct ContentSplitView: View {
             SentView()
         case .receivedTransfers:
             ReceivedView()
-        case .settings:
-            SettingsView()
+        case .account:
+            AccountView(user: PreviewHelper.sampleUser)
         }
     }
 }

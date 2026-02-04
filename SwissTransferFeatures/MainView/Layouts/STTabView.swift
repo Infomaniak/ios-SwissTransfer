@@ -18,7 +18,7 @@
 
 import STReceivedView
 import STSentView
-import STSettingsView
+import STAccountView
 import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
@@ -35,8 +35,8 @@ struct STTabView: View {
             ReceivedView()
                 .stTab(.receivedTransfers)
 
-            SettingsView()
-                .stTab(.settings)
+            AccountView(user: PreviewHelper.sampleUser)
+                .stTab(.account)
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
             TransferDetailsRootView(data: transferData)
