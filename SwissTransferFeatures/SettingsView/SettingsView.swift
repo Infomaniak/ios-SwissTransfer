@@ -27,15 +27,6 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-/// Links used in the settings view
-enum SettingLinks {
-    static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
-    static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
-    static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
-    static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
-    static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
-}
-
 public struct SettingsView: View {
     @InjectService private var matomo: MatomoUtils
 
@@ -101,7 +92,7 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
                 NavigationLink {
                     PrivacyManagementView(
-                        urlRepository: SettingLinks.githubRepository,
+                        urlRepository: URL(fileURLWithPath: ""), // TODO: Use .githubRepository
                         backgroundColor: Color.ST.background,
                         illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
                         userDefaultStore: .shared,
@@ -117,44 +108,6 @@ public struct SettingsView: View {
                                             leadingIcon: STResourcesAsset.Images.shield)
                 }
                 .settingsCell()
-            }
-
-            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
-                Link(destination: SettingLinks.termsAndConditions) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
-                                            trailingIcon: STResourcesAsset.Images.export)
-                }
-                .settingsCell()
-
-                Link(destination: SettingLinks.discoverInfomaniak) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
-                                            trailingIcon: STResourcesAsset.Images.export)
-                }
-                .settingsCell()
-
-                Link(destination: SettingLinks.shareYourIdeas) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
-                                            trailingIcon: STResourcesAsset.Images.export)
-                }
-                .settingsCell()
-
-                if !Bundle.main.isRunningInTestFlight {
-                    Link(destination: SettingLinks.appStoreReviewURL) {
-                        SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                                trailingIcon: STResourcesAsset.Images.export)
-                    }
-                    .settingsCell()
-
-                    Link(destination: UpdateLink.testFlight) {
-                        SingleLabelSettingsCell(title: CoreUILocalizable.joinTheBetaButton,
-                                                trailingIcon: STResourcesAsset.Images.export)
-                    }
-                    .settingsCell()
-                }
-
-                AboutSettingsCell(title: STResourcesStrings.Localizable.version,
-                                  subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
-                    .settingsCell()
             }
         }
         .listStyle(.insetGrouped)
