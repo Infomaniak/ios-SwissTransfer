@@ -118,6 +118,12 @@ public struct SettingsView: View {
                                             leadingIcon: STResourcesAsset.Images.shield)
                 }
                 .settingsCell()
+                
+                Link(destination: URL(fileURLWithPath: "")) { // TODO: Handle delete account
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsDeleteMyAccount, leadingIcon: STResourcesAsset.Images.delete,
+                                            trailingIcon: STResourcesAsset.Images.export)
+                }
+                .settingsCell()
             }
         }
         .listStyle(.insetGrouped)
