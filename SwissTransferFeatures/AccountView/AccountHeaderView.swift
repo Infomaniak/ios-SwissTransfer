@@ -33,7 +33,7 @@ public struct AccountHeaderView: View {
                 .background(Color.ST.highlighted, in: .circle)
                 .padding(IKPadding.small)
 
-            Text(user?.displayName ?? "Mon compte")
+            Text(user?.displayName ?? STResourcesStrings.Localizable.titleMyAccount)
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
                 .multilineTextAlignment(.center)

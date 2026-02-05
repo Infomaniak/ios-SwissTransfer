@@ -13,6 +13,12 @@
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "Auf Netzwerk warten";
 
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Alle";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Abbrechen";
+
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Übertragung abbrechen";
 
@@ -57,6 +63,12 @@
 
 /* loco:674834cdbb4f7b35ad00ea55 */
 "buttonStart" = "Starten";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Sind Sie sicher, dass Sie sich von %s abmelden möchten?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Abmelden";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Zurück";
@@ -238,6 +250,18 @@
 /* loco:6746ea1214cc5fb6da022362 */
 "onboardingPasswordTitle" = "Behalte die Kontrolle!";
 
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Sende deine Dateien";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ jetzt!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Bereit loszulegen?";
+
+/* loco:6978c2946c4481e738070653 */
+"onboardingSignInOrCreateAccount" = "Melde dich an oder erstelle kostenlos ein Konto";
+
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Teile bis zu 50 GB";
 
@@ -290,6 +314,9 @@
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Persönlich";
 
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Mein Konto löschen";
+
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Lege ein Standardlimit für deine Uploads fest";
 
@@ -310,6 +337,12 @@
 
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Spanisch";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Hilfe und Support";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Abmelden";
 
 /* loco:670e0d2650d301395000ead2 */
 "settingsMatomoDescription" = "Matomo ist ein Analysetool, das ausschliesslich von Infomaniak gehostet und verwaltet wird, um zu verstehen, wie die Anwendung genutzt wird.\n\nDurch die Untersuchung dieser Daten kann unser Team die Schnittstelle der Anwendung kontinuierlich verbessern.";
@@ -397,6 +430,12 @@
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Schutz aktivieren";
 
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Anmelden";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Konto wechseln";
+
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Wähle ein Thema aus";
 
@@ -426,6 +465,9 @@
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Optional)";
+
+/* loco:69844713312d28cb940ef782 */
+"titleMyAccount" = "Mein Konto";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Inhalt der Übertragung:";

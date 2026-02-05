@@ -35,7 +35,7 @@ public enum STTab: String, CaseIterable, Identifiable, Codable {
         case .receivedTransfers:
             return STResourcesStrings.Localizable.receivedTitle
         case .account:
-            return "Mon compte" // TODO: Import or create trad
+            return STResourcesStrings.Localizable.titleMyAccount
         }
     }
 

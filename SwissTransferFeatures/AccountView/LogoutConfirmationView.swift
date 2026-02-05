@@ -29,11 +29,11 @@ struct LogoutConfirmationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Me déconnecter") // TODO: Import or create trad
+            Text(STResourcesStrings.Localizable.confirmLogoutTitle)
                 .font(.ST.headline)
                 .foregroundStyle(Color.ST.textPrimary)
                 .padding(.bottom, IKPadding.large)
-            Text("Êtes-vous sûr de vouloir vous déconnecter du compte %@ ?") // TODO: Import or create trad
+            Text(STResourcesStrings.Localizable.confirmLogoutDescription(user.email))
                 .font(.ST.body)
                 .foregroundStyle(Color.ST.textSecondary)
                 .padding(.bottom, IKPadding.large)

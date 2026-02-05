@@ -53,7 +53,7 @@ public struct AccountView: View {
                 if user != nil {
                     NavigationLink {} label: { // TODO: Change Navigation
                         SingleLabelSettingsCell(
-                            title: "Changer de compte", // TODO: Import or create trad
+                            title: STResourcesStrings.Localizable.settingsSwitchAccount,
                             leadingIcon: STResourcesAsset.Images.userChange
                         )
                     }
@@ -61,7 +61,7 @@ public struct AccountView: View {
                 } else {
                     NavigationLink {} label: { // TODO: Change Navigation
                         SingleLabelSettingsCell(
-                            title: "Connexion", // TODO: Import or create trad
+                            title: STResourcesStrings.Localizable.settingsSignIn,
                             leadingIcon: STResourcesAsset.Images.user
                         )
                     }
@@ -79,7 +79,7 @@ public struct AccountView: View {
 
                 Link(destination: SettingLinks.helpAndSupport) {
                     SingleLabelSettingsCell(
-                        title: "Aide et support", // TODO: Import or create trad
+                        title: STResourcesStrings.Localizable.settingsHelpAndSupport,
                         leadingIcon: STResourcesAsset.Images.help, trailingIcon: STResourcesAsset.Images.export
                     )
                 }
@@ -90,7 +90,7 @@ public struct AccountView: View {
                         isShowingLogoutView = true
                     } label: {
                         SingleLabelSettingsCell(
-                            title: "Se déconnecter", // TODO: Import or create trad
+                            title: STResourcesStrings.Localizable.settingsLogOut,
                             leadingIcon: STResourcesAsset.Images.logout
                         )
                     }
