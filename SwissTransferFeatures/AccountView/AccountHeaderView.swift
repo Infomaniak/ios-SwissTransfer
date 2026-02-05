@@ -38,7 +38,7 @@ public struct AccountHeaderView: View {
                 .foregroundStyle(Color.ST.textPrimary)
                 .multilineTextAlignment(.center)
 
-            if let user = user {
+            if let user {
                 Text(user.email)
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)

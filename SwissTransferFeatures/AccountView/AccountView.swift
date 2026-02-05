@@ -85,7 +85,7 @@ public struct AccountView: View {
                 }
                 .settingsCell()
 
-                if let user = user {
+                if let user {
                     Button {
                         isShowingLogoutView = true
                     } label: {
