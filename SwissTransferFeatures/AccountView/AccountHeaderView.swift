@@ -26,11 +26,15 @@ public struct AccountHeaderView: View {
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
-            STResourcesAsset.Images.user.swiftUIImage
-                .foregroundStyle(Color.ST.onRecipientLabelBackground)
-                .frame(width: 80, height: 80)
-                .background(Color.ST.highlighted, in: .circle)
-                .padding(IKPadding.small)
+            if let user {
+                AvatarView(user: user)
+            } else {
+                STResourcesAsset.Images.user.swiftUIImage
+                    .foregroundStyle(Color.ST.onRecipientLabelBackground)
+                    .frame(width: 80, height: 80)
+                    .background(Color.ST.highlighted, in: .circle)
+                    .padding(IKPadding.small)
+            }
 
             Text(currentUser?.displayName ?? STResourcesStrings.Localizable.titleMyAccount)
                 .font(.ST.title)
