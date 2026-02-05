@@ -21,9 +21,9 @@ import STCore
 
 public enum Constants {
     public static let bundleId = "com.infomaniak.swisstransfer"
-    
+
     public static let sharedAppGroupName = "group.com.infomaniak"
-    
+
     public static let numberOfSecondsInADay: TimeInterval = 86400
     public static let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String? ?? "SwissTransfer"
 }
