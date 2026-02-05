@@ -27,6 +27,16 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+/// Links used in the settings view
+public enum SettingLinks {
+    public static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
+    public static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
+    public static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
+    public static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
+    public static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
+    public static let helpAndSupport = URL(string: "https://support.infomaniak.com")!
+}
+
 public struct SettingsView: View {
     @InjectService private var matomo: MatomoUtils
 
@@ -92,7 +102,7 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
                 NavigationLink {
                     PrivacyManagementView(
-                        urlRepository: URL(fileURLWithPath: ""), // TODO: Use .githubRepository
+                        urlRepository: SettingLinks.helpAndSupport,
                         backgroundColor: Color.ST.background,
                         illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
                         userDefaultStore: .shared,

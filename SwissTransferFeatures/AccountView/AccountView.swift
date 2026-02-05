@@ -26,16 +26,6 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-/// Links used in the settings view
-public enum SettingLinks {
-    public static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
-    public static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
-    public static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
-    public static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
-    public static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
-    public static let helpAndSupport = URL(string: "https://support.infomaniak.com")!
-}
-
 public struct AccountView: View {
     let user: UserProfile?
     @State private var isShowingLogoutView = false
