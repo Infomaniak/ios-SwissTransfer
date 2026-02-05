@@ -1,4 +1,3 @@
-//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2025 Infomaniak Network SA
@@ -18,10 +17,10 @@
  */
 
 import DesignSystem
-import InfomaniakCoreSwiftUI
-import SwiftUI
 import InfomaniakCore
+import InfomaniakCoreSwiftUI
 import STResources
+import SwiftUI
 import SwissTransferCore
 
 struct LogoutConfirmationView: View {
@@ -41,8 +40,7 @@ struct LogoutConfirmationView: View {
         }
     }
 
-    private func logout() async {
-    }
+    private func logout() async {} // TODO: implement logout func
 }
 
 #Preview {

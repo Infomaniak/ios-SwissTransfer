@@ -25,7 +25,7 @@ public struct SingleLabelSettingsCell: View {
     public let title: String
     public var leadingIcon: STResourcesImages?
     public var trailingIcon: STResourcesImages?
-    
+
     public init(title: String, leadingIcon: STResourcesImages? = nil, trailingIcon: STResourcesImages? = nil) {
         self.title = title
         self.leadingIcon = leadingIcon

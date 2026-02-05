@@ -18,9 +18,9 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import STAccountView
 import STReceivedView
 import STSentView
-import STAccountView
 import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
