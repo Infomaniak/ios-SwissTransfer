@@ -13,6 +13,12 @@
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "Esperando la red";
 
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Todos";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Cancelar";
+
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Cancelar transferencia";
 
@@ -57,6 +63,12 @@
 
 /* loco:674834cdbb4f7b35ad00ea55 */
 "buttonStart" = "Inicio";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "¿Seguro que quieres desconectarte de %s?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Cerrar sesión";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Volver";
@@ -238,6 +250,18 @@
 /* loco:6746ea1214cc5fb6da022362 */
 "onboardingPasswordTitle" = "¡Mantén el control!";
 
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Envía tus archivos";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = "¡ %@ ahora mismo!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "¿Listo para empezar?";
+
+/* loco:6978c2946c4481e738070653 */
+"onboardingSignInOrCreateAccount" = "Inicia sesión o crea una cuenta gratis";
+
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Comparte hasta 50 GB";
 
@@ -290,6 +314,9 @@
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Personalizado";
 
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Eliminar mi cuenta";
+
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Establece un límite de descarga por defecto para tus transferencias";
 
@@ -310,6 +337,12 @@
 
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Español";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Ayuda y soporte";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Cerrar sesión";
 
 /* loco:670e0d2650d301395000ead2 */
 "settingsMatomoDescription" = "Matomo es una herramienta de análisis alojada y gestionada exclusivamente por Infomaniak para comprender cómo se utiliza la aplicación.\n\nEl estudio de estos datos permite a nuestro equipo mejorar continuamente la interfaz de la aplicación.";
@@ -397,6 +430,12 @@
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Activar la protección";
 
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Iniciar sesión";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Cambiar de cuenta";
+
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Seleccione un tema";
 
@@ -426,6 +465,9 @@
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Opcional)";
+
+/* loco:69844713312d28cb940ef782 */
+"titleMyAccount" = "Mi cuenta";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenido de la transferencia:";
@@ -509,7 +551,7 @@
 "transferVirusCheckDescription" = "Los archivos aún no son accesibles por razones de seguridad.\nPor favor, vuelva dentro de unos momentos.";
 
 /* loco:678e7b0a570febadc1013692 */
-"transferVirusCheckTitle" = "Ficheros controlados";
+"transferVirusCheckTitle" = "Archivos en verificación";
 
 /* loco:678f4ab56e8b3c2390077452 */
 "transferVirusDetectedDescription" = "No puede acceder a esta transferencia porque no cumple nuestras condiciones de uso.";

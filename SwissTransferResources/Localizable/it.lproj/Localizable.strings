@@ -13,6 +13,12 @@
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "In attesa della rete";
 
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Tutti";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Annulla";
+
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Annullamento del trasferimento";
 
@@ -57,6 +63,12 @@
 
 /* loco:674834cdbb4f7b35ad00ea55 */
 "buttonStart" = "Inizio";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Sei sicuro di volerti disconnettere da %s?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Disconnettersi";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Indietro";
@@ -238,6 +250,18 @@
 /* loco:6746ea1214cc5fb6da022362 */
 "onboardingPasswordTitle" = "Mantieni il controllo!";
 
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Invia i tuoi file";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ subito!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Pronto per iniziare?";
+
+/* loco:6978c2946c4481e738070653 */
+"onboardingSignInOrCreateAccount" = "Accedi o crea un account gratuitamente";
+
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Condividi fino a 50 GB";
 
@@ -290,6 +314,9 @@
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Personalizzato";
 
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Eliminare il mio account";
+
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Impostare un limite di download predefinito per i trasferimenti";
 
@@ -310,6 +337,12 @@
 
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Spagnolo";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Aiuto e supporto";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Disconnettersi";
 
 /* loco:670e0d2650d301395000ead2 */
 "settingsMatomoDescription" = "Matomo è uno strumento di analisi ospitato e gestito esclusivamente da Infomaniak per capire come viene utilizzata l’applicazione.\n\nStudiando questi dati, il nostro team è in grado di migliorare continuamente l’interfaccia dell’applicazione.";
@@ -397,6 +430,12 @@
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Attivare la protezione";
 
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Accedi";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Cambia account";
+
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Seleziona un tema";
 
@@ -426,6 +465,9 @@
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Opzionale)";
+
+/* loco:69844713312d28cb940ef782 */
+"titleMyAccount" = "Il mio conto";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenuto del trasferimento:";

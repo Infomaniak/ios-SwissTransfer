@@ -39,10 +39,17 @@ let settingsView = Feature(
     ]
 )
 
+let accountView = Feature(
+    name: "AccountView",
+    additionalDependencies: [
+        settingsView
+    ]
+)
+
 let mainView = Feature(
     name: "MainView",
     additionalDependencies: [
-        settingsView,
+        accountView,
         receivedView,
         sentView,
         transferDetailsView,
@@ -77,7 +84,8 @@ let mainiOSAppFeatures = [
     newTransferView,
     rootTransferView,
     transferList,
-    deepLinkPasswordView
+    deepLinkPasswordView,
+    accountView
 ]
 
 // MARK: - Project
