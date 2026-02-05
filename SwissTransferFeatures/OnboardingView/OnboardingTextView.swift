@@ -25,6 +25,7 @@ enum OnboardingText {
     case storage
     case expiration
     case password
+    case sendFiles
 
     var title: String {
         switch self {
@@ -34,6 +35,8 @@ enum OnboardingText {
             STResourcesStrings.Localizable.onboardingExpirationTitle
         case .password:
             STResourcesStrings.Localizable.onboardingPasswordTitle
+        case .sendFiles:
+            STResourcesStrings.Localizable.onboardingSendFilesTitle
         }
     }
 
@@ -56,6 +59,8 @@ enum OnboardingText {
             STResourcesStrings.Localizable.onboardingExpirationSubtitleArgument
         case .password:
             STResourcesStrings.Localizable.onboardingPasswordSubtitleArgument
+        case .sendFiles:
+            STResourcesStrings.Localizable.onboardingSendFilesSubtitleArgument
         }
     }
 
@@ -67,6 +72,8 @@ enum OnboardingText {
             STResourcesStrings.Localizable.onboardingExpirationSubtitleTemplate
         case .password:
             STResourcesStrings.Localizable.onboardingPasswordSubtitleTemplate
+        case .sendFiles:
+            STResourcesStrings.Localizable.onboardingSendFilesSubtitleTemplate
         }
     }
 }

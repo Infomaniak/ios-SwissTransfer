@@ -238,6 +238,18 @@
 /* loco:6746ea1214cc5fb6da022362 */
 "onboardingPasswordTitle" = "Behalte die Kontrolle!";
 
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Sende deine Dateien";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ jetzt!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Bereit loszulegen?";
+
+/* loco:6978c2946c4481e738070653 */
+"onboardingSignInOrCreateAccount" = "Melde dich an oder erstelle kostenlos ein Konto";
+
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Teile bis zu 50 GB";
 
