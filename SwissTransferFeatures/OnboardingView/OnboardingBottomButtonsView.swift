@@ -47,22 +47,18 @@ struct OnboardingBottomButtonsView: View {
     var body: some View {
         VStack(spacing: IKPadding.mini) {
             if !isPresentingInterAppLogin {
-                Button(STResourcesStrings.Localizable.buttonStart) {
-                    Task {
-                        await accountManager.createAndSetCurrentAccount()
-                        if let currentManager = await accountManager.getCurrentManager() {
-                            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
-                        }
-                    }
-                }
-                .buttonStyle(.ikBorderedProminent)
+                Button(STResourcesStrings.Localizable.buttonStart, action: openGuestSession)
+                    .buttonStyle(.ikBorderedProminent)
             } else {
                 ContinueWithAccountView(
-                    isLoading: loginHandler.isLoading) {
-                        loginPressed()
-                    } onLoginWithAccountsPressed: { accounts in
-                        loginWithAccountsPressed(accounts: accounts)
-                    } onCreateAccountPressed: { /* Empty on purpose */ }
+                    isLoading: loginHandler.isLoading,
+                    excludingUserIds: excludedUserIds,
+                    allowsMultipleSelection: false
+                ) {
+                    loginPressed()
+                } onLoginWithAccountsPressed: { accounts in
+                    loginWithAccountsPressed(accounts: accounts)
+                } onCreateAccountPressed: { /* Empty on purpose */ }
             }
         }
         .ikButtonFullWidth(true)
