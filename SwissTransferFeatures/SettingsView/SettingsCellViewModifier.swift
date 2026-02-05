@@ -26,7 +26,7 @@ struct SettingsCellViewModifier: ViewModifier {
     }
 }
 
-extension View {
+public extension View {
     func settingsCell() -> some View {
         modifier(SettingsCellViewModifier())
     }

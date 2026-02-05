@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCore
 import STCore
 
 public enum PreviewHelper {
@@ -70,6 +71,14 @@ public enum PreviewHelper {
         files: [sampleFile],
         direction: .received,
         transferStatus: .ready
+    )
+
+    public static let sampleUser = UserProfile(
+        id: 1,
+        displayName: "John Appleseed",
+        firstName: "John",
+        lastName: "Appleseed",
+        email: "mobiletest@ik.me"
     )
 
     public static let sampleNewUploadSession = NewUploadSession(

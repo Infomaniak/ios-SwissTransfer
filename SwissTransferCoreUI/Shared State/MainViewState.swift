@@ -66,7 +66,7 @@ extension MainViewState: StateRestorable {
                     await restoreTransfer(with: id)
                 }
             case .settings(let setting):
-                paths[.settings] = [.settings(setting)]
+                paths[.account] = [.settings(setting)] // TODO: refactor 'case settings(SettingDetailUI)'
             }
         }
     }

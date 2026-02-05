@@ -21,12 +21,18 @@ import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
-struct SingleLabelSettingsCell: View {
-    let title: String
-    var leadingIcon: STResourcesImages?
-    var trailingIcon: STResourcesImages?
+public struct SingleLabelSettingsCell: View {
+    public let title: String
+    public var leadingIcon: STResourcesImages?
+    public var trailingIcon: STResourcesImages?
 
-    var body: some View {
+    public init(title: String, leadingIcon: STResourcesImages? = nil, trailingIcon: STResourcesImages? = nil) {
+        self.title = title
+        self.leadingIcon = leadingIcon
+        self.trailingIcon = trailingIcon
+    }
+
+    public var body: some View {
         HStack(spacing: IKPadding.small) {
             if let leadingIcon {
                 Image(asset: leadingIcon)

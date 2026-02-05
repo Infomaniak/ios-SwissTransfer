@@ -39,10 +39,17 @@ let settingsView = Feature(
     ]
 )
 
+let accountView = Feature(
+    name: "AccountView",
+    additionalDependencies: [
+        settingsView
+    ]
+)
+
 let mainView = Feature(
     name: "MainView",
     additionalDependencies: [
-        settingsView,
+        accountView,
         receivedView,
         sentView,
         transferDetailsView,
@@ -77,7 +84,8 @@ let mainiOSAppFeatures = [
     newTransferView,
     rootTransferView,
     transferList,
-    deepLinkPasswordView
+    deepLinkPasswordView,
+    accountView
 ]
 
 // MARK: - Project
@@ -223,7 +231,8 @@ let project = Project(
                     .external(name: "SwiftModalPresentation"),
                     .external(name: "QRCode"),
                     .external(name: "SwiftUIIntrospect-Static"),
-                    .external(name: "OrderedCollections")
+                    .external(name: "OrderedCollections"),
+                    .external(name: "NukeUI")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",
