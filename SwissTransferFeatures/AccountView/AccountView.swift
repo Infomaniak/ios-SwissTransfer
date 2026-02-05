@@ -36,7 +36,7 @@ public struct AccountView: View {
 
     public var body: some View {
         List {
-            AccountHeaderView(user: PreviewHelper.sampleUser)
+            AccountHeaderView(user: user)
                 .frame(maxWidth: .infinity)
 
             Section {
