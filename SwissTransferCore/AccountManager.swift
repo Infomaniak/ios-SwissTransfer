@@ -16,17 +16,75 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
+import DeviceAssociation
 import Foundation
 import InfomaniakCore
 import InfomaniakDI
+import InfomaniakLogin
+import InfomaniakNotifications
+import OSLog
 import STCore
 
-public actor AccountManager {
+public protocol AccountManagerable: Sendable {
+    typealias UserId = Int
+
+    func createAccount(token: ApiToken) async throws -> TransferManager
+    func createAndSetCurrentAccount(code: String, codeVerifier: String) async throws
+    func setCurrentManager(manager: TransferManager) async
+    func getCurrentManager() async -> TransferManager?
+    func createAndSetCurrentAccount() async
+    func getAccountIds() async -> [UserId]
+}
+
+public extension AccountManager {
+    enum ErrorDomain: Error {
+        case noUserSession
+    }
+}
+
+public extension ApiFetcher {
+    convenience init(token: ApiToken, delegate: RefreshTokenDelegate) {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+
+        self.init(decoder: decoder)
+        createAuthenticatedSession(
+            token,
+            authenticator: OAuthAuthenticator(refreshTokenDelegate: delegate),
+            additionalAdapters: [UserAgentAdapter()]
+        )
+    }
+}
+
+public final class STRefreshTokenDelegate: InfomaniakCore.RefreshTokenDelegate, Sendable {
+    public func didUpdateToken(newToken: ApiToken, oldToken: ApiToken) {}
+
+    public func didFailRefreshToken(_ token: ApiToken) {}
+}
+
+public actor AccountManager: AccountManagerable, ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
+    @LazyInjectService private var tokenStore: TokenStore
+    @LazyInjectService private var deviceManager: DeviceManagerable
+    @LazyInjectService private var notificationService: InfomaniakNotifications
+    @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
 
     /// In case we later choose to support multi account / login we simulate an existing guest
     private static let guestUserId = -1
-    public typealias UserId = Int
+
+    public let userProfileStore = UserProfileStore()
+
+    private let refreshTokenDelegate = STRefreshTokenDelegate()
+
+    public private(set) var currentManager: TransferManager? {
+        didSet {
+            let userId = managers.first { $0.value == currentManager }?.key ?? 0
+            UserDefaults.shared.currentUserId = userId
+            objectWillChange.send()
+        }
+    }
 
     private var managers = [UserId: TransferManager]()
 
@@ -36,6 +94,42 @@ public actor AccountManager {
 
     public func createAndSetCurrentAccount() {
         UserDefaults.shared.currentUserId = AccountManager.guestUserId
+    }
+
+    public func createAndSetCurrentAccount(code: String, codeVerifier: String) async throws {
+        let token = try await networkLoginService.apiTokenUsing(code: code, codeVerifier: codeVerifier)
+
+        do {
+            let manager = try await createAccount(token: token)
+            setCurrentManager(manager: manager)
+        } catch {
+            throw error
+        }
+    }
+
+    public func createAccount(token: ApiToken) async throws -> TransferManager {
+        let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
+        let user = try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
+
+        let deviceId = try await deviceManager.getOrCreateCurrentDevice().uid
+        tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
+
+        guard let manager = await getManager(userId: user.id) else {
+            throw ErrorDomain.noUserSession
+        }
+
+        return manager
+    }
+
+    private func attachDeviceToApiToken(_ token: ApiToken, apiFetcher: ApiFetcher) {
+        Task {
+            do {
+                let device = try await deviceManager.getOrCreateCurrentDevice()
+                try await deviceManager.attachDeviceIfNeeded(device, to: token, apiFetcher: apiFetcher)
+            } catch {
+                Logger.general.error("Failed to attach device to token: \(error.localizedDescription)")
+            }
+        }
     }
 
     public func getManager(userId: UserId) async -> TransferManager? {
@@ -56,6 +150,10 @@ public actor AccountManager {
         }
     }
 
+    public func setCurrentManager(manager: TransferManager) {
+        currentManager = manager
+    }
+
     public func getCurrentManager() async -> TransferManager? {
         let currentUserId = UserDefaults.shared.currentUserId
         guard currentUserId != 0 else {
@@ -64,5 +162,18 @@ public actor AccountManager {
 
         assert(currentUserId == AccountManager.guestUserId, "Only guest user is supported")
         return await getManager(userId: currentUserId)
+    }
+
+    public func getAccountIds() async -> [UserId] {
+        return Array(managers.keys)
+    }
+
+    public func removeTokenAndAccountFor(userId: Int) {
+        guard let removedToken = tokenStore.removeTokenFor(userId: userId) else { return }
+
+        networkLoginService.deleteApiToken(token: removedToken) { result in
+            guard case .failure(let error) = result else { return }
+            Logger.general.error("Failed to delete api token: \(error.localizedDescription)")
+        }
     }
 }
