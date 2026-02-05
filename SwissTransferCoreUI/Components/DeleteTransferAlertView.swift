@@ -25,7 +25,7 @@ import SwiftUI
 import SwissTransferCore
 
 public struct DeleteTransferAlertView: View {
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManagerable
 
     @State private var error: UserFacingError?
 
