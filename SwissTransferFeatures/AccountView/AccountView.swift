@@ -27,8 +27,9 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct AccountView: View {
-    let user: UserProfile?
     @State private var isShowingLogoutView = false
+
+    let user: UserProfile?
 
     public init(user: UserProfile? = nil) {
         self.user = user
@@ -37,7 +38,6 @@ public struct AccountView: View {
     public var body: some View {
         List {
             AccountHeaderView(user: PreviewHelper.sampleUser)
-                .frame(maxWidth: .infinity)
 
             Section {
                 if user != nil {
@@ -65,7 +65,8 @@ public struct AccountView: View {
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsTitle,
                                             leadingIcon: STResourcesAsset.Images.cog)
-                }.settingsCell()
+                }
+                .settingsCell()
 
                 Link(destination: SettingLinks.helpAndSupport) {
                     SingleLabelSettingsCell(
