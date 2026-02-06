@@ -18,6 +18,7 @@
 
 @preconcurrency import Combine
 import Foundation
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import STCore
 
@@ -31,9 +32,61 @@ public struct DownloadTask: Equatable, Sendable, Identifiable {
     }
 }
 
+public final class MultiDownloadTask: Equatable, Sendable, Identifiable, ObservableObject {
+    public static func == (lhs: MultiDownloadTask, rhs: MultiDownloadTask) -> Bool {
+        lhs.id == rhs.id &&
+            lhs.trackedDownloadTasks == rhs.trackedDownloadTasks
+    }
+
+    public let id: String
+    @Published public var trackedDownloadTasks = [String: DownloadTask]()
+
+    public var size: Int64
+
+    public init(id: String, size: Int64) {
+        self.id = id
+        self.size = size
+    }
+
+    public var state: DownloadTaskState {
+        guard !trackedDownloadTasks.isEmpty else {
+            return .running(current: 0, total: size)
+        }
+
+        guard !trackedDownloadTasks.values.filter(\.state.isRunning).isEmpty else {
+            var urls = [URL]()
+            var errors = [Error]()
+            for task in trackedDownloadTasks.values {
+                if case .completed(let url) = task.state {
+                    urls += url
+                } else if case .error(let error) = task.state {
+                    errors.append(error)
+                }
+            }
+
+            if urls.isEmpty, let error = errors.first {
+                return .error(error)
+            }
+            return .completed(urls)
+        }
+
+        var percentage: Int64 = 0
+        for task in trackedDownloadTasks.values {
+            if case .running(let current, let total) = task.state {
+                percentage += current * 100 / total
+            } else {
+                percentage += 100
+            }
+        }
+        percentage /= Int64(trackedDownloadTasks.count)
+
+        return .running(current: size * percentage / 100, total: size)
+    }
+}
+
 public enum DownloadTaskState: Equatable, Sendable {
     case running(current: Int64, total: Int64)
-    case completed(URL)
+    case completed([URL])
     case error(Error)
 
     public static func == (lhs: DownloadTaskState, rhs: DownloadTaskState) -> Bool {
@@ -67,7 +120,10 @@ public class DownloadManager: ObservableObject {
 
     private var cancellables: Set<AnyCancellable> = []
 
-    @Published private var trackedDownloadTasks = [String: DownloadTask]()
+    @Published public var trackedMultiDownloadTask: MultiDownloadTask?
+    @Published public var localDownloadOnly = false
+
+    public var localURLs = [URL]()
 
     public var backgroundDownloadCompletionCallback: (() -> Void)? {
         didSet {
@@ -93,7 +149,8 @@ public class DownloadManager: ObservableObject {
         sessionDelegate.downloadRunningSubject
             .throttle(for: .milliseconds(500), scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] downloadTaskProgress in
-                guard self?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true else { return }
+                guard self?.trackedMultiDownloadTask?.trackedDownloadTasks[downloadTaskProgress.id]?.state.isRunning == true
+                else { return }
                 self?.updateDownloadTask(
                     id: downloadTaskProgress.id,
                     state: .running(current: downloadTaskProgress.current, total: downloadTaskProgress.total)
@@ -109,45 +166,130 @@ public class DownloadManager: ObservableObject {
         }
     }
 
-    public func getDownloadTaskFor(file: FileUi, in transfer: TransferUi) -> DownloadTask? {
-        return getDownloadTaskFor(transfer: transfer, file: file)
-    }
+    public func getMultiDownloadTaskFor(transfer: TransferUi, files: [FileUi]) -> MultiDownloadTask? {
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
 
-    public func getDownloadTaskFor(transfer: TransferUi) -> DownloadTask? {
-        return getDownloadTaskFor(transfer: transfer, file: nil)
-    }
-
-    public func getDownloadTaskFor(transfer: TransferUi, file: FileUi?) -> DownloadTask? {
-        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file?.uid)
-        return trackedDownloadTasks[taskId]
+        guard trackedMultiDownloadTask?.id == multiTaskId else { return nil }
+        return trackedMultiDownloadTask
     }
 
     private func updateDownloadTask(id: String, state: DownloadTaskState) {
-        trackedDownloadTasks[id] = DownloadTask(id: id, state: state)
+        trackedMultiDownloadTask?.trackedDownloadTasks[id] = DownloadTask(id: id, state: state)
     }
 
-    public func removeDownloadTask(id: String) async {
+    public func removeMultiDownloadTask() async {
+        guard let trackedMultiDownloadTask else { return }
+        self.trackedMultiDownloadTask = nil
+        for task in trackedMultiDownloadTask.trackedDownloadTasks.values {
+            await removeDownloadTask(id: task.id)
+        }
+    }
+
+    private func removeDownloadTask(id: String) async {
         if let task = await session.allTasks.first(where: { $0.taskDescription == id }) {
             task.cancel()
         }
 
-        trackedDownloadTasks[id] = nil
+        trackedMultiDownloadTask?.trackedDownloadTasks[id] = nil
     }
 
-    public func startDownload(file: FileUi, in transfer: TransferUi) async throws {
-        let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
-        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
-        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
+    public func startOrCancelDownload(transfer: TransferUi, files: [FileUi], matomoCategory: MatomoCategory) {
+        @InjectService var matomo: MatomoUtils
+        let matomoName: MatomoName = files.count == 1 ? .consultOneFile : .downloadTransfer
+        matomo.track(eventWithCategory: matomoCategory, name: matomoName)
+
+        Task {
+            if getMultiDownloadTaskFor(transfer: transfer, files: files) != nil {
+                await removeMultiDownloadTask()
+                return
+            }
+
+            if files.isEmpty {
+                // Download Transfer
+                await startOrCancelTransferDownload(transfer: transfer)
+            } else {
+                await startOrCancelFilesDownload(transfer: transfer, files: files)
+            }
+        }
     }
 
-    public func startDownload(transfer: TransferUi) async throws {
+    private func startOrCancelTransferDownload(transfer: TransferUi) async {
+        if let url = transfer.localArchiveURL,
+           FileManager.default.fileExists(atPath: url.path()) {
+            localURLs = [url]
+            localDownloadOnly = true
+            return
+        }
+
+        Task {
+            await notificationsHelper.requestPermissionIfNeeded()
+        }
+
+        try? await startTransferDownload(transfer: transfer)
+    }
+
+    private func startTransferDownload(transfer: TransferUi) async throws {
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: [])
+        let multiDownloadTask = MultiDownloadTask(
+            id: multiTaskId,
+            size: transfer.sizeUploaded
+        )
+        trackedMultiDownloadTask = multiDownloadTask
+
         let downloadURL = try await getDownloadURLFor(transfer: transfer)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
+    private func startOrCancelFilesDownload(transfer: TransferUi, files: [FileUi]) async {
+        let localFiles: [String: URL] = Dictionary(
+            uniqueKeysWithValues: files.compactMap { file in
+                guard let url = file.localURLFor(transfer: transfer),
+                      FileManager.default.fileExists(atPath: url.path()) else { return nil }
+                return (file.uid, url)
+            }
+        )
+        localURLs = Array(localFiles.values)
+
+        if localFiles.count == files.count {
+            localDownloadOnly = true
+            return
+        }
+
+        Task {
+            await notificationsHelper.requestPermissionIfNeeded()
+        }
+
+        let filesToDownload = files.filter { localFiles[$0.uid] == nil }
+
+        try? await startFilesDownload(files: filesToDownload, in: transfer)
+    }
+
+    private func startFilesDownload(files: [FileUi], in transfer: TransferUi) async throws {
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
+        let multiDownloadTask = MultiDownloadTask(
+            id: multiTaskId,
+            size: files.filesSize()
+        )
+        trackedMultiDownloadTask = multiDownloadTask
+
+        for file in files {
+            try? await startDownload(file: file, in: transfer)
+        }
+    }
+
+    private func startDownload(file: FileUi, in transfer: TransferUi) async throws {
+        let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
+        let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
+        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
+    }
+
     private func taskId(transferUUID: String, fileUUID: String?) -> String {
         "\(transferUUID)__\(fileUUID ?? "")"
+    }
+
+    private func multiTaskId(transferUUID: String, filesUUID: [String]) -> String {
+        return "\(transferUUID)__\(filesUUID.sorted().joined(separator: "-"))"
     }
 
     private func getDownloadURLFor(file: FileUi, in transfer: TransferUi) async throws -> URL {
@@ -210,7 +352,7 @@ public class DownloadManager: ObservableObject {
                 )
                 updateDownloadTask(
                     id: downloadTaskCompletion.id,
-                    state: .completed(resultURL)
+                    state: .completed([resultURL])
                 )
             } catch {
                 notificationsHelper.sendBackgroundDownloadErrorNotificationIfNeeded(

@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,30 +16,29 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import DesignSystem
-import InfomaniakCoreCommonUI
-import InfomaniakCoreSwiftUI
-import InfomaniakDI
 import STCore
-import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-struct ContentView: View {
-    let transfer: TransferUi
-    let matomoCategory: MatomoCategory
+struct DownloadSelectionModifier: ViewModifier {
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: IKPadding.medium) {
-            Text(STResourcesStrings.Localizable.transferContentHeader)
-                .sectionHeader()
+    let transfer: TransferUi?
 
-            FileGridView(files: transfer.files, transfer: transfer, matomoCategory: matomoCategory)
+    func body(content: Content) -> some View {
+        content.toolbar {
+            if let transfer, multipleSelectionManager.isEnabled {
+                ToolbarItem(placement: .bottomBar) {
+                    DownloadButton(transfer: transfer, matomoCategory: .receivedTransfer)
+                }
+            }
         }
     }
 }
 
-#Preview {
-    ContentView(transfer: PreviewHelper.sampleTransfer, matomoCategory: .sentTransfer)
+public extension View {
+    func downloadSelectionToolbar(transfer: TransferUi?) -> some View {
+        modifier(DownloadSelectionModifier(transfer: transfer))
+    }
 }
