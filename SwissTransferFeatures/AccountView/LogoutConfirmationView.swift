@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,30 +16,33 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
+import STResources
 import SwiftUI
+import SwissTransferCore
 
-public struct AboutSettingsCell: View {
-    public let title: String
-    public let subtitle: String
+struct LogoutConfirmationView: View {
+    let user: UserProfile
 
-    public init(title: String, subtitle: String) {
-        self.title = title
-        self.subtitle = subtitle
-    }
-
-    public var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(STResourcesStrings.Localizable.confirmLogoutTitle)
+                .font(.ST.headline)
                 .foregroundStyle(Color.ST.textPrimary)
+                .padding(.bottom, IKPadding.large)
+            Text(STResourcesStrings.Localizable.confirmLogoutDescription(user.email))
                 .font(.ST.body)
-            Text(subtitle)
                 .foregroundStyle(Color.ST.textSecondary)
-                .font(.ST.callout)
+                .padding(.bottom, IKPadding.large)
+            ModalButtonsView(primaryButtonTitle: STResourcesStrings.Localizable.buttonConfirm, primaryButtonAction: logout)
         }
     }
+
+    private func logout() async {} // TODO: implement logout func
 }
 
 #Preview {
-    AboutSettingsCell(title: "title", subtitle: "subtitle")
+    LogoutConfirmationView(user: PreviewHelper.sampleUser)
 }

@@ -22,7 +22,7 @@ import SwiftUI
 public enum STTab: String, CaseIterable, Identifiable, Codable {
     case sentTransfers
     case receivedTransfers
-    case settings
+    case account
 
     public var id: String {
         rawValue
@@ -34,8 +34,8 @@ public enum STTab: String, CaseIterable, Identifiable, Codable {
             return STResourcesStrings.Localizable.sentTitle
         case .receivedTransfers:
             return STResourcesStrings.Localizable.receivedTitle
-        case .settings:
-            return STResourcesStrings.Localizable.settingsTitle
+        case .account:
+            return STResourcesStrings.Localizable.titleMyAccount
         }
     }
 
@@ -45,7 +45,7 @@ public enum STTab: String, CaseIterable, Identifiable, Codable {
             return STResourcesAsset.Images.arrowUpCircle.swiftUIImage
         case .receivedTransfers:
             return STResourcesAsset.Images.arrowDownCircle.swiftUIImage
-        case .settings:
+        case .account:
             return STResourcesAsset.Images.sliderVertical3.swiftUIImage
         }
     }

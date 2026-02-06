@@ -13,6 +13,12 @@
 /* loco:677be58b7579b67f0406b33e */
 "awaitingNetwork" = "En attente de réseau";
 
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Tout";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Annuler";
+
 /* loco:6721e8f6b18493385d00ec52 */
 "buttonCancelTransfer" = "Annuler le transfert";
 
@@ -57,6 +63,12 @@
 
 /* loco:674834cdbb4f7b35ad00ea55 */
 "buttonStart" = "Démarrer";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Êtes-vous sûr de vouloir vous déconnecter du compte %s ?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Me déconnecter";
 
 /* loco:66c5b8a600121e93c00c79d2 */
 "contentDescriptionButtonBack" = "Retour";
@@ -238,6 +250,18 @@
 /* loco:6746ea1214cc5fb6da022362 */
 "onboardingPasswordTitle" = "Garde le contrôle !";
 
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Envoie tes fichiers";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ dès maintenant !";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Prêt à commencer ?";
+
+/* loco:6978c2946c4481e738070653 */
+"onboardingSignInOrCreateAccount" = "Connecte-toi ou crée un compte gratuitement";
+
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Partage jusqu’à 50 Go";
 
@@ -290,6 +314,9 @@
 /* loco:67338ed629e297656f0617c2 */
 "settingsCustomizedNotifications" = "Personnalisé";
 
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Supprimer mon compte";
+
 /* loco:66c6e297bb7794739b0ec0d2 */
 "settingsDownloadsLimitTitle" = "Défini une limite de téléchargements par défaut pour tes transferts";
 
@@ -310,6 +337,12 @@
 
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Espagnol";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Aide et support";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Se déconnecter";
 
 /* loco:670e0d2650d301395000ead2 */
 "settingsMatomoDescription" = "Matomo est un outil d’analyse hébergé et géré exclusivement par Infomaniak pour comprendre comment l’application est utilisée.\n\nL’étude de ces données permet à notre équipe d’améliorer en continue l’interface de l’application.";
@@ -397,6 +430,12 @@
 /* loco:6707f77d5ff0bb7280049122 */
 "settingsPasswordToggleDescription" = "Activer la protection";
 
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Connexion";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Changer de compte";
+
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Sélectionne un thème";
 
@@ -426,6 +465,9 @@
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Facultatif)";
+
+/* loco:69844713312d28cb940ef782 */
+"titleMyAccount" = "Mon compte";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenu du transfert :";
