@@ -48,7 +48,7 @@ public final class RootViewState: ObservableObject {
 
     public init() {}
 
-    public func transitionToMainViewIfPossible(accountManager: AccountManager, rootViewState: RootViewState) async {
+    public func transitionToMainViewIfPossible(accountManager: AccountManagerable, rootViewState: RootViewState) async {
         if let currentManager = await accountManager.getCurrentManager() {
             rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
         } else {

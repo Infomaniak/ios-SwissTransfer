@@ -63,13 +63,25 @@ extension Slide {
                     )
                 ),
                 bottomView: OnboardingTextView(text: .password)
+            ),
+            Slide(
+                backgroundImage: STResourcesAsset.Images.onboardingBlurLeft.image,
+                backgroundImageTintColor: nil,
+                content: .animation(
+                    IKLottieConfiguration(
+                        id: 4,
+                        filename: "padlocks",
+                        bundle: STResourcesResources.bundle
+                    )
+                ),
+                bottomView: OnboardingTextView(text: .sendFiles)
             )
         ]
     }
 }
 
 public struct OnboardingView: View {
-    @LazyInjectService private var accountManager: AccountManager
+    @LazyInjectService private var accountManager: AccountManagerable
 
     @EnvironmentObject private var rootViewState: RootViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
@@ -79,33 +91,8 @@ public struct OnboardingView: View {
     public init() {}
 
     public var body: some View {
-        CarouselView(slides: Slide.onboardingSlides, selectedSlide: $selectedSlideIndex) { slideIndex in
-            if slideIndex == Slide.onboardingSlides.count - 1 {
-                Button(STResourcesStrings.Localizable.buttonStart) {
-                    Task {
-                        await accountManager.createAndSetCurrentAccount()
-                        if let currentManager = await accountManager.getCurrentManager() {
-                            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
-                        }
-                    }
-                }
-                .buttonStyle(.ikBorderedProminent)
-                .ikButtonFullWidth(true)
-                .controlSize(.large)
-                .padding(.horizontal, value: .medium)
-            } else {
-                Button {
-                    selectedSlideIndex += 1
-                } label: {
-                    Label {
-                        Text(CoreUILocalizable.buttonNext)
-                    } icon: {
-                        STResourcesAsset.Images.arrowRight.swiftUIImage
-                    }
-                    .labelStyle(.iconOnly)
-                }
-                .buttonStyle(.ikSquare)
-            }
+        CarouselView(slides: Slide.onboardingSlides, selectedSlide: $selectedSlideIndex) { _ in
+            OnboardingBottomButtonsView(selection: $selectedSlideIndex, slideCount: Slide.onboardingSlides.count)
         }
         .appBackground()
         .ignoresSafeArea()

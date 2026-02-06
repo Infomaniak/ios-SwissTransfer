@@ -34,7 +34,7 @@ struct SwissTransferAppClip: App {
 
     @LazyInjectService private var downloadManager: DownloadManager
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManagerable
 
     @StateObject private var universalLinksState = UniversalLinksState()
     @StateObject private var rootViewState = RootViewState()

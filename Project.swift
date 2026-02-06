@@ -63,7 +63,8 @@ let mainView = Feature(
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
     TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakOnboarding"),
-    TargetDependency.external(name: "Lottie")
+    TargetDependency.external(name: "Lottie"),
+    TargetDependency.external(name: "InterAppLogin")
 ])
 
 let rootView = Feature(
@@ -166,7 +167,9 @@ let project = Project(
                 "NSExtension": [
                     "NSExtensionPointIdentifier": "com.apple.share-services",
                     "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).ShareViewController",
-                    "NSExtensionAttributes": ["NSExtensionActivationRule": "SUBQUERY (extensionItems, $extensionItem, SUBQUERY ($extensionItem.attachments, $attachment, (ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.data\")).@count == $extensionItem.attachments.@count ).@count > 0"]
+                    "NSExtensionAttributes": [
+                        "NSExtensionActivationRule": "SUBQUERY (extensionItems, $extensionItem, SUBQUERY ($extensionItem.attachments, $attachment, (ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.data\")).@count == $extensionItem.attachments.@count ).@count > 0"
+                    ]
                 ]
             ]),
             sources: "SwissTransferShareExtension/Sources/**",
@@ -211,7 +214,10 @@ let project = Project(
                     .external(name: "InfomaniakCoreUIKit"),
                     .external(name: "InfomaniakConcurrency"),
                     .external(name: "DesignSystem"),
+                    .external(name: "DeviceAssociation"),
+                    .external(name: "InAppTwoFactorAuthentication"),
                     .external(name: "InfomaniakDeviceCheck"),
+                    .external(name: "InfomaniakNotifications"),
                     .external(name: "STCore"),
                     .external(name: "STNetwork"),
                     .external(name: "STDatabase"),
