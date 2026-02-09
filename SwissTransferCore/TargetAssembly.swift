@@ -61,7 +61,7 @@ open class TargetAssembly {
                 AccountManager()
             },
             Factory(type: ConnectedAccountManagerable.self) { _, _ in
-                ConnectedAccountManager(currentAppKeychainIdentifier: AppIdentifierBuilder.stKeychainIdentifier)
+                ConnectedAccountManager(currentAppKeychainIdentifier: AppIdentifierBuilder.swissTransferKeychainIdentifier)
             },
             Factory(type: InfomaniakNetworkLoginable.self) { _, _ in
                 InfomaniakNetworkLogin(config: loginConfig)
