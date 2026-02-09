@@ -71,7 +71,7 @@ public struct UniversalLinkHandler {
     }
 
     private func createAccountIfNeeded() async -> TransferManager? {
-        @InjectService var accountManager: AccountManagerable
+        @InjectService var accountManager: AccountManager
 
         var defaultTransferManager = await accountManager.getCurrentManager()
 

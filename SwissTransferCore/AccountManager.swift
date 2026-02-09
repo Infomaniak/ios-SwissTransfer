@@ -26,17 +26,6 @@ import InfomaniakNotifications
 import OSLog
 import STCore
 
-public protocol AccountManagerable: Sendable {
-    typealias UserId = Int
-
-    func createAccount(token: ApiToken) async throws -> TransferManager
-    func createAndSetCurrentAccount(code: String, codeVerifier: String) async throws
-    func setCurrentManager(manager: TransferManager) async
-    func getCurrentManager() async -> TransferManager?
-    func createAndSetCurrentAccount() async
-    func getAccountIds() async -> [UserId]
-}
-
 public extension AccountManager {
     enum ErrorDomain: Error {
         case noUserSession
@@ -64,7 +53,9 @@ public final class STRefreshTokenDelegate: InfomaniakCore.RefreshTokenDelegate, 
     public func didFailRefreshToken(_ token: ApiToken) {}
 }
 
-public actor AccountManager: AccountManagerable, ObservableObject {
+public actor AccountManager: ObservableObject {
+    public typealias UserId = Int
+
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var tokenStore: TokenStore
     @LazyInjectService private var deviceManager: DeviceManagerable

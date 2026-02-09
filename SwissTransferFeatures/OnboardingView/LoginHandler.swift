@@ -31,7 +31,7 @@ import SwissTransferCore
 public final class LoginHandler: InfomaniakLoginDelegate, ObservableObject {
     @LazyInjectService private var loginService: InfomaniakLoginable
     @LazyInjectService private var tokenService: InfomaniakNetworkLoginable
-    @LazyInjectService private var accountManager: AccountManagerable
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @Published var isLoading = false
     @Published var error: ErrorDomain?

@@ -57,7 +57,7 @@ open class TargetAssembly {
 
     open class func getCommonServices() -> [Factory] {
         return [
-            Factory(type: AccountManagerable.self) { _, _ in
+            Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
             },
             Factory(type: ConnectedAccountManagerable.self) { _, _ in

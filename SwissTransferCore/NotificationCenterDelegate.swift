@@ -23,7 +23,7 @@ import UserNotifications
 
 @MainActor
 public final class NotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate, ObservableObject {
-    @LazyInjectService var accountManager: AccountManagerable
+    @LazyInjectService var accountManager: AccountManager
 
     @Published public var tappedTransfer: TransferUi?
 

@@ -26,7 +26,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct OnboardingBottomButtonsView: View {
-    @InjectService private var accountManager: AccountManagerable
+    @InjectService private var accountManager: AccountManager
     @InjectService private var connectedAccountsManager: ConnectedAccountManagerable
 
     @EnvironmentObject private var rootViewState: RootViewState

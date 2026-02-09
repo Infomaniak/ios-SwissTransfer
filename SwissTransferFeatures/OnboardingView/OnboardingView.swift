@@ -81,7 +81,7 @@ extension Slide {
 }
 
 public struct OnboardingView: View {
-    @LazyInjectService private var accountManager: AccountManagerable
+    @LazyInjectService private var accountManager: AccountManager
 
     @EnvironmentObject private var rootViewState: RootViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState

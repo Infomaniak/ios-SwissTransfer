@@ -30,7 +30,7 @@ import SwissTransferCoreUI
 
 public struct NewTransferView: View {
     @LazyInjectService private var injection: SwissTransferInjection
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManagerable
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL

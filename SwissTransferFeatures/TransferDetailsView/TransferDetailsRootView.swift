@@ -48,14 +48,14 @@ final class TransferDetailsViewModel: ObservableObject {
     }
 
     private func fetchTransfer(uuid: String) async {
-        @InjectService var accountManager: SwissTransferCore.AccountManagerable
+        @InjectService var accountManager: SwissTransferCore.AccountManager
         let currentManager = await accountManager.getCurrentManager()
 
         try? await currentManager?.fetchTransfer(transferUUID: uuid)
     }
 
     private func observeTransfer(uuid: String) async throws {
-        @InjectService var accountManager: SwissTransferCore.AccountManagerable
+        @InjectService var accountManager: SwissTransferCore.AccountManager
         guard let currentManager = await accountManager.getCurrentManager() else { return }
 
         flow = try currentManager.getTransferFlow(transferUUID: uuid)
