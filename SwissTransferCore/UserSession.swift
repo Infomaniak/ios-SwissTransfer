@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,16 +17,21 @@
  */
 
 import Foundation
+import InfomaniakCore
 import STCore
 
-public enum Constants {
-    public static let bundleId = "com.infomaniak.swisstransfer"
+public struct UserSession: Sendable {
+    public let userId: AccountManager.UserId
+    public let userProfile: UserProfile?
+    public let transferManager: TransferManager
 
-    public static let sharedAppGroupName = "group.com.infomaniak"
-    public static let appGroupIdentifier = "group.\(Constants.bundleId)"
+    public var isGuest: Bool {
+        userId == AccountManager.guestUserId
+    }
 
-    public static let numberOfSecondsInADay: TimeInterval = 86400
-    public static let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String? ?? "SwissTransfer"
-    private static let appIdentifierPrefix = Bundle.main.infoDictionary!["AppIdentifierPrefix"] as! String
-    public static let accessGroup: String = Constants.appIdentifierPrefix + Constants.bundleId
+    init(userId: AccountManager.UserId, userProfile: UserProfile?, transferManager: TransferManager) {
+        self.userId = userId
+        self.userProfile = userProfile
+        self.transferManager = transferManager
+    }
 }

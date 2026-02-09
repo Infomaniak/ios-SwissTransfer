@@ -98,7 +98,7 @@ struct OnboardingBottomButtonsView: View {
     private func openGuestSession() {
         Task {
             await accountManager.createAndSetCurrentAccount()
-            if let currentManager = await accountManager.getCurrentManager() {
+            if let currentManager = await accountManager.getCurrentUserSession()?.transferManager {
                 rootViewState.state = .mainView(MainViewState(transferManager: currentManager), nil)
             }
         }

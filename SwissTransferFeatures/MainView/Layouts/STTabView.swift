@@ -39,7 +39,7 @@ struct STTabView: View {
                 .stTab(.account)
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
-            TransferDetailsRootView(data: transferData)
+            TransferDetailsRootView(data: transferData, transferManager: mainViewState.transferManager)
         }
     }
 }

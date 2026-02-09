@@ -64,7 +64,7 @@ public struct DeleteTransferAlertView: View {
     }
 
     private func deleteTransfer() async throws {
-        let defaultTransferManager = await accountManager.getCurrentManager()
+        let defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager
 
         do {
             let feedback = UINotificationFeedbackGenerator()

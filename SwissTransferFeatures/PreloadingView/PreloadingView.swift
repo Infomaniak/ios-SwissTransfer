@@ -75,11 +75,14 @@ public struct PreloadingView: View {
                 .padding(.bottom, value: .medium)
         }
         .task {
-            if let currentManager = await accountManager.getCurrentManager() {
-                rootViewState.state = .mainView(MainViewState(transferManager: currentManager), nil)
+            if let userSession = await accountManager.getCurrentUserSession() {
+                rootViewState.state = .mainView(
+                    MainViewState(transferManager: userSession.transferManager),
+                    userSession.userProfile
+                )
             } else if skipOnboarding {
                 await accountManager.createAndSetCurrentAccount()
-                if let currentManager = await accountManager.getCurrentManager() {
+                if let currentManager = await accountManager.getCurrentUserSession()?.transferManager {
                     rootViewState.state = .mainView(MainViewState(transferManager: currentManager), nil)
                 } else {
                     // As a last resort we still go to onboarding

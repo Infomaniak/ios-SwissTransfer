@@ -73,11 +73,11 @@ public struct UniversalLinkHandler {
     private func createAccountIfNeeded() async -> TransferManager? {
         @InjectService var accountManager: AccountManager
 
-        var defaultTransferManager = await accountManager.getCurrentManager()
+        var defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager
 
         if defaultTransferManager == nil {
             await accountManager.createAndSetCurrentAccount()
-            defaultTransferManager = await accountManager.getCurrentManager()
+            defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager
         }
 
         return defaultTransferManager

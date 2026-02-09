@@ -121,7 +121,7 @@ public struct NewTransferView: View {
             isLoadingFileToUpload = true
 
             // We need to ensure that we have an account initialized before starting
-            _ = await accountManager.getCurrentManager()
+            _ = await accountManager.getCurrentUserSession()?.transferManager
 
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
 

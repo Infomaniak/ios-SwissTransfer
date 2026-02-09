@@ -63,7 +63,7 @@ public actor AccountManager: ObservableObject {
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
 
     /// In case we later choose to support multi account / login we simulate an existing guest
-    private static let guestUserId = -1
+    static let guestUserId = -1
 
     public let userProfileStore = UserProfileStore()
 
@@ -71,8 +71,6 @@ public actor AccountManager: ObservableObject {
 
     public private(set) var currentManager: TransferManager? {
         didSet {
-            let userId = managers.first { $0.value == currentManager }?.key ?? 0
-            UserDefaults.shared.currentUserId = userId
             objectWillChange.send()
         }
     }
@@ -105,6 +103,7 @@ public actor AccountManager: ObservableObject {
         let deviceId = try await deviceManager.getOrCreateCurrentDevice().uid
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
 
+        UserDefaults.shared.currentUserId = user.id
         guard let manager = await getManager(userId: user.id) else {
             throw ErrorDomain.noUserSession
         }
@@ -124,8 +123,6 @@ public actor AccountManager: ObservableObject {
     }
 
     public func getManager(userId: UserId) async -> TransferManager? {
-        assert(userId == AccountManager.guestUserId, "Only guest user is supported")
-
         _ = await loadUserTask?.result
         if let manager = managers[userId] {
             return manager
@@ -145,14 +142,33 @@ public actor AccountManager: ObservableObject {
         currentManager = manager
     }
 
-    public func getCurrentManager() async -> TransferManager? {
+    public func getCurrentUserSession() async -> UserSession? {
         let currentUserId = UserDefaults.shared.currentUserId
-        guard currentUserId != 0 else {
+
+        guard currentUserId > 0 || currentUserId == AccountManager.guestUserId else {
             return nil
         }
 
-        assert(currentUserId == AccountManager.guestUserId, "Only guest user is supported")
-        return await getManager(userId: currentUserId)
+        if currentUserId == AccountManager.guestUserId,
+           let guestManager = await getManager(userId: AccountManager.guestUserId) {
+            return UserSession(userId: AccountManager.guestUserId, userProfile: nil, transferManager: guestManager)
+        }
+
+        guard let token = tokenStore.tokenFor(userId: currentUserId)?.apiToken,
+              let manager = await getManager(userId: currentUserId) else {
+            return nil
+        }
+
+        if let userProfile = await userProfileStore.getUserProfile(id: currentUserId) {
+            return UserSession(userId: currentUserId, userProfile: userProfile, transferManager: manager)
+        } else {
+            let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
+            if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
+                return UserSession(userId: currentUserId, userProfile: userProfile, transferManager: manager)
+            }
+        }
+
+        return nil
     }
 
     public func getAccountIds() async -> [UserId] {

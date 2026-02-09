@@ -42,7 +42,7 @@ public final class NotificationCenterDelegate: NSObject, UNUserNotificationCente
     }
 
     public func handlePossibleTransfer(uuid: String) async -> TransferUi? {
-        guard let defaultTransferManager = await accountManager.getCurrentManager() else { return nil }
+        guard let defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager else { return nil }
 
         return try? await defaultTransferManager.getTransferByUUID(transferUUID: uuid)
     }
