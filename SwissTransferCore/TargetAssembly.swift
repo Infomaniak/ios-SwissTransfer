@@ -16,10 +16,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DeviceAssociation
 import Foundation
+import InAppTwoFactorAuthentication
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakDI
+import InfomaniakLogin
+import InterAppLogin
 import OSLog
 import STCore
 
@@ -40,6 +44,13 @@ extension [Factory] {
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
+    private static let apiEnvironment = ApiEnvironment.prod
+    public static let loginConfig = InfomaniakLogin.Config(
+        clientId: "17EE3471-9843-4FB9-AD95-CB8C41BAD624",
+        loginURL: URL(string: "https://login.\(apiEnvironment.host)/")!,
+        accessType: nil
+    )
+
     public init() {
         Self.setupDI()
     }
@@ -48,6 +59,24 @@ open class TargetAssembly {
         return [
             Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
+            },
+            Factory(type: ConnectedAccountManagerable.self) { _, _ in
+                ConnectedAccountManager(currentAppKeychainIdentifier: AppIdentifierBuilder.swissTransferKeychainIdentifier)
+            },
+            Factory(type: InfomaniakNetworkLoginable.self) { _, _ in
+                InfomaniakNetworkLogin(config: loginConfig)
+            },
+            Factory(type: InfomaniakLoginable.self) { _, _ in
+                InfomaniakLogin(config: loginConfig)
+            },
+            Factory(type: TokenStore.self) { _, _ in
+                TokenStore()
+            },
+            Factory(type: DeviceManagerable.self) { _, _ in
+                let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String? ?? "x.x"
+                return DeviceManager(appGroupIdentifier: Constants.sharedAppGroupName,
+                                     appMarketingVersion: version,
+                                     capabilities: [.twoFactorAuthenticationChallengeApproval])
             },
             Factory(type: DownloadManager.self) { _, _ in
                 let isRunningInAppClip = Bundle.main.bundleIdentifier == "com.infomaniak.swisstransfer.Clip"
