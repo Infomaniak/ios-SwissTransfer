@@ -106,7 +106,7 @@ public struct OnboardingView: View {
                     mainViewState.handleDeepLink(linkedTransfer)
                     universalLinksState.linkedTransfer = nil
                     withAnimation {
-                        rootViewState.state = .mainView(mainViewState)
+                        rootViewState.state = .mainView(mainViewState, nil)
                     }
                 } else {
                     universalLinksState.linkedTransfer = nil
