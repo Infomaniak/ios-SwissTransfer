@@ -17,7 +17,7 @@
  */
 
 import SwiftUI
-import SwissTransferCore
+import SwissTransferCoreUI
 
 extension View {
     func stTab(_ tab: STTab) -> some View {
