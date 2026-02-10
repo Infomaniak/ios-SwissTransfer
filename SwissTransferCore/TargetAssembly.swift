@@ -52,6 +52,7 @@ open class TargetAssembly {
     )
 
     public init() {
+        ApiEnvironment.current = Self.apiEnvironment
         Self.setupDI()
     }
 
