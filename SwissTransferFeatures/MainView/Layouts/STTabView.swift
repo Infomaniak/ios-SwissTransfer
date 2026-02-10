@@ -35,7 +35,7 @@ struct STTabView: View {
             ReceivedView()
                 .stTab(.receivedTransfers)
 
-            AccountView(user: PreviewHelper.sampleUser)
+            AccountView()
                 .stTab(.account)
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
