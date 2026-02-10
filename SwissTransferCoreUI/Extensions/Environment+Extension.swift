@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import SwiftUI
 
 public typealias DismissModalAction = () -> Void
@@ -24,4 +25,5 @@ public extension EnvironmentValues {
     @Entry var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
     @Entry var shareExtensionContext: ShareExtensionContext?
     @Entry var isRunningInAppClip = false
+    @Entry var currentUser: UserProfile?
 }

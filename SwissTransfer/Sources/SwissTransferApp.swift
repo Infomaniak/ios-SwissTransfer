@@ -112,7 +112,7 @@ struct SwissTransferApp: App {
                 }
 
                 if versionStatus == .canBeUpdated,
-                   case .mainView(let mainViewState) = rootViewState.state {
+                   case .mainView(let mainViewState, _) = rootViewState.state {
                     mainViewState.isShowingUpdateAvailable = true
                 }
             } catch {

@@ -99,7 +99,7 @@ struct OnboardingBottomButtonsView: View {
         Task {
             await accountManager.createAndSetCurrentAccount()
             if let currentManager = await accountManager.getCurrentManager() {
-                rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+                rootViewState.state = .mainView(MainViewState(transferManager: currentManager), nil)
             }
         }
     }
