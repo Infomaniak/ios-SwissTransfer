@@ -1,0 +1,43 @@
+/*
+ Infomaniak SwissTransfer - iOS App
+ Copyright (C) 2024 Infomaniak Network SA
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import InfomaniakCore
+import SwiftUI
+
+@MainActor
+public enum TabBarAvatarIcon {
+    public static func render(user: UserProfile, loadedImage: UIImage?, size: CGFloat = 24) -> Image? {
+        let view = avatarView(user: user, loadedImage: loadedImage, size: size)
+        let renderer = ImageRenderer(content: view)
+        guard let uiImage = renderer.uiImage else { return nil }
+        return Image(uiImage: uiImage.withRenderingMode(.alwaysOriginal))
+    }
+
+    @ViewBuilder
+    private static func avatarView(user: UserProfile, loadedImage: UIImage?, size: CGFloat) -> some View {
+        if let loadedImage {
+            Image(uiImage: loadedImage)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size, height: size)
+                .clipShape(Circle())
+        } else {
+            AvatarView(user: user, avatarSize: size)
+        }
+    }
+}

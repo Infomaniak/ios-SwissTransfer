@@ -53,7 +53,7 @@ public enum STTab: CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
-    @MainActor public var icon: Image {
+    @MainActor public func icon(avatarImage: UIImage? = nil) -> Image {
         switch self {
         case .sentTransfers:
             return STResourcesAsset.Images.arrowUpCircle.swiftUIImage
@@ -61,12 +61,8 @@ public enum STTab: CaseIterable, Identifiable, Codable, Hashable {
             return STResourcesAsset.Images.arrowDownCircle.swiftUIImage
         case .account(let user):
             if let user {
-                let renderer = ImageRenderer(content: AvatarView(user: user, avatarSize: 24))
-                guard let uiImage = renderer.uiImage  else {
-                    return STResourcesAsset.Images.user.swiftUIImage
-                }
-
-                return Image(uiImage: uiImage.withRenderingMode(.alwaysOriginal))
+                return TabBarAvatarIcon.render(user: user, loadedImage: avatarImage)
+                    ?? STResourcesAsset.Images.user.swiftUIImage
             } else {
                 return STResourcesAsset.Images.user.swiftUIImage
             }
@@ -113,7 +109,7 @@ public enum STTab: CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
-    @MainActor public var label: Label<Text, Image> {
-        Label(title: { Text(title) }, icon: { icon })
+    @MainActor public func label(avatarImage: UIImage? = nil) -> Label<Text, Image> {
+        Label(title: { Text(title) }, icon: { icon(avatarImage: avatarImage) })
     }
 }
