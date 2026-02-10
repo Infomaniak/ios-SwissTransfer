@@ -20,14 +20,15 @@ import DesignSystem
 import InfomaniakCore
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct AccountHeaderView: View {
     @Environment(\.currentUser) private var currentUser
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
-            if let user {
-                AvatarView(user: user)
+            if let currentUser {
+                AvatarView(user: currentUser)
             } else {
                 STResourcesAsset.Images.user.swiftUIImage
                     .foregroundStyle(Color.ST.onRecipientLabelBackground)
