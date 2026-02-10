@@ -27,20 +27,18 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct AccountView: View {
+    @Environment(\.currentUser) private var currentUser
+
     @State private var isShowingLogoutView = false
 
-    let user: UserProfile?
-
-    public init(user: UserProfile? = nil) {
-        self.user = user
-    }
+    public init() {}
 
     public var body: some View {
         List {
-            AccountHeaderView(user: PreviewHelper.sampleUser)
+            AccountHeaderView()
 
             Section {
-                if user != nil {
+                if currentUser != nil {
                     NavigationLink {} label: { // TODO: Change Navigation
                         SingleLabelSettingsCell(
                             title: STResourcesStrings.Localizable.settingsSwitchAccount,
@@ -76,7 +74,7 @@ public struct AccountView: View {
                 }
                 .settingsCell()
 
-                if let user {
+                if let currentUser {
                     Button {
                         isShowingLogoutView = true
                     } label: {
@@ -87,7 +85,7 @@ public struct AccountView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     .stCustomAlert(isPresented: $isShowingLogoutView) {
-                        LogoutConfirmationView(user: user)
+                        LogoutConfirmationView(user: currentUser)
                     }
                     .settingsCell()
                 }

@@ -68,7 +68,7 @@ private struct ContentSplitView: View {
         case .receivedTransfers:
             ReceivedView()
         case .account:
-            AccountView(user: PreviewHelper.sampleUser)
+            AccountView()
         }
     }
 }

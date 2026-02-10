@@ -20,10 +20,9 @@ import DesignSystem
 import InfomaniakCore
 import STResources
 import SwiftUI
-import SwissTransferCore
 
 public struct AccountHeaderView: View {
-    let user: UserProfile?
+    @Environment(\.currentUser) private var currentUser
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
@@ -33,13 +32,13 @@ public struct AccountHeaderView: View {
                 .background(Color.ST.highlighted, in: .circle)
                 .padding(IKPadding.small)
 
-            Text(user?.displayName ?? STResourcesStrings.Localizable.titleMyAccount)
+            Text(currentUser?.displayName ?? STResourcesStrings.Localizable.titleMyAccount)
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
                 .multilineTextAlignment(.center)
 
-            if let user {
-                Text(user.email)
+            if let currentUser {
+                Text(currentUser.email)
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
                     .multilineTextAlignment(.center)
@@ -53,5 +52,5 @@ public struct AccountHeaderView: View {
 }
 
 #Preview {
-    AccountHeaderView(user: PreviewHelper.sampleUser)
+    AccountHeaderView()
 }
