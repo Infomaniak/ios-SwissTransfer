@@ -38,6 +38,8 @@ extension VerticalAlignment {
 
 public struct PreloadingView: View {
     @LazyInjectService private var accountManager: AccountManager
+    @LazyInjectService private var appLaunchCounter: AppLaunchCounter
+    @LazyInjectService private var tokenStore: TokenStore
 
     @EnvironmentObject private var rootViewState: RootViewState
 
@@ -75,6 +77,13 @@ public struct PreloadingView: View {
                 .padding(.bottom, value: .medium)
         }
         .task {
+            guard !appLaunchCounter.isFirstLaunch else {
+                tokenStore.removeAllTokens()
+                appLaunchCounter.increase()
+                rootViewState.state = .onboarding
+                return
+            }
+
             if let userSession = await accountManager.getCurrentUserSession() {
                 rootViewState.state = .mainView(
                     MainViewState(transferManager: userSession.transferManager),
