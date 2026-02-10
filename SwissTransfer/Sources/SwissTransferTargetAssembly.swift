@@ -23,7 +23,7 @@ import SwissTransferCore
 // periphery:ignore - Used by DI
 class SwissTransferTargetAssembly: TargetAssembly {
     override class func getTargetServices() -> [Factory] {
-        return super.getTargetServices() + [
+        return [
             Factory(type: AppLaunchCounter.self) { _, _ in
                 AppLaunchCounter()
             }
