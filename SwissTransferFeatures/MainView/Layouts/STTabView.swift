@@ -21,7 +21,6 @@ import STReceivedView
 import STSentView
 import STTransferDetailsView
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct STTabView: View {

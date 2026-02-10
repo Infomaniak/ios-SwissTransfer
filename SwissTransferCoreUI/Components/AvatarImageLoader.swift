@@ -25,12 +25,10 @@ public class AvatarImageLoader: ObservableObject {
     @Published public var loadedImage: UIImage?
     @Published public var isLoading = false
 
-    private var cancellables = Set<AnyCancellable>()
-
     public init() {}
 
     public func loadAvatar(from urlString: String?) async {
-        guard let urlString = urlString,
+        guard let urlString,
               let url = URL(string: urlString) else {
             return
         }
