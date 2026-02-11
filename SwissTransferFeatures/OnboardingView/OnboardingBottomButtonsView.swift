@@ -31,14 +31,26 @@ struct OnboardingBottomButtonsView: View {
 
     @EnvironmentObject private var rootViewState: RootViewState
 
-    @ObservedObject var loginHandler = LoginHandler()
+    @ObservedObject var loginHandler: LoginHandler
 
     @State private var excludedUserIds: [AccountManager.UserId] = []
-    @State var isPresentingInterAppLogin = false
+    @State private var isPresentingInterAppLogin: Bool
 
     @Binding var selection: Int
 
     let slideCount: Int
+
+    init(
+        loginHandler: LoginHandler = LoginHandler(),
+        isPresentingInterAppLogin: Bool = false,
+        selection: Binding<Int>,
+        slideCount: Int
+    ) {
+        self.loginHandler = loginHandler
+        _isPresentingInterAppLogin = State(initialValue: isPresentingInterAppLogin)
+        _selection = selection
+        self.slideCount = slideCount
+    }
 
     private var isLastSlide: Bool {
         return selection == slideCount - 1
