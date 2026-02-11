@@ -34,7 +34,7 @@ struct OnboardingBottomButtonsView: View {
     @ObservedObject var loginHandler = LoginHandler()
 
     @State private var excludedUserIds: [AccountManager.UserId] = []
-    @State private var isPresentingInterAppLogin = false
+    @State var isPresentingInterAppLogin = false
 
     @Binding var selection: Int
 
