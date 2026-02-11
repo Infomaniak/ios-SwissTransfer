@@ -39,11 +39,16 @@ let settingsView = Feature(
     ]
 )
 
+let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
+    TargetDependency.external(name: "InfomaniakCoreUIResources"),
+    TargetDependency.external(name: "InfomaniakOnboarding"),
+    TargetDependency.external(name: "Lottie"),
+    TargetDependency.external(name: "InterAppLogin")
+])
+
 let accountView = Feature(
     name: "AccountView",
-    additionalDependencies: [
-        settingsView
-    ]
+    additionalDependencies: [settingsView, onboardingView]
 )
 
 let mainView = Feature(
@@ -59,13 +64,6 @@ let mainView = Feature(
         TargetDependency.external(name: "VersionChecker")
     ]
 )
-
-let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
-    TargetDependency.external(name: "InfomaniakCoreUIResources"),
-    TargetDependency.external(name: "InfomaniakOnboarding"),
-    TargetDependency.external(name: "Lottie"),
-    TargetDependency.external(name: "InterAppLogin")
-])
 
 let rootView = Feature(
     name: "RootView",
