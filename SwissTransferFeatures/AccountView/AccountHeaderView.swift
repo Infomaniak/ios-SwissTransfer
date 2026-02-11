@@ -20,17 +20,22 @@ import DesignSystem
 import InfomaniakCore
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 public struct AccountHeaderView: View {
     @Environment(\.currentUser) private var currentUser
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
-            STResourcesAsset.Images.user.swiftUIImage
-                .foregroundStyle(Color.ST.onRecipientLabelBackground)
-                .frame(width: 80, height: 80)
-                .background(Color.ST.highlighted, in: .circle)
-                .padding(IKPadding.small)
+            if let currentUser {
+                AvatarView(user: currentUser)
+            } else {
+                STResourcesAsset.Images.user.swiftUIImage
+                    .foregroundStyle(Color.ST.onRecipientLabelBackground)
+                    .frame(width: 80, height: 80)
+                    .background(Color.ST.highlighted, in: .circle)
+                    .padding(IKPadding.small)
+            }
 
             Text(currentUser?.displayName ?? STResourcesStrings.Localizable.titleMyAccount)
                 .font(.ST.title)

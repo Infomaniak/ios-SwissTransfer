@@ -237,7 +237,8 @@ let project = Project(
                     .external(name: "SwiftModalPresentation"),
                     .external(name: "QRCode"),
                     .external(name: "SwiftUIIntrospect-Static"),
-                    .external(name: "OrderedCollections")
+                    .external(name: "OrderedCollections"),
+                    .external(name: "NukeUI")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",
