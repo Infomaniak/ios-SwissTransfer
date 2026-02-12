@@ -27,6 +27,7 @@ public struct TabBarAvatarIconProvider: TabBarAvatarIconProvidable {
     @MainActor public func render(user: UserProfile, loadedImage: UIImage?, size: CGFloat = 24) -> Image? {
         let view = avatarView(user: user, loadedImage: loadedImage, size: size)
         let renderer = ImageRenderer(content: view)
+        renderer.scale = 4
         guard let uiImage = renderer.uiImage else { return nil }
         return Image(uiImage: uiImage.withRenderingMode(.alwaysOriginal))
     }
