@@ -21,11 +21,13 @@ import STReceivedView
 import STSentView
 import STTransferDetailsView
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct STTabView: View {
+    @Environment(\.currentUser) private var currentUser
     @EnvironmentObject private var mainViewState: MainViewState
+
+    @StateObject private var avatarLoader = AvatarImageLoader()
 
     var body: some View {
         TabView(selection: $mainViewState.selectedTab) {
@@ -36,10 +38,13 @@ struct STTabView: View {
                 .stTab(.receivedTransfers)
 
             AccountView()
-                .stTab(.account)
+                .stTab(.account(currentUser), avatarImage: avatarLoader.loadedImage)
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
             TransferDetailsRootView(data: transferData)
+        }
+        .task {
+            await avatarLoader.loadAvatar(from: currentUser?.avatar)
         }
     }
 }

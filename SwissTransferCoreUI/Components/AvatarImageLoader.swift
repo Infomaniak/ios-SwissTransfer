@@ -16,23 +16,25 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
+import InfomaniakCore
+import Nuke
 import SwiftUI
-import SwissTransferCoreUI
 
-extension View {
-    func stTab(_ tab: STTab, avatarImage: UIImage? = nil) -> some View {
-        modifier(STTabModifier(tab: tab, avatarImage: avatarImage))
-    }
-}
+@MainActor
+public class AvatarImageLoader: ObservableObject {
+    @Published public var loadedImage: UIImage?
 
-struct STTabModifier: ViewModifier {
-    let tab: STTab
-    let avatarImage: UIImage?
+    public init() {}
 
-    func body(content: Content) -> some View {
-        content
-            .navigableTab(tab)
-            .tabItem { tab.label(avatarImage: avatarImage) }
-            .tag(tab)
+    public func loadAvatar(from urlString: String?) async {
+        guard let urlString,
+              let url = URL(string: urlString) else {
+            return
+        }
+
+        let imageTask = ImagePipeline.shared.imageTask(with: url)
+        guard let imageResponse = try? await imageTask.image else { return }
+        loadedImage = imageResponse
     }
 }

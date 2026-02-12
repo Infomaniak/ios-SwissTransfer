@@ -27,17 +27,26 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct STSplitView: View {
+    @Environment(\.currentUser) private var currentUser
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var selectedItems = [ImportedItem]()
+    @StateObject private var avatarLoader = AvatarImageLoader()
+
+    private var item: [STTab] {
+        return [.sentTransfers, .receivedTransfers, .account(currentUser)]
+    }
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            List(STTab.allCases, selection: $mainViewState.selectedTab) { tab in
+            List(item, selection: $mainViewState.selectedTab) { tab in
                 NavigationLink(value: tab) {
-                    tab.label
+                    tab.label(avatarImage: avatarLoader.loadedImage)
                 }
+            }
+            .task {
+                await avatarLoader.loadAvatar(from: currentUser?.avatar)
             }
             .stIconNavigationBar()
             .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.mini)
@@ -59,16 +68,25 @@ struct STSplitView: View {
 }
 
 private struct ContentSplitView: View {
+    @Environment(\.currentUser) private var currentUser
+
+    @StateObject private var avatarLoader = AvatarImageLoader()
+
     let tab: STTab
 
     var body: some View {
-        switch tab {
-        case .sentTransfers:
-            SentView()
-        case .receivedTransfers:
-            ReceivedView()
-        case .account:
-            AccountView()
+        Group {
+            switch tab {
+            case .sentTransfers:
+                SentView()
+            case .receivedTransfers:
+                ReceivedView()
+            case .account:
+                AccountView()
+            }
+        }
+        .task {
+            await avatarLoader.loadAvatar(from: currentUser?.avatar)
         }
     }
 }

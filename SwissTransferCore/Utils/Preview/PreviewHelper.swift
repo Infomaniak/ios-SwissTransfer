@@ -78,7 +78,8 @@ public enum PreviewHelper {
         displayName: "John Appleseed",
         firstName: "John",
         lastName: "Appleseed",
-        email: "mobiletest@ik.me"
+        email: "mobiletest@ik.me",
+        avatar: "https://avatar.storage.infomaniak.com/AXo01iecwUeoGoydY7WaCmmG.png?1717510064"
     )
 
     public static let sampleNewUploadSession = NewUploadSession(

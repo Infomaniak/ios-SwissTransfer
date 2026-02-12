@@ -16,19 +16,33 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
+import InfomaniakCoreSwiftUI
+import NukeUI
 import STResources
 import SwiftUI
 
-public enum STTab: String, CaseIterable, Identifiable, Codable {
+public enum STTab: Identifiable, Codable, Hashable {
     case sentTransfers
     case receivedTransfers
-    case account
+    case account(UserProfile?)
 
     public var id: String {
-        rawValue
+        switch self {
+        case .sentTransfers:
+            return "sentTransfers"
+        case .receivedTransfers:
+            return "receivedTransfers"
+        case .account(let user):
+            if let user {
+                return "\(user.id)"
+            } else {
+                return "account"
+            }
+        }
     }
 
-    public var title: String {
+    @MainActor public var title: String {
         switch self {
         case .sentTransfers:
             return STResourcesStrings.Localizable.sentTitle
@@ -39,18 +53,22 @@ public enum STTab: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    public var icon: Image {
+    @MainActor public func icon(avatarImage: UIImage? = nil) -> Image {
         switch self {
         case .sentTransfers:
             return STResourcesAsset.Images.arrowUpCircle.swiftUIImage
         case .receivedTransfers:
             return STResourcesAsset.Images.arrowDownCircle.swiftUIImage
-        case .account:
-            return STResourcesAsset.Images.sliderVertical3.swiftUIImage
+        case .account(let user):
+            if let user, let avatar = TabBarAvatarIconProvider().render(user: user, loadedImage: avatarImage) {
+                return avatar
+            } else {
+                return STResourcesAsset.Images.user.swiftUIImage
+            }
         }
     }
 
-    public var label: Label<Text, Image> {
-        Label(title: { Text(title) }, icon: { icon })
+    @MainActor public func label(avatarImage: UIImage? = nil) -> Label<Text, Image> {
+        Label(title: { Text(title) }, icon: { icon(avatarImage: avatarImage) })
     }
 }
