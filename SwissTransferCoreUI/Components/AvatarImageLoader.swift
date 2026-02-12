@@ -18,12 +18,12 @@
 
 import Combine
 import InfomaniakCore
+import Nuke
 import SwiftUI
 
 @MainActor
 public class AvatarImageLoader: ObservableObject {
     @Published public var loadedImage: UIImage?
-    @Published public var isLoading = false
 
     public init() {}
 
@@ -33,16 +33,8 @@ public class AvatarImageLoader: ObservableObject {
             return
         }
 
-        isLoading = true
-        defer { isLoading = false }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            if let image = UIImage(data: data) {
-                loadedImage = image
-            }
-        } catch {
-            // Silently fail, keep initials as fallback
-        }
+        let imageTask = ImagePipeline.shared.imageTask(with: url)
+        guard let imageResponse = try? await imageTask.image else { return }
+        loadedImage = imageResponse
     }
 }

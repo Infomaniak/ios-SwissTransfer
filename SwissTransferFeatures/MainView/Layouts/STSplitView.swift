@@ -33,10 +33,14 @@ struct STSplitView: View {
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var selectedItems = [ImportedItem]()
     @StateObject private var avatarLoader = AvatarImageLoader()
+    
+    private var item: [STTab] {
+        return [.sentTransfers, .receivedTransfers, .account(currentUser)]
+    }
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            List(STTab.allCases, selection: $mainViewState.selectedTab) { tab in
+            List(item, selection: $mainViewState.selectedTab) { tab in
                 NavigationLink(value: tab) {
                     tab.label(avatarImage: avatarLoader.loadedImage)
                 }

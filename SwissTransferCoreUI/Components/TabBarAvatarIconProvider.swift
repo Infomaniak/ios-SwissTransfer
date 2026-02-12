@@ -19,17 +19,20 @@
 import InfomaniakCore
 import SwiftUI
 
-@MainActor
-public enum TabBarAvatarIcon {
-    public static func render(user: UserProfile, loadedImage: UIImage?, size: CGFloat = 24) -> Image? {
+public protocol TabBarAvatarIconProvidable {
+    @MainActor func render(user: UserProfile, loadedImage: UIImage?, size: CGFloat) -> Image?
+}
+
+public struct TabBarAvatarIconProvider: TabBarAvatarIconProvidable {
+    @MainActor public func render(user: UserProfile, loadedImage: UIImage?, size: CGFloat = 24) -> Image? {
         let view = avatarView(user: user, loadedImage: loadedImage, size: size)
         let renderer = ImageRenderer(content: view)
         guard let uiImage = renderer.uiImage else { return nil }
         return Image(uiImage: uiImage.withRenderingMode(.alwaysOriginal))
     }
 
-    @ViewBuilder
-    private static func avatarView(user: UserProfile, loadedImage: UIImage?, size: CGFloat) -> some View {
+    @MainActor @ViewBuilder
+    private func avatarView(user: UserProfile, loadedImage: UIImage?, size: CGFloat) -> some View {
         if let loadedImage {
             Image(uiImage: loadedImage)
                 .resizable()

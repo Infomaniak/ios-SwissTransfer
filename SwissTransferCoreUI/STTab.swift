@@ -22,7 +22,7 @@ import NukeUI
 import STResources
 import SwiftUI
 
-public enum STTab: CaseIterable, Identifiable, Codable, Hashable {
+public enum STTab: Identifiable, Codable, Hashable {
     case sentTransfers
     case receivedTransfers
     case account(UserProfile?)
@@ -60,52 +60,11 @@ public enum STTab: CaseIterable, Identifiable, Codable, Hashable {
         case .receivedTransfers:
             return STResourcesAsset.Images.arrowDownCircle.swiftUIImage
         case .account(let user):
-            if let user {
-                return TabBarAvatarIcon.render(user: user, loadedImage: avatarImage)
-                    ?? STResourcesAsset.Images.user.swiftUIImage
+            if let user, let avatar = TabBarAvatarIconProvider().render(user: user, loadedImage: avatarImage) {
+                return avatar
             } else {
                 return STResourcesAsset.Images.user.swiftUIImage
             }
-        }
-    }
-
-    public static var allCases: [STTab] {
-        [.sentTransfers, .receivedTransfers, .account(nil)]
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case type
-        case userProfile
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decode(String.self, forKey: .type)
-
-        switch type {
-        case "sentTransfers":
-            self = .sentTransfers
-        case "receivedTransfers":
-            self = .receivedTransfers
-        case "account":
-            let userProfile = try container.decodeIfPresent(UserProfile.self, forKey: .userProfile)
-            self = .account(userProfile)
-        default:
-            throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown STTab type: \(type)")
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        switch self {
-        case .sentTransfers:
-            try container.encode("sentTransfers", forKey: .type)
-        case .receivedTransfers:
-            try container.encode("receivedTransfers", forKey: .type)
-        case .account(let userProfile):
-            try container.encode("account", forKey: .type)
-            try container.encodeIfPresent(userProfile, forKey: .userProfile)
         }
     }
 
