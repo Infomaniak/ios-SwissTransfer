@@ -30,7 +30,8 @@ import SwissTransferCoreUI
 public struct AccountView: View {
     @Environment(\.currentUser) private var currentUser
 
-    @State private var isShowingLoginView = false
+    @EnvironmentObject private var mainViewState: MainViewState
+
     @State private var isShowingLogoutView = false
 
     public init() {}
@@ -50,7 +51,7 @@ public struct AccountView: View {
                     .settingsCell()
                 } else {
                     Button {
-                        isShowingLoginView = true
+                        mainViewState.isShowingLoginView = true
                     } label: {
                         SingleLabelSettingsCell(
                             title: STResourcesStrings.Localizable.settingsSignIn,
@@ -59,9 +60,6 @@ public struct AccountView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     .settingsCell()
-                    .fullScreenCover(isPresented: $isShowingLoginView) {
-                        SingleOnboardingView()
-                    }
                 }
 
                 NavigationLink {
@@ -140,6 +138,9 @@ public struct AccountView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .appBackground()
+        .fullScreenCover(isPresented: $mainViewState.isShowingLoginView) {
+            SingleOnboardingView()
+        }
     }
 }
 
