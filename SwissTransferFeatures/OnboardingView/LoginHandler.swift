@@ -24,6 +24,7 @@ import InfomaniakDI
 import InfomaniakLogin
 import InterAppLogin
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 
@@ -68,6 +69,21 @@ public final class LoginHandler: InfomaniakLoginDelegate, ObservableObject {
     }
 
     public func didFailLoginWith(error: any Error) {}
+
+    func loginAfterAccountCreation(from viewController: UIViewController) {
+        isLoading = true
+        loginService.setupWebviewNavbar(
+            title: STResourcesStrings.Localizable.settingsSignIn,
+            titleColor: nil,
+            color: nil,
+            buttonColor: nil,
+            clearCookie: false,
+            timeOutMessage: nil
+        )
+        loginService.webviewLoginFrom(viewController: viewController,
+                                      hideCreateAccountButton: true,
+                                      delegate: self)
+    }
 
     public func login() async {
         isLoading = true
