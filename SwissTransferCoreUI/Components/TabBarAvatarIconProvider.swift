@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public protocol TabBarAvatarIconProvidable {
@@ -41,7 +42,12 @@ public struct TabBarAvatarIconProvider: TabBarAvatarIconProvidable {
                 .frame(width: size, height: size)
                 .clipShape(Circle())
         } else {
-            AvatarView(user: user, avatarSize: size)
+            InitialsView(
+                initials: NameFormatter(fullName: user.displayName).initials,
+                backgroundColor: Color.backgroundColor(from: user.email.hash),
+                foregroundColor: Color.white,
+                size: 24
+            )
         }
     }
 }
