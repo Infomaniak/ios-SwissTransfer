@@ -59,7 +59,6 @@ public actor AccountManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var tokenStore: TokenStore
     @LazyInjectService private var deviceManager: DeviceManagerable
-    @LazyInjectService private var notificationService: InfomaniakNotifications
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
 
     /// In case we later choose to support multi account / login we simulate an existing guest
@@ -102,6 +101,7 @@ public actor AccountManager: ObservableObject {
 
         let deviceId = try await deviceManager.getOrCreateCurrentDevice().uid
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
+        attachDeviceToApiToken(token, apiFetcher: temporaryApiFetcher)
 
         UserDefaults.shared.currentUserId = user.id
         guard let manager = await getManager(userId: user.id) else {
