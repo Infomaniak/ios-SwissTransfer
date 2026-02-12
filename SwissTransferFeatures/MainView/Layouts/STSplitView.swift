@@ -33,7 +33,7 @@ struct STSplitView: View {
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var selectedItems = [ImportedItem]()
     @StateObject private var avatarLoader = AvatarImageLoader()
-    
+
     private var item: [STTab] {
         return [.sentTransfers, .receivedTransfers, .account(currentUser)]
     }
