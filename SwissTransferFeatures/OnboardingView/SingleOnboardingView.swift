@@ -24,7 +24,7 @@ import SwiftUI
 public struct SingleOnboardingView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var loginHandler = LoginHandler()
+    @StateObject private var loginHandler = LoginHandler()
 
     private let slides = [Slide.onboardingSlides.last!]
 
@@ -41,6 +41,7 @@ public struct SingleOnboardingView: View {
         }
         .appBackground()
         .ignoresSafeArea()
+        .loginErrorAlert(loginHandler: loginHandler)
     }
 }
 

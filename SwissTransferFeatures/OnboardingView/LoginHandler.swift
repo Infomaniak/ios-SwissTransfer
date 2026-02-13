@@ -105,18 +105,21 @@ public final class LoginHandler: InfomaniakLoginDelegate, ObservableObject {
         isLoading = true
         defer { isLoading = false }
 
-        let _: [Result<Int, any Error>] = await accounts.asyncCompactMap { account in
+        let errors: [Error] = await accounts.asyncCompactMap { account in
             do {
                 let derivatedToken = try await self.tokenService.derivateApiToken(for: account)
 
                 try await self.accountManager.createAccount(token: derivatedToken)
-                return .success(derivatedToken.userId)
+                return nil
             } catch {
-                return .failure(error)
+                return error
             }
         }
 
-        // TODO: Check that if at least one account succeeded, otherwise display an error message
+        if errors.count == accounts.count,
+           let error = errors.first {
+            loginFailed(error: error)
+        }
     }
 
     private func loginSuccessful(code: String, codeVerifier verifier: String) async throws {
