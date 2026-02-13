@@ -18,6 +18,7 @@
 
 import DesignSystem
 import InfomaniakCoreUIResources
+import InfomaniakCreateAccount
 import InfomaniakDI
 import InterAppLogin
 import STResources
@@ -35,6 +36,7 @@ struct OnboardingBottomButtonsView: View {
 
     @State private var excludedUserIds: [AccountManager.UserId] = []
     @State private var isPresentingInterAppLogin: Bool
+    @State private var isPresentingCreateAccount = false
 
     @Binding var selection: Int
 
@@ -70,7 +72,9 @@ struct OnboardingBottomButtonsView: View {
                     loginPressed()
                 } onLoginWithAccountsPressed: { accounts in
                     loginWithAccountsPressed(accounts: accounts)
-                } onCreateAccountPressed: { /* Empty on purpose */ }
+                } onCreateAccountPressed: {
+                    isPresentingCreateAccount = true
+                }
             }
         }
         .ikButtonFullWidth(true)
@@ -97,6 +101,12 @@ struct OnboardingBottomButtonsView: View {
             let accounts = await connectedAccountsManager.listAllLocalAccounts()
             if !accounts.isEmpty {
                 isPresentingInterAppLogin = true
+            }
+        }
+        .sheet(isPresented: $isPresentingCreateAccount) {
+            RegisterView(registrationProcess: .swissTransfer) { viewController in
+                guard let viewController else { return }
+                loginHandler.loginAfterAccountCreation(from: viewController)
             }
         }
     }
