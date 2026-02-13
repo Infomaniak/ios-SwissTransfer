@@ -20,6 +20,7 @@ import DesignSystem
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
+import STOnboardingView
 import STResources
 import STSettingsView
 import SwiftUI
@@ -28,6 +29,8 @@ import SwissTransferCoreUI
 
 public struct AccountView: View {
     @Environment(\.currentUser) private var currentUser
+
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var isShowingLogoutView = false
 
@@ -47,12 +50,15 @@ public struct AccountView: View {
                     }
                     .settingsCell()
                 } else {
-                    NavigationLink {} label: { // TODO: Change Navigation
+                    Button {
+                        mainViewState.isShowingLoginView = true
+                    } label: {
                         SingleLabelSettingsCell(
                             title: STResourcesStrings.Localizable.settingsSignIn,
                             leadingIcon: STResourcesAsset.Images.user
                         )
                     }
+                    .buttonStyle(.plain)
                     .settingsCell()
                 }
 
@@ -132,6 +138,9 @@ public struct AccountView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .appBackground()
+        .fullScreenCover(isPresented: $mainViewState.isShowingLoginView) {
+            SingleOnboardingView()
+        }
     }
 }
 
