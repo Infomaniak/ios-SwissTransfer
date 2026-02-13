@@ -26,9 +26,12 @@ final class TransferDetailsViewModel: ObservableObject {
     @Published var transfer: TransferUi?
     @Published var status: TransferStatus
 
+    private let transferManager: TransferManager
+
     private var flow: (any AsyncSequence)?
 
-    init(data: TransferData) {
+    init(data: TransferData, transferManager: TransferManager) {
+        self.transferManager = transferManager
         switch data {
         case .transfer(let transfer):
             self.transfer = transfer
@@ -39,7 +42,7 @@ final class TransferDetailsViewModel: ObservableObject {
 
         if let transfer {
             Task {
-                await fetchTransfer(uuid: transfer.uuid)
+                try? await transferManager.fetchTransfer(transferUUID: transfer.uuid)
             }
             Task {
                 try await observeTransfer(uuid: transfer.uuid)
@@ -47,18 +50,8 @@ final class TransferDetailsViewModel: ObservableObject {
         }
     }
 
-    private func fetchTransfer(uuid: String) async {
-        @InjectService var accountManager: SwissTransferCore.AccountManager
-        let currentManager = await accountManager.getCurrentManager()
-
-        try? await currentManager?.fetchTransfer(transferUUID: uuid)
-    }
-
     private func observeTransfer(uuid: String) async throws {
-        @InjectService var accountManager: SwissTransferCore.AccountManager
-        guard let currentManager = await accountManager.getCurrentManager() else { return }
-
-        flow = try currentManager.getTransferFlow(transferUUID: uuid)
+        flow = try transferManager.getTransferFlow(transferUUID: uuid)
         guard let flow else { return }
 
         for try await flowResult in flow {
@@ -75,8 +68,8 @@ final class TransferDetailsViewModel: ObservableObject {
 public struct TransferDetailsRootView: View {
     @StateObject private var viewModel: TransferDetailsViewModel
 
-    public init(data: TransferData) {
-        _viewModel = .init(wrappedValue: .init(data: data))
+    public init(data: TransferData, transferManager: TransferManager) {
+        _viewModel = .init(wrappedValue: .init(data: data, transferManager: transferManager))
     }
 
     public var body: some View {

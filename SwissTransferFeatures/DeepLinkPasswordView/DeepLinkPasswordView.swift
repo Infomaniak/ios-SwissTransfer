@@ -86,7 +86,7 @@ public struct DeepLinkPasswordView: View {
 
             do {
                 @InjectService var accountManager: SwissTransferCore.AccountManager
-                guard let transferManager = await accountManager.getCurrentManager() else { return }
+                guard let transferManager = await accountManager.getCurrentUserSession()?.transferManager else { return }
 
                 guard let transferUUID = try await transferManager.addTransferByUrl(
                     url: url.url.path(),

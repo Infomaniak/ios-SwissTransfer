@@ -46,7 +46,7 @@ struct MainView: View {
                 .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) {
                     isShowingAppOverlay = true
                 } content: { transferData in
-                    TransferDetailsRootView(data: transferData)
+                    TransferDetailsRootView(data: transferData, transferManager: mainViewState.transferManager)
                 }
         }
         .sceneLifecycle(willEnterForeground: willEnterForeground)

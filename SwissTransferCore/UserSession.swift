@@ -16,17 +16,22 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import InfomaniakCore
-import InfomaniakDI
-import SwissTransferCore
+import STCore
 
-// periphery:ignore - Used by DI
-class SwissTransferTargetAssembly: TargetAssembly {
-    override class func getTargetServices() -> [Factory] {
-        return [
-            Factory(type: AppLaunchCounter.self) { _, _ in
-                AppLaunchCounter()
-            }
-        ]
+public struct UserSession: Sendable {
+    public let userId: AccountManager.UserId
+    public let userProfile: UserProfile?
+    public let transferManager: TransferManager
+
+    public var isGuest: Bool {
+        userId == AccountManager.guestUserId
+    }
+
+    init(userId: AccountManager.UserId, userProfile: UserProfile?, transferManager: TransferManager) {
+        self.userId = userId
+        self.userProfile = userProfile
+        self.transferManager = transferManager
     }
 }

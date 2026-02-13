@@ -91,7 +91,7 @@ struct SwissTransferApp: App {
         checkAppVersion()
 
         Task {
-            guard let currentManager = await accountManager.getCurrentManager() else {
+            guard let currentManager = await accountManager.getCurrentUserSession()?.transferManager else {
                 return
             }
 
@@ -110,10 +110,7 @@ struct SwissTransferApp: App {
                 }
 
                 if rootViewState.state == .updateRequired {
-                    await rootViewState.transitionToMainViewIfPossible(
-                        accountManager: accountManager,
-                        rootViewState: rootViewState
-                    )
+                    await rootViewState.transitionToMainViewIfPossible(accountManager: accountManager)
                 }
 
                 if versionStatus == .canBeUpdated,

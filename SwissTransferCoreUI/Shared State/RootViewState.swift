@@ -16,8 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
 import Foundation
 import InfomaniakCore
+import InfomaniakDI
 import SwiftUI
 import SwissTransferCore
 
@@ -47,13 +49,25 @@ public enum RootViewType: Equatable {
 public final class RootViewState: ObservableObject {
     @Published public var state: RootViewType = .preloading
 
-    public init() {}
+    private var accountManagerObservation: AnyCancellable?
 
-    public func transitionToMainViewIfPossible(accountManager: AccountManager, rootViewState: RootViewState) async {
-        if let currentManager = await accountManager.getCurrentManager() {
-            rootViewState.state = .mainView(MainViewState(transferManager: currentManager), nil)
+    public init() {
+        @InjectService var accountManager: AccountManager
+
+        state = .preloading
+
+        accountManagerObservation = accountManager.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
+            Task {
+                await self?.transitionToMainViewIfPossible(accountManager: accountManager)
+            }
+        }
+    }
+
+    public func transitionToMainViewIfPossible(accountManager: AccountManager) async {
+        if let currentSession = await accountManager.getCurrentUserSession() {
+            state = .mainView(MainViewState(transferManager: currentSession.transferManager), currentSession.userProfile)
         } else {
-            rootViewState.state = .onboarding
+            state = .onboarding
         }
     }
 }

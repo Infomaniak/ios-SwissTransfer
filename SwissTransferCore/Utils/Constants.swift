@@ -23,7 +23,10 @@ public enum Constants {
     public static let bundleId = "com.infomaniak.swisstransfer"
 
     public static let sharedAppGroupName = "group.com.infomaniak"
+    public static let appGroupIdentifier = "group.\(Constants.bundleId)"
 
     public static let numberOfSecondsInADay: TimeInterval = 86400
     public static let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String? ?? "SwissTransfer"
+    private static let appIdentifierPrefix = Bundle.main.infoDictionary!["AppIdentifierPrefix"] as! String
+    public static let accessGroup: String = Constants.appIdentifierPrefix + Constants.bundleId
 }

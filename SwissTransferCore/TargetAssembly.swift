@@ -70,6 +70,9 @@ open class TargetAssembly {
             Factory(type: InfomaniakLoginable.self) { _, _ in
                 InfomaniakLogin(config: loginConfig)
             },
+            Factory(type: KeychainHelper.self) { _, _ in
+                KeychainHelper(accessGroup: Constants.accessGroup)
+            },
             Factory(type: TokenStore.self) { _, _ in
                 TokenStore()
             },

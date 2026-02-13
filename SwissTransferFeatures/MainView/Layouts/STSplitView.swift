@@ -19,6 +19,7 @@
 import DesignSystem
 import InfomaniakCoreSwiftUI
 import STAccountView
+import STCore
 import STReceivedView
 import STSentView
 import STTransferDetailsView
@@ -61,7 +62,7 @@ struct STSplitView: View {
                     .stNavigationBarStyle()
             }
         } detail: {
-            DetailSplitView(destination: mainViewState.selectedDestination)
+            DetailSplitView(destination: mainViewState.selectedDestination, transferManager: mainViewState.transferManager)
                 .stNavigationBarStyle()
         }
     }
@@ -93,12 +94,13 @@ private struct ContentSplitView: View {
 
 private struct DetailSplitView: View {
     let destination: NavigationDestination?
+    let transferManager: TransferManager
 
     var body: some View {
         if let destination {
             switch destination {
             case .transfer(let transferData):
-                TransferDetailsRootView(data: transferData)
+                TransferDetailsRootView(data: transferData, transferManager: transferManager)
                     .id(transferData.id)
             case .settings:
                 Text("TODO: Settings Option.")

@@ -59,23 +59,14 @@ public actor AccountManager: ObservableObject {
     @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var tokenStore: TokenStore
     @LazyInjectService private var deviceManager: DeviceManagerable
-    @LazyInjectService private var notificationService: InfomaniakNotifications
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
 
     /// In case we later choose to support multi account / login we simulate an existing guest
-    private static let guestUserId = -1
+    static let guestUserId = -1
 
     public let userProfileStore = UserProfileStore()
 
     private let refreshTokenDelegate = STRefreshTokenDelegate()
-
-    public private(set) var currentManager: TransferManager? {
-        didSet {
-            let userId = managers.first { $0.value == currentManager }?.key ?? 0
-            UserDefaults.shared.currentUserId = userId
-            objectWillChange.send()
-        }
-    }
 
     private var managers = [UserId: TransferManager]()
 
@@ -85,31 +76,33 @@ public actor AccountManager: ObservableObject {
 
     public func createAndSetCurrentAccount() {
         UserDefaults.shared.currentUserId = AccountManager.guestUserId
+        objectWillChange.send()
     }
 
     public func createAndSetCurrentAccount(code: String, codeVerifier: String) async throws {
         let token = try await networkLoginService.apiTokenUsing(code: code, codeVerifier: codeVerifier)
 
         do {
-            let manager = try await createAccount(token: token)
-            setCurrentManager(manager: manager)
+            try await createAccount(token: token)
         } catch {
             throw error
         }
     }
 
-    public func createAccount(token: ApiToken) async throws -> TransferManager {
+    public func createAccount(token: ApiToken) async throws {
         let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
         let user = try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
 
         let deviceId = try await deviceManager.getOrCreateCurrentDevice().uid
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
+        attachDeviceToApiToken(token, apiFetcher: temporaryApiFetcher)
 
-        guard let manager = await getManager(userId: user.id) else {
+        guard await (getManager(userId: user.id)) != nil else {
             throw ErrorDomain.noUserSession
         }
 
-        return manager
+        UserDefaults.shared.currentUserId = user.id
+        objectWillChange.send()
     }
 
     private func attachDeviceToApiToken(_ token: ApiToken, apiFetcher: ApiFetcher) {
@@ -124,8 +117,6 @@ public actor AccountManager: ObservableObject {
     }
 
     public func getManager(userId: UserId) async -> TransferManager? {
-        assert(userId == AccountManager.guestUserId, "Only guest user is supported")
-
         _ = await loadUserTask?.result
         if let manager = managers[userId] {
             return manager
@@ -141,18 +132,33 @@ public actor AccountManager: ObservableObject {
         }
     }
 
-    public func setCurrentManager(manager: TransferManager) {
-        currentManager = manager
-    }
-
-    public func getCurrentManager() async -> TransferManager? {
+    public func getCurrentUserSession() async -> UserSession? {
         let currentUserId = UserDefaults.shared.currentUserId
-        guard currentUserId != 0 else {
+
+        guard currentUserId > 0 || currentUserId == AccountManager.guestUserId else {
             return nil
         }
 
-        assert(currentUserId == AccountManager.guestUserId, "Only guest user is supported")
-        return await getManager(userId: currentUserId)
+        if currentUserId == AccountManager.guestUserId,
+           let guestManager = await getManager(userId: AccountManager.guestUserId) {
+            return UserSession(userId: AccountManager.guestUserId, userProfile: nil, transferManager: guestManager)
+        }
+
+        guard let token = tokenStore.tokenFor(userId: currentUserId)?.apiToken,
+              let manager = await getManager(userId: currentUserId) else {
+            return nil
+        }
+
+        if let userProfile = await userProfileStore.getUserProfile(id: currentUserId) {
+            return UserSession(userId: currentUserId, userProfile: userProfile, transferManager: manager)
+        } else {
+            let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
+            if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
+                return UserSession(userId: currentUserId, userProfile: userProfile, transferManager: manager)
+            }
+        }
+
+        return nil
     }
 
     public func getAccountIds() async -> [UserId] {
