@@ -19,6 +19,7 @@
 import DesignSystem
 import InfomaniakCore
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -40,7 +41,10 @@ struct LogoutConfirmationView: View {
         }
     }
 
-    private func logout() async {} // TODO: implement logout func
+    private func logout() async {
+        @InjectService var accountManager: AccountManager
+        await accountManager.removeTokenAndAccountFor(userId: user.id)
+    }
 }
 
 #Preview {
