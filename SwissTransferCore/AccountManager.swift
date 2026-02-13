@@ -68,12 +68,6 @@ public actor AccountManager: ObservableObject {
 
     private let refreshTokenDelegate = STRefreshTokenDelegate()
 
-    public private(set) var currentManager: TransferManager? {
-        didSet {
-            objectWillChange.send()
-        }
-    }
-
     private var managers = [UserId: TransferManager]()
 
     private var loadUserTask: Task<Void?, Never>?
@@ -82,20 +76,20 @@ public actor AccountManager: ObservableObject {
 
     public func createAndSetCurrentAccount() {
         UserDefaults.shared.currentUserId = AccountManager.guestUserId
+        objectWillChange.send()
     }
 
     public func createAndSetCurrentAccount(code: String, codeVerifier: String) async throws {
         let token = try await networkLoginService.apiTokenUsing(code: code, codeVerifier: codeVerifier)
 
         do {
-            let manager = try await createAccount(token: token)
-            setCurrentManager(manager: manager)
+            try await createAccount(token: token)
         } catch {
             throw error
         }
     }
 
-    public func createAccount(token: ApiToken) async throws -> TransferManager {
+    public func createAccount(token: ApiToken) async throws {
         let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
         let user = try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
 
@@ -103,12 +97,12 @@ public actor AccountManager: ObservableObject {
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
         attachDeviceToApiToken(token, apiFetcher: temporaryApiFetcher)
 
-        UserDefaults.shared.currentUserId = user.id
-        guard let manager = await getManager(userId: user.id) else {
+        guard await (getManager(userId: user.id)) != nil else {
             throw ErrorDomain.noUserSession
         }
 
-        return manager
+        UserDefaults.shared.currentUserId = user.id
+        objectWillChange.send()
     }
 
     private func attachDeviceToApiToken(_ token: ApiToken, apiFetcher: ApiFetcher) {
@@ -136,10 +130,6 @@ public actor AccountManager: ObservableObject {
 
             return managers[userId]
         }
-    }
-
-    public func setCurrentManager(manager: TransferManager) {
-        currentManager = manager
     }
 
     public func getCurrentUserSession() async -> UserSession? {
