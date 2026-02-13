@@ -58,7 +58,7 @@ public struct AccountView: View {
                             leadingIcon: STResourcesAsset.Images.user
                         )
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                     .settingsCell()
                 }
 
