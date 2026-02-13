@@ -43,7 +43,7 @@ struct OnboardingBottomButtonsView: View {
     let slideCount: Int
 
     init(
-        loginHandler: LoginHandler = LoginHandler(),
+        loginHandler: LoginHandler,
         isPresentingInterAppLogin: Bool = false,
         selection: Binding<Int>,
         slideCount: Int
@@ -134,5 +134,5 @@ struct OnboardingBottomButtonsView: View {
 }
 
 #Preview {
-    OnboardingBottomButtonsView(selection: .constant(1), slideCount: 3)
+    OnboardingBottomButtonsView(loginHandler: LoginHandler(), selection: .constant(1), slideCount: 3)
 }

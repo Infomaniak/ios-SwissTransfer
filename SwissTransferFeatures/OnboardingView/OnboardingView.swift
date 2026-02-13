@@ -87,15 +87,21 @@ public struct OnboardingView: View {
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
     @State private var selectedSlideIndex = 0
+    @StateObject private var loginHandler = LoginHandler()
 
     public init() {}
 
     public var body: some View {
         CarouselView(slides: Slide.onboardingSlides, selectedSlide: $selectedSlideIndex) { _ in
-            OnboardingBottomButtonsView(selection: $selectedSlideIndex, slideCount: Slide.onboardingSlides.count)
+            OnboardingBottomButtonsView(
+                loginHandler: loginHandler,
+                selection: $selectedSlideIndex,
+                slideCount: Slide.onboardingSlides.count
+            )
         }
         .appBackground()
         .ignoresSafeArea()
+        .loginErrorAlert(loginHandler: loginHandler)
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
 
