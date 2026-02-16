@@ -16,16 +16,7 @@ The project follows a modular architecture with clear separation of concerns:
 - **SwissTransferCore**: Business logic framework with API layer, state managers, and data models
 - **SwissTransferCoreUI**: Shared UI components and view modifiers
 - **SwissTransferResources**: Assets, localized strings, and resources
-- **SwissTransferFeatures**: Feature modules including:
-  - **RootView**: Root navigation and view coordination
-  - **MainView**: Main application interface with tabs
-  - **OnboardingView**: User onboarding experience
-  - **NewTransferView**: New transfer creation
-  - **UploadProgressView**: Upload progress tracking
-  - **TransferDetailsView**: Transfer details and management
-  - **ReceivedView**: Received transfers list
-  - **SentView**: Sent transfers list
-  - **SettingsView**: Application settings
+- **SwissTransferFeatures**: Feature modules including
 - **Extensions**: Share extension and App Clip
 
 A <a href="https://github.com/Infomaniak/multiplatform-SwissTransfer">KMP library</a> is used to share code between the iOS and Android versions of the app.
