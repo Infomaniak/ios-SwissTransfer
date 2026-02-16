@@ -56,7 +56,10 @@ A <a href="https://github.com/Infomaniak/multiplatform-SwissTransfer">KMP librar
 2. Bootstrap the development environment:
    ```bash
    mise install
-   eval "$(mise activate bash --shims)"
+   # Activate mise for your shell:
+   # For bash/zsh: eval "$(mise activate bash)"
+   # For fish: mise activate fish | source
+   # Or follow: https://mise.jdx.dev/getting-started.html#shells
    ```
 
 3. Install dependencies and generate the Xcode project:
