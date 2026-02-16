@@ -1,25 +1,85 @@
-# SwissTransfer
-SwissTransfer application for iOS
+# 📧 Infomaniak SwissTransfer for iOS
 
-Send up to 50 GB - Free and without registration - Keep your transfers for up to 30 days.
+Welcome to the official repository for **Infomaniak SwissTransfer**, a secure and easy file transfer app for iOS, iPadOS, and macOS (via Catalyst). 👋
 
-## Installation
+<a href="https://apps.apple.com/app/infomaniak-swisstransfer/id6737686335"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1662076800"></a>
 
-This project uses [Mise](https://github.com/jdx/mise) to manage build tools versions. Once installed you can run in the project directory `mise install` to get all the tools.
+## 📖 About Infomaniak SwissTransfer
 
-This project uses [Tuist](https://docs.tuist.io/guides/quick-start/install-tuist) to prevent conflicts on xcodeproj files. To generate the Xcode project, you need to install Tuist and run the `tuist install` and `tuist generate` commands. Refer to their documentation for more information.
+Infomaniak SwissTransfer is part of the <a href="https://www.infomaniak.com/">Infomaniak</a> ecosystem, providing a privacy-focused 🔒, Swiss-based 🇨🇭 file transfer solution with a beautiful native iOS experience. Built with Swift and SwiftUI, this app offers a fast, secure, and user-friendly way to send files up to 50 GB - free and without registration - and keep your transfers for up to 30 days.
 
-## Architecture
+## 🏗️ Architecture
 
-A [KMP library](https://github.com/Infomaniak/multiplatform-SwissTransfer) is used to share code between the iOS and Android versions of the app.
-This app uses a modular architecture. Each feature is placed in a module.
+The project follows a modular architecture with clear separation of concerns:
 
-## Contributing
+- **SwissTransfer**: Main app target containing SwiftUI views, scenes, and app lifecycle
+- **SwissTransferCore**: Business logic framework with API layer, state managers, and data models
+- **SwissTransferCoreUI**: Shared UI components and view modifiers
+- **SwissTransferResources**: Assets, localized strings, and resources
+- **SwissTransferFeatures**: Feature modules including:
+  - **RootView**: Root navigation and view coordination
+  - **MainView**: Main application interface with tabs
+  - **OnboardingView**: User onboarding experience
+  - **NewTransferView**: New transfer creation
+  - **UploadProgressView**: Upload progress tracking
+  - **TransferDetailsView**: Transfer details and management
+  - **ReceivedView**: Received transfers list
+  - **SentView**: Sent transfers list
+  - **SettingsView**: Application settings
+- **Extensions**: Share extension and App Clip
 
-If you see a bug or an enhancement point, feel free to create an issue, so that we can discuss it. Once approved, we or you (
-depending on the priority of the bug/improvement) will take care of the issue and apply a merge request. Please, don't do a merge
-request before creating an issue.
+A <a href="https://github.com/Infomaniak/multiplatform-SwissTransfer">KMP library</a> is used to share code between the iOS and Android versions of the app.
 
-## License
+## 🛠️ Technology Stack
+
+- **Language**: Swift 5.10
+- **UI Framework**: SwiftUI (primary) with UIKit integration
+- **Shared Logic**: Kotlin Multiplatform (KMP) via <a href="https://github.com/Infomaniak/multiplatform-SwissTransfer">multiplatform-SwissTransfer</a>
+- **Build System**: <a href="https://tuist.io/">Tuist</a> for project generation and SPM dependency management
+- **Tool Management**: <a href="https://mise.jdx.dev/">Mise</a> for managing tool versions
+- **Key Dependencies**:
+  - Lottie for animations
+  - Sentry for error tracking
+  - Infomaniak Core libraries for common functionality
+  - QRCode for QR code generation
+- **Minimum iOS**: 16.6+
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+1. Install <a href="https://mise.jdx.dev/">Mise</a> for tool version management:
+   ```bash
+   curl https://mise.run | sh
+   ```
+
+2. Bootstrap the development environment:
+   ```bash
+   mise install
+   eval "$(mise activate bash --shims)"
+   ```
+
+3. Install dependencies and generate the Xcode project:
+   ```bash
+   tuist install
+   tuist generate
+   ```
+
+### Building and Running
+
+Open the generated `SwissTransfer.xcworkspace` in Xcode and build the project, or use:
+```bash
+xcodebuild -scheme "SwissTransfer"
+```
+
+## 🧪 Testing
+
+You can run the tests using Xcode or Tuist. The project includes unit tests to ensure code quality and reliability.
+
+## 🤝 Contributing
+
+If you see a bug or an enhancement point, feel free to create an issue, so that we can discuss it. Once approved, we or you (depending on the priority of the bug/improvement) will take care of the issue and apply a merge request. Please, don't do a merge request before creating an issue.
+
+## 📄 License
 
 This project is under GPLv3 license. See the LICENSE file for more details.
