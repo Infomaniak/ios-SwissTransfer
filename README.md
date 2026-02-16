@@ -1,4 +1,4 @@
-# 📧 Infomaniak SwissTransfer for iOS
+# 📦 Infomaniak SwissTransfer for iOS
 
 Welcome to the official repository for **Infomaniak SwissTransfer**, a secure and easy file transfer app for iOS, iPadOS, and macOS (via Catalyst). 👋
 
