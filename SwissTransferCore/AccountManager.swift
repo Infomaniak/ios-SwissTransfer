@@ -168,6 +168,8 @@ public actor AccountManager: ObservableObject {
     public func removeTokenAndAccountFor(userId: Int) {
         guard let removedToken = tokenStore.removeTokenFor(userId: userId) else { return }
 
+        objectWillChange.send()
+
         networkLoginService.deleteApiToken(token: removedToken) { result in
             guard case .failure(let error) = result else { return }
             Logger.general.error("Failed to delete api token: \(error.localizedDescription)")
