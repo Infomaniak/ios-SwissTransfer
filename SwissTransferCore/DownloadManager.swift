@@ -134,14 +134,14 @@ public class DownloadManager: ObservableObject {
         trackedDownloadTasks[id] = nil
     }
 
-    public func startDownload(file: FileUi, in transfer: TransferUi) async throws {
-        let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
+    public func startDownload(file: FileUi, in transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws {
+        let downloadURL = try await getDownloadURLFor(file: file, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
     }
 
-    public func startDownload(transfer: TransferUi) async throws {
-        let downloadURL = try await getDownloadURLFor(transfer: transfer)
+    public func startDownload(transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws {
+        let downloadURL = try await getDownloadURLFor(transfer: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
@@ -150,8 +150,10 @@ public class DownloadManager: ObservableObject {
         "\(transferUUID)__\(fileUUID ?? "")"
     }
 
-    private func getDownloadURLFor(file: FileUi, in transfer: TransferUi) async throws -> URL {
-        guard let rawDownloadURL = try await injection.sharedApiUrlCreator.downloadFileUrl(
+    private func getDownloadURLFor(file: FileUi,
+                                   in transfer: TransferUi,
+                                   sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
+        guard let rawDownloadURL = try await sharedApiUrlCreator.downloadFileUrl(
             transferUUID: transfer.uuid,
             fileUUID: file.uid
         ),
@@ -162,13 +164,13 @@ public class DownloadManager: ObservableObject {
         return downloadURL
     }
 
-    private func getDownloadURLFor(transfer: TransferUi) async throws -> URL {
+    private func getDownloadURLFor(transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
         if transfer.files.count == 1,
            let firstFile = transfer.files.first {
-            return try await getDownloadURLFor(file: firstFile, in: transfer)
+            return try await getDownloadURLFor(file: firstFile, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         }
 
-        guard let rawDownloadURL = try await injection.sharedApiUrlCreator.downloadFilesUrl(transferUUID: transfer.uuid),
+        guard let rawDownloadURL = try await sharedApiUrlCreator.downloadFilesUrl(transferUUID: transfer.uuid),
               let downloadURL = URL(string: rawDownloadURL) else {
             throw ErrorDomain.badURL
         }

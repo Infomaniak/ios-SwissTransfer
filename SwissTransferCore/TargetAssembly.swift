@@ -44,7 +44,7 @@ extension [Factory] {
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
-    private static let apiEnvironment = ApiEnvironment.prod
+    private static let apiEnvironment = ApiEnvironment.preprod
     public static let loginConfig = InfomaniakLogin.Config(
         clientId: "17EE3471-9843-4FB9-AD95-CB8C41BAD624",
         loginURL: URL(string: "https://login.\(apiEnvironment.host)/")!,
@@ -105,14 +105,16 @@ open class TargetAssembly {
                     environment: STCore.ApiEnvironment.Preprod(),
                     userAgent: UserAgentBuilder().userAgent,
                     databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper
+                    crashReport: sentryWrapper,
+                    databaseConfig: .init(databaseRootDirectory: realmRootDirectory)
                 )
                 #else
                 return SwissTransferInjection(
                     environment: STCore.ApiEnvironment.Prod(),
                     userAgent: UserAgentBuilder().userAgent,
                     databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper
+                    crashReport: sentryWrapper,
+                    databaseConfig: .init(databaseRootDirectory: realmRootDirectory)
                 )
                 #endif
             },

@@ -32,7 +32,7 @@ struct LegacyToolbarSpacing: View {
 }
 
 struct ShareTransferToolbarModifier: ViewModifier {
-    @LazyInjectService private var injection: SwissTransferInjection
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var isShowingPassword = false
 
@@ -40,7 +40,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
-        let apiURLCreator = injection.sharedApiUrlCreator
+        let apiURLCreator = mainViewState.injection.sharedApiUrlCreator
         let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
         return URL(string: url)
     }

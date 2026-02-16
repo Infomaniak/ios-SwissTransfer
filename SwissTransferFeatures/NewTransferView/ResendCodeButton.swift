@@ -23,7 +23,7 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct ResendCodeButton: View {
-    @LazyInjectService private var injection: SwissTransferInjection
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var isSendingCode = false
@@ -72,7 +72,7 @@ struct ResendCodeButton: View {
 
         Task {
             do {
-                try await injection.uploadManager.resendEmailCode(address: emailToVerify)
+                try await mainViewState.injection.uploadManager.resendEmailCode(address: emailToVerify)
                 timeLeftSeconds = resendTimeDelaySeconds
                 timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
             } catch {

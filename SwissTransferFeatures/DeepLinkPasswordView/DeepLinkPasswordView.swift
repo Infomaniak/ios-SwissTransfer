@@ -85,8 +85,7 @@ public struct DeepLinkPasswordView: View {
             let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
 
             do {
-                @InjectService var accountManager: SwissTransferCore.AccountManager
-                guard let transferManager = await accountManager.getCurrentUserSession()?.transferManager else { return }
+                let transferManager = mainViewState.transferManager
 
                 guard let transferUUID = try await transferManager.addTransferByUrl(
                     url: url.url.path(),

@@ -31,7 +31,7 @@ public enum RootViewType: Equatable {
         case (.preloading, .preloading):
             return true
         case (.mainView(let lhsMainViewState, let lhsUser), .mainView(let rhsMainViewState, let rhsUser)):
-            return lhsUser?.id == rhsUser?.id && lhsMainViewState.transferManager == rhsMainViewState.transferManager
+            return lhsUser?.id == rhsUser?.id // TODO: maybe check mainViewState ?
         case (.updateRequired, .updateRequired):
             return true
         default:
@@ -65,7 +65,7 @@ public final class RootViewState: ObservableObject {
 
     public func transitionToMainViewIfPossible(accountManager: AccountManager) async {
         if let currentSession = await accountManager.getCurrentUserSession() {
-            state = .mainView(MainViewState(transferManager: currentSession.transferManager), currentSession.userProfile)
+            state = .mainView(MainViewState(injection: currentSession.injection), currentSession.userProfile)
         } else {
             state = .onboarding
         }

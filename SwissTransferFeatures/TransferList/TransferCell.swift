@@ -26,8 +26,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct TransferCell: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-
     @EnvironmentObject private var mainViewState: MainViewState
 
     let transfer: TransferUi
@@ -73,7 +71,7 @@ struct TransferCell: View {
         .contextMenu {
             Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
                 Task {
-                    try? await injection.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+                    try? await mainViewState.injection.transferManager.deleteTransfer(transferUUID: transfer.uuid)
                 }
             }
         }

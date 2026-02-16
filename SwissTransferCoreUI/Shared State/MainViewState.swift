@@ -17,7 +17,7 @@
  */
 
 import OSLog
-import STCore
+@preconcurrency import STCore
 import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
@@ -150,10 +150,14 @@ public final class MainViewState: ObservableObject {
         }
     }
 
-    public let transferManager: TransferManager
+    public var transferManager: TransferManager {
+        return injection.transferManager
+    }
 
-    public init(transferManager: TransferManager) {
-        self.transferManager = transferManager
+    public let injection: SwissTransferInjection
+
+    public init(injection: SwissTransferInjection) {
+        self.injection = injection
     }
 
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {

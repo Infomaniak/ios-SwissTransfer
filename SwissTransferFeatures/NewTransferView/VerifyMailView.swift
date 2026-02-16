@@ -31,10 +31,9 @@ private extension UserFacingError {
 }
 
 public struct VerifyMailView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-
     @Environment(\.openURL) private var openURL
 
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
@@ -114,7 +113,8 @@ public struct VerifyMailView: View {
         Task {
             do {
                 let addressToVerify = newUploadSession.authorEmail
-                let token = try await injection.uploadManager.verifyEmailCode(code: code, address: addressToVerify).token
+                let token = try await mainViewState.injection.uploadManager.verifyEmailCode(code: code, address: addressToVerify)
+                    .token
 
                 let uploadSessionWithEmailToken = NewUploadSession(
                     duration: newUploadSession.duration,
@@ -130,7 +130,7 @@ public struct VerifyMailView: View {
 
                 viewModel.authorEmailToken = token
 
-                let localUploadSession = try await injection.uploadManager
+                let localUploadSession = try await mainViewState.injection.uploadManager
                     .createAndGetSendableUploadSession(newUploadSession: uploadSessionWithEmailToken)
 
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))

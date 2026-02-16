@@ -25,7 +25,7 @@ import SwiftUI
 import SwissTransferCore
 
 public struct DeleteTransferAlertView: View {
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var error: UserFacingError?
 
@@ -64,13 +64,11 @@ public struct DeleteTransferAlertView: View {
     }
 
     private func deleteTransfer() async throws {
-        let defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager
-
         do {
             let feedback = UINotificationFeedbackGenerator()
             feedback.prepare()
 
-            try await defaultTransferManager?.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
+            try await mainViewState.transferManager.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
 
             feedback.notificationOccurred(.success)
         } catch {
