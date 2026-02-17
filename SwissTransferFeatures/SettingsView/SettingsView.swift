@@ -119,7 +119,7 @@ public struct SettingsView: View {
                 }
                 .settingsCell()
 
-                Link(destination: URL(fileURLWithPath: "")) { // TODO: Handle delete account
+                Button {} label: {
                     SingleLabelSettingsCell(
                         title: STResourcesStrings.Localizable.settingsDeleteMyAccount,
                         leadingIcon: STResourcesAsset.Images.delete,
