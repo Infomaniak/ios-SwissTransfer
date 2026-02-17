@@ -63,7 +63,7 @@ struct AccountHeaderCell: View {
                     .font(.ST.headline)
                     .foregroundStyle(Color.ST.textPrimary)
                 Text(user.email)
-                    .font(.ST.headline)
+                    .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
             }
             .lineLimit(1)
