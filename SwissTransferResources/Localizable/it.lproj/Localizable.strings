@@ -64,6 +64,9 @@
 /* loco:674834cdbb4f7b35ad00ea55 */
 "buttonStart" = "Inizio";
 
+/* loco:699471fbbf0c6c800e06b763 */
+"buttonUseOtherAccount" = "Utilizza un altro account";
+
 /* loco:69845c4f61406c35b20db5d2 */
 "confirmLogoutDescription" = "Sei sicuro di volerti disconnettere da %s?";
 
@@ -465,9 +468,6 @@
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Opzionale)";
-
-/* loco:69844713312d28cb940ef782 */
-"titleMyAccount" = "Il mio conto";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Contenuto del trasferimento:";
