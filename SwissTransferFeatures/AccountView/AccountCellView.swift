@@ -26,8 +26,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct AccountCellView: View {
-    @Environment(\.dismissModal) private var dismissModal
-
     @Binding var selectedUserId: Int?
 
     let user: InfomaniakCore.UserProfile
