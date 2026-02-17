@@ -37,7 +37,7 @@ public struct AccountHeaderView: View {
                     .padding(IKPadding.small)
             }
 
-            Text(currentUser?.displayName ?? STResourcesStrings.Localizable.titleMyAccount)
+            Text(currentUser?.displayName ?? STResourcesStrings.Localizable.titleMyAccount(1))
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
                 .multilineTextAlignment(.center)
