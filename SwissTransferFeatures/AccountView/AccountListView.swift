@@ -25,7 +25,6 @@ import STOnboardingView
 import STResources
 import STSettingsView
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct AccountListView: View {
@@ -33,7 +32,6 @@ struct AccountListView: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var isShowingNewAccountView = false
     @State private var users: [UserProfile] = []
 
     var body: some View {
