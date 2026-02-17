@@ -49,7 +49,7 @@ public enum STTab: Identifiable, Codable, Hashable {
         case .receivedTransfers:
             return STResourcesStrings.Localizable.receivedTitle
         case .account:
-            return STResourcesStrings.Localizable.titleMyAccount
+            return STResourcesStrings.Localizable.titleMyAccount(1)
         }
     }
 
