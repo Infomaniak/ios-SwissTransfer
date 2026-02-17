@@ -72,7 +72,7 @@ struct AccountListView: View {
 
     private func updateUsers() async throws {
         // TODO: Update func
-        await withThrowingTaskGroup(of: Void.self) { group in
+        await withThrowingTaskGroup(of: Void.self) { _ in
             users = [currentUser!]
         }
     }
