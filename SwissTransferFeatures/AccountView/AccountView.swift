@@ -32,6 +32,7 @@ public struct AccountView: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
 
+    @State private var isShowingNewAccountListView = false
     @State private var isShowingLogoutView = false
 
     public init() {}
@@ -42,13 +43,19 @@ public struct AccountView: View {
 
             Section {
                 if currentUser != nil {
-                    NavigationLink {} label: { // TODO: Change Navigation
+                    Button {
+                        isShowingNewAccountListView = true
+                    } label: {
                         SingleLabelSettingsCell(
                             title: STResourcesStrings.Localizable.settingsSwitchAccount,
                             leadingIcon: STResourcesAsset.Images.userChange
                         )
                     }
                     .settingsCell()
+                    .stFloatingPanel(isPresented: $isShowingNewAccountListView,
+                                     title: STResourcesStrings.Localizable.titleMyAccount(1)) { // TODO: change number
+                        AccountListView()
+                    }
                 } else {
                     Button {
                         mainViewState.isShowingLoginView = true
