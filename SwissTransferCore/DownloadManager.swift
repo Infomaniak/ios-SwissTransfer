@@ -60,7 +60,6 @@ public enum DownloadTaskState: Equatable, Sendable {
 
 @MainActor
 public class DownloadManager: ObservableObject {
-    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     private let session: URLSession

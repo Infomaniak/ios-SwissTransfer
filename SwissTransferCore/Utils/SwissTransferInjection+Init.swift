@@ -42,7 +42,7 @@ extension SwissTransferInjection {
             environment: STCore.ApiEnvironment.Prod(),
             userAgent: UserAgentBuilder().userAgent,
             databaseRootDirectory: realmRootDirectory,
-            crashReport: sentryWrapper,
+            crashReport: sentryWrapper
         )
         #endif
     }

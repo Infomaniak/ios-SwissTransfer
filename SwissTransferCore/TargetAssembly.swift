@@ -44,7 +44,7 @@ extension [Factory] {
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
-    private static let apiEnvironment = ApiEnvironment.preprod
+    private static let apiEnvironment = ApiEnvironment.prod
     public static let loginConfig = InfomaniakLogin.Config(
         clientId: "17EE3471-9843-4FB9-AD95-CB8C41BAD624",
         loginURL: URL(string: "https://login.\(apiEnvironment.host)/")!,
@@ -88,9 +88,6 @@ open class TargetAssembly {
             },
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
-            },
-            Factory(type: SwissTransferInjection.self) { _, _ in
-                return SwissTransferInjection()
             },
             Factory(type: AppSettingsManager.self) { _, resolver in
                 let stInjection = try resolver.resolve(type: SwissTransferInjection.self,
