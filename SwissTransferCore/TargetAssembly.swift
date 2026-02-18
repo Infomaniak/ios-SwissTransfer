@@ -89,12 +89,8 @@ open class TargetAssembly {
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
             },
-            Factory(type: AppSettingsManager.self) { _, resolver in
-                let stInjection = try resolver.resolve(type: SwissTransferInjection.self,
-                                                       forCustomTypeIdentifier: nil,
-                                                       factoryParameters: nil,
-                                                       resolver: resolver)
-                return stInjection.appSettingsManager
+            Factory(type: AppSettingsManager.self) { _, _ in
+                return SwissTransferInjection().appSettingsManager
             },
             Factory(type: ReviewManageable.self) { _, _ in
                 ReviewManager(userDefaults: UserDefaults.shared, actionBeforeFirstReview: 2)
