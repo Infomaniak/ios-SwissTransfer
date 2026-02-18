@@ -20,6 +20,7 @@ import DesignSystem
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
+import InfomaniakDI
 import STOnboardingView
 import STResources
 import STSettingsView
@@ -52,6 +53,8 @@ public struct AccountView: View {
                     .settingsCell()
                 } else {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .login)
                         mainViewState.isShowingLoginView = true
                     } label: {
                         SingleLabelSettingsCell(
@@ -74,6 +77,8 @@ public struct AccountView: View {
                 .settingsCell()
 
                 Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .helpAndSupport)
                     openURL(SettingLinks.helpAndSupportURL)
                 } label: {
                     SingleLabelSettingsCell(
@@ -86,6 +91,8 @@ public struct AccountView: View {
 
                 if let currentUser {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .logout)
                         isShowingLogoutView = true
                     } label: {
                         SingleLabelSettingsCell(
@@ -93,7 +100,7 @@ public struct AccountView: View {
                             leadingIcon: STResourcesAsset.Images.logout
                         )
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                     .stCustomAlert(isPresented: $isShowingLogoutView) {
                         LogoutConfirmationView(user: currentUser)
                     }
@@ -103,6 +110,8 @@ public struct AccountView: View {
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
                 Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .termsAndConditions)
                     openURL(SettingLinks.termsAndConditions)
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
@@ -112,6 +121,8 @@ public struct AccountView: View {
                 .settingsCell()
 
                 Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .discoverInfomaniak)
                     openURL(SettingLinks.discoverInfomaniak)
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
@@ -121,6 +132,8 @@ public struct AccountView: View {
                 .settingsCell()
 
                 Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .shareYourIdeas)
                     openURL(SettingLinks.shareYourIdeas)
                 } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
@@ -131,6 +144,8 @@ public struct AccountView: View {
 
                 if !Bundle.main.isRunningInTestFlight {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .giveYourOpinion)
                         openURL(SettingLinks.appStoreReviewURL)
                     } label: {
                         SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
