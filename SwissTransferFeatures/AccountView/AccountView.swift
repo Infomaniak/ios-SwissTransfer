@@ -73,6 +73,7 @@ public struct AccountView: View {
                 .settingsCell()
 
                 Link(destination: SettingLinks.helpAndSupport) {
+                    openURL(SettingLinks.helpAndSupportURL)
                     SingleLabelSettingsCell(
                         title: STResourcesStrings.Localizable.settingsHelpAndSupport,
                         leadingIcon: STResourcesAsset.Images.help, trailingIcon: STResourcesAsset.Images.export
