@@ -86,10 +86,6 @@ public struct TransferDetailsRootView: View {
                 VirusCheckView()
             case .virusDetected:
                 VirusDetectedView(transfer: transfer)
-            case .notYetFetched:
-                fatalError("TODO: handle not yet fetched status")
-            case .pendingUpload:
-                fatalError("TODO: handle pending upload status")
             }
         }
     }

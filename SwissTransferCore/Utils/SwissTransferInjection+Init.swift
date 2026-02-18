@@ -35,8 +35,7 @@ extension SwissTransferInjection {
             environment: STCore.ApiEnvironment.Preprod(),
             userAgent: UserAgentBuilder().userAgent,
             databaseRootDirectory: realmRootDirectory,
-            crashReport: sentryWrapper,
-            databaseConfig: .init(databaseRootDirectory: realmRootDirectory)
+            crashReport: sentryWrapper
         )
         #else
         self.init(
@@ -44,7 +43,6 @@ extension SwissTransferInjection {
             userAgent: UserAgentBuilder().userAgent,
             databaseRootDirectory: realmRootDirectory,
             crashReport: sentryWrapper,
-            databaseConfig: .init(databaseRootDirectory: realmRootDirectory)
         )
         #endif
     }

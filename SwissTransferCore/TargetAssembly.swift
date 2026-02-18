@@ -89,34 +89,8 @@ open class TargetAssembly {
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
             },
-            Factory(type: SwissTransferInjection.self) { _, resolver in
-                let groupPathProvider = try resolver.resolve(type: AppGroupPathProvidable.self,
-                                                             forCustomTypeIdentifier: nil,
-                                                             factoryParameters: nil,
-                                                             resolver: resolver)
-
-                let sentryWrapper = SentryKMPWrapper()
-
-                let realmRootDirectory = groupPathProvider.realmRootURL.path()
-                Logger.general.info("Realm group directory \(realmRootDirectory)")
-
-                #if DEBUG
-                return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Preprod(),
-                    userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper,
-                    databaseConfig: .init(databaseRootDirectory: realmRootDirectory)
-                )
-                #else
-                return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Prod(),
-                    userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper,
-                    databaseConfig: .init(databaseRootDirectory: realmRootDirectory)
-                )
-                #endif
+            Factory(type: SwissTransferInjection.self) { _, _ in
+                return SwissTransferInjection()
             },
             Factory(type: AppSettingsManager.self) { _, resolver in
                 let stInjection = try resolver.resolve(type: SwissTransferInjection.self,

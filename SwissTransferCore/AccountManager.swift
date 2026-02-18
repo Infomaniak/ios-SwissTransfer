@@ -122,11 +122,7 @@ public actor AccountManager: ObservableObject {
         } else {
             loadUserTask = Task {
                 let injection = SwissTransferInjection()
-                if userId > 0, let token {
-                    try? await injection.accountManager.loadUser(user: STUserAuthUser(id: Int64(userId), token: token))
-                } else {
-                    try? await injection.accountManager.loadUser(user: STUserGuestUser(id: Int64(userId)))
-                }
+                try? await injection.accountManager.loadUser(userId: Int32(AccountManager.guestUserId))
                 managers[userId] = injection
             }
             _ = await loadUserTask?.result
