@@ -29,8 +29,6 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct MainView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
@@ -64,7 +62,7 @@ struct MainView: View {
 
     private func willEnterForeground() {
         Task {
-            try? await injection.transferManager.deleteExpiredTransfers()
+            try? await mainViewState.transferManager.deleteExpiredTransfers()
         }
     }
 }

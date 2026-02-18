@@ -106,8 +106,8 @@ public struct OnboardingView: View {
             guard let linkedTransfer else { return }
 
             Task {
-                if let currentManager = await accountManager.getCurrentUserSession()?.transferManager {
-                    let mainViewState = MainViewState(transferManager: currentManager)
+                if let currentInjection = await accountManager.getCurrentUserSession()?.injection {
+                    let mainViewState = MainViewState(injection: currentInjection)
 
                     mainViewState.handleDeepLink(linkedTransfer)
                     universalLinksState.linkedTransfer = nil

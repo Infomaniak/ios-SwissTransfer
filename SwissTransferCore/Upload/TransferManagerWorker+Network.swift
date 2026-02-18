@@ -24,8 +24,7 @@ import STNetwork
 
 extension TransferManagerWorker {
     func uploadChunk(chunkData: Data, chunk: WorkerChunk, progressTracker: UploadTaskProgressTracker) async throws {
-        @InjectService var injection: SwissTransferInjection
-        guard let rawChunkURL = try injection.sharedApiUrlCreator.uploadChunkUrl(
+        guard let rawChunkURL = try apiURLCreator.uploadChunkUrl(
             uploadUUID: chunk.uploadUUID,
             fileUUID: chunk.remoteUploadFileUUID,
             chunkIndex: Int32(chunk.index),

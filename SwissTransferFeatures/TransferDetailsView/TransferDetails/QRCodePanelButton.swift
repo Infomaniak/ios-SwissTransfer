@@ -21,9 +21,10 @@ import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCoreUI
 
 struct QRCodePanelButton: View {
-    @LazyInjectService private var injection: SwissTransferInjection
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var isShowingQRCode = false
 
@@ -31,7 +32,7 @@ struct QRCodePanelButton: View {
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
-        let apiURLCreator = injection.sharedApiUrlCreator
+        let apiURLCreator = mainViewState.injection.sharedApiUrlCreator
         let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
         return URL(string: url)
     }

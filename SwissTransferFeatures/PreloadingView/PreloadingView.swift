@@ -86,13 +86,13 @@ public struct PreloadingView: View {
 
             if let userSession = await accountManager.getCurrentUserSession() {
                 rootViewState.state = .mainView(
-                    MainViewState(transferManager: userSession.transferManager),
+                    MainViewState(injection: userSession.injection),
                     userSession.userProfile
                 )
             } else if skipOnboarding {
                 await accountManager.createAndSetCurrentAccount()
-                if let currentManager = await accountManager.getCurrentUserSession()?.transferManager {
-                    rootViewState.state = .mainView(MainViewState(transferManager: currentManager), nil)
+                if let injection = await accountManager.getCurrentUserSession()?.injection {
+                    rootViewState.state = .mainView(MainViewState(injection: injection), nil)
                 } else {
                     // As a last resort we still go to onboarding
                     rootViewState.state = .onboarding

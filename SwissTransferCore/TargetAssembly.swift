@@ -89,39 +89,8 @@ open class TargetAssembly {
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
             },
-            Factory(type: SwissTransferInjection.self) { _, resolver in
-                let groupPathProvider = try resolver.resolve(type: AppGroupPathProvidable.self,
-                                                             forCustomTypeIdentifier: nil,
-                                                             factoryParameters: nil,
-                                                             resolver: resolver)
-
-                let sentryWrapper = SentryKMPWrapper()
-
-                let realmRootDirectory = groupPathProvider.realmRootURL.path()
-                Logger.general.info("Realm group directory \(realmRootDirectory)")
-
-                #if DEBUG
-                return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Preprod(),
-                    userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper
-                )
-                #else
-                return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Prod(),
-                    userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper
-                )
-                #endif
-            },
-            Factory(type: AppSettingsManager.self) { _, resolver in
-                let stInjection = try resolver.resolve(type: SwissTransferInjection.self,
-                                                       forCustomTypeIdentifier: nil,
-                                                       factoryParameters: nil,
-                                                       resolver: resolver)
-                return stInjection.appSettingsManager
+            Factory(type: AppSettingsManager.self) { _, _ in
+                return SwissTransferInjection().appSettingsManager
             },
             Factory(type: ReviewManageable.self) { _, _ in
                 ReviewManager(userDefaults: UserDefaults.shared, actionBeforeFirstReview: 2)

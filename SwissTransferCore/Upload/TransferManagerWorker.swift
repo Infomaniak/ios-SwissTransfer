@@ -71,12 +71,11 @@ public protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
 }
 
 public actor TransferManagerWorker {
-    @LazyInjectService private var injection: SwissTransferInjection
-
     private static let maxParallelUploads = 4
 
     private let appStateObserver = AppStateObserver()
     private let uploadSession: SendableUploadSession
+    private let uploadManager: UploadManager
     private weak var delegate: TransferManagerWorkerDelegate?
 
     private var uploadingFiles = [WorkerFile]()
@@ -102,12 +101,19 @@ public actor TransferManagerWorker {
         minTotalChunks: 1
     )
 
+    let apiURLCreator: SharedApiUrlCreator
     let overallProgress: Progress
     let uploadURLSession: URLSession = .sharedSwissTransfer
 
-    public init(overallProgress: Progress, uploadSession: SendableUploadSession, delegate: TransferManagerWorkerDelegate) {
+    public init(overallProgress: Progress,
+                uploadSession: SendableUploadSession,
+                uploadManager: UploadManager,
+                apiURLCreator: SharedApiUrlCreator,
+                delegate: TransferManagerWorkerDelegate) {
         self.overallProgress = overallProgress
         self.uploadSession = uploadSession
+        self.uploadManager = uploadManager
+        self.apiURLCreator = apiURLCreator
         self.delegate = delegate
         appStateObserver.delegate = self
     }
@@ -179,7 +185,6 @@ public actor TransferManagerWorker {
                 try await self.uploadAllChunks(forFile: uploadFile)
             }
 
-            let uploadManager = injection.uploadManager
             let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
 
             await delegate?.uploadDidComplete(result: .success(transferUUID))

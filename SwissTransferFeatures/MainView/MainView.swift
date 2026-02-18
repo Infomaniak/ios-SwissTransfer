@@ -30,7 +30,6 @@ import SwissTransferCoreUI
 import VersionChecker
 
 public struct MainView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var matomo: MatomoUtils
     @LazyInjectService private var reviewManager: ReviewManageable
 
@@ -121,7 +120,7 @@ public struct MainView: View {
 
     private func willEnterForeground() {
         Task {
-            try? await injection.transferManager.deleteExpiredTransfers()
+            try? await mainViewState.transferManager.deleteExpiredTransfers()
         }
     }
 }

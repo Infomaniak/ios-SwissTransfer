@@ -42,6 +42,7 @@ public struct DownloadButton: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @EnvironmentObject private var downloadManager: DownloadManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var downloadedTransferURL: IdentifiableURL?
 
@@ -91,7 +92,10 @@ public struct DownloadButton: View {
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
-            try? await downloadManager.startDownload(transfer: transfer)
+            try? await downloadManager.startDownload(
+                transfer: transfer,
+                sharedApiUrlCreator: mainViewState.injection.sharedApiUrlCreator
+            )
         }
     }
 }

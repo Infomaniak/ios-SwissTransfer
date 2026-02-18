@@ -32,10 +32,9 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-
     @Environment(\.colorScheme) private var colorScheme
 
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
@@ -119,14 +118,18 @@ public struct UploadProgressView: View {
 
             reportTransferToMatomo()
 
-            let uploadManager = injection.uploadManager
+            let uploadManager = mainViewState.injection.uploadManager
 
             if viewModel.initializedFromShare,
                let uploadSessionFromShare = try? await uploadManager.getUploads().first(where: { $0.uuid == localSessionUUID }) {
                 viewModel.restoreWith(uploadSession: uploadSessionFromShare)
             }
 
-            let uploadSession = try await uploadManager.createRemoteUploadSession(localSessionUUID: localSessionUUID)
+            let uploadSession = try await uploadManager.createRemoteUploadSession(
+                localSessionUUID: localSessionUUID,
+                uploadTokensManager: mainViewState.injection.uploadTokensManager,
+                sharedApiUrlCreator: mainViewState.injection.sharedApiUrlCreator
+            )
 
             await saveEmailTokenIfNeeded(uploadSession: uploadSession)
 
@@ -135,7 +138,9 @@ public struct UploadProgressView: View {
             try await UploadContinuationCoordinator()
                 .startUploadWithBackgroundContinuation(
                     with: transferSessionManager,
-                    uploadSession: uploadSession
+                    uploadSession: uploadSession,
+                    uploadManager: uploadManager,
+                    apiURLCreator: mainViewState.injection.sharedApiUrlCreator
                 )
         }
     }
@@ -153,7 +158,10 @@ public struct UploadProgressView: View {
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DailyQuotaExceededException {
             rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
-            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else {
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(
+                newTransferFileManager,
+                injection: mainViewState.injection
+            ) else {
                 return
             }
             rootTransferViewState.transition(to: .verifyMail(newUploadSession))
@@ -193,14 +201,18 @@ public struct UploadProgressView: View {
         guard !uploadSession.authorEmail.isEmpty,
               let authorEmailToken = uploadSession.authorEmailToken else { return }
 
-        try? await injection.uploadTokensManager.setEmailToken(email: uploadSession.authorEmail, emailToken: authorEmailToken)
+        try? await mainViewState.injection.uploadTokensManager.setEmailToken(
+            email: uploadSession.authorEmail,
+            emailToken: authorEmailToken
+        )
     }
 
     private func cancelTransfer() {
         guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
         rootTransferViewState.cancelUploadContainer = CurrentUploadContainer(
             uuid: currentUploadSessionUUID,
-            uploadsCancellable: transferSessionManager
+            uploadsCancellable: transferSessionManager,
+            uploadManager: mainViewState.injection.uploadManager
         )
     }
 

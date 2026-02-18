@@ -41,9 +41,8 @@ struct FileListView: View {
 
     private let matomoCategory: MatomoCategory
 
-    init(folder: FileUi, transfer: TransferUi?, matomoCategory: MatomoCategory) {
-        @LazyInjectService var injection: SwissTransferInjection
-        let children = injection.fileManager.getFilesFromTransfer(folderUuid: folder.uid)
+    init(folder: FileUi, transfer: TransferUi?, fileManager: STCore.FileManager, matomoCategory: MatomoCategory) {
+        let children = fileManager.getFilesFromTransfer(folderUuid: folder.uid)
 
         title = folder.fileName
         _files = StateObject(wrappedValue: FlowObserver(flow: children))
@@ -69,8 +68,4 @@ struct FileListView: View {
         .matomoView(view: .transferDetailsFileList)
         .stNavigationBarFullScreen(title: title, closeButtonPlacement: .topBarTrailing)
     }
-}
-
-#Preview {
-    FileListView(folder: PreviewHelper.sampleFolder, transfer: nil, matomoCategory: .sentTransfer)
 }

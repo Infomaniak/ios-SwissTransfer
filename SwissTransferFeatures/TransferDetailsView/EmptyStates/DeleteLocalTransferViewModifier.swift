@@ -50,6 +50,8 @@ struct DeleteLocalTransferViewModifier: ViewModifier {
 
     @Environment(\.dismiss) private var dismiss
 
+    @EnvironmentObject private var mainViewState: MainViewState
+
     let transfer: TransferUi?
     let origin: Origin
 
@@ -67,8 +69,7 @@ struct DeleteLocalTransferViewModifier: ViewModifier {
 
     private func deleteTransferLocally(_ transfer: TransferUi) {
         Task {
-            @InjectService var injection: SwissTransferInjection
-            try? await injection.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+            try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
             transfer.removeLocalContainer()
         }
 
