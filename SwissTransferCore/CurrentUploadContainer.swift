@@ -33,10 +33,12 @@ public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
     public let uploadsCancellable: UploadCancellable
+    private let uploadManager: UploadManager?
 
-    public init(uuid: String, uploadsCancellable: UploadCancellable) {
+    public init(uuid: String, uploadsCancellable: UploadCancellable, uploadManager: UploadManager?) {
         self.uuid = uuid
         self.uploadsCancellable = uploadsCancellable
+        self.uploadManager = uploadManager
     }
 }
 
@@ -44,10 +46,7 @@ extension CurrentUploadContainer: Cancellable {
     public func cancel() {
         Task {
             await uploadsCancellable.cancelUploads()
-
-            @InjectService var injection: SwissTransferInjection
-            let uploadManager = injection.uploadManager
-            try? await uploadManager.cancelUploadSession(uuid: uuid)
+            try? await uploadManager?.cancelUploadSession(uuid: uuid)
         }
     }
 }
