@@ -83,6 +83,7 @@ public struct TransferDetailsView: View {
         .stNavigationBarFullScreen(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
             FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
+                .environment(\.dismissModal) { dismiss() }
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)
