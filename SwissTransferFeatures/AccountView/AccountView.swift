@@ -34,6 +34,7 @@ public struct AccountView: View {
     @Environment(\.currentUser) private var currentUser
 
     @EnvironmentObject private var mainViewState: MainViewState
+    @Environment(\.openURL) private var openURL
 
     @State private var isShowingLogoutView = false
 
@@ -82,13 +83,15 @@ public struct AccountView: View {
                 }
                 .settingsCell()
 
-                Link(destination: SettingLinks.helpAndSupport) {
+                Button {
                     openURL(SettingLinks.helpAndSupportURL)
+                } label: {
                     SingleLabelSettingsCell(
                         title: STResourcesStrings.Localizable.settingsHelpAndSupport,
                         leadingIcon: STResourcesAsset.Images.help, trailingIcon: STResourcesAsset.Images.export
                     )
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
                 if let currentUser {
@@ -109,29 +112,41 @@ public struct AccountView: View {
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
-                Link(destination: SettingLinks.termsAndConditions) {
+                Button {
+                    openURL(SettingLinks.termsAndConditions)
+                } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
-                Link(destination: SettingLinks.discoverInfomaniak) {
+                Button {
+                    openURL(SettingLinks.discoverInfomaniak)
+                } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
-                Link(destination: SettingLinks.shareYourIdeas) {
+                Button {
+                    openURL(SettingLinks.shareYourIdeas)
+                } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
                 if !Bundle.main.isRunningInTestFlight {
-                    Link(destination: SettingLinks.appStoreReviewURL) {
+                    Button {
+                        openURL(SettingLinks.appStoreReviewURL)
+                    } label: {
                         SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
                                                 trailingIcon: STResourcesAsset.Images.export)
                     }
+                    .buttonStyle(.plain)
                     .settingsCell()
 
                     Link(destination: UpdateLink.testFlight) {
