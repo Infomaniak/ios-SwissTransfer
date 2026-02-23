@@ -87,7 +87,7 @@ public struct TransferDetailsView: View {
             FileListView(
                 folder: file,
                 transfer: transfer,
-                fileManager: mainViewState.injection.fileManager,
+                fileManager: mainViewState.swissTransferManager.fileManager,
                 matomoCategory: matomoCategory
             )
         }

@@ -85,7 +85,7 @@ struct DownloadableFileCellView: View {
             try await downloadManager.startDownload(
                 file: file,
                 in: transfer,
-                sharedApiUrlCreator: mainViewState.injection.sharedApiUrlCreator
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
             )
         }
     }

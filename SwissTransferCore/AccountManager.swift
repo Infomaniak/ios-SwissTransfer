@@ -96,7 +96,7 @@ public actor AccountManager: ObservableObject {
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
         attachDeviceToApiToken(token, apiFetcher: temporaryApiFetcher)
 
-        guard await (getInjection(userId: user.id, token: token.accessToken)) != nil else {
+        guard await (getSwissTransferManager(userId: user.id, token: token.accessToken)) != nil else {
             throw ErrorDomain.noUserSession
         }
 
@@ -116,7 +116,7 @@ public actor AccountManager: ObservableObject {
     }
 
     // periphery:ignore - Token will be used with new multi account
-    private func getInjection(userId: UserId, token: String?) async -> SwissTransferInjection? {
+    private func getSwissTransferManager(userId: UserId, token: String?) async -> SwissTransferInjection? {
         _ = await loadUserTask?.result
         if let manager = managers[userId] {
             return manager
@@ -141,21 +141,25 @@ public actor AccountManager: ObservableObject {
         }
 
         if currentUserId == AccountManager.guestUserId,
-           let guestInjection = await getInjection(userId: AccountManager.guestUserId, token: nil) {
-            return UserSession(userId: AccountManager.guestUserId, userProfile: nil, injection: guestInjection)
+           let guestSwissTransferManager = await getSwissTransferManager(userId: AccountManager.guestUserId, token: nil) {
+            return UserSession(
+                userId: AccountManager.guestUserId,
+                userProfile: nil,
+                swissTransferManager: guestSwissTransferManager
+            )
         }
 
         guard let token = tokenStore.tokenFor(userId: currentUserId)?.apiToken,
-              let injection = await getInjection(userId: currentUserId, token: token.accessToken) else {
+              let swissTransferManager = await getSwissTransferManager(userId: currentUserId, token: token.accessToken) else {
             return nil
         }
 
         if let userProfile = await userProfileStore.getUserProfile(id: currentUserId) {
-            return UserSession(userId: currentUserId, userProfile: userProfile, injection: injection)
+            return UserSession(userId: currentUserId, userProfile: userProfile, swissTransferManager: swissTransferManager)
         } else {
             let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
             if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
-                return UserSession(userId: currentUserId, userProfile: userProfile, injection: injection)
+                return UserSession(userId: currentUserId, userProfile: userProfile, swissTransferManager: swissTransferManager)
             }
         }
 

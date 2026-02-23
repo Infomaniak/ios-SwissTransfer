@@ -32,7 +32,7 @@ struct QRCodePanelButton: View {
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
-        let apiURLCreator = mainViewState.injection.sharedApiUrlCreator
+        let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
         let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
         return URL(string: url)
     }

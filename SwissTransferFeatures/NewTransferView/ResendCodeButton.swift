@@ -72,7 +72,7 @@ struct ResendCodeButton: View {
 
         Task {
             do {
-                try await mainViewState.injection.uploadManager.resendEmailCode(address: emailToVerify)
+                try await mainViewState.swissTransferManager.uploadManager.resendEmailCode(address: emailToVerify)
                 timeLeftSeconds = resendTimeDelaySeconds
                 timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
             } catch {

@@ -120,8 +120,8 @@ struct OnboardingBottomButtonsView: View {
     private func openGuestSession() {
         Task {
             await accountManager.createAndSetCurrentAccount()
-            if let injection = await accountManager.getCurrentUserSession()?.injection {
-                rootViewState.state = .mainView(MainViewState(injection: injection), nil)
+            if let injection = await accountManager.getCurrentUserSession()?.swissTransferManager {
+                rootViewState.state = .mainView(MainViewState(swissTransferManager: injection), nil)
             }
         }
     }

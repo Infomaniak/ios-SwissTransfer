@@ -71,7 +71,7 @@ struct TransferCell: View {
         .contextMenu {
             Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
                 Task {
-                    try? await mainViewState.injection.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+                    try? await mainViewState.swissTransferManager.transferManager.deleteTransfer(transferUUID: transfer.uuid)
                 }
             }
         }

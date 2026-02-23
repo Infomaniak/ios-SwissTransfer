@@ -118,7 +118,7 @@ public struct UploadProgressView: View {
 
             reportTransferToMatomo()
 
-            let uploadManager = mainViewState.injection.uploadManager
+            let uploadManager = mainViewState.swissTransferManager.uploadManager
 
             if viewModel.initializedFromShare,
                let uploadSessionFromShare = try? await uploadManager.getUploads().first(where: { $0.uuid == localSessionUUID }) {
@@ -127,8 +127,8 @@ public struct UploadProgressView: View {
 
             let uploadSession = try await uploadManager.createRemoteUploadSession(
                 localSessionUUID: localSessionUUID,
-                uploadTokensManager: mainViewState.injection.uploadTokensManager,
-                sharedApiUrlCreator: mainViewState.injection.sharedApiUrlCreator
+                uploadTokensManager: mainViewState.swissTransferManager.uploadTokensManager,
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
             )
 
             await saveEmailTokenIfNeeded(uploadSession: uploadSession)
@@ -140,7 +140,7 @@ public struct UploadProgressView: View {
                     with: transferSessionManager,
                     uploadSession: uploadSession,
                     uploadManager: uploadManager,
-                    apiURLCreator: mainViewState.injection.sharedApiUrlCreator
+                    apiURLCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
                 )
         }
     }
@@ -160,7 +160,7 @@ public struct UploadProgressView: View {
         } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(
                 newTransferFileManager,
-                injection: mainViewState.injection
+                swissTransferManager: mainViewState.swissTransferManager
             ) else {
                 return
             }
@@ -201,7 +201,7 @@ public struct UploadProgressView: View {
         guard !uploadSession.authorEmail.isEmpty,
               let authorEmailToken = uploadSession.authorEmailToken else { return }
 
-        try? await mainViewState.injection.uploadTokensManager.setEmailToken(
+        try? await mainViewState.swissTransferManager.uploadTokensManager.setEmailToken(
             email: uploadSession.authorEmail,
             emailToken: authorEmailToken
         )
@@ -212,7 +212,7 @@ public struct UploadProgressView: View {
         rootTransferViewState.cancelUploadContainer = CurrentUploadContainer(
             uuid: currentUploadSessionUUID,
             uploadsCancellable: transferSessionManager,
-            uploadManager: mainViewState.injection.uploadManager
+            uploadManager: mainViewState.swissTransferManager.uploadManager
         )
     }
 

@@ -94,7 +94,7 @@ public struct DownloadButton: View {
 
             try? await downloadManager.startDownload(
                 transfer: transfer,
-                sharedApiUrlCreator: mainViewState.injection.sharedApiUrlCreator
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
             )
         }
     }

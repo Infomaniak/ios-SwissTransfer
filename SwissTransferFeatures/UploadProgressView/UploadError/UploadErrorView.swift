@@ -69,13 +69,13 @@ public struct UploadErrorView: View {
             isRetryingUpload = true
             guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(
                 newTransferFileManager,
-                injection: mainViewState.injection
+                swissTransferManager: mainViewState.swissTransferManager
             ) else {
                 isRetryingUpload = false
                 return
             }
 
-            let localUploadSession = try await mainViewState.injection.uploadManager
+            let localUploadSession = try await mainViewState.swissTransferManager.uploadManager
                 .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 
             rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))

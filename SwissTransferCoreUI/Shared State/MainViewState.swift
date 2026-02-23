@@ -151,13 +151,13 @@ public final class MainViewState: ObservableObject {
     }
 
     public var transferManager: TransferManager {
-        return injection.transferManager
+        return swissTransferManager.transferManager
     }
 
-    public let injection: SwissTransferInjection
+    public let swissTransferManager: SwissTransferInjection
 
-    public init(injection: SwissTransferInjection) {
-        self.injection = injection
+    public init(swissTransferManager: SwissTransferInjection) {
+        self.swissTransferManager = swissTransferManager
     }
 
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {

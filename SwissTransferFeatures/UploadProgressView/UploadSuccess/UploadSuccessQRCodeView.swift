@@ -39,7 +39,7 @@ struct UploadSuccessQRCodeView: View {
     let transferUUID: String
 
     private var transferURL: URL? {
-        let apiURLCreator = mainViewState.injection.sharedApiUrlCreator
+        let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
         let url = apiURLCreator.shareTransferUrl(transferUUID: transferUUID)
         return URL(string: url)
     }

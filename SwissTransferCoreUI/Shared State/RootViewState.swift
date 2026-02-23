@@ -65,7 +65,10 @@ public final class RootViewState: ObservableObject {
 
     public func transitionToMainViewIfPossible(accountManager: AccountManager) async {
         if let currentSession = await accountManager.getCurrentUserSession() {
-            state = .mainView(MainViewState(injection: currentSession.injection), currentSession.userProfile)
+            state = .mainView(
+                MainViewState(swissTransferManager: currentSession.swissTransferManager),
+                currentSession.userProfile
+            )
         } else {
             state = .onboarding
         }

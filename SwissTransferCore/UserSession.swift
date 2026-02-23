@@ -25,18 +25,18 @@ public struct UserSession: Sendable {
     public let userProfile: UserProfile?
 
     public var transferManager: TransferManager {
-        return injection.transferManager
+        return swissTransferManager.transferManager
     }
 
-    public let injection: SwissTransferInjection
+    public let swissTransferManager: SwissTransferInjection
 
     public var isGuest: Bool {
         userId == AccountManager.guestUserId
     }
 
-    init(userId: AccountManager.UserId, userProfile: UserProfile?, injection: SwissTransferInjection) {
+    init(userId: AccountManager.UserId, userProfile: UserProfile?, swissTransferManager: SwissTransferInjection) {
         self.userId = userId
         self.userProfile = userProfile
-        self.injection = injection
+        self.swissTransferManager = swissTransferManager
     }
 }
