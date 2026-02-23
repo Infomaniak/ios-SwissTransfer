@@ -27,6 +27,7 @@ struct DownloadableFileCellView: View {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     @EnvironmentObject private var downloadManager: DownloadManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var downloadedFilePreviewURL: URL?
     @State private var downloadedDirectoryURL: IdentifiableURL?
@@ -81,7 +82,11 @@ struct DownloadableFileCellView: View {
                 await notificationsHelper.requestPermissionIfNeeded()
             }
 
-            try await downloadManager.startDownload(file: file, in: transfer)
+            try await downloadManager.startDownload(
+                file: file,
+                in: transfer,
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
+            )
         }
     }
 

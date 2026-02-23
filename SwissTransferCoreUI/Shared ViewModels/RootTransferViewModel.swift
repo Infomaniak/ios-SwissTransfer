@@ -81,13 +81,12 @@ public final class RootTransferViewModel: ObservableObject {
         emailLanguage = appSettings.emailLanguage
     }
 
-    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
-        @InjectService var injection: SwissTransferInjection
-
+    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager,
+                                       swissTransferManager: SwissTransferInjection) async -> NewUploadSession? {
         var authorTrimmedEmail = ""
         if transferType == .mail {
             authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-            authorEmailToken = try? await injection.uploadTokensManager.getTokenForEmail(email: authorTrimmedEmail)
+            authorEmailToken = try? await swissTransferManager.uploadTokensManager.getTokenForEmail(email: authorTrimmedEmail)
         }
 
         guard let filesToUpload = try? newTransferFileManager.filesToUpload(),

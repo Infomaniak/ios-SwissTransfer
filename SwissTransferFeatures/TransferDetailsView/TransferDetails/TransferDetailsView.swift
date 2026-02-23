@@ -28,6 +28,8 @@ public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isCompactWindow) private var isCompactWindow
 
+    @EnvironmentObject private var mainViewState: MainViewState
+
     private let transfer: TransferUi?
 
     private var matomoCategory: MatomoCategory {
@@ -82,7 +84,12 @@ public struct TransferDetailsView: View {
         .stNavigationBarStyle()
         .stNavigationBarFullScreen(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
         .navigationDestination(for: FileUi.self) { file in
-            FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
+            FileListView(
+                folder: file,
+                transfer: transfer,
+                fileManager: mainViewState.swissTransferManager.fileManager,
+                matomoCategory: matomoCategory
+            )
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)

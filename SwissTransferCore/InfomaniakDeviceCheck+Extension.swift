@@ -27,19 +27,18 @@ public struct STDeviceCheckError: Error, Sendable {
 }
 
 public extension InfomaniakDeviceCheck {
-    static func generateAttestationTokenForUploadContainer() async throws -> String {
+    static func generateAttestationTokenForUploadContainer(sharedApiUrlCreator: SharedApiUrlCreator) async throws -> String {
         do {
-            @InjectService var injection: SwissTransferInjection
             #if DEBUG
             let attestationToken = try await InfomaniakDeviceCheck(environment: .preprod).generateAttestationFor(
-                targetUrl: URL(string: injection.sharedApiUrlCreator.createUploadContainerUrl)!,
+                targetUrl: URL(string: sharedApiUrlCreator.createUploadContainerUrl)!,
                 bundleId: Constants.bundleId,
                 bypassValidation: true
             )
             Logger.general.warning("Since this is a debug build, attestation token validation is bypassed")
             #else
             let attestationToken = try await InfomaniakDeviceCheck(environment: .prod).generateAttestationFor(
-                targetUrl: URL(string: injection.sharedApiUrlCreator.createUploadContainerUrl)!,
+                targetUrl: URL(string: sharedApiUrlCreator.createUploadContainerUrl)!,
                 bundleId: Constants.bundleId,
                 bypassValidation: false
             )

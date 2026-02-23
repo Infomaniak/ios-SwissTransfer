@@ -18,20 +18,25 @@
 
 import Foundation
 import InfomaniakCore
-import STCore
+@preconcurrency import STCore
 
 public struct UserSession: Sendable {
     public let userId: AccountManager.UserId
     public let userProfile: UserProfile?
-    public let transferManager: TransferManager
+
+    public var transferManager: TransferManager {
+        return swissTransferManager.transferManager
+    }
+
+    public let swissTransferManager: SwissTransferInjection
 
     public var isGuest: Bool {
         userId == AccountManager.guestUserId
     }
 
-    init(userId: AccountManager.UserId, userProfile: UserProfile?, transferManager: TransferManager) {
+    init(userId: AccountManager.UserId, userProfile: UserProfile?, swissTransferManager: SwissTransferInjection) {
         self.userId = userId
         self.userProfile = userProfile
-        self.transferManager = transferManager
+        self.swissTransferManager = swissTransferManager
     }
 }

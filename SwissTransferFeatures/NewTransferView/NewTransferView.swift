@@ -29,13 +29,11 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
-
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(\.shareExtensionContext) private var shareExtensionContext
 
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
@@ -120,16 +118,16 @@ public struct NewTransferView: View {
         Task {
             isLoadingFileToUpload = true
 
-            // We need to ensure that we have an account initialized before starting
-            _ = await accountManager.getCurrentUserSession()?.transferManager
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(
+                newTransferFileManager,
+                swissTransferManager: mainViewState.swissTransferManager
+            ) else { return }
 
-            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
-
-            let localUploadSession = try await injection.uploadManager
+            let localUploadSession = try await mainViewState.swissTransferManager.uploadManager
                 .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
 
             if let shareExtensionContext {
-                let importURL = try injection.sharedApiUrlCreator
+                let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator
                     .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
                 openURL(importURL)
                 shareExtensionContext.dismissShareSheet()

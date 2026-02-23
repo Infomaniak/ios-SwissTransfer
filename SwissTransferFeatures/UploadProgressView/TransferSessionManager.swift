@@ -42,7 +42,9 @@ final class TransferSessionManager: ObservableObject {
     private let displayScale = UIScreen.main.scale
 
     func uploadFiles(
-        for uploadSession: SendableUploadSession
+        for uploadSession: SendableUploadSession,
+        with uploadManager: UploadManager,
+        apiURLCreator: SharedApiUrlCreator
     ) async throws {
         startThumbnailGeneration(uploadSession: uploadSession)
 
@@ -61,7 +63,13 @@ final class TransferSessionManager: ObservableObject {
         let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
-        let worker = TransferManagerWorker(overallProgress: overallProgress, uploadSession: uploadSession, delegate: self)
+        let worker = TransferManagerWorker(
+            overallProgress: overallProgress,
+            uploadSession: uploadSession,
+            uploadManager: uploadManager,
+            apiURLCreator: apiURLCreator,
+            delegate: self
+        )
         transferManagerWorker = worker
 
         try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)

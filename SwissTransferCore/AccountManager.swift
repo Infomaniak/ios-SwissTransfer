@@ -56,7 +56,6 @@ public final class STRefreshTokenDelegate: InfomaniakCore.RefreshTokenDelegate, 
 public actor AccountManager: ObservableObject {
     public typealias UserId = Int
 
-    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var tokenStore: TokenStore
     @LazyInjectService private var deviceManager: DeviceManagerable
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
@@ -68,7 +67,7 @@ public actor AccountManager: ObservableObject {
 
     private let refreshTokenDelegate = STRefreshTokenDelegate()
 
-    private var managers = [UserId: TransferManager]()
+    private var managers = [UserId: SwissTransferInjection]()
 
     private var loadUserTask: Task<Void?, Never>?
 
@@ -97,7 +96,7 @@ public actor AccountManager: ObservableObject {
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
         attachDeviceToApiToken(token, apiFetcher: temporaryApiFetcher)
 
-        guard await (getManager(userId: user.id)) != nil else {
+        guard await (getSwissTransferManager(userId: user.id, token: token.accessToken)) != nil else {
             throw ErrorDomain.noUserSession
         }
 
@@ -116,14 +115,16 @@ public actor AccountManager: ObservableObject {
         }
     }
 
-    public func getManager(userId: UserId) async -> TransferManager? {
+    // periphery:ignore - Token will be used with new multi account
+    private func getSwissTransferManager(userId: UserId, token: String?) async -> SwissTransferInjection? {
         _ = await loadUserTask?.result
         if let manager = managers[userId] {
             return manager
         } else {
             loadUserTask = Task {
-                try? await injection.accountManager.loadUser(userId: Int32(userId))
-                managers[userId] = injection.transferManager
+                let injection = SwissTransferInjection()
+                try? await injection.accountManager.loadUser(userId: Int32(AccountManager.guestUserId))
+                managers[userId] = injection
             }
             _ = await loadUserTask?.result
             loadUserTask = nil
@@ -140,21 +141,25 @@ public actor AccountManager: ObservableObject {
         }
 
         if currentUserId == AccountManager.guestUserId,
-           let guestManager = await getManager(userId: AccountManager.guestUserId) {
-            return UserSession(userId: AccountManager.guestUserId, userProfile: nil, transferManager: guestManager)
+           let guestSwissTransferManager = await getSwissTransferManager(userId: AccountManager.guestUserId, token: nil) {
+            return UserSession(
+                userId: AccountManager.guestUserId,
+                userProfile: nil,
+                swissTransferManager: guestSwissTransferManager
+            )
         }
 
         guard let token = tokenStore.tokenFor(userId: currentUserId)?.apiToken,
-              let manager = await getManager(userId: currentUserId) else {
+              let swissTransferManager = await getSwissTransferManager(userId: currentUserId, token: token.accessToken) else {
             return nil
         }
 
         if let userProfile = await userProfileStore.getUserProfile(id: currentUserId) {
-            return UserSession(userId: currentUserId, userProfile: userProfile, transferManager: manager)
+            return UserSession(userId: currentUserId, userProfile: userProfile, swissTransferManager: swissTransferManager)
         } else {
             let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
             if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
-                return UserSession(userId: currentUserId, userProfile: userProfile, transferManager: manager)
+                return UserSession(userId: currentUserId, userProfile: userProfile, swissTransferManager: swissTransferManager)
             }
         }
 

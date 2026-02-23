@@ -29,7 +29,7 @@ import SwissTransferCoreUI
 struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
-    @LazyInjectService private var injection: SwissTransferInjection
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @Environment(\.dismiss) private var dismiss
 
@@ -39,7 +39,7 @@ struct UploadSuccessQRCodeView: View {
     let transferUUID: String
 
     private var transferURL: URL? {
-        let apiURLCreator = injection.sharedApiUrlCreator
+        let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
         let url = apiURLCreator.shareTransferUrl(transferUUID: transferUUID)
         return URL(string: url)
     }
