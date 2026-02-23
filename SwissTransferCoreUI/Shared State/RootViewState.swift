@@ -58,12 +58,13 @@ public final class RootViewState: ObservableObject {
 
         accountManagerObservation = accountManager.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
             Task {
-                await self?.transitionToMainViewIfPossible(accountManager: accountManager)
+                await self?.transitionToMainViewIfPossible()
             }
         }
     }
 
-    public func transitionToMainViewIfPossible(accountManager: AccountManager) async {
+    public func transitionToMainViewIfPossible() async {
+        @InjectService var accountManager: AccountManager
         if let currentSession = await accountManager.getCurrentUserSession() {
             state = .mainView(
                 MainViewState(swissTransferManager: currentSession.swissTransferManager),

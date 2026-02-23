@@ -25,8 +25,34 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
+struct AccountCellPlaceholderView: View {
+    var body: some View {
+        Button { /* Placeholder does nothing */ } label: {
+            HStack {
+                Circle()
+                    .fill(Color.ST.textPrimary)
+                    .frame(width: 40, height: 40)
+
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("user.displayName")
+                        .redacted(reason: .placeholder)
+                        .font(.ST.headline)
+                        .foregroundStyle(Color.ST.textPrimary)
+                    Text("user.email")
+                        .redacted(reason: .placeholder)
+                        .font(.ST.body)
+                        .foregroundStyle(Color.ST.textSecondary)
+                }
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.vertical, value: .mini)
+        }
+    }
+}
+
 struct AccountCellView: View {
-    @Binding var selectedUserId: Int?
+    let selectedUserId: Int?
 
     let user: InfomaniakCore.UserProfile
 
@@ -38,12 +64,12 @@ struct AccountCellView: View {
         Button {
             guard !isSelected else { return }
 
+            Task { @MainActor in
+                @InjectService var accountManager: AccountManager
+                await accountManager.switchUser(newCurrentUserId: user.id)
+            }
         } label: {
-            AccountHeaderCell(user: user, isSelected: Binding(get: {
-                isSelected
-            }, set: {
-                selectedUserId = $0 ? user.id : nil
-            }))
+            AccountHeaderCell(user: user, isSelected: isSelected)
         }
     }
 }
@@ -51,7 +77,7 @@ struct AccountCellView: View {
 struct AccountHeaderCell: View {
     let user: InfomaniakCore.UserProfile
 
-    @Binding var isSelected: Bool
+    let isSelected: Bool
 
     var body: some View {
         HStack {
@@ -79,7 +105,7 @@ struct AccountHeaderCell: View {
 
 #Preview {
     AccountCellView(
-        selectedUserId: .constant(nil),
+        selectedUserId: 0,
         user: PreviewHelper.sampleUser
     )
 }

@@ -25,6 +25,7 @@ import STOnboardingView
 import STResources
 import STSettingsView
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct AccountListView: View {
@@ -32,16 +33,25 @@ struct AccountListView: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var users: [UserProfile] = []
+    @State private var users: [UserProfile]?
+
+    let userCount: Int
 
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: IKPadding.micro) {
-                ForEach(users, id: \.id) { user in
-                    AccountCellView(
-                        selectedUserId: .constant(currentUser?.id),
-                        user: user
-                    )
+                if let users {
+                    ForEach(users, id: \.id) { user in
+                        AccountCellView(selectedUserId: currentUser?.id, user: user)
+                    }
+                } else {
+                    ForEach(0 ..< userCount, id: \.self) { _ in
+                        AccountCellPlaceholderView()
+                            .padding(.horizontal, value: .medium)
+                    }
+                    .task {
+                        try? await updateUsers()
+                    }
                 }
             }
 
@@ -55,27 +65,35 @@ struct AccountListView: View {
                     title: STResourcesStrings.Localizable.buttonUseOtherAccount,
                     leadingIcon: STResourcesAsset.Images.userAdd
                 )
-                .settingsCell()
             }
             .buttonStyle(.plain)
+            .padding(value: .medium)
         }
         .padding(.horizontal, value: .medium)
-        .task {
-            try? await updateUsers()
-        }
-        .fullScreenCover(isPresented: $mainViewState.isShowingLoginView) {
-            SingleOnboardingView()
-        }
     }
 
     private func updateUsers() async throws {
-        // TODO: Update func
-        await withThrowingTaskGroup(of: Void.self) { _ in
-            users = [currentUser!]
+        await withThrowingTaskGroup(of: Void.self) { group in
+            @InjectService var accountManager: AccountManager
+            @InjectService var tokenStore: TokenStore
+
+            var storedUsers = [UserProfile]()
+            let allTokens = tokenStore.getAllTokens()
+            for (userId, token) in allTokens {
+                if let user = await accountManager.userProfileStore.getUserProfile(id: userId) {
+                    storedUsers.append(user)
+                }
+
+                group.addTask {
+                    _ = try await accountManager.updateUser(token: token.apiToken)
+                }
+            }
+
+            users = storedUsers
         }
     }
 }
 
 #Preview {
-    AccountListView()
+    AccountListView(userCount: 1)
 }

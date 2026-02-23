@@ -109,6 +109,7 @@ public final class MainViewState: ObservableObject {
     @ModalPublished public var isShowingReviewAlert = false
     @ModalPublished public var isShowingDeleteTransferDeeplink: DeleteTransferLinkResult?
     @ModalPublished public var isShowingLoginView = false
+    @ModalPublished public var isShowingSwitchAccountListView = false
 
     public var selectedDestination: NavigationDestination? {
         get {

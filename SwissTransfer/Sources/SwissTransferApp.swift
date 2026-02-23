@@ -110,7 +110,7 @@ struct SwissTransferApp: App {
                 }
 
                 if rootViewState.state == .updateRequired {
-                    await rootViewState.transitionToMainViewIfPossible(accountManager: accountManager)
+                    await rootViewState.transitionToMainViewIfPossible()
                 }
 
                 if versionStatus == .canBeUpdated,
