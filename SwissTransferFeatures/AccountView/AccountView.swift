@@ -20,6 +20,7 @@ import DesignSystem
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
+import InfomaniakDI
 import STOnboardingView
 import STResources
 import STSettingsView
@@ -28,6 +29,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct AccountView: View {
+    @InjectService private var tokenStore: TokenStore
+
     @Environment(\.currentUser) private var currentUser
 
     @EnvironmentObject private var mainViewState: MainViewState
@@ -42,13 +45,20 @@ public struct AccountView: View {
 
             Section {
                 if currentUser != nil {
-                    NavigationLink {} label: { // TODO: Change Navigation
+                    let userCount = tokenStore.getAllTokens().count
+                    Button {
+                        mainViewState.isShowingSwitchAccountListView = true
+                    } label: {
                         SingleLabelSettingsCell(
                             title: STResourcesStrings.Localizable.settingsSwitchAccount,
                             leadingIcon: STResourcesAsset.Images.userChange
                         )
                     }
                     .settingsCell()
+                    .stFloatingPanel(isPresented: $mainViewState.isShowingSwitchAccountListView,
+                                     title: STResourcesStrings.Localizable.titleMyAccount(userCount)) {
+                        AccountListView(userCount: userCount)
+                    }
                 } else {
                     Button {
                         mainViewState.isShowingLoginView = true

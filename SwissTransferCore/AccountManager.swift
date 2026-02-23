@@ -104,6 +104,18 @@ public actor AccountManager: ObservableObject {
         objectWillChange.send()
     }
 
+    @discardableResult
+    public func updateUser(token: ApiToken) async throws -> UserProfile {
+        let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
+        let user = try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
+        return user
+    }
+
+    public func switchUser(newCurrentUserId: Int) {
+        UserDefaults.shared.currentUserId = newCurrentUserId
+        objectWillChange.send()
+    }
+
     private func attachDeviceToApiToken(_ token: ApiToken, apiFetcher: ApiFetcher) {
         Task {
             do {
@@ -140,7 +152,11 @@ public actor AccountManager: ObservableObject {
             return nil
         }
 
-        if currentUserId == AccountManager.guestUserId,
+        return await getUserSession(for: currentUserId)
+    }
+
+    public func getUserSession(for userId: Int) async -> UserSession? {
+        if userId == AccountManager.guestUserId,
            let guestSwissTransferManager = await getSwissTransferManager(userId: AccountManager.guestUserId, token: nil) {
             return UserSession(
                 userId: AccountManager.guestUserId,
@@ -149,17 +165,17 @@ public actor AccountManager: ObservableObject {
             )
         }
 
-        guard let token = tokenStore.tokenFor(userId: currentUserId)?.apiToken,
-              let swissTransferManager = await getSwissTransferManager(userId: currentUserId, token: token.accessToken) else {
+        guard let token = tokenStore.tokenFor(userId: userId)?.apiToken,
+              let swissTransferManager = await getSwissTransferManager(userId: userId, token: token.accessToken) else {
             return nil
         }
 
-        if let userProfile = await userProfileStore.getUserProfile(id: currentUserId) {
-            return UserSession(userId: currentUserId, userProfile: userProfile, swissTransferManager: swissTransferManager)
+        if let userProfile = await userProfileStore.getUserProfile(id: userId) {
+            return UserSession(userId: userId, userProfile: userProfile, swissTransferManager: swissTransferManager)
         } else {
             let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
             if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
-                return UserSession(userId: currentUserId, userProfile: userProfile, swissTransferManager: swissTransferManager)
+                return UserSession(userId: userId, userProfile: userProfile, swissTransferManager: swissTransferManager)
             }
         }
 
