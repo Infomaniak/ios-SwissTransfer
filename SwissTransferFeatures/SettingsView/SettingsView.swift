@@ -20,9 +20,11 @@ import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
+import InfomaniakLogin
 import InfomaniakPrivacyManagement
 import STCore
 import STResources
+import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -37,12 +39,23 @@ public enum SettingLinks {
     public static let helpAndSupport = URL(string: "https://support.infomaniak.com")!
 }
 
+extension ApiToken: @retroactive Identifiable {
+    public var id: String {
+        return accessToken
+    }
+}
+
 public struct SettingsView: View {
     @InjectService private var matomo: MatomoUtils
+
+    @Environment(\.currentUser) private var currentUser
 
     @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
+    @StateObject private var deleteAccountDelegate = SettingsAccountManagementViewDelegate()
+
+    @ModalState private var presentedAccountDeletionToken: ApiToken?
 
     public init() {
         @InjectService var settingsManager: AppSettingsManager
@@ -118,11 +131,38 @@ public struct SettingsView: View {
                                             leadingIcon: STResourcesAsset.Images.shield)
                 }
                 .settingsCell()
+
+                if let currentUserId = currentUser?.id {
+                    Button {
+                        @InjectService var tokenStore: TokenStore
+
+                        presentedAccountDeletionToken = tokenStore.tokenFor(userId: currentUserId)?.apiToken
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.settingsDeleteMyAccount,
+                            leadingIcon: STResourcesAsset.Images.delete,
+                            trailingIcon: STResourcesAsset.Images.export
+                        )
+                    }
+                    .settingsCell()
+                    .sheet(item: $presentedAccountDeletionToken) { userToken in
+                        DeleteAccountView(accessToken: userToken.accessToken, delegate: deleteAccountDelegate)
+                    }
+                }
             }
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .appBackground()
+        .alert(STResourcesStrings.Localizable.deleteAccountAlertTitle,
+               isPresented: Binding(get: {
+                   deleteAccountDelegate.resultMessage != nil
+               }, set: { presented in
+                   if !presented {
+                       deleteAccountDelegate.resultMessage = nil
+                   }
+               })) {}
+        message: { Text(deleteAccountDelegate.resultMessage ?? "") }
         .matomoView(view: .settings)
     }
 }

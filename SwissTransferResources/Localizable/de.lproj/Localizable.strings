@@ -103,6 +103,15 @@
 /* loco:677fbfbeb541dd8a8c0276d2 */
 "deeplinkTransferNotFound" = "Diese Übertragung gibt es nicht";
 
+/* loco:699c62a8090390d46409c7f2 */
+"deleteAccountAlertTitle" = "Konto löschen";
+
+/* loco:699c52d6d2021467050c9872 */
+"deleteAccountErrorAlertMessage" = "Konto konnte nicht gelöscht werden";
+
+/* loco:699c4fdc93c5e844420cf302 */
+"deleteAccountSuccessAlertMessage" = "Konto erfolgreich löschen";
+
 /* loco:68359c6b15da309c25045492 */
 "deleteThisTransferDescription" = "Diese Übertragung und die darin enthaltenen Dateien werden gelöscht.";
 
