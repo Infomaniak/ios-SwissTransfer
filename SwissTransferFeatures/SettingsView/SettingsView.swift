@@ -154,7 +154,7 @@ public struct SettingsView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .appBackground()
-        .alert("Delete account",
+        .alert(STResourcesStrings.Localizable.deleteAccountAlertTitle,
                isPresented: Binding(get: {
                    deleteAccountDelegate.resultMessage != nil
                }, set: { presented in

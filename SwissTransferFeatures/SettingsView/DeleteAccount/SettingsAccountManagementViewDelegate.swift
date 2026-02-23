@@ -19,6 +19,7 @@
 import Foundation
 import InfomaniakDI
 import InfomaniakLogin
+import STResources
 import SwissTransferCore
 
 @MainActor
@@ -32,11 +33,11 @@ final class SettingsAccountManagementViewDelegate: ObservableObject, @MainActor 
             guard let userSession = await accountManager.getCurrentUserSession() else { return }
             await accountManager.removeTokenAndAccountFor(userId: userSession.userId)
             // TODO: Switch to next available account
-            resultMessage = "Delete account success" // TODO: Localize
+            resultMessage = STResourcesStrings.Localizable.deleteAccountSuccessAlertMessage
         }
     }
 
     func didFailDeleteAccount(error _: InfomaniakLoginError) {
-        resultMessage = "Failed to delete account" // TODO: Localize
+        resultMessage = STResourcesStrings.Localizable.deleteAccountErrorAlertMessage
     }
 }
