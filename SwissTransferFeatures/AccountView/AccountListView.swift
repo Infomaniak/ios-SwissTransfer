@@ -21,7 +21,6 @@ import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
-import STOnboardingView
 import STResources
 import STSettingsView
 import SwiftUI
