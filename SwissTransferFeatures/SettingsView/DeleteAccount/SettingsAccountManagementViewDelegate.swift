@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCore
 import InfomaniakDI
 import InfomaniakLogin
 import STResources
@@ -32,8 +33,13 @@ final class SettingsAccountManagementViewDelegate: ObservableObject, @MainActor 
 
             guard let userSession = await accountManager.getCurrentUserSession() else { return }
             await accountManager.removeTokenAndAccountFor(userId: userSession.userId)
-            // TODO: Switch to next available account
+
             resultMessage = STResourcesStrings.Localizable.deleteAccountSuccessAlertMessage
+
+            @InjectService var tokenStore: TokenStore
+            if let userId = tokenStore.getAllTokens().first?.key {
+                await accountManager.switchUser(newCurrentUserId: userId)
+            }
         }
     }
 

@@ -43,7 +43,12 @@ struct LogoutConfirmationView: View {
 
     private func logout() async {
         @InjectService var accountManager: AccountManager
+        @InjectService var tokenStore: TokenStore
+
         await accountManager.removeTokenAndAccountFor(userId: user.id)
+        if let userId = tokenStore.getAllTokens().first?.key {
+            await accountManager.switchUser(newCurrentUserId: userId)
+        }
     }
 }
 
