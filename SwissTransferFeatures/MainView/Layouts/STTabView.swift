@@ -39,6 +39,7 @@ struct STTabView: View {
 
             AccountView()
                 .stTab(.account(currentUser), avatarImage: avatarLoader.loadedImage)
+                .id(currentUser?.id)
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
             TransferDetailsRootView(data: transferData, transferManager: mainViewState.transferManager)
