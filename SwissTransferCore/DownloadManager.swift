@@ -32,20 +32,21 @@ public struct DownloadTask: Equatable, Sendable, Identifiable {
     }
 }
 
-public final class MultiDownloadTask: Equatable, Sendable, Identifiable, ObservableObject {
+public struct MultiDownloadTask: Equatable, Sendable, Identifiable {
     public static func == (lhs: MultiDownloadTask, rhs: MultiDownloadTask) -> Bool {
         lhs.id == rhs.id &&
             lhs.trackedDownloadTasks == rhs.trackedDownloadTasks
     }
 
     public let id: String
-    @Published public var trackedDownloadTasks = [String: DownloadTask]()
+    public var trackedDownloadTasks = [String: DownloadTask]()
 
     public var size: Int64
 
-    public init(id: String, size: Int64) {
+    public init(id: String, size: Int64, trackedDownloadTasks: [String: DownloadTask] = [:]) {
         self.id = id
         self.size = size
+        self.trackedDownloadTasks = trackedDownloadTasks
     }
 
     public var state: DownloadTaskState {
@@ -121,9 +122,6 @@ public class DownloadManager: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
     @Published public var trackedMultiDownloadTask: MultiDownloadTask?
-    @Published public var localDownloadOnly = false
-
-    public var localURLs = [URL]()
 
     public var backgroundDownloadCompletionCallback: (() -> Void)? {
         didSet {
@@ -205,19 +203,24 @@ public class DownloadManager: ObservableObject {
             }
 
             if files.isEmpty {
-                // Download Transfer
-                await startOrCancelTransferDownload(transfer: transfer)
+                try? await startTransferDownload(transfer: transfer)
             } else {
-                await startOrCancelFilesDownload(transfer: transfer, files: files)
+                try? await startFilesDownload(files: files, in: transfer)
             }
         }
     }
 
-    private func startOrCancelTransferDownload(transfer: TransferUi) async {
+    private func startTransferDownload(transfer: TransferUi) async throws {
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: [])
+
         if let url = transfer.localArchiveURL,
            FileManager.default.fileExists(atPath: url.path()) {
-            localURLs = [url]
-            localDownloadOnly = true
+            let multiDownloadTask = MultiDownloadTask(
+                id: multiTaskId,
+                size: transfer.sizeUploaded,
+                trackedDownloadTasks: [transfer.uuid: DownloadTask(id: transfer.uuid, state: .completed([url]))]
+            )
+            trackedMultiDownloadTask = multiDownloadTask
             return
         }
 
@@ -225,11 +228,6 @@ public class DownloadManager: ObservableObject {
             await notificationsHelper.requestPermissionIfNeeded()
         }
 
-        try? await startTransferDownload(transfer: transfer)
-    }
-
-    private func startTransferDownload(transfer: TransferUi) async throws {
-        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: [])
         let multiDownloadTask = MultiDownloadTask(
             id: multiTaskId,
             size: transfer.sizeUploaded
@@ -241,39 +239,34 @@ public class DownloadManager: ObservableObject {
         try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
-    private func startOrCancelFilesDownload(transfer: TransferUi, files: [FileUi]) async {
-        let localFiles: [String: URL] = Dictionary(
+    private func startFilesDownload(files: [FileUi], in transfer: TransferUi) async throws {
+        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
+
+        let alreadyDownloadedFiles: [String: DownloadTask] = Dictionary(
             uniqueKeysWithValues: files.compactMap { file in
                 guard let url = file.localURLFor(transfer: transfer),
                       FileManager.default.fileExists(atPath: url.path()) else { return nil }
-                return (file.uid, url)
+                return (file.uid, DownloadTask(id: file.uid, state: .completed([url])))
             }
         )
-        localURLs = Array(localFiles.values)
 
-        if localFiles.count == files.count {
-            localDownloadOnly = true
-            return
-        }
-
-        Task {
-            await notificationsHelper.requestPermissionIfNeeded()
-        }
-
-        let filesToDownload = files.filter { localFiles[$0.uid] == nil }
-
-        try? await startFilesDownload(files: filesToDownload, in: transfer)
-    }
-
-    private func startFilesDownload(files: [FileUi], in transfer: TransferUi) async throws {
-        let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
         let multiDownloadTask = MultiDownloadTask(
             id: multiTaskId,
-            size: files.filesSize()
+            size: files.filesSize(),
+            trackedDownloadTasks: alreadyDownloadedFiles
         )
         trackedMultiDownloadTask = multiDownloadTask
 
-        for file in files {
+        let filesToDownload = files.filter { alreadyDownloadedFiles[$0.uid] == nil }
+
+        guard !filesToDownload.isEmpty else {
+            Task {
+                await notificationsHelper.requestPermissionIfNeeded()
+            }
+            return
+        }
+
+        for file in filesToDownload {
             try? await startDownload(file: file, in: transfer)
         }
     }

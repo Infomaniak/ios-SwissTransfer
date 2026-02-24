@@ -42,7 +42,7 @@ struct DownloadProgressAlert: View {
 
     @State private var state: DownloadProgressAlertState = .idle
 
-    @ObservedObject var multiDownloadTask: MultiDownloadTask
+    let multiDownloadTask: MultiDownloadTask
     let downloadCompletedCallback: (([URL]) -> Void)?
 
     var body: some View {

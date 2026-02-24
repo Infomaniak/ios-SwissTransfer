@@ -29,7 +29,6 @@ struct DownloadResult: Identifiable {
 }
 
 struct FileGridView: View {
-    @EnvironmentObject private var downloadManager: DownloadManager
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let files: [FileUi]
@@ -44,12 +43,7 @@ struct FileGridView: View {
             FileGridCellsView(files: files, transfer: transfer, matomoCategory: matomoCategory)
         }
         .downloadProgressAlert { urls in
-            manageDownloadedURLs(urls: urls)
-        }
-        .onChange(of: downloadManager.localDownloadOnly) { _ in
-            guard downloadManager.localDownloadOnly else { return }
-            manageDownloadedURLs(urls: [])
-            downloadManager.localDownloadOnly = false
+            handleDownloadedURLs(urls: urls)
         }
         .sheet(item: $shareResult) { downloadResult in
             ActivityView(sharedFileURLs: downloadResult.urls)
@@ -60,16 +54,13 @@ struct FileGridView: View {
         .quickLookPreview($previewResult)
     }
 
-    private func manageDownloadedURLs(urls: [URL]) {
-        var allURLs = urls
-        allURLs.append(contentsOf: downloadManager.localURLs)
-
-        if allURLs.count == 1,
-           let url = allURLs.first,
+    private func handleDownloadedURLs(urls: [URL]) {
+        if urls.count == 1,
+           let url = urls.first,
            QLPreviewController.canPreview(url as QLPreviewItem) {
             previewResult = url
         } else {
-            shareResult = DownloadResult(urls: allURLs)
+            shareResult = DownloadResult(urls: urls)
         }
     }
 }
