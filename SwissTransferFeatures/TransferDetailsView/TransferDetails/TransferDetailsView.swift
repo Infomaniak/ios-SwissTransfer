@@ -81,7 +81,11 @@ public struct TransferDetailsView: View {
         .scrollBounceBehavior(.basedOnSize)
         .appBackground()
         .stNavigationBarStyle()
-        .stNavigationBarMultipleSelection(title: transfer?.name ?? "", showCloseButton: isCompactWindow) {
+        .stNavigationBarMultipleSelection(
+            title: transfer?.name ?? "",
+            showCloseButton: isCompactWindow,
+            isSelectAllEnable: multipleSelectionManager.selectedItems.count < transfer?.files.count ?? 0
+        ) {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }
         .navigationDestination(for: FileUi.self) { file in

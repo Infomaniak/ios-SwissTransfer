@@ -67,7 +67,11 @@ struct FileListView: View {
         }
         .stNavigationBarStyle()
         .matomoView(view: .transferDetailsFileList)
-        .stNavigationBarMultipleSelection(title: title, closeButtonPlacement: .topBarTrailing) {
+        .stNavigationBarMultipleSelection(
+            title: title,
+            closeButtonPlacement: .topBarTrailing,
+            isSelectAllEnable: multipleSelectionManager.selectedItems.count < files.value?.count ?? 0
+        ) {
             multipleSelectionManager.selectAll(files: files.value)
         }
     }

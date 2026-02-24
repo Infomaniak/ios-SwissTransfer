@@ -27,6 +27,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
     let title: String
     let showCloseButton: Bool
     let closeButtonPlacement: ToolbarItemPlacement
+    let isSelectAllEnable: Bool
     let onSelectAll: () -> Void
 
     private var navigationTitle: String {
@@ -38,11 +39,13 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
         title: String,
         showCloseButton: Bool,
         closeButtonPlacement: ToolbarItemPlacement = .cancellationAction,
+        isSelectAllEnable: Bool,
         onSelectAll: @escaping () -> Void
     ) {
         self.title = title
         self.showCloseButton = showCloseButton
         self.closeButtonPlacement = closeButtonPlacement
+        self.isSelectAllEnable = isSelectAllEnable
         self.onSelectAll = onSelectAll
     }
 
@@ -65,6 +68,7 @@ struct STNavigationBarMultipleSelectionModifier: ViewModifier {
                         } label: {
                             Text(STResourcesStrings.Localizable.buttonAll)
                         }
+                        .disabled(!isSelectAllEnable)
                     }
                 } else if showCloseButton {
                     ToolbarItem(placement: closeButtonPlacement) {
@@ -81,6 +85,7 @@ public extension View {
         title: String,
         showCloseButton: Bool = true,
         closeButtonPlacement: ToolbarItemPlacement = .cancellationAction,
+        isSelectAllEnable: Bool,
         onSelectAll: @escaping () -> Void
     ) -> some View {
         modifier(
@@ -88,6 +93,7 @@ public extension View {
                 title: title,
                 showCloseButton: showCloseButton,
                 closeButtonPlacement: closeButtonPlacement,
+                isSelectAllEnable: isSelectAllEnable,
                 onSelectAll: onSelectAll
             )
         )
