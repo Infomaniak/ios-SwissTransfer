@@ -53,22 +53,22 @@ public enum STTab: Identifiable, Codable, Hashable {
         }
     }
 
-    @MainActor public func icon(avatarImage: UIImage? = nil) -> Image {
+    @MainActor public func icon(avatarImage: Image? = nil) -> Image {
         switch self {
         case .sentTransfers:
             return STResourcesAsset.Images.arrowUpCircle.swiftUIImage
         case .receivedTransfers:
             return STResourcesAsset.Images.arrowDownCircle.swiftUIImage
         case .account(let user):
-            if let user, let avatar = TabBarAvatarIconProvider().render(user: user, loadedImage: avatarImage) {
-                return avatar
+            if let user, let avatarImage {
+                return avatarImage
             } else {
                 return STResourcesAsset.Images.user.swiftUIImage
             }
         }
     }
 
-    @MainActor public func label(avatarImage: UIImage? = nil) -> Label<Text, Image> {
+    @MainActor public func label(avatarImage: Image? = nil) -> Label<Text, Image> {
         Label(title: { Text(title) }, icon: { icon(avatarImage: avatarImage) })
     }
 }

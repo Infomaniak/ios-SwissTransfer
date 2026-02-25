@@ -89,6 +89,14 @@ public struct PreloadingView: View {
                     MainViewState(swissTransferManager: userSession.swissTransferManager),
                     userSession.userProfile
                 )
+            } else if let otherToken = tokenStore.getAllTokens().first,
+                      let userSession = await accountManager.getUserSession(for: otherToken.key) {
+                await accountManager.switchUser(newCurrentUserId: otherToken.key)
+
+                rootViewState.state = .mainView(
+                    MainViewState(swissTransferManager: userSession.swissTransferManager),
+                    userSession.userProfile
+                )
             } else if skipOnboarding {
                 await accountManager.createAndSetCurrentAccount()
                 if let swissTransferManager = await accountManager.getCurrentUserSession()?.swissTransferManager {
