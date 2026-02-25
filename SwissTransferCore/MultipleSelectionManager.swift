@@ -58,11 +58,7 @@ public class MultipleSelectionManager: ObservableObject {
         feedbackGenerator.prepare()
         feedbackGenerator.impactOccurred(intensity: 0.6)
 
-        if files.count == selectedItems.count {
-            selectedItems.removeAll()
-        } else {
-            selectedItems.formUnion(files)
-        }
+        selectedItems.formUnion(files)
     }
 
     public func disable() {
