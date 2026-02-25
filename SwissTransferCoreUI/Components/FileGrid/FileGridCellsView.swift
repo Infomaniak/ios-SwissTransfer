@@ -18,7 +18,6 @@
 
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
-import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
