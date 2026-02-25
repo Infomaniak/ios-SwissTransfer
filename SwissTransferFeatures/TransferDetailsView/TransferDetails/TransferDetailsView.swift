@@ -84,7 +84,7 @@ public struct TransferDetailsView: View {
         .stNavigationBarMultipleSelection(
             title: transfer?.name ?? "",
             showCloseButton: isCompactWindow,
-            isSelectAllEnable: multipleSelectionManager.selectedItems.count < transfer?.files.count ?? 0
+            isSelectAllEnabled: multipleSelectionManager.selectedItems.count < transfer?.files.count ?? 0
         ) {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }

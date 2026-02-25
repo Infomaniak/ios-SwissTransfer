@@ -70,7 +70,7 @@ struct FileListView: View {
         .stNavigationBarMultipleSelection(
             title: title,
             closeButtonPlacement: .topBarTrailing,
-            isSelectAllEnable: multipleSelectionManager.selectedItems.count < files.value?.count ?? 0
+            isSelectAllEnabled: multipleSelectionManager.selectedItems.count < files.value?.count ?? 0
         ) {
             multipleSelectionManager.selectAll(files: files.value)
         }
