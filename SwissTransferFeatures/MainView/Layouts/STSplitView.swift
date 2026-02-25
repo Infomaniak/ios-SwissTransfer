@@ -46,8 +46,9 @@ struct STSplitView: View {
                     tab.label(avatarImage: avatarLoader.loadedImage)
                 }
             }
-            .task {
-                await avatarLoader.loadAvatar(from: currentUser?.avatar)
+            .task(id: currentUser?.avatar) {
+                guard let currentUser else { return }
+                await avatarLoader.loadAvatar(for: currentUser)
             }
             .stIconNavigationBar()
             .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.mini)
@@ -69,10 +70,6 @@ struct STSplitView: View {
 }
 
 private struct ContentSplitView: View {
-    @Environment(\.currentUser) private var currentUser
-
-    @StateObject private var avatarLoader = AvatarImageLoader()
-
     let tab: STTab
 
     var body: some View {
@@ -85,9 +82,6 @@ private struct ContentSplitView: View {
             case .account:
                 AccountView()
             }
-        }
-        .task {
-            await avatarLoader.loadAvatar(from: currentUser?.avatar)
         }
     }
 }

@@ -20,14 +20,14 @@ import SwiftUI
 import SwissTransferCoreUI
 
 extension View {
-    func stTab(_ tab: STTab, avatarImage: UIImage? = nil) -> some View {
+    func stTab(_ tab: STTab, avatarImage: Image? = nil) -> some View {
         modifier(STTabModifier(tab: tab, avatarImage: avatarImage))
     }
 }
 
 struct STTabModifier: ViewModifier {
     let tab: STTab
-    let avatarImage: UIImage?
+    let avatarImage: Image?
 
     func body(content: Content) -> some View {
         content
