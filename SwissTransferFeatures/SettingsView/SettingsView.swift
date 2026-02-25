@@ -134,6 +134,9 @@ public struct SettingsView: View {
 
                 if let currentUserId = currentUser?.id {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .settings, name: .deleteMyAccount)
+
                         @InjectService var tokenStore: TokenStore
 
                         presentedAccountDeletionToken = tokenStore.tokenFor(userId: currentUserId)?.apiToken
