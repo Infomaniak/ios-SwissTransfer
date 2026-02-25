@@ -46,7 +46,7 @@ struct STNavigationBarFullScreenModifier: ViewModifier {
 
 public extension View {
     func stNavigationBarFullScreen(
-        title: String = "Transfer",
+        title: String,
         showCloseButton: Bool = true,
         closeButtonPlacement: ToolbarItemPlacement = .cancellationAction
     ) -> some View {

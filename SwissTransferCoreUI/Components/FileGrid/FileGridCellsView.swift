@@ -61,7 +61,11 @@ public struct FileGridCellsView: View {
                 }
             } else {
                 if let transfer, let fileUi = file as? FileUi {
-                    DownloadableFileCellView(transfer: transfer, file: fileUi, matomoCategory: matomoCategory)
+                    DownloadableFileCellView(
+                        transfer: transfer,
+                        file: fileUi,
+                        matomoCategory: matomoCategory
+                    )
                 } else if let transferableFile = file as? TransferableFile {
                     TransferableFileCellView(
                         file: transferableFile,
