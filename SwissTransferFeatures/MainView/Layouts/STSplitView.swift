@@ -46,7 +46,7 @@ struct STSplitView: View {
                     tab.label(avatarImage: avatarLoader.loadedImage)
                 }
             }
-            .task(id: currentUser?.avatar) {
+            .task(id: currentUser?.id) {
                 guard let currentUser else { return }
                 await avatarLoader.loadAvatar(for: currentUser)
             }

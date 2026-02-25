@@ -43,7 +43,7 @@ struct STTabView: View {
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
             TransferDetailsRootView(data: transferData, transferManager: mainViewState.transferManager)
         }
-        .task(id: currentUser?.avatar) {
+        .task(id: currentUser?.id) {
             guard let currentUser else { return }
             await avatarLoader.loadAvatar(for: currentUser)
         }
