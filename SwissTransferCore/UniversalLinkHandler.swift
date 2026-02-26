@@ -60,7 +60,7 @@ public struct UniversalLinkHandler {
         guard let transferManager else { return nil }
 
         do {
-            guard let transferUUID = try await transferManager.addTransferByUrl(url: url.path, password: nil),
+            guard let transferUUID = try await transferManager.addTransferByUrl(url: url.absoluteString, password: nil),
                   let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
             else { return nil }
 
