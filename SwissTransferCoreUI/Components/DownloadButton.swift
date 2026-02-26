@@ -25,23 +25,9 @@ import STResources
 import SwiftUI
 import SwissTransferCore
 
-struct ActivityView: UIViewControllerRepresentable {
-    let sharedFileURL: URL
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: [sharedFileURL], applicationActivities: nil)
-    }
-
-    func updateUIViewController(
-        _ uiViewController: UIActivityViewController,
-        context: UIViewControllerRepresentableContext<ActivityView>
-    ) {}
-}
-
 public struct DownloadButton: View {
-    @LazyInjectService private var notificationsHelper: NotificationsHelper
-
     @EnvironmentObject private var downloadManager: DownloadManager
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var downloadedTransferURL: IdentifiableURL?
@@ -56,46 +42,18 @@ public struct DownloadButton: View {
 
     public var body: some View {
         Button {
-            startOrCancelDownloadIfNeeded()
+            downloadManager.startOrCancelDownload(
+                transfer: transfer,
+                files: Array(multipleSelectionManager.selectedItems),
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                matomoCategory: matomoCategory
+            )
         } label: {
             Label {
                 Text(STResourcesStrings.Localizable.buttonDownload)
             } icon: {
                 STResourcesAsset.Images.arrowDownLine.swiftUIImage
             }
-        }
-        .downloadProgressAlertFor(transfer: transfer) { downloadedFileURL in
-            downloadedTransferURL = IdentifiableURL(url: downloadedFileURL)
-        }
-        .sheet(item: $downloadedTransferURL) { downloadedFileURL in
-            ActivityView(sharedFileURL: downloadedFileURL.url)
-        }
-    }
-
-    private func startOrCancelDownloadIfNeeded() {
-        @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: matomoCategory, name: .downloadTransfer)
-
-        Task {
-            if let downloadTask = downloadManager.getDownloadTaskFor(transfer: transfer) {
-                await downloadManager.removeDownloadTask(id: downloadTask.id)
-                return
-            }
-
-            if let localURL = transfer.localArchiveURL,
-               FileManager.default.fileExists(atPath: localURL.path()) {
-                downloadedTransferURL = IdentifiableURL(url: localURL)
-                return
-            }
-
-            Task {
-                await notificationsHelper.requestPermissionIfNeeded()
-            }
-
-            try? await downloadManager.startDownload(
-                transfer: transfer,
-                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
-            )
         }
     }
 }

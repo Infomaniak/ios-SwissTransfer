@@ -45,6 +45,7 @@ struct SwissTransferApp: App {
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
     @StateObject private var rootViewState = RootViewState()
+    @StateObject private var multipleSelectionManager = MultipleSelectionManager()
 
     private var savedColorScheme: ColorScheme? {
         guard let appSettings = appSettings.value,
@@ -67,6 +68,7 @@ struct SwissTransferApp: App {
             RootView()
                 .environmentObject(universalLinksState)
                 .environmentObject(downloadManager)
+                .environmentObject(multipleSelectionManager)
                 .environmentObject(notificationCenterDelegate)
                 .environmentObject(rootViewState)
                 .ikButtonTheme(.swissTransfer)

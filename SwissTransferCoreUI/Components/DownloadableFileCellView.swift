@@ -24,9 +24,8 @@ import SwiftUI
 import SwissTransferCore
 
 struct DownloadableFileCellView: View {
-    @LazyInjectService private var notificationsHelper: NotificationsHelper
-
     @EnvironmentObject private var downloadManager: DownloadManager
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var downloadedFilePreviewURL: URL?
@@ -36,66 +35,55 @@ struct DownloadableFileCellView: View {
     let file: FileUi
     let matomoCategory: MatomoCategory
 
-    private var downloadFileAction: DownloadFileAction {
-        DownloadFileAction { _ in
-            startOrCancelDownloadIfNeeded()
+    private var downloadFileAction: DownloadFileAction? {
+        guard !multipleSelectionManager.isEnabled else {
+            return nil
         }
-    }
 
-    var body: some View {
-        ZStack {
-            if file.isFolder {
-                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
-            } else {
-                Button(action: startOrCancelDownloadIfNeeded) {
-                    LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .downloadProgressAlertFor(transfer: transfer, file: file) { downloadedFileURL in
-            presentFile(at: downloadedFileURL)
-        }
-        .quickLookPreview($downloadedFilePreviewURL)
-        .sheet(item: $downloadedDirectoryURL) { downloadedFileURL in
-            ActivityView(sharedFileURL: downloadedFileURL.url)
-        }
-    }
-
-    private func startOrCancelDownloadIfNeeded() {
-        @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: matomoCategory, name: .consultOneFile)
-
-        Task {
-            if let downloadTask = downloadManager.getDownloadTaskFor(file: file, in: transfer) {
-                await downloadManager.removeDownloadTask(id: downloadTask.id)
-                return
-            }
-
-            if let localURL = file.localURLFor(transfer: transfer),
-               FileManager.default.fileExists(atPath: localURL.path()) {
-                presentFile(at: localURL)
-                return
-            }
-
-            Task {
-                await notificationsHelper.requestPermissionIfNeeded()
-            }
-
-            try await downloadManager.startDownload(
-                file: file,
-                in: transfer,
-                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
+        return DownloadFileAction { _ in
+            downloadManager.startOrCancelDownload(
+                transfer: transfer,
+                files: [file],
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                matomoCategory: matomoCategory
             )
         }
     }
 
-    private func presentFile(at url: URL) {
-        if file.isFolder {
-            downloadedDirectoryURL = IdentifiableURL(url: url)
-        } else {
-            downloadedFilePreviewURL = url
+    var body: some View {
+        Group {
+            if file.isFolder && !multipleSelectionManager.isEnabled {
+                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
+            } else {
+                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
+                    .onTapGesture {
+                        fileTapped()
+                    }
+                    .overlay(alignment: .topLeading) {
+                        if multipleSelectionManager.isEnabled {
+                            MultipleSelectionCheckboxView(isSelected: multipleSelectionManager.isSelected(file: file))
+                                .padding(12)
+                        }
+                    }
+            }
         }
+        .onLongPressGesture {
+            multipleSelectionManager.toggleMultipleSelection(of: file)
+        }
+    }
+
+    private func fileTapped() {
+        guard multipleSelectionManager.isEnabled else {
+            downloadManager.startOrCancelDownload(
+                transfer: transfer,
+                files: [file],
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                matomoCategory: matomoCategory
+            )
+            return
+        }
+
+        multipleSelectionManager.toggleSelection(of: file)
     }
 }
 

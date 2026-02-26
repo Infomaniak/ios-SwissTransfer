@@ -21,6 +21,7 @@ import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 struct LegacyToolbarSpacing: View {
@@ -33,6 +34,8 @@ struct LegacyToolbarSpacing: View {
 
 struct ShareTransferToolbarModifier: ViewModifier {
     @EnvironmentObject private var mainViewState: MainViewState
+
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     @State private var isShowingPassword = false
 
@@ -48,48 +51,50 @@ struct ShareTransferToolbarModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
-
-                    LegacyToolbarSpacing()
-
-                    if let transferURL {
-                        ShareLink(item: transferURL) {
-                            Label {
-                                Text(STResourcesStrings.Localizable.buttonShare)
-                            } icon: {
-                                STResourcesAsset.Images.squareArrowUp.swiftUIImage
-                            }
-                        }
-                        .simultaneousGesture(TapGesture().onEnded {
-                            @InjectService var matomo: MatomoUtils
-                            matomo.track(eventWithCategory: matomoCategory, name: .share)
-                        })
+                if !multipleSelectionManager.isEnabled {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        QRCodePanelButton(transfer: transfer, matomoCategory: .sentTransfer)
 
                         LegacyToolbarSpacing()
+
+                        if let transferURL {
+                            ShareLink(item: transferURL) {
+                                Label {
+                                    Text(STResourcesStrings.Localizable.buttonShare)
+                                } icon: {
+                                    STResourcesAsset.Images.squareArrowUp.swiftUIImage
+                                }
+                            }
+                            .simultaneousGesture(TapGesture().onEnded {
+                                @InjectService var matomo: MatomoUtils
+                                matomo.track(eventWithCategory: matomoCategory, name: .share)
+                            })
+
+                            LegacyToolbarSpacing()
+                        }
                     }
-                }
 
-                if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.fixed, placement: .bottomBar)
-                }
+                    if #available(iOS 26.0, *) {
+                        ToolbarSpacer(.fixed, placement: .bottomBar)
+                    }
 
-                ToolbarItemGroup(placement: .bottomBar) {
-                    if let password = transfer.password, !password.isEmpty, transfer.direction == .sent {
-                        Button {
-                            isShowingPassword = true
-                        } label: {
-                            Label {
-                                Text(STResourcesStrings.Localizable.settingsOptionPassword)
-                            } icon: {
-                                STResourcesAsset.Images.textfieldLock.swiftUIImage
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        if let password = transfer.password, !password.isEmpty, transfer.direction == .sent {
+                            Button {
+                                isShowingPassword = true
+                            } label: {
+                                Label {
+                                    Text(STResourcesStrings.Localizable.settingsOptionPassword)
+                                } icon: {
+                                    STResourcesAsset.Images.textfieldLock.swiftUIImage
+                                }
                             }
-                        }
-                        .stFloatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
-                            PasswordPanelView(password: password, matomoCategory: matomoCategory)
-                        }
+                            .stFloatingPanel(isPresented: $isShowingPassword, bottomPadding: .zero) {
+                                PasswordPanelView(password: password, matomoCategory: matomoCategory)
+                            }
 
-                        LegacyToolbarSpacing()
+                            LegacyToolbarSpacing()
+                        }
                     }
                 }
 

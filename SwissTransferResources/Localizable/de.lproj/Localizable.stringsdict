@@ -4,9 +4,9 @@
  Loco ios export: Xcode Stringsdict (legacy)
  Project: SwissTransfer
  Locale: de, German
- Tagged: ios-stringdict
- Exported by: Valentin Perignon
- Exported at: Tue, 08 Apr 2025 08:43:17 +0200
+ Tagged: ios-stringsdict
+ Exported by: Ambroise Decouttere
+ Exported at: Wed, 14 Jan 2026 08:40:19 +0100
 -->
 <plist version="1.0">
   <dict>
@@ -24,6 +24,22 @@
         <string>%d Datei</string>
         <key>other</key>
         <string>%d Dateien</string>
+      </dict>
+    </dict>
+    <key>multipleSelectionTitle</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ausgewählt</string>
+        <key>other</key>
+        <string>%d ausgewählt</string>
       </dict>
     </dict>
     <key>recipientHeader</key>

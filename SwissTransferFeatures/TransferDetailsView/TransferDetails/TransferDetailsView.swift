@@ -28,6 +28,7 @@ public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isCompactWindow) private var isCompactWindow
 
+    @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
 
     private let transfer: TransferUi?
@@ -82,7 +83,13 @@ public struct TransferDetailsView: View {
         .scrollBounceBehavior(.basedOnSize)
         .appBackground()
         .stNavigationBarStyle()
-        .stNavigationBarFullScreen(title: transfer?.name ?? "", showCloseButton: isCompactWindow)
+        .stNavigationBarMultipleSelection(
+            title: transfer?.name ?? "",
+            showCloseButton: isCompactWindow,
+            isSelectAllEnabled: multipleSelectionManager.selectedItems.count < transfer?.files.count ?? 0
+        ) {
+            multipleSelectionManager.selectAll(files: transfer?.files)
+        }
         .navigationDestination(for: FileUi.self) { file in
             FileListView(
                 folder: file,
@@ -90,6 +97,8 @@ public struct TransferDetailsView: View {
                 fileManager: mainViewState.swissTransferManager.fileManager,
                 matomoCategory: matomoCategory
             )
+            .downloadSelectionToolbar(transfer: transfer)
+            .environment(\.dismissModal) { dismiss() }
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)
