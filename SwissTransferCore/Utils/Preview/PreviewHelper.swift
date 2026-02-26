@@ -55,7 +55,8 @@ public enum PreviewHelper {
         recipientsEmails: Set(),
         files: [sampleFile],
         direction: .received,
-        transferStatus: .ready
+        transferStatus: .ready,
+        apiSource: .v1
     )
 
     public static let sampleOldTransfer = TransferUi(
@@ -70,7 +71,8 @@ public enum PreviewHelper {
         recipientsEmails: Set(),
         files: [sampleFile],
         direction: .received,
-        transferStatus: .ready
+        transferStatus: .ready,
+        apiSource: .v1
     )
 
     public static let sampleUser = UserProfile(

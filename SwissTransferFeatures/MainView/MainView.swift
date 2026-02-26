@@ -34,11 +34,12 @@ public struct MainView: View {
     @LazyInjectService private var reviewManager: ReviewManageable
 
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.openURL) private var openURL
+    @Environment(\.currentUser) private var currentUser
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
-    @Environment(\.openURL) private var openURL
 
     public init() {}
 
@@ -50,6 +51,7 @@ public struct MainView: View {
                 STSplitView()
             }
         }
+        .id(currentUser?.id)
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
         .stateRestorable(mainViewState)
