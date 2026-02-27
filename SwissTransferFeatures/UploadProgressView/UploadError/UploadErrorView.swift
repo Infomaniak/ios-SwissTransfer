@@ -75,10 +75,10 @@ public struct UploadErrorView: View {
                 return
             }
 
-            let localUploadSession = try await mainViewState.swissTransferManager.uploadManager
-                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+            let localUploadSessionUUID = try await mainViewState.swissTransferManager.uploadManager
+                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
 
-            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             isRetryingUpload = false
         }
     }

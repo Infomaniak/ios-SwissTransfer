@@ -133,10 +133,10 @@ public struct VerifyMailView: View {
 
                 viewModel.authorEmailToken = token
 
-                let localUploadSession = try await mainViewState.swissTransferManager.uploadManager
-                    .createAndGetSendableUploadSession(newUploadSession: uploadSessionWithEmailToken)
+                let localUploadSessionUUID = try await mainViewState.swissTransferManager.uploadManager
+                    .createAndGetLocalUploadSessionUUID(newUploadSession: uploadSessionWithEmailToken)
 
-                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
                 withAnimation {
                     self.error = UserFacingError.validateMailCodeIncorrect

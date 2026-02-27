@@ -26,9 +26,9 @@ public extension UploadManager {
         case containerNotFound
     }
 
-    func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
+    func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession) async throws -> String {
         let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
-        return SendableUploadSession(uploadSession: uploadSession)
+        return uploadSession.uuid
     }
 
     func initSendableUploadSession(uuid: String, isRetrying: Bool) async throws -> SendableUploadSession {
