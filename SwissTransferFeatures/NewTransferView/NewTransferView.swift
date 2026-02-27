@@ -123,8 +123,9 @@ public struct NewTransferView: View {
                 swissTransferManager: mainViewState.swissTransferManager
             ) else { return }
 
-            let uploadManager = mainViewState.swissTransferManager.uploadManager
-            let localUploadSessionUUID = try await uploadManager.createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
+            let uploadBackendRouter = mainViewState.uploadBackendRouter
+            let localUploadSessionUUID = try await uploadBackendRouter
+                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
 
             if let shareExtensionContext {
                 let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator

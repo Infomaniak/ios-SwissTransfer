@@ -43,8 +43,7 @@ final class TransferSessionManager: ObservableObject {
 
     func uploadFiles(
         for uploadSession: SendableUploadSession,
-        with uploadManager: UploadManager,
-        apiURLCreator: SharedApiUrlCreator
+        with uploadBackendRouter: UploadBackendRouter
     ) async throws {
         startThumbnailGeneration(uploadSession: uploadSession)
 
@@ -66,8 +65,7 @@ final class TransferSessionManager: ObservableObject {
         let worker = TransferManagerWorker(
             overallProgress: overallProgress,
             uploadSession: uploadSession,
-            uploadManager: uploadManager,
-            apiURLCreator: apiURLCreator,
+            uploadBackendRouter: uploadBackendRouter,
             delegate: self
         )
         transferManagerWorker = worker

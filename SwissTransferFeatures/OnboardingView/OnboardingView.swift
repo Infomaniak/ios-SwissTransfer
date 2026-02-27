@@ -106,13 +106,17 @@ public struct OnboardingView: View {
             guard let linkedTransfer else { return }
 
             Task {
-                if let swissTransferManager = await accountManager.getCurrentUserSession()?.swissTransferManager {
-                    let mainViewState = MainViewState(swissTransferManager: swissTransferManager)
+                if let session = await accountManager.getCurrentUserSession() {
+                    let mainViewState = MainViewState(swissTransferManager: session.swissTransferManager,
+                                                      uploadBackendRouter: UploadBackendRouter(
+                                                          currentUser: session.userProfile,
+                                                          swissTransferManager: session.swissTransferManager
+                                                      ))
 
                     mainViewState.handleDeepLink(linkedTransfer)
                     universalLinksState.linkedTransfer = nil
                     withAnimation {
-                        rootViewState.state = .mainView(mainViewState, nil)
+                        rootViewState.state = .mainView(mainViewState, session.userProfile)
                     }
                 } else {
                     universalLinksState.linkedTransfer = nil

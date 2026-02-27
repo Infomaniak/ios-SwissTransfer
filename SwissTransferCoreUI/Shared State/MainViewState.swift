@@ -156,9 +156,11 @@ public final class MainViewState: ObservableObject {
     }
 
     public let swissTransferManager: SwissTransferInjection
+    public let uploadBackendRouter: UploadBackendRouter
 
-    public init(swissTransferManager: SwissTransferInjection) {
+    public init(swissTransferManager: SwissTransferInjection, uploadBackendRouter: UploadBackendRouter) {
         self.swissTransferManager = swissTransferManager
+        self.uploadBackendRouter = uploadBackendRouter
     }
 
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {

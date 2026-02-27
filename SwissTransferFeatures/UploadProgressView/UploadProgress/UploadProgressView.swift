@@ -118,18 +118,14 @@ public struct UploadProgressView: View {
 
             reportTransferToMatomo()
 
-            let uploadManager = mainViewState.swissTransferManager.uploadManager
+            let uploadBackendRouter = mainViewState.uploadBackendRouter
 
             if viewModel.initializedFromShare,
-               let uploadSessionFromShare = try? await uploadManager.getUploads().first(where: { $0.uuid == localSessionUUID }) {
+               let uploadSessionFromShare = try? await uploadBackendRouter.getLocalUploadSession(uuid: localSessionUUID) {
                 viewModel.restoreWith(uploadSession: uploadSessionFromShare)
             }
 
-            let uploadSession = try await uploadManager.createRemoteUploadSession(
-                localSessionUUID: localSessionUUID,
-                uploadTokensManager: mainViewState.swissTransferManager.uploadTokensManager,
-                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
-            )
+            let uploadSession = try await uploadBackendRouter.createRemoteUploadSession(localSessionUUID: localSessionUUID)
 
             await saveEmailTokenIfNeeded(uploadSession: uploadSession)
 
@@ -139,8 +135,7 @@ public struct UploadProgressView: View {
                 .startUploadWithBackgroundContinuation(
                     with: transferSessionManager,
                     uploadSession: uploadSession,
-                    uploadManager: uploadManager,
-                    apiURLCreator: mainViewState.swissTransferManager.sharedApiUrlCreator
+                    uploadBackendRouter: uploadBackendRouter
                 )
         }
     }

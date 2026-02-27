@@ -86,7 +86,13 @@ public struct PreloadingView: View {
 
             if let userSession = await accountManager.getCurrentUserSession() {
                 rootViewState.state = .mainView(
-                    MainViewState(swissTransferManager: userSession.swissTransferManager),
+                    MainViewState(
+                        swissTransferManager: userSession.swissTransferManager,
+                        uploadBackendRouter: UploadBackendRouter(
+                            currentUser: userSession.userProfile,
+                            swissTransferManager: userSession.swissTransferManager
+                        )
+                    ),
                     userSession.userProfile
                 )
             } else if let otherToken = tokenStore.getAllTokens().first,
@@ -94,13 +100,26 @@ public struct PreloadingView: View {
                 await accountManager.switchUser(newCurrentUserId: otherToken.key)
 
                 rootViewState.state = .mainView(
-                    MainViewState(swissTransferManager: userSession.swissTransferManager),
+                    MainViewState(
+                        swissTransferManager: userSession.swissTransferManager,
+                        uploadBackendRouter: UploadBackendRouter(
+                            currentUser: userSession.userProfile,
+                            swissTransferManager: userSession.swissTransferManager
+                        )
+                    ),
                     userSession.userProfile
                 )
             } else if skipOnboarding {
                 await accountManager.createAndSetCurrentAccount()
                 if let swissTransferManager = await accountManager.getCurrentUserSession()?.swissTransferManager {
-                    rootViewState.state = .mainView(MainViewState(swissTransferManager: swissTransferManager), nil)
+                    rootViewState.state = .mainView(
+                        MainViewState(swissTransferManager: swissTransferManager,
+                                      uploadBackendRouter: UploadBackendRouter(
+                                          currentUser: nil,
+                                          swissTransferManager: swissTransferManager
+                                      )),
+                        nil
+                    )
                 } else {
                     // As a last resort we still go to onboarding
                     rootViewState.state = .onboarding

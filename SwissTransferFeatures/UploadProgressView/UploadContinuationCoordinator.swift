@@ -40,16 +40,14 @@ struct UploadContinuationCoordinator {
     func startUploadWithBackgroundContinuation(
         with transferSessionManager: TransferSessionManager,
         uploadSession: SendableUploadSession,
-        uploadManager: UploadManager,
-        apiURLCreator: SharedApiUrlCreator
+        uploadBackendRouter: UploadBackendRouter
     ) async throws {
         let _: Void = try await withCheckedThrowingContinuation { continuation in
             guard #available(iOS 26.0, *) else {
                 fallbackUploadInForeground(
                     with: transferSessionManager,
                     uploadSession: uploadSession,
-                    uploadManager: uploadManager,
-                    apiURLCreator: apiURLCreator,
+                    uploadBackendRouter: uploadBackendRouter,
                     continuation: continuation
                 )
                 return
@@ -66,8 +64,7 @@ struct UploadContinuationCoordinator {
                     fallbackUploadInForeground(
                         with: transferSessionManager,
                         uploadSession: uploadSession,
-                        uploadManager: uploadManager,
-                        apiURLCreator: apiURLCreator,
+                        uploadBackendRouter: uploadBackendRouter,
                         continuation: continuation
                     )
                     return
@@ -96,11 +93,7 @@ struct UploadContinuationCoordinator {
                                     .notificationProgressSubtitle(progress.formatted(.defaultPercent))
                             )
                         }
-                        try await transferSessionManager.uploadFiles(
-                            for: uploadSession,
-                            with: uploadManager,
-                            apiURLCreator: apiURLCreator
-                        )
+                        try await transferSessionManager.uploadFiles(for: uploadSession, with: uploadBackendRouter)
                         continuation?.resume()
                         continuation = nil
                         task.setTaskCompleted(success: true)
@@ -120,8 +113,7 @@ struct UploadContinuationCoordinator {
                 fallbackUploadInForeground(
                     with: transferSessionManager,
                     uploadSession: uploadSession,
-                    uploadManager: uploadManager,
-                    apiURLCreator: apiURLCreator,
+                    uploadBackendRouter: uploadBackendRouter,
                     continuation: continuation
                 )
             }
@@ -131,8 +123,7 @@ struct UploadContinuationCoordinator {
     private func fallbackUploadInForeground(
         with transferSessionManager: TransferSessionManager,
         uploadSession: SendableUploadSession,
-        uploadManager: UploadManager,
-        apiURLCreator: SharedApiUrlCreator,
+        uploadBackendRouter: UploadBackendRouter,
         continuation: CheckedContinuation<Void, any Error>
     ) {
         Task {
@@ -146,11 +137,7 @@ struct UploadContinuationCoordinator {
             }
 
             do {
-                try await transferSessionManager.uploadFiles(
-                    for: uploadSession,
-                    with: uploadManager,
-                    apiURLCreator: apiURLCreator
-                )
+                try await transferSessionManager.uploadFiles(for: uploadSession, with: uploadBackendRouter)
                 continuation.resume()
             } catch {
                 continuation.resume(throwing: error)
