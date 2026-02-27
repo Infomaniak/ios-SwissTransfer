@@ -22,7 +22,7 @@ import InfomaniakDI
 import STCore
 import STNetwork
 
-extension TransferManagerWorker {
+extension TransferManagerWorkerV1 {
     func uploadChunk(chunkData: Data, chunk: WorkerChunk, progressTracker: UploadTaskProgressTracker) async throws {
         guard let rawChunkURL = try uploadBackendRouter.swissTransferManager.sharedApiUrlCreator.uploadChunkUrl(
             uploadUUID: chunk.uploadUUID,
@@ -31,11 +31,11 @@ extension TransferManagerWorker {
             isLastChunk: chunk.isLast,
             isRetry: false
         ) else {
-            throw ErrorDomain.invalidUploadChunkURL
+            throw TransferManagerWorkerError.invalidUploadChunkURL
         }
 
         guard let chunkURL = URL(string: rawChunkURL) else {
-            throw ErrorDomain.invalidURL(rawURL: rawChunkURL)
+            throw TransferManagerWorkerError.invalidURL(rawURL: rawChunkURL)
         }
 
         var uploadRequest = URLRequest(url: chunkURL)
@@ -43,11 +43,11 @@ extension TransferManagerWorker {
 
         let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: chunkData, delegate: progressTracker)
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw ErrorDomain.invalidResponse
+            throw TransferManagerWorkerError.invalidResponse
         }
 
         if httpResponse.statusCode >= 400 {
-            throw ErrorDomain.invalidChunkResponse
+            throw TransferManagerWorkerError.invalidChunkResponse
         }
     }
 }

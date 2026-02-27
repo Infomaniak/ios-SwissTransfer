@@ -28,49 +28,7 @@ import STNetwork
 
 extension Result: Sendable where Success: Sendable, Failure: Sendable {}
 
-private struct WorkerChunkInFile: Equatable, Sendable {
-    let file: WorkerFile
-    let chunk: WorkerChunk
-    var task: Task<Void, Error>?
-
-    static func == (lhs: WorkerChunkInFile, rhs: WorkerChunkInFile) -> Bool {
-        lhs.chunk == rhs.chunk
-    }
-}
-
-struct WorkerChunk: Equatable, Hashable, Sendable {
-    let fileURL: URL
-    let remoteUploadFileUUID: String
-    let uploadUUID: String
-    let range: DataRange
-    let index: Int
-    let isLast: Bool
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(fileURL)
-        hasher.combine(index)
-    }
-
-    static func == (lhs: WorkerChunk, rhs: WorkerChunk) -> Bool {
-        lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
-    }
-}
-
-private struct WorkerFile: Equatable, Sendable {
-    let fileURL: URL
-    let uploadChunks: [WorkerChunk]
-    let lastChunk: WorkerChunk
-
-    static func == (lhs: WorkerFile, rhs: WorkerFile) -> Bool {
-        lhs.fileURL == rhs.fileURL
-    }
-}
-
-public protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
-    @MainActor func uploadDidComplete(result: Result<String, NSError>)
-}
-
-public actor TransferManagerWorker {
+public actor TransferManagerWorkerV1: TransferManagerWorker {
     private static let maxParallelUploads = 4
 
     private let appStateObserver = AppStateObserver()
@@ -140,7 +98,7 @@ public actor TransferManagerWorker {
 
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
         guard let fileURL = URL(string: path) else {
-            throw ErrorDomain.invalidURL(rawURL: path)
+            throw TransferManagerWorkerError.invalidURL(rawURL: path)
         }
 
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
@@ -159,7 +117,7 @@ public actor TransferManagerWorker {
         }
 
         guard let lastChunk = chunks.popLast() else {
-            throw ErrorDomain.invalidChunk
+            throw TransferManagerWorkerError.invalidChunk
         }
 
         assert(lastChunk.isLast, "expecting isLast flag to match the last in collection")
@@ -244,11 +202,11 @@ public actor TransferManagerWorker {
             guard let self else { return }
 
             guard let chunkReader = ChunkReader(fileURL: chunk.fileURL) else {
-                throw ErrorDomain.invalidURL(rawURL: chunk.fileURL.path)
+                throw TransferManagerWorkerError.invalidURL(rawURL: chunk.fileURL.path)
             }
 
             guard let chunkData = try chunkReader.readChunk(range: chunk.range) else {
-                throw ErrorDomain.invalidChunk
+                throw TransferManagerWorkerError.invalidChunk
             }
 
             try await uploadChunk(chunkData: chunkData,
@@ -270,13 +228,13 @@ public actor TransferManagerWorker {
     }
 }
 
-extension TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
+extension TransferManagerWorkerV1: @preconcurrency ExpiringActivityDelegate {
     public func backgroundActivityExpiring() {
         suspendAllTasks()
     }
 }
 
-extension TransferManagerWorker: AppStateObserverDelegate {
+extension TransferManagerWorkerV1: AppStateObserverDelegate {
     public nonisolated func appDidBecomeActive() {
         Task {
             try await retryRemainingFiles()

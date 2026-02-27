@@ -35,6 +35,21 @@ public final class UploadBackendRouter: Sendable {
         self.swissTransferManager = swissTransferManager
     }
 
+    public func instantiateTransferManagerWorker(overallProgress: Progress,
+                                                 uploadSession: SendableUploadSession,
+                                                 delegate: TransferManagerWorkerDelegate) -> TransferManagerWorker {
+        if currentUser != nil {
+            fatalError("TODO")
+        } else {
+            return TransferManagerWorkerV1(
+                overallProgress: overallProgress,
+                uploadSession: uploadSession,
+                uploadBackendRouter: self,
+                delegate: delegate
+            )
+        }
+    }
+
     public func getLocalUploadSession(uuid: String) async throws -> UploadSession? {
         if currentUser != nil {
             return nil
