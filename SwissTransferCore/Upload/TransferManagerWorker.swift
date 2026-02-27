@@ -75,7 +75,7 @@ public actor TransferManagerWorker {
 
     private let appStateObserver = AppStateObserver()
     private let uploadSession: SendableUploadSession
-    private let uploadManager: UploadManager
+    let uploadBackendRouter: UploadBackendRouter
     private weak var delegate: TransferManagerWorkerDelegate?
 
     private var uploadingFiles = [WorkerFile]()
@@ -101,19 +101,16 @@ public actor TransferManagerWorker {
         minTotalChunks: 1
     )
 
-    let apiURLCreator: SharedApiUrlCreator
     let overallProgress: Progress
     let uploadURLSession: URLSession = .sharedSwissTransfer
 
     public init(overallProgress: Progress,
                 uploadSession: SendableUploadSession,
-                uploadManager: UploadManager,
-                apiURLCreator: SharedApiUrlCreator,
+                uploadBackendRouter: UploadBackendRouter,
                 delegate: TransferManagerWorkerDelegate) {
         self.overallProgress = overallProgress
         self.uploadSession = uploadSession
-        self.uploadManager = uploadManager
-        self.apiURLCreator = apiURLCreator
+        self.uploadBackendRouter = uploadBackendRouter
         self.delegate = delegate
         appStateObserver.delegate = self
     }
@@ -185,7 +182,7 @@ public actor TransferManagerWorker {
                 try await self.uploadAllChunks(forFile: uploadFile)
             }
 
-            let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
+            let transferUUID = try await uploadBackendRouter.finishUploadSession(uuid: uploadSession.uuid)
 
             await delegate?.uploadDidComplete(result: .success(transferUUID))
         } catch let error as URLError where error.code == .cancelled {
