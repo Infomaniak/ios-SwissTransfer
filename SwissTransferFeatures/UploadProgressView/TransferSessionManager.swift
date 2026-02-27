@@ -62,15 +62,12 @@ final class TransferSessionManager: ObservableObject {
         let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
-        let worker = TransferManagerWorker(
-            overallProgress: overallProgress,
-            uploadSession: uploadSession,
-            uploadBackendRouter: uploadBackendRouter,
-            delegate: self
-        )
-        transferManagerWorker = worker
+        transferManagerWorker = uploadBackendRouter.instantiateTransferManagerWorker(overallProgress: overallProgress,
+                                                                                     uploadSession: uploadSession,
+                                                                                     uploadBackendRouter: uploadBackendRouter,
+                                                                                     delegate: self)
 
-        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
+        try await transferManagerWorker?.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
     }
 
     func startThumbnailGeneration(uploadSession: SendableUploadSession) {

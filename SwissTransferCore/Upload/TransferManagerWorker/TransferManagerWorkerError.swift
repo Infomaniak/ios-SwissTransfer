@@ -18,12 +18,10 @@
 
 import Foundation
 
-extension TransferManagerWorker {
-    enum ErrorDomain: Error {
-        case invalidURL(rawURL: String)
-        case invalidUploadChunkURL
-        case invalidChunk
-        case invalidResponse
-        case invalidChunkResponse
-    }
+enum TransferManagerWorkerError: Error {
+    case invalidURL(rawURL: String)
+    case invalidUploadChunkURL
+    case invalidChunk
+    case invalidResponse
+    case invalidChunkResponse
 }
