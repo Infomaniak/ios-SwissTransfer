@@ -36,7 +36,7 @@ public enum SettingLinks {
     public static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
     public static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
     public static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
-    public static let helpAndSupport = URL(string: "https://support.infomaniak.com")!
+    public static let helpAndSupportURL = URL(string: "https://support.infomaniak.com")!
 }
 
 extension ApiToken: @retroactive Identifiable {
@@ -115,7 +115,7 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
                 NavigationLink {
                     PrivacyManagementView(
-                        urlRepository: SettingLinks.helpAndSupport,
+                        urlRepository: SettingLinks.helpAndSupportURL,
                         backgroundColor: Color.ST.background,
                         illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
                         userDefaultStore: .shared,
@@ -134,6 +134,9 @@ public struct SettingsView: View {
 
                 if let currentUserId = currentUser?.id {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .settings, name: .deleteMyAccount)
+
                         @InjectService var tokenStore: TokenStore
 
                         presentedAccountDeletionToken = tokenStore.tokenFor(userId: currentUserId)?.apiToken

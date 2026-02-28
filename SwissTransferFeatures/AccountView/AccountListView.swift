@@ -58,6 +58,9 @@ struct AccountListView: View {
                 .padding(.vertical, value: .mini)
 
             Button {
+                @InjectService var matomo: MatomoUtils
+                matomo.track(eventWithCategory: .switchUserBottomSheet, name: .addAccount)
+
                 mainViewState.isShowingLoginView = true
             } label: {
                 SingleLabelSettingsCell(

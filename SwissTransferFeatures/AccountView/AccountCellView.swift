@@ -64,6 +64,9 @@ struct AccountCellView: View {
         Button {
             guard !isSelected else { return }
 
+            @InjectService var matomo: MatomoUtils
+            matomo.track(eventWithCategory: .switchUserBottomSheet, name: .switch)
+
             Task { @MainActor in
                 @InjectService var accountManager: AccountManager
                 await accountManager.switchUser(newCurrentUserId: user.id)

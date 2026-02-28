@@ -34,6 +34,7 @@ public struct AccountView: View {
     @Environment(\.currentUser) private var currentUser
 
     @EnvironmentObject private var mainViewState: MainViewState
+    @Environment(\.openURL) private var openURL
 
     @State private var isShowingLogoutView = false
 
@@ -47,6 +48,8 @@ public struct AccountView: View {
                 if currentUser != nil {
                     let userCount = tokenStore.getAllTokens().count
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .switchUser)
                         mainViewState.isShowingSwitchAccountListView = true
                     } label: {
                         SingleLabelSettingsCell(
@@ -61,6 +64,8 @@ public struct AccountView: View {
                     }
                 } else {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .login)
                         mainViewState.isShowingLoginView = true
                     } label: {
                         SingleLabelSettingsCell(
@@ -82,16 +87,23 @@ public struct AccountView: View {
                 }
                 .settingsCell()
 
-                Link(destination: SettingLinks.helpAndSupport) {
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .helpAndSupport)
+                    openURL(SettingLinks.helpAndSupportURL)
+                } label: {
                     SingleLabelSettingsCell(
                         title: STResourcesStrings.Localizable.settingsHelpAndSupport,
                         leadingIcon: STResourcesAsset.Images.help, trailingIcon: STResourcesAsset.Images.export
                     )
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
                 if let currentUser {
                     Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .logout)
                         isShowingLogoutView = true
                     } label: {
                         SingleLabelSettingsCell(
@@ -99,7 +111,7 @@ public struct AccountView: View {
                             leadingIcon: STResourcesAsset.Images.logout
                         )
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.plain)
                     .stCustomAlert(isPresented: $isShowingLogoutView) {
                         LogoutConfirmationView(user: currentUser)
                     }
@@ -108,29 +120,49 @@ public struct AccountView: View {
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
-                Link(destination: SettingLinks.termsAndConditions) {
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .termsAndConditions)
+                    openURL(SettingLinks.termsAndConditions)
+                } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
-                Link(destination: SettingLinks.discoverInfomaniak) {
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .discoverInfomaniak)
+                    openURL(SettingLinks.discoverInfomaniak)
+                } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
-                Link(destination: SettingLinks.shareYourIdeas) {
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .shareYourIdeas)
+                    openURL(SettingLinks.shareYourIdeas)
+                } label: {
                     SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
                                             trailingIcon: STResourcesAsset.Images.export)
                 }
+                .buttonStyle(.plain)
                 .settingsCell()
 
                 if !Bundle.main.isRunningInTestFlight {
-                    Link(destination: SettingLinks.appStoreReviewURL) {
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .giveYourOpinion)
+                        openURL(SettingLinks.appStoreReviewURL)
+                    } label: {
                         SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
                                                 trailingIcon: STResourcesAsset.Images.export)
                     }
+                    .buttonStyle(.plain)
                     .settingsCell()
 
                     Link(destination: UpdateLink.testFlight) {
