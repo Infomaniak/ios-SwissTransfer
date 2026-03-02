@@ -31,6 +31,7 @@ extension UploadTokensManager: @retroactive @unchecked Sendable {}
 extension SharedApiUrlCreator: @retroactive @unchecked Sendable {}
 extension STCore.AccountManager: @retroactive @unchecked Sendable {}
 extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
+extension STNChunkEtag: @retroactive @unchecked Sendable {}
 
 @frozen public struct SendableUploadSession {
     public let uuid: String
@@ -38,11 +39,34 @@ extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
     public let authorEmailToken: String?
     public let files: [SendableUploadFileSession]
 
+    enum DomainError: Error {
+        case noLocalPathMatchingRemotePath(localPath: String, remotePath: String)
+    }
+
+    /// V1 api models
     init(uploadSession: any UploadSession) {
         uuid = uploadSession.uuid
         authorEmail = uploadSession.authorEmail
         authorEmailToken = uploadSession.authorEmailToken
         files = uploadSession.files.map { SendableUploadFileSession(uploadFileSession: $0) }
+    }
+
+    /// V2 api models
+    init(transfer: any Transfer_, localFilePaths: Set<String>) throws {
+        uuid = transfer.id
+        authorEmail = transfer.senderEmail
+        authorEmailToken = nil
+        files = try transfer.files.map {
+            let remotePath = $0.path
+            // TODO: Consume the element instead of looping each time
+            guard let localPath = localFilePaths.first(where: { $0.suffix(remotePath.count) == remotePath }) else {
+                throw DomainError.noLocalPathMatchingRemotePath(
+                    localPath: localFilePaths.joined(separator: ", "),
+                    remotePath: remotePath
+                )
+            }
+            return SendableUploadFileSession(transferFile: $0, localPath: localPath)
+        }
     }
 }
 
@@ -61,6 +85,13 @@ extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
             remoteUploadFile = nil
         }
     }
+
+    init(transferFile: any File_, localPath: String) {
+        self.localPath = localPath
+        size = transferFile.size
+
+        remoteUploadFile = SendableRemoteUploadFile(uuid: transferFile.id)
+    }
 }
 
 @frozen public struct SendableRemoteUploadFile {
@@ -68,5 +99,9 @@ extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
 
     init(remoteUploadFile: any RemoteUploadFile) {
         uuid = remoteUploadFile.uuid
+    }
+
+    init(uuid: String) {
+        self.uuid = uuid
     }
 }
