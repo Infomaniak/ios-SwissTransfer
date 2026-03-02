@@ -35,17 +35,17 @@ extension SwissTransferInjection {
         self.init(
             environment: STCore.ApiEnvironment.Preprod(),
             userAgent: UserAgentBuilder().userAgent,
-            databaseRootDirectory: realmRootDirectory,
-            crashReport: sentryWrapper,
-            databaseConfig: .init(databaseRootDirectory: roomPath)
+            legacyDatabaseRootDirectory: realmRootDirectory,
+            databaseNameOrPath: roomPath,
+            crashReport: sentryWrapper
         )
         #else
         self.init(
             environment: STCore.ApiEnvironment.Prod(),
             userAgent: UserAgentBuilder().userAgent,
-            databaseRootDirectory: realmRootDirectory,
-            crashReport: sentryWrapper,
-            databaseConfig: .init(databaseRootDirectory: roomPath)
+            legacyDatabaseRootDirectory: realmRootDirectory,
+            databaseNameOrPath: roomPath,
+            crashReport: sentryWrapper
         )
         #endif
     }
