@@ -28,20 +28,23 @@ extension SwissTransferInjection {
         let sentryWrapper = SentryKMPWrapper()
 
         let realmRootDirectory = groupPathProvider.realmRootURL.path()
+        let roomPath = groupPathProvider.realmRootURL.appending(path: "transfers").path()
         Logger.general.info("Realm group directory \(realmRootDirectory)")
 
         #if DEBUG
         self.init(
             environment: STCore.ApiEnvironment.Preprod(),
             userAgent: UserAgentBuilder().userAgent,
-            databaseRootDirectory: realmRootDirectory,
+            legacyDatabaseRootDirectory: realmRootDirectory,
+            databaseNameOrPath: roomPath,
             crashReport: sentryWrapper
         )
         #else
         self.init(
             environment: STCore.ApiEnvironment.Prod(),
             userAgent: UserAgentBuilder().userAgent,
-            databaseRootDirectory: realmRootDirectory,
+            legacyDatabaseRootDirectory: realmRootDirectory,
+            databaseNameOrPath: roomPath,
             crashReport: sentryWrapper
         )
         #endif

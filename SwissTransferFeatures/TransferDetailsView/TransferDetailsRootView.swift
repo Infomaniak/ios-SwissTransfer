@@ -86,6 +86,8 @@ public struct TransferDetailsRootView: View {
                 VirusCheckView()
             case .virusDetected:
                 VirusDetectedView(transfer: transfer)
+            case .notYetFetched, .pendingUpload:
+                EmptyView()
             }
         }
     }

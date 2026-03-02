@@ -293,7 +293,8 @@ public class DownloadManager: ObservableObject {
         return "\(transferUUID)__\(filesUUID.sorted().joined(separator: "-"))"
     }
 
-    private func getDownloadURLFor(file: FileUi, in transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
+    private func getDownloadURLFor(file: FileUi, in transfer: TransferUi,
+                                   sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
         guard let rawDownloadURL = try await sharedApiUrlCreator.downloadFileUrl(
             transferUUID: transfer.uuid,
             fileUUID: file.uid
