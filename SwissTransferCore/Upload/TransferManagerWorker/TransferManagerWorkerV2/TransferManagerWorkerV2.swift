@@ -179,7 +179,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeFileUploadedInChunks(
             transferId: uploadSession.uuid,
             fileId: uploadFile.remoteUploadFileUUID,
-            etags: chunkEtags
+            etags: chunkEtags.sorted { $0.chunkIndex < $1.chunkIndex }
         )
         uploadedFiles.append(uploadFile)
     }
