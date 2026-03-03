@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import STNewTransferView
 import STUploadProgressView
 import SwiftUI
@@ -27,17 +28,17 @@ public struct RootTransferView: View {
     @StateObject private var viewModel: RootTransferViewModel
     @StateObject private var newTransferManager: NewTransferFileManager
 
-    public init(initialItems: [ImportedItem]) {
+    public init(initialItems: [ImportedItem], currentUser: UserProfile?) {
         _viewState = StateObject(wrappedValue: RootTransferViewState())
-        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: false))
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: false, currentUser: currentUser))
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: initialItems))
     }
 
-    public init(localSessionUUID: String) {
+    public init(localSessionUUID: String, currentUser: UserProfile?) {
         _viewState = StateObject(wrappedValue: RootTransferViewState(
             initialState: .uploadProgress(localSessionUUID: localSessionUUID)
         ))
-        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: true))
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: true, currentUser: currentUser))
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: [], shouldDoInitialClean: false))
     }
 
@@ -66,5 +67,5 @@ public struct RootTransferView: View {
 }
 
 #Preview {
-    RootTransferView(initialItems: [])
+    RootTransferView(initialItems: [], currentUser: nil)
 }

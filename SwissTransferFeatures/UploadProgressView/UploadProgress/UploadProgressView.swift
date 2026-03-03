@@ -224,5 +224,5 @@ public struct UploadProgressView: View {
 
 #Preview {
     UploadProgressView(localSessionUUID: "")
-        .environmentObject(RootTransferViewModel())
+        .environmentObject(RootTransferViewModel(currentUser: nil))
 }
