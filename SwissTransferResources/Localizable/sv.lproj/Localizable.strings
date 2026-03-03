@@ -1,0 +1,638 @@
+/*
+ * Loco ios export: Xcode Strings (legacy)
+ * Project: SwissTransfer
+ * Locale: sv, Swedish
+ * Tagged: ios
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 03 Mar 2026 14:04:47 +0100
+ */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Avancerade inställningar";
+
+/* loco:677be58b7579b67f0406b33e */
+"awaitingNetwork" = "Väntar på nätverk";
+
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Alla";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Avbryt";
+
+/* loco:6721e8f6b18493385d00ec52 */
+"buttonCancelTransfer" = "Avbryt överföringen";
+
+/* loco:6721eccd0752504a0d064d02 */
+"buttonCloseAndContinue" = "Stäng och fortsätt";
+
+/* loco:6707f83845c44bad7f0d7805 */
+"buttonConfirm" = "Bekräfta";
+
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Kopiera länk";
+
+/* loco:67616ea394ffdbb7e5071e36 */
+"buttonDeleteTransfer" = "Ta bort överföring";
+
+/* loco:68359d4126ae0a9eed0c68a2 */
+"buttonDeleteYes" = "Ja, ta bort";
+
+/* loco:67220015101b3de12b0f1f82 */
+"buttonDownload" = "Ladda ner";
+
+/* loco:672200e4a61b86b8470776e2 */
+"buttonDownloadSelected" = "Ladda ner urval";
+
+/* loco:677e9253d2777f26f5019852 */
+"buttonDownloaded" = "Nedladdad";
+
+/* loco:67448efd69b0e5a4910909b2 */
+"buttonEditTransfer" = "Redigera min överföring";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Klar";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Öppna e-postappen";
+
+/* loco:672a116b6135bb977203e762 */
+"buttonRetry" = "Försök igen";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Dela";
+
+/* loco:674834cdbb4f7b35ad00ea55 */
+"buttonStart" = "Starta";
+
+/* loco:699471fbbf0c6c800e06b763 */
+"buttonUseOtherAccount" = "Använd ett annat konto";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Är du säker på att du vill logga ut från %@?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Logga ut";
+
+/* loco:66c5b8a600121e93c00c79d2 */
+"contentDescriptionButtonBack" = "Tillbaka";
+
+/* loco:66c5b8e29f9df1eb920ef483 */
+"contentDescriptionButtonClose" = "Stäng";
+
+/* loco:6719f3144da70102cb0abc82 */
+"contentDescriptionButtonHidePassword" = "Dölj lösenord";
+
+/* loco:66ed1facfdf04647c80a0482 */
+"contentDescriptionButtonRemove" = "Ta bort fil";
+
+/* loco:6719f30247e142610b08f4f3 */
+"contentDescriptionButtonShowPassword" = "Visa lösenord";
+
+/* loco:66a1fa770af8cf8470002102 */
+"contentDescriptionCreateNewTransferButton" = "Ny överföring";
+
+/* loco:67e54599054e355e4f053752 */
+"dailyTransferLimitReached" = "Du har nått din dagliga överföringsgräns";
+
+/* loco:677cf4a37658668b1c07d9a2 */
+"deeplinkPasswordDescription" = "Ange lösenordet du har fått för att ladda ner dessa filer.";
+
+/* loco:6787727e96fb165b36011422 */
+"deeplinkTransferExpired" = "Denna överföring har gått ut";
+
+/* loco:677fbfbeb541dd8a8c0276d2 */
+"deeplinkTransferNotFound" = "Denna överföring existerar inte";
+
+/* loco:699c62a8090390d46409c7f2 */
+"deleteAccountAlertTitle" = "Ta bort konto";
+
+/* loco:699c52d6d2021467050c9872 */
+"deleteAccountErrorAlertMessage" = "Misslyckades med att ta bort konto";
+
+/* loco:699c4fdc93c5e844420cf302 */
+"deleteAccountSuccessAlertMessage" = "Ta bort konto framgångsrikt";
+
+/* loco:68359c6b15da309c25045492 */
+"deleteThisTransferDescription" = "Denna överföring och filerna den innehåller kommer att tas bort.";
+
+/* loco:68359bf65101e64968042602 */
+"deleteThisTransferTitle" = "Ta bort denna överföring?";
+
+/* loco:67852070453d66cb9a0033c2 */
+"downloadInProgressDialogTitle" = "Nedladdning pågår…";
+
+/* loco:66a24a3f3472a720090cfd52 */
+"downloadedTransferLabel" = "Nedladdad överföring: %d/%d";
+
+/* loco:6720ec444fa469071a050ee2 */
+"errorGeneratingQRCode" = "Det går inte att generera QR-koden";
+
+/* loco:677cfe305ec5b8afc10db732 */
+"errorIncorrectPassword" = "Felaktigt lösenord";
+
+/* loco:6728e0698584637cc20ef6b2 */
+"errorTransferPasswordLength" = "Lösenordet måste vara mellan 6 och 25 tecken";
+
+/* loco:67b8749b3c6e5f744d0bcc82 */
+"expired" = "Utgången";
+
+/* loco:67b489ba13ccf8b7ab0e46b3 */
+"expiresAt" = "Går ut kl. %@";
+
+/* loco:669f7a817f40f7e9170fafa2 */
+"expiresIn" = "Går ut om %d dagar";
+
+/* loco:67b49607bdcd0286220cea32 */
+"expiresThe" = "Går ut den %s";
+
+/* loco:6776640e5e97ee7e550d5b72 */
+"expiresTomorrow" = "Går ut imorgon";
+
+/* loco:67fe654051b0931bec0d5b42 */
+"fileCountOverDisplayOnly" = "%1$d/%2$d filer";
+
+/* loco:67fe6950a9aa76a7670a9112 */
+"fileCountOverTtsFriendly" = "%1$d av %2$d filer";
+
+/* loco:67ffa893e821c9e3a80af462 */
+"fileSizeOverDisplayOnly" = "%1$@/%2$@";
+
+/* loco:67ffa9059ea861506908e942 */
+"fileSizeOverTtsFriendly" = "%1$@ av %2$@";
+
+/* loco:669f76984c6fad682900d032 */
+"firstTransferDescription" = "Gör din första överföring!";
+
+/* loco:66c5b683919c7a5f1b024142 */
+"importFilesScreenTitle" = "Filer att överföra";
+
+/* loco:6750234ba38b270dc804a7d2 */
+"invalidAddress" = "Ogiltig adress";
+
+/* loco:66a24acfa855c577100e2353 */
+"messageHeader" = "Meddelande:";
+
+/* loco:6707f41e004c1612f407fae2 */
+"myFilesTitle" = "Mina filer";
+
+/* loco:673b609c03c82748a509bd92 */
+"networkUnavailable" = "Nätverk ej tillgängligt";
+
+/* loco:675ae8861595e0ef6b063c92 */
+"newTransferConfirmLeavingDialogTitle" = "Hoppsan, vill du verkligen avbryta?";
+
+/* loco:675aed225692b5b2fc063e12 */
+"newTransferLeavingDialogDescription" = "Din överföring är nästan klar. Är du säker på att du vill avbryta den?";
+
+/* loco:675aedf9d296e6311c094eb2 */
+"newTransferLeavingDialogNegativeButton" = "Nej, fortsätt";
+
+/* loco:675aed916909b0ae120a2512 */
+"newTransferLeavingDialogPositiveButton" = "Ja, avbryt";
+
+/* loco:674dbabbdd957af5740cf002 */
+"noSettingsSelectedDescription" = "Välj en parameter för att visa den";
+
+/* loco:66d00a919c37e358f5081dd2 */
+"noTransferReceivedDescription" = "Alla överföringar du tar emot under de senaste 30 dagarna visas här.";
+
+/* loco:66d009adae0a00bb3c011352 */
+"noTransferReceivedTitle" = "Inga mottagna överföringar";
+
+/* loco:67482c2dde54f81d2a0824d2 */
+"noTransferSelectedDescription" = "Välj en överföring eller skapa en ny.";
+
+/* loco:6748294ce710a9c2af069052 */
+"noTransferSelectedTitle" = "Inga överföringar att visa";
+
+/* loco:678f47605b4d4a18240a8395 */
+"notificationDownloadErrorDescription" = "Ett fel uppstod under nedladdningen.";
+
+/* loco:678f44b7f2593a75b90f0f92 */
+"notificationDownloadErrorNotificationTitle" = "Nedladdningsfel";
+
+/* loco:678f473fe3af2239cf0b99c2 */
+"notificationDownloadSuccessDescription" = "Filen %@ har laddats ner.";
+
+/* loco:678f44517474b710de0065b6 */
+"notificationDownloadSuccessNotificationTitle" = "Nedladdning slutförd";
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Håll appen öppen tills överföringen är klar.";
+
+/* loco:68fe59d91ce32740c80377c2 */
+"notificationProgressSubtitle" = "Framsteg %@";
+
+/* loco:678630d98c1534fbc50d2cc2 */
+"notificationUploadFailureDescription" = "Ett problem uppstod, försök igen";
+
+/* loco:678630b92eec2a91f00603af */
+"notificationUploadFailureTitle" = "Överföringen misslyckades";
+
+/* loco:67851171fcb1c1349e0f8392 */
+"notificationUploadProgressTitle" = "Överföring pågår… (%@%%)";
+
+/* loco:6785135bb4d438d6ca0272a2 */
+"notificationUploadSuccessDescriptionMail" = "Nedladdningslänken har skickats till mottagarna";
+
+/* loco:6785134bbb571a28f10994e4 */
+"notificationUploadSuccessDescriptionOther" = "Tryck för att få din nedladdningslänk";
+
+/* loco:6785125e391d0459e50fa852 */
+"notificationUploadSuccessTitle" = "Överföring slutförd";
+
+/* loco:6746e8a0396f33e00a0fc393 */
+"onboardingExpirationSubtitleArgument" = "30 dagar.";
+
+/* loco:6746e853f31dad284f0aa742 */
+"onboardingExpirationSubtitleTemplate" = "Dela dina filer via e-post, länk eller QR-kod. Dina länkar förblir aktiva i %@";
+
+/* loco:6746e6c255f60b501f02d372 */
+"onboardingExpirationTitle" = "Spela dina bästa kort!";
+
+/* loco:6746f713c933bb6d0001c2c2 */
+"onboardingPasswordSubtitleArgument" = "ett lösenord.";
+
+/* loco:6746f6d24c1e8eac030e37a2 */
+"onboardingPasswordSubtitleTemplate" = "Skydda dina delningar med %@";
+
+/* loco:6746ea1214cc5fb6da022362 */
+"onboardingPasswordTitle" = "Behåll kontrollen!";
+
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Skicka dina filer";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ nu!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Redo att börja?";
+
+/* loco:6745e4cbc46e4416540015f3 */
+"onboardingStorageSubtitleArgument" = "Dela upp till 50 GB";
+
+/* loco:6745e479fd92d04bbd0ac2b2 */
+"onboardingStorageSubtitleTemplate" = "%@ filer gratis utan registrering.";
+
+/* loco:6745d761b427af1ed8084c32 */
+"onboardingStorageTitle" = "Skicka tunga filer!";
+
+/* loco:67ff96fe53fc54f951079062 */
+"oneClickSharing" = "Dela med 1 klick!";
+
+/* loco:68079d4b17b8e06966072592 */
+"quickSharingDescription" = "För snabb delning, använd knappen %1$@ eller %2$@ under QR-koden.\nDet är enklare än att ta en skärmbild.";
+
+/* loco:66fa5ce7eb184f21290154a2 */
+"receivedFilesTitle" = "Mottagna filer";
+
+/* loco:669f759d2093b5a83708e5e2 */
+"receivedTitle" = "Mottaget";
+
+/* loco:67bd58877695a8511309f862 */
+"restrictedLocation" = "Infomaniak SwissTransfer är inte tillgänglig på din plats";
+
+/* loco:669f76052093b5a83708e5e4 */
+"sentEmptyTitle" = "Vår historia börjar här";
+
+/* loco:669f79ffb8749b07fa0023d3 */
+"sentFilesTitle" = "Delade filer";
+
+/* loco:669f755c502e59a518017423 */
+"sentTitle" = "Skickat";
+
+/* loco:67319f67ca1b48e5d00b77e2
+ * Notifications settings */
+"settingsAllNotifications" = "Alla aviseringar";
+
+/* loco:66c3345d68555c9cec08bd35 */
+"settingsCategoryAbout" = "Om";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Data & Integritet";
+
+/* loco:66c33433d8cdb0aeb6003082 */
+"settingsCategoryDefaultSettings" = "Standardinställningar";
+
+/* loco:66c333f5222777ffd504e5f3 */
+"settingsCategoryGeneral" = "Allmänt";
+
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Anpassat";
+
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Radera mitt konto";
+
+/* loco:66c6e297bb7794739b0ec0d2 */
+"settingsDownloadsLimitTitle" = "Ange en standardnedladdningsgräns för dina överföringar";
+
+/* loco:66c6beb4953867da65029872 */
+"settingsEmailLanguageTitle" = "Ange ett standardspråk för dina e-postöverföringar";
+
+/* loco:66c6bfb72d51f3e429025a82 */
+"settingsEmailLanguageValueEnglish" = "Engelska";
+
+/* loco:66c6bf06ba6306bc710887a2 */
+"settingsEmailLanguageValueFrench" = "Franska";
+
+/* loco:66c6bf698e116411a90d9052 */
+"settingsEmailLanguageValueGerman" = "Tyska";
+
+/* loco:66c6bf3e4e4926d9600599f2 */
+"settingsEmailLanguageValueItalian" = "Italienska";
+
+/* loco:66c6bf8d83619a4f090feb72 */
+"settingsEmailLanguageValueSpanish" = "Spanska";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Hjälp & Support";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Logga ut";
+
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Matomo är ett analysverktyg som uteslutande driftas och hanteras av Infomaniak för att förstå hur applikationen används.\n\nGenom att studera dessa data kan vårt team kontinuerligt förbättra applikationens gränssnitt.";
+
+/* loco:6731a0b0ee0948aac509e672
+ * Notifications settings */
+"settingsNotificationsDownloadInProgress" = "Nedladdning pågår";
+
+/* loco:6731a15af505e237120fb292
+ * Notifications settings */
+"settingsNotificationsDownloadTransfer" = "Laddar ner en överföring";
+
+/* loco:6731a4f786feae2e5707c952 */
+"settingsNotificationsLinkExpired" = "Utgången länk";
+
+/* loco:66c57e1cac4c61d2dd0c8f12 */
+"settingsNotificationsTitle" = "Välj en inställning";
+
+/* loco:6731a1221ff67f956202a482
+ * Notifications settings */
+"settingsNotificationsTransferFinished" = "Överföring slutförd";
+
+/* loco:6731a079a36f5786980eff62
+ * Notifications settings */
+"settingsNotificationsTransferInProgress" = "Överföring pågår";
+
+/* loco:6731a18f7f9ab820b6015712
+ * Notifications settings */
+"settingsNotificationsTransferNotDownloaded" = "Överföring inte nedladdad";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Aktiverat";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Datahantering";
+
+/* loco:66c3355378e62c3f0d0a4672 */
+"settingsOptionDiscoverInfomaniak" = "Upptäck Infomaniak";
+
+/* loco:66c3351479627944d00efd83 */
+"settingsOptionDownloadLimit" = "Nedladdningsgräns";
+
+/* loco:66c3352f911ccd83de06b562 */
+"settingsOptionEmailLanguage" = "E-postspråk";
+
+/* loco:66c336f6f7bdfdc4d900cd12 */
+"settingsOptionGiveFeedback" = "Ge din åsikt";
+
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Ingen";
+
+/* loco:66c334b41bd6706567037508 */
+"settingsOptionNotifications" = "Aviseringar";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Lösenord";
+
+/* loco:66c3356b79627944d00efd88 */
+"settingsOptionShareIdeas" = "Dela dina idéer";
+
+/* loco:67b83b2918cbcda68004dd22 */
+"settingsOptionTermsAndConditions" = "Villkor";
+
+/* loco:66c3348f7990bb4f500f8864 */
+"settingsOptionTheme" = "Tema";
+
+/* loco:66c5767075065f6a6f0a55f2 */
+"settingsOptionThemeDark" = "Mörkt";
+
+/* loco:66c576623f6469240f064202 */
+"settingsOptionThemeLight" = "Ljust";
+
+/* loco:66c57650368985cbec0f7d42 */
+"settingsOptionThemeSystem" = "System";
+
+/* loco:66c334f8fe4641955405f122 */
+"settingsOptionValidityPeriod" = "Giltighetstid";
+
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "Dina mottagare behöver ange lösenordet för att ladda ner filerna.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Skydda din överföring med ett lösenord";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Aktivera skydd";
+
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Logga in";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Byt konto";
+
+/* loco:66c342a1e87c8303b10b2372 */
+"settingsThemeTitle" = "Välj ett tema";
+
+/* loco:669f75c5d69668e460064082 */
+"settingsTitle" = "Inställningar";
+
+/* loco:66c587e4067064f587099c02 */
+"settingsValidityPeriodTitle" = "Ange en standardgiltighetstid för dina överföringar";
+
+/* loco:67335c646d95d56ce00c77b2 */
+"sharePasswordButton" = "Kopiera lösenord";
+
+/* loco:673358d908873a82380b99b2 */
+"sharePasswordDescription" = "Här är lösenordet för att ladda ner filerna!";
+
+/* loco:673358d1792d18d1c40c4612 */
+"sharePasswordTitle" = "Denna överföring är säker";
+
+/* loco:673357fffb9ea749380dce44 */
+"shareQrCodeDescription" = "Scanna denna QR-kod för att dela din överföring:";
+
+/* loco:673357ce7a09e445af086eb3 */
+"shareQrCodeTitle" = "Snabba delning";
+
+/* loco:67bd585d873224d0fb0894c2 */
+"sorry" = "Vi beklagar";
+
+/* loco:6718df9028c2ea33b001c522 */
+"textFieldOptional" = "(Valfritt)";
+
+/* loco:66a24b1d3472a720090cfd58 */
+"transferContentHeader" = "Överföringsinnehåll:";
+
+/* loco:6720b962e49b6c46620d30f3 */
+"transferExpiredButton" = "Ta bort från historik";
+
+/* loco:6720af2aaad13976bb0d7832 */
+"transferExpiredDateReachedDescription" = "Tyvärr gick denna överföring ut den %@. Du kan inte längre ladda ner eller visa filerna.";
+
+/* loco:678e7bb990830fe7f1052e92 */
+"transferExpiredDescription" = "Tyvärr har denna överföring gått ut. Du kan inte längre ladda ner eller visa filerna.";
+
+/* loco:6720aec78a4f6e6b0c0d28a2 */
+"transferExpiredTitle" = "Denna överföring är inte längre tillgänglig";
+
+/* loco:6791edf4a6f878c7ab05bc22 */
+"transferInitializing" = "Laddar…";
+
+/* loco:66c6d0936969c14fab0aec72 */
+"transferListSectionLastWeek" = "Förra veckan";
+
+/* loco:66c6d0ade6247c4847026ec4 */
+"transferListSectionThisMonth" = "Denna månad";
+
+/* loco:66c6d072ab48fd071b0db6c2 */
+"transferListSectionThisWeek" = "Denna vecka";
+
+/* loco:66c6d006e6247c4847026ec2 */
+"transferListSectionToday" = "Idag";
+
+/* loco:66c6d050074f03cc770d2932 */
+"transferListSectionYesterday" = "Igår";
+
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "Ett meddelande att skicka med?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Skicka filer till";
+
+/* loco:6707d903f6f42e03b90b8632 */
+"transferSendButton" = "Skicka";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Din e-postadress";
+
+/* loco:6707e02b8a6e1328f2054d62 */
+"transferSpaceLeft" = "%@ kvar";
+
+/* loco:66c4aa7762a79eb6a60eaba2 */
+"transferTypeEmail" = "E-post";
+
+/* loco:66c4aa6548c80af1df099483 */
+"transferTypeLink" = "Länk";
+
+/* loco:66c4aa8cf1945b5bd70ed563 */
+"transferTypeQrCode" = "QR-kod";
+
+/* loco:66c5f77ed20c38c185010bd3 */
+"transferTypeScreenTitle" = "Överföring";
+
+/* loco:66c4a98a0aee7eb62404ec62 */
+"transferTypeTitle" = "Skicka via";
+
+/* loco:6889de6a89343a80ff014992 */
+"transferUploadSourceChoiceCamera" = "Kamera";
+
+/* loco:6889df37c9b6166238093af2 */
+"transferUploadSourceChoiceFiles" = "Bläddra bland filer";
+
+/* loco:6889df8b6973de8abd0616a2 */
+"transferUploadSourceChoiceGallery" = "Foto- och videogalleri";
+
+/* loco:678e7b3b30ca99c9690c7c92 */
+"transferVirusCheckDescription" = "Filerna är inte tillgängliga ännu av säkerhetsskäl.\nKom tillbaka om en stund.";
+
+/* loco:678e7b0a570febadc1013692 */
+"transferVirusCheckTitle" = "Filer kontrolleras";
+
+/* loco:678f4ab56e8b3c2390077452 */
+"transferVirusDetectedDescription" = "Du kan inte komma åt denna överföring eftersom den inte uppfyller våra användarvillkor.";
+
+/* loco:678f4a42026090be7200ee62 */
+"transferVirusDetectedTitle" = "Ej kompatibla filer";
+
+/* loco:6800aa6d8135c915920188b2 */
+"understandTitleButton" = "Jag förstår!";
+
+/* loco:672104c0398a368f6308c152 */
+"uploadCancelConfirmBottomSheetTitle" = "Är du säker på att du vill avbryta överföringen?";
+
+/* loco:6729e40f3f0d68fc7e03bab2 */
+"uploadErrorDescription" = "Överföringen fungerade inte, ge det en ny chans. Om problemet kvarstår, kontakta vårt supportteam.";
+
+/* loco:6729d9d657eb1ed1a40f5f92 */
+"uploadErrorTitle" = "Vänta, vad hände just?";
+
+/* loco:6720a3367f6276e49d0d9902 */
+"uploadProgressDescriptionArgumentConfidentiality" = "internet som respekterar konfidentialitet och integritet.";
+
+/* loco:671facb7f1fe8e23eb02e732 */
+"uploadProgressDescriptionArgumentEnergy" = "våra egna datacenter, utan luftkonditionering";
+
+/* loco:671fab15def78345b802d5c2 */
+"uploadProgressDescriptionArgumentIndependence" = "teknologiskt oberoende i Europa.";
+
+/* loco:6720a2f98e276b472c007252 */
+"uploadProgressDescriptionTemplateConfidentiality" = "Vi är oberoende och bidrar till ett %@";
+
+/* loco:671faca64009477847056262 */
+"uploadProgressDescriptionTemplateEnergy" = "Vi utformar %@, för att överträffa marknadens energieffektivitetsstandarder.";
+
+/* loco:671faa8cec286426400c01c2 */
+"uploadProgressDescriptionTemplateIndependence" = "Vi utvecklar %@ Utan kompromisser gällande ekologi, integritet och människor.";
+
+/* loco:6720d40108caba4c6a0dddb3 */
+"uploadProgressIndication" = "Överföring pågår…";
+
+/* loco:6729e09ab18f3f7a5803b282 */
+"uploadProgressTitleArgument" = "unika";
+
+/* loco:671f96c0560f1de88c0f7e02 */
+"uploadProgressTitleTemplate" = "Vad gör oss %@?";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "Skickat!";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Scanna denna QR-kod för att dela dina filer, eller kopiera länken nedan.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Din överföring är klar!";
+
+/* loco:66c5ef9c409f7ef5ca058e34 */
+"urlAbout" = "https://www.infomaniak.com/en/about";
+
+/* loco:66c5ef608055a7b4f70c4022 */
+"urlUserReport" = "https://feedback.userreport.com/a61a740b-4800-4b53-8c9e-d2b010155416/";
+
+/* loco:6707f8d793cc933d520740f4 */
+"validateMailCodeIncorrectError" = "Den angivna koden är felaktig";
+
+/* loco:677bfb5467b61da0dd035562 */
+"validateMailCodeResentFeedback" = "Koden skickades till e-postadressen %@";
+
+/* loco:6707f975b37970cb7704b0c2 */
+"validateMailDescription" = "Vi har skickat en kod till %@. Ange den nedan för att verifiera din e-postadress i appen:";
+
+/* loco:6707f9d6c8a673d44f0035f2 */
+"validateMailInfo" = "Kom ihåg att kontrollera skräppostmappen för din e-postadress.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Skicka en kod igen";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Skicka en kod igen (%ds)";
+
+/* loco:6707f9ac045804ab200b44f2 */
+"validateMailTitle" = "Kontrollera din e-post";
+
+/* loco:677bf872ea9c5274c6075542 */
+"validateMailUnknownError" = "Ett fel har inträffat. Försök igen om en stund.";
+
+/* loco:66c335b6cb643611950ea795 */
+"version" = "Version";

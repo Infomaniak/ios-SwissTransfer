@@ -5,8 +5,8 @@
  Project: SwissTransfer
  Locale: es, Spanish
  Tagged: ios-stringsdict
- Exported by: Ambroise Decouttere
- Exported at: Wed, 14 Jan 2026 08:40:20 +0100
+ Exported by: Valentin Perignon
+ Exported at: Tue, 03 Mar 2026 14:04:48 +0100
 -->
 <plist version="1.0">
   <dict>
@@ -72,6 +72,22 @@
         <string>día %d</string>
         <key>other</key>
         <string>%d días</string>
+      </dict>
+    </dict>
+    <key>titleMyAccount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Mi cuenta</string>
+        <key>other</key>
+        <string>Mis cuentas</string>
       </dict>
     </dict>
     <key>transferExpiredLimitReachedDescription</key>

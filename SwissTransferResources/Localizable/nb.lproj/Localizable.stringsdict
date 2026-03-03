@@ -3,7 +3,7 @@
 <!--
  Loco ios export: Xcode Stringsdict (legacy)
  Project: SwissTransfer
- Locale: it, Italian
+ Locale: nb, Norwegian Bokmål
  Tagged: ios-stringsdict
  Exported by: Valentin Perignon
  Exported at: Tue, 03 Mar 2026 14:04:48 +0100
@@ -21,9 +21,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d file</string>
+        <string>%d fil</string>
         <key>other</key>
-        <string>%d file</string>
+        <string>%d filer</string>
       </dict>
     </dict>
     <key>multipleSelectionTitle</key>
@@ -37,9 +37,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d selezionato</string>
+        <string>%d valgt</string>
         <key>other</key>
-        <string>%d selezionati</string>
+        <string>%d valgt</string>
       </dict>
     </dict>
     <key>recipientHeader</key>
@@ -53,9 +53,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>A:</string>
+        <string>Mottaker:</string>
         <key>other</key>
-        <string>A:</string>
+        <string>Mottakere:</string>
       </dict>
     </dict>
     <key>settingsValidityPeriodValue</key>
@@ -69,9 +69,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d giorno</string>
+        <string>%d dag</string>
         <key>other</key>
-        <string>%d giorni</string>
+        <string>%d dager</string>
       </dict>
     </dict>
     <key>titleMyAccount</key>
@@ -85,9 +85,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Il mio conto</string>
+        <string>Min konto</string>
         <key>other</key>
-        <string>I miei account</string>
+        <string>Mine kontoer</string>
       </dict>
     </dict>
     <key>transferExpiredLimitReachedDescription</key>
@@ -101,9 +101,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Spiacenti, questo trasferimento ha raggiunto il limite di %d download possibile.</string>
+        <string>Beklager, denne overføringen har nådd grensen på %d mulig nedlasting.</string>
         <key>other</key>
-        <string>Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.</string>
+        <string>Beklager, denne overføringen har nådd grensen på %d mulige nedlastinger.</string>
       </dict>
     </dict>
     <key>uploadSuccessEmailDescription</key>
@@ -117,9 +117,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Il link per il download è stato inviato al seguente destinatario:</string>
+        <string>Nedlastingslenken er sendt til følgende mottaker:</string>
         <key>other</key>
-        <string>Il link per il download è stato inviato ai seguenti destinatari:</string>
+        <string>Nedlastingslenken er sendt til følgende mottakere:</string>
       </dict>
     </dict>
   </dict>

@@ -3,7 +3,7 @@
 <!--
  Loco ios export: Xcode Stringsdict (legacy)
  Project: SwissTransfer
- Locale: it, Italian
+ Locale: pl, Polish
  Tagged: ios-stringsdict
  Exported by: Valentin Perignon
  Exported at: Tue, 03 Mar 2026 14:04:48 +0100
@@ -21,9 +21,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d file</string>
+        <string>%d plik</string>
+        <key>few</key>
+        <string>%d pliki</string>
+        <key>many</key>
+        <string>%d plików</string>
         <key>other</key>
-        <string>%d file</string>
+        <string>%d pliku</string>
       </dict>
     </dict>
     <key>multipleSelectionTitle</key>
@@ -37,9 +41,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d selezionato</string>
+        <string>%d zaznaczony</string>
+        <key>few</key>
+        <string>%d zaznaczone</string>
+        <key>many</key>
+        <string>%d zaznaczonych</string>
         <key>other</key>
-        <string>%d selezionati</string>
+        <string>%d zaznaczone</string>
       </dict>
     </dict>
     <key>recipientHeader</key>
@@ -53,9 +61,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>A:</string>
+        <string>Odbiorca:</string>
+        <key>few</key>
+        <string>Odbiorcy:</string>
+        <key>many</key>
+        <string>Odbiorców:</string>
         <key>other</key>
-        <string>A:</string>
+        <string>Odbiorcy:</string>
       </dict>
     </dict>
     <key>settingsValidityPeriodValue</key>
@@ -69,9 +81,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d giorno</string>
+        <string>%d dzień</string>
+        <key>few</key>
+        <string>%d dni</string>
+        <key>many</key>
+        <string>%d dni</string>
         <key>other</key>
-        <string>%d giorni</string>
+        <string>%d dnia</string>
       </dict>
     </dict>
     <key>titleMyAccount</key>
@@ -85,9 +101,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Il mio conto</string>
+        <string>Moje konto</string>
+        <key>few</key>
+        <string>Moje konta</string>
+        <key>many</key>
+        <string>Moje konta</string>
         <key>other</key>
-        <string>I miei account</string>
+        <string>Moje konta</string>
       </dict>
     </dict>
     <key>transferExpiredLimitReachedDescription</key>
@@ -101,9 +121,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Spiacenti, questo trasferimento ha raggiunto il limite di %d download possibile.</string>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwego pobrania.</string>
+        <key>few</key>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwych pobrań.</string>
+        <key>many</key>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwych pobrań.</string>
         <key>other</key>
-        <string>Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.</string>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwych pobrań.</string>
       </dict>
     </dict>
     <key>uploadSuccessEmailDescription</key>
@@ -117,9 +141,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Il link per il download è stato inviato al seguente destinatario:</string>
+        <string>Link do pobrania został wysłany do następującego odbiorcy:</string>
+        <key>few</key>
+        <string>Link do pobrania został wysłany do następujących odbiorców:</string>
+        <key>many</key>
+        <string>Link do pobrania został wysłany do następujących odbiorców:</string>
         <key>other</key>
-        <string>Il link per il download è stato inviato ai seguenti destinatari:</string>
+        <string>Link do pobrania został wysłany do następujących odbiorców:</string>
       </dict>
     </dict>
   </dict>

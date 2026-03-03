@@ -3,7 +3,7 @@
 <!--
  Loco ios export: Xcode Stringsdict (legacy)
  Project: SwissTransfer
- Locale: it, Italian
+ Locale: fi, Finnish
  Tagged: ios-stringsdict
  Exported by: Valentin Perignon
  Exported at: Tue, 03 Mar 2026 14:04:48 +0100
@@ -21,9 +21,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d file</string>
+        <string>%d tiedosto</string>
         <key>other</key>
-        <string>%d file</string>
+        <string>%d tiedostoa</string>
       </dict>
     </dict>
     <key>multipleSelectionTitle</key>
@@ -37,9 +37,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d selezionato</string>
+        <string>%d valittu</string>
         <key>other</key>
-        <string>%d selezionati</string>
+        <string>%d valittu</string>
       </dict>
     </dict>
     <key>recipientHeader</key>
@@ -53,9 +53,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>A:</string>
+        <string>Vastaanottaja:</string>
         <key>other</key>
-        <string>A:</string>
+        <string>Vastaanottajat:</string>
       </dict>
     </dict>
     <key>settingsValidityPeriodValue</key>
@@ -69,9 +69,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d giorno</string>
+        <string>%d päivä</string>
         <key>other</key>
-        <string>%d giorni</string>
+        <string>%d päivää</string>
       </dict>
     </dict>
     <key>titleMyAccount</key>
@@ -85,9 +85,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Il mio conto</string>
+        <string>Oma tili</string>
         <key>other</key>
-        <string>I miei account</string>
+        <string>Omat tilit</string>
       </dict>
     </dict>
     <key>transferExpiredLimitReachedDescription</key>
@@ -101,9 +101,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Spiacenti, questo trasferimento ha raggiunto il limite di %d download possibile.</string>
+        <string>Pahoittelut, tämä siirto on saavuttanut %d mahdollisen latauksen rajan.</string>
         <key>other</key>
-        <string>Spiacente, questo trasferimento ha raggiunto il limite di %d download possibili.</string>
+        <string>Pahoittelut, tämä siirto on saavuttanut %d mahdollisten latausten rajan.</string>
       </dict>
     </dict>
     <key>uploadSuccessEmailDescription</key>
@@ -117,9 +117,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>Il link per il download è stato inviato al seguente destinatario:</string>
+        <string>Latauslinkki on lähetetty seuraavalle vastaanottajalle:</string>
         <key>other</key>
-        <string>Il link per il download è stato inviato ai seguenti destinatari:</string>
+        <string>Latauslinkki on lähetetty seuraaville vastaanottajille:</string>
       </dict>
     </dict>
   </dict>
