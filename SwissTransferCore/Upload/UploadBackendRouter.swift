@@ -87,7 +87,8 @@ public final class UploadBackendRouter: Sendable {
                 filesMetadata.append(FileToUploadMetadata(
                     name: file.name,
                     size: file.size,
-                    mimeType: file.mimeType
+                    mimeType: file.mimeType,
+                    localPath: file.localPath
                 ))
                 sizeOfUpload += file.size
                 localFilePaths.insert(file.localPath)
@@ -97,6 +98,7 @@ public final class UploadBackendRouter: Sendable {
                 validityPeriod: localUploadSession.duration,
                 authorEmail: currentUser.email,
                 password: localUploadSession.password,
+                title: nil,
                 message: localUploadSession.message,
                 sizeOfUpload: sizeOfUpload,
                 downloadCountLimit: localUploadSession.numberOfDownload,
@@ -120,7 +122,7 @@ public final class UploadBackendRouter: Sendable {
 
     public func finishUploadSession(uuid: String) async throws -> String {
         if currentUser != nil {
-            try await swissTransferManager.uploadV2Manager.finalizeTransfer(transferId: uuid, conclusion: .complete)
+            let uuid = try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(transferId: uuid)
             return uuid
         } else {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
