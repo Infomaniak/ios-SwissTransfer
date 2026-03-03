@@ -78,16 +78,18 @@ public final class RootTransferViewModel: ObservableObject {
     }
 
     private func fetchValuesFromSettings() {
-        @InjectService var settingsManager: AppSettingsManager
-        guard let appSettings = settingsManager.getAppSettings() else { return }
+        Task {
+            @InjectService var settingsManager: AppSettingsManager
+            guard let appSettings = try await settingsManager.getAppSettings() else { return }
 
-        if currentUser?.email == nil || currentUser?.email.isEmpty == true {
-            authorEmail = appSettings.lastAuthorEmail ?? ""
+            if currentUser?.email == nil || currentUser?.email.isEmpty == true {
+                authorEmail = appSettings.lastAuthorEmail ?? ""
+            }
+            transferType = appSettings.lastTransferType
+            validityPeriod = appSettings.validityPeriod
+            downloadLimit = appSettings.downloadLimit
+            emailLanguage = appSettings.emailLanguage
         }
-        transferType = appSettings.lastTransferType
-        validityPeriod = appSettings.validityPeriod
-        downloadLimit = appSettings.downloadLimit
-        emailLanguage = appSettings.emailLanguage
     }
 
     public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager,
