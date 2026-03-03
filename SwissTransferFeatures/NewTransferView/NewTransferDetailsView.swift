@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import OrderedCollections
 import STCore
@@ -25,6 +26,8 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
+    @Environment(\.currentUser) private var currentUser
+
     @Binding var authorEmail: String
     @Binding var recipientsEmail: OrderedSet<String>
     @Binding var message: String
@@ -35,6 +38,8 @@ struct NewTransferDetailsView: View {
         VStack(spacing: IKPadding.medium) {
             if transferType == .mail {
                 AuthorMailTextFieldView(authorEmail: $authorEmail)
+                    .disabled(currentUser?.email != nil)
+
                 RecipientsTextFieldView(recipients: $recipientsEmail)
             }
 

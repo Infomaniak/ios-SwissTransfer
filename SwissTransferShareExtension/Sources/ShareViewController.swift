@@ -48,7 +48,7 @@ class ShareViewController: UIViewController {
 
         let importedItems = itemProviders.map { ImportedItem(item: $0) }
 
-        let rootTransferView = RootTransferView(initialItems: importedItems)
+        let rootTransferView = RootTransferView(initialItems: importedItems, currentUser: nil)
             .tint(.ST.primary)
             .ikButtonTheme(.swissTransfer)
             .detectCompactWindow()

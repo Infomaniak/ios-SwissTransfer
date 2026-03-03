@@ -149,6 +149,6 @@ public struct NewTransferView: View {
 #Preview {
     NewTransferView()
         .environmentObject(RootTransferViewState())
-        .environmentObject(RootTransferViewModel())
+        .environmentObject(RootTransferViewModel(currentUser: nil))
         .environmentObject(NewTransferFileManager())
 }
