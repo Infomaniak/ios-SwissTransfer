@@ -33,7 +33,12 @@ struct QRCodePanelButton: View {
 
     private var transferURL: URL? {
         let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
-        let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        let url: String
+        if transfer.apiSource == .v1 {
+            url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        } else {
+            url = apiURLCreator.shareTransferV2Url(linkUUID: transfer.linkId ?? "")
+        }
         return URL(string: url)
     }
 
