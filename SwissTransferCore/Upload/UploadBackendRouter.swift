@@ -128,4 +128,12 @@ public final class UploadBackendRouter: Sendable {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
         }
     }
+
+    public func cancelUploadSession(uuid: String) async throws {
+        if currentUser != nil {
+            _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(transferId: uuid, failed: false)
+        } else {
+            try await swissTransferManager.uploadManager.cancelUploadSession(uuid: uuid)
+        }
+    }
 }
