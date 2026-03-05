@@ -301,7 +301,7 @@ public class DownloadManager: ObservableObject {
     private func getDownloadURLFor(file: FileUi, in transfer: TransferUi,
                                    sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
         guard let rawDownloadURL = try await sharedApiUrlCreator.downloadFileUrl(
-            transferUUID: transfer.uuid,
+            transfer: transfer,
             fileUUID: file.uid
         ),
             let downloadURL = URL(string: rawDownloadURL) else {
