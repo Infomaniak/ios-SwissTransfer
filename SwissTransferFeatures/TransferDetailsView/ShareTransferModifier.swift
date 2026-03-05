@@ -44,7 +44,15 @@ struct ShareTransferToolbarModifier: ViewModifier {
 
     private var transferURL: URL? {
         let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
-        let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        let url: String
+        if transfer.apiSource == .v1 {
+            url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        } else if let linkId = transfer.linkId {
+            url = apiURLCreator.shareTransferV2Url(linkUUID: linkId)
+        } else {
+            return nil
+        }
+
         return URL(string: url)
     }
 

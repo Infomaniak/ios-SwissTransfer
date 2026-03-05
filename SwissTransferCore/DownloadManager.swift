@@ -215,6 +215,11 @@ public class DownloadManager: ObservableObject {
     }
 
     private func startTransferDownload(transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws {
+        guard transfer.apiSource == .v1 else {
+            try await startFilesDownload(files: transfer.files, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
+            return
+        }
+
         let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: [])
 
         if let url = transfer.localArchiveURL,
