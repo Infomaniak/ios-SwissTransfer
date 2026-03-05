@@ -32,6 +32,7 @@ extension SharedApiUrlCreator: @retroactive @unchecked Sendable {}
 extension STCore.AccountManager: @retroactive @unchecked Sendable {}
 extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
 extension STNChunkEtag: @retroactive @unchecked Sendable {}
+extension UploadSessionRequest: @retroactive @unchecked Sendable {}
 
 @frozen public struct SendableUploadSession {
     public let uuid: String
