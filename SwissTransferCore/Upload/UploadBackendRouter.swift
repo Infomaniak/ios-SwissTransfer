@@ -39,7 +39,12 @@ public final class UploadBackendRouter: Sendable {
                                                  uploadSession: SendableUploadSession,
                                                  delegate: TransferManagerWorkerDelegate) -> TransferManagerWorker {
         if currentUser != nil {
-            fatalError("TODO")
+            return TransferManagerWorkerV2(
+                overallProgress: overallProgress,
+                uploadSession: uploadSession,
+                uploadBackendRouter: self,
+                delegate: delegate
+            )
         } else {
             return TransferManagerWorkerV1(
                 overallProgress: overallProgress,
@@ -60,7 +65,9 @@ public final class UploadBackendRouter: Sendable {
 
     public func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession) async throws -> String {
         if currentUser != nil {
-            fatalError("TODO")
+            let localUUID = UUID().uuidString
+            localUploadSessions[localUUID] = newUploadSession
+            return localUUID
         } else {
             return try await swissTransferManager.uploadManager
                 .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
@@ -69,7 +76,41 @@ public final class UploadBackendRouter: Sendable {
 
     public func createRemoteUploadSession(localSessionUUID: String) async throws -> SendableUploadSession {
         if let currentUser {
-            fatalError("TODO")
+            guard let localUploadSession = localUploadSessions[localSessionUUID] else {
+                throw DomainError.localUploadSessionNotFound
+            }
+
+            var filesMetadata: [FileToUploadMetadata] = []
+            var sizeOfUpload: Int64 = 0
+            var localFilePaths = Set<String>()
+            for file in localUploadSession.files {
+                filesMetadata.append(FileToUploadMetadata(
+                    name: file.name,
+                    size: file.size,
+                    mimeType: file.mimeType,
+                    localPath: file.localPath
+                ))
+                sizeOfUpload += file.size
+                localFilePaths.insert(file.localPath)
+            }
+
+            let transfer = try await swissTransferManager.uploadV2Manager.prepareTransfer(request: UploadSessionRequest(
+                validityPeriod: localUploadSession.duration,
+                authorEmail: currentUser.email,
+                password: localUploadSession.password,
+                title: nil,
+                message: localUploadSession.message,
+                sizeOfUpload: sizeOfUpload,
+                downloadCountLimit: localUploadSession.numberOfDownload,
+                filesCount: Int32(localUploadSession.files.count),
+                languageCode: localUploadSession.language,
+                filesMetadata: filesMetadata,
+                recipientsEmails: localUploadSession.recipientsEmails
+            ))
+
+            localUploadSessions[localSessionUUID] = nil
+
+            return try SendableUploadSession(transfer: transfer, localFilePaths: localFilePaths)
         } else {
             return try await swissTransferManager.uploadManager.createRemoteUploadSession(
                 localSessionUUID: localSessionUUID,
@@ -81,7 +122,8 @@ public final class UploadBackendRouter: Sendable {
 
     public func finishUploadSession(uuid: String) async throws -> String {
         if currentUser != nil {
-            fatalError("TODO")
+            let uuid = try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(transferId: uuid)
+            return uuid
         } else {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
         }
