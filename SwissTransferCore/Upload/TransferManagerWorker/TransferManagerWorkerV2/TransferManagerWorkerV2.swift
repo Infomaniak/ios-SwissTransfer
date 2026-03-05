@@ -168,7 +168,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }.map(\.chunk)
         let chunksToUpload = uploadFile.uploadChunks.filter { !uploadedChunksInFile.contains($0) }
 
-        let chunkEtags = try await chunksToUpload.concurrentMap(customConcurrency: 1) { [weak self] chunk in
+        let chunkEtags = try await chunksToUpload.concurrentMap(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
             guard let self else {
                 throw TransferManagerWorkerError.invalidChunk
             }

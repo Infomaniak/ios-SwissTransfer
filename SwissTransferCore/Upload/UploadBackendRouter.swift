@@ -42,7 +42,7 @@ public final class UploadBackendRouter: Sendable {
             return TransferManagerWorkerV2(
                 overallProgress: overallProgress,
                 uploadSession: uploadSession,
-                uploadBackendRouter: uploadBackendRouter,
+                uploadBackendRouter: self,
                 delegate: delegate
             )
         } else {
