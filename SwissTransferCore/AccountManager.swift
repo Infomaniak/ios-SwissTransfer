@@ -190,9 +190,12 @@ public actor AccountManager: ObservableObject {
         return Array(managers.keys)
     }
 
-    public func removeTokenAndAccountFor(userId: Int) {
+    public func removeTokenAndAccountFor(userId: Int) async {
         guard let removedToken = tokenStore.removeTokenFor(userId: userId) else { return }
 
+        let kmpAccountManager = await getSwissTransferManager(userId: userId, token: removedToken.accessToken)?.accountManager
+        try? await kmpAccountManager?.logoutCurrentUser(newSTUser: nil)
+        managers[userId] = nil
         objectWillChange.send()
 
         networkLoginService.deleteApiToken(token: removedToken) { result in
