@@ -123,16 +123,17 @@ public struct NewTransferView: View {
                 swissTransferManager: mainViewState.swissTransferManager
             ) else { return }
 
-            let localUploadSession = try await mainViewState.swissTransferManager.uploadManager
-                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+            let uploadBackendRouter = mainViewState.uploadBackendRouter
+            let localUploadSessionUUID = try await uploadBackendRouter
+                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
 
             if let shareExtensionContext {
                 let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator
-                    .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
+                    .importFromShareExtensionURL(localImportUUID: localUploadSessionUUID)
                 openURL(importURL)
                 shareExtensionContext.dismissShareSheet()
             } else {
-                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             }
 
             isLoadingFileToUpload = false

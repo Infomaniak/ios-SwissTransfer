@@ -121,7 +121,11 @@ struct OnboardingBottomButtonsView: View {
         Task {
             await accountManager.createAndSetCurrentAccount()
             if let injection = await accountManager.getCurrentUserSession()?.swissTransferManager {
-                rootViewState.state = .mainView(MainViewState(swissTransferManager: injection), nil)
+                rootViewState.state = .mainView(MainViewState(swissTransferManager: injection,
+                                                              uploadBackendRouter: UploadBackendRouter(
+                                                                  currentUser: nil,
+                                                                  swissTransferManager: injection
+                                                              )), nil)
             }
         }
     }

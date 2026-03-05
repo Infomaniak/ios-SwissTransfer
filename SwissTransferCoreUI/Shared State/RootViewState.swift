@@ -67,7 +67,13 @@ public final class RootViewState: ObservableObject {
         @InjectService var accountManager: AccountManager
         if let currentSession = await accountManager.getCurrentUserSession() {
             state = .mainView(
-                MainViewState(swissTransferManager: currentSession.swissTransferManager),
+                MainViewState(
+                    swissTransferManager: currentSession.swissTransferManager,
+                    uploadBackendRouter: UploadBackendRouter(
+                        currentUser: currentSession.userProfile,
+                        swissTransferManager: currentSession.swissTransferManager
+                    )
+                ),
                 currentSession.userProfile
             )
         } else {
