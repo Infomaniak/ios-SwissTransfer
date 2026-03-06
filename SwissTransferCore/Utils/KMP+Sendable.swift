@@ -57,15 +57,19 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
         uuid = transfer.id
         authorEmail = transfer.senderEmail
         authorEmailToken = nil
+
+        var localFilePaths = localFilePaths
         files = try transfer.files.map {
             let remotePath = $0.path
-            // TODO: Consume the element instead of looping each time
-            guard let localPath = localFilePaths.first(where: { $0.suffix(remotePath.count) == remotePath }) else {
+            guard let localPathIndex = localFilePaths.firstIndex(where: { $0.suffix(remotePath.count) == remotePath }) else {
                 throw DomainError.noLocalPathMatchingRemotePath(
                     localPath: localFilePaths.joined(separator: ", "),
                     remotePath: remotePath
                 )
             }
+
+            let localPath = localFilePaths[localPathIndex]
+            localFilePaths.remove(at: localPathIndex)
             return SendableUploadFileSession(transferFile: $0, localPath: localPath)
         }
     }
