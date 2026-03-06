@@ -124,7 +124,6 @@ public final class UploadBackendRouter: Sendable {
 
                 return try SendableUploadSession(transfer: transfer, localFilePaths: localFilePaths)
             } catch {
-                try? await sessionStore.remove(uuid: localSessionUUID)
                 throw error
             }
         } else {
