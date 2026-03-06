@@ -130,9 +130,12 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
                 try await self.uploadAllChunks(forFile: uploadFile)
             }
 
-            let transferUUID = try await uploadBackendRouter.finishUploadSession(uuid: uploadSession.uuid)
+            let linkId = try await uploadBackendRouter.finishUploadSession(uuid: uploadSession.uuid)
 
-            await delegate?.uploadDidComplete(result: .success(transferUUID))
+            await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
+                transferUUID: uploadSession.uuid,
+                transferLinkId: linkId
+            )))
         } catch let error as URLError where error.code == .cancelled {
             // silent catching, uploads are suspending
         } catch {

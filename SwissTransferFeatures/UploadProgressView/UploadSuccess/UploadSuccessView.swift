@@ -41,10 +41,10 @@ public struct UploadSuccessView: View {
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
-    let transferUUID: String
+    let transferCompletedResult: TransferCompletedResult
 
-    public init(transferUUID: String) {
-        self.transferUUID = transferUUID
+    public init(transferCompletedResult: TransferCompletedResult) {
+        self.transferCompletedResult = transferCompletedResult
     }
 
     public var body: some View {
@@ -52,7 +52,7 @@ public struct UploadSuccessView: View {
             Group {
                 switch viewModel.transferType {
                 case .link:
-                    UploadSuccessQRCodeView(type: viewModel.transferType, transferUUID: transferUUID)
+                    UploadSuccessQRCodeView(type: viewModel.transferType, transferCompletedResult: transferCompletedResult)
                 case .mail:
                     UploadSuccessMailView(recipients: viewModel.recipientsEmail)
                 }
@@ -72,14 +72,9 @@ public struct UploadSuccessView: View {
     }
 }
 
-#Preview("Mail") {
-    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid)
-}
-
-#Preview("QR Code") {
-    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid)
-}
-
-#Preview("Link") {
-    UploadSuccessView(transferUUID: PreviewHelper.sampleTransfer.uuid)
+#Preview {
+    UploadSuccessView(transferCompletedResult: TransferCompletedResult(
+        transferUUID: PreviewHelper.sampleTransfer.uuid,
+        transferLinkId: PreviewHelper.sampleTransfer.uuid
+    ))
 }

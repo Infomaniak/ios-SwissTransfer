@@ -137,8 +137,7 @@ public final class UploadBackendRouter: Sendable {
 
     public func finishUploadSession(uuid: String) async throws -> String {
         if currentUser != nil {
-            let uuid = try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(transferId: uuid)
-            return uuid
+            return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(transferId: uuid)
         } else {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
         }

@@ -100,8 +100,8 @@ public struct UploadProgressView: View {
             .onChange(of: transferSessionManager.transferResult) { transferResult in
                 guard let transferResult else { return }
                 switch transferResult {
-                case .success(let transferUUID):
-                    uploadFinished(transferUUID: transferUUID)
+                case .success(let transferCompletedResult):
+                    uploadFinished(transferCompletedResult: transferCompletedResult)
                 case .failure(let error):
                     handleUploadError(error)
                 }
@@ -142,8 +142,8 @@ public struct UploadProgressView: View {
         }
     }
 
-    private func uploadFinished(transferUUID: String) {
-        rootTransferViewState.transition(to: .success(transferUUID))
+    private func uploadFinished(transferCompletedResult: TransferCompletedResult) {
+        rootTransferViewState.transition(to: .success(transferCompletedResult))
     }
 
     private func catchingUploadErrors(_ task: () async throws -> Void) async {

@@ -53,8 +53,8 @@ public struct RootTransferView: View {
                 VerifyMailView(newUploadSession: newUploadSession)
             case .error(let uploadError):
                 UploadErrorView(uploadError: uploadError)
-            case .success(let transferUUID):
-                UploadSuccessView(transferUUID: transferUUID)
+            case .success(let transferCompletedResult):
+                UploadSuccessView(transferCompletedResult: transferCompletedResult)
             }
         }
         .stFloatingPanel(item: $viewState.cancelUploadContainer, bottomPadding: .zero) { container in
