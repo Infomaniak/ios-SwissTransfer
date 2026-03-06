@@ -1,1 +1,2 @@
-Améliorations et corrections diverses.
+- Téléchargement en multi sélection
+- Support langages addditionnels
