@@ -69,7 +69,7 @@ public final class UploadFile: Identifiable, Sendable {
 
 extension UploadFile: UploadFileSession {
     public var localPath: String {
-        url.absoluteString
+        url.path(percentEncoded: false)
     }
 
     public var name: String {
