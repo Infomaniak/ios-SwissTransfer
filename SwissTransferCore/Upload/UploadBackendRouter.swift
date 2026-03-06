@@ -23,16 +23,16 @@ import InfomaniakCore
 public final class UploadBackendRouter: Sendable {
     let currentUser: UserProfile?
     let swissTransferManager: SwissTransferInjection
+    let sessionStore: LocalUploadSessionStore
 
     enum DomainError: Error {
         case localUploadSessionNotFound
     }
 
-    private var localUploadSessions: [String: NewUploadSession] = [:]
-
     public init(currentUser: UserProfile?, swissTransferManager: SwissTransferInjection) {
         self.currentUser = currentUser
         self.swissTransferManager = swissTransferManager
+        sessionStore = LocalUploadSessionStore(uploadV2Manager: swissTransferManager.uploadV2Manager)
     }
 
     public func instantiateTransferManagerWorker(overallProgress: Progress,
@@ -55,18 +55,54 @@ public final class UploadBackendRouter: Sendable {
         }
     }
 
-    public func getLocalUploadSession(uuid: String) async throws -> UploadSession? {
+    public func getRestorableLocalUploadSession(uuid: String) async throws -> RootTransferRestorableState? {
         if currentUser != nil {
-            return nil
+            guard let uploadSessionRequest = try await sessionStore.get(uuid: uuid) else {
+                return nil
+            }
+
+            return RootTransferRestorableState(uploadSessionRequest: uploadSessionRequest)
         } else {
-            return try await swissTransferManager.uploadManager.getUploads().first { $0.uuid == uuid }
+            guard let uploadSession = try await swissTransferManager.uploadManager.getUploads().first(where: { $0.uuid == uuid })
+            else {
+                return nil
+            }
+
+            return RootTransferRestorableState(uploadSession: uploadSession)
         }
     }
 
     public func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession) async throws -> String {
-        if currentUser != nil {
+        if let currentUser {
+            var filesMetadata: [FileToUploadMetadata] = []
+            var sizeOfUpload: Int64 = 0
+            for file in newUploadSession.files {
+                filesMetadata.append(FileToUploadMetadata(
+                    name: file.name,
+                    size: file.size,
+                    mimeType: file.mimeType,
+                    localPath: file.localPath
+                ))
+                sizeOfUpload += file.size
+            }
+
+            let request = UploadSessionRequest(
+                validityPeriod: newUploadSession.duration,
+                authorEmail: currentUser.email,
+                password: newUploadSession.password,
+                title: nil,
+                message: newUploadSession.message,
+                sizeOfUpload: sizeOfUpload,
+                downloadCountLimit: newUploadSession.numberOfDownload,
+                filesCount: Int32(newUploadSession.files.count),
+                languageCode: newUploadSession.language,
+                filesMetadata: filesMetadata,
+                recipientsEmails: newUploadSession.recipientsEmails
+            )
+
             let localUUID = UUID().uuidString
-            localUploadSessions[localUUID] = newUploadSession
+            try await sessionStore.save(uuid: localUUID, session: request)
+
             return localUUID
         } else {
             return try await swissTransferManager.uploadManager
@@ -75,42 +111,21 @@ public final class UploadBackendRouter: Sendable {
     }
 
     public func createRemoteUploadSession(localSessionUUID: String) async throws -> SendableUploadSession {
-        if let currentUser {
-            guard let localUploadSession = localUploadSessions[localSessionUUID] else {
+        if currentUser != nil {
+            guard let localUploadSession = try await sessionStore.get(uuid: localSessionUUID) else {
                 throw DomainError.localUploadSessionNotFound
             }
 
-            var filesMetadata: [FileToUploadMetadata] = []
-            var sizeOfUpload: Int64 = 0
-            var localFilePaths = Set<String>()
-            for file in localUploadSession.files {
-                filesMetadata.append(FileToUploadMetadata(
-                    name: file.name,
-                    size: file.size,
-                    mimeType: file.mimeType,
-                    localPath: file.localPath
-                ))
-                sizeOfUpload += file.size
-                localFilePaths.insert(file.localPath)
+            do {
+                let transfer = try await swissTransferManager.uploadV2Manager.prepareTransfer(request: localUploadSession)
+                let localFilePaths = Set(localUploadSession.filesMetadata.map { $0.localPath })
+
+                try await sessionStore.remove(uuid: localSessionUUID)
+
+                return try SendableUploadSession(transfer: transfer, localFilePaths: localFilePaths)
+            } catch {
+                throw error
             }
-
-            let transfer = try await swissTransferManager.uploadV2Manager.prepareTransfer(request: UploadSessionRequest(
-                validityPeriod: localUploadSession.duration,
-                authorEmail: currentUser.email,
-                password: localUploadSession.password,
-                title: nil,
-                message: localUploadSession.message,
-                sizeOfUpload: sizeOfUpload,
-                downloadCountLimit: localUploadSession.numberOfDownload,
-                filesCount: Int32(localUploadSession.files.count),
-                languageCode: localUploadSession.language,
-                filesMetadata: filesMetadata,
-                recipientsEmails: localUploadSession.recipientsEmails
-            ))
-
-            localUploadSessions[localSessionUUID] = nil
-
-            return try SendableUploadSession(transfer: transfer, localFilePaths: localFilePaths)
         } else {
             return try await swissTransferManager.uploadManager.createRemoteUploadSession(
                 localSessionUUID: localSessionUUID,

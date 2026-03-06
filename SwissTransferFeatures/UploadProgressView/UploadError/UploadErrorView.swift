@@ -75,7 +75,7 @@ public struct UploadErrorView: View {
                 return
             }
 
-            let localUploadSessionUUID = try await mainViewState.swissTransferManager.uploadManager
+            let localUploadSessionUUID = try await mainViewState.uploadBackendRouter
                 .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
 
             rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))

@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakDI
 import STRootTransferView
 import SwiftUI
 import SwissTransferCore
@@ -48,25 +49,43 @@ class ShareViewController: UIViewController {
 
         let importedItems = itemProviders.map { ImportedItem(item: $0) }
 
-        let rootTransferView = RootTransferView(initialItems: importedItems, currentUser: nil)
-            .tint(.ST.primary)
-            .ikButtonTheme(.swissTransfer)
-            .detectCompactWindow()
-            .environment(\.shareExtensionContext, ShareExtensionContext { self.dismiss(animated: true) })
-            .defaultAppStorage(.shared)
+        Task {
+            @InjectService var accountManager: AccountManager
+            guard let userSession = await accountManager.getCurrentUserSession() else {
+                dismiss(animated: true)
+                return
+            }
 
-        let hostingController = UIHostingController(rootView: rootTransferView)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        addChild(hostingController)
-        view.addSubview(hostingController.view)
-        hostingController.didMove(toParent: self)
+            let mainViewState = MainViewState(
+                swissTransferManager: userSession.swissTransferManager,
+                uploadBackendRouter: UploadBackendRouter(
+                    currentUser: userSession.userProfile,
+                    swissTransferManager: userSession.swissTransferManager
+                )
+            )
 
-        NSLayoutConstraint.activate([
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+            let rootTransferView = RootTransferView(initialItems: importedItems, currentUser: userSession.userProfile)
+                .tint(.ST.primary)
+                .ikButtonTheme(.swissTransfer)
+                .detectCompactWindow()
+                .environment(\.shareExtensionContext, ShareExtensionContext { self.dismiss(animated: true) })
+                .environment(\.currentUser, userSession.userProfile)
+                .environmentObject(mainViewState)
+                .defaultAppStorage(.shared)
+
+            let hostingController = UIHostingController(rootView: rootTransferView)
+            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+            addChild(hostingController)
+            view.addSubview(hostingController.view)
+            hostingController.didMove(toParent: self)
+
+            NSLayoutConstraint.activate([
+                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
     }
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
