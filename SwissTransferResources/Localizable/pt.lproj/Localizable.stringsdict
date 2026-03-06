@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+ Loco ios export: Xcode Stringsdict (legacy)
+ Project: SwissTransfer
+ Locale: pt, Portuguese
+ Tagged: ios-stringsdict
+ Exported by: Valentin Perignon
+ Exported at: Tue, 03 Mar 2026 14:04:48 +0100
+-->
+<plist version="1.0">
+  <dict>
+    <key>filesCount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ficheiro</string>
+        <key>other</key>
+        <string>%d ficheiros</string>
+      </dict>
+    </dict>
+    <key>multipleSelectionTitle</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d selecionado</string>
+        <key>other</key>
+        <string>%d selecionados</string>
+      </dict>
+    </dict>
+    <key>recipientHeader</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Destinatário:</string>
+        <key>other</key>
+        <string>Destinatários:</string>
+      </dict>
+    </dict>
+    <key>settingsValidityPeriodValue</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d dia</string>
+        <key>other</key>
+        <string>%d dias</string>
+      </dict>
+    </dict>
+    <key>titleMyAccount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>A minha conta</string>
+        <key>other</key>
+        <string>As minhas contas</string>
+      </dict>
+    </dict>
+    <key>transferExpiredLimitReachedDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Lamentamos, esta transferência atingiu o limite de %d transferência possível.</string>
+        <key>other</key>
+        <string>Lamentamos, esta transferência atingiu o limite de %d transferências possíveis.</string>
+      </dict>
+    </dict>
+    <key>uploadSuccessEmailDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>A ligação de transferência foi enviada para o seguinte destinatário:</string>
+        <key>other</key>
+        <string>A ligação de transferência foi enviada para os seguintes destinatários:</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

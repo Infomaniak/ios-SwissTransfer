@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+ Loco ios export: Xcode Stringsdict (legacy)
+ Project: SwissTransfer
+ Locale: el, Greek
+ Tagged: ios-stringsdict
+ Exported by: Valentin Perignon
+ Exported at: Tue, 03 Mar 2026 14:04:48 +0100
+-->
+<plist version="1.0">
+  <dict>
+    <key>filesCount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d αρχείο</string>
+        <key>other</key>
+        <string>%d αρχεία</string>
+      </dict>
+    </dict>
+    <key>multipleSelectionTitle</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d επιλεγμένο</string>
+        <key>other</key>
+        <string>%d επιλεγμένα</string>
+      </dict>
+    </dict>
+    <key>recipientHeader</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Παραλήπτης:</string>
+        <key>other</key>
+        <string>Παραλήπτες:</string>
+      </dict>
+    </dict>
+    <key>settingsValidityPeriodValue</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d ημέρα</string>
+        <key>other</key>
+        <string>%d ημέρες</string>
+      </dict>
+    </dict>
+    <key>titleMyAccount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Ο λογαριασμός μου</string>
+        <key>other</key>
+        <string>Οι λογαριασμοί μου</string>
+      </dict>
+    </dict>
+    <key>transferExpiredLimitReachedDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Λυπούμαστε, αυτή η μεταφορά έχει φτάσει το όριο των %d δυνατών λήψεων.</string>
+        <key>other</key>
+        <string>Λυπούμαστε, αυτή η μεταφορά έχει φτάσει το όριο των %d δυνατών λήψεων.</string>
+      </dict>
+    </dict>
+    <key>uploadSuccessEmailDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Ο σύνδεσμος λήψης εστάλη στον παρακάτω παραλήπτη:</string>
+        <key>other</key>
+        <string>Ο σύνδεσμος λήψης εστάλη στους παρακάτω παραλήπτες:</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

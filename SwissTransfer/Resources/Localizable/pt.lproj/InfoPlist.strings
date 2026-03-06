@@ -1,0 +1,14 @@
+/*
+ * Loco ios export: Xcode Strings (legacy)
+ * Project: SwissTransfer
+ * Locale: pt, Portuguese
+ * Tagged: ios-info-plist
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 03 Mar 2026 14:04:48 +0100
+ */
+
+/* loco:673c893e9562320bbd0bf572 */
+"NSCameraUsageDescription" = "Poderás transferir as fotos e vídeos tirados com a tua câmara.";
+
+/* loco:67e2587ee6d37ff8b60b2622 */
+"NSPhotoLibraryAddUsageDescription" = "Poderás guardar fotos e vídeos na tua biblioteca de fotos.";

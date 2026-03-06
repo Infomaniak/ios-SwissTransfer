@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+ Loco ios export: Xcode Stringsdict (legacy)
+ Project: SwissTransfer
+ Locale: nb, Norwegian Bokmål
+ Tagged: ios-stringsdict
+ Exported by: Valentin Perignon
+ Exported at: Tue, 03 Mar 2026 14:04:48 +0100
+-->
+<plist version="1.0">
+  <dict>
+    <key>filesCount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d fil</string>
+        <key>other</key>
+        <string>%d filer</string>
+      </dict>
+    </dict>
+    <key>multipleSelectionTitle</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d valgt</string>
+        <key>other</key>
+        <string>%d valgt</string>
+      </dict>
+    </dict>
+    <key>recipientHeader</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Mottaker:</string>
+        <key>other</key>
+        <string>Mottakere:</string>
+      </dict>
+    </dict>
+    <key>settingsValidityPeriodValue</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d dag</string>
+        <key>other</key>
+        <string>%d dager</string>
+      </dict>
+    </dict>
+    <key>titleMyAccount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Min konto</string>
+        <key>other</key>
+        <string>Mine kontoer</string>
+      </dict>
+    </dict>
+    <key>transferExpiredLimitReachedDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Beklager, denne overføringen har nådd grensen på %d mulig nedlasting.</string>
+        <key>other</key>
+        <string>Beklager, denne overføringen har nådd grensen på %d mulige nedlastinger.</string>
+      </dict>
+    </dict>
+    <key>uploadSuccessEmailDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Nedlastingslenken er sendt til følgende mottaker:</string>
+        <key>other</key>
+        <string>Nedlastingslenken er sendt til følgende mottakere:</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>
