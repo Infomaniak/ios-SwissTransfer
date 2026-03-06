@@ -19,8 +19,18 @@
 import Foundation
 import InfomaniakCore
 
+public struct TransferCompletedResult: Equatable, Sendable {
+    public let transferUUID: String
+    public let transferLinkId: String
+
+    public init(transferUUID: String, transferLinkId: String) {
+        self.transferUUID = transferUUID
+        self.transferLinkId = transferLinkId
+    }
+}
+
 public protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
-    @MainActor func uploadDidComplete(result: Result<String, NSError>)
+    @MainActor func uploadDidComplete(result: Result<TransferCompletedResult, NSError>)
 }
 
 public protocol TransferManagerWorker: Sendable, ExpiringActivityDelegate {
