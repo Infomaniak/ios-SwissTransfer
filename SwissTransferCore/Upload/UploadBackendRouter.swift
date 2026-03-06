@@ -76,7 +76,6 @@ public final class UploadBackendRouter: Sendable {
         if let currentUser {
             var filesMetadata: [FileToUploadMetadata] = []
             var sizeOfUpload: Int64 = 0
-            var localFilePaths = Set<String>()
             for file in newUploadSession.files {
                 filesMetadata.append(FileToUploadMetadata(
                     name: file.name,
@@ -85,7 +84,6 @@ public final class UploadBackendRouter: Sendable {
                     localPath: file.localPath
                 ))
                 sizeOfUpload += file.size
-                localFilePaths.insert(file.localPath)
             }
 
             let request = UploadSessionRequest(
