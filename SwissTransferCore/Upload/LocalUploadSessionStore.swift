@@ -18,6 +18,7 @@
 
 import Foundation
 import OSLog
+import Sentry
 import STCore
 
 actor LocalUploadSessionStore {
@@ -37,7 +38,8 @@ actor LocalUploadSessionStore {
         do {
             storageDirectory = try URL.appGroupTmpDirectory().appendingPathComponent("upload-sessions", isDirectory: true)
         } catch {
-            fatalError("Couldn't create directory for upload sessions: \(error.localizedDescription)")
+            SentrySDK.capture(error: error)
+            storageDirectory = .temporaryDirectory.appendingPathComponent("upload-sessions", isDirectory: true)
         }
     }
 
