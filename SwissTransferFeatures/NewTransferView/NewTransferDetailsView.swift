@@ -49,6 +49,13 @@ struct NewTransferDetailsView: View {
                 size: 88
             )
         }
+        .onChange(of: transferType) { newValue in
+            if newValue == .link {
+                authorEmail = ""
+            } else {
+                authorEmail = currentUser?.email ?? ""
+            }
+        }
     }
 }
 

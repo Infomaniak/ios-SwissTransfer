@@ -44,8 +44,6 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
 
-    let currentUser: UserProfile?
-
     public private(set) var initializedFromShare: Bool
 
     public var isTransferConfigurationValid: Bool {
@@ -69,11 +67,6 @@ public final class RootTransferViewModel: ObservableObject {
 
     public init(initializedFromShare: Bool = false, currentUser: UserProfile?) {
         self.initializedFromShare = initializedFromShare
-        self.currentUser = currentUser
-        if let currentUser, !currentUser.email.isEmpty {
-            authorEmail = currentUser.email
-        }
-
         fetchValuesFromSettings()
     }
 
@@ -82,9 +75,7 @@ public final class RootTransferViewModel: ObservableObject {
             @InjectService var settingsManager: AppSettingsManager
             guard let appSettings = try await settingsManager.getAppSettings() else { return }
 
-            if currentUser?.email == nil || currentUser?.email.isEmpty == true {
-                authorEmail = appSettings.lastAuthorEmail ?? ""
-            }
+            authorEmail = appSettings.lastAuthorEmail ?? ""
             transferType = appSettings.lastTransferType
             validityPeriod = appSettings.validityPeriod
             downloadLimit = appSettings.downloadLimit
