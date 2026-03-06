@@ -55,11 +55,20 @@ public final class UploadBackendRouter: Sendable {
         }
     }
 
-    public func getLocalUploadSession(uuid: String) async throws -> UploadSession? {
+    public func getRestorableLocalUploadSession(uuid: String) async throws -> RootTransferRestorableState? {
         if currentUser != nil {
-            return nil
+            guard let uploadSessionRequest = try await sessionStore.get(uuid: uuid) else {
+                return nil
+            }
+
+            return RootTransferRestorableState(uploadSessionRequest: uploadSessionRequest)
         } else {
-            return try await swissTransferManager.uploadManager.getUploads().first { $0.uuid == uuid }
+            guard let uploadSession = try await swissTransferManager.uploadManager.getUploads().first(where: { $0.uuid == uuid })
+            else {
+                return nil
+            }
+
+            return RootTransferRestorableState(uploadSession: uploadSession)
         }
     }
 

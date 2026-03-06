@@ -120,18 +120,14 @@ public final class RootTransferViewModel: ObservableObject {
         return newUploadSession
     }
 
-    public func restoreWith(uploadSession: any UploadSession) {
-        authorEmail = uploadSession.authorEmail
-        recipientsEmail = OrderedSet(uploadSession.recipientsEmails)
-
-        if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
-            transferType = .mail
-        }
-
-        password = uploadSession.password
-        message = uploadSession.message
-        validityPeriod = uploadSession.duration
-        downloadLimit = uploadSession.numberOfDownload
-        emailLanguage = uploadSession.language
+    public func restoreWith(state: RootTransferRestorableState) {
+        authorEmail = state.authorEmail
+        recipientsEmail = state.recipientsEmail
+        transferType = state.transferType
+        password = state.password
+        message = state.message
+        validityPeriod = state.validityPeriod
+        downloadLimit = state.downloadLimit
+        emailLanguage = state.emailLanguage
     }
 }

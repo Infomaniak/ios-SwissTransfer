@@ -122,8 +122,9 @@ public struct UploadProgressView: View {
             let uploadBackendRouter = mainViewState.uploadBackendRouter
 
             if viewModel.initializedFromShare,
-               let uploadSessionFromShare = try? await uploadBackendRouter.getLocalUploadSession(uuid: localSessionUUID) {
-                viewModel.restoreWith(uploadSession: uploadSessionFromShare)
+               let uploadSessionFromShare = try? await uploadBackendRouter
+               .getRestorableLocalUploadSession(uuid: localSessionUUID) {
+                viewModel.restoreWith(state: uploadSessionFromShare)
             }
 
             let uploadSession = try await uploadBackendRouter.createRemoteUploadSession(localSessionUUID: localSessionUUID)
