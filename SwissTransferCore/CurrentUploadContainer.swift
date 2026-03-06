@@ -33,20 +33,20 @@ public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
     public let uploadsCancellable: UploadCancellable
-    private let uploadManager: UploadManager?
+    private let uploadBackendRouter: UploadBackendRouter?
 
-    public init(uuid: String, uploadsCancellable: UploadCancellable, uploadManager: UploadManager?) {
+    public init(uuid: String, uploadsCancellable: UploadCancellable, uploadBackendRouter: UploadBackendRouter?) {
         self.uuid = uuid
         self.uploadsCancellable = uploadsCancellable
-        self.uploadManager = uploadManager
+        self.uploadBackendRouter = uploadBackendRouter
     }
 }
 
 extension CurrentUploadContainer: Cancellable {
     public func cancel() {
-        Task {
+        Task.detached {
             await uploadsCancellable.cancelUploads()
-            try? await uploadManager?.cancelUploadSession(uuid: uuid)
+            try? await uploadBackendRouter?.cancelUploadSession(uuid: uuid)
         }
     }
 }

@@ -60,6 +60,6 @@ public struct CancelUploadView: View {
 }
 
 #Preview {
-    let container = CurrentUploadContainer(uuid: "", uploadsCancellable: DummyUploadCancellable(), uploadManager: nil)
+    let container = CurrentUploadContainer(uuid: "", uploadsCancellable: DummyUploadCancellable(), uploadBackendRouter: nil)
     CancelUploadView(uploadContainer: container)
 }
