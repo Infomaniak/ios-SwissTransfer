@@ -88,7 +88,7 @@ public struct DeepLinkPasswordView: View {
                 let transferManager = mainViewState.transferManager
 
                 guard let transferUUID = try await transferManager.addTransferByUrl(
-                    url: url.url.path(),
+                    url: url.url.absoluteString,
                     password: trimmedPassword
                 ) else { return }
                 let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)

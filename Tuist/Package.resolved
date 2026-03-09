@@ -102,7 +102,7 @@
     {
       "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
         "revision" : "69faaefa7721fba9e434a52c16adf4329c9084db",
         "version" : "4.6.0"
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "9b378e16e6421810dc317ccf0d8acdad9efb67b2",
-        "version" : "5.4.0"
+        "revision" : "2847d7716f9ba18c1f6ab2612b7fddaf7fdb93a1",
+        "version" : "7.0.0"
       }
     },
     {

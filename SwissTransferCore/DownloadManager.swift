@@ -245,7 +245,7 @@ public class DownloadManager: ObservableObject {
 
         let downloadURL = try await getDownloadURLFor(transfer: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
-        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
+        try createDownloadTask(url: downloadURL, password: transfer.password, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
     private func startFilesDownload(
@@ -287,7 +287,7 @@ public class DownloadManager: ObservableObject {
     private func startDownload(file: FileUi, in transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws {
         let downloadURL = try await getDownloadURLFor(file: file, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
-        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
+        try createDownloadTask(url: downloadURL, password: transfer.password, taskId: taskId, expectedSize: file.fileSize)
     }
 
     private func taskId(transferUUID: String, fileUUID: String?) -> String {
@@ -325,8 +325,11 @@ public class DownloadManager: ObservableObject {
         return downloadURL
     }
 
-    private func createDownloadTask(url downloadURL: URL, taskId: String, expectedSize: Int64) throws {
-        let downloadRequest = try URLRequest(url: downloadURL, method: .get)
+    private func createDownloadTask(url downloadURL: URL, password: String?, taskId: String, expectedSize: Int64) throws {
+        var downloadRequest = try URLRequest(url: downloadURL, method: .get)
+        if let password {
+            downloadRequest.setValue(password, forHTTPHeaderField: "Transfer-Password")
+        }
         let sessionDownloadTask = session.downloadTask(with: downloadRequest)
         sessionDownloadTask.taskDescription = taskId
         sessionDownloadTask.countOfBytesClientExpectsToReceive = expectedSize
