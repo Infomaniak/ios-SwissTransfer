@@ -44,7 +44,7 @@ extension [Factory] {
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
-    private static let apiEnvironment = ApiEnvironment.prod
+    private static let apiEnvironment = ApiEnvironment.preprod
     public static let loginConfig = InfomaniakLogin.Config(
         clientId: "17EE3471-9843-4FB9-AD95-CB8C41BAD624",
         loginURL: URL(string: "https://login.\(apiEnvironment.host)/")!,
