@@ -28,7 +28,6 @@ actor LocalUploadSessionStore {
 
     enum DomainError: Error {
         case failedToCreateStorageDirectory
-        case sessionNotFound
     }
 
     private let storageDirectory: URL
@@ -92,22 +91,6 @@ actor LocalUploadSessionStore {
             try fileManager.removeItem(at: fileURL)
         } catch {
             Logger.general.error("Failed to remove upload session \(uuid): \(error.localizedDescription)")
-            throw error
-        }
-    }
-
-    func cleanupAll() throws {
-        cache.removeAll()
-
-        guard fileManager.fileExists(atPath: storageDirectory.path) else {
-            return
-        }
-
-        do {
-            try fileManager.removeItem(at: storageDirectory)
-            Logger.general.info("Cleaned up all upload sessions")
-        } catch {
-            Logger.general.error("Failed to cleanup upload sessions: \(error.localizedDescription)")
             throw error
         }
     }

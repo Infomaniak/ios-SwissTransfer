@@ -65,7 +65,7 @@ public final class RootTransferViewModel: ObservableObject {
         return true
     }
 
-    public init(initializedFromShare: Bool = false, currentUser: UserProfile?) {
+    public init(initializedFromShare: Bool = false) {
         self.initializedFromShare = initializedFromShare
         fetchValuesFromSettings()
     }

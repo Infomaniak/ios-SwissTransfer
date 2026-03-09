@@ -30,8 +30,6 @@ public struct DownloadButton: View {
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var downloadedTransferURL: IdentifiableURL?
-
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
 

@@ -84,9 +84,9 @@ public struct MainView: View {
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
             switch container.content {
             case .importedItems(let importedItems):
-                RootTransferView(initialItems: importedItems, currentUser: currentUser)
+                RootTransferView(initialItems: importedItems)
             case .shareExtensionContinuing(let localSessionUUID):
-                RootTransferView(localSessionUUID: localSessionUUID, currentUser: currentUser)
+                RootTransferView(localSessionUUID: localSessionUUID)
             }
         }
         .sheet(item: $mainViewState.isShowingProtectedDeepLink) { identifiableURL in

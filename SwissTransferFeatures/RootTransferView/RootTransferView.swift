@@ -28,17 +28,17 @@ public struct RootTransferView: View {
     @StateObject private var viewModel: RootTransferViewModel
     @StateObject private var newTransferManager: NewTransferFileManager
 
-    public init(initialItems: [ImportedItem], currentUser: UserProfile?) {
+    public init(initialItems: [ImportedItem]) {
         _viewState = StateObject(wrappedValue: RootTransferViewState())
-        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: false, currentUser: currentUser))
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: false))
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: initialItems))
     }
 
-    public init(localSessionUUID: String, currentUser: UserProfile?) {
+    public init(localSessionUUID: String) {
         _viewState = StateObject(wrappedValue: RootTransferViewState(
             initialState: .uploadProgress(localSessionUUID: localSessionUUID)
         ))
-        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: true, currentUser: currentUser))
+        _viewModel = StateObject(wrappedValue: RootTransferViewModel(initializedFromShare: true))
         _newTransferManager = StateObject(wrappedValue: NewTransferFileManager(initialItems: [], shouldDoInitialClean: false))
     }
 
@@ -67,5 +67,5 @@ public struct RootTransferView: View {
 }
 
 #Preview {
-    RootTransferView(initialItems: [], currentUser: nil)
+    RootTransferView(initialItems: [])
 }

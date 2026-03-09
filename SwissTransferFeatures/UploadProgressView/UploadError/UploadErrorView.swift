@@ -91,5 +91,5 @@ public struct UploadErrorView: View {
 #Preview {
     UploadErrorView(uploadError: .default)
         .environmentObject(RootTransferViewState())
-        .environmentObject(RootTransferViewModel(currentUser: nil))
+        .environmentObject(RootTransferViewModel())
 }

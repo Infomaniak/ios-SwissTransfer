@@ -28,9 +28,6 @@ struct DownloadableFileCellView: View {
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var downloadedFilePreviewURL: URL?
-    @State private var downloadedDirectoryURL: IdentifiableURL?
-
     let transfer: TransferUi
     let file: FileUi
     let matomoCategory: MatomoCategory
