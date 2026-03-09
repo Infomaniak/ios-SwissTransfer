@@ -99,8 +99,7 @@ public struct ThumbnailProvider: ThumbnailProvidable {
     }
 
     private func generateTemporaryThumbnailFor(file: SendableUploadFileSession, scale: CGFloat) async -> URL? {
-        guard let fileLocalURL = URL(string: file.localPath) else { return nil }
-
+        let fileLocalURL = URL(filePath: file.localPath)
         let tmpDirectoryURL = FileManager.default.temporaryDirectory.appending(path: "thumbnails", directoryHint: .isDirectory)
 
         do {

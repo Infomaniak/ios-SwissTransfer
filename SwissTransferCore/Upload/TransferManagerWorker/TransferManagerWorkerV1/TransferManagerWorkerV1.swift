@@ -97,10 +97,7 @@ public actor TransferManagerWorkerV1: TransferManagerWorker {
     }
 
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: path) else {
-            throw TransferManagerWorkerError.invalidURL(rawURL: path)
-        }
-
+        let fileURL = URL(filePath: path)
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
 
         let ranges = try rangeProvider.allRanges
