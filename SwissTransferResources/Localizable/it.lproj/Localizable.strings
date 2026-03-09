@@ -4,7 +4,7 @@
  * Locale: it, Italian
  * Tagged: ios
  * Exported by: Philippe Weidmann
- * Exported at: Sun, 26 Oct 2025 18:35:29 +0100
+ * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -68,7 +68,7 @@
 "buttonUseOtherAccount" = "Utilizza un altro account";
 
 /* loco:69845c4f61406c35b20db5d2 */
-"confirmLogoutDescription" = "Sei sicuro di volerti disconnettere da %s?";
+"confirmLogoutDescription" = "Sei sicuro di volerti disconnettere da %@?";
 
 /* loco:69845bbd75c02bd018051a32 */
 "confirmLogoutTitle" = "Disconnettersi";
@@ -123,9 +123,6 @@
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Trasferimento scaricato: %d/%d";
-
-/* loco:6761311fef0ed7ef9d0a2812 */
-"errorAppIntegrity" = "Il dispositivo non è riconosciuto come sicuro";
 
 /* loco:6720ec444fa469071a050ee2 */
 "errorGeneratingQRCode" = "Impossibile generare il codice QR";
@@ -270,9 +267,6 @@
 
 /* loco:697b34e6399432fc860cf9b2 */
 "onboardingSendFilesTitle" = "Pronto per iniziare?";
-
-/* loco:6978c2946c4481e738070653 */
-"onboardingSignInOrCreateAccount" = "Accedi o crea un account gratuitamente";
 
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Condividi fino a 50 GB";
@@ -526,11 +520,8 @@
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ rimasto";
 
-/* loco:6707e09639f0b3f32007d2e2 */
-"transferSpaceLeft-plural" = "%@ rimasti";
-
-/* loco:6712085058c0880751095f72 */
-"transferSpaceLeft-plural-many" = "";
+/* loco:69aa93edc7dabf95130ef882 */
+"transferTitlePlaceholder" = "Dai un titolo al tuo trasferimento";
 
 /* loco:66c4aa7762a79eb6a60eaba2 */
 "transferTypeEmail" = "Email";

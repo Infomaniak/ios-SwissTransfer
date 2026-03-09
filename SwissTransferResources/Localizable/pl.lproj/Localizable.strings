@@ -1,0 +1,641 @@
+/*
+ * Loco ios export: Xcode Strings (legacy)
+ * Project: SwissTransfer
+ * Locale: pl, Polish
+ * Tagged: ios
+ * Exported by: Philippe Weidmann
+ * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
+ */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Ustawienia zaawansowane";
+
+/* loco:677be58b7579b67f0406b33e */
+"awaitingNetwork" = "Oczekiwanie na sieć";
+
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Wszystkie";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Anuluj";
+
+/* loco:6721e8f6b18493385d00ec52 */
+"buttonCancelTransfer" = "Anuluj transfer";
+
+/* loco:6721eccd0752504a0d064d02 */
+"buttonCloseAndContinue" = "Zamknij i kontynuuj";
+
+/* loco:6707f83845c44bad7f0d7805 */
+"buttonConfirm" = "Potwierdź";
+
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Kopiuj link";
+
+/* loco:67616ea394ffdbb7e5071e36 */
+"buttonDeleteTransfer" = "Usuń transfer";
+
+/* loco:68359d4126ae0a9eed0c68a2 */
+"buttonDeleteYes" = "Tak, usuń";
+
+/* loco:67220015101b3de12b0f1f82 */
+"buttonDownload" = "Pobierz";
+
+/* loco:672200e4a61b86b8470776e2 */
+"buttonDownloadSelected" = "Pobierz zaznaczone";
+
+/* loco:677e9253d2777f26f5019852 */
+"buttonDownloaded" = "Pobrano";
+
+/* loco:67448efd69b0e5a4910909b2 */
+"buttonEditTransfer" = "Edytuj mój transfer";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Zakończ";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Otwórz aplikację pocztową";
+
+/* loco:672a116b6135bb977203e762 */
+"buttonRetry" = "Spróbuj ponownie";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Udostępnij";
+
+/* loco:674834cdbb4f7b35ad00ea55 */
+"buttonStart" = "Rozpocznij";
+
+/* loco:699471fbbf0c6c800e06b763 */
+"buttonUseOtherAccount" = "Użyj innego konta";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Czy na pewno chcesz się wylogować z %@?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Wyloguj się";
+
+/* loco:66c5b8a600121e93c00c79d2 */
+"contentDescriptionButtonBack" = "Wstecz";
+
+/* loco:66c5b8e29f9df1eb920ef483 */
+"contentDescriptionButtonClose" = "Zamknij";
+
+/* loco:6719f3144da70102cb0abc82 */
+"contentDescriptionButtonHidePassword" = "Ukryj hasło";
+
+/* loco:66ed1facfdf04647c80a0482 */
+"contentDescriptionButtonRemove" = "Usuń plik";
+
+/* loco:6719f30247e142610b08f4f3 */
+"contentDescriptionButtonShowPassword" = "Pokaż hasło";
+
+/* loco:66a1fa770af8cf8470002102 */
+"contentDescriptionCreateNewTransferButton" = "Nowy transfer";
+
+/* loco:67e54599054e355e4f053752 */
+"dailyTransferLimitReached" = "Osiągnąłeś dzienny limit transferów";
+
+/* loco:677cf4a37658668b1c07d9a2 */
+"deeplinkPasswordDescription" = "Wprowadź hasło, które otrzymałeś, aby pobrać te pliki.";
+
+/* loco:6787727e96fb165b36011422 */
+"deeplinkTransferExpired" = "Ten transfer wygasł";
+
+/* loco:677fbfbeb541dd8a8c0276d2 */
+"deeplinkTransferNotFound" = "Ten transfer nie istnieje";
+
+/* loco:699c62a8090390d46409c7f2 */
+"deleteAccountAlertTitle" = "Usuń konto";
+
+/* loco:699c52d6d2021467050c9872 */
+"deleteAccountErrorAlertMessage" = "Usunięcie konta nie powiodło się";
+
+/* loco:699c4fdc93c5e844420cf302 */
+"deleteAccountSuccessAlertMessage" = "Pomyślne usunięcie konta";
+
+/* loco:68359c6b15da309c25045492 */
+"deleteThisTransferDescription" = "Ten transfer i zawarte w nim pliki zostaną usunięte.";
+
+/* loco:68359bf65101e64968042602 */
+"deleteThisTransferTitle" = "Usunąć ten transfer?";
+
+/* loco:67852070453d66cb9a0033c2 */
+"downloadInProgressDialogTitle" = "Pobieranie w toku…";
+
+/* loco:66a24a3f3472a720090cfd52 */
+"downloadedTransferLabel" = "Pobrany transfer: %d/%d";
+
+/* loco:6720ec444fa469071a050ee2 */
+"errorGeneratingQRCode" = "Nie można wygenerować kodu QR";
+
+/* loco:677cfe305ec5b8afc10db732 */
+"errorIncorrectPassword" = "Nieprawidłowe hasło";
+
+/* loco:6728e0698584637cc20ef6b2 */
+"errorTransferPasswordLength" = "Hasło musi mieć od 6 do 25 znaków";
+
+/* loco:67b8749b3c6e5f744d0bcc82 */
+"expired" = "Wygasłe";
+
+/* loco:67b489ba13ccf8b7ab0e46b3 */
+"expiresAt" = "Wygasa o %@";
+
+/* loco:669f7a817f40f7e9170fafa2 */
+"expiresIn" = "Wygasa za %d dni";
+
+/* loco:67b49607bdcd0286220cea32 */
+"expiresThe" = "Wygasa dnia %s";
+
+/* loco:6776640e5e97ee7e550d5b72 */
+"expiresTomorrow" = "Wygasa jutro";
+
+/* loco:67fe654051b0931bec0d5b42 */
+"fileCountOverDisplayOnly" = "%1$d/%2$d plików";
+
+/* loco:67fe6950a9aa76a7670a9112 */
+"fileCountOverTtsFriendly" = "%1$d z %2$d plików";
+
+/* loco:67ffa893e821c9e3a80af462 */
+"fileSizeOverDisplayOnly" = "%1$@/%2$@";
+
+/* loco:67ffa9059ea861506908e942 */
+"fileSizeOverTtsFriendly" = "%1$@ z %2$@";
+
+/* loco:669f76984c6fad682900d032 */
+"firstTransferDescription" = "Wykonaj swój pierwszy transfer!";
+
+/* loco:66c5b683919c7a5f1b024142 */
+"importFilesScreenTitle" = "Pliki do transferu";
+
+/* loco:6750234ba38b270dc804a7d2 */
+"invalidAddress" = "Nieprawidłowy adres";
+
+/* loco:66a24acfa855c577100e2353 */
+"messageHeader" = "Wiadomość:";
+
+/* loco:6707f41e004c1612f407fae2 */
+"myFilesTitle" = "Moje pliki";
+
+/* loco:673b609c03c82748a509bd92 */
+"networkUnavailable" = "Sieć niedostępna";
+
+/* loco:675ae8861595e0ef6b063c92 */
+"newTransferConfirmLeavingDialogTitle" = "Ups, czy naprawdę chcesz anulować?";
+
+/* loco:675aed225692b5b2fc063e12 */
+"newTransferLeavingDialogDescription" = "Twój transfer jest prawie gotowy. Czy na pewno chcesz go anulować?";
+
+/* loco:675aedf9d296e6311c094eb2 */
+"newTransferLeavingDialogNegativeButton" = "Nie, kontynuuj";
+
+/* loco:675aed916909b0ae120a2512 */
+"newTransferLeavingDialogPositiveButton" = "Tak, anuluj";
+
+/* loco:674dbabbdd957af5740cf002 */
+"noSettingsSelectedDescription" = "Wybierz parametr, aby go wyświetlić";
+
+/* loco:66d00a919c37e358f5081dd2 */
+"noTransferReceivedDescription" = "Wszystkie transfery, które otrzymasz w ciągu ostatnich 30 dni, pojawią się tutaj.";
+
+/* loco:66d009adae0a00bb3c011352 */
+"noTransferReceivedTitle" = "Brak otrzymanych transferów";
+
+/* loco:67482c2dde54f81d2a0824d2 */
+"noTransferSelectedDescription" = "Wybierz transfer lub utwórz nowy.";
+
+/* loco:6748294ce710a9c2af069052 */
+"noTransferSelectedTitle" = "Brak transferów do wyświetlenia";
+
+/* loco:678f47605b4d4a18240a8395 */
+"notificationDownloadErrorDescription" = "Wystąpił błąd podczas pobierania.";
+
+/* loco:678f44b7f2593a75b90f0f92 */
+"notificationDownloadErrorNotificationTitle" = "Błąd pobierania";
+
+/* loco:678f473fe3af2239cf0b99c2 */
+"notificationDownloadSuccessDescription" = "Plik %@ został pobrany.";
+
+/* loco:678f44517474b710de0065b6 */
+"notificationDownloadSuccessNotificationTitle" = "Pobieranie zakończone";
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Trzymaj aplikację otwartą do końca transferu.";
+
+/* loco:68fe59d91ce32740c80377c2 */
+"notificationProgressSubtitle" = "Postęp %@";
+
+/* loco:678630d98c1534fbc50d2cc2 */
+"notificationUploadFailureDescription" = "Wystąpił problem, spróbuj ponownie";
+
+/* loco:678630b92eec2a91f00603af */
+"notificationUploadFailureTitle" = "Transfer nie powiódł się";
+
+/* loco:67851171fcb1c1349e0f8392 */
+"notificationUploadProgressTitle" = "Transfer w toku… (%@%%)";
+
+/* loco:6785135bb4d438d6ca0272a2 */
+"notificationUploadSuccessDescriptionMail" = "Link do pobrania został wysłany do odbiorców";
+
+/* loco:6785134bbb571a28f10994e4 */
+"notificationUploadSuccessDescriptionOther" = "Kliknij, aby uzyskać link do pobrania";
+
+/* loco:6785125e391d0459e50fa852 */
+"notificationUploadSuccessTitle" = "Transfer zakończony";
+
+/* loco:6746e8a0396f33e00a0fc393 */
+"onboardingExpirationSubtitleArgument" = "30 dni.";
+
+/* loco:6746e853f31dad284f0aa742 */
+"onboardingExpirationSubtitleTemplate" = "Udostępniaj pliki przez e-mail, link lub kod QR. Twoje linki pozostają aktywne przez %@";
+
+/* loco:6746e6c255f60b501f02d372 */
+"onboardingExpirationTitle" = "Zagraj najlepszymi kartami!";
+
+/* loco:6746f713c933bb6d0001c2c2 */
+"onboardingPasswordSubtitleArgument" = "hasła.";
+
+/* loco:6746f6d24c1e8eac030e37a2 */
+"onboardingPasswordSubtitleTemplate" = "Chroń swoje udostępnienia za pomocą %@";
+
+/* loco:6746ea1214cc5fb6da022362 */
+"onboardingPasswordTitle" = "Zachowaj kontrolę!";
+
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Wyślij swoje pliki";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ teraz!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Gotowy do rozpoczęcia?";
+
+/* loco:6745e4cbc46e4416540015f3 */
+"onboardingStorageSubtitleArgument" = "Udostępniaj do 50 GB";
+
+/* loco:6745e479fd92d04bbd0ac2b2 */
+"onboardingStorageSubtitleTemplate" = "%@ plików za darmo bez rejestracji.";
+
+/* loco:6745d761b427af1ed8084c32 */
+"onboardingStorageTitle" = "Wysyłaj duże pliki!";
+
+/* loco:67ff96fe53fc54f951079062 */
+"oneClickSharing" = "Udostępnij w 1 kliknięciu!";
+
+/* loco:68079d4b17b8e06966072592 */
+"quickSharingDescription" = "Aby szybko udostępnić, użyj przycisku %1$@ lub %2$@ pod kodem QR.\nTo prostsze niż robienie zrzutu ekranu.";
+
+/* loco:66fa5ce7eb184f21290154a2 */
+"receivedFilesTitle" = "Otrzymane pliki";
+
+/* loco:669f759d2093b5a83708e5e2 */
+"receivedTitle" = "Otrzymane";
+
+/* loco:67bd58877695a8511309f862 */
+"restrictedLocation" = "Infomaniak SwissTransfer nie jest dostępny w Twojej lokalizacji";
+
+/* loco:669f76052093b5a83708e5e4 */
+"sentEmptyTitle" = "Nasza historia zaczyna się tutaj";
+
+/* loco:669f79ffb8749b07fa0023d3 */
+"sentFilesTitle" = "Udostępnione pliki";
+
+/* loco:669f755c502e59a518017423 */
+"sentTitle" = "Wysłane";
+
+/* loco:67319f67ca1b48e5d00b77e2
+ * Notifications settings */
+"settingsAllNotifications" = "Wszystkie powiadomienia";
+
+/* loco:66c3345d68555c9cec08bd35 */
+"settingsCategoryAbout" = "O aplikacji";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Dane & Prywatność";
+
+/* loco:66c33433d8cdb0aeb6003082 */
+"settingsCategoryDefaultSettings" = "Ustawienia domyślne";
+
+/* loco:66c333f5222777ffd504e5f3 */
+"settingsCategoryGeneral" = "Ogólne";
+
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Niestandardowe";
+
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Usuń moje konto";
+
+/* loco:66c6e297bb7794739b0ec0d2 */
+"settingsDownloadsLimitTitle" = "Ustaw domyślny limit pobierań dla swoich transferów";
+
+/* loco:66c6beb4953867da65029872 */
+"settingsEmailLanguageTitle" = "Ustaw domyślny język dla swoich transferów e-mailowych";
+
+/* loco:66c6bfb72d51f3e429025a82 */
+"settingsEmailLanguageValueEnglish" = "Angielski";
+
+/* loco:66c6bf06ba6306bc710887a2 */
+"settingsEmailLanguageValueFrench" = "Francuski";
+
+/* loco:66c6bf698e116411a90d9052 */
+"settingsEmailLanguageValueGerman" = "Niemiecki";
+
+/* loco:66c6bf3e4e4926d9600599f2 */
+"settingsEmailLanguageValueItalian" = "Włoski";
+
+/* loco:66c6bf8d83619a4f090feb72 */
+"settingsEmailLanguageValueSpanish" = "Hiszpański";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Pomoc & Wsparcie";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Wyloguj się";
+
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Matomo to narzędzie analityczne hostowane i zarządzane wyłącznie przez Infomaniak, służące do zrozumienia sposobu korzystania z aplikacji.\n\nAnalizując te dane, nasz zespół jest w stanie stale poprawiać interfejs aplikacji.";
+
+/* loco:6731a0b0ee0948aac509e672
+ * Notifications settings */
+"settingsNotificationsDownloadInProgress" = "Pobieranie w toku";
+
+/* loco:6731a15af505e237120fb292
+ * Notifications settings */
+"settingsNotificationsDownloadTransfer" = "Pobieranie transferu";
+
+/* loco:6731a4f786feae2e5707c952 */
+"settingsNotificationsLinkExpired" = "Wygasły link";
+
+/* loco:66c57e1cac4c61d2dd0c8f12 */
+"settingsNotificationsTitle" = "Wybierz preferencję";
+
+/* loco:6731a1221ff67f956202a482
+ * Notifications settings */
+"settingsNotificationsTransferFinished" = "Transfer zakończony";
+
+/* loco:6731a079a36f5786980eff62
+ * Notifications settings */
+"settingsNotificationsTransferInProgress" = "Transfer w toku";
+
+/* loco:6731a18f7f9ab820b6015712
+ * Notifications settings */
+"settingsNotificationsTransferNotDownloaded" = "Transfer nie został pobrany";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Włączone";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Zarządzanie danymi";
+
+/* loco:66c3355378e62c3f0d0a4672 */
+"settingsOptionDiscoverInfomaniak" = "Odkryj Infomaniak";
+
+/* loco:66c3351479627944d00efd83 */
+"settingsOptionDownloadLimit" = "Limit pobierań";
+
+/* loco:66c3352f911ccd83de06b562 */
+"settingsOptionEmailLanguage" = "Język e-maila";
+
+/* loco:66c336f6f7bdfdc4d900cd12 */
+"settingsOptionGiveFeedback" = "Podziel się opinią";
+
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Brak";
+
+/* loco:66c334b41bd6706567037508 */
+"settingsOptionNotifications" = "Powiadomienia";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Hasło";
+
+/* loco:66c3356b79627944d00efd88 */
+"settingsOptionShareIdeas" = "Podziel się swoimi pomysłami";
+
+/* loco:67b83b2918cbcda68004dd22 */
+"settingsOptionTermsAndConditions" = "Regulamin";
+
+/* loco:66c3348f7990bb4f500f8864 */
+"settingsOptionTheme" = "Motyw";
+
+/* loco:66c5767075065f6a6f0a55f2 */
+"settingsOptionThemeDark" = "Ciemny";
+
+/* loco:66c576623f6469240f064202 */
+"settingsOptionThemeLight" = "Jasny";
+
+/* loco:66c57650368985cbec0f7d42 */
+"settingsOptionThemeSystem" = "Systemowy";
+
+/* loco:66c334f8fe4641955405f122 */
+"settingsOptionValidityPeriod" = "Okres ważności";
+
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "Twoi odbiorcy będą musieli wprowadzić hasło, aby pobrać pliki.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Chroń swój transfer hasłem";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Włącz ochronę";
+
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Zaloguj się";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Przełącz konto";
+
+/* loco:66c342a1e87c8303b10b2372 */
+"settingsThemeTitle" = "Wybierz motyw";
+
+/* loco:669f75c5d69668e460064082 */
+"settingsTitle" = "Ustawienia";
+
+/* loco:66c587e4067064f587099c02 */
+"settingsValidityPeriodTitle" = "Ustaw domyślny okres ważności dla swoich transferów";
+
+/* loco:67335c646d95d56ce00c77b2 */
+"sharePasswordButton" = "Kopiuj hasło";
+
+/* loco:673358d908873a82380b99b2 */
+"sharePasswordDescription" = "Oto hasło do pobrania plików!";
+
+/* loco:673358d1792d18d1c40c4612 */
+"sharePasswordTitle" = "Ten transfer jest zabezpieczony";
+
+/* loco:673357fffb9ea749380dce44 */
+"shareQrCodeDescription" = "Zeskanuj ten kod QR, aby udostępnić swój transfer:";
+
+/* loco:673357ce7a09e445af086eb3 */
+"shareQrCodeTitle" = "Szybkie udostępnianie";
+
+/* loco:67bd585d873224d0fb0894c2 */
+"sorry" = "Przepraszamy";
+
+/* loco:6718df9028c2ea33b001c522 */
+"textFieldOptional" = "(Opcjonalne)";
+
+/* loco:66a24b1d3472a720090cfd58 */
+"transferContentHeader" = "Zawartość transferu:";
+
+/* loco:6720b962e49b6c46620d30f3 */
+"transferExpiredButton" = "Usuń z historii";
+
+/* loco:6720af2aaad13976bb0d7832 */
+"transferExpiredDateReachedDescription" = "Przepraszamy, ten transfer wygasł dnia %@. Nie możesz już pobierać ani przeglądać plików.";
+
+/* loco:678e7bb990830fe7f1052e92 */
+"transferExpiredDescription" = "Przepraszamy, ten transfer wygasł. Nie możesz już pobierać ani przeglądać plików.";
+
+/* loco:6720aec78a4f6e6b0c0d28a2 */
+"transferExpiredTitle" = "Ten transfer nie jest już dostępny";
+
+/* loco:6791edf4a6f878c7ab05bc22 */
+"transferInitializing" = "Ładowanie…";
+
+/* loco:66c6d0936969c14fab0aec72 */
+"transferListSectionLastWeek" = "W zeszłym tygodniu";
+
+/* loco:66c6d0ade6247c4847026ec4 */
+"transferListSectionThisMonth" = "W tym miesiącu";
+
+/* loco:66c6d072ab48fd071b0db6c2 */
+"transferListSectionThisWeek" = "W tym tygodniu";
+
+/* loco:66c6d006e6247c4847026ec2 */
+"transferListSectionToday" = "Dzisiaj";
+
+/* loco:66c6d050074f03cc770d2932 */
+"transferListSectionYesterday" = "Wczoraj";
+
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "Wiadomość do przekazania?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Wyślij pliki do";
+
+/* loco:6707d903f6f42e03b90b8632 */
+"transferSendButton" = "Wyślij";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Twój adres e-mail";
+
+/* loco:6707e02b8a6e1328f2054d62 */
+"transferSpaceLeft" = "%@ pozostało";
+
+/* loco:69aa93edc7dabf95130ef882 */
+"transferTitlePlaceholder" = "Nadaj tytuł swojemu transferowi";
+
+/* loco:66c4aa7762a79eb6a60eaba2 */
+"transferTypeEmail" = "E-mail";
+
+/* loco:66c4aa6548c80af1df099483 */
+"transferTypeLink" = "Link";
+
+/* loco:66c4aa8cf1945b5bd70ed563 */
+"transferTypeQrCode" = "Kod QR";
+
+/* loco:66c5f77ed20c38c185010bd3 */
+"transferTypeScreenTitle" = "Transfer";
+
+/* loco:66c4a98a0aee7eb62404ec62 */
+"transferTypeTitle" = "Wyślij przez";
+
+/* loco:6889de6a89343a80ff014992 */
+"transferUploadSourceChoiceCamera" = "Aparat";
+
+/* loco:6889df37c9b6166238093af2 */
+"transferUploadSourceChoiceFiles" = "Przeglądaj pliki";
+
+/* loco:6889df8b6973de8abd0616a2 */
+"transferUploadSourceChoiceGallery" = "Galeria zdjęć i filmów";
+
+/* loco:678e7b3b30ca99c9690c7c92 */
+"transferVirusCheckDescription" = "Pliki nie są jeszcze dostępne ze względów bezpieczeństwa.\nWróć za chwilę.";
+
+/* loco:678e7b0a570febadc1013692 */
+"transferVirusCheckTitle" = "Pliki są sprawdzane";
+
+/* loco:678f4ab56e8b3c2390077452 */
+"transferVirusDetectedDescription" = "Nie możesz uzyskać dostępu do tego transferu, ponieważ nie jest zgodny z naszymi warunkami użytkowania.";
+
+/* loco:678f4a42026090be7200ee62 */
+"transferVirusDetectedTitle" = "Niezgodne pliki";
+
+/* loco:6800aa6d8135c915920188b2 */
+"understandTitleButton" = "Rozumiem!";
+
+/* loco:672104c0398a368f6308c152 */
+"uploadCancelConfirmBottomSheetTitle" = "Czy na pewno chcesz anulować transfer?";
+
+/* loco:6729e40f3f0d68fc7e03bab2 */
+"uploadErrorDescription" = "Transfer nie zadziałał, daj mu jeszcze jedną szansę. Jeśli problem będzie się utrzymywał, skontaktuj się z naszym zespołem wsparcia.";
+
+/* loco:6729d9d657eb1ed1a40f5f92 */
+"uploadErrorTitle" = "Poczekaj, co tu się właśnie stało?";
+
+/* loco:6720a3367f6276e49d0d9902 */
+"uploadProgressDescriptionArgumentConfidentiality" = "internetu szanującego poufność i prywatność.";
+
+/* loco:671facb7f1fe8e23eb02e732 */
+"uploadProgressDescriptionArgumentEnergy" = "własne centra danych bez klimatyzacji";
+
+/* loco:671fab15def78345b802d5c2 */
+"uploadProgressDescriptionArgumentIndependence" = "niezależność technologiczną w Europie.";
+
+/* loco:6720a2f98e276b472c007252 */
+"uploadProgressDescriptionTemplateConfidentiality" = "Jesteśmy niezależni i przyczyniamy się do budowy %@";
+
+/* loco:671faca64009477847056262 */
+"uploadProgressDescriptionTemplateEnergy" = "Projektujemy %@, aby przekraczać rynkowe standardy efektywności energetycznej.";
+
+/* loco:671faa8cec286426400c01c2 */
+"uploadProgressDescriptionTemplateIndependence" = "Rozwijamy %@ Bez kompromisów w kwestii ekologii, prywatności i ludzi.";
+
+/* loco:6720d40108caba4c6a0dddb3 */
+"uploadProgressIndication" = "Transfer w toku…";
+
+/* loco:6729e09ab18f3f7a5803b282 */
+"uploadProgressTitleArgument" = "wyjątkowymi";
+
+/* loco:671f96c0560f1de88c0f7e02 */
+"uploadProgressTitleTemplate" = "Co nas wyróżnia %@?";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "Wysłane!";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Zeskanuj ten kod QR, aby udostępnić pliki, lub skopiuj poniższy link.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Twój transfer jest gotowy!";
+
+/* loco:66c5ef9c409f7ef5ca058e34 */
+"urlAbout" = "https://www.infomaniak.com/en/about";
+
+/* loco:66c5ef608055a7b4f70c4022 */
+"urlUserReport" = "https://feedback.userreport.com/a61a740b-4800-4b53-8c9e-d2b010155416/";
+
+/* loco:6707f8d793cc933d520740f4 */
+"validateMailCodeIncorrectError" = "Wprowadzony kod jest nieprawidłowy";
+
+/* loco:677bfb5467b61da0dd035562 */
+"validateMailCodeResentFeedback" = "Kod został wysłany na adres e-mail %@";
+
+/* loco:6707f975b37970cb7704b0c2 */
+"validateMailDescription" = "Wysłaliśmy kod na adres %@. Wprowadź go poniżej, aby zweryfikować adres e-mail w aplikacji:";
+
+/* loco:6707f9d6c8a673d44f0035f2 */
+"validateMailInfo" = "Pamiętaj o sprawdzeniu folderu spam na swoim koncie e-mail.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Wyślij kod ponownie";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Wyślij kod ponownie (%ds)";
+
+/* loco:6707f9ac045804ab200b44f2 */
+"validateMailTitle" = "Sprawdź swoją pocztę";
+
+/* loco:677bf872ea9c5274c6075542 */
+"validateMailUnknownError" = "Wystąpił błąd. Spróbuj ponownie za chwilę.";
+
+/* loco:66c335b6cb643611950ea795 */
+"version" = "Wersja";

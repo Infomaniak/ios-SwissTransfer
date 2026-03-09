@@ -1,0 +1,641 @@
+/*
+ * Loco ios export: Xcode Strings (legacy)
+ * Project: SwissTransfer
+ * Locale: el, Greek
+ * Tagged: ios
+ * Exported by: Philippe Weidmann
+ * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
+ */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Σύνθετες ρυθμίσεις";
+
+/* loco:677be58b7579b67f0406b33e */
+"awaitingNetwork" = "Αναμονή δικτύου";
+
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Όλα";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Ακύρωση";
+
+/* loco:6721e8f6b18493385d00ec52 */
+"buttonCancelTransfer" = "Ακύρωση μεταφοράς";
+
+/* loco:6721eccd0752504a0d064d02 */
+"buttonCloseAndContinue" = "Κλείσιμο και συνέχεια";
+
+/* loco:6707f83845c44bad7f0d7805 */
+"buttonConfirm" = "Επιβεβαίωση";
+
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Αντιγραφή συνδέσμου";
+
+/* loco:67616ea394ffdbb7e5071e36 */
+"buttonDeleteTransfer" = "Διαγραφή μεταφοράς";
+
+/* loco:68359d4126ae0a9eed0c68a2 */
+"buttonDeleteYes" = "Ναι, διαγραφή";
+
+/* loco:67220015101b3de12b0f1f82 */
+"buttonDownload" = "Λήψη";
+
+/* loco:672200e4a61b86b8470776e2 */
+"buttonDownloadSelected" = "Λήψη επιλογής";
+
+/* loco:677e9253d2777f26f5019852 */
+"buttonDownloaded" = "Ελήφθη";
+
+/* loco:67448efd69b0e5a4910909b2 */
+"buttonEditTransfer" = "Επεξεργασία της μεταφοράς μου";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Τέλος";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Άνοιγμα εφαρμογής email";
+
+/* loco:672a116b6135bb977203e762 */
+"buttonRetry" = "Επανάληψη";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Κοινοποίηση";
+
+/* loco:674834cdbb4f7b35ad00ea55 */
+"buttonStart" = "Έναρξη";
+
+/* loco:699471fbbf0c6c800e06b763 */
+"buttonUseOtherAccount" = "Χρήση άλλου λογαριασμού";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Είσαι σίγουρος ότι θέλεις να αποσυνδεθείς από %@;";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Αποσύνδεση";
+
+/* loco:66c5b8a600121e93c00c79d2 */
+"contentDescriptionButtonBack" = "Πίσω";
+
+/* loco:66c5b8e29f9df1eb920ef483 */
+"contentDescriptionButtonClose" = "Κλείσιμο";
+
+/* loco:6719f3144da70102cb0abc82 */
+"contentDescriptionButtonHidePassword" = "Απόκρυψη κωδικού πρόσβασης";
+
+/* loco:66ed1facfdf04647c80a0482 */
+"contentDescriptionButtonRemove" = "Αφαίρεση αρχείου";
+
+/* loco:6719f30247e142610b08f4f3 */
+"contentDescriptionButtonShowPassword" = "Εμφάνιση κωδικού πρόσβασης";
+
+/* loco:66a1fa770af8cf8470002102 */
+"contentDescriptionCreateNewTransferButton" = "Νέα μεταφορά";
+
+/* loco:67e54599054e355e4f053752 */
+"dailyTransferLimitReached" = "Έχεις φτάσει το ημερήσιο όριο μεταφορών σου";
+
+/* loco:677cf4a37658668b1c07d9a2 */
+"deeplinkPasswordDescription" = "Εισάγαλε τον κωδικό πρόσβασης που σου δόθηκε για να κατεβάσεις αυτά τα αρχεία.";
+
+/* loco:6787727e96fb165b36011422 */
+"deeplinkTransferExpired" = "Αυτή η μεταφορά έχει λήξει";
+
+/* loco:677fbfbeb541dd8a8c0276d2 */
+"deeplinkTransferNotFound" = "Αυτή η μεταφορά δεν υπάρχει";
+
+/* loco:699c62a8090390d46409c7f2 */
+"deleteAccountAlertTitle" = "Διαγραφή λογαριασμού";
+
+/* loco:699c52d6d2021467050c9872 */
+"deleteAccountErrorAlertMessage" = "Αποτυχία διαγραφής λογαριασμού";
+
+/* loco:699c4fdc93c5e844420cf302 */
+"deleteAccountSuccessAlertMessage" = "Επιτυχία διαγραφής λογαριασμού";
+
+/* loco:68359c6b15da309c25045492 */
+"deleteThisTransferDescription" = "Αυτή η μεταφορά και τα αρχεία που περιέχει θα διαγραφούν.";
+
+/* loco:68359bf65101e64968042602 */
+"deleteThisTransferTitle" = "Διαγραφή αυτής της μεταφοράς;";
+
+/* loco:67852070453d66cb9a0033c2 */
+"downloadInProgressDialogTitle" = "Λήψη σε εξέλιξη…";
+
+/* loco:66a24a3f3472a720090cfd52 */
+"downloadedTransferLabel" = "Ληφθείσα μεταφορά: %d/%d";
+
+/* loco:6720ec444fa469071a050ee2 */
+"errorGeneratingQRCode" = "Αδύνατη η δημιουργία του κωδικού QR";
+
+/* loco:677cfe305ec5b8afc10db732 */
+"errorIncorrectPassword" = "Λανθασμένος κωδικός πρόσβασης";
+
+/* loco:6728e0698584637cc20ef6b2 */
+"errorTransferPasswordLength" = "Ο κωδικός πρόσβασης πρέπει να είναι μεταξύ 6 και 25 χαρακτήρων";
+
+/* loco:67b8749b3c6e5f744d0bcc82 */
+"expired" = "Ληγμένο";
+
+/* loco:67b489ba13ccf8b7ab0e46b3 */
+"expiresAt" = "Λήγει στις %@";
+
+/* loco:669f7a817f40f7e9170fafa2 */
+"expiresIn" = "Λήγει σε %d ημέρες";
+
+/* loco:67b49607bdcd0286220cea32 */
+"expiresThe" = "Λήγει στις %s";
+
+/* loco:6776640e5e97ee7e550d5b72 */
+"expiresTomorrow" = "Λήγει αύριο";
+
+/* loco:67fe654051b0931bec0d5b42 */
+"fileCountOverDisplayOnly" = "%1$d/%2$d αρχεία";
+
+/* loco:67fe6950a9aa76a7670a9112 */
+"fileCountOverTtsFriendly" = "%1$d από %2$d αρχεία";
+
+/* loco:67ffa893e821c9e3a80af462 */
+"fileSizeOverDisplayOnly" = "%1$@/%2$@";
+
+/* loco:67ffa9059ea861506908e942 */
+"fileSizeOverTtsFriendly" = "%1$@ από %2$@";
+
+/* loco:669f76984c6fad682900d032 */
+"firstTransferDescription" = "Κάνε την πρώτη σου μεταφορά!";
+
+/* loco:66c5b683919c7a5f1b024142 */
+"importFilesScreenTitle" = "Αρχεία για μεταφορά";
+
+/* loco:6750234ba38b270dc804a7d2 */
+"invalidAddress" = "Μη έγκυρη διεύθυνση";
+
+/* loco:66a24acfa855c577100e2353 */
+"messageHeader" = "Μήνυμα:";
+
+/* loco:6707f41e004c1612f407fae2 */
+"myFilesTitle" = "Τα αρχεία μου";
+
+/* loco:673b609c03c82748a509bd92 */
+"networkUnavailable" = "Το δίκτυο δεν είναι διαθέσιμο";
+
+/* loco:675ae8861595e0ef6b063c92 */
+"newTransferConfirmLeavingDialogTitle" = "Ωχ, θέλεις πραγματικά να ακυρώσεις;";
+
+/* loco:675aed225692b5b2fc063e12 */
+"newTransferLeavingDialogDescription" = "Η μεταφορά σου είναι σχεδόν έτοιμη. Είσαι σίγουρος ότι θέλεις να την ακυρώσεις;";
+
+/* loco:675aedf9d296e6311c094eb2 */
+"newTransferLeavingDialogNegativeButton" = "Όχι, συνέχεια";
+
+/* loco:675aed916909b0ae120a2512 */
+"newTransferLeavingDialogPositiveButton" = "Ναι, ακύρωση";
+
+/* loco:674dbabbdd957af5740cf002 */
+"noSettingsSelectedDescription" = "Επίλεξε μια παράμετρο για να την εμφανίσεις";
+
+/* loco:66d00a919c37e358f5081dd2 */
+"noTransferReceivedDescription" = "Όλες οι μεταφορές που λαμβάνεις τις τελευταίες 30 ημέρες θα εμφανίζονται εδώ.";
+
+/* loco:66d009adae0a00bb3c011352 */
+"noTransferReceivedTitle" = "Δεν ελήφθησαν μεταφορές";
+
+/* loco:67482c2dde54f81d2a0824d2 */
+"noTransferSelectedDescription" = "Επίλεξε μια μεταφορά ή δημιούργησε μια νέα.";
+
+/* loco:6748294ce710a9c2af069052 */
+"noTransferSelectedTitle" = "Δεν υπάρχουν μεταφορές για εμφάνιση";
+
+/* loco:678f47605b4d4a18240a8395 */
+"notificationDownloadErrorDescription" = "Παρουσιάστηκε σφάλμα κατά τη λήψη.";
+
+/* loco:678f44b7f2593a75b90f0f92 */
+"notificationDownloadErrorNotificationTitle" = "Σφάλμα λήψης";
+
+/* loco:678f473fe3af2239cf0b99c2 */
+"notificationDownloadSuccessDescription" = "Το αρχείο %@ έχει ληφθεί.";
+
+/* loco:678f44517474b710de0065b6 */
+"notificationDownloadSuccessNotificationTitle" = "Η λήψη ολοκληρώθηκε";
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Κράτα την εφαρμογή ανοιχτή μέχρι το τέλος της μεταφοράς.";
+
+/* loco:68fe59d91ce32740c80377c2 */
+"notificationProgressSubtitle" = "Πρόοδος %@";
+
+/* loco:678630d98c1534fbc50d2cc2 */
+"notificationUploadFailureDescription" = "Παρουσιάστηκε πρόβλημα, δοκίμασε ξανά";
+
+/* loco:678630b92eec2a91f00603af */
+"notificationUploadFailureTitle" = "Η μεταφορά απέτυχε";
+
+/* loco:67851171fcb1c1349e0f8392 */
+"notificationUploadProgressTitle" = "Η μεταφορά βρίσκεται σε εξέλιξη… (%@%%)";
+
+/* loco:6785135bb4d438d6ca0272a2 */
+"notificationUploadSuccessDescriptionMail" = "Ο σύνδεσμος λήψης εστάλη στους παραλήπτες";
+
+/* loco:6785134bbb571a28f10994e4 */
+"notificationUploadSuccessDescriptionOther" = "Πάτησε για να αποκτήσεις τον σύνδεσμο λήψης σου";
+
+/* loco:6785125e391d0459e50fa852 */
+"notificationUploadSuccessTitle" = "Η μεταφορά ολοκληρώθηκε";
+
+/* loco:6746e8a0396f33e00a0fc393 */
+"onboardingExpirationSubtitleArgument" = "30 ημέρες.";
+
+/* loco:6746e853f31dad284f0aa742 */
+"onboardingExpirationSubtitleTemplate" = "Μοιράσου τα αρχεία σου μέσω email, συνδέσμου ή κωδικού QR. Οι σύνδεσμοί σου παραμένουν ενεργοί για %@";
+
+/* loco:6746e6c255f60b501f02d372 */
+"onboardingExpirationTitle" = "Παίξε τα καλύτερα χαρτιά σου!";
+
+/* loco:6746f713c933bb6d0001c2c2 */
+"onboardingPasswordSubtitleArgument" = "κωδικό πρόσβασης.";
+
+/* loco:6746f6d24c1e8eac030e37a2 */
+"onboardingPasswordSubtitleTemplate" = "Προστάτευσε τις κοινοποιήσεις σου με %@";
+
+/* loco:6746ea1214cc5fb6da022362 */
+"onboardingPasswordTitle" = "Διατήρησε τον έλεγχο!";
+
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Στείλε τα αρχεία σου";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ τώρα!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Έτοιμος να ξεκινήσεις;";
+
+/* loco:6745e4cbc46e4416540015f3 */
+"onboardingStorageSubtitleArgument" = "Μοιράσου έως 50 GB";
+
+/* loco:6745e479fd92d04bbd0ac2b2 */
+"onboardingStorageSubtitleTemplate" = "%@ αρχείων δωρεάν χωρίς εγγραφή.";
+
+/* loco:6745d761b427af1ed8084c32 */
+"onboardingStorageTitle" = "Στείλε μεγάλα αρχεία!";
+
+/* loco:67ff96fe53fc54f951079062 */
+"oneClickSharing" = "Κοινοποίηση με 1 κλικ!";
+
+/* loco:68079d4b17b8e06966072592 */
+"quickSharingDescription" = "Για γρήγορη κοινοποίηση, χρησιμοποίησε το κουμπί %1$@ ή %2$@ κάτω από τον κωδικό QR.\nΕίναι πιο εύκολο από τη λήψη στιγμιότυπου οθόνης.";
+
+/* loco:66fa5ce7eb184f21290154a2 */
+"receivedFilesTitle" = "Ληφθέντα αρχεία";
+
+/* loco:669f759d2093b5a83708e5e2 */
+"receivedTitle" = "Ελήφθη";
+
+/* loco:67bd58877695a8511309f862 */
+"restrictedLocation" = "Το Infomaniak SwissTransfer δεν είναι διαθέσιμο στην τοποθεσία σου";
+
+/* loco:669f76052093b5a83708e5e4 */
+"sentEmptyTitle" = "Η ιστορία μας ξεκινά εδώ";
+
+/* loco:669f79ffb8749b07fa0023d3 */
+"sentFilesTitle" = "Κοινόχρηστα αρχεία";
+
+/* loco:669f755c502e59a518017423 */
+"sentTitle" = "Απεστάλη";
+
+/* loco:67319f67ca1b48e5d00b77e2
+ * Notifications settings */
+"settingsAllNotifications" = "Όλες οι ειδοποιήσεις";
+
+/* loco:66c3345d68555c9cec08bd35 */
+"settingsCategoryAbout" = "Σχετικά";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Δεδομένα & Απόρρητο";
+
+/* loco:66c33433d8cdb0aeb6003082 */
+"settingsCategoryDefaultSettings" = "Προεπιλεγμένες ρυθμίσεις";
+
+/* loco:66c333f5222777ffd504e5f3 */
+"settingsCategoryGeneral" = "Γενικά";
+
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Προσαρμοσμένο";
+
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Διαγραφή του λογαριασμού μου";
+
+/* loco:66c6e297bb7794739b0ec0d2 */
+"settingsDownloadsLimitTitle" = "Όρισε ένα προεπιλεγμένο όριο λήψεων για τις μεταφορές σου";
+
+/* loco:66c6beb4953867da65029872 */
+"settingsEmailLanguageTitle" = "Όρισε μια προεπιλεγμένη γλώσσα για τις μεταφορές σου μέσω email";
+
+/* loco:66c6bfb72d51f3e429025a82 */
+"settingsEmailLanguageValueEnglish" = "Αγγλικά";
+
+/* loco:66c6bf06ba6306bc710887a2 */
+"settingsEmailLanguageValueFrench" = "Γαλλικά";
+
+/* loco:66c6bf698e116411a90d9052 */
+"settingsEmailLanguageValueGerman" = "Γερμανικά";
+
+/* loco:66c6bf3e4e4926d9600599f2 */
+"settingsEmailLanguageValueItalian" = "Ιταλικά";
+
+/* loco:66c6bf8d83619a4f090feb72 */
+"settingsEmailLanguageValueSpanish" = "Ισπανικά";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Βοήθεια & Υποστήριξη";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Αποσύνδεση";
+
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Το Matomo είναι ένα εργαλείο ανάλυσης που φιλοξενείται και διαχειρίζεται αποκλειστικά από την Infomaniak για να κατανοήσει πώς χρησιμοποιείται η εφαρμογή.\n\nΜελετώντας αυτά τα δεδομένα, η ομάδα μας μπορεί να βελτιώνει συνεχώς τη διεπαφή της εφαρμογής.";
+
+/* loco:6731a0b0ee0948aac509e672
+ * Notifications settings */
+"settingsNotificationsDownloadInProgress" = "Λήψη σε εξέλιξη";
+
+/* loco:6731a15af505e237120fb292
+ * Notifications settings */
+"settingsNotificationsDownloadTransfer" = "Λήψη μιας μεταφοράς";
+
+/* loco:6731a4f786feae2e5707c952 */
+"settingsNotificationsLinkExpired" = "Ληγμένος σύνδεσμος";
+
+/* loco:66c57e1cac4c61d2dd0c8f12 */
+"settingsNotificationsTitle" = "Επίλεξε μια προτίμηση";
+
+/* loco:6731a1221ff67f956202a482
+ * Notifications settings */
+"settingsNotificationsTransferFinished" = "Η μεταφορά ολοκληρώθηκε";
+
+/* loco:6731a079a36f5786980eff62
+ * Notifications settings */
+"settingsNotificationsTransferInProgress" = "Μεταφορά σε εξέλιξη";
+
+/* loco:6731a18f7f9ab820b6015712
+ * Notifications settings */
+"settingsNotificationsTransferNotDownloaded" = "Η μεταφορά δεν ελήφθη";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Ενεργοποιημένο";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Διαχείριση δεδομένων";
+
+/* loco:66c3355378e62c3f0d0a4672 */
+"settingsOptionDiscoverInfomaniak" = "Ανακάλυψε την Infomaniak";
+
+/* loco:66c3351479627944d00efd83 */
+"settingsOptionDownloadLimit" = "Όριο λήψεων";
+
+/* loco:66c3352f911ccd83de06b562 */
+"settingsOptionEmailLanguage" = "Γλώσσα email";
+
+/* loco:66c336f6f7bdfdc4d900cd12 */
+"settingsOptionGiveFeedback" = "Δώσε τη γνώμη σου";
+
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Κανένα";
+
+/* loco:66c334b41bd6706567037508 */
+"settingsOptionNotifications" = "Ειδοποιήσεις";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Κωδικός πρόσβασης";
+
+/* loco:66c3356b79627944d00efd88 */
+"settingsOptionShareIdeas" = "Μοιράσου τις ιδέες σου";
+
+/* loco:67b83b2918cbcda68004dd22 */
+"settingsOptionTermsAndConditions" = "Όροι και προϋποθέσεις";
+
+/* loco:66c3348f7990bb4f500f8864 */
+"settingsOptionTheme" = "Θέμα";
+
+/* loco:66c5767075065f6a6f0a55f2 */
+"settingsOptionThemeDark" = "Σκοτεινό";
+
+/* loco:66c576623f6469240f064202 */
+"settingsOptionThemeLight" = "Ανοιχτό";
+
+/* loco:66c57650368985cbec0f7d42 */
+"settingsOptionThemeSystem" = "Σύστημα";
+
+/* loco:66c334f8fe4641955405f122 */
+"settingsOptionValidityPeriod" = "Περίοδος ισχύος";
+
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "Οι παραλήπτες σου θα πρέπει να εισάγουν τον κωδικό πρόσβασης για να κατεβάσουν τα αρχεία.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Προστάτευσε τη μεταφορά σου με κωδικό πρόσβασης";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Ενεργοποίηση προστασίας";
+
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Σύνδεση";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Εναλλαγή λογαριασμού";
+
+/* loco:66c342a1e87c8303b10b2372 */
+"settingsThemeTitle" = "Επίλεξε θέμα";
+
+/* loco:669f75c5d69668e460064082 */
+"settingsTitle" = "Ρυθμίσεις";
+
+/* loco:66c587e4067064f587099c02 */
+"settingsValidityPeriodTitle" = "Όρισε μια προεπιλεγμένη περίοδο ισχύος για τις μεταφορές σου";
+
+/* loco:67335c646d95d56ce00c77b2 */
+"sharePasswordButton" = "Αντιγραφή κωδικού πρόσβασης";
+
+/* loco:673358d908873a82380b99b2 */
+"sharePasswordDescription" = "Εδώ είναι ο κωδικός για να κατεβάσεις τα αρχεία!";
+
+/* loco:673358d1792d18d1c40c4612 */
+"sharePasswordTitle" = "Αυτή η μεταφορά είναι ασφαλής";
+
+/* loco:673357fffb9ea749380dce44 */
+"shareQrCodeDescription" = "Σκανάρισε αυτόν τον κωδικό QR για να μοιραστείς τη μεταφορά σου:";
+
+/* loco:673357ce7a09e445af086eb3 */
+"shareQrCodeTitle" = "Γρήγορη κοινοποίηση";
+
+/* loco:67bd585d873224d0fb0894c2 */
+"sorry" = "Λυπούμαστε";
+
+/* loco:6718df9028c2ea33b001c522 */
+"textFieldOptional" = "(Προαιρετικό)";
+
+/* loco:66a24b1d3472a720090cfd58 */
+"transferContentHeader" = "Περιεχόμενο μεταφοράς:";
+
+/* loco:6720b962e49b6c46620d30f3 */
+"transferExpiredButton" = "Διαγραφή από το ιστορικό";
+
+/* loco:6720af2aaad13976bb0d7832 */
+"transferExpiredDateReachedDescription" = "Λυπούμαστε, αυτή η μεταφορά έληξε στις %@. Δεν μπορείς πλέον να κατεβάσεις ή να δεις τα αρχεία.";
+
+/* loco:678e7bb990830fe7f1052e92 */
+"transferExpiredDescription" = "Λυπούμαστε, αυτή η μεταφορά έχει λήξει. Δεν μπορείς πλέον να κατεβάσεις ή να δεις τα αρχεία.";
+
+/* loco:6720aec78a4f6e6b0c0d28a2 */
+"transferExpiredTitle" = "Αυτή η μεταφορά δεν είναι πλέον διαθέσιμη";
+
+/* loco:6791edf4a6f878c7ab05bc22 */
+"transferInitializing" = "Φόρτωση…";
+
+/* loco:66c6d0936969c14fab0aec72 */
+"transferListSectionLastWeek" = "Την περασμένη εβδομάδα";
+
+/* loco:66c6d0ade6247c4847026ec4 */
+"transferListSectionThisMonth" = "Αυτόν τον μήνα";
+
+/* loco:66c6d072ab48fd071b0db6c2 */
+"transferListSectionThisWeek" = "Αυτή την εβδομάδα";
+
+/* loco:66c6d006e6247c4847026ec2 */
+"transferListSectionToday" = "Σήμερα";
+
+/* loco:66c6d050074f03cc770d2932 */
+"transferListSectionYesterday" = "Χθες";
+
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "Ένα μήνυμα να μεταβιβαστεί;";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Αποστολή αρχείων σε";
+
+/* loco:6707d903f6f42e03b90b8632 */
+"transferSendButton" = "Αποστολή";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Η διεύθυνση email σου";
+
+/* loco:6707e02b8a6e1328f2054d62 */
+"transferSpaceLeft" = "%@ απομένει";
+
+/* loco:69aa93edc7dabf95130ef882 */
+"transferTitlePlaceholder" = "Δώσε έναν τίτλο στη μεταφορά σου";
+
+/* loco:66c4aa7762a79eb6a60eaba2 */
+"transferTypeEmail" = "Email";
+
+/* loco:66c4aa6548c80af1df099483 */
+"transferTypeLink" = "Σύνδεσμος";
+
+/* loco:66c4aa8cf1945b5bd70ed563 */
+"transferTypeQrCode" = "Κωδικός QR";
+
+/* loco:66c5f77ed20c38c185010bd3 */
+"transferTypeScreenTitle" = "Μεταφορά";
+
+/* loco:66c4a98a0aee7eb62404ec62 */
+"transferTypeTitle" = "Αποστολή μέσω";
+
+/* loco:6889de6a89343a80ff014992 */
+"transferUploadSourceChoiceCamera" = "Κάμερα";
+
+/* loco:6889df37c9b6166238093af2 */
+"transferUploadSourceChoiceFiles" = "Αναζήτηση αρχείων";
+
+/* loco:6889df8b6973de8abd0616a2 */
+"transferUploadSourceChoiceGallery" = "Συλλογή φωτογραφιών και βίντεο";
+
+/* loco:678e7b3b30ca99c9690c7c92 */
+"transferVirusCheckDescription" = "Τα αρχεία δεν είναι ακόμα προσβάσιμα για λόγους ασφαλείας.\nΕπέστρεψε σε λίγα λεπτά.";
+
+/* loco:678e7b0a570febadc1013692 */
+"transferVirusCheckTitle" = "Τα αρχεία ελέγχονται";
+
+/* loco:678f4ab56e8b3c2390077452 */
+"transferVirusDetectedDescription" = "Δεν μπορείς να αποκτήσεις πρόσβαση σε αυτή τη μεταφορά επειδή δεν συμμορφώνεται με τους όρους χρήσης μας.";
+
+/* loco:678f4a42026090be7200ee62 */
+"transferVirusDetectedTitle" = "Μη συμβατά αρχεία";
+
+/* loco:6800aa6d8135c915920188b2 */
+"understandTitleButton" = "Κατάλαβα!";
+
+/* loco:672104c0398a368f6308c152 */
+"uploadCancelConfirmBottomSheetTitle" = "Είσαι σίγουρος ότι θέλεις να ακυρώσεις τη μεταφορά;";
+
+/* loco:6729e40f3f0d68fc7e03bab2 */
+"uploadErrorDescription" = "Η μεταφορά δεν λειτούργησε, δώσε της μια ακόμα ευκαιρία. Αν το πρόβλημα παραμένει, επικοινώνησε με την ομάδα υποστήριξής μας.";
+
+/* loco:6729d9d657eb1ed1a40f5f92 */
+"uploadErrorTitle" = "Περίμενε, τι συνέβη μόλις;";
+
+/* loco:6720a3367f6276e49d0d9902 */
+"uploadProgressDescriptionArgumentConfidentiality" = "διαδίκτυο που σέβεται την εμπιστευτικότητα και την ιδιωτικότητα.";
+
+/* loco:671facb7f1fe8e23eb02e732 */
+"uploadProgressDescriptionArgumentEnergy" = "τα δικά μας κέντρα δεδομένων, χωρίς κλιματισμό";
+
+/* loco:671fab15def78345b802d5c2 */
+"uploadProgressDescriptionArgumentIndependence" = "τεχνολογική ανεξαρτησία στην Ευρώπη.";
+
+/* loco:6720a2f98e276b472c007252 */
+"uploadProgressDescriptionTemplateConfidentiality" = "Είμαστε ανεξάρτητοι και συμβάλλουμε σε ένα %@";
+
+/* loco:671faca64009477847056262 */
+"uploadProgressDescriptionTemplateEnergy" = "Σχεδιάζουμε %@, για να ξεπεράσουμε τα πρότυπα της αγοράς για ενεργειακή απόδοση.";
+
+/* loco:671faa8cec286426400c01c2 */
+"uploadProgressDescriptionTemplateIndependence" = "Αναπτύσσουμε %@ Χωρίς συμβιβασμούς στην οικολογία, την ιδιωτικότητα και τους ανθρώπους.";
+
+/* loco:6720d40108caba4c6a0dddb3 */
+"uploadProgressIndication" = "Η μεταφορά βρίσκεται σε εξέλιξη…";
+
+/* loco:6729e09ab18f3f7a5803b282 */
+"uploadProgressTitleArgument" = "μοναδικούς";
+
+/* loco:671f96c0560f1de88c0f7e02 */
+"uploadProgressTitleTemplate" = "Τι μας κάνει %@;";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "Εστάλη!";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Σκανάρισε αυτόν τον κωδικό QR για να μοιραστείς τα αρχεία σου, ή αντέγραψε τον σύνδεσμο παρακάτω.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Η μεταφορά σου είναι έτοιμη!";
+
+/* loco:66c5ef9c409f7ef5ca058e34 */
+"urlAbout" = "https://www.infomaniak.com/en/about";
+
+/* loco:66c5ef608055a7b4f70c4022 */
+"urlUserReport" = "https://feedback.userreport.com/a61a740b-4800-4b53-8c9e-d2b010155416/";
+
+/* loco:6707f8d793cc933d520740f4 */
+"validateMailCodeIncorrectError" = "Ο κωδικός που εισήχθη είναι εσφαλμένος";
+
+/* loco:677bfb5467b61da0dd035562 */
+"validateMailCodeResentFeedback" = "Ο κωδικός στάλθηκε στη διεύθυνση email %@";
+
+/* loco:6707f975b37970cb7704b0c2 */
+"validateMailDescription" = "Στείλαμε έναν κωδικό στο %@. Εισάγαλε τον παρακάτω για να επαληθευτεί η διεύθυνση email σου στην εφαρμογή:";
+
+/* loco:6707f9d6c8a673d44f0035f2 */
+"validateMailInfo" = "Θυμήσου να ελέγξεις τον φάκελο ανεπιθύμητης αλληλογραφίας.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Επαναποστολή κωδικού";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Επαναποστολή κωδικού (%ds)";
+
+/* loco:6707f9ac045804ab200b44f2 */
+"validateMailTitle" = "Έλεγξε το email σου";
+
+/* loco:677bf872ea9c5274c6075542 */
+"validateMailUnknownError" = "Παρουσιάστηκε σφάλμα. Δοκίμασε ξανά σε λίγα λεπτά.";
+
+/* loco:66c335b6cb643611950ea795 */
+"version" = "Έκδοση";

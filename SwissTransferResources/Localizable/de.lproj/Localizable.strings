@@ -4,7 +4,7 @@
  * Locale: de, German
  * Tagged: ios
  * Exported by: Philippe Weidmann
- * Exported at: Sun, 26 Oct 2025 18:35:29 +0100
+ * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -68,7 +68,7 @@
 "buttonUseOtherAccount" = "Ein anderes Konto verwenden";
 
 /* loco:69845c4f61406c35b20db5d2 */
-"confirmLogoutDescription" = "Sind Sie sicher, dass Sie sich von %s abmelden möchten?";
+"confirmLogoutDescription" = "Sind Sie sicher, dass Sie sich von %@ abmelden möchten?";
 
 /* loco:69845bbd75c02bd018051a32 */
 "confirmLogoutTitle" = "Abmelden";
@@ -123,9 +123,6 @@
 
 /* loco:66a24a3f3472a720090cfd52 */
 "downloadedTransferLabel" = "Heruntergeladene Übertragung: %d/%d";
-
-/* loco:6761311fef0ed7ef9d0a2812 */
-"errorAppIntegrity" = "Ihr Gerät wird nicht als sicher erkannt";
 
 /* loco:6720ec444fa469071a050ee2 */
 "errorGeneratingQRCode" = "Unmöglich, den QR-Code zu generieren";
@@ -270,9 +267,6 @@
 
 /* loco:697b34e6399432fc860cf9b2 */
 "onboardingSendFilesTitle" = "Bereit loszulegen?";
-
-/* loco:6978c2946c4481e738070653 */
-"onboardingSignInOrCreateAccount" = "Melde dich an oder erstelle kostenlos ein Konto";
 
 /* loco:6745e4cbc46e4416540015f3 */
 "onboardingStorageSubtitleArgument" = "Teile bis zu 50 GB";
@@ -526,11 +520,8 @@
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ übrig";
 
-/* loco:6707e09639f0b3f32007d2e2 */
-"transferSpaceLeft-plural" = "%@ übrig";
-
-/* loco:6712085058c0880751095f72 */
-"transferSpaceLeft-plural-many" = "";
+/* loco:69aa93edc7dabf95130ef882 */
+"transferTitlePlaceholder" = "Gib deinem Transfer einen Titel";
 
 /* loco:66c4aa7762a79eb6a60eaba2 */
 "transferTypeEmail" = "E-Mail";

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+ Loco ios export: Xcode Stringsdict (legacy)
+ Project: SwissTransfer
+ Locale: pl, Polish
+ Tagged: ios-stringsdict
+ Exported by: Philippe Weidmann
+ Exported at: Mon, 09 Mar 2026 08:34:05 +0100
+-->
+<plist version="1.0">
+  <dict>
+    <key>filesCount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d plik</string>
+        <key>few</key>
+        <string>%d pliki</string>
+        <key>many</key>
+        <string>%d plików</string>
+        <key>other</key>
+        <string>%d pliku</string>
+      </dict>
+    </dict>
+    <key>multipleSelectionTitle</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d zaznaczony</string>
+        <key>few</key>
+        <string>%d zaznaczone</string>
+        <key>many</key>
+        <string>%d zaznaczonych</string>
+        <key>other</key>
+        <string>%d zaznaczone</string>
+      </dict>
+    </dict>
+    <key>recipientHeader</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Odbiorca:</string>
+        <key>few</key>
+        <string>Odbiorcy:</string>
+        <key>many</key>
+        <string>Odbiorców:</string>
+        <key>other</key>
+        <string>Odbiorcy:</string>
+      </dict>
+    </dict>
+    <key>settingsValidityPeriodValue</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d dzień</string>
+        <key>few</key>
+        <string>%d dni</string>
+        <key>many</key>
+        <string>%d dni</string>
+        <key>other</key>
+        <string>%d dnia</string>
+      </dict>
+    </dict>
+    <key>titleMyAccount</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Moje konto</string>
+        <key>few</key>
+        <string>Moje konta</string>
+        <key>many</key>
+        <string>Moje konta</string>
+        <key>other</key>
+        <string>Moje konta</string>
+      </dict>
+    </dict>
+    <key>transferExpiredLimitReachedDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwego pobrania.</string>
+        <key>few</key>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwych pobrań.</string>
+        <key>many</key>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwych pobrań.</string>
+        <key>other</key>
+        <string>Przepraszamy, ten transfer osiągnął limit %d możliwych pobrań.</string>
+      </dict>
+    </dict>
+    <key>uploadSuccessEmailDescription</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@value@</string>
+      <key>value</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Link do pobrania został wysłany do następującego odbiorcy:</string>
+        <key>few</key>
+        <string>Link do pobrania został wysłany do następujących odbiorców:</string>
+        <key>many</key>
+        <string>Link do pobrania został wysłany do następujących odbiorców:</string>
+        <key>other</key>
+        <string>Link do pobrania został wysłany do następujących odbiorców:</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

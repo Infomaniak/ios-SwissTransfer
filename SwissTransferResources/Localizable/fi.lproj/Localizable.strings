@@ -1,0 +1,641 @@
+/*
+ * Loco ios export: Xcode Strings (legacy)
+ * Project: SwissTransfer
+ * Locale: fi, Finnish
+ * Tagged: ios
+ * Exported by: Philippe Weidmann
+ * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
+ */
+
+/* loco:6707f4ba182e2d63b400cd42 */
+"advancedSettingsTitle" = "Lisäasetukset";
+
+/* loco:677be58b7579b67f0406b33e */
+"awaitingNetwork" = "Odotetaan verkkoa";
+
+/* loco:69673a66c902e57f3d0d3df2 */
+"buttonAll" = "Kaikki";
+
+/* loco:69673a54c41f8a02920d2e02 */
+"buttonCancel" = "Peruuta";
+
+/* loco:6721e8f6b18493385d00ec52 */
+"buttonCancelTransfer" = "Peruuta siirto";
+
+/* loco:6721eccd0752504a0d064d02 */
+"buttonCloseAndContinue" = "Sulje ja jatka";
+
+/* loco:6707f83845c44bad7f0d7805 */
+"buttonConfirm" = "Vahvista";
+
+/* loco:670f888e8b65a30acb0c6be2 */
+"buttonCopyLink" = "Kopioi linkki";
+
+/* loco:67616ea394ffdbb7e5071e36 */
+"buttonDeleteTransfer" = "Poista siirto";
+
+/* loco:68359d4126ae0a9eed0c68a2 */
+"buttonDeleteYes" = "Kyllä, poista";
+
+/* loco:67220015101b3de12b0f1f82 */
+"buttonDownload" = "Lataa";
+
+/* loco:672200e4a61b86b8470776e2 */
+"buttonDownloadSelected" = "Lataa valinta";
+
+/* loco:677e9253d2777f26f5019852 */
+"buttonDownloaded" = "Ladattu";
+
+/* loco:67448efd69b0e5a4910909b2 */
+"buttonEditTransfer" = "Muokkaa siirtoani";
+
+/* loco:670f577c33200f8f64069c62 */
+"buttonFinished" = "Valmis";
+
+/* loco:67580dfad1fd26fc9d068a82 */
+"buttonOpenMailApp" = "Avaa sähköpostisovellus";
+
+/* loco:672a116b6135bb977203e762 */
+"buttonRetry" = "Yritä uudelleen";
+
+/* loco:670f74260368c869540093b2 */
+"buttonShare" = "Jaa";
+
+/* loco:674834cdbb4f7b35ad00ea55 */
+"buttonStart" = "Aloita";
+
+/* loco:699471fbbf0c6c800e06b763 */
+"buttonUseOtherAccount" = "Käytä toista tiliä";
+
+/* loco:69845c4f61406c35b20db5d2 */
+"confirmLogoutDescription" = "Haluatko varmasti kirjautua ulos tililtä %@?";
+
+/* loco:69845bbd75c02bd018051a32 */
+"confirmLogoutTitle" = "Kirjaudu ulos";
+
+/* loco:66c5b8a600121e93c00c79d2 */
+"contentDescriptionButtonBack" = "Takaisin";
+
+/* loco:66c5b8e29f9df1eb920ef483 */
+"contentDescriptionButtonClose" = "Sulje";
+
+/* loco:6719f3144da70102cb0abc82 */
+"contentDescriptionButtonHidePassword" = "Piilota salasana";
+
+/* loco:66ed1facfdf04647c80a0482 */
+"contentDescriptionButtonRemove" = "Poista tiedosto";
+
+/* loco:6719f30247e142610b08f4f3 */
+"contentDescriptionButtonShowPassword" = "Näytä salasana";
+
+/* loco:66a1fa770af8cf8470002102 */
+"contentDescriptionCreateNewTransferButton" = "Uusi siirto";
+
+/* loco:67e54599054e355e4f053752 */
+"dailyTransferLimitReached" = "Olet saavuttanut päivittäisen siirtorajan";
+
+/* loco:677cf4a37658668b1c07d9a2 */
+"deeplinkPasswordDescription" = "Syötä saamasi salasana ladataksesi nämä tiedostot.";
+
+/* loco:6787727e96fb165b36011422 */
+"deeplinkTransferExpired" = "Tämä siirto on vanhentunut";
+
+/* loco:677fbfbeb541dd8a8c0276d2 */
+"deeplinkTransferNotFound" = "Tätä siirtoa ei ole olemassa";
+
+/* loco:699c62a8090390d46409c7f2 */
+"deleteAccountAlertTitle" = "Poista tili";
+
+/* loco:699c52d6d2021467050c9872 */
+"deleteAccountErrorAlertMessage" = "Tilin poistaminen epäonnistui";
+
+/* loco:699c4fdc93c5e844420cf302 */
+"deleteAccountSuccessAlertMessage" = "Tilin poistaminen onnistuu";
+
+/* loco:68359c6b15da309c25045492 */
+"deleteThisTransferDescription" = "Tämä siirto ja sen sisältämät tiedostot poistetaan.";
+
+/* loco:68359bf65101e64968042602 */
+"deleteThisTransferTitle" = "Poistetaanko tämä siirto?";
+
+/* loco:67852070453d66cb9a0033c2 */
+"downloadInProgressDialogTitle" = "Lataus käynnissä…";
+
+/* loco:66a24a3f3472a720090cfd52 */
+"downloadedTransferLabel" = "Ladattu siirto: %d/%d";
+
+/* loco:6720ec444fa469071a050ee2 */
+"errorGeneratingQRCode" = "QR-koodin luominen ei onnistu";
+
+/* loco:677cfe305ec5b8afc10db732 */
+"errorIncorrectPassword" = "Virheellinen salasana";
+
+/* loco:6728e0698584637cc20ef6b2 */
+"errorTransferPasswordLength" = "Salasanan täytyy olla 6–25 merkkiä pitkä";
+
+/* loco:67b8749b3c6e5f744d0bcc82 */
+"expired" = "Vanhentunut";
+
+/* loco:67b489ba13ccf8b7ab0e46b3 */
+"expiresAt" = "Vanhenee klo %@";
+
+/* loco:669f7a817f40f7e9170fafa2 */
+"expiresIn" = "Vanhenee %d päivässä";
+
+/* loco:67b49607bdcd0286220cea32 */
+"expiresThe" = "Vanhenee %s";
+
+/* loco:6776640e5e97ee7e550d5b72 */
+"expiresTomorrow" = "Vanhenee huomenna";
+
+/* loco:67fe654051b0931bec0d5b42 */
+"fileCountOverDisplayOnly" = "%1$d/%2$d tiedostoa";
+
+/* loco:67fe6950a9aa76a7670a9112 */
+"fileCountOverTtsFriendly" = "%1$d / %2$d tiedostoa";
+
+/* loco:67ffa893e821c9e3a80af462 */
+"fileSizeOverDisplayOnly" = "%1$@/%2$@";
+
+/* loco:67ffa9059ea861506908e942 */
+"fileSizeOverTtsFriendly" = "%1$@ / %2$@";
+
+/* loco:669f76984c6fad682900d032 */
+"firstTransferDescription" = "Tee ensimmäinen siirtosi!";
+
+/* loco:66c5b683919c7a5f1b024142 */
+"importFilesScreenTitle" = "Siirrettävät tiedostot";
+
+/* loco:6750234ba38b270dc804a7d2 */
+"invalidAddress" = "Virheellinen osoite";
+
+/* loco:66a24acfa855c577100e2353 */
+"messageHeader" = "Viesti:";
+
+/* loco:6707f41e004c1612f407fae2 */
+"myFilesTitle" = "Omat tiedostot";
+
+/* loco:673b609c03c82748a509bd92 */
+"networkUnavailable" = "Verkko ei saatavilla";
+
+/* loco:675ae8861595e0ef6b063c92 */
+"newTransferConfirmLeavingDialogTitle" = "Hups, haluatko todella peruuttaa?";
+
+/* loco:675aed225692b5b2fc063e12 */
+"newTransferLeavingDialogDescription" = "Siirtosi on melkein valmis. Haluatko varmasti peruuttaa sen?";
+
+/* loco:675aedf9d296e6311c094eb2 */
+"newTransferLeavingDialogNegativeButton" = "Ei, jatka";
+
+/* loco:675aed916909b0ae120a2512 */
+"newTransferLeavingDialogPositiveButton" = "Kyllä, peruuta";
+
+/* loco:674dbabbdd957af5740cf002 */
+"noSettingsSelectedDescription" = "Valitse parametri näyttääksesi sen";
+
+/* loco:66d00a919c37e358f5081dd2 */
+"noTransferReceivedDescription" = "Kaikki viimeisen 30 päivän aikana vastaanottamasi siirrot näkyvät täällä.";
+
+/* loco:66d009adae0a00bb3c011352 */
+"noTransferReceivedTitle" = "Ei vastaanotettuja siirtoja";
+
+/* loco:67482c2dde54f81d2a0824d2 */
+"noTransferSelectedDescription" = "Valitse siirto tai luo uusi.";
+
+/* loco:6748294ce710a9c2af069052 */
+"noTransferSelectedTitle" = "Ei näytettäviä siirtoja";
+
+/* loco:678f47605b4d4a18240a8395 */
+"notificationDownloadErrorDescription" = "Latauksen aikana tapahtui virhe.";
+
+/* loco:678f44b7f2593a75b90f0f92 */
+"notificationDownloadErrorNotificationTitle" = "Latausvirhe";
+
+/* loco:678f473fe3af2239cf0b99c2 */
+"notificationDownloadSuccessDescription" = "Tiedosto %@ on ladattu.";
+
+/* loco:678f44517474b710de0065b6 */
+"notificationDownloadSuccessNotificationTitle" = "Lataus valmis";
+
+/* loco:678e479bdf4d2ab457051f92 */
+"notificationKeepAppForegroundDescription" = "Pidä sovellus auki siirron loppuun asti.";
+
+/* loco:68fe59d91ce32740c80377c2 */
+"notificationProgressSubtitle" = "Edistyminen %@";
+
+/* loco:678630d98c1534fbc50d2cc2 */
+"notificationUploadFailureDescription" = "Tapahtui ongelma, yritä uudelleen";
+
+/* loco:678630b92eec2a91f00603af */
+"notificationUploadFailureTitle" = "Siirto epäonnistui";
+
+/* loco:67851171fcb1c1349e0f8392 */
+"notificationUploadProgressTitle" = "Siirto käynnissä… (%@%%)";
+
+/* loco:6785135bb4d438d6ca0272a2 */
+"notificationUploadSuccessDescriptionMail" = "Latauslinkki on lähetetty vastaanottajille";
+
+/* loco:6785134bbb571a28f10994e4 */
+"notificationUploadSuccessDescriptionOther" = "Napauta saadaksesi lataustilasi";
+
+/* loco:6785125e391d0459e50fa852 */
+"notificationUploadSuccessTitle" = "Siirto valmis";
+
+/* loco:6746e8a0396f33e00a0fc393 */
+"onboardingExpirationSubtitleArgument" = "30 päivää.";
+
+/* loco:6746e853f31dad284f0aa742 */
+"onboardingExpirationSubtitleTemplate" = "Jaa tiedostosi sähköpostitse, linkillä tai QR-koodilla. Linkkisi pysyvät aktiivisina %@";
+
+/* loco:6746e6c255f60b501f02d372 */
+"onboardingExpirationTitle" = "Pelaa parhailla korteillasi!";
+
+/* loco:6746f713c933bb6d0001c2c2 */
+"onboardingPasswordSubtitleArgument" = "salasanalla.";
+
+/* loco:6746f6d24c1e8eac030e37a2 */
+"onboardingPasswordSubtitleTemplate" = "Suojaa jakosi %@";
+
+/* loco:6746ea1214cc5fb6da022362 */
+"onboardingPasswordTitle" = "Pysy hallinnassa!";
+
+/* loco:697b35596736bc830f01d493 */
+"onboardingSendFilesSubtitleArgument" = "Lähetä tiedostosi";
+
+/* loco:697b35831a260357c10a5d93 */
+"onboardingSendFilesSubtitleTemplate" = " %@ nyt!";
+
+/* loco:697b34e6399432fc860cf9b2 */
+"onboardingSendFilesTitle" = "Valmis aloittamaan?";
+
+/* loco:6745e4cbc46e4416540015f3 */
+"onboardingStorageSubtitleArgument" = "Jaa jopa 50 Gt";
+
+/* loco:6745e479fd92d04bbd0ac2b2 */
+"onboardingStorageSubtitleTemplate" = "%@ tiedostoja ilmaiseksi ilman rekisteröitymistä.";
+
+/* loco:6745d761b427af1ed8084c32 */
+"onboardingStorageTitle" = "Lähetä isoja tiedostoja!";
+
+/* loco:67ff96fe53fc54f951079062 */
+"oneClickSharing" = "Jaa yhdellä napsautuksella!";
+
+/* loco:68079d4b17b8e06966072592 */
+"quickSharingDescription" = "Jakaminen nopeasti onnistuu käyttämällä %1$@- tai %2$@-painiketta QR-koodin alla.\nSe on helpompaa kuin kuvakaappauksen ottaminen.";
+
+/* loco:66fa5ce7eb184f21290154a2 */
+"receivedFilesTitle" = "Vastaanotetut tiedostot";
+
+/* loco:669f759d2093b5a83708e5e2 */
+"receivedTitle" = "Vastaanotettu";
+
+/* loco:67bd58877695a8511309f862 */
+"restrictedLocation" = "Infomaniak SwissTransfer ei ole saatavilla alueellasi";
+
+/* loco:669f76052093b5a83708e5e4 */
+"sentEmptyTitle" = "Tarinamme alkaa täältä";
+
+/* loco:669f79ffb8749b07fa0023d3 */
+"sentFilesTitle" = "Jaetut tiedostot";
+
+/* loco:669f755c502e59a518017423 */
+"sentTitle" = "Lähetetty";
+
+/* loco:67319f67ca1b48e5d00b77e2
+ * Notifications settings */
+"settingsAllNotifications" = "Kaikki ilmoitukset";
+
+/* loco:66c3345d68555c9cec08bd35 */
+"settingsCategoryAbout" = "Tietoja";
+
+/* loco:6708ded3b998cbf13209d3c3 */
+"settingsCategoryDataManagement" = "Tiedot & Yksityisyys";
+
+/* loco:66c33433d8cdb0aeb6003082 */
+"settingsCategoryDefaultSettings" = "Oletusasetukset";
+
+/* loco:66c333f5222777ffd504e5f3 */
+"settingsCategoryGeneral" = "Yleiset";
+
+/* loco:67338ed629e297656f0617c2 */
+"settingsCustomizedNotifications" = "Mukautettu";
+
+/* loco:6978bb175239463c840e1b52 */
+"settingsDeleteMyAccount" = "Poista tilini";
+
+/* loco:66c6e297bb7794739b0ec0d2 */
+"settingsDownloadsLimitTitle" = "Aseta oletusarvoinen latausraja siirroillesi";
+
+/* loco:66c6beb4953867da65029872 */
+"settingsEmailLanguageTitle" = "Aseta oletuskieli sähköpostilähetyksillesi";
+
+/* loco:66c6bfb72d51f3e429025a82 */
+"settingsEmailLanguageValueEnglish" = "Englanti";
+
+/* loco:66c6bf06ba6306bc710887a2 */
+"settingsEmailLanguageValueFrench" = "Ranska";
+
+/* loco:66c6bf698e116411a90d9052 */
+"settingsEmailLanguageValueGerman" = "Saksa";
+
+/* loco:66c6bf3e4e4926d9600599f2 */
+"settingsEmailLanguageValueItalian" = "Italia";
+
+/* loco:66c6bf8d83619a4f090feb72 */
+"settingsEmailLanguageValueSpanish" = "Espanja";
+
+/* loco:6978b9d9ebbf21f50b0bc542 */
+"settingsHelpAndSupport" = "Ohje & Tuki";
+
+/* loco:6978ba6722491ec3b40e4ae4 */
+"settingsLogOut" = "Kirjaudu ulos";
+
+/* loco:670e0d2650d301395000ead2 */
+"settingsMatomoDescription" = "Matomo on analyysityökalu, jota Infomaniak isännöi ja hallinnoi yksinomaan ymmärtääkseen kuinka sovellusta käytetään.\n\nTutkimalla näitä tietoja tiimimme pystyy jatkuvasti parantamaan sovelluksen käyttöliittymää.";
+
+/* loco:6731a0b0ee0948aac509e672
+ * Notifications settings */
+"settingsNotificationsDownloadInProgress" = "Lataus käynnissä";
+
+/* loco:6731a15af505e237120fb292
+ * Notifications settings */
+"settingsNotificationsDownloadTransfer" = "Siirron lataaminen";
+
+/* loco:6731a4f786feae2e5707c952 */
+"settingsNotificationsLinkExpired" = "Vanhentunut linkki";
+
+/* loco:66c57e1cac4c61d2dd0c8f12 */
+"settingsNotificationsTitle" = "Valitse asetus";
+
+/* loco:6731a1221ff67f956202a482
+ * Notifications settings */
+"settingsNotificationsTransferFinished" = "Siirto valmis";
+
+/* loco:6731a079a36f5786980eff62
+ * Notifications settings */
+"settingsNotificationsTransferInProgress" = "Siirto käynnissä";
+
+/* loco:6731a18f7f9ab820b6015712
+ * Notifications settings */
+"settingsNotificationsTransferNotDownloaded" = "Siirtoa ei ladattu";
+
+/* loco:67176dcf314971e1f604b9c2 */
+"settingsOptionActivated" = "Aktivoitu";
+
+/* loco:6708df5b59630fe9e604b612 */
+"settingsOptionDataManagement" = "Tietojen hallinta";
+
+/* loco:66c3355378e62c3f0d0a4672 */
+"settingsOptionDiscoverInfomaniak" = "Tutustu Infomaniakiin";
+
+/* loco:66c3351479627944d00efd83 */
+"settingsOptionDownloadLimit" = "Latausraja";
+
+/* loco:66c3352f911ccd83de06b562 */
+"settingsOptionEmailLanguage" = "Sähköpostin kieli";
+
+/* loco:66c336f6f7bdfdc4d900cd12 */
+"settingsOptionGiveFeedback" = "Anna palautetta";
+
+/* loco:6707f66faff7e06a6e048832 */
+"settingsOptionNone" = "Ei mitään";
+
+/* loco:66c334b41bd6706567037508 */
+"settingsOptionNotifications" = "Ilmoitukset";
+
+/* loco:6707f6230fd9a408030f4a92 */
+"settingsOptionPassword" = "Salasana";
+
+/* loco:66c3356b79627944d00efd88 */
+"settingsOptionShareIdeas" = "Jaa ideasi";
+
+/* loco:67b83b2918cbcda68004dd22 */
+"settingsOptionTermsAndConditions" = "Käyttöehdot";
+
+/* loco:66c3348f7990bb4f500f8864 */
+"settingsOptionTheme" = "Teema";
+
+/* loco:66c5767075065f6a6f0a55f2 */
+"settingsOptionThemeDark" = "Tumma";
+
+/* loco:66c576623f6469240f064202 */
+"settingsOptionThemeLight" = "Vaalea";
+
+/* loco:66c57650368985cbec0f7d42 */
+"settingsOptionThemeSystem" = "Järjestelmä";
+
+/* loco:66c334f8fe4641955405f122 */
+"settingsOptionValidityPeriod" = "Voimassaoloaika";
+
+/* loco:6707f75349305b1a670f8f62 */
+"settingsPasswordDescription" = "Vastaanottajien täytyy syöttää salasana ladatakseen tiedostot.";
+
+/* loco:6707f721fff461b22300ffd2 */
+"settingsPasswordTitle" = "Suojaa siirtosi salasanalla";
+
+/* loco:6707f77d5ff0bb7280049122 */
+"settingsPasswordToggleDescription" = "Aktivoi suojaus";
+
+/* loco:6978b799c6877d37f00c2dc5 */
+"settingsSignIn" = "Kirjaudu sisään";
+
+/* loco:6978c92a07f250e2610b9342 */
+"settingsSwitchAccount" = "Vaihda tiliä";
+
+/* loco:66c342a1e87c8303b10b2372 */
+"settingsThemeTitle" = "Valitse teema";
+
+/* loco:669f75c5d69668e460064082 */
+"settingsTitle" = "Asetukset";
+
+/* loco:66c587e4067064f587099c02 */
+"settingsValidityPeriodTitle" = "Aseta oletusarvoinen voimassaoloaika siirroillesi";
+
+/* loco:67335c646d95d56ce00c77b2 */
+"sharePasswordButton" = "Kopioi salasana";
+
+/* loco:673358d908873a82380b99b2 */
+"sharePasswordDescription" = "Tässä on salasana tiedostojen lataamiseen!";
+
+/* loco:673358d1792d18d1c40c4612 */
+"sharePasswordTitle" = "Tämä siirto on suojattu";
+
+/* loco:673357fffb9ea749380dce44 */
+"shareQrCodeDescription" = "Näytä tätä QR-koodia jakaaksesi siirtosi:";
+
+/* loco:673357ce7a09e445af086eb3 */
+"shareQrCodeTitle" = "Pikajako";
+
+/* loco:67bd585d873224d0fb0894c2 */
+"sorry" = "Olemme pahoillamme";
+
+/* loco:6718df9028c2ea33b001c522 */
+"textFieldOptional" = "(Valinnainen)";
+
+/* loco:66a24b1d3472a720090cfd58 */
+"transferContentHeader" = "Siirron sisältö:";
+
+/* loco:6720b962e49b6c46620d30f3 */
+"transferExpiredButton" = "Poista historiasta";
+
+/* loco:6720af2aaad13976bb0d7832 */
+"transferExpiredDateReachedDescription" = "Pahoittelut, tämä siirto vanheni %@. Et voi enää ladata tai tarkastella tiedostoja.";
+
+/* loco:678e7bb990830fe7f1052e92 */
+"transferExpiredDescription" = "Pahoittelut, tämä siirto on vanhentunut. Et voi enää ladata tai tarkastella tiedostoja.";
+
+/* loco:6720aec78a4f6e6b0c0d28a2 */
+"transferExpiredTitle" = "Tämä siirto ei ole enää saatavilla";
+
+/* loco:6791edf4a6f878c7ab05bc22 */
+"transferInitializing" = "Ladataan…";
+
+/* loco:66c6d0936969c14fab0aec72 */
+"transferListSectionLastWeek" = "Viime viikolla";
+
+/* loco:66c6d0ade6247c4847026ec4 */
+"transferListSectionThisMonth" = "Tässä kuussa";
+
+/* loco:66c6d072ab48fd071b0db6c2 */
+"transferListSectionThisWeek" = "Tällä viikolla";
+
+/* loco:66c6d006e6247c4847026ec2 */
+"transferListSectionToday" = "Tänään";
+
+/* loco:66c6d050074f03cc770d2932 */
+"transferListSectionYesterday" = "Eilen";
+
+/* loco:6718e0db7d3cf9ef4e0b9c83 */
+"transferMessagePlaceholder" = "Viesti välitettäväksi?";
+
+/* loco:6707f2a5535a86d2220b6ea2 */
+"transferRecipientAddressPlaceholder" = "Lähetä tiedostoja osoitteeseen";
+
+/* loco:6707d903f6f42e03b90b8632 */
+"transferSendButton" = "Lähetä";
+
+/* loco:6707f27ec37017ff2b0192a2 */
+"transferSenderAddressPlaceholder" = "Sähköpostiosoitteesi";
+
+/* loco:6707e02b8a6e1328f2054d62 */
+"transferSpaceLeft" = "%@ jäljellä";
+
+/* loco:69aa93edc7dabf95130ef882 */
+"transferTitlePlaceholder" = "Anna siirrollesi otsikko";
+
+/* loco:66c4aa7762a79eb6a60eaba2 */
+"transferTypeEmail" = "Sähköposti";
+
+/* loco:66c4aa6548c80af1df099483 */
+"transferTypeLink" = "Linkki";
+
+/* loco:66c4aa8cf1945b5bd70ed563 */
+"transferTypeQrCode" = "QR-koodi";
+
+/* loco:66c5f77ed20c38c185010bd3 */
+"transferTypeScreenTitle" = "Siirto";
+
+/* loco:66c4a98a0aee7eb62404ec62 */
+"transferTypeTitle" = "Lähetä";
+
+/* loco:6889de6a89343a80ff014992 */
+"transferUploadSourceChoiceCamera" = "Kamera";
+
+/* loco:6889df37c9b6166238093af2 */
+"transferUploadSourceChoiceFiles" = "Selaa tiedostoja";
+
+/* loco:6889df8b6973de8abd0616a2 */
+"transferUploadSourceChoiceGallery" = "Kuva- ja videogalleria";
+
+/* loco:678e7b3b30ca99c9690c7c92 */
+"transferVirusCheckDescription" = "Tiedostot eivät ole vielä saatavilla turvallisuussyistä.\nPalaa hetken kuluttua.";
+
+/* loco:678e7b0a570febadc1013692 */
+"transferVirusCheckTitle" = "Tiedostoja tarkistetaan";
+
+/* loco:678f4ab56e8b3c2390077452 */
+"transferVirusDetectedDescription" = "Et voi käyttää tätä siirtoa, koska se ei noudata käyttöehtojamme.";
+
+/* loco:678f4a42026090be7200ee62 */
+"transferVirusDetectedTitle" = "Vaatimustenvastaisia tiedostoja";
+
+/* loco:6800aa6d8135c915920188b2 */
+"understandTitleButton" = "Ymmärsin!";
+
+/* loco:672104c0398a368f6308c152 */
+"uploadCancelConfirmBottomSheetTitle" = "Haluatko varmasti peruuttaa siirron?";
+
+/* loco:6729e40f3f0d68fc7e03bab2 */
+"uploadErrorDescription" = "Siirto ei onnistunut, anna sille toinen mahdollisuus. Jos ongelma jatkuu, ota yhteyttä tukitiimiimme.";
+
+/* loco:6729d9d657eb1ed1a40f5f92 */
+"uploadErrorTitle" = "Odota, mitä juuri tapahtui?";
+
+/* loco:6720a3367f6276e49d0d9902 */
+"uploadProgressDescriptionArgumentConfidentiality" = "internetiä, joka kunnioittaa luottamuksellisuutta ja yksityisyyttä.";
+
+/* loco:671facb7f1fe8e23eb02e732 */
+"uploadProgressDescriptionArgumentEnergy" = "omat palvelinkeskuksemme, ilman ilmastointia";
+
+/* loco:671fab15def78345b802d5c2 */
+"uploadProgressDescriptionArgumentIndependence" = "teknologista riippumattomuutta Euroopassa.";
+
+/* loco:6720a2f98e276b472c007252 */
+"uploadProgressDescriptionTemplateConfidentiality" = "Olemme riippumattomia ja edistämme %@";
+
+/* loco:671faca64009477847056262 */
+"uploadProgressDescriptionTemplateEnergy" = "Suunnittelemme %@, ylittääksemme markkinoiden energiatehokkuusstandardit.";
+
+/* loco:671faa8cec286426400c01c2 */
+"uploadProgressDescriptionTemplateIndependence" = "Kehitämme %@ Ilman kompromisseja ekologian, yksityisyyden ja ihmisten suhteen.";
+
+/* loco:6720d40108caba4c6a0dddb3 */
+"uploadProgressIndication" = "Siirto käynnissä…";
+
+/* loco:6729e09ab18f3f7a5803b282 */
+"uploadProgressTitleArgument" = "erottavaa";
+
+/* loco:671f96c0560f1de88c0f7e02 */
+"uploadProgressTitleTemplate" = "Mikä tekee meistä %@?";
+
+/* loco:670f500d0230688d8b0bdf42 */
+"uploadSuccessEmailTitle" = "Lähetetty!";
+
+/* loco:670f73fb548cd8f1aa016292 */
+"uploadSuccessLinkDescription" = "Näytä tätä QR-koodia jakaaksesi tiedostosi, tai kopioi alla oleva linkki.";
+
+/* loco:670f73c3cfc693ebbc0a1cc2 */
+"uploadSuccessLinkTitle" = "Siirtosi on valmis!";
+
+/* loco:66c5ef9c409f7ef5ca058e34 */
+"urlAbout" = "https://www.infomaniak.com/en/about";
+
+/* loco:66c5ef608055a7b4f70c4022 */
+"urlUserReport" = "https://feedback.userreport.com/a61a740b-4800-4b53-8c9e-d2b010155416/";
+
+/* loco:6707f8d793cc933d520740f4 */
+"validateMailCodeIncorrectError" = "Syötetty koodi on virheellinen";
+
+/* loco:677bfb5467b61da0dd035562 */
+"validateMailCodeResentFeedback" = "Koodi lähetettiin sähköpostiosoitteeseen %@";
+
+/* loco:6707f975b37970cb7704b0c2 */
+"validateMailDescription" = "Lähetimme koodin osoitteeseen %@. Syötä se alla vahvistaaksesi sähköpostiosoitteesi sovelluksessa:";
+
+/* loco:6707f9d6c8a673d44f0035f2 */
+"validateMailInfo" = "Muista tarkistaa sähköpostisi roskapostikansio.";
+
+/* loco:67580f59ad58797d7d01c4d2 */
+"validateMailResendCode" = "Lähetä koodi uudelleen";
+
+/* loco:67580fe013d5798b410521b3 */
+"validateMailResendCodeTemplate" = "Lähetä koodi uudelleen (%ds)";
+
+/* loco:6707f9ac045804ab200b44f2 */
+"validateMailTitle" = "Tarkista sähköpostisi";
+
+/* loco:677bf872ea9c5274c6075542 */
+"validateMailUnknownError" = "Tapahtui virhe. Yritä uudelleen hetken kuluttua.";
+
+/* loco:66c335b6cb643611950ea795 */
+"version" = "Versio";

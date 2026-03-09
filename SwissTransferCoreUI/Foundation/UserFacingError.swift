@@ -46,7 +46,7 @@ public extension UserFacingError {
 
 public struct UploadError: Error {
     public static let `default` = UploadError()
-    public static let appIntegrity = UploadError(subtitle: STResourcesStrings.Localizable.errorAppIntegrity)
+    public static let appIntegrity = UploadError(subtitle: CoreUILocalizable.errorAppIntegrity)
     public static let restrictedLocation = UploadError(
         title: STResourcesStrings.Localizable.sorry,
         subtitle: STResourcesStrings.Localizable.restrictedLocation,
