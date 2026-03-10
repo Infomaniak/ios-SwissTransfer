@@ -72,7 +72,8 @@ public final class UploadBackendRouter: Sendable {
         }
     }
 
-    public func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession) async throws -> String {
+    public func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession,
+                                                   title: String? = nil) async throws -> String {
         if currentUser != nil {
             var filesMetadata: [FileToUploadMetadata] = []
             var sizeOfUpload: Int64 = 0
@@ -90,7 +91,7 @@ public final class UploadBackendRouter: Sendable {
                 validityPeriod: newUploadSession.duration,
                 authorEmail: newUploadSession.authorEmail,
                 password: newUploadSession.password,
-                title: nil,
+                title: title,
                 message: newUploadSession.message,
                 sizeOfUpload: sizeOfUpload,
                 downloadCountLimit: newUploadSession.numberOfDownload,

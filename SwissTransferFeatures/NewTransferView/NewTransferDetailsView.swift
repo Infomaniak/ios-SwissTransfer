@@ -31,11 +31,16 @@ struct NewTransferDetailsView: View {
     @Binding var authorEmail: String
     @Binding var recipientsEmail: OrderedSet<String>
     @Binding var message: String
+    @Binding var title: String
 
     let transferType: TransferType
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
+            if currentUser != nil {
+                TitleTextFieldView(title: $title)
+            }
+
             if transferType == .mail {
                 AuthorMailTextFieldView(authorEmail: $authorEmail)
                     .disabled(currentUser?.email != nil)
@@ -64,6 +69,7 @@ struct NewTransferDetailsView: View {
         authorEmail: .constant(""),
         recipientsEmail: .constant(OrderedSet()),
         message: .constant(""),
+        title: .constant(""),
         transferType: .link
     )
 }

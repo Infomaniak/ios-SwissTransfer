@@ -26,6 +26,7 @@ public struct RootTransferRestorableState: Sendable {
     public let transferType: TransferType
     public let password: String
     public let message: String
+    public let title: String
     public let validityPeriod: ValidityPeriod
     public let downloadLimit: DownloadLimit
     public let emailLanguage: EmailLanguage
@@ -42,6 +43,7 @@ public struct RootTransferRestorableState: Sendable {
 
         password = uploadSession.password
         message = uploadSession.message
+        title = ""
         validityPeriod = uploadSession.duration
         downloadLimit = uploadSession.numberOfDownload
         emailLanguage = uploadSession.language
@@ -59,6 +61,7 @@ public struct RootTransferRestorableState: Sendable {
 
         password = uploadSessionRequest.password
         message = uploadSessionRequest.message
+        title = uploadSessionRequest.title ?? ""
         validityPeriod = uploadSessionRequest.validityPeriod
         downloadLimit = uploadSessionRequest.downloadCountLimit
         emailLanguage = uploadSessionRequest.languageCode
