@@ -520,6 +520,9 @@
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ restante";
 
+/* loco:6707e09639f0b3f32007d2e2 */
+"transferSpaceLeft-plural" = "%@ restantes";
+
 /* loco:69aa93edc7dabf95130ef882 */
 "transferTitlePlaceholder" = "Dê um título à sua transferência";
 
