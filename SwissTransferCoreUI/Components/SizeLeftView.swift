@@ -28,11 +28,19 @@ public struct SizeLeftView: View {
     }
 
     private var filesSizeText: Text {
-        return Text(
-            STResourcesStrings.Localizable.transferSpaceLeft(
-                remainingSize.formatted(.defaultByteCount)
+        if remainingSize > 1 {
+            return Text(
+                STResourcesStrings.Localizable.transferSpaceLeftPlural(
+                    remainingSize.formatted(.defaultByteCount)
+                )
             )
-        )
+        } else {
+            return Text(
+                STResourcesStrings.Localizable.transferSpaceLeft(
+                    remainingSize.formatted(.defaultByteCount)
+                )
+            )
+        }
     }
 
     public init(sizeOccupied: Int64) {

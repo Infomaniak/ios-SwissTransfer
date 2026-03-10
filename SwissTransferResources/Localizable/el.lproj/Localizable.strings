@@ -520,6 +520,9 @@
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ απομένει";
 
+/* loco:6707e09639f0b3f32007d2e2 */
+"transferSpaceLeft-plural" = "%@ απομένουν";
+
 /* loco:69aa93edc7dabf95130ef882 */
 "transferTitlePlaceholder" = "Δώσε έναν τίτλο στη μεταφορά σου";
 
