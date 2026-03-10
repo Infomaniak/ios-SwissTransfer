@@ -27,7 +27,11 @@ extension TransferUi: Identifiable {
 
 public extension TransferUi {
     var name: String {
-        return date.formatted(.prettyDate)
+        guard let title, !title.isEmpty else {
+            return date.formatted(.prettyDate)
+        }
+
+        return title
     }
 
     var date: Date {
