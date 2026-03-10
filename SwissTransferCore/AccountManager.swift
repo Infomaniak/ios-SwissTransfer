@@ -127,7 +127,6 @@ public actor AccountManager: ObservableObject {
         }
     }
 
-    // periphery:ignore - Token will be used with new multi account
     private func getSwissTransferManager(userId: UserId, token: String?) async -> SwissTransferInjection? {
         _ = await loadUserTask?.result
         if let manager = managers[userId] {

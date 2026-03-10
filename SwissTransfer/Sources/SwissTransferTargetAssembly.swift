@@ -20,7 +20,6 @@ import InfomaniakCore
 import InfomaniakDI
 import SwissTransferCore
 
-// periphery:ignore - Used by DI
 class SwissTransferTargetAssembly: TargetAssembly {
     override class func getTargetServices() -> [Factory] {
         return [
