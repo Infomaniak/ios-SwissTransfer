@@ -68,7 +68,6 @@ public struct AccountView: View {
                             leadingIcon: STResourcesAsset.Images.user
                         )
                     }
-                    .buttonStyle(.plain)
                     .settingsCell()
                 }
 
@@ -99,7 +98,6 @@ public struct AccountView: View {
                             leadingIcon: STResourcesAsset.Images.logout
                         )
                     }
-                    .buttonStyle(PlainButtonStyle())
                     .stCustomAlert(isPresented: $isShowingLogoutView) {
                         LogoutConfirmationView(user: currentUser)
                     }
