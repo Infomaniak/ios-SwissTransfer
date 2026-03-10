@@ -64,6 +64,7 @@ public struct NewTransferView: View {
                         authorEmail: $viewModel.authorEmail,
                         recipientsEmail: $viewModel.recipientsEmail,
                         message: $viewModel.message,
+                        title: $viewModel.title,
                         transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
@@ -125,7 +126,7 @@ public struct NewTransferView: View {
 
             let uploadBackendRouter = mainViewState.uploadBackendRouter
             let localUploadSessionUUID = try await uploadBackendRouter
-                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
+                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession, title: viewModel.title)
 
             if let shareExtensionContext {
                 let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator

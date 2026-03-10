@@ -38,6 +38,7 @@ public final class RootTransferViewModel: ObservableObject {
     public var authorEmailToken: String?
     @Published public var recipientsEmail = OrderedSet<String>()
     @Published public var message = ""
+    @Published public var title = ""
     @Published public var password = ""
     @Published public var validityPeriod = ValidityPeriod.thirty
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
@@ -113,6 +114,7 @@ public final class RootTransferViewModel: ObservableObject {
 
     public func restoreWith(state: RootTransferRestorableState) {
         authorEmail = state.authorEmail
+        title = state.title
         recipientsEmail = state.recipientsEmail
         transferType = state.transferType
         password = state.password
