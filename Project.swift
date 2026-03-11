@@ -126,6 +126,7 @@ let mainView = Feature(
         rootTransferView,
         deepLinkPasswordView,
         TargetDependency.target(name: "STResources"),
+        TargetDependency.external(name: "InAppTwoFactorAuthentication"),
         TargetDependency.external(name: "InfomaniakCoreUIResources"),
         TargetDependency.external(name: "VersionChecker")
     ]
@@ -192,6 +193,7 @@ let project = Project(
                 .external(name: "InfomaniakCoreSwiftUI"),
                 .external(name: "InfomaniakCore"),
                 .external(name: "InfomaniakDI"),
+                .external(name: "InfomaniakNotifications"),
                 .external(name: "VersionChecker"),
                 rootView.asDependency
             ],

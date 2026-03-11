@@ -23,6 +23,7 @@ import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakDI
 import InfomaniakLogin
+import InfomaniakNotifications
 import InterAppLogin
 import OSLog
 import STCore
@@ -61,8 +62,17 @@ open class TargetAssembly {
             Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
             },
+            Factory(type: AppLaunchCounter.self) { _, _ in
+                AppLaunchCounter()
+            },
             Factory(type: ConnectedAccountManagerable.self) { _, _ in
                 ConnectedAccountManager(currentAppKeychainIdentifier: AppIdentifierBuilder.swissTransferKeychainIdentifier)
+            },
+            Factory(type: InAppTwoFactorAuthenticationManagerable.self) { _, _ in
+                InAppTwoFactorAuthenticationManager()
+            },
+            Factory(type: InfomaniakNotifications.self) { _, _ in
+                InfomaniakNotifications(appGroup: Constants.appGroupIdentifier)
             },
             Factory(type: InfomaniakNetworkLoginable.self) { _, _ in
                 InfomaniakNetworkLogin(config: loginConfig)

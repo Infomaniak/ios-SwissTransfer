@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InAppTwoFactorAuthentication
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
@@ -124,6 +125,28 @@ public struct MainView: View {
         Task {
             try? await mainViewState.transferManager.deleteExpiredTransfers()
         }
+        Task {
+            await checkTwoFAChallenges()
+        }
+    }
+
+    private func checkTwoFAChallenges() async {
+        @InjectService var accountManager: SwissTransferCore.AccountManager
+        @InjectService var tokenStore: TokenStore
+
+        let tokens = tokenStore.getAllTokens()
+        let sessions: [InAppTwoFactorAuthenticationSession] = await tokens.values.asyncCompactMap { account in
+            guard let user = await accountManager.userProfileStore.getUserProfile(id: account.userId) else {
+                return nil
+            }
+
+            let apiFetcher = await accountManager.getApiFetcher(token: account.apiToken)
+
+            return InAppTwoFactorAuthenticationSession(user: user, apiFetcher: apiFetcher)
+        }
+
+        @InjectService var inAppTwoFactorAuthenticationManager: InAppTwoFactorAuthenticationManagerable
+        inAppTwoFactorAuthenticationManager.checkConnectionAttempts(using: sessions)
     }
 }
 
