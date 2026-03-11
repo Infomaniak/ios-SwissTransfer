@@ -19,7 +19,8 @@
 import Combine
 import DeviceAssociation
 import Foundation
-import InfomaniakCore
+import InAppTwoFactorAuthentication
+@preconcurrency import InfomaniakCore
 import InfomaniakDI
 import InfomaniakLogin
 import InfomaniakNotifications
@@ -59,6 +60,7 @@ public actor AccountManager: ObservableObject {
     @LazyInjectService private var tokenStore: TokenStore
     @LazyInjectService private var deviceManager: DeviceManagerable
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
+    @LazyInjectService private var notificationService: InfomaniakNotifications
 
     /// In case we later choose to support multi account / login we simulate an existing guest
     static let guestUserId = -1
@@ -89,12 +91,13 @@ public actor AccountManager: ObservableObject {
     }
 
     public func createAccount(token: ApiToken) async throws {
-        let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
+        let temporaryApiFetcher = getApiFetcher(token: token)
         let user = try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
 
         let deviceId = try await deviceManager.getOrCreateCurrentDevice().uid
         tokenStore.addToken(newToken: token, associatedDeviceId: deviceId)
         attachDeviceToApiToken(token, apiFetcher: temporaryApiFetcher)
+        await notificationService.updateTopicsIfNeeded([Topic.twoFAPushChallenge], userApiFetcher: temporaryApiFetcher)
 
         guard await (getSwissTransferManager(userId: user.id, token: token.accessToken)) != nil else {
             throw ErrorDomain.noUserSession
@@ -106,9 +109,12 @@ public actor AccountManager: ObservableObject {
 
     @discardableResult
     public func updateUser(token: ApiToken) async throws -> UserProfile {
-        let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
-        let user = try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
-        return user
+        let temporaryApiFetcher = getApiFetcher(token: token)
+        return try await userProfileStore.updateUserProfile(with: temporaryApiFetcher)
+    }
+
+    public func getApiFetcher(token: ApiToken) -> ApiFetcher {
+        return ApiFetcher(token: token, delegate: refreshTokenDelegate)
     }
 
     public func switchUser(newCurrentUserId: Int) {
@@ -191,6 +197,10 @@ public actor AccountManager: ObservableObject {
 
     public func removeTokenAndAccountFor(userId: Int) async {
         guard let removedToken = tokenStore.removeTokenFor(userId: userId) else { return }
+
+        Task {
+            await notificationService.removeStoredTokenFor(userId: userId)
+        }
 
         let kmpAccountManager = await getSwissTransferManager(userId: userId, token: removedToken.accessToken)?.accountManager
         try? await kmpAccountManager?.logoutCurrentUser(newSTUser: nil)

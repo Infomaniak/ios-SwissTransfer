@@ -17,8 +17,11 @@
  */
 
 import Foundation
+import InAppTwoFactorAuthentication
+@preconcurrency import InfomaniakCore
 import InfomaniakDI
 import STCore
+import UIKit
 import UserNotifications
 
 @MainActor
@@ -41,9 +44,42 @@ public final class NotificationCenterDelegate: NSObject, UNUserNotificationCente
         }
     }
 
-    public func handlePossibleTransfer(uuid: String) async -> TransferUi? {
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        await handleTwoFactorAuthenticationNotification(notification)
+        return []
+    }
+
+    func handlePossibleTransfer(uuid: String) async -> TransferUi? {
         guard let defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager else { return nil }
 
         return try? await defaultTransferManager.getTransferByUUID(transferUUID: uuid)
+    }
+
+    func handleTwoFactorAuthenticationNotification(_ notification: UNNotification) async {
+        @InjectService var inAppTwoFactorAuthenticationManager: InAppTwoFactorAuthenticationManagerable
+
+        guard let userId = inAppTwoFactorAuthenticationManager.handleRemoteNotification(notification) else {
+            return
+        }
+
+        @InjectService var tokenStore: TokenStore
+        let tokens = tokenStore.getAllTokens()
+
+        guard !tokens.isEmpty else {
+            UIApplication.shared.unregisterForRemoteNotifications()
+            return
+        }
+
+        guard let token = tokens[userId],
+              let user = await accountManager.userProfileStore.getUserProfile(id: userId) else {
+            return
+        }
+
+        let apiFetcher = await accountManager.getApiFetcher(token: token.apiToken)
+
+        let session = InAppTwoFactorAuthenticationSession(user: user, apiFetcher: apiFetcher)
+
+        inAppTwoFactorAuthenticationManager.checkConnectionAttempts(using: session)
     }
 }
