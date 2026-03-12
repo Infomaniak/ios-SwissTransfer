@@ -57,7 +57,7 @@ public struct TransferDetailsView: View {
                         expiringTimestamp: transfer.expirationDateTimestamp,
                         downloadLeft: transfer.downloadLeft,
                         downloadLimit: transfer.downloadLimit,
-                        transferDirection: transfer.direction
+                        shouldShowDownloadCounter: transfer.direction == .sent && transfer.apiSource == .v1
                     )
 
                     if shouldDisplayRecipientsOrMessage {
