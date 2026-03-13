@@ -20,7 +20,7 @@
 import Foundation
 import InfomaniakCoreCommonUI
 import InfomaniakDI
-import STCore
+@preconcurrency import STCore
 
 public struct DownloadTask: Equatable, Sendable, Identifiable {
     public let id: String
@@ -194,6 +194,7 @@ public class DownloadManager: ObservableObject {
         transfer: TransferUi,
         files: [FileUi],
         sharedApiUrlCreator: SharedApiUrlCreator,
+        fileManager: STCore.FileManager,
         matomoCategory: MatomoCategory
     ) {
         @InjectService var matomo: MatomoUtils
@@ -207,16 +208,25 @@ public class DownloadManager: ObservableObject {
             }
 
             if files.isEmpty {
-                try? await startTransferDownload(transfer: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
+                try? await startTransferDownload(
+                    transfer: transfer,
+                    sharedApiUrlCreator: sharedApiUrlCreator,
+                    fileManager: fileManager
+                )
             } else {
                 try? await startFilesDownload(files: files, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
             }
         }
     }
 
-    private func startTransferDownload(transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws {
+    private func startTransferDownload(
+        transfer: TransferUi,
+        sharedApiUrlCreator: SharedApiUrlCreator,
+        fileManager: STCore.FileManager
+    ) async throws {
         guard transfer.apiSource == .v1 else {
-            try await startFilesDownload(files: transfer.files, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
+            let transferFiles = try await fileManager.getTransferFilesOnly(transferId: transfer.uuid)
+            try await startFilesDownload(files: transferFiles, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
             return
         }
 

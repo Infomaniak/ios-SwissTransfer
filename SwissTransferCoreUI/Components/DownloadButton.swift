@@ -44,6 +44,7 @@ public struct DownloadButton: View {
                 transfer: transfer,
                 files: Array(multipleSelectionManager.selectedItems),
                 sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                fileManager: mainViewState.swissTransferManager.fileManager,
                 matomoCategory: matomoCategory
             )
         } label: {
