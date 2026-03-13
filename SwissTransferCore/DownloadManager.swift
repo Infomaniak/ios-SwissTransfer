@@ -214,9 +214,30 @@ public class DownloadManager: ObservableObject {
                     fileManager: fileManager
                 )
             } else {
-                try? await startFilesDownload(files: files, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
+                let flattenedFiles = try await getFlattenedFiles(for: transfer, files: files, fileManager: fileManager)
+                try? await startFilesDownload(files: flattenedFiles, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
             }
         }
+    }
+
+    private func getFlattenedFiles(for transfer: TransferUi,
+                                   files: [FileUi],
+                                   fileManager: STCore.FileManager) async throws -> [FileUi] {
+        guard transfer.apiSource == .v2 else { return files }
+
+        var flattenedFiles = [FileUi]()
+        for file in files {
+            if file.isFolder {
+                if let folderPath = file.path {
+                    let folderFiles = try await fileManager.getFilesUnderPath(transferId: transfer.uuid, folderPath: folderPath)
+                    flattenedFiles.append(contentsOf: folderFiles)
+                }
+            } else {
+                flattenedFiles.append(file)
+            }
+        }
+
+        return flattenedFiles
     }
 
     private func startTransferDownload(
