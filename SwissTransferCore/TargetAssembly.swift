@@ -34,6 +34,23 @@ public extension UserDefaults {
     static let shared = UserDefaults(suiteName: appGroupIdentifier)!
 }
 
+extension InfomaniakCore.ApiEnvironment {
+    var kmpEnvironment: STCore.ApiEnvironment {
+        switch self {
+        case .prod:
+            return .Prod()
+        case .preprod:
+            return .Preprod()
+        case .customHost(let string):
+            Logger.general
+                .warning(
+                    "Using same custom host for both iOS and KMP, but KMP does not support custom ports, so port will be ignored if specified in the string"
+                )
+            return .Custom(url: string, urlV2: string)
+        }
+    }
+}
+
 extension [Factory] {
     func registerFactoriesInDI() {
         forEach { SimpleResolver.sharedResolver.store(factory: $0) }
@@ -45,7 +62,11 @@ extension [Factory] {
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
+    #if DEBUG
     private static let apiEnvironment = ApiEnvironment.preprod
+    #else
+    private static let apiEnvironment = ApiEnvironment.prod
+    #endif
     public static let loginConfig = InfomaniakLogin.Config(
         clientId: "17EE3471-9843-4FB9-AD95-CB8C41BAD624",
         loginURL: URL(string: "https://login.\(apiEnvironment.host)/")!,

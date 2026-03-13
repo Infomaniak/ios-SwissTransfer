@@ -42,6 +42,7 @@ struct DownloadableFileCellView: View {
                 transfer: transfer,
                 files: [file],
                 sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                fileManager: mainViewState.swissTransferManager.fileManager,
                 matomoCategory: matomoCategory
             )
         }
@@ -75,6 +76,7 @@ struct DownloadableFileCellView: View {
                 transfer: transfer,
                 files: [file],
                 sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                fileManager: mainViewState.swissTransferManager.fileManager,
                 matomoCategory: matomoCategory
             )
             return
