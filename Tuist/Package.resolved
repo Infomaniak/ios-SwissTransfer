@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-features",
       "state" : {
-        "revision" : "aa7a0c221a3b111011f95bc9e136b26fc047d721",
-        "version" : "8.4.3"
+        "revision" : "b378b3ac6b06899f117d5487157d650827446c30",
+        "version" : "8.6.0"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-login",
       "state" : {
-        "revision" : "3862e03c6c3305ec59d3171dc1152b179d59c334",
-        "version" : "7.5.0"
+        "revision" : "2bd3a484802879f54c27407671cf80906c34b528",
+        "version" : "7.6.0"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "2847d7716f9ba18c1f6ab2612b7fddaf7fdb93a1",
-        "version" : "7.0.0"
+        "revision" : "31a863402816b5fb67f1cd8b6e97dbcc66830a88",
+        "version" : "7.1.0"
       }
     },
     {
@@ -203,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "7b847a3b7008b2dc2f47ca3110d8c782fb2e5c7e",
-        "version" : "1.3.0"
+        "revision" : "8d9834a6189db730f6264db7556a7ffb751e99ee",
+        "version" : "1.4.0"
       }
     },
     {
