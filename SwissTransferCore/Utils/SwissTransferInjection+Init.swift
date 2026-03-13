@@ -31,22 +31,12 @@ extension SwissTransferInjection {
         let roomPath = groupPathProvider.realmRootURL.appending(path: "transfers").path()
         Logger.general.info("Realm group directory \(realmRootDirectory)")
 
-        #if DEBUG
         self.init(
-            environment: STCore.ApiEnvironment.Preprod(),
+            environment: ApiEnvironment.current.kmpEnvironment,
             userAgent: UserAgentBuilder().userAgent,
             legacyDatabaseRootDirectory: realmRootDirectory,
             databaseNameOrPath: roomPath,
             crashReport: sentryWrapper
         )
-        #else
-        self.init(
-            environment: STCore.ApiEnvironment.Prod(),
-            userAgent: UserAgentBuilder().userAgent,
-            legacyDatabaseRootDirectory: realmRootDirectory,
-            databaseNameOrPath: roomPath,
-            crashReport: sentryWrapper
-        )
-        #endif
     }
 }
