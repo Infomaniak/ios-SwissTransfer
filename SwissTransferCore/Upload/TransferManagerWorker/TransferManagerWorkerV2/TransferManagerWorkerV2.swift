@@ -226,6 +226,30 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
         return progress
     }
+
+    private func uploadFile(forFile uploadFile: WorkerFileV2) async throws {
+        let rawFileUrl = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileUrl(
+            transferId: uploadFile.uploadUUID, fileId: uploadFile.remoteUploadFileUUID
+        )
+
+        guard let fileUrl = URL(string: rawFileUrl) else {
+            throw TransferManagerWorkerError.invalidURL(rawURL: rawFileUrl)
+        }
+
+        var uploadRequest = URLRequest(url: fileUrl)
+        uploadRequest.httpMethod = Method.PUT.rawValue
+
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: Data(contentsOf: uploadFile.fileURL))
+        guard response is HTTPURLResponse else {
+            throw TransferManagerWorkerError.invalidResponse
+        }
+
+        try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
+            transferId: uploadSession.uuid,
+            fileId: uploadFile.remoteUploadFileUUID
+        )
+        uploadedFiles.append(uploadFile)
+    }
 }
 
 extension TransferManagerWorkerV2: @preconcurrency ExpiringActivityDelegate {
