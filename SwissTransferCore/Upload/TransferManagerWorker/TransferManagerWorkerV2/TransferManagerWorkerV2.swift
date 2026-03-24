@@ -109,7 +109,8 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             return uploadingChunk
         }
 
-        let uploadingFile = WorkerFileV2(fileURL: fileURL, remoteUploadFileUUID: remoteUploadFileUUID, uploadChunks: chunks)
+        let uploadChunks = chunks.count > 1 ? chunks : []
+        let uploadingFile = WorkerFileV2(fileURL: fileURL, uploadUUID: uploadUUID, remoteUploadFileUUID: remoteUploadFileUUID, uploadChunks: uploadChunks)
         uploadingFiles.append(uploadingFile)
     }
 
@@ -124,7 +125,11 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
 
             try await allFiles.asyncForEach { uploadFile in
-                try await self.uploadAllChunks(forFile: uploadFile)
+                if uploadFile.uploadChunks.isEmpty {
+                    try await self.uploadFile(forFile: uploadFile)
+                } else {
+                    try await self.uploadAllChunks(forFile: uploadFile)
+                }
             }
 
             let linkId = try await uploadBackendRouter.finishUploadSession(uuid: uploadSession.uuid)
