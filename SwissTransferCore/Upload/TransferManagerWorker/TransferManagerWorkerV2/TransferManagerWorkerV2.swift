@@ -233,6 +233,11 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     }
 
     private func uploadFile(forFile uploadFile: WorkerFileV2) async throws {
+        let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
+        let fileSize = try rangeProvider.fileSize
+        let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
+        overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
+
         let rawFileUrl = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileUrl(
             transferId: uploadFile.uploadUUID, fileId: uploadFile.remoteUploadFileUUID
         )
@@ -244,7 +249,9 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         var uploadRequest = URLRequest(url: fileUrl)
         uploadRequest.httpMethod = Method.PUT.rawValue
 
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest, from: Data(contentsOf: uploadFile.fileURL))
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
+                                                              from: Data(contentsOf: uploadFile.fileURL),
+                                                              delegate: progressTracker)
         guard response is HTTPURLResponse else {
             throw TransferManagerWorkerError.invalidResponse
         }
