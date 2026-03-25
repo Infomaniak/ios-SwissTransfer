@@ -110,7 +110,10 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }
 
         let uploadChunks = chunks.count > 1 ? chunks : []
-        let uploadingFile = WorkerFileV2(fileURL: fileURL, uploadUUID: uploadUUID, remoteUploadFileUUID: remoteUploadFileUUID, uploadChunks: uploadChunks)
+        let uploadingFile = WorkerFileV2(fileURL: fileURL,
+                                         uploadUUID: uploadUUID,
+                                         remoteUploadFileUUID: remoteUploadFileUUID,
+                                         uploadChunks: uploadChunks)
         uploadingFiles.append(uploadingFile)
     }
 
