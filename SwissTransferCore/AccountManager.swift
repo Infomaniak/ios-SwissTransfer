@@ -220,8 +220,7 @@ public actor AccountManager: ObservableObject {
     public func enableBugTrackerIfAvailable() async {
         if let currentUser = await userProfileStore.getUserProfile(id: UserDefaults.shared.currentUserId),
            let token = tokenStore.tokenFor(userId: currentUser.id),
-           currentUser.isStaff == true
-        {
+           currentUser.isStaff == true {
             bugTracker.activateOnScreenshot()
             let apiFetcher = getApiFetcher(token: token.apiToken)
             bugTracker.configure(with: apiFetcher)
