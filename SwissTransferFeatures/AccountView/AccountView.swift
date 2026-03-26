@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakBugTracker
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
@@ -136,6 +137,25 @@ public struct AccountView: View {
                                                 trailingIcon: STResourcesAsset.Images.export)
                     }
                     .settingsCell()
+                }
+
+                if let currentUser, currentUser.isStaff == true {
+                    Button {
+                        Task { @MainActor in
+                            @InjectService var accountManager: AccountManager
+
+                            await accountManager.enableBugTrackerIfAvailable()
+                            mainViewState.isShowingBugTracker = true
+                        }
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.buttonFeedback
+                        )
+                    }
+                    .settingsCell()
+                    .sheet(isPresented: $mainViewState.isShowingBugTracker) {
+                        BugTrackerView(isPresented: $mainViewState.isShowingBugTracker)
+                    }
                 }
 
                 AboutSettingsCell(title: STResourcesStrings.Localizable.version,
