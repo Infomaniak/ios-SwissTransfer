@@ -19,6 +19,7 @@
 import DeviceAssociation
 import Foundation
 import InAppTwoFactorAuthentication
+import InfomaniakBugTracker
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakDI
@@ -151,6 +152,9 @@ open class TargetAssembly {
             },
             Factory(type: NotificationCenterDelegate.self) { _, _ in
                 NotificationCenterDelegate()
+            },
+            Factory(type: BugTracker.self) { _, _ in
+                InfomaniakBugTracker.BugTracker(info: BugTrackerInfo(project: "app-mobile-swisstransfer"))
             }
         ]
     }
