@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "bb4bedd8727720d449379d33fdce1b66133b9b77",
-        "version" : "18.7.1"
+        "revision" : "c5b21c1c4a1fb4cb45633a51a41e4f5bfd744bde",
+        "version" : "18.7.2"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-features",
       "state" : {
-        "revision" : "b378b3ac6b06899f117d5487157d650827446c30",
-        "version" : "8.6.0"
+        "revision" : "9f1e4772c9e31941d26d8e589277344197da51d3",
+        "version" : "8.8.0"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-login",
       "state" : {
-        "revision" : "2bd3a484802879f54c27407671cf80906c34b528",
-        "version" : "7.6.0"
+        "revision" : "569e7087a164cc708b7c81a6cbad73fdfa3c1a88",
+        "version" : "7.7.0"
       }
     },
     {
@@ -122,8 +122,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "31a863402816b5fb67f1cd8b6e97dbcc66830a88",
-        "version" : "7.1.0"
+        "revision" : "807b5f458c37a563a622eb298622d45576ccd270",
+        "version" : "7.1.1"
       }
     },
     {
@@ -203,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "8d9834a6189db730f6264db7556a7ffb751e99ee",
-        "version" : "1.4.0"
+        "revision" : "6675bc0ff86e61436e615df6fc5174e043e57924",
+        "version" : "1.4.1"
       }
     },
     {
@@ -257,8 +257,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "a08b87f96b41055577721a6e397562b21ad52454",
-        "version" : "26.0.0"
+        "revision" : "26986a57e31c813f98262ddb62d4b07d40008535",
+        "version" : "26.0.1"
       }
     },
     {
