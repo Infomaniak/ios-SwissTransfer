@@ -49,6 +49,9 @@
 /* loco:67448efd69b0e5a4910909b2 */
 "buttonEditTransfer" = "Mijn overdracht bewerken";
 
+/* loco:69c50be1cc3830b8160e7e12 */
+"buttonFeedback" = "Feedback";
+
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Voltooien";
 
