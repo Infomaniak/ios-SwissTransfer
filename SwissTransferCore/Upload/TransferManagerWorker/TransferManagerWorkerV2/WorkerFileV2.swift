@@ -49,6 +49,7 @@ struct WorkerChunkV2: Equatable, Hashable, Sendable {
 
 struct WorkerFileV2: Equatable, Sendable {
     let fileURL: URL
+    let uploadUUID: String
     let remoteUploadFileUUID: String
     let uploadChunks: [WorkerChunkV2]
 

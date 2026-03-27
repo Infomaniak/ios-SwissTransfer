@@ -30,12 +30,12 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     private static let maxParallelUploads = 4
 
     private let appStateObserver = AppStateObserver()
-    private let uploadSession: SendableUploadSession
+    let uploadSession: SendableUploadSession
     let uploadBackendRouter: UploadBackendRouter
     private weak var delegate: TransferManagerWorkerDelegate?
 
     private var uploadingFiles = [WorkerFileV2]()
-    private var uploadedFiles = [WorkerFileV2]()
+    var uploadedFiles = [WorkerFileV2]()
 
     private var doneUploading: Bool {
         uploadingFiles.count == uploadedFiles.count
@@ -48,7 +48,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
     private var suspendedUploads = false
 
-    private let rangeProviderConfig = RangeProvider.Config(
+    let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
         chunkMaxSizeClient: 50 * 1024 * 1024,
         chunkMaxSizeServer: 50 * 1024 * 1024,
@@ -100,6 +100,14 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
         let ranges = try rangeProvider.allRanges
         let indexedRanges = ranges.enumerated().map { ($0, $1) }
+        guard indexedRanges.count > 1 else {
+            let uploadingFile = WorkerFileV2(fileURL: fileURL,
+                                             uploadUUID: uploadUUID,
+                                             remoteUploadFileUUID: remoteUploadFileUUID,
+                                             uploadChunks: [])
+            uploadingFiles.append(uploadingFile)
+            return
+        }
         let chunks = indexedRanges.map { index, range in
             let uploadingChunk = WorkerChunkV2(fileURL: fileURL,
                                                remoteUploadFileUUID: remoteUploadFileUUID,
@@ -109,7 +117,10 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             return uploadingChunk
         }
 
-        let uploadingFile = WorkerFileV2(fileURL: fileURL, remoteUploadFileUUID: remoteUploadFileUUID, uploadChunks: chunks)
+        let uploadingFile = WorkerFileV2(fileURL: fileURL,
+                                         uploadUUID: uploadUUID,
+                                         remoteUploadFileUUID: remoteUploadFileUUID,
+                                         uploadChunks: chunks)
         uploadingFiles.append(uploadingFile)
     }
 
@@ -124,7 +135,11 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
 
             try await allFiles.asyncForEach { uploadFile in
-                try await self.uploadAllChunks(forFile: uploadFile)
+                if uploadFile.uploadChunks.isEmpty {
+                    try await self.uploadFile(forFile: uploadFile)
+                } else {
+                    try await self.uploadAllChunks(forFile: uploadFile)
+                }
             }
 
             let linkId = try await uploadBackendRouter.finishUploadSession(uuid: uploadSession.uuid)

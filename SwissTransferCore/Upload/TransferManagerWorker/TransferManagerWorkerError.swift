@@ -24,4 +24,5 @@ enum TransferManagerWorkerError: Error {
     case invalidChunk
     case invalidResponse
     case invalidChunkResponse
+    case invalidFileResponse
 }

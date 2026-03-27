@@ -51,4 +51,39 @@ extension TransferManagerWorkerV2 {
 
         return STNChunkEtag(etag: etag, chunkIndex: chunkIndex)
     }
+
+    func uploadFile(forFile uploadFile: WorkerFileV2) async throws {
+        let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
+        let fileSize = try rangeProvider.fileSize
+        let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
+        overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
+
+        let rawFileUrl = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileUrl(
+            transferId: uploadFile.uploadUUID, fileId: uploadFile.remoteUploadFileUUID
+        )
+
+        guard let fileUrl = URL(string: rawFileUrl) else {
+            throw TransferManagerWorkerError.invalidURL(rawURL: rawFileUrl)
+        }
+
+        var uploadRequest = URLRequest(url: fileUrl)
+        uploadRequest.httpMethod = Method.PUT.rawValue
+
+        let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
+                                                              fromFile: uploadFile.fileURL,
+                                                              delegate: progressTracker)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw TransferManagerWorkerError.invalidResponse
+        }
+
+        guard httpResponse.statusCode < 400 else {
+            throw TransferManagerWorkerError.invalidFileResponse
+        }
+
+        try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
+            transferId: uploadSession.uuid,
+            fileId: uploadFile.remoteUploadFileUUID
+        )
+        uploadedFiles.append(uploadFile)
+    }
 }
