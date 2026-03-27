@@ -30,12 +30,12 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     private static let maxParallelUploads = 4
 
     private let appStateObserver = AppStateObserver()
-    private let uploadSession: SendableUploadSession
+    let uploadSession: SendableUploadSession
     let uploadBackendRouter: UploadBackendRouter
     private weak var delegate: TransferManagerWorkerDelegate?
 
     private var uploadingFiles = [WorkerFileV2]()
-    private var uploadedFiles = [WorkerFileV2]()
+    var uploadedFiles = [WorkerFileV2]()
 
     private var doneUploading: Bool {
         uploadingFiles.count == uploadedFiles.count
@@ -48,7 +48,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
     private var suspendedUploads = false
 
-    private let rangeProviderConfig = RangeProvider.Config(
+    let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
         chunkMaxSizeClient: 50 * 1024 * 1024,
         chunkMaxSizeServer: 50 * 1024 * 1024,
@@ -100,6 +100,14 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
         let ranges = try rangeProvider.allRanges
         let indexedRanges = ranges.enumerated().map { ($0, $1) }
+        guard indexedRanges.count > 1 else {
+            let uploadingFile = WorkerFileV2(fileURL: fileURL,
+                                             uploadUUID: uploadUUID,
+                                             remoteUploadFileUUID: remoteUploadFileUUID,
+                                             uploadChunks: [])
+            uploadingFiles.append(uploadingFile)
+            return
+        }
         let chunks = indexedRanges.map { index, range in
             let uploadingChunk = WorkerChunkV2(fileURL: fileURL,
                                                remoteUploadFileUUID: remoteUploadFileUUID,
@@ -109,11 +117,10 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             return uploadingChunk
         }
 
-        let uploadChunks = chunks.count > 1 ? chunks : []
         let uploadingFile = WorkerFileV2(fileURL: fileURL,
                                          uploadUUID: uploadUUID,
                                          remoteUploadFileUUID: remoteUploadFileUUID,
-                                         uploadChunks: uploadChunks)
+                                         uploadChunks: chunks)
         uploadingFiles.append(uploadingFile)
     }
 
@@ -233,37 +240,6 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }
 
         return progress
-    }
-
-    private func uploadFile(forFile uploadFile: WorkerFileV2) async throws {
-        let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
-        let fileSize = try rangeProvider.fileSize
-        let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
-        overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
-
-        let rawFileUrl = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileUrl(
-            transferId: uploadFile.uploadUUID, fileId: uploadFile.remoteUploadFileUUID
-        )
-
-        guard let fileUrl = URL(string: rawFileUrl) else {
-            throw TransferManagerWorkerError.invalidURL(rawURL: rawFileUrl)
-        }
-
-        var uploadRequest = URLRequest(url: fileUrl)
-        uploadRequest.httpMethod = Method.PUT.rawValue
-
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
-                                                              from: Data(contentsOf: uploadFile.fileURL),
-                                                              delegate: progressTracker)
-        guard response is HTTPURLResponse else {
-            throw TransferManagerWorkerError.invalidResponse
-        }
-
-        try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
-            transferId: uploadSession.uuid,
-            fileId: uploadFile.remoteUploadFileUUID
-        )
-        uploadedFiles.append(uploadFile)
     }
 }
 
