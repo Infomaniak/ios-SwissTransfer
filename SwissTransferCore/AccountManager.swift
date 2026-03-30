@@ -62,7 +62,7 @@ public actor AccountManager: ObservableObject {
     @LazyInjectService private var deviceManager: DeviceManagerable
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
     @LazyInjectService private var notificationService: InfomaniakNotifications
-    @LazyInjectService var bugTracker: BugTracker
+    @LazyInjectService private var bugTracker: BugTracker
 
     /// In case we later choose to support multi account / login we simulate an existing guest
     static let guestUserId = -1
