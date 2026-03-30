@@ -10,6 +10,7 @@ let packageSettings = PackageSettings(
         "DesignSystem": .framework,
         "DeviceAssociation": .framework,
         "InAppTwoFactorAuthentication": .framework,
+        "InfomaniakBugTracker": .framework,
         "InfomaniakConcurrency": .framework,
         "InfomaniakCoreCommonUI": .framework,
         "InfomaniakCoreSwiftUI": .framework,
@@ -30,8 +31,7 @@ let packageSettings = PackageSettings(
         "SwiftUIIntrospect": .framework,
         "SwissTransferCore": .framework,
         "VersionChecker": .framework,
-        "_LottieStub": .framework,
-        "InfomaniakBugTracker": .framework
+        "_LottieStub": .framework
     ]
 )
 #endif
@@ -43,6 +43,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
         .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0")),
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "8.0.0")),
+        .package(url: "https://github.com/Infomaniak/ios-bug-tracker", .upToNextMajor(from: "17.0.1")),
         .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "18.6.0")),
         .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "24.4.0")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.1")),
@@ -56,7 +57,6 @@ let package = Package(
         .package(url: "https://github.com/Infomaniak/swift-modal-presentation", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),
         .package(url: "https://github.com/kean/Nuke", .upToNextMajor(from: "12.1.3")),
-        .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "26.0.0")),
-        .package(url: "https://github.com/Infomaniak/ios-bug-tracker", .upToNextMajor(from: "17.0.1"))
+        .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "26.0.0"))
     ]
 )
