@@ -112,7 +112,8 @@ let accountView = Feature(
         TargetDependency.external(name: "InfomaniakCoreUIResources"),
         TargetDependency.external(name: "InfomaniakCore"),
         TargetDependency.external(name: "InfomaniakDI"),
-        TargetDependency.external(name: "InfomaniakLogin")
+        TargetDependency.external(name: "InfomaniakLogin"),
+        TargetDependency.external(name: "InfomaniakBugTracker")
     ]
 )
 
@@ -195,6 +196,7 @@ let project = Project(
                 .external(name: "InfomaniakDI"),
                 .external(name: "InfomaniakNotifications"),
                 .external(name: "VersionChecker"),
+                .external(name: "InfomaniakBugTracker"),
                 rootView.asDependency
             ],
             settings: .settings(base: Constants.baseSettings),
@@ -306,7 +308,8 @@ let project = Project(
                     .external(name: "Sentry-Dynamic"),
                     .external(name: "STCore"),
                     .external(name: "STDatabase"),
-                    .external(name: "STNetwork")
+                    .external(name: "STNetwork"),
+                    .external(name: "InfomaniakBugTracker")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "SwissTransferCoreUI",

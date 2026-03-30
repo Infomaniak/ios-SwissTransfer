@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "ios-bug-tracker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-bug-tracker",
+      "state" : {
+        "revision" : "f6c92f7ed021d3a875083da9f2079f8fd0d00113",
+        "version" : "17.0.1"
+      }
+    },
+    {
       "identity" : "ios-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
@@ -102,7 +111,7 @@
     {
       "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-spm",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
       "state" : {
         "revision" : "69faaefa7721fba9e434a52c16adf4329c9084db",
         "version" : "4.6.0"

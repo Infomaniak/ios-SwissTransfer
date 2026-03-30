@@ -20,6 +20,7 @@ import Combine
 import DeviceAssociation
 import Foundation
 import InAppTwoFactorAuthentication
+import InfomaniakBugTracker
 @preconcurrency import InfomaniakCore
 import InfomaniakDI
 import InfomaniakLogin
@@ -61,6 +62,7 @@ public actor AccountManager: ObservableObject {
     @LazyInjectService private var deviceManager: DeviceManagerable
     @LazyInjectService private var networkLoginService: InfomaniakNetworkLoginable
     @LazyInjectService private var notificationService: InfomaniakNotifications
+    @LazyInjectService private var bugTracker: BugTracker
 
     /// In case we later choose to support multi account / login we simulate an existing guest
     static let guestUserId = -1
@@ -85,6 +87,7 @@ public actor AccountManager: ObservableObject {
 
         do {
             try await createAccount(token: token)
+            await enableBugTrackerIfAvailable()
         } catch {
             throw error
         }
@@ -117,8 +120,9 @@ public actor AccountManager: ObservableObject {
         return ApiFetcher(token: token, delegate: refreshTokenDelegate)
     }
 
-    public func switchUser(newCurrentUserId: Int) {
+    public func switchUser(newCurrentUserId: Int) async {
         UserDefaults.shared.currentUserId = newCurrentUserId
+        await enableBugTrackerIfAvailable()
         objectWillChange.send()
     }
 
@@ -210,6 +214,18 @@ public actor AccountManager: ObservableObject {
         networkLoginService.deleteApiToken(token: removedToken) { result in
             guard case .failure(let error) = result else { return }
             Logger.general.error("Failed to delete api token: \(error.localizedDescription)")
+        }
+    }
+
+    public func enableBugTrackerIfAvailable() async {
+        if let currentUser = await userProfileStore.getUserProfile(id: UserDefaults.shared.currentUserId),
+           let token = tokenStore.tokenFor(userId: currentUser.id),
+           currentUser.isStaff == true {
+            bugTracker.activateOnScreenshot()
+            let apiFetcher = getApiFetcher(token: token.apiToken)
+            bugTracker.configure(with: apiFetcher)
+        } else {
+            bugTracker.stopActivatingOnScreenshot()
         }
     }
 }
