@@ -77,14 +77,9 @@ private struct DetailSplitView: View {
     let destination: NavigationDestination?
 
     var body: some View {
-        if let destination {
-            switch destination {
-            case .transfer(let transferData):
-                TransferDetailsRootView(data: transferData)
-                    .id(transferData.id)
-            case .settings:
-                Text("TODO: Settings Option.")
-            }
+        if let destination, case .transfer(let transferData) = destination {
+            TransferDetailsRootView(data: transferData)
+                .id(transferData.id)
         } else {
             SplitViewDetailsEmptyView()
         }
