@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
 import InfomaniakCreateAccount
 import InfomaniakDI
@@ -71,8 +72,12 @@ struct OnboardingBottomButtonsView: View {
                 ) {
                     loginPressed()
                 } onLoginWithAccountsPressed: { accounts in
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .account, name: .openLoginWebview)
                     loginWithAccountsPressed(accounts: accounts)
                 } onCreateAccountPressed: {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .account, name: .openCreationWebview)
                     isPresentingCreateAccount = true
                 }
             }
