@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "bb4bedd8727720d449379d33fdce1b66133b9b77",
-        "version" : "18.7.1"
+        "revision" : "0bdf13526040c44ea9a9eb6fba86492d4ad79c06",
+        "version" : "18.9.0"
       }
     },
     {
@@ -75,7 +75,7 @@
     {
       "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
         "revision" : "69faaefa7721fba9e434a52c16adf4329c9084db",
         "version" : "4.6.0"
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "16cd512711375fa73f25ae5e373f596bdf4251ae",
-        "version" : "8.58.0"
+        "revision" : "d459ff99b1912c9603c9e607e030b4b98e2e199a",
+        "version" : "9.9.0"
       }
     },
     {

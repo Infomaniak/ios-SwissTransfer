@@ -34,6 +34,9 @@ public struct SentryService {
             options.enableNetworkBreadcrumbs = false
             options.enableSwizzling = false // We can disable swizzling because we only used it for networking
             options.enableMetricKit = true
+            options.experimental.enableSessionReplayInUnreliableEnvironment = false
+            options.sessionReplay.sessionSampleRate = 0
+            options.sessionReplay.onErrorSampleRate = 0
 
             options.beforeSend = { event in
                 // if the application is in debug mode discard the events
