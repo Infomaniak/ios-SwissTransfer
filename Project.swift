@@ -92,6 +92,7 @@ let settingsView = Feature(
 
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "InfomaniakCoreCommonUI"),
     TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakCreateAccount"),
     TargetDependency.external(name: "InfomaniakDeviceCheck"),

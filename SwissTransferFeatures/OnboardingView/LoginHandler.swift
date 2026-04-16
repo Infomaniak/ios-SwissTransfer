@@ -18,6 +18,7 @@
 
 import AuthenticationServices
 import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
 import InfomaniakDeviceCheck
 import InfomaniakDI
@@ -123,6 +124,8 @@ public final class LoginHandler: InfomaniakLoginDelegate, ObservableObject {
     }
 
     private func loginSuccessful(code: String, codeVerifier verifier: String) async throws {
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: .account, name: .loggedIn)
         try await accountManager.createAndSetCurrentAccount(code: code, codeVerifier: verifier)
     }
 
