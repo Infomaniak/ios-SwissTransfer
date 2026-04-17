@@ -1,2 +1,1 @@
-- Téléchargement en multi sélection
-- Support langages addditionnels
+Corrections de bugs et améliorations diverses

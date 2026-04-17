@@ -1,2 +1,1 @@
-- Multiple selection download
-- Added support for new languages
+Bug fixes and various improvements
