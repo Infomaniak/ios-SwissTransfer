@@ -31,7 +31,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-spm.git", .upToNextMajor(from: "4.5.2")),
         .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
-        .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "22.0.0")),
+        .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "28.0.0")),
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "9.8.0")),
         .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "18.9.0")),
         .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "24.4.0")),
