@@ -16,6 +16,7 @@ let packageSettings = PackageSettings(
         "InfomaniakDI": .framework,
         "Lottie": .framework,
         "OrderedCollections": .framework,
+        "QRCode": .framework,
         "Sentry-Dynamic": .framework,
         "SwiftModalPresentation": .framework,
         "SwiftUIIntrospect": .framework,
