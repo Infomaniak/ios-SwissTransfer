@@ -25,6 +25,8 @@ import SwissTransferCoreUI
 struct ScreenshotQrBottomSheetView: View {
     @Environment(\.dismiss) private var dismiss
 
+    @Binding var isShowingShareSheet: Bool
+
     private let quickSharingDescription = STResourcesStrings.Localizable.quickSharingDescription
     private let shareStringParameter = STResourcesStrings.Localizable.buttonShare
     private let copyLinkStringParameter = STResourcesStrings.Localizable.buttonCopyLink
@@ -52,9 +54,12 @@ struct ScreenshotQrBottomSheetView: View {
             title: STResourcesStrings.Localizable.oneClickSharing,
             subtitle: description
         ) {
-            Button(STResourcesStrings.Localizable.understandTitleButton) {
-                dismiss()
+            Button(STResourcesStrings.Localizable.buttonShare) {
+                isShowingShareSheet = true
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                dismiss()
+            })
             .buttonStyle(.ikBorderedProminent)
         }
         .matomoView(view: .screenshotQrCode)
@@ -62,5 +67,5 @@ struct ScreenshotQrBottomSheetView: View {
 }
 
 #Preview {
-    ScreenshotQrBottomSheetView()
+    ScreenshotQrBottomSheetView(isShowingShareSheet: .constant(false))
 }
