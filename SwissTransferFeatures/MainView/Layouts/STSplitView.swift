@@ -91,14 +91,9 @@ private struct DetailSplitView: View {
     let transferManager: TransferManager
 
     var body: some View {
-        if let destination {
-            switch destination {
-            case .transfer(let transferData):
-                TransferDetailsRootView(data: transferData, transferManager: transferManager)
-                    .id(transferData.id)
-            case .settings:
-                Text("TODO: Settings Option.")
-            }
+        if let destination, case .transfer(let transferData) = destination {
+            TransferDetailsRootView(data: transferData, transferManager: transferManager)
+                .id(transferData.id)
         } else {
             SplitViewDetailsEmptyView()
         }
