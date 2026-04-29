@@ -64,6 +64,9 @@ public struct UniversalLinkHandler {
                   let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
             else { return nil }
 
+            guard let transfer = try await transferManager.addTransferByUrl(url: url.absoluteString, password: nil) else {
+                return nil
+            }
             return UniversalLinkResult(link: url, result: .success(transfer))
         } catch {
             return UniversalLinkResult(link: url, result: .failure(error))
