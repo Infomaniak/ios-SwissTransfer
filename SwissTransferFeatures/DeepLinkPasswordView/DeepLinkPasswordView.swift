@@ -87,16 +87,13 @@ public struct DeepLinkPasswordView: View {
             do {
                 let transferManager = mainViewState.transferManager
 
-                guard let transferUUID = try await transferManager.addTransferByUrl(
+                guard let transfer = try await transferManager.addTransferByUrl(
                     url: url.url.absoluteString,
                     password: trimmedPassword
                 ) else { return }
-                let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
 
                 dismiss()
-                if let transfer {
-                    mainViewState.selectedTransfer = .transfer(transfer)
-                }
+                mainViewState.selectedTransfer = .transfer(transfer)
             } catch {
                 let kotlinException = (error as NSError).kotlinException
 
