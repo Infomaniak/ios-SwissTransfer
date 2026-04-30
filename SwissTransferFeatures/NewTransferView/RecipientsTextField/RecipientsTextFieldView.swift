@@ -31,10 +31,10 @@ enum RecipientFocus: Hashable {
 }
 
 struct RecipientsTextFieldView: View {
-    @State private var text = ""
     @FocusState private var focusedView: RecipientFocus?
 
     @Binding var recipients: OrderedSet<String>
+    @Binding var text: String
 
     private let submitKeys: Set = [" ", ","]
 
@@ -131,8 +131,8 @@ struct RecipientsTextFieldView: View {
     @Previewable @State var emptyRecipients = OrderedSet<String>()
 
     VStack {
-        RecipientsTextFieldView(recipients: $fullRecipients)
-        RecipientsTextFieldView(recipients: $emptyRecipients)
+        RecipientsTextFieldView(recipients: $fullRecipients, text: .constant(""))
+        RecipientsTextFieldView(recipients: $emptyRecipients, text: .constant(""))
     }
     .padding()
 }

@@ -44,6 +44,7 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
+    @Published public var emailText = ""
 
     public private(set) var initializedFromShare: Bool
 
@@ -58,7 +59,7 @@ public final class RootTransferViewModel: ObservableObject {
                 return false
             }
 
-            if recipientsEmail.isEmpty {
+            if recipientsEmail.isEmpty && !EmailChecker(email: emailText).validate() {
                 return false
             }
         }

@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
@@ -64,6 +65,7 @@ public struct NewTransferView: View {
                         authorEmail: $viewModel.authorEmail,
                         recipientsEmail: $viewModel.recipientsEmail,
                         message: $viewModel.message,
+                        emailText: $viewModel.emailText,
                         title: $viewModel.title,
                         transferType: viewModel.transferType
                     )
@@ -117,6 +119,11 @@ public struct NewTransferView: View {
 
     private func startUpload() {
         Task {
+            if EmailChecker(email: viewModel.emailText).validate() {
+                viewModel.recipientsEmail.append(viewModel.emailText)
+            }
+            viewModel.emailText = ""
+
             isLoadingFileToUpload = true
 
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(
