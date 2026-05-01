@@ -26,20 +26,6 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-struct ActivityViewController: UIViewControllerRepresentable {
-    var activityItems: [Any]
-    var applicationActivities: [UIActivity]?
-
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
-    }
-
-    func updateUIViewController(
-        _ uiViewController: UIActivityViewController,
-        context: UIViewControllerRepresentableContext<ActivityViewController>
-    ) {}
-}
-
 struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
@@ -142,7 +128,7 @@ struct UploadSuccessQRCodeView: View {
         }
         .sheet(isPresented: $isShowingShareSheet) {
             if let url = transferURL {
-                ActivityViewController(activityItems: [url])
+                UploadSucessActivityViewController(activityItems: [url])
                     .presentationDetents([.medium])
             }
         }
