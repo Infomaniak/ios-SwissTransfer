@@ -51,8 +51,10 @@ final class TransferDetailsViewModel: ObservableObject {
     }
 
     private func observeTransfer(uuid: String) async throws {
-        flow = try transferManager.getTransferFlow(transferUUID: uuid)
-        guard let flow else { return }
+        flow = transferManager.getTransferFlow(transferUUID: uuid)
+        guard let flow else {
+            return
+        }
 
         for try await flowResult in flow {
             guard let newTransfer = flowResult as? TransferUi else { continue }
