@@ -94,6 +94,9 @@
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "Ny överföring";
 
+/* loco:69f88d0b9be8973ff901e7a3 */
+"contentDescriptionViewTransferDetails" = "Visa överföringsdetaljer";
+
 /* loco:67e54599054e355e4f053752 */
 "dailyTransferLimitReached" = "Du har nått din dagliga överföringsgräns";
 

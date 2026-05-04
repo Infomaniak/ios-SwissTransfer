@@ -55,6 +55,7 @@ public struct FirstTransferButton: View {
                         .resizable()
                         .frame(width: 28, height: 34)
                         .rotationEffect(Angle(degrees: -30))
+                        .accessibilityHidden(true)
                 }
                 .offset(offset)
 
@@ -68,6 +69,7 @@ public struct FirstTransferButton: View {
                     .resizable()
                     .frame(width: 36, height: 44)
                     .offset(offset)
+                    .accessibilityHidden(true)
             }
         }
     }

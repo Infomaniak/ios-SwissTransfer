@@ -28,6 +28,7 @@ struct STIconNavigationBarModifier: ViewModifier {
                         .resizable()
                         .scaledToFit()
                         .frame(height: 24)
+                        .accessibilityHidden(true)
                 }
             }
             .stNavigationBarStyle()

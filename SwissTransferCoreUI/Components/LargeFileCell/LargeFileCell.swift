@@ -98,6 +98,7 @@ public struct LargeFileCell: View {
                         .padding(value: .mini)
                         .background(.black.opacity(0.5), in: .circle)
                         .padding(value: .mini)
+                        .accessibilityLabel(action.label(for: file, transferUUID: transferUUID))
                 }
             }
         }
