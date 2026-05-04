@@ -91,14 +91,18 @@ public struct LargeFileCell: View {
                 Button {
                     action(file: file)
                 } label: {
-                    action.icon(for: file, transferUUID: transferUUID)
-                        .resizable()
-                        .foregroundStyle(.white)
-                        .frame(width: 8, height: 8)
-                        .padding(value: .mini)
-                        .background(.black.opacity(0.5), in: .circle)
-                        .padding(value: .mini)
-                        .accessibilityLabel(action.label(for: file, transferUUID: transferUUID))
+                    Label {
+                        Text(action.label(for: file, transferUUID: transferUUID))
+                    } icon: {
+                        action.icon(for: file, transferUUID: transferUUID)
+                            .resizable()
+                            .foregroundStyle(.white)
+                            .frame(width: 8, height: 8)
+                            .padding(value: .mini)
+                            .background(.black.opacity(0.5), in: .circle)
+                            .padding(value: .mini)
+                    }
+                    .labelStyle(.iconOnly)
                 }
             }
         }

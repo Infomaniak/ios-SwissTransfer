@@ -64,7 +64,7 @@ struct TransferCell: View {
             STResourcesAsset.Images.chevronRight.swiftUIImage
                 .iconSize(.medium)
                 .foregroundStyle(Color.ST.textPrimary)
-                .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionViewTransferDetails)
+                .accessibilityHidden(true)
         }
         .padding(value: .medium)
         .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
@@ -83,6 +83,8 @@ struct TransferCell: View {
             }
         }
         .padding(.horizontal, value: .medium)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionViewTransferDetails)
     }
 }
 
