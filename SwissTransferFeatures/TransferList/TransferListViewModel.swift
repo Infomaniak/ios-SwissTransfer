@@ -59,7 +59,7 @@ final class TransferListViewModel: ObservableObject {
 
     private func observeTransfers() {
         Task {
-            let transfersFlow = try transferManager.getSortedTransfers(transferDirection: transferDirection)
+            let transfersFlow = transferManager.getSortedTransfers(transferDirection: transferDirection)
             for await transfers in transfersFlow {
                 await mapTransfers(from: transfers)
             }
