@@ -21,6 +21,10 @@ import InfomaniakDI
 import Sentry
 import STCore
 
+public extension Notification.Name {
+    static let userWasLoggedOut = Notification.Name("userWasLoggedOut")
+}
+
 final class UnauthorizedHandler: STNUnauthorizedHandler {
     func __onUnauthorized(userId: KotlinLong?) async throws {
         guard let userId = userId?.intValue else {
@@ -31,5 +35,7 @@ final class UnauthorizedHandler: STNUnauthorizedHandler {
 
         @InjectService var accountManager: AccountManager
         await accountManager.removeAccountAndSwitchToNextUserIfNecessary(userId: userId)
+
+        NotificationCenter.default.post(name: .userWasLoggedOut, object: nil)
     }
 }

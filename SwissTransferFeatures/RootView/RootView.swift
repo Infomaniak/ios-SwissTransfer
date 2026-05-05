@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUIResources
 import STCore
 import STMainView
 import STOnboardingView
@@ -44,6 +45,9 @@ public struct RootView: View {
             }
         }
         .environmentObject(rootViewState)
+        .alert(CoreUILocalizable.youHaveBeenDisconnectedLabel, isPresented: $rootViewState.showUserWasLoggedOutAlert) {
+            Button(CoreUILocalizable.buttonClose) {}
+        }
     }
 }
 
