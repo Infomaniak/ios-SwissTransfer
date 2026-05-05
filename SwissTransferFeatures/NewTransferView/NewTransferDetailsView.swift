@@ -70,8 +70,8 @@ struct NewTransferDetailsView: View {
         authorEmail: .constant(""),
         recipientsEmail: .constant(OrderedSet()),
         message: .constant(""),
-        title: .constant(""),
         emailText: .constant(""),
+        title: .constant(""),
         transferType: .link
     )
 }
