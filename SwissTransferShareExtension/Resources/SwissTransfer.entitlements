@@ -7,5 +7,9 @@
 		<string>group.com.infomaniak.swisstransfer</string>
 		<string>group.com.infomaniak</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)com.infomaniak.swisstransfer</string>
+	</array>
 </dict>
 </plist>

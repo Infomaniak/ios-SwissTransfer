@@ -29,7 +29,7 @@ struct HeaderView: View {
     let expiringTimestamp: Int64
     let downloadLeft: Int32
     let downloadLimit: Int32
-    let transferDirection: TransferDirection?
+    let shouldShowDownloadCounter: Bool
 
     private var downloadedTimes: Int {
         Int(downloadLimit) - Int(downloadLeft)
@@ -51,7 +51,7 @@ struct HeaderView: View {
             )
             .labelStyle(.horizontal)
 
-            if transferDirection == .sent {
+            if shouldShowDownloadCounter {
                 DividerView()
 
                 Label(
@@ -71,6 +71,6 @@ struct HeaderView: View {
         expiringTimestamp: 0,
         downloadLeft: 249,
         downloadLimit: 250,
-        transferDirection: .received
+        shouldShowDownloadCounter: false
     )
 }

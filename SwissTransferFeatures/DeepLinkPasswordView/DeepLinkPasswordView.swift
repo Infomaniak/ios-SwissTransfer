@@ -85,19 +85,15 @@ public struct DeepLinkPasswordView: View {
             let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
 
             do {
-                @InjectService var accountManager: SwissTransferCore.AccountManager
-                guard let transferManager = await accountManager.getCurrentManager() else { return }
+                let transferManager = mainViewState.transferManager
 
-                guard let transferUUID = try await transferManager.addTransferByUrl(
-                    url: url.url.path(),
+                guard let transfer = try await transferManager.addTransferByUrl(
+                    url: url.url.absoluteString,
                     password: trimmedPassword
                 ) else { return }
-                let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
 
                 dismiss()
-                if let transfer {
-                    mainViewState.selectedTransfer = .transfer(transfer)
-                }
+                mainViewState.selectedTransfer = .transfer(transfer)
             } catch {
                 let kotlinException = (error as NSError).kotlinException
 

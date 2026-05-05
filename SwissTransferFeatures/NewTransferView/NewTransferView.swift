@@ -29,13 +29,11 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct NewTransferView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
-
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(\.shareExtensionContext) private var shareExtensionContext
 
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
@@ -66,6 +64,7 @@ public struct NewTransferView: View {
                         authorEmail: $viewModel.authorEmail,
                         recipientsEmail: $viewModel.recipientsEmail,
                         message: $viewModel.message,
+                        title: $viewModel.title,
                         transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
@@ -120,21 +119,22 @@ public struct NewTransferView: View {
         Task {
             isLoadingFileToUpload = true
 
-            // We need to ensure that we have an account initialized before starting
-            _ = await accountManager.getCurrentManager()
+            guard let newUploadSession = await viewModel.toNewUploadSessionWith(
+                newTransferFileManager,
+                swissTransferManager: mainViewState.swissTransferManager
+            ) else { return }
 
-            guard let newUploadSession = await viewModel.toNewUploadSessionWith(newTransferFileManager) else { return }
-
-            let localUploadSession = try await injection.uploadManager
-                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+            let uploadBackendRouter = mainViewState.uploadBackendRouter
+            let localUploadSessionUUID = try await uploadBackendRouter
+                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession, title: viewModel.title)
 
             if let shareExtensionContext {
-                let importURL = try injection.sharedApiUrlCreator
-                    .importFromShareExtensionURL(localImportUUID: localUploadSession.uuid)
+                let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator
+                    .importFromShareExtensionURL(localImportUUID: localUploadSessionUUID)
                 openURL(importURL)
                 shareExtensionContext.dismissShareSheet()
             } else {
-                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             }
 
             isLoadingFileToUpload = false

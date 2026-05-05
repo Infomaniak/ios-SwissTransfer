@@ -31,9 +31,10 @@ public struct RootView: View {
     public var body: some View {
         ZStack {
             switch rootViewState.state {
-            case .mainView(let mainViewState):
+            case .mainView(let mainViewState, let user):
                 MainView()
                     .environmentObject(mainViewState)
+                    .environment(\.currentUser, user)
             case .preloading:
                 PreloadingView()
             case .onboarding:

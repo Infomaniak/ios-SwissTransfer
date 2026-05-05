@@ -20,7 +20,7 @@
 import Foundation
 import InfomaniakCoreCommonUI
 import InfomaniakDI
-import STCore
+@preconcurrency import STCore
 
 public struct DownloadTask: Equatable, Sendable, Identifiable {
     public let id: String
@@ -114,7 +114,6 @@ public enum DownloadTaskState: Equatable, Sendable {
 
 @MainActor
 public class DownloadManager: ObservableObject {
-    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var notificationsHelper: NotificationsHelper
 
     private let session: URLSession
@@ -191,7 +190,13 @@ public class DownloadManager: ObservableObject {
         trackedMultiDownloadTask?.trackedDownloadTasks[id] = nil
     }
 
-    public func startOrCancelDownload(transfer: TransferUi, files: [FileUi], matomoCategory: MatomoCategory) {
+    public func startOrCancelDownload(
+        transfer: TransferUi,
+        files: [FileUi],
+        sharedApiUrlCreator: SharedApiUrlCreator,
+        fileManager: STCore.FileManager,
+        matomoCategory: MatomoCategory
+    ) {
         @InjectService var matomo: MatomoUtils
         let matomoName: MatomoName = files.count == 1 ? .consultOneFile : .downloadTransfer
         matomo.track(eventWithCategory: matomoCategory, name: matomoName)
@@ -203,14 +208,49 @@ public class DownloadManager: ObservableObject {
             }
 
             if files.isEmpty {
-                try? await startTransferDownload(transfer: transfer)
+                try? await startTransferDownload(
+                    transfer: transfer,
+                    sharedApiUrlCreator: sharedApiUrlCreator,
+                    fileManager: fileManager
+                )
             } else {
-                try? await startFilesDownload(files: files, in: transfer)
+                let flattenedFiles = try await getFlattenedFiles(for: transfer, files: files, fileManager: fileManager)
+                try? await startFilesDownload(files: flattenedFiles, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
             }
         }
     }
 
-    private func startTransferDownload(transfer: TransferUi) async throws {
+    private func getFlattenedFiles(for transfer: TransferUi,
+                                   files: [FileUi],
+                                   fileManager: STCore.FileManager) async throws -> [FileUi] {
+        guard transfer.apiSource == .v2 else { return files }
+
+        var flattenedFiles = [FileUi]()
+        for file in files {
+            if file.isFolder {
+                if let folderPath = file.path {
+                    let folderFiles = try await fileManager.getFilesUnderPath(transferId: transfer.uuid, folderPath: folderPath)
+                    flattenedFiles.append(contentsOf: folderFiles)
+                }
+            } else {
+                flattenedFiles.append(file)
+            }
+        }
+
+        return flattenedFiles
+    }
+
+    private func startTransferDownload(
+        transfer: TransferUi,
+        sharedApiUrlCreator: SharedApiUrlCreator,
+        fileManager: STCore.FileManager
+    ) async throws {
+        guard transfer.apiSource == .v1 else {
+            let transferFiles = try await fileManager.getTransferFilesOnly(transferId: transfer.uuid)
+            try await startFilesDownload(files: transferFiles, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
+            return
+        }
+
         let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: [])
 
         if let url = transfer.localArchiveURL,
@@ -234,12 +274,16 @@ public class DownloadManager: ObservableObject {
         )
         trackedMultiDownloadTask = multiDownloadTask
 
-        let downloadURL = try await getDownloadURLFor(transfer: transfer)
+        let downloadURL = try await getDownloadURLFor(transfer: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: nil)
-        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: transfer.sizeUploaded)
+        try createDownloadTask(url: downloadURL, password: transfer.password, taskId: taskId, expectedSize: transfer.sizeUploaded)
     }
 
-    private func startFilesDownload(files: [FileUi], in transfer: TransferUi) async throws {
+    private func startFilesDownload(
+        files: [FileUi],
+        in transfer: TransferUi,
+        sharedApiUrlCreator: SharedApiUrlCreator
+    ) async throws {
         let multiTaskId = multiTaskId(transferUUID: transfer.uuid, filesUUID: files.map(\.uid))
 
         let alreadyDownloadedFiles: [String: DownloadTask] = Dictionary(
@@ -267,14 +311,14 @@ public class DownloadManager: ObservableObject {
         }
 
         for file in filesToDownload {
-            try? await startDownload(file: file, in: transfer)
+            try? await startDownload(file: file, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         }
     }
 
-    private func startDownload(file: FileUi, in transfer: TransferUi) async throws {
-        let downloadURL = try await getDownloadURLFor(file: file, in: transfer)
+    private func startDownload(file: FileUi, in transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws {
+        let downloadURL = try await getDownloadURLFor(file: file, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         let taskId = taskId(transferUUID: transfer.uuid, fileUUID: file.uid)
-        try createDownloadTask(url: downloadURL, taskId: taskId, expectedSize: file.fileSize)
+        try createDownloadTask(url: downloadURL, password: transfer.password, taskId: taskId, expectedSize: file.fileSize)
     }
 
     private func taskId(transferUUID: String, fileUUID: String?) -> String {
@@ -285,9 +329,10 @@ public class DownloadManager: ObservableObject {
         return "\(transferUUID)__\(filesUUID.sorted().joined(separator: "-"))"
     }
 
-    private func getDownloadURLFor(file: FileUi, in transfer: TransferUi) async throws -> URL {
-        guard let rawDownloadURL = try await injection.sharedApiUrlCreator.downloadFileUrl(
-            transferUUID: transfer.uuid,
+    private func getDownloadURLFor(file: FileUi, in transfer: TransferUi,
+                                   sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
+        guard let rawDownloadURL = try await sharedApiUrlCreator.downloadFileUrl(
+            transfer: transfer,
             fileUUID: file.uid
         ),
             let downloadURL = URL(string: rawDownloadURL) else {
@@ -297,13 +342,13 @@ public class DownloadManager: ObservableObject {
         return downloadURL
     }
 
-    private func getDownloadURLFor(transfer: TransferUi) async throws -> URL {
+    private func getDownloadURLFor(transfer: TransferUi, sharedApiUrlCreator: SharedApiUrlCreator) async throws -> URL {
         if transfer.files.count == 1,
            let firstFile = transfer.files.first {
-            return try await getDownloadURLFor(file: firstFile, in: transfer)
+            return try await getDownloadURLFor(file: firstFile, in: transfer, sharedApiUrlCreator: sharedApiUrlCreator)
         }
 
-        guard let rawDownloadURL = try await injection.sharedApiUrlCreator.downloadFilesUrl(transferUUID: transfer.uuid),
+        guard let rawDownloadURL = try await sharedApiUrlCreator.downloadFilesUrl(transferUUID: transfer.uuid),
               let downloadURL = URL(string: rawDownloadURL) else {
             throw ErrorDomain.badURL
         }
@@ -311,8 +356,11 @@ public class DownloadManager: ObservableObject {
         return downloadURL
     }
 
-    private func createDownloadTask(url downloadURL: URL, taskId: String, expectedSize: Int64) throws {
-        let downloadRequest = try URLRequest(url: downloadURL, method: .get)
+    private func createDownloadTask(url downloadURL: URL, password: String?, taskId: String, expectedSize: Int64) throws {
+        var downloadRequest = try URLRequest(url: downloadURL, method: .get)
+        if let password {
+            downloadRequest.setValue(password, forHTTPHeaderField: "Transfer-Password")
+        }
         let sessionDownloadTask = session.downloadTask(with: downloadRequest)
         sessionDownloadTask.taskDescription = taskId
         sessionDownloadTask.countOfBytesClientExpectsToReceive = expectedSize

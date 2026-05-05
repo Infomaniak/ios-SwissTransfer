@@ -25,8 +25,7 @@ import SwiftUI
 import SwissTransferCoreUI
 
 public struct UploadErrorView: View {
-    @LazyInjectService var injection: SwissTransferInjection
-
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var rootTransferViewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
@@ -68,15 +67,18 @@ public struct UploadErrorView: View {
     private func retryTransfer() {
         Task {
             isRetryingUpload = true
-            guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(newTransferFileManager) else {
+            guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(
+                newTransferFileManager,
+                swissTransferManager: mainViewState.swissTransferManager
+            ) else {
                 isRetryingUpload = false
                 return
             }
 
-            let localUploadSession = try await injection.uploadManager
-                .createAndGetSendableUploadSession(newUploadSession: newUploadSession)
+            let localUploadSessionUUID = try await mainViewState.uploadBackendRouter
+                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
 
-            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             isRetryingUpload = false
         }
     }

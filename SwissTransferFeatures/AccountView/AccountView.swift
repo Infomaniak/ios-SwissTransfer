@@ -1,0 +1,209 @@
+/*
+ Infomaniak SwissTransfer - iOS App
+ Copyright (C) 2024 Infomaniak Network SA
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import DesignSystem
+import InfomaniakBugTracker
+import InfomaniakCore
+import InfomaniakCoreCommonUI
+import InfomaniakCoreUIResources
+import InfomaniakDI
+import STOnboardingView
+import STResources
+import STSettingsView
+import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
+
+public struct AccountView: View {
+    @InjectService private var tokenStore: TokenStore
+
+    @Environment(\.currentUser) private var currentUser
+
+    @EnvironmentObject private var mainViewState: MainViewState
+    @Environment(\.openURL) private var openURL
+
+    @State private var isShowingLogoutView = false
+
+    public init() {}
+
+    public var body: some View {
+        List {
+            AccountHeaderView()
+
+            Section {
+                if currentUser != nil {
+                    let userCount = tokenStore.getAllTokens().count
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .switchUser)
+                        mainViewState.isShowingSwitchAccountListView = true
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.settingsSwitchAccount,
+                            leadingIcon: STResourcesAsset.Images.userChange
+                        )
+                    }
+                    .settingsCell()
+                    .stFloatingPanel(isPresented: $mainViewState.isShowingSwitchAccountListView,
+                                     title: STResourcesStrings.Localizable.titleMyAccount(userCount)) {
+                        AccountListView(userCount: userCount)
+                    }
+                } else {
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .login)
+                        mainViewState.isShowingLoginView = true
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.settingsSignIn,
+                            leadingIcon: STResourcesAsset.Images.user
+                        )
+                    }
+                    .settingsCell()
+                }
+
+                NavigationLink {
+                    SettingsView()
+                        .stNavigationTitle(STResourcesStrings.Localizable.settingsTitle)
+                        .stNavigationBarStyle()
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsTitle,
+                                            leadingIcon: STResourcesAsset.Images.cog)
+                }
+                .settingsCell()
+
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .helpAndSupport)
+                    openURL(SettingLinks.helpAndSupportURL)
+                } label: {
+                    SingleLabelSettingsCell(
+                        title: STResourcesStrings.Localizable.settingsHelpAndSupport,
+                        leadingIcon: STResourcesAsset.Images.help, trailingIcon: STResourcesAsset.Images.export
+                    )
+                }
+                .buttonStyle(.plain)
+                .settingsCell()
+
+                if let currentUser {
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .logout)
+                        isShowingLogoutView = true
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.settingsLogOut,
+                            leadingIcon: STResourcesAsset.Images.logout
+                        )
+                    }
+                    .stCustomAlert(isPresented: $isShowingLogoutView) {
+                        LogoutConfirmationView(user: currentUser)
+                    }
+                    .settingsCell()
+                }
+            }
+
+            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .termsAndConditions)
+                    openURL(SettingLinks.termsAndConditions)
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
+                                            trailingIcon: STResourcesAsset.Images.export)
+                }
+                .buttonStyle(.plain)
+                .settingsCell()
+
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .discoverInfomaniak)
+                    openURL(SettingLinks.discoverInfomaniak)
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
+                                            trailingIcon: STResourcesAsset.Images.export)
+                }
+                .buttonStyle(.plain)
+                .settingsCell()
+
+                Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .myAccount, name: .shareYourIdeas)
+                    openURL(SettingLinks.shareYourIdeas)
+                } label: {
+                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
+                                            trailingIcon: STResourcesAsset.Images.export)
+                }
+                .buttonStyle(.plain)
+                .settingsCell()
+
+                if !Bundle.main.isRunningInTestFlight {
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .myAccount, name: .giveYourOpinion)
+                        openURL(SettingLinks.appStoreReviewURL)
+                    } label: {
+                        SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
+                                                trailingIcon: STResourcesAsset.Images.export)
+                    }
+                    .buttonStyle(.plain)
+                    .settingsCell()
+
+                    Link(destination: UpdateLink.testFlight) {
+                        SingleLabelSettingsCell(title: CoreUILocalizable.joinTheBetaButton,
+                                                trailingIcon: STResourcesAsset.Images.export)
+                    }
+                    .settingsCell()
+                }
+
+                if let currentUser, currentUser.isStaff == true {
+                    Button {
+                        Task { @MainActor in
+                            @InjectService var accountManager: AccountManager
+
+                            await accountManager.enableBugTrackerIfAvailable()
+                            mainViewState.isShowingBugTracker = true
+                        }
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.buttonFeedback
+                        )
+                    }
+                    .settingsCell()
+                    .sheet(isPresented: $mainViewState.isShowingBugTracker) {
+                        BugTrackerView(isPresented: $mainViewState.isShowingBugTracker)
+                    }
+                }
+
+                AboutSettingsCell(title: STResourcesStrings.Localizable.version,
+                                  subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
+                    .settingsCell()
+            }
+        }
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .appBackground()
+        .fullScreenCover(isPresented: $mainViewState.isShowingLoginView) {
+            SingleOnboardingView()
+        }
+    }
+}
+
+#Preview {
+    AccountView()
+}

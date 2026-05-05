@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>aps-environment</key>
+	<string>development</string>
 	<key>com.apple.developer.associated-appclip-app-identifiers</key>
 	<array>
 		<string>$(AppIdentifierPrefix)com.infomaniak.swisstransfer.Clip</string>
@@ -9,17 +11,28 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:swisstransfer-legacy.preprod.dev.infomaniak.ch?mode=developer</string>
+        <string>applinks:swisstransfer.preprod.dev.infomaniak.ch?mode=developer</string>
 		<string>applinks:swisstransfer.com</string>
 		<string>applinks:www.swisstransfer.com</string>
+        <string>applinks:swisstransfer.infomaniak.com</string>
 		<string>appclips:swisstransfer.com</string>
 		<string>appclips:www.swisstransfer.com</string>
 	</array>
 	<key>com.apple.developer.devicecheck.appattest-environment</key>
 	<string>development</string>
+	<key>com.apple.developer.usernotifications.time-sensitive</key>
+	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.com.infomaniak.swisstransfer</string>
 		<string>group.com.infomaniak</string>
+	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)com.infomaniak.swisstransfer</string>
+		<string>$(AppIdentifierPrefix)com.infomaniak.mail</string>
+		<string>$(AppIdentifierPrefix)com.infomaniak.drive</string>
+		<string>$(AppIdentifierPrefix)com.infomaniak.euria</string>
 	</array>
 </dict>
 </plist>

@@ -18,26 +18,37 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import STAccountView
+import STCore
 import STReceivedView
 import STSentView
-import STSettingsView
 import STTransferDetailsView
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
 struct STSplitView: View {
+    @Environment(\.currentUser) private var currentUser
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var columnVisibility = NavigationSplitViewVisibility.all
     @State private var selectedItems = [ImportedItem]()
+    @StateObject private var avatarLoader = AvatarImageLoader()
+
+    private var item: [STTab] {
+        return [.sentTransfers, .receivedTransfers, .account(currentUser)]
+    }
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            List(STTab.allCases, selection: $mainViewState.selectedTab) { tab in
+            List(item, selection: $mainViewState.selectedTab) { tab in
                 NavigationLink(value: tab) {
-                    tab.label
+                    tab.label(avatarImage: avatarLoader.loadedImage)
                 }
+            }
+            .task(id: currentUser?.id) {
+                guard let currentUser else { return }
+                await avatarLoader.loadAvatar(for: currentUser)
             }
             .stIconNavigationBar()
             .stContentMargins(.top, value: IKPadding.medium, safeAreaValue: IKPadding.mini)
@@ -52,7 +63,7 @@ struct STSplitView: View {
                     .stNavigationBarStyle()
             }
         } detail: {
-            DetailSplitView(destination: mainViewState.selectedDestination)
+            DetailSplitView(destination: mainViewState.selectedDestination, transferManager: mainViewState.transferManager)
                 .stNavigationBarStyle()
         }
     }
@@ -62,23 +73,26 @@ private struct ContentSplitView: View {
     let tab: STTab
 
     var body: some View {
-        switch tab {
-        case .sentTransfers:
-            SentView()
-        case .receivedTransfers:
-            ReceivedView()
-        case .settings:
-            SettingsView()
+        Group {
+            switch tab {
+            case .sentTransfers:
+                SentView()
+            case .receivedTransfers:
+                ReceivedView()
+            case .account:
+                AccountView()
+            }
         }
     }
 }
 
 private struct DetailSplitView: View {
     let destination: NavigationDestination?
+    let transferManager: TransferManager
 
     var body: some View {
         if let destination, case .transfer(let transferData) = destination {
-            TransferDetailsRootView(data: transferData)
+            TransferDetailsRootView(data: transferData, transferManager: transferManager)
                 .id(transferData.id)
         } else {
             SplitViewDetailsEmptyView()

@@ -38,6 +38,8 @@ extension VerticalAlignment {
 
 public struct PreloadingView: View {
     @LazyInjectService private var accountManager: AccountManager
+    @LazyInjectService private var appLaunchCounter: AppLaunchCounter
+    @LazyInjectService private var tokenStore: TokenStore
 
     @EnvironmentObject private var rootViewState: RootViewState
 
@@ -75,12 +77,49 @@ public struct PreloadingView: View {
                 .padding(.bottom, value: .medium)
         }
         .task {
-            if let currentManager = await accountManager.getCurrentManager() {
-                rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+            guard !appLaunchCounter.isFirstLaunch else {
+                tokenStore.removeAllTokens()
+                appLaunchCounter.increase()
+                rootViewState.state = .onboarding
+                return
+            }
+
+            if let userSession = await accountManager.getCurrentUserSession() {
+                rootViewState.state = .mainView(
+                    MainViewState(
+                        swissTransferManager: userSession.swissTransferManager,
+                        uploadBackendRouter: UploadBackendRouter(
+                            currentUser: userSession.userProfile,
+                            swissTransferManager: userSession.swissTransferManager
+                        )
+                    ),
+                    userSession.userProfile
+                )
+            } else if let otherToken = tokenStore.getAllTokens().first,
+                      let userSession = await accountManager.getUserSession(for: otherToken.key) {
+                await accountManager.switchUser(newCurrentUserId: otherToken.key)
+
+                rootViewState.state = .mainView(
+                    MainViewState(
+                        swissTransferManager: userSession.swissTransferManager,
+                        uploadBackendRouter: UploadBackendRouter(
+                            currentUser: userSession.userProfile,
+                            swissTransferManager: userSession.swissTransferManager
+                        )
+                    ),
+                    userSession.userProfile
+                )
             } else if skipOnboarding {
                 await accountManager.createAndSetCurrentAccount()
-                if let currentManager = await accountManager.getCurrentManager() {
-                    rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+                if let swissTransferManager = await accountManager.getCurrentUserSession()?.swissTransferManager {
+                    rootViewState.state = .mainView(
+                        MainViewState(swissTransferManager: swissTransferManager,
+                                      uploadBackendRouter: UploadBackendRouter(
+                                          currentUser: nil,
+                                          swissTransferManager: swissTransferManager
+                                      )),
+                        nil
+                    )
                 } else {
                     // As a last resort we still go to onboarding
                     rootViewState.state = .onboarding

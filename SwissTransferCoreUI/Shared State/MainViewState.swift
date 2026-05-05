@@ -17,7 +17,7 @@
  */
 
 import OSLog
-import STCore
+@preconcurrency import STCore
 import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
@@ -66,7 +66,7 @@ extension MainViewState: StateRestorable {
                     await restoreTransfer(with: id)
                 }
             case .settings(let setting):
-                paths[.settings] = [.settings(setting)]
+                paths[.account(nil)] = [.settings(setting)]
             }
         }
     }
@@ -108,6 +108,9 @@ public final class MainViewState: ObservableObject {
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
     @ModalPublished public var isShowingReviewAlert = false
     @ModalPublished public var isShowingDeleteTransferDeeplink: DeleteTransferLinkResult?
+    @ModalPublished public var isShowingLoginView = false
+    @ModalPublished public var isShowingSwitchAccountListView = false
+    @ModalPublished public var isShowingBugTracker = false
 
     public var selectedDestination: NavigationDestination? {
         get {
@@ -149,10 +152,16 @@ public final class MainViewState: ObservableObject {
         }
     }
 
-    public let transferManager: TransferManager
+    public var transferManager: TransferManager {
+        return swissTransferManager.transferManager
+    }
 
-    public init(transferManager: TransferManager) {
-        self.transferManager = transferManager
+    public let swissTransferManager: SwissTransferInjection
+    public let uploadBackendRouter: UploadBackendRouter
+
+    public init(swissTransferManager: SwissTransferInjection, uploadBackendRouter: UploadBackendRouter) {
+        self.swissTransferManager = swissTransferManager
+        self.uploadBackendRouter = uploadBackendRouter
     }
 
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {

@@ -63,6 +63,18 @@ extension Slide {
                     )
                 ),
                 bottomView: OnboardingTextView(text: .password)
+            ),
+            Slide(
+                backgroundImage: STResourcesAsset.Images.onboardingBlurLeft.image,
+                backgroundImageTintColor: nil,
+                content: .animation(
+                    IKLottieConfiguration(
+                        id: 4,
+                        filename: "padlocks",
+                        bundle: STResourcesResources.bundle
+                    )
+                ),
+                bottomView: OnboardingTextView(text: .sendFiles)
             )
         ]
     }
@@ -75,51 +87,36 @@ public struct OnboardingView: View {
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
     @State private var selectedSlideIndex = 0
+    @StateObject private var loginHandler = LoginHandler()
 
     public init() {}
 
     public var body: some View {
-        CarouselView(slides: Slide.onboardingSlides, selectedSlide: $selectedSlideIndex) { slideIndex in
-            if slideIndex == Slide.onboardingSlides.count - 1 {
-                Button(STResourcesStrings.Localizable.buttonStart) {
-                    Task {
-                        await accountManager.createAndSetCurrentAccount()
-                        if let currentManager = await accountManager.getCurrentManager() {
-                            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
-                        }
-                    }
-                }
-                .buttonStyle(.ikBorderedProminent)
-                .ikButtonFullWidth(true)
-                .controlSize(.large)
-                .padding(.horizontal, value: .medium)
-            } else {
-                Button {
-                    selectedSlideIndex += 1
-                } label: {
-                    Label {
-                        Text(CoreUILocalizable.buttonNext)
-                    } icon: {
-                        STResourcesAsset.Images.arrowRight.swiftUIImage
-                    }
-                    .labelStyle(.iconOnly)
-                }
-                .buttonStyle(.ikSquare)
-            }
+        CarouselView(slides: Slide.onboardingSlides, selectedSlide: $selectedSlideIndex) { _ in
+            OnboardingBottomButtonsView(
+                loginHandler: loginHandler,
+                selection: $selectedSlideIndex,
+                slideCount: Slide.onboardingSlides.count
+            )
         }
         .appBackground()
         .ignoresSafeArea()
+        .loginErrorAlert(loginHandler: loginHandler)
         .onChange(of: universalLinksState.linkedTransfer) { linkedTransfer in
             guard let linkedTransfer else { return }
 
             Task {
-                if let currentManager = await accountManager.getCurrentManager() {
-                    let mainViewState = MainViewState(transferManager: currentManager)
+                if let session = await accountManager.getCurrentUserSession() {
+                    let mainViewState = MainViewState(swissTransferManager: session.swissTransferManager,
+                                                      uploadBackendRouter: UploadBackendRouter(
+                                                          currentUser: session.userProfile,
+                                                          swissTransferManager: session.swissTransferManager
+                                                      ))
 
                     mainViewState.handleDeepLink(linkedTransfer)
                     universalLinksState.linkedTransfer = nil
                     withAnimation {
-                        rootViewState.state = .mainView(mainViewState)
+                        rootViewState.state = .mainView(mainViewState, session.userProfile)
                     }
                 } else {
                     universalLinksState.linkedTransfer = nil

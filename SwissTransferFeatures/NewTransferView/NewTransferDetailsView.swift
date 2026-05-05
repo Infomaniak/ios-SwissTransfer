@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import OrderedCollections
 import STCore
@@ -25,16 +26,25 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
+    @Environment(\.currentUser) private var currentUser
+
     @Binding var authorEmail: String
     @Binding var recipientsEmail: OrderedSet<String>
     @Binding var message: String
+    @Binding var title: String
 
     let transferType: TransferType
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
+            if currentUser != nil {
+                TitleTextFieldView(title: $title)
+            }
+
             if transferType == .mail {
                 AuthorMailTextFieldView(authorEmail: $authorEmail)
+                    .disabled(currentUser?.email != nil)
+
                 RecipientsTextFieldView(recipients: $recipientsEmail)
             }
 
@@ -44,6 +54,13 @@ struct NewTransferDetailsView: View {
                 size: 88
             )
         }
+        .onChange(of: transferType) { newValue in
+            if newValue == .link {
+                authorEmail = ""
+            } else {
+                authorEmail = currentUser?.email ?? ""
+            }
+        }
     }
 }
 
@@ -52,6 +69,7 @@ struct NewTransferDetailsView: View {
         authorEmail: .constant(""),
         recipientsEmail: .constant(OrderedSet()),
         message: .constant(""),
+        title: .constant(""),
         transferType: .link
     )
 }

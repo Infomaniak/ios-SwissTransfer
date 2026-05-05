@@ -26,9 +26,9 @@ public extension UploadManager {
         case containerNotFound
     }
 
-    func createAndGetSendableUploadSession(newUploadSession: NewUploadSession) async throws -> SendableUploadSession {
+    func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession) async throws -> String {
         let uploadSession = try await createAndGetUpload(newUploadSession: newUploadSession)
-        return SendableUploadSession(uploadSession: uploadSession)
+        return uploadSession.uuid
     }
 
     func initSendableUploadSession(uuid: String, isRetrying: Bool) async throws -> SendableUploadSession {
@@ -40,16 +40,18 @@ public extension UploadManager {
         return SendableUploadSession(uploadSession: uploadSession)
     }
 
-    func createRemoteUploadSession(localSessionUUID: String) async throws -> SendableUploadSession {
+    func createRemoteUploadSession(localSessionUUID: String,
+                                   uploadTokensManager: UploadTokensManager,
+                                   sharedApiUrlCreator: SharedApiUrlCreator) async throws -> SendableUploadSession {
         do {
             let uploadSessionWithRemoteContainer = try await initSendableUploadSession(uuid: localSessionUUID, isRetrying: false)
             return uploadSessionWithRemoteContainer
         } catch let error as NSError
             where error.kotlinException is STNAttestationTokenException.InvalidAttestationTokenException {
-            let attestationToken = try await InfomaniakDeviceCheck.generateAttestationTokenForUploadContainer()
+            let attestationToken = try await InfomaniakDeviceCheck
+                .generateAttestationTokenForUploadContainer(sharedApiUrlCreator: sharedApiUrlCreator)
 
-            @InjectService var injection: SwissTransferInjection
-            try await injection.uploadTokensManager.setAttestationToken(attestationToken: attestationToken)
+            try await uploadTokensManager.setAttestationToken(attestationToken: attestationToken)
 
             let uploadSessionWithRemoteContainer = try await initSendableUploadSession(uuid: localSessionUUID, isRetrying: true)
             return uploadSessionWithRemoteContainer

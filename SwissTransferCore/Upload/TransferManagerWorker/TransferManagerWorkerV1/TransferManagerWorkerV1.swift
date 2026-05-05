@@ -28,55 +28,12 @@ import STNetwork
 
 extension Result: Sendable where Success: Sendable, Failure: Sendable {}
 
-private struct WorkerChunkInFile: Equatable, Sendable {
-    let file: WorkerFile
-    let chunk: WorkerChunk
-    var task: Task<Void, Error>?
-
-    static func == (lhs: WorkerChunkInFile, rhs: WorkerChunkInFile) -> Bool {
-        lhs.chunk == rhs.chunk
-    }
-}
-
-struct WorkerChunk: Equatable, Hashable, Sendable {
-    let fileURL: URL
-    let remoteUploadFileUUID: String
-    let uploadUUID: String
-    let range: DataRange
-    let index: Int
-    let isLast: Bool
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(fileURL)
-        hasher.combine(index)
-    }
-
-    static func == (lhs: WorkerChunk, rhs: WorkerChunk) -> Bool {
-        lhs.fileURL == rhs.fileURL && lhs.index == rhs.index
-    }
-}
-
-private struct WorkerFile: Equatable, Sendable {
-    let fileURL: URL
-    let uploadChunks: [WorkerChunk]
-    let lastChunk: WorkerChunk
-
-    static func == (lhs: WorkerFile, rhs: WorkerFile) -> Bool {
-        lhs.fileURL == rhs.fileURL
-    }
-}
-
-public protocol TransferManagerWorkerDelegate: AnyObject, Sendable {
-    @MainActor func uploadDidComplete(result: Result<String, NSError>)
-}
-
-public actor TransferManagerWorker {
-    @LazyInjectService private var injection: SwissTransferInjection
-
+public actor TransferManagerWorkerV1: TransferManagerWorker {
     private static let maxParallelUploads = 4
 
     private let appStateObserver = AppStateObserver()
     private let uploadSession: SendableUploadSession
+    let uploadBackendRouter: UploadBackendRouter
     private weak var delegate: TransferManagerWorkerDelegate?
 
     private var uploadingFiles = [WorkerFile]()
@@ -105,9 +62,13 @@ public actor TransferManagerWorker {
     let overallProgress: Progress
     let uploadURLSession: URLSession = .sharedSwissTransfer
 
-    public init(overallProgress: Progress, uploadSession: SendableUploadSession, delegate: TransferManagerWorkerDelegate) {
+    public init(overallProgress: Progress,
+                uploadSession: SendableUploadSession,
+                uploadBackendRouter: UploadBackendRouter,
+                delegate: TransferManagerWorkerDelegate) {
         self.overallProgress = overallProgress
         self.uploadSession = uploadSession
+        self.uploadBackendRouter = uploadBackendRouter
         self.delegate = delegate
         appStateObserver.delegate = self
     }
@@ -136,10 +97,7 @@ public actor TransferManagerWorker {
     }
 
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
-        guard let fileURL = URL(string: path) else {
-            throw ErrorDomain.invalidURL(rawURL: path)
-        }
-
+        let fileURL = URL(filePath: path)
         let rangeProvider = RangeProvider(fileURL: fileURL, config: rangeProviderConfig)
 
         let ranges = try rangeProvider.allRanges
@@ -156,7 +114,7 @@ public actor TransferManagerWorker {
         }
 
         guard let lastChunk = chunks.popLast() else {
-            throw ErrorDomain.invalidChunk
+            throw TransferManagerWorkerError.invalidChunk
         }
 
         assert(lastChunk.isLast, "expecting isLast flag to match the last in collection")
@@ -179,10 +137,12 @@ public actor TransferManagerWorker {
                 try await self.uploadAllChunks(forFile: uploadFile)
             }
 
-            let uploadManager = injection.uploadManager
-            let transferUUID = try await uploadManager.finishUploadSession(uuid: uploadSession.uuid)
+            let transferUUID = try await uploadBackendRouter.finishUploadSession(uuid: uploadSession.uuid)
 
-            await delegate?.uploadDidComplete(result: .success(transferUUID))
+            await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
+                transferUUID: transferUUID,
+                transferLinkId: transferUUID // For some reason in V1 it is both the same
+            )))
         } catch let error as URLError where error.code == .cancelled {
             // silent catching, uploads are suspending
         } catch {
@@ -242,11 +202,11 @@ public actor TransferManagerWorker {
             guard let self else { return }
 
             guard let chunkReader = ChunkReader(fileURL: chunk.fileURL) else {
-                throw ErrorDomain.invalidURL(rawURL: chunk.fileURL.path)
+                throw TransferManagerWorkerError.invalidURL(rawURL: chunk.fileURL.path)
             }
 
             guard let chunkData = try chunkReader.readChunk(range: chunk.range) else {
-                throw ErrorDomain.invalidChunk
+                throw TransferManagerWorkerError.invalidChunk
             }
 
             try await uploadChunk(chunkData: chunkData,
@@ -268,13 +228,13 @@ public actor TransferManagerWorker {
     }
 }
 
-extension TransferManagerWorker: @preconcurrency ExpiringActivityDelegate {
+extension TransferManagerWorkerV1: @preconcurrency ExpiringActivityDelegate {
     public func backgroundActivityExpiring() {
         suspendAllTasks()
     }
 }
 
-extension TransferManagerWorker: AppStateObserverDelegate {
+extension TransferManagerWorkerV1: AppStateObserverDelegate {
     public nonisolated func appDidBecomeActive() {
         Task {
             try await retryRemainingFiles()

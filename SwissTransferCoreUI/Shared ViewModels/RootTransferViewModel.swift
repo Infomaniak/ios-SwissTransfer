@@ -38,6 +38,7 @@ public final class RootTransferViewModel: ObservableObject {
     public var authorEmailToken: String?
     @Published public var recipientsEmail = OrderedSet<String>()
     @Published public var message = ""
+    @Published public var title = ""
     @Published public var password = ""
     @Published public var validityPeriod = ValidityPeriod.thirty
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
@@ -71,23 +72,24 @@ public final class RootTransferViewModel: ObservableObject {
     }
 
     private func fetchValuesFromSettings() {
-        @InjectService var settingsManager: AppSettingsManager
-        guard let appSettings = settingsManager.getAppSettings() else { return }
+        Task {
+            @InjectService var settingsManager: AppSettingsManager
+            guard let appSettings = try await settingsManager.getAppSettings() else { return }
 
-        transferType = appSettings.lastTransferType
-        authorEmail = appSettings.lastAuthorEmail ?? ""
-        validityPeriod = appSettings.validityPeriod
-        downloadLimit = appSettings.downloadLimit
-        emailLanguage = appSettings.emailLanguage
+            authorEmail = appSettings.lastAuthorEmail ?? ""
+            transferType = appSettings.lastTransferType
+            validityPeriod = appSettings.validityPeriod
+            downloadLimit = appSettings.downloadLimit
+            emailLanguage = appSettings.emailLanguage
+        }
     }
 
-    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager) async -> NewUploadSession? {
-        @InjectService var injection: SwissTransferInjection
-
+    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager,
+                                       swissTransferManager: SwissTransferInjection) async -> NewUploadSession? {
         var authorTrimmedEmail = ""
         if transferType == .mail {
             authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-            authorEmailToken = try? await injection.uploadTokensManager.getTokenForEmail(email: authorTrimmedEmail)
+            authorEmailToken = try? await swissTransferManager.uploadTokensManager.getTokenForEmail(email: authorTrimmedEmail)
         }
 
         guard let filesToUpload = try? newTransferFileManager.filesToUpload(),
@@ -110,18 +112,15 @@ public final class RootTransferViewModel: ObservableObject {
         return newUploadSession
     }
 
-    public func restoreWith(uploadSession: any UploadSession) {
-        authorEmail = uploadSession.authorEmail
-        recipientsEmail = OrderedSet(uploadSession.recipientsEmails)
-
-        if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
-            transferType = .mail
-        }
-
-        password = uploadSession.password
-        message = uploadSession.message
-        validityPeriod = uploadSession.duration
-        downloadLimit = uploadSession.numberOfDownload
-        emailLanguage = uploadSession.language
+    public func restoreWith(state: RootTransferRestorableState) {
+        authorEmail = state.authorEmail
+        title = state.title
+        recipientsEmail = state.recipientsEmail
+        transferType = state.transferType
+        password = state.password
+        message = state.message
+        validityPeriod = state.validityPeriod
+        downloadLimit = state.downloadLimit
+        emailLanguage = state.emailLanguage
     }
 }

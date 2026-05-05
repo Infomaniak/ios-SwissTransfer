@@ -60,10 +60,13 @@ public struct UniversalLinkHandler {
         guard let transferManager else { return nil }
 
         do {
-            guard let transferUUID = try await transferManager.addTransferByUrl(url: url.path, password: nil),
-                  let transfer = try await transferManager.getTransferByUUID(transferUUID: transferUUID)
-            else { return nil }
+            if let transfer = try await transferManager.getTransferByUrl(url: url.absoluteString) {
+                return UniversalLinkResult(link: url, result: .success(transfer))
+            }
 
+            guard let transfer = try await transferManager.addTransferByUrl(url: url.absoluteString, password: nil) else {
+                return nil
+            }
             return UniversalLinkResult(link: url, result: .success(transfer))
         } catch {
             return UniversalLinkResult(link: url, result: .failure(error))
@@ -73,11 +76,11 @@ public struct UniversalLinkHandler {
     private func createAccountIfNeeded() async -> TransferManager? {
         @InjectService var accountManager: AccountManager
 
-        var defaultTransferManager = await accountManager.getCurrentManager()
+        var defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager
 
         if defaultTransferManager == nil {
             await accountManager.createAndSetCurrentAccount()
-            defaultTransferManager = await accountManager.getCurrentManager()
+            defaultTransferManager = await accountManager.getCurrentUserSession()?.transferManager
         }
 
         return defaultTransferManager

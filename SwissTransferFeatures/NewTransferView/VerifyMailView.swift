@@ -31,10 +31,9 @@ private extension UserFacingError {
 }
 
 public struct VerifyMailView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
-
     @Environment(\.openURL) private var openURL
 
+    @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
 
@@ -114,7 +113,11 @@ public struct VerifyMailView: View {
         Task {
             do {
                 let addressToVerify = newUploadSession.authorEmail
-                let token = try await injection.uploadManager.verifyEmailCode(code: code, address: addressToVerify).token
+                let token = try await mainViewState.swissTransferManager.uploadManager.verifyEmailCode(
+                    code: code,
+                    address: addressToVerify
+                )
+                .token
 
                 let uploadSessionWithEmailToken = NewUploadSession(
                     duration: newUploadSession.duration,
@@ -130,10 +133,10 @@ public struct VerifyMailView: View {
 
                 viewModel.authorEmailToken = token
 
-                let localUploadSession = try await injection.uploadManager
-                    .createAndGetSendableUploadSession(newUploadSession: uploadSessionWithEmailToken)
+                let localUploadSessionUUID = try await mainViewState.swissTransferManager.uploadManager
+                    .createAndGetLocalUploadSessionUUID(newUploadSession: uploadSessionWithEmailToken)
 
-                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSession.uuid))
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
                 withAnimation {
                     self.error = UserFacingError.validateMailCodeIncorrect

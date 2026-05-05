@@ -17,7 +17,9 @@
  */
 
 import Foundation
+@preconcurrency import InfomaniakCore
 import InfomaniakDI
+import InfomaniakNotifications
 import SwissTransferCore
 import UIKit
 
@@ -31,5 +33,27 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         @InjectService var downloadManager: DownloadManager
         downloadManager.backgroundDownloadCompletionCallback = completionHandler
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Task {
+            @InjectService var notificationService: InfomaniakNotifications
+            @InjectService var accountManager: AccountManager
+            @InjectService var tokenStore: TokenStore
+
+            let tokens = tokenStore.getAllTokens()
+            for (_, token) in tokens {
+                Task {
+                    /* Because of a backend issue we can't register the notification token directly after the creation or refresh of
+                     an API token. We wait at least 15 seconds before trying to register. */
+                    try? await Task.sleep(nanoseconds: 15_000_000_000)
+
+                    let userApiFetcher = await accountManager.getApiFetcher(token: token.apiToken)
+                    await notificationService.updateRemoteNotificationsToken(tokenData: deviceToken,
+                                                                             userApiFetcher: userApiFetcher,
+                                                                             updatePolicy: .always)
+                }
+            }
+        }
     }
 }

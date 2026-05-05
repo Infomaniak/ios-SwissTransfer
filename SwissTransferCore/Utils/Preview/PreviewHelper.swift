@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import InfomaniakCore
 import STCore
 
 public enum PreviewHelper {
@@ -44,32 +45,47 @@ public enum PreviewHelper {
 
     public static let sampleTransfer = TransferUi(
         uuid: "transferUUID",
+        linkId: "somelink",
         createdDateTimestamp: 1_723_960_169,
         expirationDateTimestamp: expireTimeStamp(expired: false),
         sizeUploaded: 8123,
         downloadLimit: 250,
         downloadLeft: 249,
+        title: nil,
         message: "Some message",
         password: nil,
         recipientsEmails: Set(),
         files: [sampleFile],
         direction: .received,
-        transferStatus: .ready
+        transferStatus: .ready,
+        apiSource: .v1
     )
 
     public static let sampleOldTransfer = TransferUi(
         uuid: "oldTransferUUID",
+        linkId: "somelink",
         createdDateTimestamp: 1_714_160_797,
         expirationDateTimestamp: expireTimeStamp(expired: true),
         sizeUploaded: 8123,
         downloadLimit: 250,
         downloadLeft: 249,
+        title: nil,
         message: "Some message",
         password: nil,
         recipientsEmails: Set(),
         files: [sampleFile],
         direction: .received,
-        transferStatus: .ready
+        transferStatus: .ready,
+        apiSource: .v1
+    )
+
+    public static let sampleUser = UserProfile(
+        id: 1,
+        displayName: "John Appleseed",
+        firstName: "John",
+        lastName: "Appleseed",
+        email: "mobiletest@ik.me",
+        avatar: "https://avatar.storage.infomaniak.com/AXo01iecwUeoGoydY7WaCmmG.png?1717510064"
     )
 
     public static let sampleNewUploadSession = NewUploadSession(

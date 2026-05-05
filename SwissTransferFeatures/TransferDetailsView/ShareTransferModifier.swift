@@ -33,7 +33,7 @@ struct LegacyToolbarSpacing: View {
 }
 
 struct ShareTransferToolbarModifier: ViewModifier {
-    @LazyInjectService private var injection: SwissTransferInjection
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
@@ -43,8 +43,16 @@ struct ShareTransferToolbarModifier: ViewModifier {
     let matomoCategory: MatomoCategory
 
     private var transferURL: URL? {
-        let apiURLCreator = injection.sharedApiUrlCreator
-        let url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
+        let url: String
+        if transfer.apiSource == .v1 {
+            url = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        } else if let linkId = transfer.linkId {
+            url = apiURLCreator.shareTransferV2Url(linkUUID: linkId)
+        } else {
+            return nil
+        }
+
         return URL(string: url)
     }
 

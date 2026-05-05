@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InAppTwoFactorAuthentication
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
@@ -30,16 +31,16 @@ import SwissTransferCoreUI
 import VersionChecker
 
 public struct MainView: View {
-    @LazyInjectService private var injection: SwissTransferInjection
     @LazyInjectService private var matomo: MatomoUtils
     @LazyInjectService private var reviewManager: ReviewManageable
 
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.openURL) private var openURL
+    @Environment(\.currentUser) private var currentUser
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
-    @Environment(\.openURL) private var openURL
 
     public init() {}
 
@@ -51,6 +52,7 @@ public struct MainView: View {
                 STSplitView()
             }
         }
+        .id(currentUser?.id)
         .sceneLifecycle(willEnterForeground: willEnterForeground)
         .environmentObject(mainViewState.transferManager)
         .stateRestorable(mainViewState)
@@ -121,8 +123,30 @@ public struct MainView: View {
 
     private func willEnterForeground() {
         Task {
-            try? await injection.transferManager.deleteExpiredTransfers()
+            try? await mainViewState.transferManager.deleteExpiredTransfers()
         }
+        Task {
+            await checkTwoFAChallenges()
+        }
+    }
+
+    private func checkTwoFAChallenges() async {
+        @InjectService var accountManager: SwissTransferCore.AccountManager
+        @InjectService var tokenStore: TokenStore
+
+        let tokens = tokenStore.getAllTokens()
+        let sessions: [InAppTwoFactorAuthenticationSession] = await tokens.values.asyncCompactMap { account in
+            guard let user = await accountManager.userProfileStore.getUserProfile(id: account.userId) else {
+                return nil
+            }
+
+            let apiFetcher = await accountManager.getApiFetcher(token: account.apiToken)
+
+            return InAppTwoFactorAuthenticationSession(user: user, apiFetcher: apiFetcher)
+        }
+
+        @InjectService var inAppTwoFactorAuthenticationManager: InAppTwoFactorAuthenticationManagerable
+        inAppTwoFactorAuthenticationManager.checkConnectionAttempts(using: sessions)
     }
 }
 

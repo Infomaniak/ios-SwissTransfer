@@ -26,6 +26,7 @@ import SwissTransferCore
 struct DownloadableFileCellView: View {
     @EnvironmentObject private var downloadManager: DownloadManager
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     let transfer: TransferUi
     let file: FileUi
@@ -37,7 +38,13 @@ struct DownloadableFileCellView: View {
         }
 
         return DownloadFileAction { _ in
-            downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
+            downloadManager.startOrCancelDownload(
+                transfer: transfer,
+                files: [file],
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                fileManager: mainViewState.swissTransferManager.fileManager,
+                matomoCategory: matomoCategory
+            )
         }
     }
 
@@ -65,7 +72,13 @@ struct DownloadableFileCellView: View {
 
     private func fileTapped() {
         guard multipleSelectionManager.isEnabled else {
-            downloadManager.startOrCancelDownload(transfer: transfer, files: [file], matomoCategory: matomoCategory)
+            downloadManager.startOrCancelDownload(
+                transfer: transfer,
+                files: [file],
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                fileManager: mainViewState.swissTransferManager.fileManager,
+                matomoCategory: matomoCategory
+            )
             return
         }
 

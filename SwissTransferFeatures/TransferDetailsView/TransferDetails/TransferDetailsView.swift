@@ -27,7 +27,9 @@ import SwissTransferCoreUI
 public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isCompactWindow) private var isCompactWindow
+
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     private let transfer: TransferUi?
 
@@ -55,7 +57,7 @@ public struct TransferDetailsView: View {
                         expiringTimestamp: transfer.expirationDateTimestamp,
                         downloadLeft: transfer.downloadLeft,
                         downloadLimit: transfer.downloadLimit,
-                        transferDirection: transfer.direction
+                        shouldShowDownloadCounter: transfer.direction == .sent && transfer.apiSource == .v1
                     )
 
                     if shouldDisplayRecipientsOrMessage {
@@ -89,9 +91,14 @@ public struct TransferDetailsView: View {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }
         .navigationDestination(for: FileUi.self) { file in
-            FileListView(folder: file, transfer: transfer, matomoCategory: matomoCategory)
-                .downloadSelectionToolbar(transfer: transfer)
-                .environment(\.dismissModal) { dismiss() }
+            FileListView(
+                folder: file,
+                transfer: transfer,
+                fileManager: mainViewState.swissTransferManager.fileManager,
+                matomoCategory: matomoCategory
+            )
+            .downloadSelectionToolbar(transfer: transfer)
+            .environment(\.dismissModal) { dismiss() }
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)

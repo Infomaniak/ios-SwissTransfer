@@ -20,28 +20,42 @@ import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
+import InfomaniakLogin
 import InfomaniakPrivacyManagement
 import STCore
 import STResources
+import SwiftModalPresentation
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
 /// Links used in the settings view
-enum SettingLinks {
-    static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
-    static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
-    static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
-    static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
-    static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
+public enum SettingLinks {
+    public static let discoverInfomaniak = URL(string: STResourcesStrings.Localizable.urlAbout)!
+    public static let shareYourIdeas = URL(string: STResourcesStrings.Localizable.urlUserReport)!
+    public static let githubRepository = URL(string: "https://github.com/Infomaniak/ios-SwissTransfer")!
+    public static let termsAndConditions = URL(string: "https://www.swisstransfer.com/?cgu")!
+    public static let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6737686335?action=write-review")!
+    public static let helpAndSupportURL = URL(string: "https://support.infomaniak.com")!
+}
+
+extension ApiToken: @retroactive Identifiable {
+    public var id: String {
+        return accessToken
+    }
 }
 
 public struct SettingsView: View {
     @InjectService private var matomo: MatomoUtils
 
+    @Environment(\.currentUser) private var currentUser
+
     @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
+    @StateObject private var deleteAccountDelegate = SettingsAccountManagementViewDelegate()
+
+    @ModalState private var presentedAccountDeletionToken: ApiToken?
 
     public init() {
         @InjectService var settingsManager: AppSettingsManager
@@ -101,7 +115,7 @@ public struct SettingsView: View {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDataManagement)) {
                 NavigationLink {
                     PrivacyManagementView(
-                        urlRepository: SettingLinks.githubRepository,
+                        urlRepository: SettingLinks.helpAndSupportURL,
                         backgroundColor: Color.ST.background,
                         illustration: STResourcesAsset.Images.documentSignaturePencilBulb.swiftUIImage,
                         userDefaultStore: .shared,
@@ -117,49 +131,41 @@ public struct SettingsView: View {
                                             leadingIcon: STResourcesAsset.Images.shield)
                 }
                 .settingsCell()
-            }
 
-            Section(header: Text(STResourcesStrings.Localizable.settingsCategoryAbout)) {
-                Link(destination: SettingLinks.termsAndConditions) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionTermsAndConditions,
-                                            trailingIcon: STResourcesAsset.Images.export)
-                }
-                .settingsCell()
+                if let currentUserId = currentUser?.id {
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .settings, name: .deleteMyAccount)
 
-                Link(destination: SettingLinks.discoverInfomaniak) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionDiscoverInfomaniak,
-                                            trailingIcon: STResourcesAsset.Images.export)
-                }
-                .settingsCell()
+                        @InjectService var tokenStore: TokenStore
 
-                Link(destination: SettingLinks.shareYourIdeas) {
-                    SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionShareIdeas,
-                                            trailingIcon: STResourcesAsset.Images.export)
-                }
-                .settingsCell()
-
-                if !Bundle.main.isRunningInTestFlight {
-                    Link(destination: SettingLinks.appStoreReviewURL) {
-                        SingleLabelSettingsCell(title: STResourcesStrings.Localizable.settingsOptionGiveFeedback,
-                                                trailingIcon: STResourcesAsset.Images.export)
+                        presentedAccountDeletionToken = tokenStore.tokenFor(userId: currentUserId)?.apiToken
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: STResourcesStrings.Localizable.settingsDeleteMyAccount,
+                            leadingIcon: STResourcesAsset.Images.delete,
+                            trailingIcon: STResourcesAsset.Images.export
+                        )
                     }
                     .settingsCell()
-
-                    Link(destination: UpdateLink.testFlight) {
-                        SingleLabelSettingsCell(title: CoreUILocalizable.joinTheBetaButton,
-                                                trailingIcon: STResourcesAsset.Images.export)
+                    .sheet(item: $presentedAccountDeletionToken) { userToken in
+                        DeleteAccountView(accessToken: userToken.accessToken, delegate: deleteAccountDelegate)
                     }
-                    .settingsCell()
                 }
-
-                AboutSettingsCell(title: STResourcesStrings.Localizable.version,
-                                  subtitle: CorePlatform.appVersionLabel(fallbackAppName: "SwissTransfer"))
-                    .settingsCell()
             }
         }
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .appBackground()
+        .alert(STResourcesStrings.Localizable.deleteAccountAlertTitle,
+               isPresented: Binding(get: {
+                   deleteAccountDelegate.resultMessage != nil
+               }, set: { presented in
+                   if !presented {
+                       deleteAccountDelegate.resultMessage = nil
+                   }
+               })) {}
+        message: { Text(deleteAccountDelegate.resultMessage ?? "") }
         .matomoView(view: .settings)
     }
 }

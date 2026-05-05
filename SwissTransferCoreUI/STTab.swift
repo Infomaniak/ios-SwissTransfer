@@ -16,41 +16,59 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
+import InfomaniakCoreSwiftUI
+import NukeUI
 import STResources
 import SwiftUI
 
-public enum STTab: String, CaseIterable, Identifiable, Codable {
+public enum STTab: Identifiable, Codable, Hashable {
     case sentTransfers
     case receivedTransfers
-    case settings
+    case account(UserProfile?)
 
     public var id: String {
-        rawValue
+        switch self {
+        case .sentTransfers:
+            return "sentTransfers"
+        case .receivedTransfers:
+            return "receivedTransfers"
+        case .account(let user):
+            if let user {
+                return "\(user.id)"
+            } else {
+                return "account"
+            }
+        }
     }
 
-    public var title: String {
+    @MainActor public var title: String {
         switch self {
         case .sentTransfers:
             return STResourcesStrings.Localizable.sentTitle
         case .receivedTransfers:
             return STResourcesStrings.Localizable.receivedTitle
-        case .settings:
-            return STResourcesStrings.Localizable.settingsTitle
+        case .account:
+            return STResourcesStrings.Localizable.titleMyAccount(1)
         }
     }
 
-    public var icon: Image {
+    @MainActor public func icon(avatarImage: Image? = nil) -> Image {
         switch self {
         case .sentTransfers:
             return STResourcesAsset.Images.arrowUpCircle.swiftUIImage
         case .receivedTransfers:
             return STResourcesAsset.Images.arrowDownCircle.swiftUIImage
-        case .settings:
-            return STResourcesAsset.Images.sliderVertical3.swiftUIImage
+        case .account(let user):
+            if let user, let avatarImage {
+                return avatarImage
+            } else {
+                return STResourcesAsset.Images.user.swiftUIImage
+            }
         }
     }
 
-    public var label: Label<Text, Image> {
-        Label(title: { Text(title) }, icon: { icon })
+    @MainActor public func label(avatarImage: Image? = nil) -> Label<Text, Image> {
+        Label(title: { Text(title) }, icon: { icon(avatarImage: avatarImage) })
     }
 }

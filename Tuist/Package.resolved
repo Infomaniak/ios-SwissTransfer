@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "ios-bug-tracker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-bug-tracker",
+      "state" : {
+        "revision" : "f6c92f7ed021d3a875083da9f2079f8fd0d00113",
+        "version" : "17.0.1"
+      }
+    },
+    {
       "identity" : "ios-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
@@ -25,6 +34,15 @@
       "state" : {
         "revision" : "9f838764a22cac07960974cc71227bca9d7daee1",
         "version" : "24.7.0"
+      }
+    },
+    {
+      "identity" : "ios-create-account",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-create-account",
+      "state" : {
+        "revision" : "45dfbaf58e09c281684939370adbdb59b0fc8c44",
+        "version" : "23.3.0"
       }
     },
     {
@@ -46,12 +64,30 @@
       }
     },
     {
+      "identity" : "ios-features",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-features",
+      "state" : {
+        "revision" : "9f1e4772c9e31941d26d8e589277344197da51d3",
+        "version" : "8.8.0"
+      }
+    },
+    {
       "identity" : "ios-login",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-login",
       "state" : {
         "revision" : "3ead81cbaf8c1aa1c7daf45904f77e4b1634aa85",
         "version" : "7.8.0"
+      }
+    },
+    {
+      "identity" : "ios-notifications",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Infomaniak/ios-notifications",
+      "state" : {
+        "revision" : "bf0722c1392a783ac3e1fe2a69b10ae3e45350ff",
+        "version" : "15.1.0"
       }
     },
     {
@@ -95,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "9b378e16e6421810dc317ccf0d8acdad9efb67b2",
-        "version" : "5.4.0"
+        "revision" : "cea456682edd94af19e0fd3fda2adce3d3a3cdc3",
+        "version" : "9.0.0"
       }
     },
     {

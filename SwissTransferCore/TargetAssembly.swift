@@ -16,10 +16,16 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DeviceAssociation
 import Foundation
+import InAppTwoFactorAuthentication
+import InfomaniakBugTracker
 import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakDI
+import InfomaniakLogin
+import InfomaniakNotifications
+import InterAppLogin
 import OSLog
 import STCore
 
@@ -27,6 +33,23 @@ private let appGroupIdentifier = "group.\(Constants.bundleId)"
 
 public extension UserDefaults {
     static let shared = UserDefaults(suiteName: appGroupIdentifier)!
+}
+
+extension InfomaniakCore.ApiEnvironment {
+    var kmpEnvironment: STCore.ApiEnvironment {
+        switch self {
+        case .prod:
+            return .Prod()
+        case .preprod:
+            return .Preprod()
+        case .customHost(let string):
+            Logger.general
+                .warning(
+                    "Using same custom host for both iOS and KMP, but KMP does not support custom ports, so port will be ignored if specified in the string"
+                )
+            return .Custom(url: string, urlV2: string)
+        }
+    }
 }
 
 extension [Factory] {
@@ -40,7 +63,19 @@ extension [Factory] {
 open class TargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
+    #if DEBUG
+    private static let apiEnvironment = ApiEnvironment.preprod
+    #else
+    private static let apiEnvironment = ApiEnvironment.prod
+    #endif
+    public static let loginConfig = InfomaniakLogin.Config(
+        clientId: "17EE3471-9843-4FB9-AD95-CB8C41BAD624",
+        loginURL: URL(string: "https://login.\(apiEnvironment.host)/")!,
+        accessType: nil
+    )
+
     public init() {
+        ApiEnvironment.current = Self.apiEnvironment
         Self.setupDI()
     }
 
@@ -49,6 +84,36 @@ open class TargetAssembly {
             Factory(type: AccountManager.self) { _, _ in
                 AccountManager()
             },
+            Factory(type: AppLaunchCounter.self) { _, _ in
+                AppLaunchCounter()
+            },
+            Factory(type: ConnectedAccountManagerable.self) { _, _ in
+                ConnectedAccountManager(currentAppKeychainIdentifier: AppIdentifierBuilder.swissTransferKeychainIdentifier)
+            },
+            Factory(type: InAppTwoFactorAuthenticationManagerable.self) { _, _ in
+                InAppTwoFactorAuthenticationManager()
+            },
+            Factory(type: InfomaniakNotifications.self) { _, _ in
+                InfomaniakNotifications(appGroup: Constants.appGroupIdentifier)
+            },
+            Factory(type: InfomaniakNetworkLoginable.self) { _, _ in
+                InfomaniakNetworkLogin(config: loginConfig)
+            },
+            Factory(type: InfomaniakLoginable.self) { _, _ in
+                InfomaniakLogin(config: loginConfig)
+            },
+            Factory(type: KeychainHelper.self) { _, _ in
+                KeychainHelper(accessGroup: Constants.accessGroup)
+            },
+            Factory(type: TokenStore.self) { _, _ in
+                TokenStore()
+            },
+            Factory(type: DeviceManagerable.self) { _, _ in
+                let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String? ?? "x.x"
+                return DeviceManager(appGroupIdentifier: Constants.sharedAppGroupName,
+                                     appMarketingVersion: version,
+                                     capabilities: [.twoFactorAuthenticationChallengeApproval])
+            },
             Factory(type: DownloadManager.self) { _, _ in
                 let isRunningInAppClip = Bundle.main.bundleIdentifier == "com.infomaniak.swisstransfer.Clip"
                 return DownloadManager(sessionConfiguration: isRunningInAppClip ? .swissTransfer : .swissTransferBackground)
@@ -56,39 +121,8 @@ open class TargetAssembly {
             Factory(type: ThumbnailProvidable.self) { _, _ in
                 ThumbnailProvider()
             },
-            Factory(type: SwissTransferInjection.self) { _, resolver in
-                let groupPathProvider = try resolver.resolve(type: AppGroupPathProvidable.self,
-                                                             forCustomTypeIdentifier: nil,
-                                                             factoryParameters: nil,
-                                                             resolver: resolver)
-
-                let sentryWrapper = SentryKMPWrapper()
-
-                let realmRootDirectory = groupPathProvider.realmRootURL.path()
-                Logger.general.info("Realm group directory \(realmRootDirectory)")
-
-                #if DEBUG
-                return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Preprod(),
-                    userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper
-                )
-                #else
-                return SwissTransferInjection(
-                    environment: STCore.ApiEnvironment.Prod(),
-                    userAgent: UserAgentBuilder().userAgent,
-                    databaseRootDirectory: realmRootDirectory,
-                    crashReport: sentryWrapper
-                )
-                #endif
-            },
-            Factory(type: AppSettingsManager.self) { _, resolver in
-                let stInjection = try resolver.resolve(type: SwissTransferInjection.self,
-                                                       forCustomTypeIdentifier: nil,
-                                                       factoryParameters: nil,
-                                                       resolver: resolver)
-                return stInjection.appSettingsManager
+            Factory(type: AppSettingsManager.self) { _, _ in
+                return SwissTransferInjection().appSettingsManager
             },
             Factory(type: ReviewManageable.self) { _, _ in
                 ReviewManager(userDefaults: UserDefaults.shared, actionBeforeFirstReview: 2)
@@ -118,6 +152,9 @@ open class TargetAssembly {
             },
             Factory(type: NotificationCenterDelegate.self) { _, _ in
                 NotificationCenterDelegate()
+            },
+            Factory(type: BugTracker.self) { _, _ in
+                InfomaniakBugTracker.BugTracker(info: BugTrackerInfo(project: "app-mobile-swisstransfer"))
             }
         ]
     }

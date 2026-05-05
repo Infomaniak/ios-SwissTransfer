@@ -16,16 +16,18 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STAccountView
 import STReceivedView
 import STSentView
-import STSettingsView
 import STTransferDetailsView
 import SwiftUI
-import SwissTransferCore
 import SwissTransferCoreUI
 
 struct STTabView: View {
+    @Environment(\.currentUser) private var currentUser
     @EnvironmentObject private var mainViewState: MainViewState
+
+    @StateObject private var avatarLoader = AvatarImageLoader()
 
     var body: some View {
         TabView(selection: $mainViewState.selectedTab) {
@@ -35,11 +37,15 @@ struct STTabView: View {
             ReceivedView()
                 .stTab(.receivedTransfers)
 
-            SettingsView()
-                .stTab(.settings)
+            AccountView()
+                .stTab(.account(currentUser), avatarImage: avatarLoader.loadedImage)
         }
         .fullScreenCover(item: $mainViewState.selectedFullscreenTransfer) { transferData in
-            TransferDetailsRootView(data: transferData)
+            TransferDetailsRootView(data: transferData, transferManager: mainViewState.transferManager)
+        }
+        .task(id: currentUser?.id) {
+            guard let currentUser else { return }
+            await avatarLoader.loadAvatar(for: currentUser)
         }
     }
 }

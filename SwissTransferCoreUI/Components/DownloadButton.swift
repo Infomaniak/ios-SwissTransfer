@@ -28,6 +28,7 @@ import SwissTransferCore
 public struct DownloadButton: View {
     @EnvironmentObject private var downloadManager: DownloadManager
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
@@ -42,6 +43,8 @@ public struct DownloadButton: View {
             downloadManager.startOrCancelDownload(
                 transfer: transfer,
                 files: Array(multipleSelectionManager.selectedItems),
+                sharedApiUrlCreator: mainViewState.swissTransferManager.sharedApiUrlCreator,
+                fileManager: mainViewState.swissTransferManager.fileManager,
                 matomoCategory: matomoCategory
             )
         } label: {

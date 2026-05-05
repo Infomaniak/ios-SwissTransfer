@@ -16,14 +16,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
+import InfomaniakCore
+import InfomaniakDI
+import SwissTransferCore
 
-extension TransferManagerWorker {
-    enum ErrorDomain: Error {
-        case invalidURL(rawURL: String)
-        case invalidUploadChunkURL
-        case invalidChunk
-        case invalidResponse
-        case invalidChunkResponse
+class SwissTransferTargetAssembly: TargetAssembly {
+    override class func getTargetServices() -> [Factory] {
+        return []
     }
 }

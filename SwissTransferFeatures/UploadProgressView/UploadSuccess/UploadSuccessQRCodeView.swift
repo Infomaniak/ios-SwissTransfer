@@ -29,18 +29,26 @@ import SwissTransferCoreUI
 struct UploadSuccessQRCodeView: View {
     private static let qrCodeSize: CGFloat = 160
 
-    @LazyInjectService private var injection: SwissTransferInjection
+    @EnvironmentObject private var mainViewState: MainViewState
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.currentUser) private var currentUser
 
     @State private var isShowingShareTipSheet = false
 
     let type: TransferType
-    let transferUUID: String
+    let transferCompletedResult: TransferCompletedResult
 
     private var transferURL: URL? {
-        let apiURLCreator = injection.sharedApiUrlCreator
-        let url = apiURLCreator.shareTransferUrl(transferUUID: transferUUID)
+        let isUsingApiV2 = currentUser != nil
+        let url: String
+        if isUsingApiV2 {
+            let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
+            url = apiURLCreator.shareTransferV2Url(linkUUID: transferCompletedResult.transferLinkId)
+        } else {
+            let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
+            url = apiURLCreator.shareTransferUrl(transferUUID: transferCompletedResult.transferUUID)
+        }
         return URL(string: url)
     }
 
@@ -120,5 +128,11 @@ struct UploadSuccessQRCodeView: View {
 }
 
 #Preview {
-    UploadSuccessQRCodeView(type: .link, transferUUID: PreviewHelper.sampleTransfer.uuid)
+    UploadSuccessQRCodeView(
+        type: .link,
+        transferCompletedResult: TransferCompletedResult(
+            transferUUID: PreviewHelper.sampleTransfer.uuid,
+            transferLinkId: PreviewHelper.sampleTransfer.uuid
+        )
+    )
 }

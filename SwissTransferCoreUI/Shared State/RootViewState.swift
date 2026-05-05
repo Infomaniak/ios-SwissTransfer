@@ -16,7 +16,10 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Combine
 import Foundation
+import InfomaniakCore
+import InfomaniakDI
 import SwiftUI
 import SwissTransferCore
 
@@ -27,8 +30,8 @@ public enum RootViewType: Equatable {
             return true
         case (.preloading, .preloading):
             return true
-        case (.mainView(let lhsMainViewState), .mainView(let rhsMainViewState)):
-            return lhsMainViewState.transferManager == rhsMainViewState.transferManager
+        case (.mainView(let lhsMainViewState, let lhsUser), .mainView(let rhsMainViewState, let rhsUser)):
+            return lhsUser?.id == rhsUser?.id // TODO: maybe check mainViewState ?
         case (.updateRequired, .updateRequired):
             return true
         default:
@@ -36,7 +39,7 @@ public enum RootViewType: Equatable {
         }
     }
 
-    case mainView(MainViewState)
+    case mainView(MainViewState, UserProfile?)
     case preloading
     case onboarding
     case updateRequired
@@ -46,13 +49,35 @@ public enum RootViewType: Equatable {
 public final class RootViewState: ObservableObject {
     @Published public var state: RootViewType = .preloading
 
-    public init() {}
+    private var accountManagerObservation: AnyCancellable?
 
-    public func transitionToMainViewIfPossible(accountManager: AccountManager, rootViewState: RootViewState) async {
-        if let currentManager = await accountManager.getCurrentManager() {
-            rootViewState.state = .mainView(MainViewState(transferManager: currentManager))
+    public init() {
+        @InjectService var accountManager: AccountManager
+
+        state = .preloading
+
+        accountManagerObservation = accountManager.objectWillChange.receive(on: RunLoop.main).sink { [weak self] in
+            Task {
+                await self?.transitionToMainViewIfPossible()
+            }
+        }
+    }
+
+    public func transitionToMainViewIfPossible() async {
+        @InjectService var accountManager: AccountManager
+        if let currentSession = await accountManager.getCurrentUserSession() {
+            state = .mainView(
+                MainViewState(
+                    swissTransferManager: currentSession.swissTransferManager,
+                    uploadBackendRouter: UploadBackendRouter(
+                        currentUser: currentSession.userProfile,
+                        swissTransferManager: currentSession.swissTransferManager
+                    )
+                ),
+                currentSession.userProfile
+            )
         } else {
-            rootViewState.state = .onboarding
+            state = .onboarding
         }
     }
 }

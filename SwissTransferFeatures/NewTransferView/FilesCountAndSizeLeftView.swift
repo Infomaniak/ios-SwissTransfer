@@ -48,8 +48,13 @@ public struct FilesCountAndSizeLeftView: View {
                     Text(STResourcesStrings.Localizable.fileSizeOverTtsFriendly(sizeFormatted, maxSizeFormatted))
                 )
         }
-        return Text(STResourcesStrings.Localizable.transferSpaceLeft((NewTransferConstants.maxFileSize - size)
-                .formatted(.defaultByteCount)))
+        if size > 1 {
+            return Text(STResourcesStrings.Localizable.transferSpaceLeftPlural((NewTransferConstants.maxFileSize - size)
+                    .formatted(.defaultByteCount)))
+        } else {
+            return Text(STResourcesStrings.Localizable.transferSpaceLeft((NewTransferConstants.maxFileSize - size)
+                    .formatted(.defaultByteCount)))
+        }
     }
 
     private var filesSizeColor: Color {

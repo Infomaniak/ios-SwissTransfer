@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: de, German
  * Tagged: ios
- * Exported by: Valentin Perignon
- * Exported at: Tue, 03 Mar 2026 14:04:47 +0100
+ * Exported by: Philippe Weidmann
+ * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -48,6 +48,9 @@
 
 /* loco:67448efd69b0e5a4910909b2 */
 "buttonEditTransfer" = "Meine Übertragung bearbeiten";
+
+/* loco:69c50be1cc3830b8160e7e12 */
+"buttonFeedback" = "Rückmeldung";
 
 /* loco:670f577c33200f8f64069c62 */
 "buttonFinished" = "Beenden";
@@ -519,6 +522,12 @@
 
 /* loco:6707e02b8a6e1328f2054d62 */
 "transferSpaceLeft" = "%@ übrig";
+
+/* loco:6707e09639f0b3f32007d2e2 */
+"transferSpaceLeft-plural" = "%@ übrig";
+
+/* loco:69aa93edc7dabf95130ef882 */
+"transferTitlePlaceholder" = "Gib deinem Transfer einen Titel";
 
 /* loco:66c4aa7762a79eb6a60eaba2 */
 "transferTypeEmail" = "E-Mail";

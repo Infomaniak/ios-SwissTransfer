@@ -4,9 +4,11 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+        <string>applinks:swisstransfer-legacy.preprod.dev.infomaniak.ch?mode=developer</string>
         <string>applinks:swisstransfer.preprod.dev.infomaniak.ch?mode=developer</string>
         <string>applinks:swisstransfer.com</string>
         <string>applinks:www.swisstransfer.com</string>
+        <string>applinks:swisstransfer.infomaniak.com</string>
         <string>appclips:swisstransfer.com</string>
         <string>appclips:www.swisstransfer.com</string>
     </array>

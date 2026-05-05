@@ -32,7 +32,7 @@ struct SwissTransferApp: App {
     // periphery:ignore - Making sure the Sentry is initialized at a very early stage of the app launch.
     private let sentryService = SentryService()
     // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
-    private let dependencyInjectionHook = TargetAssembly()
+    private let dependencyInjectionHook = SwissTransferTargetAssembly()
 
     @UIApplicationDelegateAdaptor private var appDelegateAdaptor: AppDelegate
 
@@ -40,6 +40,7 @@ struct SwissTransferApp: App {
     @LazyInjectService private var notificationsHelper: NotificationsHelper
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @LazyInjectService private var appLaunchCounter: AppLaunchCounter
 
     @StateObject private var appSettings: FlowObserver<AppSettings>
     @StateObject private var universalLinksState = UniversalLinksState()
@@ -84,11 +85,15 @@ struct SwissTransferApp: App {
     }
 
     private func onWillEnterForeground() {
+        if rootViewState.state != .onboarding && rootViewState.state != .preloading {
+            appLaunchCounter.increase()
+        }
+
         notificationsHelper.removeAllUploadNotifications()
         checkAppVersion()
 
         Task {
-            guard let currentManager = await accountManager.getCurrentManager() else {
+            guard let currentManager = await accountManager.getCurrentUserSession()?.transferManager else {
                 return
             }
 
@@ -107,14 +112,11 @@ struct SwissTransferApp: App {
                 }
 
                 if rootViewState.state == .updateRequired {
-                    await rootViewState.transitionToMainViewIfPossible(
-                        accountManager: accountManager,
-                        rootViewState: rootViewState
-                    )
+                    await rootViewState.transitionToMainViewIfPossible()
                 }
 
                 if versionStatus == .canBeUpdated,
-                   case .mainView(let mainViewState) = rootViewState.state {
+                   case .mainView(let mainViewState, _) = rootViewState.state {
                     mainViewState.isShowingUpdateAvailable = true
                 }
             } catch {

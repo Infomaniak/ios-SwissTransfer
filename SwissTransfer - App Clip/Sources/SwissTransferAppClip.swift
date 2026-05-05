@@ -66,7 +66,7 @@ struct SwissTransferAppClip: App {
 
     private func onWillEnterForeground() {
         Task {
-            guard let currentManager = await accountManager.getCurrentManager() else {
+            guard let currentManager = await accountManager.getCurrentUserSession()?.transferManager else {
                 return
             }
 

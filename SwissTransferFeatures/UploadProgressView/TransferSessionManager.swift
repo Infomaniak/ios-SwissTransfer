@@ -34,7 +34,7 @@ final class TransferSessionManager: ObservableObject {
 
     @Published var fractionCompleted: Double = 0
     @Published var totalBytes: Int64 = 0
-    @Published var transferResult: Result<String, NSError>?
+    @Published var transferResult: Result<TransferCompletedResult, NSError>?
 
     private var cancellables: Set<AnyCancellable> = []
     private var transferManagerWorker: TransferManagerWorker?
@@ -42,7 +42,8 @@ final class TransferSessionManager: ObservableObject {
     private let displayScale = UIScreen.main.scale
 
     func uploadFiles(
-        for uploadSession: SendableUploadSession
+        for uploadSession: SendableUploadSession,
+        with uploadBackendRouter: UploadBackendRouter
     ) async throws {
         startThumbnailGeneration(uploadSession: uploadSession)
 
@@ -61,10 +62,11 @@ final class TransferSessionManager: ObservableObject {
         let remoteUploadFiles = uploadSession.files.compactMap { $0.remoteUploadFile }
         assert(remoteUploadFiles.count == uploadSession.files.count, "All files should have a remote upload file")
 
-        let worker = TransferManagerWorker(overallProgress: overallProgress, uploadSession: uploadSession, delegate: self)
-        transferManagerWorker = worker
+        transferManagerWorker = uploadBackendRouter.instantiateTransferManagerWorker(overallProgress: overallProgress,
+                                                                                     uploadSession: uploadSession,
+                                                                                     delegate: self)
 
-        try await worker.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
+        try await transferManagerWorker?.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
     }
 
     func startThumbnailGeneration(uploadSession: SendableUploadSession) {
@@ -97,10 +99,10 @@ extension TransferSessionManager: UploadCancellable {
 }
 
 extension TransferSessionManager: TransferManagerWorkerDelegate {
-    @MainActor func uploadDidComplete(result: Result<String, NSError>) {
+    @MainActor func uploadDidComplete(result: Result<TransferCompletedResult, NSError>) {
         Task {
-            if case .success(let transferUUID) = result {
-                await finishThumbnailGeneration(transferUUID: transferUUID)
+            if case .success(let transferCompleted) = result {
+                await finishThumbnailGeneration(transferUUID: transferCompleted.transferUUID)
             }
 
             transferResult = result
