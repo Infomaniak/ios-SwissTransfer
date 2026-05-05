@@ -55,11 +55,12 @@ public final class RootTransferViewModel: ObservableObject {
         }
 
         if transferType == .mail {
-            if authorEmail.isEmpty || !EmailChecker(email: authorEmail).validate() {
+            let trimmedAuthorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            if authorEmail.isEmpty || !EmailChecker(email: trimmedAuthorEmail).validate() {
                 return false
             }
-
-            if recipientsEmail.isEmpty && !EmailChecker(email: emailText).validate() {
+            let trimmedEmailText = emailText.trimmingCharacters(in: .whitespacesAndNewlines)
+            if recipientsEmail.isEmpty && !EmailChecker(email: trimmedEmailText).validate() {
                 return false
             }
         }

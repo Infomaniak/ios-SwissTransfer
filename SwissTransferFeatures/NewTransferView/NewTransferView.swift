@@ -119,9 +119,13 @@ public struct NewTransferView: View {
 
     private func startUpload() {
         Task {
-            if EmailChecker(email: viewModel.emailText).validate() {
-                viewModel.recipientsEmail.append(viewModel.emailText)
+            if viewModel.transferType == .mail {
+                let trimmedEmailText = viewModel.emailText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if EmailChecker(email: trimmedEmailText).validate() {
+                    viewModel.recipientsEmail.append(trimmedEmailText)
+                }
             }
+
             viewModel.emailText = ""
 
             isLoadingFileToUpload = true
