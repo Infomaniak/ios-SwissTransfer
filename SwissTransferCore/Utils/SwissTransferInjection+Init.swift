@@ -26,6 +26,7 @@ extension SwissTransferInjection {
     convenience init() {
         @InjectService var groupPathProvider: AppGroupPathProvidable
         let sentryWrapper = SentryKMPWrapper()
+        let unauthorizedHandler = UnauthorizedHandler()
 
         let realmRootDirectory = groupPathProvider.realmRootURL.path()
         let roomPath = groupPathProvider.realmRootURL.appending(path: "transfers").path()
@@ -36,7 +37,8 @@ extension SwissTransferInjection {
             userAgent: UserAgentBuilder().userAgent,
             legacyDatabaseRootDirectory: realmRootDirectory,
             databaseNameOrPath: roomPath,
-            crashReport: sentryWrapper
+            crashReport: sentryWrapper,
+            unauthorizedHandler: unauthorizedHandler
         )
     }
 }

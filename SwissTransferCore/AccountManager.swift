@@ -75,10 +75,15 @@ public actor AccountManager: ObservableObject {
 
     private var loadUserTask: Task<Void?, Never>?
 
+    public var currentUserId: Int {
+        get { UserDefaults.shared.currentUserId }
+        set { UserDefaults.shared.currentUserId = newValue }
+    }
+
     init() {}
 
     public func createAndSetCurrentAccount() {
-        UserDefaults.shared.currentUserId = AccountManager.guestUserId
+        currentUserId = AccountManager.guestUserId
         objectWillChange.send()
     }
 
@@ -106,7 +111,7 @@ public actor AccountManager: ObservableObject {
             throw ErrorDomain.noUserSession
         }
 
-        UserDefaults.shared.currentUserId = user.id
+        currentUserId = user.id
         objectWillChange.send()
     }
 
@@ -121,7 +126,7 @@ public actor AccountManager: ObservableObject {
     }
 
     public func switchUser(newCurrentUserId: Int) async {
-        UserDefaults.shared.currentUserId = newCurrentUserId
+        currentUserId = newCurrentUserId
         await enableBugTrackerIfAvailable()
         objectWillChange.send()
     }
@@ -159,8 +164,6 @@ public actor AccountManager: ObservableObject {
     }
 
     public func getCurrentUserSession() async -> UserSession? {
-        let currentUserId = UserDefaults.shared.currentUserId
-
         guard currentUserId > 0 || currentUserId == AccountManager.guestUserId else {
             return nil
         }
@@ -199,6 +202,15 @@ public actor AccountManager: ObservableObject {
         return Array(managers.keys)
     }
 
+    public func removeAccountAndSwitchToNextUserIfNecessary(userId: Int) async {
+        let isCurrentUser = userId == currentUserId
+
+        await removeTokenAndAccountFor(userId: userId)
+        if isCurrentUser {
+            await switchToNextAccountIfPossible()
+        }
+    }
+
     public func removeTokenAndAccountFor(userId: Int) async {
         guard let removedToken = tokenStore.removeTokenFor(userId: userId) else { return }
 
@@ -217,8 +229,17 @@ public actor AccountManager: ObservableObject {
         }
     }
 
+    public func switchToNextAccountIfPossible() async {
+        let tokens = tokenStore.getAllTokens()
+        guard let nextToken = tokens.first(where: { $0.value.userId != currentUserId }) else {
+            return
+        }
+
+        await switchUser(newCurrentUserId: nextToken.value.userId)
+    }
+
     public func enableBugTrackerIfAvailable() async {
-        if let currentUser = await userProfileStore.getUserProfile(id: UserDefaults.shared.currentUserId),
+        if let currentUser = await userProfileStore.getUserProfile(id: currentUserId),
            let token = tokenStore.tokenFor(userId: currentUser.id),
            currentUser.isStaff == true {
             bugTracker.activateOnScreenshot()
