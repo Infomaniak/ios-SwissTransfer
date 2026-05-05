@@ -44,6 +44,7 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
+    @Published public var emailText = ""
 
     public private(set) var initializedFromShare: Bool
 
@@ -54,11 +55,12 @@ public final class RootTransferViewModel: ObservableObject {
         }
 
         if transferType == .mail {
-            if authorEmail.isEmpty || !EmailChecker(email: authorEmail).validate() {
+            let trimmedAuthorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            if authorEmail.isEmpty || !EmailChecker(email: trimmedAuthorEmail).validate() {
                 return false
             }
-
-            if recipientsEmail.isEmpty {
+            let trimmedEmailText = emailText.trimmingCharacters(in: .whitespacesAndNewlines)
+            if recipientsEmail.isEmpty && !EmailChecker(email: trimmedEmailText).validate() {
                 return false
             }
         }

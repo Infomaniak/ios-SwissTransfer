@@ -31,6 +31,7 @@ struct NewTransferDetailsView: View {
     @Binding var authorEmail: String
     @Binding var recipientsEmail: OrderedSet<String>
     @Binding var message: String
+    @Binding var emailText: String
     @Binding var title: String
 
     let transferType: TransferType
@@ -45,7 +46,7 @@ struct NewTransferDetailsView: View {
                 AuthorMailTextFieldView(authorEmail: $authorEmail)
                     .disabled(currentUser?.email != nil)
 
-                RecipientsTextFieldView(recipients: $recipientsEmail)
+                RecipientsTextFieldView(recipients: $recipientsEmail, text: $emailText)
             }
 
             STTextEditor(
@@ -69,6 +70,7 @@ struct NewTransferDetailsView: View {
         authorEmail: .constant(""),
         recipientsEmail: .constant(OrderedSet()),
         message: .constant(""),
+        emailText: .constant(""),
         title: .constant(""),
         transferType: .link
     )
