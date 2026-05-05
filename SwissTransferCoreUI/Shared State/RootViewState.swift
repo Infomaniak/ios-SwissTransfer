@@ -67,7 +67,7 @@ public final class RootViewState: ObservableObject {
             }
 
         loggedOutObservation = NotificationCenter.default.publisher(for: .userWasLoggedOut)
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.showUserWasLoggedOutAlert = true

@@ -75,7 +75,7 @@ public actor AccountManager: ObservableObject {
 
     private var loadUserTask: Task<Void?, Never>?
 
-    private var currentUserId: Int {
+    public var currentUserId: Int {
         get { UserDefaults.shared.currentUserId }
         set { UserDefaults.shared.currentUserId = newValue }
     }

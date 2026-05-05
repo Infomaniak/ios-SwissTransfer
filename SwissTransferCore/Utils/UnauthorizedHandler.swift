@@ -34,8 +34,11 @@ final class UnauthorizedHandler: STNUnauthorizedHandler {
         SentrySDK.capture(message: "Received HTTP Status 401 Unauthorized")
 
         @InjectService var accountManager: AccountManager
+        let isCurrentUser = await accountManager.currentUserId == userId
         await accountManager.removeAccountAndSwitchToNextUserIfNecessary(userId: userId)
 
-        NotificationCenter.default.post(name: .userWasLoggedOut, object: nil)
+        if isCurrentUser {
+            NotificationCenter.default.post(name: .userWasLoggedOut, object: nil)
+        }
     }
 }
