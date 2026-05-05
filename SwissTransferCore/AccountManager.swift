@@ -202,6 +202,15 @@ public actor AccountManager: ObservableObject {
         return Array(managers.keys)
     }
 
+    public func removeAccountAndSwitchToNextUserIfNecessary(userId: Int) async {
+        let isCurrentUser = userId == currentUserId
+
+        await removeTokenAndAccountFor(userId: userId)
+        if isCurrentUser {
+            await switchToNextAccountIfPossible()
+        }
+    }
+
     public func removeTokenAndAccountFor(userId: Int) async {
         guard let removedToken = tokenStore.removeTokenFor(userId: userId) else { return }
 
@@ -218,6 +227,15 @@ public actor AccountManager: ObservableObject {
             guard case .failure(let error) = result else { return }
             Logger.general.error("Failed to delete api token: \(error.localizedDescription)")
         }
+    }
+
+    public func switchToNextAccountIfPossible() async {
+        let tokens = tokenStore.getAllTokens()
+        guard let nextToken = tokens.first(where: { $0.value.userId != currentUserId }) else {
+            return
+        }
+
+        await switchUser(newCurrentUserId: nextToken.value.userId)
     }
 
     public func enableBugTrackerIfAvailable() async {

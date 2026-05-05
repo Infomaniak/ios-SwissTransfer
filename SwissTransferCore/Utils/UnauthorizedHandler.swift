@@ -27,6 +27,6 @@ final class UnauthorizedHandler: STNUnauthorizedHandler {
         }
 
         @InjectService var accountManager: AccountManager
-        await accountManager.removeTokenAndAccountFor(userId: userId)
+        await accountManager.removeAccountAndSwitchToNextUserIfNecessary(userId: userId)
     }
 }
