@@ -75,10 +75,15 @@ public actor AccountManager: ObservableObject {
 
     private var loadUserTask: Task<Void?, Never>?
 
+    private var currentUserId: Int {
+        get { UserDefaults.shared.currentUserId }
+        set { UserDefaults.shared.currentUserId = newValue }
+    }
+
     init() {}
 
     public func createAndSetCurrentAccount() {
-        UserDefaults.shared.currentUserId = AccountManager.guestUserId
+        currentUserId = AccountManager.guestUserId
         objectWillChange.send()
     }
 
@@ -106,7 +111,7 @@ public actor AccountManager: ObservableObject {
             throw ErrorDomain.noUserSession
         }
 
-        UserDefaults.shared.currentUserId = user.id
+        currentUserId = user.id
         objectWillChange.send()
     }
 
@@ -121,7 +126,7 @@ public actor AccountManager: ObservableObject {
     }
 
     public func switchUser(newCurrentUserId: Int) async {
-        UserDefaults.shared.currentUserId = newCurrentUserId
+        currentUserId = newCurrentUserId
         await enableBugTrackerIfAvailable()
         objectWillChange.send()
     }
@@ -159,8 +164,6 @@ public actor AccountManager: ObservableObject {
     }
 
     public func getCurrentUserSession() async -> UserSession? {
-        let currentUserId = UserDefaults.shared.currentUserId
-
         guard currentUserId > 0 || currentUserId == AccountManager.guestUserId else {
             return nil
         }
@@ -218,7 +221,7 @@ public actor AccountManager: ObservableObject {
     }
 
     public func enableBugTrackerIfAvailable() async {
-        if let currentUser = await userProfileStore.getUserProfile(id: UserDefaults.shared.currentUserId),
+        if let currentUser = await userProfileStore.getUserProfile(id: currentUserId),
            let token = tokenStore.tokenFor(userId: currentUser.id),
            currentUser.isStaff == true {
             bugTracker.activateOnScreenshot()
