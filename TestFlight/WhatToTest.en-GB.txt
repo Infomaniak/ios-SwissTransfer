@@ -1,1 +1,1 @@
-Bug fixes and various improvements.
+You can now connect your Infomaniak account in SwissTransfer!
