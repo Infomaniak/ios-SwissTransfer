@@ -128,7 +128,7 @@ struct UploadSuccessQRCodeView: View {
         }
         .sheet(isPresented: $isShowingShareSheet) {
             if let url = transferURL {
-                UploadSucessActivityViewController(activityItems: [url])
+                UploadSuccessActivityViewController(activityItems: [url])
                     .presentationDetents([.medium])
             }
         }

@@ -1,4 +1,3 @@
-//
 /*
  Infomaniak SwissTransfer - iOS App
  Copyright (C) 2025 Infomaniak Network SA
@@ -19,17 +18,17 @@
 
 import SwiftUI
 
-struct UploadSucessActivityViewController: UIViewControllerRepresentable {
+struct UploadSuccessActivityViewController: UIViewControllerRepresentable {
     var activityItems: [Any]
     var applicationActivities: [UIActivity]?
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<UploadSucessActivityViewController>)
+    func makeUIViewController(context: UIViewControllerRepresentableContext<UploadSuccessActivityViewController>)
         -> UIActivityViewController {
         return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
     }
 
     func updateUIViewController(
         _ uiViewController: UIActivityViewController,
-        context: UIViewControllerRepresentableContext<UploadSucessActivityViewController>
+        context: UIViewControllerRepresentableContext<UploadSuccessActivityViewController>
     ) {}
 }

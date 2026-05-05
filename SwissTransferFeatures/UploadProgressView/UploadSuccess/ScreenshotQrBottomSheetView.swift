@@ -56,10 +56,8 @@ struct ScreenshotQrBottomSheetView: View {
         ) {
             Button(STResourcesStrings.Localizable.buttonShare) {
                 isShowingShareSheet = true
-            }
-            .simultaneousGesture(TapGesture().onEnded {
                 dismiss()
-            })
+            }
             .buttonStyle(.ikBorderedProminent)
         }
         .matomoView(view: .screenshotQrCode)
