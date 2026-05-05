@@ -18,6 +18,7 @@
 
 import Foundation
 import InfomaniakDI
+import Sentry
 import STCore
 
 final class UnauthorizedHandler: STNUnauthorizedHandler {
@@ -25,6 +26,8 @@ final class UnauthorizedHandler: STNUnauthorizedHandler {
         guard let userId = userId?.intValue else {
             return
         }
+
+        SentrySDK.capture(message: "Received HTTP Status 401 Unauthorized")
 
         @InjectService var accountManager: AccountManager
         await accountManager.removeAccountAndSwitchToNextUserIfNecessary(userId: userId)
