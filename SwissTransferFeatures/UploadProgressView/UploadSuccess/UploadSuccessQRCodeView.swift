@@ -58,6 +58,7 @@ struct UploadSuccessQRCodeView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: Self.qrCodeSize)
+                .accessibilityHidden(true)
 
             Text(type.successTitle)
                 .font(.ST.title)

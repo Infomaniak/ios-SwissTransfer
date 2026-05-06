@@ -33,8 +33,10 @@ public struct SeparatedItemsView<Lhs: View, Rhs: View>: View {
         HStack(spacing: IKPadding.micro) {
             lhs
             Text("•")
+                .accessibilityHidden(true)
             rhs
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

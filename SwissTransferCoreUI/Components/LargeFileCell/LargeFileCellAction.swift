@@ -23,6 +23,7 @@ import SwissTransferCore
 public protocol LargeFileCellAction {
     var action: (any DisplayableFile) -> Void { get }
     func icon(for file: any DisplayableFile, transferUUID: String?) -> Image
+    func label(for file: any DisplayableFile, transferUUID: String?) -> String
 }
 
 public extension LargeFileCellAction {
@@ -36,6 +37,10 @@ public struct RemoveFileAction: LargeFileCellAction {
 
     public func icon(for file: any DisplayableFile, transferUUID: String?) -> Image {
         Image(systemName: "xmark")
+    }
+
+    public func label(for file: any DisplayableFile, transferUUID: String?) -> String {
+        return STResourcesStrings.Localizable.contentDescriptionButtonRemove
     }
 
     public init(action: @escaping (any DisplayableFile) -> Void) {
@@ -52,6 +57,14 @@ public struct DownloadFileAction: LargeFileCellAction {
         }
 
         return STResourcesAsset.Images.check.swiftUIImage
+    }
+
+    public func label(for file: any DisplayableFile, transferUUID: String?) -> String {
+        guard file.existsLocally(transferUUID: transferUUID) else {
+            return STResourcesStrings.Localizable.buttonDownload
+        }
+
+        return STResourcesStrings.Localizable.buttonDownloaded
     }
 
     public init(action: @escaping (any DisplayableFile) -> Void) {

@@ -75,6 +75,7 @@ public struct IllustrationAndTextView: View {
             if let image {
                 image
                     .imageThatFits()
+                    .accessibilityHidden(true)
             }
 
             VStack(spacing: IKPadding.medium) {
