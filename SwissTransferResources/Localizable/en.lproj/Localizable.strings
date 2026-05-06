@@ -94,9 +94,6 @@
 /* loco:66a1fa770af8cf8470002102 */
 "contentDescriptionCreateNewTransferButton" = "New transfer";
 
-/* loco:69f88d0b9be8973ff901e7a3 */
-"contentDescriptionViewTransferDetails" = "View transfer details";
-
 /* loco:67e54599054e355e4f053752 */
 "dailyTransferLimitReached" = "You have reached your daily transfer limit";
 

@@ -83,8 +83,6 @@ struct TransferCell: View {
             }
         }
         .padding(.horizontal, value: .medium)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionViewTransferDetails)
     }
 }
 

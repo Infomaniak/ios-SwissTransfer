@@ -36,6 +36,7 @@ public struct SeparatedItemsView<Lhs: View, Rhs: View>: View {
                 .accessibilityHidden(true)
             rhs
         }
+        .accessibilityElement(children: .combine)
     }
 }
 
