@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreUIKit
 import InfomaniakDI
 import SwissTransferCore
 
@@ -25,6 +26,9 @@ class SwissTransferShareExtensionTargetAssembly: TargetAssembly {
         return [
             Factory(type: AlertPresentable.self) { _, _ in
                 AlertPresenter()
+            },
+            Factory(type: ApplicationStatable.self) { _, _ in
+                ApplicationState()
             }
         ]
     }
