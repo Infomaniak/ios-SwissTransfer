@@ -45,9 +45,6 @@ public struct RootView: View {
             }
         }
         .environmentObject(rootViewState)
-        .alert(CoreUILocalizable.youHaveBeenDisconnectedLabel, isPresented: $rootViewState.showUserWasLoggedOutAlert) {
-            Button(CoreUILocalizable.buttonClose) {}
-        }
     }
 }
 

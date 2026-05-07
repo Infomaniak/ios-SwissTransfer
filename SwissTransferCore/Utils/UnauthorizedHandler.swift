@@ -21,10 +21,6 @@ import InfomaniakDI
 import Sentry
 import STCore
 
-public extension Notification.Name {
-    static let userWasLoggedOut = Notification.Name("userWasLoggedOut")
-}
-
 final class UnauthorizedHandler: STNUnauthorizedHandler {
     func __onUnauthorized(userId: KotlinLong?) async throws {
         guard let userId = userId?.intValue else {
@@ -34,11 +30,8 @@ final class UnauthorizedHandler: STNUnauthorizedHandler {
         SentrySDK.capture(message: "Received HTTP Status 401 Unauthorized")
 
         @InjectService var accountManager: AccountManager
-        let isCurrentUser = await accountManager.currentUserId == userId
         await accountManager.removeAccountAndSwitchToNextUserIfNecessary(userId: userId)
 
-        if isCurrentUser {
-            NotificationCenter.default.post(name: .userWasLoggedOut, object: nil)
-        }
+        NotificationsHelper.sendDisconnectedNotification()
     }
 }
