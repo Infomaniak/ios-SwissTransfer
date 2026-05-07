@@ -16,16 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import InfomaniakCore
-import InfomaniakDI
-import SwissTransferCore
+import UIKit
 
-class SwissTransferTargetAssembly: TargetAssembly {
-    override class func getTargetServices() -> [Factory] {
-        return [
-            Factory(type: AlertPresentable.self) { _, _ in
-                AlertPresenter()
-            }
-        ]
-    }
+public protocol AlertPresentable: Sendable {
+    @MainActor func show(title: String, message: String?, actions: [UIAlertAction])
 }
