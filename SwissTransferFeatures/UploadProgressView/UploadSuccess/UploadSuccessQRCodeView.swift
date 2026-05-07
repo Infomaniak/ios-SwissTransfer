@@ -35,6 +35,7 @@ struct UploadSuccessQRCodeView: View {
     @Environment(\.currentUser) private var currentUser
 
     @State private var isShowingShareTipSheet = false
+    @State private var isShowingShareSheet = false
 
     let type: TransferType
     let transferCompletedResult: TransferCompletedResult
@@ -123,7 +124,13 @@ struct UploadSuccessQRCodeView: View {
             }
         }
         .stDiscoveryPresenter(isPresented: $isShowingShareTipSheet, bottomPadding: 0) {
-            ScreenshotQrBottomSheetView()
+            ScreenshotQrBottomSheetView(isShowingShareSheet: $isShowingShareSheet)
+        }
+        .sheet(isPresented: $isShowingShareSheet) {
+            if let url = transferURL {
+                UploadSuccessActivityViewController(activityItems: [url])
+                    .presentationDetents([.medium])
+            }
         }
     }
 }
