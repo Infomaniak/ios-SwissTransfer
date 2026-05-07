@@ -192,6 +192,7 @@ let project = Project(
                 .target(name: "SwissTransferCoreUI"),
                 .target(name: "SwissTransferShareExtension"),
                 .target(name: "SwissTransfer - App Clip"),
+                .external(name: "InfomaniakCoreUIKit"),
                 .external(name: "InfomaniakCoreSwiftUI"),
                 .external(name: "InfomaniakCore"),
                 .external(name: "InfomaniakDI"),
@@ -260,6 +261,7 @@ let project = Project(
             dependencies: [
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
+                .external(name: "InfomaniakCoreUIKit"),
                 .external(name: "InfomaniakDI"),
                 rootTransferView.asDependency
             ],

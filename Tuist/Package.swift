@@ -13,6 +13,7 @@ let packageSettings = PackageSettings(
         "InfomaniakBugTracker": .framework,
         "InfomaniakConcurrency": .framework,
         "InfomaniakCoreCommonUI": .framework,
+        "InfomaniakCoreUIKit": .framework,
         "InfomaniakCoreSwiftUI": .framework,
         "InfomaniakCoreUIResources": .framework,
         "InfomaniakCore": .framework,
