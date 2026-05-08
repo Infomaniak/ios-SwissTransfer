@@ -45,18 +45,30 @@ public final class AlertPresenter: AlertPresentable {
             self.alertWindow = nil
         }
 
-        guard let scene = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .first(where: { $0.activationState == .foregroundActive })
-        else { return }
-
-        let rootViewController = AlertHostViewController(alert: alert)
-
-        let window = UIWindow(windowScene: scene)
-        window.rootViewController = rootViewController
+        let window = AlertWindow()
+        window.rootViewController = AlertHostViewController(alert: alert)
         window.windowLevel = .alert
         window.makeKeyAndVisible()
         alertWindow = window
+    }
+}
+
+private final class AlertWindow: UIWindow {
+    init() {
+        if let activeForegroundScene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            super.init(windowScene: activeForegroundScene)
+        } else if let inactiveForegroundScene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundInactive }) as? UIWindowScene {
+            super.init(windowScene: inactiveForegroundScene)
+        } else {
+            super.init(frame: UIScreen.main.bounds)
+        }
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
