@@ -21,7 +21,7 @@ import InfomaniakCoreUIKit
 import InfomaniakDI
 import SwissTransferCore
 
-class SwissTransferTargetAssembly: TargetAssembly {
+class SwissTransferAppTargetAssembly: SwissTransferTargetAssembly {
     override class func getTargetServices() -> [Factory] {
         return [
             Factory(type: AlertPresentable.self) { _, _ in
