@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "branch" : "feat/public-target-assembly-extension",
-        "revision" : "b5fcb1197f8fad1ae0dd5ba0b4d993fe2f67aa96"
+        "revision" : "abd50a55c2cbb8df9c6c93764a89eddbaa856f9c",
+        "version" : "18.10.3"
       }
     },
     {
