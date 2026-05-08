@@ -27,7 +27,7 @@ class ShareViewController: UIViewController {
     // periphery:ignore - Making sure the Sentry is initialized at a very early stage of the extension launch.
     private let sentryService = SentryService()
     // periphery:ignore - Making sure the DI is registered at a very early stage of the extension launch.
-    private let dependencyInjectionHook = TargetAssembly()
+    private let dependencyInjectionHook = SwissTransferShareExtensionTargetAssembly()
 
     override func viewDidLoad() {
         super.viewDidLoad()

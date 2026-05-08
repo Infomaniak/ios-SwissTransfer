@@ -17,6 +17,9 @@
  */
 
 import Foundation
+import InfomaniakCoreUIKit
+import InfomaniakCoreUIResources
+import InfomaniakDI
 import OSLog
 import STResources
 import UIKit
@@ -27,6 +30,10 @@ public struct NotificationsHelper: Sendable {
         public static let general = "com.infomaniak.swisstransfer.general"
         public static let upload = "com.infomaniak.swisstransfer.upload"
         public static let download = "com.infomaniak.swisstransfer.download"
+    }
+
+    private enum NotificationIdentifier {
+        static let disconnected = "accountDisconnected"
     }
 
     public enum UserInfoKeys {
@@ -50,8 +57,7 @@ public struct NotificationsHelper: Sendable {
 
         let options: UNAuthorizationOptions = [.alert, .sound]
         do {
-            let granted = try await notificationCenter.requestAuthorization(options: options)
-            return granted
+            return try await notificationCenter.requestAuthorization(options: options)
         } catch {
             return false
         }
@@ -116,6 +122,33 @@ public struct NotificationsHelper: Sendable {
 
             let request = UNNotificationRequest(identifier: "upload_success", content: content, trigger: immediateTrigger)
             try? await UNUserNotificationCenter.current().add(request)
+        }
+    }
+
+    public static func sendDisconnectedNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = CoreUILocalizable.errorLoginTitle
+        content.body = CoreUILocalizable.youHaveBeenDisconnectedLabel
+        content.categoryIdentifier = CategoryIdentifier.general
+        content.sound = .default
+        sendImmediately(notification: content, id: NotificationIdentifier.disconnected)
+    }
+
+    private static func sendImmediately(notification: UNMutableNotificationContent, id: String) {
+        Task { @MainActor in
+            @LazyInjectService var applicationState: ApplicationStatable
+            let isInBackground = Bundle.main.isExtension || applicationState.applicationState != .active
+
+            if isInBackground {
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
+                let request = UNNotificationRequest(identifier: id, content: notification, trigger: trigger)
+                try? await UNUserNotificationCenter.current().add(request)
+            } else {
+                @InjectService var alertPresenter: AlertPresentable
+                alertPresenter.show(title: notification.title, message: notification.body, actions: [
+                    UIAlertAction(title: CoreUILocalizable.buttonClose, style: .default)
+                ])
+            }
         }
     }
 }

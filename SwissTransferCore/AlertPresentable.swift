@@ -16,22 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Foundation
-import InfomaniakDI
-import Sentry
-import STCore
+import UIKit
 
-final class UnauthorizedHandler: STNUnauthorizedHandler {
-    func __onUnauthorized(userId: KotlinLong?) async throws {
-        guard let userId = userId?.intValue else {
-            return
-        }
-
-        SentrySDK.capture(message: "Received HTTP Status 401 Unauthorized")
-
-        @InjectService var accountManager: AccountManager
-        await accountManager.removeAccountAndSwitchToNextUserIfNecessary(userId: userId)
-
-        NotificationsHelper.sendDisconnectedNotification()
-    }
+public protocol AlertPresentable: Sendable {
+    @MainActor func show(title: String, message: String?, actions: [UIAlertAction])
 }

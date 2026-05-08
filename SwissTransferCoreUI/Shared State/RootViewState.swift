@@ -48,10 +48,8 @@ public enum RootViewType: Equatable {
 @MainActor
 public final class RootViewState: ObservableObject {
     @Published public var state: RootViewType = .preloading
-    @Published public var showUserWasLoggedOutAlert = false
 
     private var accountManagerObservation: AnyCancellable?
-    private var loggedOutObservation: AnyCancellable?
 
     public init() {
         @InjectService var accountManager: AccountManager
@@ -64,13 +62,6 @@ public final class RootViewState: ObservableObject {
                 Task {
                     await self?.transitionToMainViewIfPossible()
                 }
-            }
-
-        loggedOutObservation = NotificationCenter.default.publisher(for: .userWasLoggedOut)
-            .removeDuplicates()
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.showUserWasLoggedOutAlert = true
             }
     }
 
