@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire",
       "state" : {
-        "revision" : "e938f8c66708e7352fc7e3512647fa54255b267a",
-        "version" : "5.11.2"
+        "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
+        "version" : "5.12.0"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-features",
       "state" : {
-        "revision" : "9f1e4772c9e31941d26d8e589277344197da51d3",
-        "version" : "8.8.0"
+        "revision" : "87cc1a846fc0dad2a25b2261d33950d98395e66e",
+        "version" : "8.9.1"
       }
     },
     {
@@ -185,8 +185,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "3a22ecd00ad1398747bfd587e44df82716908dd3",
-        "version" : "9.10.0"
+        "revision" : "54d5fbcdea46c37a5de01bab5fef48dc78baec84",
+        "version" : "9.12.1"
       }
     },
     {
@@ -212,8 +212,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "6675bc0ff86e61436e615df6fc5174e043e57924",
-        "version" : "1.4.1"
+        "revision" : "03cc312c2c933ed87abace34044a5dff7a3117c1",
+        "version" : "1.5.0"
       }
     },
     {
