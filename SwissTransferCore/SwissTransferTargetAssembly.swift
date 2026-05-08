@@ -52,15 +52,9 @@ extension InfomaniakCore.ApiEnvironment {
     }
 }
 
-extension [Factory] {
-    func registerFactoriesInDI() {
-        forEach { SimpleResolver.sharedResolver.store(factory: $0) }
-    }
-}
-
 /// Each target should subclass `TargetAssembly` and override `getTargetServices` to provide additional, target related, services.
 @MainActor
-open class TargetAssembly {
+open class SwissTransferTargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
     #if DEBUG

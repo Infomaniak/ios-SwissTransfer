@@ -30,7 +30,7 @@ struct SwissTransferAppClip: App {
     // periphery:ignore - Making sure the Sentry is initialized at a very early stage of the app launch.
     private let sentryService = SentryService()
     // periphery:ignore - Making sure the DI is registered at a very early stage of the app launch.
-    private let dependencyInjectionHook = TargetAssembly()
+    private let dependencyInjectionHook = SwissTransferTargetAssembly()
 
     @LazyInjectService private var downloadManager: DownloadManager
     @LazyInjectService private var notificationCenterDelegate: NotificationCenterDelegate
