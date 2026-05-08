@@ -1,1 +1,3 @@
-Vous pouvez maintenant connecter votre compte Infomaniak dans SwissTransfer !
+- Expérience utilisateur de transfert par e-mail améliorée
+- Amélioration de l'accessibilité (VoiceOver)
+- Corrections de bugs et optimisations diverses
