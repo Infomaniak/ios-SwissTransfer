@@ -1,3 +1,2 @@
-- Expérience utilisateur de transfert par e-mail améliorée
-- Amélioration de l'accessibilité (VoiceOver)
+- Améliorations des performances lors de la création d'un nouveau transfert
 - Corrections de bugs et optimisations diverses

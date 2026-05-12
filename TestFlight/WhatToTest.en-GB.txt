@@ -1,3 +1,2 @@
-- Improved user experience for transfer by email
-- Accessibility improvements (VoiceOver)
+- Performance improvements when creating a new transfer
 - Bug fixes and various optimizations
