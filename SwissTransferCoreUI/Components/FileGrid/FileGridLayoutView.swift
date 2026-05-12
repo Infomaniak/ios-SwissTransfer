@@ -26,16 +26,14 @@ public struct FileGridLayoutView<Content: View>: View {
         GridItem(.adaptive(minimum: 150, maximum: 180), spacing: IKPadding.medium)
     ]
 
-    private let content: Content
+    private let content: () -> Content
 
-    public init(@ViewBuilder content: () -> Content) {
-        self.content = content()
+    public init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content
     }
 
     public var body: some View {
-        LazyVGrid(columns: columns, alignment: .center, spacing: IKPadding.medium, pinnedViews: []) {
-            content
-        }
+        LazyVGrid(columns: columns, alignment: .center, spacing: IKPadding.medium, pinnedViews: [], content: content)
     }
 }
 
