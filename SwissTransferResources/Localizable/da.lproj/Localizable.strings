@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: da, Danish
  * Tagged: ios
- * Exported by: Philippe Weidmann
- * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 12 May 2026 08:30:33 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -526,6 +526,12 @@
 /* loco:6707e09639f0b3f32007d2e2 */
 "transferSpaceLeft-plural" = "%@ tilbage";
 
+/* loco:6998516ab23ec22861057358 */
+"transferSpaceLeft-plural-2" = "";
+
+/* loco:6998516ab23ec22861057359 */
+"transferSpaceLeft-plural-3" = "";
+
 /* loco:69aa93edc7dabf95130ef882 */
 "transferTitlePlaceholder" = "Giv din overførsel en titel";
 
@@ -564,9 +570,6 @@
 
 /* loco:678f4a42026090be7200ee62 */
 "transferVirusDetectedTitle" = "Ikke-kompatible filer";
-
-/* loco:6800aa6d8135c915920188b2 */
-"understandTitleButton" = "Jeg forstod!";
 
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Er du sikker på, at du vil annullere overføringen?";
