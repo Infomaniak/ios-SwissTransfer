@@ -58,6 +58,7 @@ struct UploadContinuationCoordinator {
                 title: STResourcesStrings.Localizable.uploadProgressIndication,
                 subtitle: STResourcesStrings.Localizable.notificationProgressSubtitle(0.formatted(.defaultPercent))
             )
+            request.strategy = .fail
 
             BGTaskScheduler.shared.register(forTaskWithIdentifier: taskIdentifier, using: nil) { task in
                 guard let task = task as? BGContinuedProcessingTask else {
