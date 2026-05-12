@@ -55,7 +55,7 @@ struct NewTransferFilesCellView: View {
                 .foregroundStyle(Color.ST.textSecondary)
 
                 ScrollView(.horizontal) {
-                    HStack(spacing: IKPadding.medium) {
+                    LazyHStack(spacing: IKPadding.medium) {
                         AddFilesMenu(
                             selection: $selectedItems,
                             maxSelectionCount: NewTransferConstants.maxFileCount - newTransferFileManager.filesCount,
