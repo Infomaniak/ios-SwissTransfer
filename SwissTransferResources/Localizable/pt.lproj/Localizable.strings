@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: pt, Portuguese
  * Tagged: ios
- * Exported by: Philippe Weidmann
- * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 12 May 2026 08:30:33 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -458,7 +458,7 @@
 "sharePasswordButton" = "Copiar palavra-passe";
 
 /* loco:673358d908873a82380b99b2 */
-"sharePasswordDescription" = "Aqui está a senha para descarregar os ficheiros!";
+"sharePasswordDescription" = "Aqui está a palavra mágica para descarregar os ficheiros!";
 
 /* loco:673358d1792d18d1c40c4612 */
 "sharePasswordTitle" = "Esta transferência é segura";
@@ -526,6 +526,12 @@
 /* loco:6707e09639f0b3f32007d2e2 */
 "transferSpaceLeft-plural" = "%@ restantes";
 
+/* loco:6998516ab23ec22861057358 */
+"transferSpaceLeft-plural-2" = "";
+
+/* loco:6998516ab23ec22861057359 */
+"transferSpaceLeft-plural-3" = "";
+
 /* loco:69aa93edc7dabf95130ef882 */
 "transferTitlePlaceholder" = "Dê um título à sua transferência";
 
@@ -564,9 +570,6 @@
 
 /* loco:678f4a42026090be7200ee62 */
 "transferVirusDetectedTitle" = "Ficheiros não conformes";
-
-/* loco:6800aa6d8135c915920188b2 */
-"understandTitleButton" = "Percebi!";
 
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Tens a certeza de que queres cancelar a transferência?";

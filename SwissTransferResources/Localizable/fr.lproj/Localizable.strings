@@ -3,8 +3,8 @@
  * Project: SwissTransfer
  * Locale: fr, French
  * Tagged: ios
- * Exported by: Philippe Weidmann
- * Exported at: Mon, 09 Mar 2026 08:34:04 +0100
+ * Exported by: Valentin Perignon
+ * Exported at: Tue, 12 May 2026 08:30:33 +0200
  */
 
 /* loco:6707f4ba182e2d63b400cd42 */
@@ -248,7 +248,7 @@
 "onboardingExpirationSubtitleArgument" = "30 jours.";
 
 /* loco:6746e853f31dad284f0aa742 */
-"onboardingExpirationSubtitleTemplate" = "Partages tes fichiers par e-mail, lien ou QR code. Tes liens restent actifs %@";
+"onboardingExpirationSubtitleTemplate" = "Partage tes fichiers par e-mail, lien ou QR code. Tes liens restent actifs %@";
 
 /* loco:6746e6c255f60b501f02d372 */
 "onboardingExpirationTitle" = "Joue tes meilleures cartes !";
@@ -526,6 +526,12 @@
 /* loco:6707e09639f0b3f32007d2e2 */
 "transferSpaceLeft-plural" = "%@ restants";
 
+/* loco:6998516ab23ec22861057358 */
+"transferSpaceLeft-plural-2" = "";
+
+/* loco:6998516ab23ec22861057359 */
+"transferSpaceLeft-plural-3" = "";
+
 /* loco:69aa93edc7dabf95130ef882 */
 "transferTitlePlaceholder" = "Donne un titre à ton transfert";
 
@@ -565,14 +571,11 @@
 /* loco:678f4a42026090be7200ee62 */
 "transferVirusDetectedTitle" = "Fichiers non conformes";
 
-/* loco:6800aa6d8135c915920188b2 */
-"understandTitleButton" = "J’ai compris !";
-
 /* loco:672104c0398a368f6308c152 */
 "uploadCancelConfirmBottomSheetTitle" = "Es-tu certain de vouloir annuler le transfert ?";
 
 /* loco:6729e40f3f0d68fc7e03bab2 */
-"uploadErrorDescription" = "Le transfert n’a pas fonctionné, donnes-lui une autre chance. Si le problème persiste, contacte notre support.";
+"uploadErrorDescription" = "Le transfert n’a pas fonctionné, donne-lui une autre chance. Si le problème persiste, contacte notre support.";
 
 /* loco:6729d9d657eb1ed1a40f5f92 */
 "uploadErrorTitle" = "Qu’est-ce que quoi ?";
