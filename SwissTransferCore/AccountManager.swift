@@ -77,10 +77,17 @@ public actor AccountManager: ObservableObject {
 
     public var currentUserId: Int {
         get { UserDefaults.shared.currentUserId }
-        set { UserDefaults.shared.currentUserId = newValue }
+        set {
+            previousCurrentUserId = UserDefaults.shared.currentUserId
+            UserDefaults.shared.currentUserId = newValue
+        }
     }
 
-    init() {}
+    private var previousCurrentUserId: Int
+
+    init() {
+        previousCurrentUserId = UserDefaults.shared.currentUserId
+    }
 
     public func createAndSetCurrentAccount() {
         currentUserId = AccountManager.guestUserId
@@ -150,6 +157,9 @@ public actor AccountManager: ObservableObject {
             loadUserTask = Task {
                 let injection = SwissTransferInjection()
                 if userId > 0, let token {
+                    if previousCurrentUserId == Self.guestUserId {
+                        try? await injection.accountManager.loadUser(user: STUserGuestUser.shared)
+                    }
                     try? await injection.accountManager.loadUser(user: STUserAuthUser(id: Int64(userId), token: token))
                 } else {
                     try? await injection.accountManager.loadUser(user: STUserGuestUser.shared)
