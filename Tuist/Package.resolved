@@ -131,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "d650ab4d63175dc616c6fb458b9523dd1271fe65",
-        "version" : "10.0.0"
+        "revision" : "1792d8b3c6691f21be509d5a397d3336245f290b",
+        "version" : "10.0.1"
       }
     },
     {
@@ -185,8 +185,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "54d5fbcdea46c37a5de01bab5fef48dc78baec84",
-        "version" : "9.12.1"
+        "revision" : "64c9c5cc401aefde0eda46a9192b36082533a79d",
+        "version" : "9.13.0"
       }
     },
     {
@@ -212,8 +212,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "03cc312c2c933ed87abace34044a5dff7a3117c1",
-        "version" : "1.5.0"
+        "revision" : "fea17c02d767f46b23070fdfdacc28a03a39232a",
+        "version" : "1.5.1"
       }
     },
     {
