@@ -1,2 +1,1 @@
-- Améliorations des performances lors de la création d'un nouveau transfert
-- Corrections de bugs et optimisations diverses
+- Corrections de bugs
