@@ -1,2 +1,1 @@
-- Performance improvements when creating a new transfer
-- Bug fixes and various optimizations
+- Bug fixes
