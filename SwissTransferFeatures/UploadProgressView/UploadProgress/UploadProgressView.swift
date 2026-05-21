@@ -183,7 +183,7 @@ public struct UploadProgressView: View {
 
     private func sendErrorToSentryIfNeeded(error: Error) {
         guard ![NSURLErrorNotConnectedToInternet, NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost]
-            .contains((error as NSError).code) && !(error is STNNetworkException) else {
+            .contains((error as NSError).code) && !((error as NSError).kotlinException is STNNetworkException) else {
             return
         }
 
@@ -192,7 +192,7 @@ public struct UploadProgressView: View {
         let nsError = (error as NSError)
         if let kotlinException = nsError.userInfo["kotlinException"] as? String {
             customError = NSError(
-                domain: kotlinException.components(separatedBy: ":").first ?? kotlinException,
+                domain: kotlinException.components(separatedBy: ":").first?.components(separatedBy: ".").last ?? kotlinException,
                 code: nsError.code,
                 userInfo: nsError.userInfo
             )
