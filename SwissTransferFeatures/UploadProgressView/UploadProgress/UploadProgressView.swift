@@ -187,7 +187,18 @@ public struct UploadProgressView: View {
             return
         }
 
-        SentrySDK.capture(error: error) { scope in
+        var customError = error
+
+        let nsError = (error as NSError)
+        if let kotlinException = nsError.userInfo["kotlinException"] as? String {
+            customError = NSError(
+                domain: kotlinException.components(separatedBy: ":").first ?? kotlinException,
+                code: nsError.code,
+                userInfo: nsError.userInfo
+            )
+        }
+
+        SentrySDK.capture(error: customError) { scope in
             if let containerError = (error as NSError).kotlinException as? STNContainerErrorsException {
                 scope.setContext(value: ["requestId": containerError.requestContextId], key: "Container Error")
             }
