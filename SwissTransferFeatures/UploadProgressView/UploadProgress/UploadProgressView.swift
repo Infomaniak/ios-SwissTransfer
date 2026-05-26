@@ -190,10 +190,12 @@ public struct UploadProgressView: View {
         var customError = error
 
         let nsError = (error as NSError)
-        if let kotlinException = nsError.userInfo["kotlinException"] as? String {
+        if let kotlinException = nsError.kotlinException {
+            let stringifiedException = String(describing: kotlinException)
+            let kmpDomain = stringifiedException.components(separatedBy: ":").first?.components(separatedBy: ".").last
             customError = NSError(
-                domain: kotlinException.components(separatedBy: ":").first?.components(separatedBy: ".").last ?? kotlinException,
-                code: nsError.code,
+                domain: kmpDomain ?? "KMP",
+                code: 0,
                 userInfo: nsError.userInfo
             )
         }
