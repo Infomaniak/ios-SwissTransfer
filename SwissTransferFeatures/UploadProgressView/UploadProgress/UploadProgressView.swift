@@ -183,11 +183,24 @@ public struct UploadProgressView: View {
 
     private func sendErrorToSentryIfNeeded(error: Error) {
         guard ![NSURLErrorNotConnectedToInternet, NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost]
-            .contains((error as NSError).code) && !(error is STNNetworkException) else {
+            .contains((error as NSError).code) && !((error as NSError).kotlinException is STNNetworkException) else {
             return
         }
 
-        SentrySDK.capture(error: error) { scope in
+        var customError = error
+
+        let nsError = (error as NSError)
+        if let kotlinException = nsError.kotlinException {
+            let stringifiedException = String(describing: kotlinException)
+            let kmpDomain = stringifiedException.components(separatedBy: ":").first?.components(separatedBy: ".").last
+            customError = NSError(
+                domain: kmpDomain ?? "KMP",
+                code: 0,
+                userInfo: nsError.userInfo
+            )
+        }
+
+        SentrySDK.capture(error: customError) { scope in
             if let containerError = (error as NSError).kotlinException as? STNContainerErrorsException {
                 scope.setContext(value: ["requestId": containerError.requestContextId], key: "Container Error")
             }
