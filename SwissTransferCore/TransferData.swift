@@ -19,7 +19,7 @@
 import Foundation
 import STCore
 
-public enum TransferData: Identifiable {
+public enum TransferData: Identifiable, Equatable {
     case transfer(TransferUi)
     case status(TransferStatus)
 

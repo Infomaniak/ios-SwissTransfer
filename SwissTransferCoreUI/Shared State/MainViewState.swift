@@ -100,7 +100,7 @@ public final class MainViewState: ObservableObject {
 
     @Published public var newTransferContainer: NewTransferContainer?
     /// Only used by STTabView
-    @Published public var selectedFullscreenTransfer: TransferData?
+    @ModalPublished public var selectedFullscreenTransfer: TransferData?
 
     public var isSplitView = false
 
