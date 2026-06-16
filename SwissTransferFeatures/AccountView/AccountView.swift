@@ -63,6 +63,21 @@ public struct AccountView: View {
                                      title: STResourcesStrings.Localizable.titleMyAccount(userCount)) {
                         AccountListView(userCount: userCount)
                     }
+                    
+                    // TODO: - If plusieurs orga
+                    Button {
+                        mainViewState.isShowingSwitchOrgaListView = true
+                    } label: {
+                        SingleLabelSettingsCell(
+                            title: "Switch orga",
+                            leadingIcon: STResourcesAsset.Images.userChange
+                        )
+                    }
+                    .settingsCell()
+                    .stFloatingPanel(isPresented: $mainViewState.isShowingSwitchOrgaListView,
+                                     title: "Mon orga") {
+                        OrgaListView()
+                    }
                 } else {
                     Button {
                         @InjectService var matomo: MatomoUtils
