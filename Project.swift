@@ -336,7 +336,7 @@ let project = Project(
                     .external(name: "OrderedCollections"),
                     .external(name: "QRCode"),
                     .external(name: "SwiftModalPresentation"),
-                    .external(name: "SwiftUIIntrospect-Static")
+                    .external(name: "SwiftUIIntrospect")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",
