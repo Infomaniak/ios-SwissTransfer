@@ -22,7 +22,17 @@ import STCore
 import SwiftUI
 import SwissTransferCore
 
+public class FileListRouter: ObservableObject {
+    @Published public var path = NavigationPath()
+
+    public init() {
+        path = NavigationPath()
+    }
+}
+
 public struct FileGridCellsView: View {
+    @EnvironmentObject private var router: FileListRouter
+
     private let files: [any DisplayableFile]
     private let transfer: TransferUi?
     private let action: (any LargeFileCellAction)?
@@ -42,25 +52,8 @@ public struct FileGridCellsView: View {
 
     public var body: some View {
         ForEach(files, id: \.id) { file in
-            if file.isFolder {
-                NavigationLink(value: file) {
                     if let transfer,
                        let fileUi = file as? FileUi {
-                        DownloadableFileCellView(
-                            transfer: transfer,
-                            file: fileUi,
-                            matomoCategory: matomoCategory
-                        )
-                    } else {
-                        LargeFileCell(
-                            file: file,
-                            transferUUID: transfer?.uuid,
-                            action: action
-                        )
-                    }
-                }
-            } else {
-                if let transfer, let fileUi = file as? FileUi {
                     DownloadableFileCellView(
                         transfer: transfer,
                         file: fileUi,
@@ -78,6 +71,11 @@ public struct FileGridCellsView: View {
                         transferUUID: transfer?.uuid,
                         action: action
                     )
+                .onTapGesture {
+                    if file.isFolder {
+                        router.path.append(file)
+                        print(router.path)
+                    }
                 }
             }
         }

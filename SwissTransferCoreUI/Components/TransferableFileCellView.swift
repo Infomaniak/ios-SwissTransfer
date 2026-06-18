@@ -22,6 +22,8 @@ import SwiftUI
 import SwissTransferCore
 
 struct TransferableFileCellView: View {
+    @EnvironmentObject private var router: FileListRouter
+    
     @State private var fileToPreviewURL: URL?
 
     let file: TransferableFile
@@ -30,6 +32,10 @@ struct TransferableFileCellView: View {
 
     var body: some View {
         Button {
+            guard !file.isFolder else {
+                router.path.append(file)
+                return
+            }
             fileToPreviewURL = file.localURL
         } label: {
             LargeFileCell(file: file, transferUUID: transferUUID, action: action)
