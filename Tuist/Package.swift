@@ -45,20 +45,21 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.1.4")),
         .package(url: "https://github.com/dagronf/QRCode", .upToNextMajor(from: "28.0.0")),
         .package(url: "https://github.com/getsentry/sentry-cocoa", .upToNextMajor(from: "9.8.0")),
-        .package(url: "https://github.com/Infomaniak/ios-bug-tracker", .upToNextMajor(from: "17.0.1")),
+        .package(url: "https://github.com/Infomaniak/ios-bug-tracker", .upToNextMajor(from: "18.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-core", .upToNextMajor(from: "18.10.3")),
-        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "24.10.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "25.0.0")),
+        .package(url: "https://github.com/Infomaniak/ios-core-uikit", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.1")),
-        .package(url: "https://github.com/Infomaniak/ios-features", .upToNextMajor(from: "8.4.3")),
+        .package(url: "https://github.com/Infomaniak/ios-features", .upToNextMajor(from: "9.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-notifications", .upToNextMajor(from: "15.1.0")),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
-        .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "16.0.0")),
-        .package(url: "https://github.com/Infomaniak/ios-create-account", .upToNextMajor(from: "23.3.0")),
+        .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "17.0.0")),
+        .package(url: "https://github.com/Infomaniak/ios-create-account", .upToNextMajor(from: "24.0.1")),
         .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "10.0.0")),
         .package(url: "https://github.com/Infomaniak/swift-concurrency", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/swift-modal-presentation", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),
         .package(url: "https://github.com/kean/Nuke", .upToNextMajor(from: "12.1.3")),
-        .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "26.0.0"))
+        .package(url: "https://github.com/siteline/SwiftUI-Introspect", .upToNextMajor(from: "27.0.0-beta"))
     ]
 )
