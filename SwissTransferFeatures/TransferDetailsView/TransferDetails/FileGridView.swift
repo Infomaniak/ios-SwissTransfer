@@ -32,7 +32,7 @@ struct FileGridView: View {
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let files: [FileUi]
-    let transfer: TransferUi?
+    let transfer: TransferUi
     let matomoCategory: MatomoCategory
 
     @State private var shareResult: DownloadResult?
