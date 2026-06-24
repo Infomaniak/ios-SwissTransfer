@@ -52,31 +52,19 @@ public struct FileGridCellsView: View {
 
     public var body: some View {
         ForEach(files, id: \.id) { file in
-                    if let transfer,
-                       let fileUi = file as? FileUi {
-                    DownloadableFileCellView(
-                        transfer: transfer,
-                        file: fileUi,
-                        matomoCategory: matomoCategory
-                    )
-                } else if let transferableFile = file as? TransferableFile {
-                    TransferableFileCellView(
-                        file: transferableFile,
-                        transferUUID: transfer?.uuid,
-                        action: action
-                    )
-                } else {
-                    LargeFileCell(
-                        file: file,
-                        transferUUID: transfer?.uuid,
-                        action: action
-                    )
-                .onTapGesture {
-                    if file.isFolder {
-                        router.path.append(file)
-                        print(router.path)
-                    }
-                }
+            if let transfer,
+               let fileUi = file as? FileUi {
+                DownloadableFileCellView(
+                    transfer: transfer,
+                    file: fileUi,
+                    matomoCategory: matomoCategory
+                )
+            } else if let transferableFile = file as? TransferableFile {
+                TransferableFileCellView(
+                    file: transferableFile,
+                    transferUUID: transfer?.uuid,
+                    action: action
+                )
             }
         }
     }
