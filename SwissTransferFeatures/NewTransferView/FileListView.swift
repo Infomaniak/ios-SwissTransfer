@@ -86,15 +86,16 @@ struct FileListView: View {
                             .importingItem(controlSize: .regular)
                     }
 
-                    FileGridCellsView(
-                        files: files,
-                        action: RemoveFileAction {
-                            @InjectService var matomo: MatomoUtils
-                            matomo.track(eventWithCategory: .newTransfer, name: .deleteFile)
-                            removeFile($0, atFolderURL: localFolderURL)
-                        },
-                        matomoCategory: matomoCategory
-                    )
+                    ForEach(files, id: \.id) { file in
+                        TransferableFileCellView(
+                            file: file,
+                            action: RemoveFileAction {
+                                @InjectService var matomo: MatomoUtils
+                                matomo.track(eventWithCategory: .newTransfer, name: .deleteFile)
+                                removeFile($0, atFolderURL: localFolderURL)
+                            }
+                        )
+                    }
                     .animation(nil, value: files)
                 }
                 .animation(nil, value: newTransferFileManager.importedItems)

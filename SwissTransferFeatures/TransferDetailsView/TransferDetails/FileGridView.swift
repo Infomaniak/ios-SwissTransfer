@@ -40,7 +40,13 @@ struct FileGridView: View {
 
     var body: some View {
         FileGridLayoutView {
-            FileGridCellsView(files: files, transfer: transfer, matomoCategory: matomoCategory)
+            ForEach(files, id: \.id) { file in
+                DownloadableFileCellView(
+                    transfer: transfer,
+                    file: file,
+                    matomoCategory: matomoCategory
+                )
+            }
         }
         .downloadProgressAlert { urls in
             handleDownloadedURLs(urls: urls)
