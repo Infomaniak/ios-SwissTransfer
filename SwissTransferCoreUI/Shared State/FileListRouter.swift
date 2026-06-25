@@ -19,7 +19,7 @@
 import SwiftUI
 
 public class FileListRouter: ObservableObject {
-    @Published public var path = NavigationPath()
+    @Published public var path: NavigationPath
 
     public init() {
         path = NavigationPath()
