@@ -97,10 +97,10 @@ public struct NewTransferView: View {
             .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: TransferableFile.self) { file in
-                FileListView(parentFolder: file, matomoCategory: .newTransfer)
+                FileListView(parentFolder: file)
             }
             .navigationDestination(for: TransferableRootFolder.self) { _ in
-                FileListView(parentFolder: nil, matomoCategory: .newTransfer)
+                FileListView(parentFolder: nil)
             }
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in
                 VerifyMailView(newUploadSession: newUploadSession)

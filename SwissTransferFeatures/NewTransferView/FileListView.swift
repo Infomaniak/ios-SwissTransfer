@@ -36,7 +36,6 @@ struct FileListView: View {
     @State private var filesCount = 0
 
     private let folder: TransferableFile?
-    private let matomoCategory: MatomoCategory
 
     private var navigationTitle: String {
         guard let folder else {
@@ -49,9 +48,8 @@ struct FileListView: View {
         return folder?.localURLFor(transferUUID: "")
     }
 
-    init(parentFolder: TransferableFile?, matomoCategory: MatomoCategory) {
+    init(parentFolder: TransferableFile?) {
         folder = parentFolder
-        self.matomoCategory = matomoCategory
     }
 
     var body: some View {
@@ -148,5 +146,5 @@ struct FileListView: View {
 }
 
 #Preview {
-    FileListView(parentFolder: nil, matomoCategory: .sentTransfer)
+    FileListView(parentFolder: nil)
 }
