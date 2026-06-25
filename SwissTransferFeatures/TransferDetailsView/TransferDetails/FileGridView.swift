@@ -32,7 +32,7 @@ struct FileGridView: View {
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     let files: [FileUi]
-    let transfer: TransferUi?
+    let transfer: TransferUi
     let matomoCategory: MatomoCategory
 
     @State private var shareResult: DownloadResult?
@@ -40,7 +40,13 @@ struct FileGridView: View {
 
     var body: some View {
         FileGridLayoutView {
-            FileGridCellsView(files: files, transfer: transfer, matomoCategory: matomoCategory)
+            ForEach(files, id: \.id) { file in
+                DownloadableFileCellView(
+                    transfer: transfer,
+                    file: file,
+                    matomoCategory: matomoCategory
+                )
+            }
         }
         .downloadProgressAlert { urls in
             handleDownloadedURLs(urls: urls)

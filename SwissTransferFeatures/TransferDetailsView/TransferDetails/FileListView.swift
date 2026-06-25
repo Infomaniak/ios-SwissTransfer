@@ -31,7 +31,7 @@ struct FileListView: View {
     @StateObject private var files: FlowObserver<[FileUi]>
 
     private let title: String
-    private let transfer: TransferUi?
+    private let transfer: TransferUi
 
     private var filesCount: Int {
         files.value?.count ?? 0
@@ -43,7 +43,7 @@ struct FileListView: View {
 
     private let matomoCategory: MatomoCategory
 
-    init(folder: FileUi, transfer: TransferUi?, fileManager: STCore.FileManager, matomoCategory: MatomoCategory) {
+    init(folder: FileUi, transfer: TransferUi, fileManager: STCore.FileManager, matomoCategory: MatomoCategory) {
         let children = fileManager.getFilesFromTransfer(folderUuid: folder.uid)
 
         title = folder.fileName
