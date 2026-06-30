@@ -22,11 +22,13 @@ import OSLog
 import STCore
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 struct DownloadableFileCellView: View {
     @EnvironmentObject private var downloadManager: DownloadManager
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var router: FileListRouter
 
     let transfer: TransferUi
     let file: FileUi
@@ -49,29 +51,28 @@ struct DownloadableFileCellView: View {
     }
 
     var body: some View {
-        Group {
-            if file.isFolder && !multipleSelectionManager.isEnabled {
-                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
-            } else {
-                LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
-                    .onTapGesture {
-                        fileTapped()
-                    }
-                    .overlay(alignment: .topLeading) {
-                        if multipleSelectionManager.isEnabled {
-                            MultipleSelectionCheckboxView(isSelected: multipleSelectionManager.isSelected(file: file))
-                                .padding(12)
-                        }
-                    }
+        LargeFileCell(file: file, transferUUID: transfer.uuid, action: downloadFileAction)
+            .onTapGesture {
+                fileTapped()
             }
-        }
-        .onLongPressGesture {
-            multipleSelectionManager.toggleMultipleSelection(of: file)
-        }
+            .overlay(alignment: .topLeading) {
+                if multipleSelectionManager.isEnabled {
+                    MultipleSelectionCheckboxView(isSelected: multipleSelectionManager.isSelected(file: file))
+                        .padding(12)
+                }
+            }
+            .onLongPressGesture {
+                multipleSelectionManager.toggleMultipleSelection(of: file)
+            }
     }
 
     private func fileTapped() {
         guard multipleSelectionManager.isEnabled else {
+            guard !file.isFolder else {
+                router.path.append(file)
+                return
+            }
+
             downloadManager.startOrCancelDownload(
                 transfer: transfer,
                 files: [file],

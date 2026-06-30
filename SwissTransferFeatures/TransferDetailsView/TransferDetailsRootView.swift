@@ -20,6 +20,7 @@ import InfomaniakDI
 import STCore
 import SwiftUI
 import SwissTransferCore
+import SwissTransferCoreUI
 
 @MainActor
 final class TransferDetailsViewModel: ObservableObject {
@@ -69,13 +70,14 @@ final class TransferDetailsViewModel: ObservableObject {
 
 public struct TransferDetailsRootView: View {
     @StateObject private var viewModel: TransferDetailsViewModel
+    @StateObject private var router = FileListRouter()
 
     public init(data: TransferData, transferManager: TransferManager) {
         _viewModel = .init(wrappedValue: .init(data: data, transferManager: transferManager))
     }
 
     public var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.path) {
             let transfer = viewModel.transfer
             switch viewModel.status {
             case .ready, .unknown:
@@ -92,5 +94,6 @@ public struct TransferDetailsRootView: View {
                 EmptyView()
             }
         }
+        .environmentObject(router)
     }
 }

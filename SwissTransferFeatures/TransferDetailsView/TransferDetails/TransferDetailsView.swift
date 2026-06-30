@@ -91,14 +91,16 @@ public struct TransferDetailsView: View {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }
         .navigationDestination(for: FileUi.self) { file in
-            FileListView(
-                folder: file,
-                transfer: transfer,
-                fileManager: mainViewState.swissTransferManager.fileManager,
-                matomoCategory: matomoCategory
-            )
-            .downloadSelectionToolbar(transfer: transfer)
-            .environment(\.dismissModal) { dismiss() }
+            if let transfer {
+                FileListView(
+                    folder: file,
+                    transfer: transfer,
+                    fileManager: mainViewState.swissTransferManager.fileManager,
+                    matomoCategory: matomoCategory
+                )
+                .downloadSelectionToolbar(transfer: transfer)
+                .environment(\.dismissModal) { dismiss() }
+            }
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)

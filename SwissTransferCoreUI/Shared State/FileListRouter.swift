@@ -16,25 +16,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QuickLook
-import STCore
 import SwiftUI
-import SwissTransferCore
 
-struct TransferableFileCellView: View {
-    @State private var fileToPreviewURL: URL?
+public class FileListRouter: ObservableObject {
+    @Published public var path: NavigationPath
 
-    let file: TransferableFile
-    let transferUUID: String?
-    let action: (any LargeFileCellAction)?
-
-    var body: some View {
-        Button {
-            fileToPreviewURL = file.localURL
-        } label: {
-            LargeFileCell(file: file, transferUUID: transferUUID, action: action)
-        }
-        .buttonStyle(.plain)
-        .quickLookPreview($fileToPreviewURL)
+    public init() {
+        path = NavigationPath()
     }
 }

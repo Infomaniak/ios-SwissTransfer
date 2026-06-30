@@ -19,10 +19,14 @@
 import STResources
 import SwiftUI
 
-struct MultipleSelectionCheckboxView: View {
+public struct MultipleSelectionCheckboxView: View {
     let isSelected: Bool
 
-    var body: some View {
+    public init(isSelected: Bool) {
+        self.isSelected = isSelected
+    }
+
+    public var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 2)
                 .foregroundStyle(isSelected ? STResourcesAsset.Colors.greenMain.swiftUIColor : STResourcesAsset.Colors.white

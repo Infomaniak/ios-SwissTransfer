@@ -39,7 +39,7 @@ public struct NewTransferView: View {
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
-    @State private var rootNavigationPath = NavigationPath()
+    @StateObject private var router = FileListRouter()
     @State private var isLoadingFileToUpload = false
     @State private var importFilesTasks = [ImportTask]()
 
@@ -50,7 +50,7 @@ public struct NewTransferView: View {
     public init() {}
 
     public var body: some View {
-        NavigationStack(path: $rootNavigationPath) {
+        NavigationStack(path: $router.path) {
             ScrollView {
                 VStack(spacing: IKPadding.medium) {
                     NewTransferTypeView(transferType: $viewModel.transferType)
@@ -97,15 +97,16 @@ public struct NewTransferView: View {
             .stNavigationBarFullScreen(title: STResourcesStrings.Localizable.importFilesScreenTitle)
             .stNavigationBarStyle()
             .navigationDestination(for: TransferableFile.self) { file in
-                FileListView(parentFolder: file, matomoCategory: .newTransfer)
+                FileListView(parentFolder: file)
             }
             .navigationDestination(for: TransferableRootFolder.self) { _ in
-                FileListView(parentFolder: nil, matomoCategory: .newTransfer)
+                FileListView(parentFolder: nil)
             }
             .navigationDestination(for: NewUploadSession.self) { newUploadSession in
                 VerifyMailView(newUploadSession: newUploadSession)
             }
         }
+        .environmentObject(router)
         .environment(\.dismissModal) {
             if let shareExtensionContext {
                 shareExtensionContext.dismissShareSheet()

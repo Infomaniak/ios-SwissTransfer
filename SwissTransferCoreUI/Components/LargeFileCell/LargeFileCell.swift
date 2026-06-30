@@ -81,6 +81,7 @@ public struct LargeFileCell: View {
         }
         .aspectRatio(164 / 152, contentMode: .fit)
         .clipShape(.rect(cornerRadius: 8))
+        .contentShape(.rect(cornerRadius: 8))
         .overlay(
             RoundedRectangle(cornerRadius: IKRadius.medium)
                 .stroke(Color.ST.cardBorder)
