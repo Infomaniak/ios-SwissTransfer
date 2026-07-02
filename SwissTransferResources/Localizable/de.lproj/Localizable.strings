@@ -146,7 +146,7 @@
 "expiresIn" = "Verfällt in %d Tagen";
 
 /* loco:67b49607bdcd0286220cea32 */
-"expiresThe" = "Läuft am %@";
+"expiresThe" = "Läuft ab am %@";
 
 /* loco:6776640e5e97ee7e550d5b72 */
 "expiresTomorrow" = "Läuft morgen ab";
