@@ -1,2 +1,2 @@
-- Fixed the display order of transfers
-- Fixed a bug regarding the display of sheets
+- Fixed an issue with the file grid display in a transfer.
+- Various bug fixes and improvements.

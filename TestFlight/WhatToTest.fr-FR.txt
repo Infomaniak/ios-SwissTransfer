@@ -1,2 +1,2 @@
-- Correction de l'ordre d'affichage des transferts
-- Correction d'un bug concernant l'affichage de sheets
+- Correction d'un problème concernant la grille d'affichage des fichiers d'un transfert.
+- Diverses corrections et améliorations.
