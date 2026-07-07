@@ -140,7 +140,7 @@
 "expired" = "Abgelaufen";
 
 /* loco:67b489ba13ccf8b7ab0e46b3 */
-"expiresAt" = "Läuft ab bei %@";
+"expiresAt" = "Läuft ab um %@ Uhr";
 
 /* loco:669f7a817f40f7e9170fafa2 */
 "expiresIn" = "Verfällt in %d Tagen";
