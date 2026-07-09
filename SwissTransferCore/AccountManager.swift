@@ -189,11 +189,21 @@ public actor AccountManager: ObservableObject {
         }
 
         if let userProfile = await userProfileStore.getUserProfile(id: userId) {
-            return UserSession(userId: userId, userProfile: userProfile, swissTransferManager: swissTransferManager)
+            return UserSession(
+                userId: userId,
+                userProfile: userProfile,
+                organization: await selectedOrganization(),
+                swissTransferManager: swissTransferManager
+            )
         } else {
             let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
             if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
-                return UserSession(userId: userId, userProfile: userProfile, swissTransferManager: swissTransferManager)
+                return UserSession(
+                    userId: userId,
+                    userProfile: userProfile,
+                    organization: await selectedOrganization(),
+                    swissTransferManager: swissTransferManager
+                )
             }
         }
 
@@ -240,12 +250,18 @@ public actor AccountManager: ObservableObject {
         await switchUser(newCurrentUserId: nextToken.value.userId)
     }
 
-    public func selectedOrganizationId() async -> SkieSwiftOptionalFlow<STDOrganizationAccount>? {
-        let kmpAccountManager = await getSwissTransferManager(
+    private func selectedOrganization() async -> STDOrganizationAccount? {
+        guard let kmpAccountManager = await getSwissTransferManager(
             userId: currentUserId,
             token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
-        )?.accountManager
-        return kmpAccountManager?.selectedOrganizationAccount()
+        )?.accountManager else { return nil }
+        let selectedOrganizationFlow: SkieSwiftOptionalFlow<STDOrganizationAccount> = kmpAccountManager
+            .selectedOrganizationAccount()
+
+        for await value in selectedOrganizationFlow {
+            return value
+        }
+        return nil
     }
 
     public func organizationAccounts() async -> [STDOrganizationAccount]? {
