@@ -53,7 +53,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
     }
 
     /// V2 api models
-    init(transfer: any Transfer_, localFilePaths: Set<String>) throws {
+    init(transfer: STNTransferApi, localFilePaths: Set<String>) throws {
         uuid = transfer.id
         authorEmail = transfer.senderEmail
         authorEmailToken = nil
@@ -91,7 +91,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
         }
     }
 
-    init(transferFile: any File_, localPath: String) {
+    init(transferFile: STNFileApi, localPath: String) {
         self.localPath = localPath
         size = transferFile.size
 
