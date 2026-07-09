@@ -240,6 +240,30 @@ public actor AccountManager: ObservableObject {
         await switchUser(newCurrentUserId: nextToken.value.userId)
     }
 
+    public func selectedOrganizationId() async -> SkieSwiftOptionalFlow<STDOrganizationAccount>? {
+        let kmpAccountManager = await getSwissTransferManager(
+            userId: currentUserId,
+            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
+        )?.accountManager
+        return kmpAccountManager?.selectedOrganizationAccount()
+    }
+
+    public func organizationAccounts() async -> [STDOrganizationAccount]? {
+        let kmpAccountManager = await getSwissTransferManager(
+            userId: currentUserId,
+            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
+        )?.accountManager
+        return try? await kmpAccountManager?.organizationAccountsForUser(userId: Int64(currentUserId))
+    }
+
+    public func switchToOrganization(organizationId: Int) async {
+        let kmpAccountManager = await getSwissTransferManager(
+            userId: currentUserId,
+            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
+        )?.accountManager
+        try? await kmpAccountManager?.switchToOrganization(organizationAccountId: KotlinLong(integerLiteral: organizationId))
+    }
+
     public func enableBugTrackerIfAvailable() async {
         if let currentUser = await userProfileStore.getUserProfile(id: currentUserId),
            let token = tokenStore.tokenFor(userId: currentUser.id),
