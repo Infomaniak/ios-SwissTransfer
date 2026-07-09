@@ -17,19 +17,20 @@
  */
 
 import DesignSystem
+import InfomaniakCoreSwiftUI
+import STCore
 import STResources
 import SwiftUI
-import InfomaniakCoreSwiftUI
 
 struct OrgaListView: View {
-    @State private var selectedOrga = "Orga 1"
-    let orgas = ["Orga 1", "Orga 2", "Orga 3"]
+    let selectedOrganization: STDOrganizationAccount?
+    let organizations: [STDOrganizationAccount]
 
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: IKPadding.micro) {
-                ForEach(orgas, id: \.self) { orga in
-                    OrgaCellView(selectedOrga: selectedOrga, orga: orga)
+                ForEach(organizations, id: \.self) { orga in
+                    OrgaCellView(organization: orga, isSelected: orga.id == selectedOrganization?.id)
                 }
             }
             .padding(.horizontal, value: .medium)
@@ -37,6 +38,6 @@ struct OrgaListView: View {
     }
 }
 
-#Preview {
-    OrgaListView()
-}
+// #Preview {
+//    OrgaListView(selectedOrganization: <#STDOrganizationAccount#>, organizations: <#[STDOrganizationAccount]#>)
+// }
