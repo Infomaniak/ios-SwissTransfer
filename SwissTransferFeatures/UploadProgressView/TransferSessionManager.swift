@@ -53,7 +53,7 @@ final class TransferSessionManager: ObservableObject {
         let overallProgress = Progress(totalUnitCount: filesSize)
         overallProgress
             .publisher(for: \.fractionCompleted)
-            .throttle(for: .milliseconds(500), scheduler: RunLoop.main, latest: true)
+            .throttle(for: .milliseconds(100), scheduler: RunLoop.main, latest: true)
             .sink { [weak self] fractionCompleted in
                 self?.fractionCompleted = fractionCompleted
             }
