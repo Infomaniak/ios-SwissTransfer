@@ -18,25 +18,27 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 
 struct OrgaCellView: View {
-    let selectedOrga: String?
-    let orga: String
-
-    private var isSelected: Bool {
-        return selectedOrga == orga
-    }
+    let organization: STDOrganizationAccount
+    let isSelected: Bool
 
     var body: some View {
         Button {
             guard !isSelected else { return }
-            // TODO: - Switch orga
+            Task {
+                @InjectService var accountManager: SwissTransferCore.AccountManager
+                await accountManager.switchToOrganization(organizationId: Int(organization.id))
+            }
         } label: {
             HStack {
-                Text(orga)
-                    .font(.ST.headline)
+                Text(organization.name)
+                    .font(.ST.body)
                     .foregroundStyle(Color.ST.textPrimary)
                     .lineLimit(1)
 
@@ -52,6 +54,6 @@ struct OrgaCellView: View {
     }
 }
 
-#Preview {
-    OrgaCellView(selectedOrga: nil, orga: "orga")
-}
+// #Preview {
+//    OrgaCellView(organization: "orga", isSelected: true)
+// }

@@ -18,12 +18,20 @@
 
 import DesignSystem
 import InfomaniakCore
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct AccountHeaderView: View {
     @Environment(\.currentUser) private var currentUser
+    @EnvironmentObject private var mainViewState: MainViewState
+    @InjectService private var accountManager: SwissTransferCore.AccountManager
+
+    @State private var selectedOrganization: STDOrganizationAccount?
+    @State private var organizations = [STDOrganizationAccount]()
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
@@ -48,11 +56,46 @@ public struct AccountHeaderView: View {
                     .foregroundStyle(Color.ST.textSecondary)
                     .multilineTextAlignment(.center)
             }
+
+            if let selectedOrganization {
+                Button {
+                    mainViewState.isShowingSwitchOrgaListView = true
+                } label: {
+                    HStack(spacing: IKPadding.mini) {
+                        STResourcesAsset.Images.building.swiftUIImage
+                            .iconSize(.medium)
+
+                        Text(selectedOrganization.name)
+                            .multilineTextAlignment(.center)
+
+                        STResourcesAsset.Images.synchronize.swiftUIImage
+                            .iconSize(.medium)
+                    }
+                }
+                .foregroundStyle(Color.ST.textPrimary)
+                .buttonStyle(.plain)
+                .padding(.top, value: .micro)
+                .stFloatingPanel(isPresented: $mainViewState.isShowingSwitchOrgaListView, title: "Change organization") {
+                    OrgaListView(selectedOrganization: selectedOrganization, organizations: organizations)
+                }
+            }
         }
         .listRowBackground(Color.clear)
         .listRowSpacing(0)
         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         .frame(maxWidth: .infinity)
+        .task {
+            guard let organizationAccounts = await accountManager.organizationAccounts() else { return }
+            organizations = organizationAccounts
+        }
+        .task {
+            guard let selectedOrganizationFlow: SkieSwiftOptionalFlow<STDOrganizationAccount> = await accountManager
+                .selectedOrganizationId() else { return }
+
+            for await value in selectedOrganizationFlow {
+                selectedOrganization = value
+            }
+        }
     }
 }
 
