@@ -23,6 +23,7 @@ import InfomaniakCore
 public struct UserSession: Sendable {
     public let userId: AccountManager.UserId
     public let userProfile: UserProfile?
+    public let organization: STDOrganizationAccount?
 
     public var transferManager: TransferManager {
         return swissTransferManager.transferManager
@@ -34,9 +35,15 @@ public struct UserSession: Sendable {
         userId == AccountManager.guestUserId
     }
 
-    init(userId: AccountManager.UserId, userProfile: UserProfile?, swissTransferManager: SwissTransferInjection) {
+    init(
+        userId: AccountManager.UserId,
+        userProfile: UserProfile?,
+        organization: STDOrganizationAccount? = nil,
+        swissTransferManager: SwissTransferInjection
+    ) {
         self.userId = userId
         self.userProfile = userProfile
+        self.organization = organization
         self.swissTransferManager = swissTransferManager
     }
 }
