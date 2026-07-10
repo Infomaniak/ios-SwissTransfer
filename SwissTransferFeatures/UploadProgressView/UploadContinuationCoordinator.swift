@@ -94,7 +94,9 @@ struct UploadContinuationCoordinator {
                                     .notificationProgressSubtitle(progress.formatted(.defaultPercent))
                             )
                         }
-                        try await transferSessionManager.uploadFiles(for: uploadSession, with: uploadBackendRouter)
+                        try await transferSessionManager.uploadFiles(for: uploadSession,
+                                                                     with: uploadBackendRouter,
+                                                                     usesExpiringActivity: false)
                         continuation?.resume()
                         continuation = nil
                         task.setTaskCompleted(success: true)
@@ -138,7 +140,9 @@ struct UploadContinuationCoordinator {
             }
 
             do {
-                try await transferSessionManager.uploadFiles(for: uploadSession, with: uploadBackendRouter)
+                try await transferSessionManager.uploadFiles(for: uploadSession,
+                                                             with: uploadBackendRouter,
+                                                             usesExpiringActivity: true)
                 continuation.resume()
             } catch {
                 continuation.resume(throwing: error)
