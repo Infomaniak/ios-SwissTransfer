@@ -69,7 +69,7 @@ final class TransferSessionManager: ObservableObject {
 
         try await transferManagerWorker?.uploadFiles(for: uploadSession,
                                                      remoteUploadFiles: remoteUploadFiles,
-                                                     usesExpiringActivity: usesExpiringActivity)
+                                                     useExpiringActivity: usesExpiringActivity)
     }
 
     func startThumbnailGeneration(uploadSession: SendableUploadSession) {
