@@ -42,6 +42,6 @@ public protocol TransferManagerWorker: Sendable, ExpiringActivityDelegate {
     )
     func uploadFiles(for uploadSession: SendableUploadSession,
                      remoteUploadFiles: [SendableRemoteUploadFile],
-                     usesExpiringActivity: Bool) async throws
+                     useExpiringActivity: Bool) async throws
     func suspendAllTasks() async
 }
