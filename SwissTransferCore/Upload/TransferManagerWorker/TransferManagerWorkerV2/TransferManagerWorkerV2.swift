@@ -48,8 +48,6 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
     private var suspendedUploads = false
 
-    private var usesExpiringActivity = false
-
     let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
         chunkMaxSizeClient: 50 * 1024 * 1024,
@@ -79,8 +77,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
     public func uploadFiles(for uploadSession: SendableUploadSession,
                             remoteUploadFiles: [SendableRemoteUploadFile],
-                            usesExpiringActivity: Bool) async throws {
-        self.usesExpiringActivity = usesExpiringActivity
+                            useExpiringActivity: Bool) async throws {
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
@@ -89,7 +86,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
                                                    uploadUUID: uploadSession.uuid)
             }
 
-        await uploadAllFiles()
+        await uploadAllFiles(useExpiringActivity: useExpiringActivity)
     }
 
     public func suspendAllTasks() {
@@ -128,19 +125,13 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         uploadingFiles.append(uploadingFile)
     }
 
-    private func uploadAllFiles() async {
-        let expiringActivity: ExpiringActivity? = usesExpiringActivity
+    private func uploadAllFiles(useExpiringActivity: Bool = false) async {
+        let expiringActivity: ExpiringActivity? = useExpiringActivity
             ? ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
             : nil
         do {
-            if let expiringActivity {
-                expiringActivity.start()
-            }
-            defer {
-                if let expiringActivity {
-                    expiringActivity.endAll()
-                }
-            }
+            expiringActivity?.start()
+            defer { expiringActivity?.endAll() }
 
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
 
