@@ -353,7 +353,8 @@ let project = Project(
                     .external(name: "QRCode"),
                     .external(name: "STCore"),
                     .external(name: "SwiftModalPresentation"),
-                    .external(name: "SwiftUIIntrospect")
+                    .external(name: "SwiftUIIntrospect"),
+                    .external(name: "MyKSuite")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",
