@@ -16,22 +16,70 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import DesignSystem
+import InfomaniakDI
 import STCore
+import STResources
 import STTransferList
 import SwiftUI
+import SwissTransferCore
+import SwissTransferCoreUI
 
 public struct SentView: View {
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
     @EnvironmentObject private var transferManager: TransferManager
 
     private let direction = TransferDirection.sent
 
+    @State private var selectedOrganization: STDOrganizationAccount?
+    @State private var organizations: [STDOrganizationAccount] = []
+    @State private var isShowingOrganizationList = false
+
     public init() {}
 
     public var body: some View {
-        TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
-            SentEmptyView()
+        VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
+                Text(direction.title)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
+
+                if let selectedOrganization {
+                    OrganizationSelectorView(
+                        isShowingOrganizationList: $isShowingOrganizationList,
+                        selectedOrganization: selectedOrganization
+                    )
+                }
+            }
+            .padding(.horizontal, value: .medium)
+            .padding(.top, value: .medium)
+            .listRowInsets(EdgeInsets(.zero))
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.ST.background)
+
+            TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
+                SentEmptyView()
+            }
+            .matomoView(view: .sent)
         }
-        .matomoView(view: .sent)
+        .task {
+            guard let organizationAccounts = await accountManager.organizationAccounts() else { return }
+            organizations = organizationAccounts
+        }
+        .task {
+            guard let selectedOrganization = await accountManager.selectedOrganization() else { return }
+            self.selectedOrganization = selectedOrganization
+        }
+        .onChange(of: selectedOrganization) { newValue in
+            guard let newValue else { return }
+            Task {
+                await accountManager.switchToOrganization(organizationId: Int(newValue.id))
+            }
+            isShowingOrganizationList = false
+        }
+        .stFloatingPanel(isPresented: $isShowingOrganizationList) {
+            OrganizationListView(selectedOrganization: $selectedOrganization, organizations: organizations)
+        }
     }
 }
 
