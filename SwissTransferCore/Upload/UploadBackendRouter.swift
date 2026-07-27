@@ -73,7 +73,8 @@ public final class UploadBackendRouter: Sendable {
     }
 
     public func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession,
-                                                   title: String? = nil) async throws -> String {
+                                                   title: String? = nil,
+                                                   organizationAccountId: Int64? = nil) async throws -> String {
         if currentUser != nil {
             var filesMetadata: [FileToUploadMetadata] = []
             var sizeOfUpload: Int64 = 0
@@ -98,7 +99,8 @@ public final class UploadBackendRouter: Sendable {
                 filesCount: Int32(newUploadSession.files.count),
                 languageCode: newUploadSession.language,
                 filesMetadata: filesMetadata,
-                recipientsEmails: newUploadSession.recipientsEmails
+                recipientsEmails: newUploadSession.recipientsEmails,
+                organizationAccountId: organizationAccountId?.toKotlinLong()
             )
 
             let localUUID = UUID().uuidString
@@ -136,17 +138,24 @@ public final class UploadBackendRouter: Sendable {
         }
     }
 
-    public func finishUploadSession(uuid: String) async throws -> String {
+    public func finishUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws -> String {
         if currentUser != nil {
-            return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(transferId: uuid)
+            return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(
+                transferId: uuid,
+                organizationAccountId: organizationAccountId?.toKotlinLong()
+            )
         } else {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
         }
     }
 
-    public func cancelUploadSession(uuid: String) async throws {
+    public func cancelUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws {
         if currentUser != nil {
-            _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(transferId: uuid, failed: false)
+            _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(
+                transferId: uuid,
+                organizationAccountId: organizationAccountId?.toKotlinLong(),
+                failed: false
+            )
         } else {
             try await swissTransferManager.uploadManager.cancelUploadSession(uuid: uuid)
         }
