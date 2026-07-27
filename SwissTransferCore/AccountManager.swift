@@ -278,7 +278,6 @@ public actor AccountManager: ObservableObject {
             token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
         )?.accountManager
         try? await kmpAccountManager?.switchToOrganization(organizationAccountId: KotlinLong(integerLiteral: organizationId))
-        objectWillChange.send()
     }
 
     public func enableBugTrackerIfAvailable() async {
@@ -291,5 +290,13 @@ public actor AccountManager: ObservableObject {
         } else {
             bugTracker.stopActivatingOnScreenshot()
         }
+    }
+
+    public func selectedOrganizationFlow() async -> SkieSwiftOptionalFlow<STDOrganizationAccount>? {
+        guard let kmpAccountManager = await getSwissTransferManager(
+            userId: currentUserId,
+            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
+        )?.accountManager else { return nil }
+        return kmpAccountManager.selectedOrganizationAccount()
     }
 }
