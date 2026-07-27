@@ -50,7 +50,7 @@ let package = Package(
         .package(url: "https://github.com/Infomaniak/ios-core-ui", .upToNextMajor(from: "26.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-core-uikit", .upToNextMajor(from: "2.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-device-check", .upToNextMajor(from: "1.1.1")),
-        .package(url: "https://github.com/Infomaniak/ios-features", .upToNextMajor(from: "10.0.0")),
+        .package(url: "https://github.com/Infomaniak/ios-features", branch: "feat/Add-parameter-to-not-use-withAccounts"),
         .package(url: "https://github.com/Infomaniak/ios-notifications", .upToNextMajor(from: "16.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "18.0.0")),

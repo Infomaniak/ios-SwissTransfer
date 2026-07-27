@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCore
 import InfomaniakCoreCommonUI
 import InfomaniakCoreUIResources
 import InfomaniakCreateAccount
@@ -43,6 +44,15 @@ struct OnboardingBottomButtonsView: View {
 
     let slideCount: Int
 
+    private var shouldUseWithAccounts: Bool {
+        #if DEBUG
+        if ApiEnvironment.current == .prod {
+            return false
+        }
+        #endif
+        return true
+    }
+
     init(
         loginHandler: LoginHandler,
         isPresentingInterAppLogin: Bool = false,
@@ -68,7 +78,8 @@ struct OnboardingBottomButtonsView: View {
                 ContinueWithAccountView(
                     isLoading: loginHandler.isLoading,
                     excludingUserIds: excludedUserIds,
-                    allowsMultipleSelection: false
+                    allowsMultipleSelection: false,
+                    shouldUseWithAccounts: shouldUseWithAccounts
                 ) {
                     loginPressed()
                 } onLoginWithAccountsPressed: { accounts in
