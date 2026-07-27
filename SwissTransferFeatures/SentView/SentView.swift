@@ -34,29 +34,31 @@ public struct SentView: View {
     @State private var selectedOrganization: STDOrganizationAccount?
     @State private var organizations: [STDOrganizationAccount] = []
     @State private var isShowingOrganizationList = false
+    @State private var hasTransfers = false
 
     public init() {}
 
     public var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading) {
-                Text(direction.title)
-                    .font(.ST.title)
-                    .foregroundStyle(Color.ST.textPrimary)
+            if hasTransfers {
+                VStack(alignment: .leading) {
+                    Text(direction.title)
+                        .font(.ST.title)
+                        .foregroundStyle(Color.ST.textPrimary)
 
-                if let selectedOrganization {
-                    OrganizationSelectorView(
-                        isShowingOrganizationList: $isShowingOrganizationList,
-                        selectedOrganization: selectedOrganization
-                    )
+                    if let selectedOrganization {
+                        OrganizationSelectorView(
+                            isShowingOrganizationList: $isShowingOrganizationList,
+                            selectedOrganization: selectedOrganization
+                        )
+                    }
                 }
+                .padding(.horizontal, value: .medium)
+                .padding(.top, value: .medium)
+                .listRowInsets(EdgeInsets(.zero))
+                .listRowSeparator(.hidden)
+                .listRowBackground(Color.ST.background)
             }
-            .padding(.horizontal, value: .medium)
-            .padding(.top, value: .medium)
-            .listRowInsets(EdgeInsets(.zero))
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.ST.background)
-
             TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
                 SentEmptyView()
             }
@@ -67,8 +69,19 @@ public struct SentView: View {
             organizations = organizationAccounts
         }
         .task {
-            guard let selectedOrganization = await accountManager.selectedOrganization() else { return }
-            self.selectedOrganization = selectedOrganization
+            guard let flow = await accountManager.selectedOrganizationFlow() else { return }
+            for await value in flow {
+                withAnimation {
+                    selectedOrganization = value
+                }
+            }
+        }
+        .task {
+            for await value in transferManager.hasAccountTransferFlow() {
+                withAnimation {
+                    hasTransfers = value.boolValue
+                }
+            }
         }
         .onChange(of: selectedOrganization) { newValue in
             guard let newValue else { return }
