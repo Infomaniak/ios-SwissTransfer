@@ -30,6 +30,7 @@ public struct RootTransferRestorableState: Sendable {
     public let validityPeriod: ValidityPeriod
     public let downloadLimit: DownloadLimit
     public let emailLanguage: EmailLanguage
+    public let organizationAccountId: Int?
 
     init(uploadSession: any UploadSession) {
         authorEmail = uploadSession.authorEmail
@@ -47,6 +48,7 @@ public struct RootTransferRestorableState: Sendable {
         validityPeriod = uploadSession.duration
         downloadLimit = uploadSession.numberOfDownload
         emailLanguage = uploadSession.language
+        organizationAccountId = nil
     }
 
     init(uploadSessionRequest: UploadSessionRequest) {
@@ -65,5 +67,6 @@ public struct RootTransferRestorableState: Sendable {
         validityPeriod = uploadSessionRequest.validityPeriod
         downloadLimit = uploadSessionRequest.downloadCountLimit
         emailLanguage = uploadSessionRequest.languageCode
+        organizationAccountId = uploadSessionRequest.organizationAccountId.map { Int(truncating: $0) }
     }
 }
