@@ -250,7 +250,7 @@ public actor AccountManager: ObservableObject {
         await switchUser(newCurrentUserId: nextToken.value.userId)
     }
 
-    private func selectedOrganization() async -> STDOrganizationAccount? {
+    public func selectedOrganization() async -> STDOrganizationAccount? {
         guard let kmpAccountManager = await getSwissTransferManager(
             userId: currentUserId,
             token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
@@ -278,6 +278,7 @@ public actor AccountManager: ObservableObject {
             token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
         )?.accountManager
         try? await kmpAccountManager?.switchToOrganization(organizationAccountId: KotlinLong(integerLiteral: organizationId))
+        objectWillChange.send()
     }
 
     public func enableBugTrackerIfAvailable() async {

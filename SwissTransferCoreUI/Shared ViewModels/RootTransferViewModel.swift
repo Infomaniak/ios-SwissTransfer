@@ -45,6 +45,8 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
     @Published public var emailText = ""
+    @Published public var selectedOrganization: STDOrganizationAccount? = nil
+    @Published public var organizations: [STDOrganizationAccount] = []
 
     public private(set) var initializedFromShare: Bool
 
