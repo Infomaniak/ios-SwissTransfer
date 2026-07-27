@@ -26,6 +26,7 @@ let packageSettings = PackageSettings(
         "Lottie": .framework,
         "NukeUI": .framework,
         "Nuke": .framework,
+        "MyKSuite": .framework,
         "OrderedCollections": .framework,
         "QRCode": .framework,
         "Sentry-Dynamic": .framework,
