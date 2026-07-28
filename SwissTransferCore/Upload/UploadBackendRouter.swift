@@ -128,6 +128,7 @@ public final class UploadBackendRouter: Sendable {
                 return try SendableUploadSession(
                     transfer: transfer,
                     authorEmail: localUploadSession.authorEmail,
+                    organizationAccountId: localUploadSession.organizationAccountId.map { Int(truncating: $0) },
                     localFilePaths: localFilePaths
                 )
             } catch {

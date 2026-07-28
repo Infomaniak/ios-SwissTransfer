@@ -124,7 +124,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         uploadingFiles.append(uploadingFile)
     }
 
-    private func uploadAllFiles(organizationAccountId: Int64? = nil) async {
+    private func uploadAllFiles() async {
         do {
             let expiringActivity = ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
             expiringActivity.start()
@@ -144,7 +144,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
             let linkId = try await uploadBackendRouter.finishUploadSession(
                 uuid: uploadSession.uuid,
-                organizationAccountId: organizationAccountId
+                organizationAccountId: uploadSession.organizationAccountId.map { Int64($0) }
             )
 
             await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
