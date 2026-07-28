@@ -221,6 +221,7 @@ public struct UploadProgressView: View {
         guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
         rootTransferViewState.cancelUploadContainer = CurrentUploadContainer(
             uuid: currentUploadSessionUUID,
+            organizationAccountId: currentUploadSession?.organizationAccountId.map(Int64.init),
             uploadsCancellable: transferSessionManager,
             uploadBackendRouter: UploadBackendRouter(
                 currentUser: currentUser,

@@ -26,6 +26,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
+    @Environment(\.isCompactWindow) private var isCompactWindow
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
     @EnvironmentObject private var transferManager: TransferManager
 
@@ -42,9 +43,11 @@ public struct SentView: View {
         VStack(alignment: .leading) {
             if hasTransfers {
                 VStack(alignment: .leading) {
-                    Text(direction.title)
-                        .font(.ST.title)
-                        .foregroundStyle(Color.ST.textPrimary)
+                    if isCompactWindow {
+                        Text(direction.title)
+                            .font(.ST.title)
+                            .foregroundStyle(Color.ST.textPrimary)
+                    }
 
                     if let selectedOrganization {
                         OrganizationSelectorView(

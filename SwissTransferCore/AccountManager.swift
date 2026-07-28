@@ -188,11 +188,13 @@ public actor AccountManager: ObservableObject {
             return nil
         }
 
+        let selectedOrganization = await selectedOrganization()
+
         if let userProfile = await userProfileStore.getUserProfile(id: userId) {
             return UserSession(
                 userId: userId,
                 userProfile: userProfile,
-                organization: await selectedOrganization(),
+                organization: selectedOrganization,
                 swissTransferManager: swissTransferManager
             )
         } else {
@@ -201,7 +203,7 @@ public actor AccountManager: ObservableObject {
                 return UserSession(
                     userId: userId,
                     userProfile: userProfile,
-                    organization: await selectedOrganization(),
+                    organization: selectedOrganization,
                     swissTransferManager: swissTransferManager
                 )
             }

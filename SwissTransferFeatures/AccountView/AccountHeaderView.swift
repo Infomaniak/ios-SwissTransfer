@@ -27,8 +27,6 @@ import SwissTransferCoreUI
 
 public struct AccountHeaderView: View {
     @Environment(\.currentUser) private var currentUser
-    @EnvironmentObject private var mainViewState: MainViewState
-    @InjectService private var accountManager: SwissTransferCore.AccountManager
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
