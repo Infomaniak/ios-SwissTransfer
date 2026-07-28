@@ -129,6 +129,6 @@ public final class RootTransferViewModel: ObservableObject {
         guard let organizationAccountId = state.organizationAccountId else {
             return
         }
-        selectedOrganization = organizations[organizationAccountId]
+        selectedOrganization = organizations.first { $0.id == Int64(organizationAccountId) }
     }
 }
