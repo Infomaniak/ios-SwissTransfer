@@ -30,8 +30,8 @@ public enum RootViewType: Equatable {
             return true
         case (.preloading, .preloading):
             return true
-        case (.mainView(let lhsMainViewState, let lhsUser), .mainView(let rhsMainViewState, let rhsUser)):
-            return lhsUser?.id == rhsUser?.id // TODO: maybe check mainViewState ?
+        case (.mainView(let lhsMainViewState, let lhsSession), .mainView(let rhsMainViewState, let rhsSession)):
+            return lhsSession?.userId == rhsSession?.userId // TODO: maybe check mainViewState ?
         case (.updateRequired, .updateRequired):
             return true
         default:
@@ -39,7 +39,7 @@ public enum RootViewType: Equatable {
         }
     }
 
-    case mainView(MainViewState, UserProfile?)
+    case mainView(MainViewState, UserSession?)
     case preloading
     case onboarding
     case updateRequired
@@ -76,7 +76,7 @@ public final class RootViewState: ObservableObject {
                         swissTransferManager: currentSession.swissTransferManager
                     )
                 ),
-                currentSession.userProfile
+                currentSession
             )
         } else {
             state = .onboarding
