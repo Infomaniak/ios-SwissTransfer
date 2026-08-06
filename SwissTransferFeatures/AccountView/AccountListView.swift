@@ -28,7 +28,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct AccountListView: View {
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
 
@@ -41,7 +41,7 @@ struct AccountListView: View {
             VStack(spacing: IKPadding.micro) {
                 if let users {
                     ForEach(users, id: \.id) { user in
-                        AccountCellView(selectedUserId: currentUser?.id, user: user)
+                        AccountCellView(selectedUserId: currentSession?.userProfile?.id, user: user)
                     }
                 } else {
                     ForEach(0 ..< userCount, id: \.self) { _ in

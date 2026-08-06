@@ -48,7 +48,7 @@ extension ApiToken: @retroactive Identifiable {
 public struct SettingsView: View {
     @InjectService private var matomo: MatomoUtils
 
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
 
@@ -132,7 +132,7 @@ public struct SettingsView: View {
                 }
                 .settingsCell()
 
-                if let currentUserId = currentUser?.id {
+                if let currentUserId = currentSession?.userProfile?.id {
                     Button {
                         @InjectService var matomo: MatomoUtils
                         matomo.track(eventWithCategory: .settings, name: .deleteMyAccount)

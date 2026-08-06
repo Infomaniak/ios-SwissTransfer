@@ -33,7 +33,7 @@ import SwissTransferCoreUI
 
 public struct UploadProgressView: View {
     @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
@@ -221,10 +221,10 @@ public struct UploadProgressView: View {
         guard let currentUploadSessionUUID = currentUploadSession?.uuid else { return }
         rootTransferViewState.cancelUploadContainer = CurrentUploadContainer(
             uuid: currentUploadSessionUUID,
-            organizationAccountId: currentUploadSession?.organizationAccountId.map(Int64.init),
+            organizationAccountId: currentUploadSession?.organizationAccountId,
             uploadsCancellable: transferSessionManager,
             uploadBackendRouter: UploadBackendRouter(
-                currentUser: currentUser,
+                currentUser: currentSession?.userProfile,
                 swissTransferManager: mainViewState.swissTransferManager
             )
         )

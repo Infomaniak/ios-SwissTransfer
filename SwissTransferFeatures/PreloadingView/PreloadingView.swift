@@ -93,7 +93,7 @@ public struct PreloadingView: View {
                             swissTransferManager: userSession.swissTransferManager
                         )
                     ),
-                    userSession.userProfile
+                    userSession
                 )
             } else if let otherToken = tokenStore.getAllTokens().first,
                       let userSession = await accountManager.getUserSession(for: otherToken.key) {
@@ -107,7 +107,7 @@ public struct PreloadingView: View {
                             swissTransferManager: userSession.swissTransferManager
                         )
                     ),
-                    userSession.userProfile
+                    userSession
                 )
             } else if skipOnboarding {
                 await accountManager.createAndSetCurrentAccount()
