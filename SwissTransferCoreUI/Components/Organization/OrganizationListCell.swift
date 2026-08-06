@@ -72,7 +72,7 @@ struct OrganizationCellView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, value: .mini)
+//            .padding(.vertical, value: .mini)
         }
     }
 }
