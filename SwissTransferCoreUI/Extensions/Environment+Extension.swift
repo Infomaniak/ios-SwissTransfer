@@ -18,6 +18,7 @@
 
 import InfomaniakCore
 import SwiftUI
+import SwissTransferCore
 
 public typealias DismissModalAction = () -> Void
 
@@ -25,5 +26,5 @@ public extension EnvironmentValues {
     @Entry var dismissModal: DismissModalAction = { /* dismiss nothing by default */ }
     @Entry var shareExtensionContext: ShareExtensionContext?
     @Entry var isRunningInAppClip = false
-    @Entry var currentUser: UserProfile?
+    @Entry var currentSession: UserSession?
 }
