@@ -23,28 +23,29 @@ import STResources
 import SwiftUI
 
 public struct OrganizationListView: View {
-    let selectedOrganization: Binding<STDOrganizationAccount?>
-    let organizations: [STDOrganizationAccount]
+    @EnvironmentObject private var mainViewState: MainViewState
+    @Environment(\.currentSession) private var currentSession
 
-    public init(selectedOrganization: Binding<STDOrganizationAccount?>, organizations: [STDOrganizationAccount]) {
+    let selectedOrganization: Binding<STDOrganizationAccount?>
+
+    @State private var organizations: [STDOrganizationAccount] = []
+
+    public init(selectedOrganization: Binding<STDOrganizationAccount?>) {
         self.selectedOrganization = selectedOrganization
-        self.organizations = organizations
     }
 
     public var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: IKPadding.micro) {
-                ForEach(organizations, id: \.self) { orga in
-                    OrganizationCellView(organization: orga, isSelected: orga.id == selectedOrganization.wrappedValue?.id) {
-                        selectedOrganization.wrappedValue = orga
-                    }
-
-                    if orga.id != organizations.last?.id {
-                        Divider()
-                    }
-                }
+        List(organizations, id: \.id) { orga in
+            OrganizationCellView(organization: orga, isSelected: orga.id == selectedOrganization.wrappedValue?.id) {
+                selectedOrganization.wrappedValue = orga
             }
-            .padding(.horizontal, value: .medium)
+        }
+        .listStyle(.plain)
+        .frame(height: CGFloat(organizations.count * 70))
+        .task {
+            guard let currentUser = currentSession?.userProfile else { return }
+            organizations = (try? await mainViewState.swissTransferManager.accountManager
+                .organizationAccountsForUser(userId: Int64(currentUser.id))) ?? []
         }
     }
 }

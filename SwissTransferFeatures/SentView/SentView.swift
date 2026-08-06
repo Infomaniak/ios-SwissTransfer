@@ -94,7 +94,7 @@ public struct SentView: View {
             isShowingOrganizationList = false
         }
         .stFloatingPanel(isPresented: $isShowingOrganizationList) {
-            OrganizationListView(selectedOrganization: $selectedOrganization, organizations: organizations)
+            OrganizationListView(selectedOrganization: $selectedOrganization)
         }
     }
 }

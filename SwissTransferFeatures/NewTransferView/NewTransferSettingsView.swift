@@ -65,7 +65,7 @@ struct NewTransferSettingsView: View {
                         isPresented: $isShowingOrganizationSetting,
                         title: STResourcesStrings.Localizable.settingsOptionOrganization
                     ) {
-                        OrganizationListView(selectedOrganization: $selectedOrganization, organizations: organizations)
+                        OrganizationListView(selectedOrganization: $selectedOrganization)
                     }
                 }
                 NewTransferSettingCell(
