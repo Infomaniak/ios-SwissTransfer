@@ -43,9 +43,9 @@ public struct OrganizationListView: View {
         .listStyle(.plain)
         .frame(height: CGFloat(organizations.count * 70))
         .task {
-            guard let currentUser = currentSession?.userProfile else { return }
+            guard let userId = currentSession?.userProfile?.id else { return }
             organizations = (try? await mainViewState.swissTransferManager.accountManager
-                .organizationAccountsForUser(userId: Int64(currentUser.id))) ?? []
+                .organizationAccountsForUser(userId: Int64(userId))) ?? []
         }
     }
 }

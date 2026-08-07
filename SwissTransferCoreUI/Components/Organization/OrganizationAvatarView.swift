@@ -54,7 +54,7 @@ public struct OrganizationAvatarView: View {
     private var initialsView: some View {
         OrganizationInitialsView(
             initials: NameFormatter(fullName: organization.name).initials,
-            backgroundColor: Color.backgroundColor(from: organization.name.hash),
+            backgroundColor: Color.backgroundColor(from: Int(organization.id)),
             foregroundColor: Color.white,
             size: avatarSize
         )
