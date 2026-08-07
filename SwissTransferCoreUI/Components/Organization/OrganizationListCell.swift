@@ -18,49 +18,29 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
-import InfomaniakDI
 import MyKSuite
-import NukeUI
 import STCore
 import STResources
 import SwiftUI
-import SwissTransferCore
 
 struct OrganizationCellView: View {
     let organization: STDOrganizationAccount
     let isSelected: Bool
-
     let action: () -> Void
-
-    private var uppercasedOrganizationPack: String {
-        if var first = organization.pack.first {
-            first = first.uppercased().first!
-            return String(first) + organization.pack.dropFirst()
-        }
-        return ""
-    }
 
     var body: some View {
         Button(action: action) {
             HStack {
                 OrganizationAvatarView(organization: organization)
+
                 VStack(alignment: .leading, spacing: 0) {
                     Text(organization.name)
                         .font(.ST.body)
                         .foregroundStyle(Color.ST.textPrimary)
                         .lineLimit(1)
 
-                    if organization.type == "ksuite" {
-                        Text(uppercasedOrganizationPack)
-                            .font(.ST.callout)
-                            .foregroundStyle(Color.ST.textSecondary)
-                            .lineLimit(1)
-                    } else if organization.type == "my_ksuite" {
-                        if organization.pack == "my_ksuite" {
-                            MyKSuiteResources.myKSuiteLogo.swiftUIImage
-                        } else if organization.pack == "my_ksuite_plus" {
-                            MyKSuiteResources.myKSuitePlusLogo.swiftUIImage
-                        }
+                    if let type = OrganizationType(type: organization.type, pack: organization.pack) {
+                        type.label
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -71,8 +51,52 @@ struct OrganizationCellView: View {
                         .foregroundStyle(.tint)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-//            .padding(.vertical, value: .mini)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+enum OrganizationType {
+    case ksuite(pack: String)
+    case myKSuite(pack: MyKSuitePack)
+
+    enum MyKSuitePack: String {
+        case myKSuite = "my_ksuite"
+        case myKSuitePlus = "my_ksuite_plus"
+
+        var image: Image {
+            switch self {
+            case .myKSuite:
+                return MyKSuiteResources.myKSuiteLogo.swiftUIImage
+            case .myKSuitePlus:
+                return MyKSuiteResources.myKSuitePlusLogo.swiftUIImage
+            }
+        }
+    }
+
+    init?(type: String, pack: String) {
+        switch type {
+        case "ksuite":
+            self = .ksuite(pack: pack)
+        case "my_ksuite":
+            let myKSuitePack = MyKSuitePack(rawValue: pack) ?? .myKSuite
+            self = .myKSuite(pack: myKSuitePack)
+        default:
+            return nil
+        }
+    }
+
+    var label: some View {
+        switch self {
+        case .ksuite(let pack):
+            return AnyView(
+                Text(pack.capitalized)
+                    .font(.ST.callout)
+                    .foregroundStyle(Color.ST.textSecondary)
+                    .lineLimit(1)
+            )
+        case .myKSuite(let pack):
+            return AnyView(pack.image)
         }
     }
 }
