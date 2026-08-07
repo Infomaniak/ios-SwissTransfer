@@ -100,7 +100,7 @@ public final class UploadBackendRouter: Sendable {
                 languageCode: newUploadSession.language,
                 filesMetadata: filesMetadata,
                 recipientsEmails: newUploadSession.recipientsEmails,
-                organizationAccountId: organizationAccountId?.toKotlinLong()
+                organizationAccountId: KotlinLong(value: organizationAccountId)
             )
 
             let localUUID = UUID().uuidString
@@ -142,22 +142,22 @@ public final class UploadBackendRouter: Sendable {
         }
     }
 
-    public func finishUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws -> String {
-        if currentUser != nil {
+    public func finishUploadSession(uuid: String, organizationAccountId: Int? = nil) async throws -> String {
+        if currentUser != nil, let organizationAccountId = organizationAccountId {
             return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(
                 transferId: uuid,
-                organizationAccountId: organizationAccountId?.toKotlinLong()
+                organizationAccountId: KotlinLong(integerLiteral: organizationAccountId)
             )
         } else {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
         }
     }
 
-    public func cancelUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws {
-        if currentUser != nil {
+    public func cancelUploadSession(uuid: String, organizationAccountId: Int? = nil) async throws {
+        if currentUser != nil, let organizationAccountId = organizationAccountId {
             _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(
                 transferId: uuid,
-                organizationAccountId: organizationAccountId?.toKotlinLong(),
+                organizationAccountId: KotlinLong(integerLiteral: organizationAccountId),
                 failed: false
             )
         } else {

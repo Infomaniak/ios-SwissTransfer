@@ -19,8 +19,11 @@
 import Foundation
 import STCore
 
-public extension Int64 {
-    func toKotlinLong() -> KotlinLong {
-        return KotlinLong(value: self)
+extension KotlinLong {
+    convenience init?(value: Int64?) {
+        guard let value else {
+            return nil
+        }
+        self.init(value: value)
     }
 }

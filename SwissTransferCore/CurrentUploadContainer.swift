@@ -32,12 +32,12 @@ public final class DummyUploadCancellable: UploadCancellable {
 public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
-    public let organizationAccountId: Int64?
+    public let organizationAccountId: Int?
     public let uploadsCancellable: UploadCancellable
     private let uploadBackendRouter: UploadBackendRouter?
 
     public init(uuid: String,
-                organizationAccountId: Int64? = nil,
+                organizationAccountId: Int? = nil,
                 uploadsCancellable: UploadCancellable,
                 uploadBackendRouter: UploadBackendRouter?) {
         self.uuid = uuid
