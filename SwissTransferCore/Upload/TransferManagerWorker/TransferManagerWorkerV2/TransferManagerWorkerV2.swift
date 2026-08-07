@@ -144,7 +144,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
             let linkId = try await uploadBackendRouter.finishUploadSession(
                 uuid: uploadSession.uuid,
-                organizationAccountId: uploadSession.organizationAccountId.map { Int64($0) }
+                organizationAccountId: uploadSession.organizationAccountId
             )
 
             await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
