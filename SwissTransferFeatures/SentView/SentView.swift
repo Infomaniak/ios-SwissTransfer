@@ -26,21 +26,52 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @Environment(\.isCompactWindow) private var isCompactWindow
     @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
+    @Environment(\.currentSession) private var currentSession
+    @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var transferManager: TransferManager
+    @EnvironmentObject private var mainViewState: MainViewState
 
     private let direction = TransferDirection.sent
 
-    @State private var selectedOrganization: STDOrganizationAccount?
-    @State private var organizations: [STDOrganizationAccount] = []
     @State private var isShowingOrganizationList = false
     @State private var hasTransfers = false
+
+    private var selectedOrganization: Binding<STDOrganizationAccount?> {
+        Binding(
+            get: { currentSession?.organization },
+            set: { newValue in
+                guard let organizationAccountId = newValue?.id else { return }
+                Task { @MainActor in
+                    await accountManager.switchToOrganization(organizationId: Int(organizationAccountId))
+                }
+            }
+        )
+    }
 
     public init() {}
 
     public var body: some View {
         VStack(alignment: .leading) {
+            TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
+                SentEmptyView()
+            }
+            .matomoView(view: .sent)
+        }
+        .task {
+            for await value in transferManager.hasAccountTransferFlow() {
+                withAnimation {
+                    hasTransfers = value.boolValue
+                }
+            }
+        }
+        .onChange(of: currentSession?.organization?.id) { _ in
+            isShowingOrganizationList = false
+        }
+        .stFloatingPanel(isPresented: $isShowingOrganizationList) {
+            OrganizationListView(selectedOrganization: selectedOrganization)
+        }
+        .safeAreaInset(edge: .top, alignment: .leading) {
             if hasTransfers {
                 VStack(alignment: .leading) {
                     if isCompactWindow {
@@ -49,7 +80,7 @@ public struct SentView: View {
                             .foregroundStyle(Color.ST.textPrimary)
                     }
 
-                    if let selectedOrganization {
+                    if let selectedOrganization = currentSession?.organization {
                         OrganizationSelectorView(
                             isShowingOrganizationList: $isShowingOrganizationList,
                             selectedOrganization: selectedOrganization
@@ -62,39 +93,6 @@ public struct SentView: View {
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.ST.background)
             }
-            TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
-                SentEmptyView()
-            }
-            .matomoView(view: .sent)
-        }
-        .task {
-            guard let organizationAccounts = await accountManager.organizationAccounts() else { return }
-            organizations = organizationAccounts
-        }
-        .task {
-            guard let flow = await accountManager.selectedOrganizationFlow() else { return }
-            for await value in flow {
-                withAnimation {
-                    selectedOrganization = value
-                }
-            }
-        }
-        .task {
-            for await value in transferManager.hasAccountTransferFlow() {
-                withAnimation {
-                    hasTransfers = value.boolValue
-                }
-            }
-        }
-        .onChange(of: selectedOrganization) { newValue in
-            guard let newValue else { return }
-            Task {
-                await accountManager.switchToOrganization(organizationId: Int(newValue.id))
-            }
-            isShowingOrganizationList = false
-        }
-        .stFloatingPanel(isPresented: $isShowingOrganizationList) {
-            OrganizationListView(selectedOrganization: $selectedOrganization)
         }
     }
 }

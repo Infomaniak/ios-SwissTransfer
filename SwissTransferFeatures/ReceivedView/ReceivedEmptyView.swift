@@ -47,9 +47,9 @@ struct ReceivedEmptyView: View {
         .onChangeOfSelectedItems($selectedItems)
         .appBackground()
         .task {
-            let sentTransfers = transferManager.getAllTransfers()
-            for await transfers in sentTransfers {
-                hasAlreadyMadeTransfers = !transfers.isEmpty
+            let sentTransfers = transferManager.hasAnyTransferFlow()
+            for await hasSentTransfers in sentTransfers {
+                hasAlreadyMadeTransfers = hasSentTransfers.boolValue
             }
         }
     }
