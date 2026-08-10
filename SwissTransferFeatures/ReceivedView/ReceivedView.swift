@@ -21,6 +21,7 @@ import STTransferList
 import SwiftUI
 
 public struct ReceivedView: View {
+    @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var transferManager: TransferManager
 
     private let direction = TransferDirection.received
@@ -28,10 +29,23 @@ public struct ReceivedView: View {
     public init() {}
 
     public var body: some View {
-        TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromReceived) {
-            ReceivedEmptyView()
+        VStack(alignment: .leading) {
+            if isCompactWindow {
+                Text(direction.title)
+                    .font(.ST.title)
+                    .foregroundStyle(Color.ST.textPrimary)
+                    .padding(.horizontal, value: .medium)
+                    .padding(.top, value: .medium)
+                    .listRowInsets(EdgeInsets(.zero))
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.ST.background)
+            }
+
+            TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromReceived) {
+                ReceivedEmptyView()
+            }
+            .matomoView(view: .receivedTransferDetails)
         }
-        .matomoView(view: .receivedTransferDetails)
     }
 }
 

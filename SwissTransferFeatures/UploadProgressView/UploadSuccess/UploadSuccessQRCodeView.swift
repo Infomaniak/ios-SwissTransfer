@@ -32,7 +32,7 @@ struct UploadSuccessQRCodeView: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @State private var isShowingShareTipSheet = false
     @State private var isShowingShareSheet = false
@@ -41,7 +41,7 @@ struct UploadSuccessQRCodeView: View {
     let transferCompletedResult: TransferCompletedResult
 
     private var transferURL: URL? {
-        let isUsingApiV2 = currentUser != nil
+        let isUsingApiV2 = currentSession?.userProfile != nil
         let url: String
         if isUsingApiV2 {
             let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator

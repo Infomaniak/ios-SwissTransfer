@@ -32,11 +32,16 @@ public final class DummyUploadCancellable: UploadCancellable {
 public struct CurrentUploadContainer: Identifiable, Sendable {
     public var id: String { uuid }
     public let uuid: String
+    public let organizationAccountId: Int?
     public let uploadsCancellable: UploadCancellable
     private let uploadBackendRouter: UploadBackendRouter?
 
-    public init(uuid: String, uploadsCancellable: UploadCancellable, uploadBackendRouter: UploadBackendRouter?) {
+    public init(uuid: String,
+                organizationAccountId: Int? = nil,
+                uploadsCancellable: UploadCancellable,
+                uploadBackendRouter: UploadBackendRouter?) {
         self.uuid = uuid
+        self.organizationAccountId = organizationAccountId
         self.uploadsCancellable = uploadsCancellable
         self.uploadBackendRouter = uploadBackendRouter
     }
@@ -46,7 +51,10 @@ extension CurrentUploadContainer: Cancellable {
     public func cancel() {
         Task.detached {
             await uploadsCancellable.cancelUploads()
-            try? await uploadBackendRouter?.cancelUploadSession(uuid: uuid)
+            try? await uploadBackendRouter?.cancelUploadSession(
+                uuid: uuid,
+                organizationAccountId: organizationAccountId
+            )
         }
     }
 }

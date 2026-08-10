@@ -57,17 +57,6 @@ public struct TransferList<EmptyView: View>: View {
     public var body: some View {
         List(selection: $mainViewState.selectedDestination) {
             if let sections = viewModel.sections, !sections.isEmpty {
-                if isCompactWindow {
-                    Text(direction.title)
-                        .font(.ST.title)
-                        .foregroundStyle(Color.ST.textPrimary)
-                        .padding(.horizontal, value: .medium)
-                        .padding(.top, value: .medium)
-                        .listRowInsets(EdgeInsets(.zero))
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.ST.background)
-                }
-
                 ForEach(sections) { section in
                     Section {
                         ForEach(section.transfers, id: \.uuid) { transfer in

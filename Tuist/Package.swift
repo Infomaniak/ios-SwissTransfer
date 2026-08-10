@@ -26,6 +26,7 @@ let packageSettings = PackageSettings(
         "Lottie": .framework,
         "NukeUI": .framework,
         "Nuke": .framework,
+        "MyKSuite": .framework,
         "OrderedCollections": .framework,
         "QRCode": .framework,
         "Sentry-Dynamic": .framework,
@@ -55,7 +56,11 @@ let package = Package(
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.1.2")),
         .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "18.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-create-account", .upToNextMajor(from: "25.0.0")),
-        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", .upToNextMajor(from: "10.0.0")),
+//        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", ),
+        .package(
+            url: "https://github.com/Infomaniak/multiplatform-SwissTransfer",
+            revision: "45b1ff2d9c0646c6f6cd388731f5cf9e0c50411a"
+        ),
         .package(url: "https://github.com/Infomaniak/swift-concurrency", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/swift-modal-presentation", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),

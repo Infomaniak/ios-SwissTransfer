@@ -33,11 +33,14 @@ public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(\.shareExtensionContext) private var shareExtensionContext
+    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
+
+    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @StateObject private var router = FileListRouter()
     @State private var isLoadingFileToUpload = false
@@ -76,6 +79,8 @@ public struct NewTransferView: View {
                         limit: $viewModel.downloadLimit,
                         language: $viewModel.emailLanguage,
                         password: $viewModel.password,
+                        selectedOrganization: $viewModel.selectedOrganization,
+                        organizations: viewModel.organizations,
                         transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
@@ -116,6 +121,14 @@ public struct NewTransferView: View {
             cancelTasks()
         }
         .matomoView(view: .newTransfer)
+        .task {
+            guard let organizationAccounts = await accountManager.organizationAccounts() else { return }
+            viewModel.organizations = organizationAccounts
+        }
+        .task {
+            guard let selectedOrganization = await accountManager.selectedOrganization() else { return }
+            viewModel.selectedOrganization = selectedOrganization
+        }
     }
 
     private func startUpload() {
@@ -138,7 +151,11 @@ public struct NewTransferView: View {
 
             let uploadBackendRouter = mainViewState.uploadBackendRouter
             let localUploadSessionUUID = try await uploadBackendRouter
-                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession, title: viewModel.title)
+                .createAndGetLocalUploadSessionUUID(
+                    newUploadSession: newUploadSession,
+                    title: viewModel.title,
+                    organizationAccountId: viewModel.selectedOrganization?.id
+                )
 
             if let shareExtensionContext {
                 let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator
@@ -148,8 +165,10 @@ public struct NewTransferView: View {
             } else {
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             }
-
             isLoadingFileToUpload = false
+            if let selectedOrganizationId = viewModel.selectedOrganization?.id {
+                await accountManager.switchToOrganization(organizationId: Int(selectedOrganizationId))
+            }
         }
     }
 

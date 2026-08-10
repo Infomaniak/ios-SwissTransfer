@@ -69,7 +69,7 @@ class ShareViewController: UIViewController {
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
                 .environment(\.shareExtensionContext, ShareExtensionContext { self.dismiss(animated: true) })
-                .environment(\.currentUser, userSession.userProfile)
+                .environment(\.currentSession, userSession)
                 .environmentObject(mainViewState)
                 .defaultAppStorage(.shared)
 
