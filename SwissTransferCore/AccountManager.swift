@@ -280,6 +280,7 @@ public actor AccountManager: ObservableObject {
             token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
         )?.accountManager
         try? await kmpAccountManager?.switchToOrganization(organizationAccountId: KotlinLong(integerLiteral: organizationId))
+        objectWillChange.send()
     }
 
     public func enableBugTrackerIfAvailable() async {
