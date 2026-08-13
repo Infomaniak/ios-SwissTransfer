@@ -53,9 +53,9 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
     }
 
     /// V2 api models
-    init(transfer: any Transfer_, localFilePaths: Set<String>) throws {
+    init(transfer: STNTransferApi, authorEmail: String, localFilePaths: Set<String>) throws {
         uuid = transfer.id
-        authorEmail = transfer.senderEmail
+        self.authorEmail = authorEmail
         authorEmailToken = nil
 
         var localFilePaths = localFilePaths
@@ -64,7 +64,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
             guard let localPathIndex = localFilePaths.firstIndex(where: { $0.suffix(remotePath.count) == remotePath }) else {
                 throw DomainError.noLocalPathMatchingRemotePath(
                     localPath: localFilePaths.joined(separator: ", "),
-                    remotePath: remotePath
+                    remotePath: $0.path
                 )
             }
 
@@ -91,7 +91,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
         }
     }
 
-    init(transferFile: any File_, localPath: String) {
+    init(transferFile: STNFileApi, localPath: String) {
         self.localPath = localPath
         size = transferFile.size
 
