@@ -1,4 +1,5 @@
 {
+  "originHash" : "92537a728029acde848377382300344ffe372c311791ff499986184d2ce24cea",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -120,7 +121,7 @@
     {
       "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-spm.git",
+      "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
         "revision" : "0aff16288f8dc1e3dab35cbf5cf45979673fd3df",
         "version" : "4.6.1"
@@ -156,7 +157,7 @@
     {
       "identity" : "osinfo",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MarcoEidinger/OSInfo.git",
+      "location" : "https://github.com/MarcoEidinger/OSInfo",
       "state" : {
         "revision" : "fa5164afc8ef56c3069728629647f140c03933f5",
         "version" : "1.0.2"
@@ -174,7 +175,7 @@
     {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/realm/realm-core.git",
+      "location" : "https://github.com/realm/realm-core",
       "state" : {
         "revision" : "b4192c46305570577c4d08df790fddec5ab3aa04",
         "version" : "20.1.5"
@@ -210,7 +211,7 @@
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "location" : "https://github.com/SnapKit/SnapKit",
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
