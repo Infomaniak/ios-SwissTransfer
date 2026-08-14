@@ -1,2 +1,1 @@
-- Correction d'un problème concernant la grille d'affichage des fichiers d'un transfert.
 - Diverses corrections et améliorations.
