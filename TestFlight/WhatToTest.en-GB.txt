@@ -1,2 +1,1 @@
-- Fixed an issue with the file grid display in a transfer.
 - Various bug fixes and improvements.
