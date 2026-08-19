@@ -205,6 +205,7 @@ let project = Project(
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
                 .target(name: "SwissTransferShareExtension"),
+                .target(name: "SwissTransfer - App Clip"),
                 .external(name: "STCore"),
                 .external(name: "InfomaniakCoreUIKit"),
                 .external(name: "InfomaniakCoreSwiftUI"),
