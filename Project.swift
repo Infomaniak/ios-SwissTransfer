@@ -8,6 +8,8 @@ import ProjectDescriptionHelpers
 
 let transferList = Feature(name: "TransferList", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
+    TargetDependency.external(name: "STDatabase"),
     TargetDependency.external(name: "DesignSystem"),
     TargetDependency.external(name: "InfomaniakCoreCommonUI"),
     TargetDependency.external(name: "InfomaniakCoreSwiftUI"),
@@ -18,6 +20,8 @@ let transferList = Feature(name: "TransferList", additionalDependencies: [
 
 let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
+    TargetDependency.external(name: "STNetwork"),
     TargetDependency.external(name: "DesignSystem"),
     TargetDependency.external(name: "InfomaniakConcurrency"),
     TargetDependency.external(name: "InfomaniakCoreCommonUI"),
@@ -29,6 +33,8 @@ let newTransferView = Feature(name: "NewTransferView", additionalDependencies: [
 ])
 let uploadProgressView = Feature(name: "UploadProgressView", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
+    TargetDependency.external(name: "STNetwork"),
     TargetDependency.external(name: "DesignSystem"),
     TargetDependency.external(name: "InfomaniakConcurrency"),
     TargetDependency.external(name: "InfomaniakCoreCommonUI"),
@@ -56,6 +62,7 @@ let preloadingView = Feature(name: "PreloadingView", additionalDependencies: [
 ])
 let transferDetailsView = Feature(name: "TransferDetailsView", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
     TargetDependency.external(name: "DesignSystem"),
     TargetDependency.external(name: "InfomaniakCoreCommonUI"),
     TargetDependency.external(name: "InfomaniakCoreSwiftUI"),
@@ -63,6 +70,7 @@ let transferDetailsView = Feature(name: "TransferDetailsView", additionalDepende
 ])
 let deepLinkPasswordView = Feature(name: "DeepLinkPasswordView", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
     TargetDependency.external(name: "DesignSystem"),
     TargetDependency.external(name: "InfomaniakCoreSwiftUI"),
     TargetDependency.external(name: "InfomaniakCoreUIResources"),
@@ -70,11 +78,13 @@ let deepLinkPasswordView = Feature(name: "DeepLinkPasswordView", additionalDepen
 ])
 let receivedView = Feature(name: "ReceivedView", additionalDependencies: [
     transferList,
-    TargetDependency.target(name: "STResources")
+    TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore")
 ])
 let sentView = Feature(name: "SentView", additionalDependencies: [
     transferList,
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
     TargetDependency.external(name: "DesignSystem"),
     TargetDependency.external(name: "InfomaniakCoreCommonUI"),
     TargetDependency.external(name: "InfomaniakCoreSwiftUI")
@@ -84,6 +94,7 @@ let settingsView = Feature(
     name: "SettingsView",
     additionalDependencies: [
         TargetDependency.target(name: "STResources"),
+        TargetDependency.external(name: "STCore"),
         TargetDependency.external(name: "InfomaniakPrivacyManagement"),
         TargetDependency.external(name: "InfomaniakCoreUIResources"),
         TargetDependency.external(name: "SwiftModalPresentation")
@@ -92,6 +103,7 @@ let settingsView = Feature(
 
 let onboardingView = Feature(name: "OnboardingView", additionalDependencies: [
     TargetDependency.target(name: "STResources"),
+    TargetDependency.external(name: "STCore"),
     TargetDependency.external(name: "InfomaniakCoreCommonUI"),
     TargetDependency.external(name: "InfomaniakCoreUIResources"),
     TargetDependency.external(name: "InfomaniakCreateAccount"),
@@ -128,6 +140,7 @@ let mainView = Feature(
         rootTransferView,
         deepLinkPasswordView,
         TargetDependency.target(name: "STResources"),
+        TargetDependency.external(name: "STCore"),
         TargetDependency.external(name: "InAppTwoFactorAuthentication"),
         TargetDependency.external(name: "InfomaniakCoreUIResources"),
         TargetDependency.external(name: "VersionChecker")
@@ -140,6 +153,7 @@ let rootView = Feature(
         mainView,
         preloadingView, onboardingView,
         TargetDependency.target(name: "STResources"),
+        TargetDependency.external(name: "STCore"),
         TargetDependency.external(name: "VersionChecker")
     ]
 )
@@ -192,6 +206,7 @@ let project = Project(
                 .target(name: "SwissTransferCoreUI"),
                 .target(name: "SwissTransferShareExtension"),
                 .target(name: "SwissTransfer - App Clip"),
+                .external(name: "STCore"),
                 .external(name: "InfomaniakCoreUIKit"),
                 .external(name: "InfomaniakCoreSwiftUI"),
                 .external(name: "InfomaniakCore"),
@@ -224,6 +239,7 @@ let project = Project(
             dependencies: [
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
+                .external(name: "STCore"),
                 .external(name: "InfomaniakCoreCommonUI"),
                 .external(name: "InfomaniakCoreSwiftUI"),
                 .external(name: "InfomaniakCoreUIResources"),
@@ -335,6 +351,7 @@ let project = Project(
                     .external(name: "NukeUI"),
                     .external(name: "OrderedCollections"),
                     .external(name: "QRCode"),
+                    .external(name: "STCore"),
                     .external(name: "SwiftModalPresentation"),
                     .external(name: "SwiftUIIntrospect")
                 ],
