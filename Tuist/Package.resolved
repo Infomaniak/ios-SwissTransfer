@@ -1,5 +1,4 @@
 {
-  "originHash" : "92537a728029acde848377382300344ffe372c311791ff499986184d2ce24cea",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -24,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "0430ec9ee85e55b6d5db63b7f2cbcb66a9d2b2ca",
-        "version" : "19.1.3"
+        "revision" : "e667ed34941d4e06f0107d9633e2cc9438685fef",
+        "version" : "19.1.4"
       }
     },
     {
@@ -121,7 +120,7 @@
     {
       "identity" : "lottie-spm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/airbnb/lottie-spm",
+      "location" : "https://github.com/airbnb/lottie-spm.git",
       "state" : {
         "revision" : "0aff16288f8dc1e3dab35cbf5cf45979673fd3df",
         "version" : "4.6.1"
@@ -141,8 +140,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/multiplatform-SwissTransfer",
       "state" : {
-        "revision" : "81dc0784ae164e8faaab432ff464a6e31a4ef763",
-        "version" : "10.1.2"
+        "revision" : "859929177cac035e500504eca55b291f175b9b4f",
+        "version" : "10.1.4"
       }
     },
     {
@@ -157,7 +156,7 @@
     {
       "identity" : "osinfo",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MarcoEidinger/OSInfo",
+      "location" : "https://github.com/MarcoEidinger/OSInfo.git",
       "state" : {
         "revision" : "fa5164afc8ef56c3069728629647f140c03933f5",
         "version" : "1.0.2"
@@ -175,7 +174,7 @@
     {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/realm/realm-core",
+      "location" : "https://github.com/realm/realm-core.git",
       "state" : {
         "revision" : "b4192c46305570577c4d08df790fddec5ab3aa04",
         "version" : "20.1.5"
@@ -211,7 +210,7 @@
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SnapKit/SnapKit",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
