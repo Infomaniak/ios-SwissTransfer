@@ -65,12 +65,12 @@ public struct SettingsView: View {
     public var body: some View {
         List(selection: $mainViewState.selectedDestination) {
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryGeneral)) {
-                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionTheme,
+                SettingsCell(title: InfomaniakCoreUIResources.CoreUILocalizable.themeTitle,
                              subtitle: appSettings.value?.theme.title ?? "",
                              icon: STResourcesAsset.Images.brush) {
                     EditSettingView(Theme.self,
                                     selected: appSettings.value?.theme ?? .system,
-                                    title: STResourcesStrings.Localizable.settingsOptionTheme,
+                                    title: InfomaniakCoreUIResources.CoreUILocalizable.themeTitle,
                                     section: STResourcesStrings.Localizable.settingsThemeTitle,
                                     matomoScreen: .themeSetting)
                 }

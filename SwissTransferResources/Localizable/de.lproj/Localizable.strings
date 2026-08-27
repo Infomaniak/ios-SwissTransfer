@@ -415,9 +415,6 @@
 /* loco:67b83b2918cbcda68004dd22 */
 "settingsOptionTermsAndConditions" = "Allgemeine Geschäftsbedingungen";
 
-/* loco:66c3348f7990bb4f500f8864 */
-"settingsOptionTheme" = "Design";
-
 /* loco:66c5767075065f6a6f0a55f2 */
 "settingsOptionThemeDark" = "Dunkel";
 
@@ -446,7 +443,7 @@
 "settingsSwitchAccount" = "Konto wechseln";
 
 /* loco:66c342a1e87c8303b10b2372 */
-"settingsThemeTitle" = "Wähle ein Thema aus";
+"settingsThemeTitle" = "Wähle ein Design aus";
 
 /* loco:669f75c5d69668e460064082 */
 "settingsTitle" = "Einstellungen";
