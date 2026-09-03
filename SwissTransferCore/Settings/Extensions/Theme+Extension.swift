@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreUIResources
 import InfomaniakDI
 import STCore
 import STResources
@@ -25,11 +26,11 @@ extension Theme: SettingSelectable {
     public var title: String {
         switch self {
         case .dark:
-            return STResourcesStrings.Localizable.settingsOptionThemeDark
+            return InfomaniakCoreUIResources.CoreUILocalizable.themeDark
         case .light:
-            return STResourcesStrings.Localizable.settingsOptionThemeLight
+            return InfomaniakCoreUIResources.CoreUILocalizable.themeLight
         case .system:
-            return STResourcesStrings.Localizable.settingsOptionThemeSystem
+            return InfomaniakCoreUIResources.CoreUILocalizable.themeSystem
         }
     }
 

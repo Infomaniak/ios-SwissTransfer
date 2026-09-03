@@ -415,18 +415,6 @@
 /* loco:67b83b2918cbcda68004dd22 */
 "settingsOptionTermsAndConditions" = "Términos y condiciones";
 
-/* loco:66c3348f7990bb4f500f8864 */
-"settingsOptionTheme" = "Tema";
-
-/* loco:66c5767075065f6a6f0a55f2 */
-"settingsOptionThemeDark" = "Oscuro";
-
-/* loco:66c576623f6469240f064202 */
-"settingsOptionThemeLight" = "Claro";
-
-/* loco:66c57650368985cbec0f7d42 */
-"settingsOptionThemeSystem" = "Sistema";
-
 /* loco:66c334f8fe4641955405f122 */
 "settingsOptionValidityPeriod" = "Periodo de validez";
 
