@@ -87,8 +87,8 @@ struct DownloadProgressAlert: View {
         .task(id: multiDownloadTask.state) {
             switch multiDownloadTask.state {
             case .completed(let urls):
-                downloadCompletedCallback?(urls)
                 await downloadManager.removeMultiDownloadTask()
+                downloadCompletedCallback?(urls)
             case .running(let current, let total):
                 state = .running(currentProgress: current, totalProgress: total)
             case .error(let error):
