@@ -43,7 +43,8 @@ final class TransferSessionManager: ObservableObject {
 
     func uploadFiles(
         for uploadSession: SendableUploadSession,
-        with uploadBackendRouter: UploadBackendRouter
+        with uploadBackendRouter: UploadBackendRouter,
+        usesExpiringActivity: Bool
     ) async throws {
         startThumbnailGeneration(uploadSession: uploadSession)
 
@@ -53,7 +54,7 @@ final class TransferSessionManager: ObservableObject {
         let overallProgress = Progress(totalUnitCount: filesSize)
         overallProgress
             .publisher(for: \.fractionCompleted)
-            .throttle(for: .milliseconds(500), scheduler: RunLoop.main, latest: true)
+            .throttle(for: .milliseconds(100), scheduler: RunLoop.main, latest: true)
             .sink { [weak self] fractionCompleted in
                 self?.fractionCompleted = fractionCompleted
             }
@@ -66,7 +67,9 @@ final class TransferSessionManager: ObservableObject {
                                                                                      uploadSession: uploadSession,
                                                                                      delegate: self)
 
-        try await transferManagerWorker?.uploadFiles(for: uploadSession, remoteUploadFiles: remoteUploadFiles)
+        try await transferManagerWorker?.uploadFiles(for: uploadSession,
+                                                     remoteUploadFiles: remoteUploadFiles,
+                                                     useExpiringActivity: usesExpiringActivity)
     }
 
     func startThumbnailGeneration(uploadSession: SendableUploadSession) {
