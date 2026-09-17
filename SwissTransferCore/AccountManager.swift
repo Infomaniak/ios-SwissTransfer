@@ -238,7 +238,7 @@ public actor AccountManager: ObservableObject {
         objectWillChange.send()
 
         networkLoginService.deleteApiToken(token: removedToken) { result in
-            guard case .failure(let error) = result else { return }
+            guard case let .failure(error) = result else { return }
             Logger.general.error("Failed to delete api token: \(error.localizedDescription)")
         }
     }
@@ -267,11 +267,17 @@ public actor AccountManager: ObservableObject {
     }
 
     public func organizationAccounts() async -> [STDOrganizationAccount]? {
-        let kmpAccountManager = await getSwissTransferManager(
+        guard let kmpAccountManager = await getSwissTransferManager(
             userId: currentUserId,
             token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
-        )?.accountManager
-        return try? await kmpAccountManager?.organizationAccountsForUser(userId: Int64(currentUserId))
+        )?.accountManager else { return nil }
+
+        let organizationsFlow: SkieSwiftFlow<[STDOrganizationAccount]> = kmpAccountManager.organizationAccountsForCurrentUser()
+        for await value in organizationsFlow {
+            return value
+        }
+
+        return nil
     }
 
     public func switchToOrganization(organizationId: Int) async {

@@ -67,6 +67,6 @@ public struct RootTransferRestorableState: Sendable {
         validityPeriod = uploadSessionRequest.validityPeriod
         downloadLimit = uploadSessionRequest.downloadCountLimit
         emailLanguage = uploadSessionRequest.languageCode
-        organizationAccountId = uploadSessionRequest.organizationAccountId.map { Int(truncating: $0) }
+        organizationAccountId = uploadSessionRequest.organizationAccountId?.intValue
     }
 }
