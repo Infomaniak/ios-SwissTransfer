@@ -55,7 +55,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
     }
 
     /// V2 api models
-    init(transfer: STNTransferApi, authorEmail: String, organizationAccountId: Int, localFilePaths: Set<String>) throws {
+    init(transfer: STNTransferApi, authorEmail: String, organizationAccountId: Int?, localFilePaths: Set<String>) throws {
         uuid = transfer.id
         self.authorEmail = authorEmail
         authorEmailToken = nil
