@@ -53,11 +53,11 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
-                if let selectedOrganization {
+                if !organizations.isEmpty {
                     NewTransferSettingCell(
                         title: STResourcesStrings.Localizable.settingsOptionOrganization,
                         icon: STResourcesAsset.Images.building.swiftUIImage,
-                        value: selectedOrganization.name
+                        value: selectedOrganization?.name ?? ""
                     ) {
                         isShowingOrganizationSetting = true
                     }

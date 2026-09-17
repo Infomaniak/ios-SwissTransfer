@@ -24,7 +24,6 @@ import SwiftUI
 
 public struct OrganizationListView: View {
     @EnvironmentObject private var mainViewState: MainViewState
-    @Environment(\.currentSession) private var currentSession
 
     let selectedOrganization: Binding<STDOrganizationAccount?>
 
@@ -35,17 +34,20 @@ public struct OrganizationListView: View {
     }
 
     public var body: some View {
-        List(organizations, id: \.id) { orga in
-            OrganizationCellView(organization: orga, isSelected: orga.id == selectedOrganization.wrappedValue?.id) {
-                selectedOrganization.wrappedValue = orga
+        VStack {
+            ForEach(organizations, id: \.id) { organization in
+                OrganizationCellView(organization: organization, isSelected: organization.id == selectedOrganization.wrappedValue?.id) {
+                    selectedOrganization.wrappedValue = organization
+                }
             }
         }
-        .listStyle(.plain)
-        .frame(height: CGFloat(organizations.count * 70))
+        .padding(.horizontal, value: .medium)
         .task {
-            guard let userId = currentSession?.userProfile?.id else { return }
-            organizations = (try? await mainViewState.swissTransferManager.accountManager
-                .organizationAccountsForUser(userId: Int64(userId))) ?? []
+            let organizationsFlow: SkieSwiftFlow<[STDOrganizationAccount]> = mainViewState.swissTransferManager.accountManager.organizationAccountsForCurrentUser()
+
+            for await value in organizationsFlow {
+                organizations = value
+            }
         }
     }
 }
