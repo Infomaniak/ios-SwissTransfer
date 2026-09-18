@@ -12,6 +12,13 @@ mise install
 eval "$(mise activate bash --shims)"
 
 if [[ -n $CI_ARCHIVE_PATH ]]; then
+    if ! sentry-cli build upload "$CI_ARCHIVE_PATH" \
+        --org sentry \
+        --project "$SENTRY_PROJECT" \
+        --build-configuration Release; then
+        echo "Sentry build archive upload failed. Continuing the release."
+    fi
+
     retries=0
     max_retries=3
     until [ $retries -ge $max_retries ]
@@ -24,7 +31,6 @@ if [[ -n $CI_ARCHIVE_PATH ]]; then
 
     if [ $retries -eq $max_retries ]; then
         echo "sentry-cli failed after $max_retries attempts."
-        exit 1
     fi
 else
     echo "Archive path isn't available. Unable to run dSYMs uploading script."

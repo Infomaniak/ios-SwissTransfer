@@ -1,1 +1,2 @@
-- Various bug fixes and improvements.
+- Improved stability when previewing downloaded files on iOS 16.
+- Theme options in Settings now display the correct labels.

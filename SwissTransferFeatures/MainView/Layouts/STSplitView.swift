@@ -31,7 +31,9 @@ struct STSplitView: View {
     @Environment(\.currentUser) private var currentUser
     @EnvironmentObject private var mainViewState: MainViewState
 
+    // periphery:ignore - Used in body
     @State private var columnVisibility = NavigationSplitViewVisibility.all
+    // periphery:ignore - Used in body
     @State private var selectedItems = [ImportedItem]()
     @StateObject private var avatarLoader = AvatarImageLoader()
 

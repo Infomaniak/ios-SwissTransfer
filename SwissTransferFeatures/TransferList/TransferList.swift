@@ -32,6 +32,7 @@ public struct TransferList<EmptyView: View>: View {
 
     @StateObject private var viewModel: TransferListViewModel
 
+    // periphery:ignore - Used in body
     @State private var selectedItems = [ImportedItem]()
 
     private let direction: TransferDirection
