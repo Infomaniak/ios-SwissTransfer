@@ -86,7 +86,6 @@ public struct OnboardingView: View {
     @EnvironmentObject private var rootViewState: RootViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
-    // periphery:ignore - Used in body
     @State private var selectedSlideIndex = 0
     @StateObject private var loginHandler = LoginHandler()
 

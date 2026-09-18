@@ -26,11 +26,8 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
-    @Environment(\.currentSession) private var currentSession
     @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var transferManager: TransferManager
-    @EnvironmentObject private var mainViewState: MainViewState
 
     private let direction = TransferDirection.sent
 

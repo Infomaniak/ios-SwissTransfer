@@ -27,7 +27,6 @@ struct ReceivedEmptyView: View {
 
     @EnvironmentObject private var transferManager: TransferManager
 
-    // periphery:ignore - Used in body
     @State private var selectedItems = [ImportedItem]()
     @State private var hasAlreadyMadeTransfers = false
 

@@ -33,14 +33,11 @@ public struct NewTransferView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
     @Environment(\.shareExtensionContext) private var shareExtensionContext
-    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
     @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
-
-    @LazyInjectService private var accountManager: SwissTransferCore.AccountManager
 
     @StateObject private var router = FileListRouter()
     @State private var isLoadingFileToUpload = false

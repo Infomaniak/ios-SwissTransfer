@@ -35,7 +35,6 @@ struct UploadSuccessQRCodeView: View {
     @Environment(\.currentSession) private var currentSession
 
     @State private var isShowingShareTipSheet = false
-    // periphery:ignore - Used in body
     @State private var isShowingShareSheet = false
     @State private var isShowingShareTransferSheet = false
 
