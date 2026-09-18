@@ -1,1 +1,2 @@
-- Diverses corrections et améliorations.
+- Amélioration de la stabilité lors de la prévisualisation des fichiers téléchargés sous iOS 16.
+- Les options de thème dans les réglages affichent désormais les libellés corrects.
