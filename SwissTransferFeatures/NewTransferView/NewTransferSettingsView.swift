@@ -26,19 +26,21 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
+
     @State private var showPasswordSetting = false
     @State private var isShowingValiditySetting = false
     @State private var isShowingDownloadLimitSetting = false
     @State private var isShowingLanguageSetting = false
     @State private var isShowingOrganizationSetting = false
 
+    @State private var organizations: [STDOrganizationAccount] = []
+
     @Binding var duration: ValidityPeriod
     @Binding var limit: DownloadLimit
     @Binding var language: EmailLanguage
     @Binding var password: String
-    @Binding var selectedOrganization: STDOrganizationAccount?
-
-    let organizations: [STDOrganizationAccount]
+    @Binding var selectedOrganizationId: Int64?
 
     let transferType: TransferType
 
@@ -57,7 +59,7 @@ struct NewTransferSettingsView: View {
                     NewTransferSettingCell(
                         title: STResourcesStrings.Localizable.settingsOptionOrganization,
                         icon: STResourcesAsset.Images.building.swiftUIImage,
-                        value: selectedOrganization?.name ?? ""
+                        value: organizations.first { $0.id == selectedOrganizationId }?.name ?? ""
                     ) {
                         isShowingOrganizationSetting = true
                     }
@@ -65,7 +67,7 @@ struct NewTransferSettingsView: View {
                         isPresented: $isShowingOrganizationSetting,
                         title: STResourcesStrings.Localizable.settingsOptionOrganization
                     ) {
-                        OrganizationListView(selectedOrganization: $selectedOrganization)
+                        OrganizationListView()
                     }
                 }
                 NewTransferSettingCell(
@@ -142,6 +144,11 @@ struct NewTransferSettingsView: View {
                 PasswordSettingView(password: $password)
             }
         }
+        .observeOrganizationChanges(swissTransferManager: mainViewState.swissTransferManager) { organizationAccounts in
+            organizations = organizationAccounts
+        } onSelectedOrganizationUpdated: { selectedOrganization in
+            selectedOrganizationId = selectedOrganization?.id
+        }
     }
 }
 
@@ -151,8 +158,7 @@ struct NewTransferSettingsView: View {
         limit: .constant(.oneHundred),
         language: .constant(.french),
         password: .constant(""),
-        selectedOrganization: .constant(nil),
-        organizations: [],
+        selectedOrganizationId: .constant(nil),
         transferType: .link
     )
 }

@@ -17,29 +17,39 @@
  */
 
 import DesignSystem
+import MyKSuite
 import STCore
 import SwiftUI
 
 public struct OrganizationSelectorView: View {
-    @Binding var isShowingOrganizationList: Bool
+    @EnvironmentObject private var mainViewState: MainViewState
 
-    let selectedOrganization: STDOrganizationAccount
+    @State private var isShowingOrganizationList = false
+    @State private var selectedOrganization: STDOrganizationAccount?
 
-    public init(isShowingOrganizationList: Binding<Bool>, selectedOrganization: STDOrganizationAccount) {
-        _isShowingOrganizationList = isShowingOrganizationList
-        self.selectedOrganization = selectedOrganization
-    }
+    public init() {}
 
     public var body: some View {
-        Button {
-            isShowingOrganizationList = true
-        } label: {
-            HStack {
-                OrganizationAvatarView(organization: selectedOrganization, avatarSize: IKIconSize.large.rawValue)
-                Text(selectedOrganization.name)
-                Image(systemName: "chevron.down")
+        ZStack {
+            if let selectedOrganization {
+                Button {
+                    isShowingOrganizationList = true
+                } label: {
+                    HStack {
+                        OrganizationAvatarView(organization: selectedOrganization, avatarSize: IKIconSize.large.rawValue)
+                        Text(selectedOrganization.name)
+                        Image(systemName: "chevron.down")
+                    }
+                }
+                .buttonStyle(.plain)
             }
         }
-        .buttonStyle(.plain)
+        .observeOrganizationChanges(swissTransferManager: mainViewState.swissTransferManager,
+                                    onOrganizationsUpdated: nil) { selectedOrganization in
+            self.selectedOrganization = selectedOrganization
+        }
+        .stFloatingPanel(isPresented: $isShowingOrganizationList) {
+            OrganizationListView()
+        }
     }
 }
