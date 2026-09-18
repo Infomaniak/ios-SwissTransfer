@@ -128,7 +128,7 @@ public final class UploadBackendRouter: Sendable {
                 return try SendableUploadSession(
                     transfer: transfer,
                     authorEmail: localUploadSession.authorEmail,
-                    organizationAccountId: localUploadSession.organizationAccountId?.intValue,
+                    organizationAccountId: localUploadSession.organizationAccountId?.int64Value,
                     localFilePaths: localFilePaths
                 )
             } catch {
@@ -143,22 +143,22 @@ public final class UploadBackendRouter: Sendable {
         }
     }
 
-    public func finishUploadSession(uuid: String, organizationAccountId: Int? = nil) async throws -> String {
-        if currentUser != nil, let organizationAccountId = organizationAccountId {
+    public func finishUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws -> String {
+        if currentUser != nil {
             return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(
                 transferId: uuid,
-                organizationAccountId: KotlinLong(integerLiteral: organizationAccountId)
+                organizationAccountId: KotlinLong(value: organizationAccountId)
             )
         } else {
             return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
         }
     }
 
-    public func cancelUploadSession(uuid: String, organizationAccountId: Int? = nil) async throws {
-        if currentUser != nil, let organizationAccountId = organizationAccountId {
+    public func cancelUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws {
+        if currentUser != nil {
             _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(
                 transferId: uuid,
-                organizationAccountId: KotlinLong(integerLiteral: organizationAccountId),
+                organizationAccountId: KotlinLong(value: organizationAccountId),
                 failed: false
             )
         } else {

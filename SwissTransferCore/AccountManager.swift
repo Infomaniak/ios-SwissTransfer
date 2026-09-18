@@ -188,13 +188,10 @@ public actor AccountManager: ObservableObject {
             return nil
         }
 
-        let selectedOrganization = await selectedOrganization()
-
         if let userProfile = await userProfileStore.getUserProfile(id: userId) {
             return UserSession(
                 userId: userId,
                 userProfile: userProfile,
-                organization: selectedOrganization,
                 swissTransferManager: swissTransferManager
             )
         } else {
@@ -203,7 +200,6 @@ public actor AccountManager: ObservableObject {
                 return UserSession(
                     userId: userId,
                     userProfile: userProfile,
-                    organization: selectedOrganization,
                     swissTransferManager: swissTransferManager
                 )
             }
@@ -238,7 +234,7 @@ public actor AccountManager: ObservableObject {
         objectWillChange.send()
 
         networkLoginService.deleteApiToken(token: removedToken) { result in
-            guard case let .failure(error) = result else { return }
+            guard case .failure(let error) = result else { return }
             Logger.general.error("Failed to delete api token: \(error.localizedDescription)")
         }
     }
@@ -252,43 +248,6 @@ public actor AccountManager: ObservableObject {
         await switchUser(newCurrentUserId: nextToken.value.userId)
     }
 
-    public func selectedOrganization() async -> STDOrganizationAccount? {
-        guard let kmpAccountManager = await getSwissTransferManager(
-            userId: currentUserId,
-            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
-        )?.accountManager else { return nil }
-        let selectedOrganizationFlow: SkieSwiftOptionalFlow<STDOrganizationAccount> = kmpAccountManager
-            .selectedOrganizationAccount()
-
-        for await value in selectedOrganizationFlow {
-            return value
-        }
-        return nil
-    }
-
-    public func organizationAccounts() async -> [STDOrganizationAccount]? {
-        guard let kmpAccountManager = await getSwissTransferManager(
-            userId: currentUserId,
-            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
-        )?.accountManager else { return nil }
-
-        let organizationsFlow: SkieSwiftFlow<[STDOrganizationAccount]> = kmpAccountManager.organizationAccountsForCurrentUser()
-        for await value in organizationsFlow {
-            return value
-        }
-
-        return nil
-    }
-
-    public func switchToOrganization(organizationId: Int) async {
-        let kmpAccountManager = await getSwissTransferManager(
-            userId: currentUserId,
-            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
-        )?.accountManager
-        try? await kmpAccountManager?.switchToOrganization(organizationAccountId: KotlinLong(integerLiteral: organizationId))
-        objectWillChange.send()
-    }
-
     public func enableBugTrackerIfAvailable() async {
         if let currentUser = await userProfileStore.getUserProfile(id: currentUserId),
            let token = tokenStore.tokenFor(userId: currentUser.id),
@@ -299,13 +258,5 @@ public actor AccountManager: ObservableObject {
         } else {
             bugTracker.stopActivatingOnScreenshot()
         }
-    }
-
-    public func selectedOrganizationFlow() async -> SkieSwiftOptionalFlow<STDOrganizationAccount>? {
-        guard let kmpAccountManager = await getSwissTransferManager(
-            userId: currentUserId,
-            token: tokenStore.tokenFor(userId: currentUserId)?.apiToken.accessToken
-        )?.accountManager else { return nil }
-        return kmpAccountManager.selectedOrganizationAccount()
     }
 }

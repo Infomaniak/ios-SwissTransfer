@@ -23,31 +23,33 @@ import STResources
 import SwiftUI
 
 public struct OrganizationListView: View {
+    @Environment(\.dismiss) private var dismiss
+
     @EnvironmentObject private var mainViewState: MainViewState
 
-    let selectedOrganization: Binding<STDOrganizationAccount?>
-
     @State private var organizations: [STDOrganizationAccount] = []
+    @State private var selectedOrganization: STDOrganizationAccount?
 
-    public init(selectedOrganization: Binding<STDOrganizationAccount?>) {
-        self.selectedOrganization = selectedOrganization
-    }
+    public init() {}
 
     public var body: some View {
         VStack {
             ForEach(organizations, id: \.id) { organization in
-                OrganizationCellView(organization: organization, isSelected: organization.id == selectedOrganization.wrappedValue?.id) {
-                    selectedOrganization.wrappedValue = organization
+                OrganizationCellView(organization: organization, isSelected: organization.id == selectedOrganization?.id) {
+                    Task {
+                        let kmpAccountManager = mainViewState.swissTransferManager.accountManager
+                        try? await kmpAccountManager
+                            .switchToOrganization(organizationAccountId: KotlinLong(value: organization.id))
+                    }
+                    dismiss()
                 }
             }
         }
         .padding(.horizontal, value: .medium)
-        .task {
-            let organizationsFlow: SkieSwiftFlow<[STDOrganizationAccount]> = mainViewState.swissTransferManager.accountManager.organizationAccountsForCurrentUser()
-
-            for await value in organizationsFlow {
-                organizations = value
-            }
+        .observeOrganizationChanges(swissTransferManager: mainViewState.swissTransferManager) { organizations in
+            self.organizations = organizations
+        } onSelectedOrganizationUpdated: { selectedOrganization in
+            self.selectedOrganization = selectedOrganization
         }
     }
 }

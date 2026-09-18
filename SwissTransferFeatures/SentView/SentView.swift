@@ -34,20 +34,7 @@ public struct SentView: View {
 
     private let direction = TransferDirection.sent
 
-    @State private var isShowingOrganizationList = false
     @State private var hasTransfers = false
-
-    private var selectedOrganization: Binding<STDOrganizationAccount?> {
-        Binding(
-            get: { currentSession?.organization },
-            set: { newValue in
-                guard let organizationAccountId = newValue?.id else { return }
-                Task { @MainActor in
-                    await accountManager.switchToOrganization(organizationId: Int(organizationAccountId))
-                }
-            }
-        )
-    }
 
     public init() {}
 
@@ -65,12 +52,6 @@ public struct SentView: View {
                 }
             }
         }
-        .onChange(of: currentSession?.organization?.id) { _ in
-            isShowingOrganizationList = false
-        }
-        .stFloatingPanel(isPresented: $isShowingOrganizationList) {
-            OrganizationListView(selectedOrganization: selectedOrganization)
-        }
         .safeAreaInset(edge: .top, alignment: .leading) {
             if hasTransfers {
                 VStack(alignment: .leading) {
@@ -80,12 +61,7 @@ public struct SentView: View {
                             .foregroundStyle(Color.ST.textPrimary)
                     }
 
-                    if let selectedOrganization = currentSession?.organization {
-                        OrganizationSelectorView(
-                            isShowingOrganizationList: $isShowingOrganizationList,
-                            selectedOrganization: selectedOrganization
-                        )
-                    }
+                    OrganizationSelectorView()
                 }
                 .padding(.horizontal, value: .medium)
                 .padding(.top, value: .medium)
