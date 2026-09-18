@@ -39,7 +39,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
     public let authorEmail: String
     public let authorEmailToken: String?
     public let files: [SendableUploadFileSession]
-    public let organizationAccountId: Int?
+    public let organizationAccountId: Int64?
 
     enum DomainError: Error {
         case noLocalPathMatchingRemotePath(localPath: String, remotePath: String)
@@ -55,7 +55,7 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
     }
 
     /// V2 api models
-    init(transfer: STNTransferApi, authorEmail: String, organizationAccountId: Int?, localFilePaths: Set<String>) throws {
+    init(transfer: STNTransferApi, authorEmail: String, organizationAccountId: Int64?, localFilePaths: Set<String>) throws {
         uuid = transfer.id
         self.authorEmail = authorEmail
         authorEmailToken = nil

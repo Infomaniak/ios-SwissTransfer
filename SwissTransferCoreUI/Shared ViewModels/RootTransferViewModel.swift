@@ -45,8 +45,7 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
     @Published public var emailText = ""
-    @Published public var selectedOrganization: STDOrganizationAccount?
-    @Published public var organizations: [STDOrganizationAccount] = []
+    @Published public var selectedOrganizationId: Int64?
 
     public private(set) var initializedFromShare: Bool
 
@@ -126,9 +125,6 @@ public final class RootTransferViewModel: ObservableObject {
         validityPeriod = state.validityPeriod
         downloadLimit = state.downloadLimit
         emailLanguage = state.emailLanguage
-        guard let organizationAccountId = state.organizationAccountId else {
-            return
-        }
-        selectedOrganization = organizations.first { $0.id == Int64(organizationAccountId) }
+        selectedOrganizationId = state.organizationAccountId
     }
 }

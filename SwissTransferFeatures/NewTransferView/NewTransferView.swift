@@ -79,8 +79,7 @@ public struct NewTransferView: View {
                         limit: $viewModel.downloadLimit,
                         language: $viewModel.emailLanguage,
                         password: $viewModel.password,
-                        selectedOrganization: $viewModel.selectedOrganization,
-                        organizations: viewModel.organizations,
+                        selectedOrganizationId: $viewModel.selectedOrganizationId,
                         transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
@@ -121,14 +120,6 @@ public struct NewTransferView: View {
             cancelTasks()
         }
         .matomoView(view: .newTransfer)
-        .task {
-            guard let organizationAccounts = await accountManager.organizationAccounts() else { return }
-            viewModel.organizations = organizationAccounts
-        }
-        .task {
-            guard let selectedOrganization = await accountManager.selectedOrganization() else { return }
-            viewModel.selectedOrganization = selectedOrganization
-        }
     }
 
     private func startUpload() {
@@ -154,7 +145,7 @@ public struct NewTransferView: View {
                 .createAndGetLocalUploadSessionUUID(
                     newUploadSession: newUploadSession,
                     title: viewModel.title,
-                    organizationAccountId: viewModel.selectedOrganization?.id
+                    organizationAccountId: viewModel.selectedOrganizationId
                 )
 
             if let shareExtensionContext {
@@ -166,9 +157,6 @@ public struct NewTransferView: View {
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             }
             isLoadingFileToUpload = false
-            if let selectedOrganizationId = viewModel.selectedOrganization?.id {
-                await accountManager.switchToOrganization(organizationId: Int(selectedOrganizationId))
-            }
         }
     }
 
