@@ -36,11 +36,8 @@ public final class SentryKMPWrapper: CrashReportInterface {
     }
 
     public func capture(message: String, error: KotlinThrowable, data: [String: String]?) {
-        let event = Event()
-        event.message = SentryMessage(formatted: message)
-        event.error = KotlinThrowableWrapper(kotlinThrowable: error)
-
-        SentrySDK.capture(event: event) { scope in
+        SentrySDK.capture(error: error.asError()) { scope in
+            scope.setTag(value: message, key: "KotlinErrorMessage")
             if let data {
                 scope.setExtras(data)
             }
