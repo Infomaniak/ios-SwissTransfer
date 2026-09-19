@@ -1,6 +1,6 @@
 /*
  Infomaniak SwissTransfer - iOS App
- Copyright (C) 2024 Infomaniak Network SA
+ Copyright (C) 2025 Infomaniak Network SA
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,29 +16,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Foundation
 import STCore
-import STPreloadingView
-import SwiftUI
-import SwissTransferCoreUI
 
-struct RootView: View {
-    @EnvironmentObject private var rootViewState: RootViewState
-
-    var body: some View {
-        ZStack {
-            switch rootViewState.state {
-            case .mainView(let mainViewState, let session):
-                MainView()
-                    .environmentObject(mainViewState)
-                    .environment(\.currentSession, session)
-            case .preloading, .onboarding, .updateRequired:
-                PreloadingView(skipOnboarding: true)
-            }
+extension KotlinLong {
+    convenience init?(value: Int64?) {
+        guard let value else {
+            return nil
         }
-        .environmentObject(rootViewState)
+        self.init(value: value)
     }
-}
-
-#Preview {
-    RootView()
 }

@@ -18,16 +18,19 @@
 
 import DesignSystem
 import InfomaniakCore
+import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
+import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct AccountHeaderView: View {
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     public var body: some View {
         VStack(spacing: IKPadding.micro) {
-            if let currentUser {
+            if let currentUser = currentSession?.userProfile {
                 AvatarView(user: currentUser)
             } else {
                 STResourcesAsset.Images.user.swiftUIImage
@@ -37,12 +40,12 @@ public struct AccountHeaderView: View {
                     .padding(IKPadding.small)
             }
 
-            Text(currentUser?.displayName ?? STResourcesStrings.Localizable.titleMyAccount(1))
+            Text(currentSession?.userProfile?.displayName ?? STResourcesStrings.Localizable.titleMyAccount(1))
                 .font(.ST.title)
                 .foregroundStyle(Color.ST.textPrimary)
                 .multilineTextAlignment(.center)
 
-            if let currentUser {
+            if let currentUser = currentSession?.userProfile {
                 Text(currentUser.email)
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
