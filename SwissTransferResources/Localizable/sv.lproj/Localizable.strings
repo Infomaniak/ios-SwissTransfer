@@ -175,6 +175,12 @@
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Meddelande:";
 
+/* loco:6abb7a1dbfcc40e9a30e807a */
+"messageShareFooter" = "Ladda ner via den här länken: %s";
+
+/* loco:6abb79b0fda0a79b240b8558 */
+"messageShareIntro" = "Jag använde SwissTransfer, Infomaniaks schweiziska och etiska lösning, för att skicka filer till dig gratis och på ett säkert sätt.";
+
 /* loco:6707f41e004c1612f407fae2 */
 "myFilesTitle" = "Mina filer";
 
@@ -459,6 +465,9 @@
 
 /* loco:67bd585d873224d0fb0894c2 */
 "sorry" = "Vi beklagar";
+
+/* loco:6abb7a70082b4c8f3f06da12 */
+"subjectShare" = "Jag har skickat några filer till dig via SwissTransfer";
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Valfritt)";
