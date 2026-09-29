@@ -176,7 +176,7 @@
 "messageHeader" = "Μήνυμα:";
 
 /* loco:6abb7a1dbfcc40e9a30e807a */
-"messageShareFooter" = "Κάντε λήψη μέσω αυτού του συνδέσμου: %@";
+"messageShareFooter" = "Κάντε λήψη μέσω αυτού του συνδέσμου:";
 
 /* loco:6abb79b0fda0a79b240b8558 */
 "messageShareIntro" = "Χρησιμοποίησα το SwissTransfer, την ελβετική και ηθική λύση της Infomaniak, για να σας στείλω αρχεία δωρεάν και με ασφάλεια.";

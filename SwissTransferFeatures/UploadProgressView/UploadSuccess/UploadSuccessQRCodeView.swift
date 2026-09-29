@@ -57,11 +57,12 @@ struct UploadSuccessQRCodeView: View {
     private var shareMessage: ShareTransferMessage? {
         guard let transferURL else { return nil }
         let intro = STResourcesStrings.Localizable.messageShareIntro
-        let footer = STResourcesStrings.Localizable.messageShareFooter(transferURL)
+        let footer = STResourcesStrings.Localizable.messageShareFooter
+        let transferURLString = transferURL.absoluteString
 
         return ShareTransferMessage(
-            plainText: "\(intro)\n\(footer)",
-            html: "<p>\(intro)</p><p>\(footer)</p>"
+            plainText: "\(intro)\n\(footer)\n\(transferURLString)",
+            html: "<p>\(intro)</p><p>\(footer) <a href=\"\(transferURLString)\">\(transferURLString)</a></p>"
         )
     }
 

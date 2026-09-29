@@ -176,7 +176,7 @@
 "messageHeader" = "Wiadomość:";
 
 /* loco:6abb7a1dbfcc40e9a30e807a */
-"messageShareFooter" = "Pobierz, klikając ten link: %@";
+"messageShareFooter" = "Pobierz, klikając ten link:";
 
 /* loco:6abb79b0fda0a79b240b8558 */
 "messageShareIntro" = "Skorzystałem z serwisu SwissTransfer – szwajcarskiego i etycznego rozwiązania firmy Infomaniak – aby bezpłatnie i bezpiecznie przesłać Ci pliki.";
