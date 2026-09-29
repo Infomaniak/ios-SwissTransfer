@@ -65,7 +65,11 @@ public extension TransferUi {
     }
 
     var localContainerURL: URL? {
-        guard let transferContainerURL = try? URL.tmpDownloadsDirectory().appendingPathComponent("\(uuid)/") else {
+        Self.localContainerURL(transferUUID: uuid)
+    }
+
+    static func localContainerURL(transferUUID: String) -> URL? {
+        guard let transferContainerURL = try? URL.tmpDownloadsDirectory().appendingPathComponent("\(transferUUID)/") else {
             return nil
         }
 
@@ -95,10 +99,12 @@ public extension TransferUi {
     }
 
     func removeLocalContainer() {
-        guard let localContainerURL else {
-            return
-        }
+        Self.removeLocalContainer(transferUUID: uuid)
+    }
 
+
+    static func removeLocalContainer(transferUUID: String) {
+        guard let localContainerURL = Self.localContainerURL(transferUUID: transferUUID) else { return }
         try? FileManager.default.removeItem(at: localContainerURL)
     }
 }
