@@ -102,7 +102,6 @@ public extension TransferUi {
         Self.removeLocalContainer(transferUUID: uuid)
     }
 
-
     static func removeLocalContainer(transferUUID: String) {
         guard let localContainerURL = Self.localContainerURL(transferUUID: transferUUID) else { return }
         try? FileManager.default.removeItem(at: localContainerURL)
