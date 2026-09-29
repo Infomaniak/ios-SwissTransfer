@@ -176,7 +176,7 @@
 "messageHeader" = "Melding:";
 
 /* loco:6abb7a1dbfcc40e9a30e807a */
-"messageShareFooter" = "Last ned via denne lenken: %s";
+"messageShareFooter" = "Last ned via denne lenken: %@";
 
 /* loco:6abb79b0fda0a79b240b8558 */
 "messageShareIntro" = "Jeg brukte SwissTransfer, Infomaniaks sveitsiske og etiske løsning, for å sende deg filer gratis og sikkert.";

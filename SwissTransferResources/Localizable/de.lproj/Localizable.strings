@@ -176,7 +176,7 @@
 "messageHeader" = "Nachricht:";
 
 /* loco:6abb7a1dbfcc40e9a30e807a */
-"messageShareFooter" = "Über diesen Link herunterladen: %s";
+"messageShareFooter" = "Über diesen Link herunterladen: %@";
 
 /* loco:6abb79b0fda0a79b240b8558 */
 "messageShareIntro" = "Ich habe SwissTransfer genutzt, die Schweizer und ethische Lösung von Infomaniak, um Ihnen Dateien kostenlos und sicher zu senden.";
@@ -467,7 +467,7 @@
 "sorry" = "Es tut uns leid";
 
 /* loco:6abb7a70082b4c8f3f06da12 */
-"subjectShare" = "Ich habe dir über SwissTransfer einige Dateien geschickt.";
+"subjectShare" = "Ich habe Ihnen über SwissTransfer einige Dateien geschickt.";
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Optional)";
