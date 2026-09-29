@@ -62,7 +62,7 @@ struct MainView: View {
 
     private func willEnterForeground() {
         Task {
-            try? await mainViewState.transferManager.deleteExpiredTransfers()
+            try? await mainViewState.transferManager.deleteExpiredTransfersAndCleanLocalFiles()
         }
     }
 }

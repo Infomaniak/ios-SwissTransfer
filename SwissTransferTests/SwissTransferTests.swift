@@ -64,4 +64,10 @@ final class SwissTransferTests: XCTestCase {
             XCTFail("Error creating destination URL")
         }
     }
+
+    func testTmpDirectoryIsExcludedFromBackup() throws {
+        let tmpRoot = try URL.appGroupTmpDirectory()
+        let values = try tmpRoot.resourceValues(forKeys: [.isExcludedFromBackupKey])
+        XCTAssertTrue(values.isExcludedFromBackup == true)
+    }
 }

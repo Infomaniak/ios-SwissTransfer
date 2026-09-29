@@ -17,6 +17,36 @@
  */
 
 import Foundation
+import InfomaniakDI
+import OSLog
 import STCore
 
 extension TransferManager: ObservableObject {}
+
+public extension TransferManager {
+    func deleteExpiredTransfersAndCleanLocalFiles() async throws {
+        try await deleteExpiredTransfers()
+        await cleanOrphanedLocalContainers()
+    }
+
+    func cleanOrphanedLocalContainers() async {
+        @InjectService var downloadManager: DownloadManager
+
+        guard let downloadsDirectory = try? URL.tmpDownloadsDirectory(),
+              let folderNames = try? FileManager.default.contentsOfDirectory(atPath: downloadsDirectory.path())
+        else { return }
+
+        for folderName in folderNames {
+            let folderURL = downloadsDirectory.appendingPathComponent(folderName)
+            guard (try? folderURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
+            do {
+                if try await getTransferByUUID(transferUUID: folderName) == nil {
+                    await downloadManager.cancelDownloadTasks(transferUUID: folderName)
+                    try FileManager.default.removeItem(at: folderURL)
+                }
+            } catch {
+                Logger.general.error("Failed to clean downloaded files for transfer \(folderName): \(error)")
+            }
+        }
+    }
+}

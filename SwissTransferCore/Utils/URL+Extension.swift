@@ -28,7 +28,18 @@ public extension URL {
 
         try FileManager.default.createDirectory(at: tmpDirectoryURL, withIntermediateDirectories: true)
 
+        tmpDirectoryURL.setExcludedFromBackupIfNeeded()
         return tmpDirectoryURL
+    }
+
+    func setExcludedFromBackupIfNeeded() {
+        guard let values = try? resourceValues(forKeys: [.isExcludedFromBackupKey]),
+              values.isExcludedFromBackup != true else { return }
+
+        var url = self
+        var metadata = URLResourceValues()
+        metadata.isExcludedFromBackup = true
+        try? url.setResourceValues(metadata)
     }
 
     static func tmpUploadDirectory() throws -> URL {
