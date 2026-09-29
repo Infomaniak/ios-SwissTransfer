@@ -56,6 +56,18 @@ struct ShareTransferToolbarModifier: ViewModifier {
         return URL(string: url)
     }
 
+    private var shareMessage: ShareTransferMessage? {
+        guard let transferURL else { return nil }
+        let intro = "J'ai utilisé SwissTransfer, la solution Suisse et éthique d'Infomaniak, " +
+            "pour vous envoyer des fichiers gratuitement et en toute sécurité."
+        let footer = "Téléchargez via ce lien :\n\(transferURL)"
+
+        return ShareTransferMessage(
+            plainText: "\(intro)\n\(footer)",
+            html: "<p>\(intro)</p><br><p>\(footer)</p>"
+        )
+    }
+
     func body(content: Content) -> some View {
         content
             .toolbar {
@@ -65,8 +77,12 @@ struct ShareTransferToolbarModifier: ViewModifier {
 
                         LegacyToolbarSpacing()
 
-                        if let transferURL {
-                            ShareLink(item: transferURL) {
+                        if let shareMessage {
+                            ShareLink(
+                                item: shareMessage,
+                                subject: Text("Je vous ai envoyé des fichiers avec SwissTransfer"),
+                                preview: SharePreview("SwissTransfer")
+                            ) {
                                 Label {
                                     Text(STResourcesStrings.Localizable.buttonShare)
                                 } icon: {
