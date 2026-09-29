@@ -58,9 +58,8 @@ struct ShareTransferToolbarModifier: ViewModifier {
 
     private var shareMessage: ShareTransferMessage? {
         guard let transferURL else { return nil }
-        let intro = "J'ai utilisé SwissTransfer, la solution Suisse et éthique d'Infomaniak, " +
-            "pour vous envoyer des fichiers gratuitement et en toute sécurité."
-        let footer = "Téléchargez via ce lien :\n\(transferURL)"
+        let intro = STResourcesStrings.Localizable.messageShareIntro
+        let footer = STResourcesStrings.Localizable.messageShareFooter(transferURL.absoluteString)
 
         return ShareTransferMessage(
             plainText: "\(intro)\n\(footer)",
@@ -80,7 +79,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
                         if let shareMessage {
                             ShareLink(
                                 item: shareMessage,
-                                subject: Text("Je vous ai envoyé des fichiers avec SwissTransfer"),
+                                subject: Text(STResourcesStrings.Localizable.subjectShare),
                                 preview: SharePreview("SwissTransfer")
                             ) {
                                 Label {
