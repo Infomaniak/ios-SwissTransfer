@@ -27,6 +27,7 @@ import SwissTransferCore
 
 public struct DeleteTransferAlertView: View {
     @EnvironmentObject private var mainViewState: MainViewState
+    @LazyInjectService private var downloadManager: DownloadManager
 
     @State private var error: UserFacingError?
 
@@ -69,6 +70,7 @@ public struct DeleteTransferAlertView: View {
             let feedback = UINotificationFeedbackGenerator()
             feedback.prepare()
 
+            await downloadManager.cancelDownloadTasks(transferUUID: deleteLink.uuid)
             try await mainViewState.transferManager.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
             TransferUi.removeLocalContainer(transferUUID: deleteLink.uuid)
 

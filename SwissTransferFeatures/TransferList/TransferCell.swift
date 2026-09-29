@@ -27,6 +27,7 @@ import SwissTransferCoreUI
 
 struct TransferCell: View {
     @EnvironmentObject private var mainViewState: MainViewState
+    @LazyInjectService private var downloadManager: DownloadManager
 
     let transfer: TransferUi
 
@@ -72,6 +73,7 @@ struct TransferCell: View {
         .contextMenu {
             Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
                 Task {
+                    await downloadManager.cancelDownloadTasks(transferUUID: transfer.uuid)
                     try? await mainViewState.swissTransferManager.transferManager.deleteTransfer(transferUUID: transfer.uuid)
                     transfer.removeLocalContainer()
                 }
