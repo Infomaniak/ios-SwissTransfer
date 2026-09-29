@@ -190,6 +190,16 @@ public class DownloadManager: ObservableObject {
         trackedMultiDownloadTask?.trackedDownloadTasks[id] = nil
     }
 
+    public func cancelDownloadTasks(transferUUID: String) async {
+        let taskIdPrefix = "\(transferUUID)__"
+        for task in await session.allTasks where task.taskDescription?.hasPrefix(taskIdPrefix) == true {
+            task.cancel()
+        }
+        if trackedMultiDownloadTask?.id.hasPrefix(taskIdPrefix) == true {
+            trackedMultiDownloadTask = nil
+        }
+    }
+
     public func startOrCancelDownload(
         transfer: TransferUi,
         files: [FileUi],
