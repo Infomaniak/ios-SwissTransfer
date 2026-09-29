@@ -54,6 +54,17 @@ struct UploadSuccessQRCodeView: View {
         return URL(string: url)
     }
 
+    private var shareMessage: ShareTransferMessage? {
+        guard let transferURL else { return nil }
+        let intro = STResourcesStrings.Localizable.messageShareIntro
+        let footer = STResourcesStrings.Localizable.messageShareFooter(transferURL.absoluteString)
+
+        return ShareTransferMessage(
+            plainText: "\(intro)\n\(footer)",
+            html: "<p>\(intro)</p><br><p>\(footer)</p>"
+        )
+    }
+
     var body: some View {
         VStack(spacing: IKPadding.huge) {
             STResourcesAsset.Images.beers.swiftUIImage
@@ -81,9 +92,13 @@ struct UploadSuccessQRCodeView: View {
         .padding(.vertical, value: .large)
         .scrollableEmptyState()
         .safeAreaButtons {
-            if let transferURL {
+            if let shareMessage {
                 HStack(spacing: IKPadding.medium) {
-                    ShareLink(item: transferURL) {
+                    ShareLink(
+                        item: shareMessage,
+                        subject: Text(STResourcesStrings.Localizable.subjectShare),
+                        preview: SharePreview(Constants.appName)
+                    ) {
                         Label {
                             Text(STResourcesStrings.Localizable.buttonShare)
                         } icon: {

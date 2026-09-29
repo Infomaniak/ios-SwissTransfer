@@ -80,7 +80,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
                             ShareLink(
                                 item: shareMessage,
                                 subject: Text(STResourcesStrings.Localizable.subjectShare),
-                                preview: SharePreview("SwissTransfer")
+                                preview: SharePreview(Constants.appName)
                             ) {
                                 Label {
                                     Text(STResourcesStrings.Localizable.buttonShare)
