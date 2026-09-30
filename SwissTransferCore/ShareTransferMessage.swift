@@ -38,7 +38,7 @@ public struct ShareTransferMessage: Transferable {
             """
             return Data(document.utf8)
         }
-        .suggestedFileName("share.html")
+        .suggestedFileName("swisstransfer_link.html")
 
         ProxyRepresentation { message in
             message.plainText
