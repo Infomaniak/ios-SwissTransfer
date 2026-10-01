@@ -89,6 +89,8 @@ struct OnboardingTextView: View {
             Text(text.subtitle)
         }
         .multilineTextAlignment(.center)
+        .lineLimit(nil)
+        .minimumScaleFactor(0.5)
     }
 }
 
