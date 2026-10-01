@@ -32,7 +32,7 @@ import SwissTransferCoreUI
 public struct AccountView: View {
     @InjectService private var tokenStore: TokenStore
 
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
     @Environment(\.openURL) private var openURL
@@ -46,7 +46,7 @@ public struct AccountView: View {
             AccountHeaderView()
 
             Section {
-                if currentUser != nil {
+                if currentSession?.userProfile != nil {
                     let userCount = tokenStore.getAllTokens().count
                     Button {
                         @InjectService var matomo: MatomoUtils
@@ -100,7 +100,7 @@ public struct AccountView: View {
                 .buttonStyle(.plain)
                 .settingsCell()
 
-                if let currentUser {
+                if let currentUser = currentSession?.userProfile {
                     Button {
                         @InjectService var matomo: MatomoUtils
                         matomo.track(eventWithCategory: .myAccount, name: .logout)
@@ -171,7 +171,7 @@ public struct AccountView: View {
                     .settingsCell()
                 }
 
-                if let currentUser, currentUser.isStaff == true {
+                if let currentUser = currentSession?.userProfile, currentUser.isStaff == true {
                     Button {
                         Task { @MainActor in
                             @InjectService var accountManager: AccountManager
