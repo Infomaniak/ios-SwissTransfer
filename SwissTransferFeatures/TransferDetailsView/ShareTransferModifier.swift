@@ -56,6 +56,11 @@ struct ShareTransferToolbarModifier: ViewModifier {
         return URL(string: url)
     }
 
+    private var shareMessage: ShareTransferMessage? {
+        guard let transferURL else { return nil }
+        return ShareTransferMessage(transferURL: transferURL)
+    }
+
     func body(content: Content) -> some View {
         content
             .toolbar {
@@ -65,8 +70,12 @@ struct ShareTransferToolbarModifier: ViewModifier {
 
                         LegacyToolbarSpacing()
 
-                        if let transferURL {
-                            ShareLink(item: transferURL) {
+                        if let shareMessage {
+                            ShareLink(
+                                item: shareMessage,
+                                subject: Text(STResourcesStrings.Localizable.subjectShare),
+                                preview: SharePreview(Constants.appName)
+                            ) {
                                 Label {
                                     Text(STResourcesStrings.Localizable.buttonShare)
                                 } icon: {

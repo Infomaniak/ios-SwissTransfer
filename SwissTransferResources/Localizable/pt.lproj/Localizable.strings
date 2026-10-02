@@ -175,6 +175,12 @@
 /* loco:66a24acfa855c577100e2353 */
 "messageHeader" = "Mensagem:";
 
+/* loco:6abb7a1dbfcc40e9a30e807a */
+"messageShareFooter" = "Descarregue através deste link:";
+
+/* loco:6abb79b0fda0a79b240b8558 */
+"messageShareIntro" = "Utilizei o SwissTransfer, a solução suíça e ética da Infomaniak, para lhe enviar ficheiros de forma gratuita e segura.";
+
 /* loco:6707f41e004c1612f407fae2 */
 "myFilesTitle" = "Os meus ficheiros";
 
@@ -459,6 +465,9 @@
 
 /* loco:67bd585d873224d0fb0894c2 */
 "sorry" = "Pedimos desculpa";
+
+/* loco:6abb7a70082b4c8f3f06da12 */
+"subjectShare" = "Enviei-lhe alguns ficheiros através do SwissTransfer";
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Opcional)";
