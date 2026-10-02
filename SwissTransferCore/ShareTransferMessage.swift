@@ -16,15 +16,19 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import STResources
 import SwiftUI
 
 public struct ShareTransferMessage: Transferable {
     let plainText: String
     let html: String
 
-    public init(plainText: String, html: String) {
-        self.plainText = plainText
-        self.html = html
+    public init(transferURL: URL) {
+        let intro = STResourcesStrings.Localizable.messageShareIntro
+        let footer = STResourcesStrings.Localizable.messageShareFooter
+        let transferURLString = transferURL.absoluteString
+        plainText = "\(intro)\n\(footer)\n\(transferURLString)"
+        html = "<p>\(intro)</p><p>\(footer) <a href=\"\(transferURLString)\">\(transferURLString)</a></p>"
     }
 
     public static var transferRepresentation: some TransferRepresentation {
@@ -39,9 +43,6 @@ public struct ShareTransferMessage: Transferable {
             return Data(document.utf8)
         }
         .suggestedFileName("swisstransfer_link.html")
-
-        ProxyRepresentation { message in
-            message.plainText
-        }
+        ProxyRepresentation(exporting: \.plainText)
     }
 }
