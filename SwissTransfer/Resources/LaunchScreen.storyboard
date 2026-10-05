@@ -32,7 +32,6 @@
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="yfw-te-FVu"/>
                                 <constraints>
-                                    <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerY" secondItem="yfw-te-FVu" secondAttribute="centerY" id="LuA-R8-wQ9"/>
                                     <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerX" secondItem="yfw-te-FVu" secondAttribute="centerX" id="Up8-Jw-Vcb"/>
                                     <constraint firstItem="yfw-te-FVu" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ucg-dU-BSJ" secondAttribute="bottom" constant="16" id="gBp-EI-Sy8"/>
                                 </constraints>
@@ -47,6 +46,7 @@
                         <viewLayoutGuide key="safeArea" id="AnS-21-ChX"/>
                         <color key="backgroundColor" name="White"/>
                         <constraints>
+                            <constraint firstItem="Ucg-dU-BSJ" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-28" id="LuA-R8-wQ9"/>
                             <constraint firstItem="AnS-21-ChX" firstAttribute="trailing" secondItem="tDd-7D-iHq" secondAttribute="trailing" id="2h2-bj-Qiu"/>
                             <constraint firstItem="Owd-z3-cKR" firstAttribute="centerX" secondItem="tDd-7D-iHq" secondAttribute="centerX" id="EXR-NL-ATa"/>
                             <constraint firstItem="AnS-21-ChX" firstAttribute="top" secondItem="tDd-7D-iHq" secondAttribute="top" id="Pc2-K5-Y3z"/>
