@@ -37,6 +37,7 @@ struct UploadSuccessQRCodeView: View {
     @State private var isShowingShareTipSheet = false
     // periphery:ignore - Used in body
     @State private var isShowingShareSheet = false
+    @State private var isShowingShareTransferSheet = false
 
     let type: TransferType
     let transferCompletedResult: TransferCompletedResult
@@ -88,11 +89,11 @@ struct UploadSuccessQRCodeView: View {
         .safeAreaButtons {
             if let shareMessage {
                 HStack(spacing: IKPadding.medium) {
-                    ShareLink(
-                        item: shareMessage,
-                        subject: Text(STResourcesStrings.Localizable.subjectShare),
-                        preview: SharePreview(Constants.appName)
-                    ) {
+                    Button {
+                        @InjectService var matomo: MatomoUtils
+                        matomo.track(eventWithCategory: .newTransfer, name: .share)
+                        isShowingShareTransferSheet = true
+                    } label: {
                         Label {
                             Text(STResourcesStrings.Localizable.buttonShare)
                         } icon: {
@@ -100,10 +101,10 @@ struct UploadSuccessQRCodeView: View {
                         }
                         .labelStyle(.verticalButton)
                     }
-                    .simultaneousGesture(TapGesture().onEnded {
-                        @InjectService var matomo: MatomoUtils
-                        matomo.track(eventWithCategory: .newTransfer, name: .share)
-                    })
+                    .sheet(isPresented: $isShowingShareTransferSheet) {
+                        ActivityView(activityItems: [shareMessage])
+                            .presentationDetents([.medium, .large])
+                    }
 
                     CopyToClipboardButton(
                         text: STResourcesStrings.Localizable.buttonCopyLink,

@@ -16,33 +16,56 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import LinkPresentation
 import STResources
-import SwiftUI
+import UIKit
 
-public struct ShareTransferMessage: Transferable {
-    let plainText: String
-    let html: String
+public final class ShareTransferMessage: NSObject, UIActivityItemSource {
+    private static let urlOnlyActivityTypes: Set<UIActivity.ActivityType> = [
+        .airDrop,
+        .copyToPasteboard,
+        .addToReadingList
+    ]
+
+    let url: URL
+    let text: String
 
     public init(transferURL: URL) {
-        let intro = STResourcesStrings.Localizable.messageShareIntro
-        let footer = STResourcesStrings.Localizable.messageShareFooter
-        let transferURLString = transferURL.absoluteString
-        plainText = "\(intro)\n\(footer)\n\(transferURLString)"
-        html = "<p>\(intro)</p><p>\(footer) <a href=\"\(transferURLString)\">\(transferURLString)</a></p>"
+        url = transferURL
+        text = [
+            STResourcesStrings.Localizable.messageShareIntro,
+            STResourcesStrings.Localizable.messageShareFooter,
+            transferURL.absoluteString
+        ].joined(separator: "\n")
+        super.init()
     }
 
-    public static var transferRepresentation: some TransferRepresentation {
-        DataRepresentation(exportedContentType: .html) { message in
-            let document = """
-            <!DOCTYPE html>
-            <html>
-            <head><meta charset="utf-8"></head>
-            <body>\(message.html)</body>
-            </html>
-            """
-            return Data(document.utf8)
+    public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        url
+    }
+
+    public func activityViewController(
+        _ activityViewController: UIActivityViewController,
+        itemForActivityType activityType: UIActivity.ActivityType?
+    ) -> Any? {
+        if let activityType, Self.urlOnlyActivityTypes.contains(activityType) {
+            return url
         }
-        .suggestedFileName("swisstransfer_link.html")
-        ProxyRepresentation(exporting: \.plainText)
+        return text
+    }
+
+    public func activityViewController(
+        _ activityViewController: UIActivityViewController,
+        subjectForActivityType activityType: UIActivity.ActivityType?
+    ) -> String {
+        STResourcesStrings.Localizable.subjectShare
+    }
+
+    public func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let metadata = LPLinkMetadata()
+        metadata.title = Constants.appName
+        metadata.url = url
+        metadata.originalURL = url
+        return metadata
     }
 }

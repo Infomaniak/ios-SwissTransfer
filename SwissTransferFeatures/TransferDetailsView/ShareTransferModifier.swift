@@ -38,6 +38,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     @State private var isShowingPassword = false
+    @State private var isShowingShareSheet = false
 
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
@@ -71,21 +72,21 @@ struct ShareTransferToolbarModifier: ViewModifier {
                         LegacyToolbarSpacing()
 
                         if let shareMessage {
-                            ShareLink(
-                                item: shareMessage,
-                                subject: Text(STResourcesStrings.Localizable.subjectShare),
-                                preview: SharePreview(Constants.appName)
-                            ) {
+                            Button {
+                                @InjectService var matomo: MatomoUtils
+                                matomo.track(eventWithCategory: matomoCategory, name: .share)
+                                isShowingShareSheet = true
+                            } label: {
                                 Label {
                                     Text(STResourcesStrings.Localizable.buttonShare)
                                 } icon: {
                                     STResourcesAsset.Images.squareArrowUp.swiftUIImage
                                 }
                             }
-                            .simultaneousGesture(TapGesture().onEnded {
-                                @InjectService var matomo: MatomoUtils
-                                matomo.track(eventWithCategory: matomoCategory, name: .share)
-                            })
+                            .sheet(isPresented: $isShowingShareSheet) {
+                                ActivityView(activityItems: [shareMessage])
+                                    .presentationDetents([.medium, .large])
+                            }
 
                             LegacyToolbarSpacing()
                         }
