@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "ac51e2248f1f655ec45606a98556013d6a9d90cd",
-        "version" : "26.1.2"
+        "branch" : "feat/create-isFoldable-environement",
+        "revision" : "8b1a774b07c05a1b40e8074d64bf04db420dc145"
       }
     },
     {
