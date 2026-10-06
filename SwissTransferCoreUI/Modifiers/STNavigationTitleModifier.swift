@@ -19,17 +19,28 @@
 import SwiftUI
 
 public struct STNavigationTitleModifier: ViewModifier {
+    @Environment(\.isFoldable) private var isFoldable
     public let title: String
 
     public func body(content: Content) -> some View {
-        content
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(title)
-                        .font(.ST.title2)
-                        .foregroundStyle(.white)
+        if isFoldable {
+            content
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text(title)
+                            .font(.ST.title2)
+                    }
                 }
-            }
+        } else {
+            content
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text(title)
+                            .font(.ST.title2)
+                            .foregroundStyle(.white)
+                    }
+                }
+        }
     }
 }
 

@@ -19,12 +19,19 @@
 import SwiftUI
 
 struct STNavigationBarStyleModifier: ViewModifier {
+    @Environment(\.isFoldable) private var isFoldable
     func body(content: Content) -> some View {
-        content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
-            .navigationTitle("")
+        if isFoldable {
+            content
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("")
+        } else {
+            content
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarBackground(Color.ST.secondary, for: .navigationBar)
+                .navigationTitle("")
+        }
     }
 }
 
