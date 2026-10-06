@@ -20,10 +20,14 @@ import LinkPresentation
 import SwiftUI
 
 public struct ActivityView: UIViewControllerRepresentable {
-    let activityItems: [FileShareModel]
+    let activityItems: [Any]
 
     public init(sharedFileURLs: [URL]) {
         activityItems = sharedFileURLs.compactMap { try? FileShareModel(url: $0) }
+    }
+
+    public init(activityItems: [Any]) {
+        self.activityItems = activityItems
     }
 
     public func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {

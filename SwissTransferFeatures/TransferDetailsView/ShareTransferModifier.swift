@@ -38,6 +38,7 @@ struct ShareTransferToolbarModifier: ViewModifier {
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
 
     @State private var isShowingPassword = false
+    @State private var isShowingShareSheet = false
 
     let transfer: TransferUi
     let matomoCategory: MatomoCategory
@@ -56,6 +57,11 @@ struct ShareTransferToolbarModifier: ViewModifier {
         return URL(string: url)
     }
 
+    private var shareMessage: ShareTransferMessage? {
+        guard let transferURL else { return nil }
+        return ShareTransferMessage(transferURL: transferURL)
+    }
+
     func body(content: Content) -> some View {
         content
             .toolbar {
@@ -65,18 +71,22 @@ struct ShareTransferToolbarModifier: ViewModifier {
 
                         LegacyToolbarSpacing()
 
-                        if let transferURL {
-                            ShareLink(item: transferURL) {
+                        if let shareMessage {
+                            Button {
+                                @InjectService var matomo: MatomoUtils
+                                matomo.track(eventWithCategory: matomoCategory, name: .share)
+                                isShowingShareSheet = true
+                            } label: {
                                 Label {
                                     Text(STResourcesStrings.Localizable.buttonShare)
                                 } icon: {
                                     STResourcesAsset.Images.squareArrowUp.swiftUIImage
                                 }
                             }
-                            .simultaneousGesture(TapGesture().onEnded {
-                                @InjectService var matomo: MatomoUtils
-                                matomo.track(eventWithCategory: matomoCategory, name: .share)
-                            })
+                            .sheet(isPresented: $isShowingShareSheet) {
+                                ActivityView(activityItems: [shareMessage])
+                                    .presentationDetents([.medium, .large])
+                            }
 
                             LegacyToolbarSpacing()
                         }
