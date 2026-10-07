@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public struct STNavigationTitleModifier: ViewModifier {
@@ -23,24 +24,14 @@ public struct STNavigationTitleModifier: ViewModifier {
     public let title: String
 
     public func body(content: Content) -> some View {
-        if isFoldable {
-            content
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text(title)
-                            .font(.ST.title2)
-                    }
+        content
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(title)
+                        .font(.ST.title2)
+                        .foregroundColor(isFoldable ? nil : .white)
                 }
-        } else {
-            content
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text(title)
-                            .font(.ST.title2)
-                            .foregroundStyle(.white)
-                    }
-                }
-        }
+            }
     }
 }
 
