@@ -139,9 +139,7 @@ public class DownloadManager: ObservableObject {
         sessionDelegate.downloadCompletedSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] downloadTaskCompletion in
-                Task {
-                    await self?.handleDownloadTaskCompletion(downloadTaskCompletion)
-                }
+                self?.handleDownloadTaskCompletion(downloadTaskCompletion)
             }
             .store(in: &cancellables)
 
@@ -372,7 +370,7 @@ public class DownloadManager: ObservableObject {
         updateDownloadTask(id: taskId, state: .running(current: 0, total: 1))
     }
 
-    private func handleDownloadTaskCompletion(_ downloadTaskCompletion: DownloadTaskCompletion) async {
+    private func handleDownloadTaskCompletion(_ downloadTaskCompletion: DownloadTaskCompletion) {
         let transferUUIDAndFileUUID = downloadTaskCompletion.id.split(separator: "__")
         guard !transferUUIDAndFileUUID.isEmpty else { return }
 
