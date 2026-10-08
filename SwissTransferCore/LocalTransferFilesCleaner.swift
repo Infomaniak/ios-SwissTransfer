@@ -23,21 +23,24 @@ import STCore
 
 struct LocalTransferFilesCleaner {
     func cleanOrphanedLocalContainers(using transferManager: TransferManager) async {
-        guard let downloadsDirectory = try? URL.tmpDownloadsDirectory(),
-              let folderNames = try? FileManager.default.contentsOfDirectory(atPath: downloadsDirectory.path())
-        else { return }
+        guard let downloadsDirectory = try? URL.tmpDownloadsDirectory() else { return }
+        guard let transferDirectoryURLs = try? FileManager.default.contentsOfDirectory(
+            at: downloadsDirectory,
+            includingPropertiesForKeys: [.isDirectoryKey]
+        ) else { return }
 
-        for folderName in folderNames {
+        for transferDirectoryURL in transferDirectoryURLs {
             guard !Task.isCancelled else { return }
+            guard (try? transferDirectoryURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
 
-            let folderURL = downloadsDirectory.appendingPathComponent(folderName)
-            guard (try? folderURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
+            let transferUUID = transferDirectoryURL.lastPathComponent
+
             do {
-                if try await transferManager.getTransferByUUID(transferUUID: folderName) == nil {
-                    try FileManager.default.removeItem(at: folderURL)
+                if try await transferManager.getTransferByUUID(transferUUID: transferUUID) == nil {
+                    try FileManager.default.removeItem(at: transferDirectoryURL)
                 }
             } catch {
-                Logger.general.error("Failed to clean downloaded files for transfer \(folderName): \(error)")
+                Logger.general.error("Failed to clean downloaded files for transfer \(transferUUID): \(error)")
             }
         }
     }
