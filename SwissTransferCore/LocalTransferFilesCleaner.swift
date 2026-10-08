@@ -28,6 +28,8 @@ struct LocalTransferFilesCleaner {
         else { return }
 
         for folderName in folderNames {
+            guard !Task.isCancelled else { return }
+
             let folderURL = downloadsDirectory.appendingPathComponent(folderName)
             guard (try? folderURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
             do {
