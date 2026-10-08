@@ -73,6 +73,7 @@ struct TransferCell: View {
             Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
                 Task {
                     try? await mainViewState.swissTransferManager.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+                    transfer.removeLocalContainer()
                 }
             }
         }

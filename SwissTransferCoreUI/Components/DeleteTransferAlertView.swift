@@ -20,6 +20,7 @@ import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
+import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
@@ -69,6 +70,7 @@ public struct DeleteTransferAlertView: View {
             feedback.prepare()
 
             try await mainViewState.transferManager.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
+            TransferUi.removeLocalContainer(transferUUID: deleteLink.uuid)
 
             feedback.notificationOccurred(.success)
         } catch {

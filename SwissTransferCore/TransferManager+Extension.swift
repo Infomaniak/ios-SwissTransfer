@@ -20,3 +20,11 @@ import Foundation
 import STCore
 
 extension TransferManager: ObservableObject {}
+
+public extension TransferManager {
+    func deleteExpiredTransfersAndCleanLocalFiles() async throws {
+        try await deleteExpiredTransfers()
+        await LocalTransferFilesCleaner()
+            .cleanOrphanedLocalContainers(using: self)
+    }
+}
