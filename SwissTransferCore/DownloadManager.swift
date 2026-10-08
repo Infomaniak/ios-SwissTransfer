@@ -192,16 +192,6 @@ public class DownloadManager: ObservableObject {
         trackedMultiDownloadTask?.trackedDownloadTasks[id] = nil
     }
 
-    public func cancelDownloadTasks(transferUUID: String) async {
-        let taskIdPrefix = "\(transferUUID)__"
-        for task in await session.allTasks where task.taskDescription?.hasPrefix(taskIdPrefix) == true {
-            task.cancel()
-        }
-        if trackedMultiDownloadTask?.id.hasPrefix(taskIdPrefix) == true {
-            trackedMultiDownloadTask = nil
-        }
-    }
-
     public func startOrCancelDownload(
         transfer: TransferUi,
         files: [FileUi],
@@ -392,12 +382,6 @@ public class DownloadManager: ObservableObject {
         switch downloadTaskCompletion.result {
         case .success(let downloadedFile):
             do {
-                if await transferWasDeleted(transferUUID: transferUUID) {
-                    try? FileManager.default.removeItem(at: downloadedFile.url)
-                    await removeMultiDownloadTask()
-                    return
-                }
-
                 let resultURL = try handleDownloadedFile(
                     transferUUID: transferUUID,
                     fileUUID: fileUUID,
@@ -426,16 +410,6 @@ public class DownloadManager: ObservableObject {
                 fileUUID: fileUUID
             )
             updateDownloadTask(id: downloadTaskCompletion.id, state: .error(error))
-        }
-    }
-
-    private func transferWasDeleted(transferUUID: String) async -> Bool {
-        @InjectService var accountManager: AccountManager
-        guard let transferManager = await accountManager.getCurrentUserSession()?.transferManager else { return false }
-        do {
-            return try await transferManager.getTransferByUUID(transferUUID: transferUUID) == nil
-        } catch {
-            return false
         }
     }
 

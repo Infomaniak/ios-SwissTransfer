@@ -30,8 +30,6 @@ public extension TransferManager {
     }
 
     func cleanOrphanedLocalContainers() async {
-        @InjectService var downloadManager: DownloadManager
-
         guard let downloadsDirectory = try? URL.tmpDownloadsDirectory(),
               let folderNames = try? FileManager.default.contentsOfDirectory(atPath: downloadsDirectory.path())
         else { return }
@@ -41,7 +39,6 @@ public extension TransferManager {
             guard (try? folderURL.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true else { continue }
             do {
                 if try await getTransferByUUID(transferUUID: folderName) == nil {
-                    await downloadManager.cancelDownloadTasks(transferUUID: folderName)
                     try FileManager.default.removeItem(at: folderURL)
                 }
             } catch {

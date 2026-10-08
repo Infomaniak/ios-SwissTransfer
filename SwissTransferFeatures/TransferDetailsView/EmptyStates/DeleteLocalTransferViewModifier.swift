@@ -52,8 +52,6 @@ struct DeleteLocalTransferViewModifier: ViewModifier {
 
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @LazyInjectService private var downloadManager: DownloadManager
-
     let transfer: TransferUi?
     let origin: Origin
 
@@ -71,7 +69,6 @@ struct DeleteLocalTransferViewModifier: ViewModifier {
 
     private func deleteTransferLocally(_ transfer: TransferUi) {
         Task {
-            await downloadManager.cancelDownloadTasks(transferUUID: transfer.uuid)
             try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
             transfer.removeLocalContainer()
         }
