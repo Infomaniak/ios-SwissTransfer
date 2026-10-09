@@ -16,14 +16,24 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import SwiftUI
 
 struct STNavigationBarStyleModifier: ViewModifier {
+    @Environment(\.isFoldable) private var isFoldable
     func body(content: Content) -> some View {
         content
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(Color.ST.secondary, for: .navigationBar)
+            .toolbarBackground(
+                isFoldable
+                    ? AnyShapeStyle(.bar)
+                    : AnyShapeStyle(Color.ST.secondary),
+                for: .navigationBar
+            )
+            .toolbarBackground(
+                isFoldable ? .automatic : .visible,
+                for: .navigationBar
+            )
             .navigationTitle("")
     }
 }

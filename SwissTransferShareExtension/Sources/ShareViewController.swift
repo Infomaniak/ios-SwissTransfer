@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import InfomaniakDI
 import STRootTransferView
 import SwiftUI
@@ -68,6 +69,7 @@ class ShareViewController: UIViewController {
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
+                .detectFoldablePhone()
                 .environment(\.shareExtensionContext, ShareExtensionContext { self.dismiss(animated: true) })
                 .environment(\.currentUser, userSession.userProfile)
                 .environmentObject(mainViewState)
