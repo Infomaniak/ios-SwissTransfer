@@ -18,6 +18,7 @@
 
 import Foundation
 @preconcurrency import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakDI
 import InfomaniakNotifications
 import SwissTransferCore
@@ -33,6 +34,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         @InjectService var downloadManager: DownloadManager
         downloadManager.backgroundDownloadCompletionCallback = completionHandler
+    }
+
+    func application(
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
+        @InjectService var orientationManager: OrientationManageable
+        return orientationManager.orientationLock
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
