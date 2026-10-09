@@ -105,12 +105,13 @@ struct CarouselView<BottomView: View>: UIViewControllerRepresentable {
         }
 
         func selectCorrectAnimation(for slideViewCell: SlideCollectionViewCell, at index: Int) {
-            guard case .animation(let configuration) = parent.slides[index].content else { return }
+            guard case .animation(let configuration) = parent.slides[index].content,
+                  case .airbnbLottieAnimationView(let animationView, _) = slideViewCell.illustrationAnimationViewContent
+            else { return }
 
             let suffix = currentColorScheme == .dark ? "dark" : "light"
-            let animation = LottieAnimation.named("\(configuration.filename)-\(suffix)", bundle: configuration.bundle)
-            slideViewCell.illustrationAnimationView.animation = animation
-            slideViewCell.illustrationAnimationView.play()
+            animationView.animation = LottieAnimation.named("\(configuration.filename)-\(suffix)", bundle: configuration.bundle)
+            animationView.play()
         }
     }
 }
