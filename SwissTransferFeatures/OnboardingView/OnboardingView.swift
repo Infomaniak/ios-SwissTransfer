@@ -134,6 +134,12 @@ public struct OnboardingView: View {
                 UIViewController.attemptRotationToDeviceOrientation()
             }
         }
+        .onDisappear {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                orientationManager.setOrientationLock(.all)
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
+        }
     }
 }
 
