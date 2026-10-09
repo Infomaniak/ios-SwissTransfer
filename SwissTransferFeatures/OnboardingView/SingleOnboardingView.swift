@@ -22,6 +22,8 @@ import InfomaniakOnboarding
 import SwiftUI
 
 public struct SingleOnboardingView: View {
+    @LazyInjectService private var orientationManager: OrientationManageable
+
     @Environment(\.dismiss) private var dismiss
 
     @StateObject private var loginHandler = LoginHandler()
@@ -42,6 +44,14 @@ public struct SingleOnboardingView: View {
         .appBackground()
         .ignoresSafeArea()
         .loginErrorAlert(loginHandler: loginHandler)
+        .onAppear {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                UIDevice.current
+                    .setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                orientationManager.setOrientationLock(.portrait)
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
+        }
     }
 }
 

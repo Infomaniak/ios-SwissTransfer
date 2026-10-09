@@ -17,6 +17,7 @@
  */
 
 import InfomaniakCore
+import InfomaniakCoreCommonUI
 import InfomaniakCoreUIKit
 import InfomaniakDI
 import SwissTransferCore
@@ -26,6 +27,9 @@ class SwissTransferAppTargetAssembly: SwissTransferTargetAssembly {
         return [
             Factory(type: AlertPresentable.self) { _, _ in
                 AlertPresenter()
+            },
+            Factory(type: OrientationManageable.self) { _, _ in
+                OrientationManager()
             },
             Factory(type: ApplicationStatable.self) { _, _ in
                 ApplicationState()
