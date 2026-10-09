@@ -76,7 +76,8 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     }
 
     public func uploadFiles(for uploadSession: SendableUploadSession,
-                            remoteUploadFiles: [SendableRemoteUploadFile]) async throws {
+                            remoteUploadFiles: [SendableRemoteUploadFile],
+                            useExpiringActivity: Bool) async throws {
         try await remoteUploadFiles.enumerated()
             .map { (uploadSession.files[$0.offset], $0.element) }
             .asyncForEach { localFile, remoteUploadFile in
@@ -85,7 +86,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
                                                    uploadUUID: uploadSession.uuid)
             }
 
-        await uploadAllFiles()
+        await uploadAllFiles(useExpiringActivity: useExpiringActivity)
     }
 
     public func suspendAllTasks() {
@@ -124,13 +125,13 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         uploadingFiles.append(uploadingFile)
     }
 
-    private func uploadAllFiles() async {
+    private func uploadAllFiles(useExpiringActivity: Bool = false) async {
+        let expiringActivity: ExpiringActivity? = useExpiringActivity
+            ? ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
+            : nil
         do {
-            let expiringActivity = ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
-            expiringActivity.start()
-            defer {
-                expiringActivity.endAll()
-            }
+            expiringActivity?.start()
+            defer { expiringActivity?.endAll() }
 
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
 
