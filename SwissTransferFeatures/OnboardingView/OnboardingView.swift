@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
@@ -81,6 +82,7 @@ extension Slide {
 }
 
 public struct OnboardingView: View {
+    @LazyInjectService private var orientationManager: OrientationManageable
     @LazyInjectService private var accountManager: AccountManager
 
     @EnvironmentObject private var rootViewState: RootViewState
@@ -122,6 +124,20 @@ public struct OnboardingView: View {
                 } else {
                     universalLinksState.linkedTransfer = nil
                 }
+            }
+        }
+        .onAppear {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                UIDevice.current
+                    .setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+                orientationManager.setOrientationLock(.portrait)
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
+        }
+        .onDisappear {
+            if UIDevice.current.userInterfaceIdiom == .phone {
+                orientationManager.setOrientationLock(.all)
+                UIViewController.attemptRotationToDeviceOrientation()
             }
         }
     }
