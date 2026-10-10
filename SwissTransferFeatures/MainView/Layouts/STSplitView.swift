@@ -17,6 +17,7 @@
  */
 
 import DesignSystem
+import InfomaniakCore
 import InfomaniakCoreSwiftUI
 import STAccountView
 import STCore
@@ -28,7 +29,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct STSplitView: View {
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
     @EnvironmentObject private var mainViewState: MainViewState
 
     // periphery:ignore - Used in body
@@ -36,6 +37,10 @@ struct STSplitView: View {
     // periphery:ignore - Used in body
     @State private var selectedItems = [ImportedItem]()
     @StateObject private var avatarLoader = AvatarImageLoader()
+
+    private var currentUser: UserProfile? {
+        currentSession?.userProfile
+    }
 
     private var item: [STTab] {
         return [.sentTransfers, .receivedTransfers, .account(currentUser)]

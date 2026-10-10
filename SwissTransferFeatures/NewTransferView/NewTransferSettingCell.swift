@@ -43,16 +43,17 @@ struct NewTransferSettingCell: View {
                         .iconSize(.medium)
                 }
                 .labelStyle(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
 
                 HStack(spacing: IKPadding.mini) {
                     Text(value)
                         .font(.ST.callout)
+                        .lineLimit(1)
 
                     STResourcesAsset.Images.chevronRight.swiftUIImage
                         .iconSize(.medium)
                 }
                 .foregroundStyle(Color.ST.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .padding(.vertical, value: .mini)
         }
