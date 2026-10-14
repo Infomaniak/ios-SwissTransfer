@@ -49,11 +49,25 @@ struct NewTransferButton: View {
     }
 
     var body: some View {
+        NewTransferMenu(selection: $selection, matomoCategory: matomoCategory)
+            .buttonStyle(.ikFloatingActionButton(customSize: style.buttonSize))
+    }
+}
+
+struct NewTransferMenu: View {
+    @Binding var selection: [ImportedItem]
+
+    let matomoCategory: MatomoCategory
+
+    var body: some View {
         AddFilesMenu(selection: $selection, matomoCategory: matomoCategory) {
-            STResourcesAsset.Images.plus.swiftUIImage
-                .accessibilityLabel(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
+            Label {
+                Text(STResourcesStrings.Localizable.contentDescriptionCreateNewTransferButton)
+            } icon: {
+                STResourcesAsset.Images.plus.swiftUIImage
+            }
+            .labelStyle(.iconOnly)
         }
-        .buttonStyle(.ikFloatingActionButton(customSize: style.buttonSize))
     }
 }
 

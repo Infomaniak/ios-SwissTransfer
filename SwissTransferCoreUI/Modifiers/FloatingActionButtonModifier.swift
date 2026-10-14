@@ -38,17 +38,15 @@ struct FloatingActionButtonModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .safeAreaInset(edge: .bottom, alignment: .trailing) {
-                if isShowing && !isRunningInAppClip {
-                    Group {
-                        switch style {
-                        case .newTransfer:
-                            NewTransferButton(selection: $selection, matomoCategory: matomoCategory)
-                        case .firstTransfer:
-                            FirstTransferButton(selection: $selection, style: .small, matomoCategory: matomoCategory)
-                        }
-                    }
-                    .padding([.trailing, .bottom], value: .medium)
+            .ikFloatingActionButton(
+                isPresented: isShowing && !isRunningInAppClip,
+                style: .ikFloatingActionButton(customSize: NewTransferStyle.small.buttonSize)
+            ) {
+                switch style {
+                case .newTransfer:
+                    NewTransferMenu(selection: $selection, matomoCategory: matomoCategory)
+                case .firstTransfer:
+                    FirstTransferButton(selection: $selection, style: .small, matomoCategory: matomoCategory)
                 }
             }
     }
