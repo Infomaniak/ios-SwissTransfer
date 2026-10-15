@@ -57,7 +57,7 @@ public struct ActivityView: UIViewControllerRepresentable {
             _ activityViewController: UIActivityViewController,
             itemForActivityType activityType: UIActivity.ActivityType?
         ) -> Any? {
-            try? Data(contentsOf: url)
+            url
         }
 
         func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
