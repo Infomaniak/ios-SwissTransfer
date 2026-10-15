@@ -76,6 +76,7 @@ public struct NewTransferView: View {
                         limit: $viewModel.downloadLimit,
                         language: $viewModel.emailLanguage,
                         password: $viewModel.password,
+                        selectedOrganizationId: $viewModel.selectedOrganizationId,
                         transferType: viewModel.transferType
                     )
                     .padding(.horizontal, value: .medium)
@@ -138,7 +139,11 @@ public struct NewTransferView: View {
 
             let uploadBackendRouter = mainViewState.uploadBackendRouter
             let localUploadSessionUUID = try await uploadBackendRouter
-                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession, title: viewModel.title)
+                .createAndGetLocalUploadSessionUUID(
+                    newUploadSession: newUploadSession,
+                    title: viewModel.title,
+                    organizationAccountId: viewModel.selectedOrganizationId
+                )
 
             if let shareExtensionContext {
                 let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator
@@ -148,7 +153,6 @@ public struct NewTransferView: View {
             } else {
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             }
-
             isLoadingFileToUpload = false
         }
     }

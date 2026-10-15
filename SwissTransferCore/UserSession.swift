@@ -34,7 +34,11 @@ public struct UserSession: Sendable {
         userId == AccountManager.guestUserId
     }
 
-    init(userId: AccountManager.UserId, userProfile: UserProfile?, swissTransferManager: SwissTransferInjection) {
+    init(
+        userId: AccountManager.UserId,
+        userProfile: UserProfile?,
+        swissTransferManager: SwissTransferInjection
+    ) {
         self.userId = userId
         self.userProfile = userProfile
         self.swissTransferManager = swissTransferManager

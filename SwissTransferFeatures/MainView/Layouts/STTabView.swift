@@ -16,6 +16,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCore
 import STAccountView
 import STReceivedView
 import STSentView
@@ -24,10 +25,14 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct STTabView: View {
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
     @EnvironmentObject private var mainViewState: MainViewState
 
     @StateObject private var avatarLoader = AvatarImageLoader()
+
+    private var currentUser: UserProfile? {
+        return currentSession?.userProfile
+    }
 
     var body: some View {
         TabView(selection: $mainViewState.selectedTab) {

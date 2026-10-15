@@ -36,11 +36,15 @@ public struct MainView: View {
 
     @Environment(\.isCompactWindow) private var isCompactWindow
     @Environment(\.openURL) private var openURL
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
     @EnvironmentObject private var notificationCenterDelegate: NotificationCenterDelegate
+
+    private var currentUser: UserProfile? {
+        return currentSession?.userProfile
+    }
 
     public init() {}
 

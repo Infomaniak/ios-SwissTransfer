@@ -26,7 +26,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct SentEmptyView: View {
-    // periphery:ignore - Used in body
     @State private var selectedItems = [ImportedItem]()
 
     var body: some View {

@@ -27,7 +27,6 @@ struct ReceivedEmptyView: View {
 
     @EnvironmentObject private var transferManager: TransferManager
 
-    // periphery:ignore - Used in body
     @State private var selectedItems = [ImportedItem]()
     @State private var hasAlreadyMadeTransfers = false
 
@@ -48,9 +47,9 @@ struct ReceivedEmptyView: View {
         .onChangeOfSelectedItems($selectedItems)
         .appBackground()
         .task {
-            let sentTransfers = transferManager.getAllTransfers()
-            for await transfers in sentTransfers {
-                hasAlreadyMadeTransfers = !transfers.isEmpty
+            let sentTransfers = transferManager.hasAnyTransferFlow()
+            for await hasSentTransfers in sentTransfers {
+                hasAlreadyMadeTransfers = hasSentTransfers.boolValue
             }
         }
     }

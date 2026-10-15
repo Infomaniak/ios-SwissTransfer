@@ -26,7 +26,7 @@ import SwiftUI
 import SwissTransferCoreUI
 
 struct NewTransferDetailsView: View {
-    @Environment(\.currentUser) private var currentUser
+    @Environment(\.currentSession) private var currentSession
 
     @Binding var authorEmail: String
     @Binding var recipientsEmail: OrderedSet<String>
@@ -38,13 +38,13 @@ struct NewTransferDetailsView: View {
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
-            if currentUser != nil {
+            if currentSession?.userProfile != nil {
                 TitleTextFieldView(title: $title)
             }
 
             if transferType == .mail {
                 AuthorMailTextFieldView(authorEmail: $authorEmail)
-                    .disabled(currentUser?.email != nil)
+                    .disabled(currentSession?.userProfile?.email != nil)
 
                 RecipientsTextFieldView(recipients: $recipientsEmail, text: $emailText)
             }
@@ -59,7 +59,7 @@ struct NewTransferDetailsView: View {
             if newValue == .link {
                 authorEmail = ""
             } else {
-                authorEmail = currentUser?.email ?? ""
+                authorEmail = currentSession?.userProfile?.email ?? ""
             }
         }
     }

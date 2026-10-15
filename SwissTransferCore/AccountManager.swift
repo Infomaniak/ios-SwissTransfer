@@ -189,11 +189,19 @@ public actor AccountManager: ObservableObject {
         }
 
         if let userProfile = await userProfileStore.getUserProfile(id: userId) {
-            return UserSession(userId: userId, userProfile: userProfile, swissTransferManager: swissTransferManager)
+            return UserSession(
+                userId: userId,
+                userProfile: userProfile,
+                swissTransferManager: swissTransferManager
+            )
         } else {
             let temporaryApiFetcher = ApiFetcher(token: token, delegate: refreshTokenDelegate)
             if let userProfile = try? await userProfileStore.updateUserProfile(with: temporaryApiFetcher) {
-                return UserSession(userId: userId, userProfile: userProfile, swissTransferManager: swissTransferManager)
+                return UserSession(
+                    userId: userId,
+                    userProfile: userProfile,
+                    swissTransferManager: swissTransferManager
+                )
             }
         }
 

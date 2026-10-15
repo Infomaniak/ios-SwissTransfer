@@ -86,7 +86,6 @@ public struct OnboardingView: View {
     @EnvironmentObject private var rootViewState: RootViewState
     @EnvironmentObject private var universalLinksState: UniversalLinksState
 
-    // periphery:ignore - Used in body
     @State private var selectedSlideIndex = 0
     @StateObject private var loginHandler = LoginHandler()
 
@@ -117,7 +116,7 @@ public struct OnboardingView: View {
                     mainViewState.handleDeepLink(linkedTransfer)
                     universalLinksState.linkedTransfer = nil
                     withAnimation {
-                        rootViewState.state = .mainView(mainViewState, session.userProfile)
+                        rootViewState.state = .mainView(mainViewState, session)
                     }
                 } else {
                     universalLinksState.linkedTransfer = nil

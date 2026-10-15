@@ -119,6 +119,7 @@ let accountView = Feature(
         settingsView,
         onboardingView,
         TargetDependency.target(name: "STResources"),
+        TargetDependency.external(name: "STCore"),
         TargetDependency.external(name: "DesignSystem"),
         TargetDependency.external(name: "InfomaniakCoreCommonUI"),
         TargetDependency.external(name: "InfomaniakCoreSwiftUI"),
@@ -353,7 +354,8 @@ let project = Project(
                     .external(name: "QRCode"),
                     .external(name: "STCore"),
                     .external(name: "SwiftModalPresentation"),
-                    .external(name: "SwiftUIIntrospect")
+                    .external(name: "SwiftUIIntrospect"),
+                    .external(name: "MyKSuite")
                 ],
                 settings: .settings(base: Constants.baseSettings)),
         .target(name: "STResources",

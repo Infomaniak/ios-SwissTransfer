@@ -18,6 +18,7 @@
 
 import DesignSystem
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -25,15 +26,21 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 struct NewTransferSettingsView: View {
+    @EnvironmentObject private var mainViewState: MainViewState
+
     @State private var showPasswordSetting = false
     @State private var isShowingValiditySetting = false
     @State private var isShowingDownloadLimitSetting = false
     @State private var isShowingLanguageSetting = false
+    @State private var isShowingOrganizationSetting = false
+
+    @State private var organizations: [STDOrganizationAccount] = []
 
     @Binding var duration: ValidityPeriod
     @Binding var limit: DownloadLimit
     @Binding var language: EmailLanguage
     @Binding var password: String
+    @Binding var selectedOrganizationId: Int64?
 
     let transferType: TransferType
 
@@ -48,6 +55,21 @@ struct NewTransferSettingsView: View {
                 .foregroundStyle(Color.ST.textPrimary)
 
             VStack(alignment: .leading, spacing: IKPadding.medium) {
+                if !organizations.isEmpty {
+                    NewTransferSettingCell(
+                        title: STResourcesStrings.Localizable.settingsOptionOrganization,
+                        icon: STResourcesAsset.Images.building.swiftUIImage,
+                        value: organizations.first { $0.id == selectedOrganizationId }?.name ?? ""
+                    ) {
+                        isShowingOrganizationSetting = true
+                    }
+                    .stFloatingPanel(
+                        isPresented: $isShowingOrganizationSetting,
+                        title: STResourcesStrings.Localizable.settingsOptionOrganization
+                    ) {
+                        OrganizationListView()
+                    }
+                }
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                     icon: STResourcesAsset.Images.clock.swiftUIImage,
@@ -122,6 +144,11 @@ struct NewTransferSettingsView: View {
                 PasswordSettingView(password: $password)
             }
         }
+        .observeOrganizationChanges(swissTransferManager: mainViewState.swissTransferManager) { organizationAccounts in
+            organizations = organizationAccounts
+        } onSelectedOrganizationUpdated: { selectedOrganization in
+            selectedOrganizationId = selectedOrganization?.id
+        }
     }
 }
 
@@ -131,6 +158,7 @@ struct NewTransferSettingsView: View {
         limit: .constant(.oneHundred),
         language: .constant(.french),
         password: .constant(""),
+        selectedOrganizationId: .constant(nil),
         transferType: .link
     )
 }
