@@ -1,2 +1,4 @@
-- Amélioration de la stabilité lors de la prévisualisation des fichiers téléchargés sous iOS 16.
-- Les options de thème dans les réglages affichent désormais les libellés corrects.
+- Choisissez une organisation lors de la création d’un transfert et changez d’organisation pour consulter les transferts envoyés correspondants.
+- Partagez vos liens de transfert avec un message prêt à envoyer.
+- Les fichiers téléchargés conservent leur nom d’origine lors du partage.
+- Design amélioré pour iPhone Duo.

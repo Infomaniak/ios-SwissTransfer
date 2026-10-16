@@ -1,0 +1,4 @@
+- Wählen Sie beim Erstellen eines Transfers eine Organisation aus und wechseln Sie die Organisation, um die zugehörigen gesendeten Transfers anzuzeigen.
+- Teilen Sie Transferlinks mit einer vorbereiteten Nachricht.
+- Heruntergeladene Dateien behalten beim Teilen ihre ursprünglichen Dateinamen.
+- Verbessertes Design für iPhone Duo.
