@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core",
       "state" : {
-        "revision" : "e667ed34941d4e06f0107d9633e2cc9438685fef",
-        "version" : "19.1.4"
+        "branch" : "fix/oauthauthenticator",
+        "revision" : "76ae11fff39ae80fa559d0dc3ffdb1cc6ab39008"
       }
     },
     {
