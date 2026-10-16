@@ -17,12 +17,15 @@
  */
 
 import InfomaniakCoreCommonUI
+import InfomaniakCoreSwiftUI
 import STCore
 import STResources
 import SwiftUI
 import SwissTransferCore
 
 public struct FirstTransferButton: View {
+    @Environment(\.ikFloatingActionButtonPlacement) private var fabPlacement
+
     @Binding var selection: [ImportedItem]
 
     private let style: NewTransferStyle
@@ -46,20 +49,22 @@ public struct FirstTransferButton: View {
     public var body: some View {
         if style == .small {
             HStack(spacing: 10) {
-                VStack(alignment: .trailing, spacing: -5) {
-                    Text(STResourcesStrings.Localizable.firstTransferDescription)
-                        .font(.ST.body)
-                        .foregroundStyle(Color.ST.textSecondary)
+                if fabPlacement == .floating {
+                    VStack(alignment: .trailing, spacing: -5) {
+                        Text(STResourcesStrings.Localizable.firstTransferDescription)
+                            .font(.ST.body)
+                            .foregroundStyle(Color.ST.textSecondary)
 
-                    STResourcesAsset.Images.arrow.swiftUIImage
-                        .resizable()
-                        .frame(width: 28, height: 34)
-                        .rotationEffect(Angle(degrees: -30))
-                        .accessibilityHidden(true)
+                        STResourcesAsset.Images.arrow.swiftUIImage
+                            .resizable()
+                            .frame(width: 28, height: 34)
+                            .rotationEffect(Angle(degrees: -30))
+                            .accessibilityHidden(true)
+                    }
+                    .offset(offset)
                 }
-                .offset(offset)
 
-                NewTransferButton(selection: $selection, style: style, matomoCategory: matomoCategory)
+                NewTransferMenu(selection: $selection, matomoCategory: matomoCategory)
             }
         } else {
             ZStack {
@@ -78,8 +83,9 @@ public struct FirstTransferButton: View {
 @available(iOS 17.0, *)
 #Preview {
     @Previewable @State var selection = [ImportedItem]()
-    VStack {
-        FirstTransferButton(selection: $selection, style: .small, matomoCategory: .importFileFromSent)
-        FirstTransferButton(selection: $selection, style: .big, matomoCategory: .importFileFromSent)
-    }
+    FirstTransferButton(selection: $selection, style: .big, matomoCategory: .importFileFromSent)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .ikFloatingActionButton(style: .ikFloatingActionButton(customSize: NewTransferStyle.small.buttonSize)) {
+            FirstTransferButton(selection: $selection, style: .small, matomoCategory: .importFileFromSent)
+        }
 }
