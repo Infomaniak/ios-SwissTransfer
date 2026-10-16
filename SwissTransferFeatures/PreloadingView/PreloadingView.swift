@@ -65,6 +65,7 @@ public struct PreloadingView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: 156)
+                    .padding(.top, -56)
                     .alignmentGuide(.splashScreenIconAlignment) { d in d[VerticalAlignment.center] }
 
                 ProgressView()
@@ -72,7 +73,8 @@ public struct PreloadingView: View {
                     .tint(STResourcesAsset.Colors.white.swiftUIColor)
             }
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+        .ignoresSafeArea()
+        .safeAreaInset(edge: .bottom) {
             infomaniakLogoImage
                 .padding(.bottom, value: .medium)
         }
