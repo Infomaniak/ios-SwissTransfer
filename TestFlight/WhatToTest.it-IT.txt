@@ -1,0 +1,4 @@
+- Scegli un’organizzazione quando crei un trasferimento e cambia organizzazione per vedere i trasferimenti inviati corrispondenti.
+- Condividi i link di trasferimento con un messaggio pronto da inviare.
+- Quando condividi i file scaricati, i nomi originali vengono mantenuti.
+- Design migliorato per iPhone Duo.

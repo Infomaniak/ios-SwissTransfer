@@ -1,0 +1,4 @@
+- Elige una organización al crear una transferencia y cambia de organización para ver las transferencias enviadas correspondientes.
+- Comparte enlaces de transferencia con un mensaje listo para enviar.
+- Los archivos descargados conservan sus nombres originales al compartirlos.
+- Diseño mejorado para iPhone Duo.
