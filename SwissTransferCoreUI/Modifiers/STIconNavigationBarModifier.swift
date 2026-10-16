@@ -16,15 +16,26 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import STResources
 import SwiftUI
 
 struct STIconNavigationBarModifier: ViewModifier {
+    @Environment(\.isFoldable) private var isFoldable
+
+    var logo: Image {
+        if isFoldable {
+            STResourcesAsset.Images.logoNavbar.swiftUIImage
+        } else {
+            STResourcesAsset.Images.logo.swiftUIImage
+        }
+    }
+
     func body(content: Content) -> some View {
         content
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    STResourcesAsset.Images.logo.swiftUIImage
+                    logo
                         .resizable()
                         .scaledToFit()
                         .frame(height: 24)
