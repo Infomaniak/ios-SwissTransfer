@@ -49,10 +49,12 @@ struct OrganizationCellView: View {
                     STResourcesAsset.Images.check.swiftUIImage
                         .iconSize(.medium)
                         .foregroundStyle(.tint)
+                        .accessibilityHidden(true)
                 }
             }
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
