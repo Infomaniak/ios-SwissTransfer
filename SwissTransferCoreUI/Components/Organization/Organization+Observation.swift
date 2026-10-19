@@ -25,10 +25,24 @@ public extension View {
                                     onOrganizationsUpdated: (@MainActor ([STDOrganizationAccount]) -> Void)? = nil,
                                     onSelectedOrganizationUpdated: (@MainActor (STDOrganizationAccount?) -> Void)? = nil)
         -> some View {
-        task {
+        modifier(OrganizationObservationModifier(
+            swissTransferManager: swissTransferManager,
+            onOrganizationsUpdated: onOrganizationsUpdated,
+            onSelectedOrganizationUpdated: onSelectedOrganizationUpdated
+        ))
+    }
+}
+
+private struct OrganizationObservationModifier: ViewModifier {
+    let swissTransferManager: SwissTransferInjection
+    let onOrganizationsUpdated: (@MainActor ([STDOrganizationAccount]) -> Void)?
+    let onSelectedOrganizationUpdated: (@MainActor (STDOrganizationAccount?) -> Void)?
+
+    func body(content: Content) -> some View {
+        content.task {
             await withTaskGroup(returning: Void.self) { group in
                 group.addTask {
-                    let organizationsFlow = swissTransferManager.accountManager.organizationAccountsForCurrentUser()
+                    let organizationsFlow = await swissTransferManager.accountManager.organizationAccountsForCurrentUser()
 
                     for await organizationAccounts in organizationsFlow {
                         guard !Task.isCancelled else { return }
