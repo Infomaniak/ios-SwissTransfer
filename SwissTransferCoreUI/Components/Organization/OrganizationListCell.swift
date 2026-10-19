@@ -93,9 +93,9 @@ enum OrganizationType {
         switch self {
         case .ksuite(let pack):
             Text(pack.capitalized)
-                    .font(.ST.callout)
-                    .foregroundStyle(Color.ST.textSecondary)
-                    .lineLimit(1)
+                .font(.ST.callout)
+                .foregroundStyle(Color.ST.textSecondary)
+                .lineLimit(1)
         case .myKSuite(let pack):
             pack.image
         }

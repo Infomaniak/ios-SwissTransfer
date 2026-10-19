@@ -39,6 +39,10 @@ public struct TransferList<EmptyView: View, HeaderAccessory: View>: View {
     private let emptyView: EmptyView?
     private let headerAccessory: HeaderAccessory?
 
+    private var isShowingTitle: Bool {
+        isCompactWindow && viewModel.sections?.isEmpty == false
+    }
+
     public init(
         transferManager: TransferManager,
         direction: TransferDirection,
@@ -138,10 +142,6 @@ public struct TransferList<EmptyView: View, HeaderAccessory: View>: View {
                 .padding(.top, value: .medium)
             }
         }
-    }
-
-    private var isShowingTitle: Bool {
-        isCompactWindow && viewModel.sections?.isEmpty == false
     }
 }
 
