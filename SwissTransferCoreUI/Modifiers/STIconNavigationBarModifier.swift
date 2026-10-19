@@ -25,7 +25,7 @@ struct STIconNavigationBarModifier: ViewModifier {
 
     var logo: Image {
         if hasDeviceHinge {
-            STResourcesAsset.Images.logoNavbar.swiftUIImage
+            STResourcesAsset.Images.logoAdaptive.swiftUIImage
         } else {
             STResourcesAsset.Images.logo.swiftUIImage
         }
