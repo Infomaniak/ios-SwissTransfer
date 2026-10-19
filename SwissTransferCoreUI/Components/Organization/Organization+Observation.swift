@@ -26,7 +26,7 @@ public extension View {
                                     onSelectedOrganizationUpdated: (@MainActor (STDOrganizationAccount?) -> Void)? = nil)
         -> some View {
         task {
-            await withTaskGroup { group in
+            await withTaskGroup(returning: Void.self) { group in
                 group.addTask {
                     let organizationsFlow = swissTransferManager.accountManager.organizationAccountsForCurrentUser()
 
