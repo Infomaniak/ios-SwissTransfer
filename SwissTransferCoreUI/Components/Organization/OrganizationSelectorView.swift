@@ -39,6 +39,7 @@ public struct OrganizationSelectorView: View {
                         OrganizationAvatarView(organization: selectedOrganization, avatarSize: IKIconSize.large.rawValue)
                         Text(selectedOrganization.name)
                         Image(systemName: "chevron.down")
+                            .accessibilityHidden(true)
                     }
                 }
                 .buttonStyle(.plain)

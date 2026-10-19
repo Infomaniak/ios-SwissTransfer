@@ -49,6 +49,7 @@ public struct OrganizationAvatarView: View {
                 .stroke(Color.ST.cardBorder, lineWidth: 1)
         }
         .frame(width: avatarSize, height: avatarSize)
+        .accessibilityHidden(true)
     }
 
     private var initialsView: some View {

@@ -24,7 +24,7 @@ import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
 
-public struct TransferList<EmptyView: View>: View {
+public struct TransferList<EmptyView: View, HeaderAccessory: View>: View {
     @Environment(\.isCompactWindow) private var isCompactWindow
 
     @EnvironmentObject private var mainViewState: MainViewState
@@ -37,12 +37,34 @@ public struct TransferList<EmptyView: View>: View {
     private let direction: TransferDirection
     private let matomoCategory: MatomoCategory
     private let emptyView: EmptyView?
+    private let headerAccessory: HeaderAccessory?
+
+    private var isShowingTitle: Bool {
+        isCompactWindow && viewModel.sections?.isEmpty == false
+    }
 
     public init(
         transferManager: TransferManager,
         direction: TransferDirection,
         matomoCategory: MatomoCategory,
-        @ViewBuilder emptyView: () -> EmptyView
+        @ViewBuilder emptyView: () -> EmptyView,
+        @ViewBuilder headerAccessory: () -> HeaderAccessory
+    ) {
+        self.init(
+            transferManager: transferManager,
+            direction: direction,
+            matomoCategory: matomoCategory,
+            emptyView: emptyView(),
+            headerAccessory: headerAccessory()
+        )
+    }
+
+    fileprivate init(
+        transferManager: TransferManager,
+        direction: TransferDirection,
+        matomoCategory: MatomoCategory,
+        emptyView: EmptyView,
+        headerAccessory: HeaderAccessory?
     ) {
         _viewModel = StateObject(wrappedValue: TransferListViewModel(
             transferManager: transferManager,
@@ -50,7 +72,8 @@ public struct TransferList<EmptyView: View>: View {
         ))
         self.direction = direction
         self.matomoCategory = matomoCategory
-        self.emptyView = emptyView()
+        self.emptyView = emptyView
+        self.headerAccessory = headerAccessory
         UICollectionViewCell.appearance().focusEffect = .none
     }
 
@@ -102,5 +125,39 @@ public struct TransferList<EmptyView: View>: View {
                 emptyView
             }
         }
+        .safeAreaInset(edge: .top, alignment: .leading) {
+            if isShowingTitle || headerAccessory != nil {
+                VStack(alignment: .leading) {
+                    if isShowingTitle {
+                        Text(direction.title)
+                            .font(.ST.title)
+                            .foregroundStyle(Color.ST.textPrimary)
+                    }
+
+                    if let headerAccessory {
+                        headerAccessory
+                    }
+                }
+                .padding(.horizontal, value: .medium)
+                .padding(.top, value: .medium)
+            }
+        }
+    }
+}
+
+public extension TransferList where HeaderAccessory == SwiftUI.EmptyView {
+    init(
+        transferManager: TransferManager,
+        direction: TransferDirection,
+        matomoCategory: MatomoCategory,
+        @ViewBuilder emptyView: () -> EmptyView
+    ) {
+        self.init(
+            transferManager: transferManager,
+            direction: direction,
+            matomoCategory: matomoCategory,
+            emptyView: emptyView(),
+            headerAccessory: nil
+        )
     }
 }

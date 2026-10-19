@@ -26,7 +26,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct SentView: View {
-    @Environment(\.isCompactWindow) private var isCompactWindow
     @EnvironmentObject private var transferManager: TransferManager
 
     private let direction = TransferDirection.sent
@@ -36,35 +35,19 @@ public struct SentView: View {
     public init() {}
 
     public var body: some View {
-        VStack(alignment: .leading) {
-            TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
-                SentEmptyView()
+        TransferList(transferManager: transferManager, direction: direction, matomoCategory: .importFileFromSent) {
+            SentEmptyView()
+        } headerAccessory: {
+            if hasTransfers {
+                OrganizationSelectorView()
             }
-            .matomoView(view: .sent)
         }
+        .matomoView(view: .sent)
         .task {
             for await value in transferManager.hasAccountTransferFlow() {
                 withAnimation {
                     hasTransfers = value.boolValue
                 }
-            }
-        }
-        .safeAreaInset(edge: .top, alignment: .leading) {
-            if hasTransfers {
-                VStack(alignment: .leading) {
-                    if isCompactWindow {
-                        Text(direction.title)
-                            .font(.ST.title)
-                            .foregroundStyle(Color.ST.textPrimary)
-                    }
-
-                    OrganizationSelectorView()
-                }
-                .padding(.horizontal, value: .medium)
-                .padding(.top, value: .medium)
-                .listRowInsets(EdgeInsets(.zero))
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.ST.background)
             }
         }
     }
