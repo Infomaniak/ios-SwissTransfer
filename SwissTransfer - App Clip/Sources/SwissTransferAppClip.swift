@@ -54,7 +54,7 @@ struct SwissTransferAppClip: App {
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
-                .detectFoldablePhone()
+                .detectDeviceHinge(store: .shared)
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
                     guard let url = activity.webpageURL else { return }
                     handleURL(url)

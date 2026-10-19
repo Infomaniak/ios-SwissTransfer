@@ -21,10 +21,10 @@ import STResources
 import SwiftUI
 
 struct STIconNavigationBarModifier: ViewModifier {
-    @Environment(\.isFoldable) private var isFoldable
+    @Environment(\.hasDeviceHinge) private var hasDeviceHinge
 
     var logo: Image {
-        if isFoldable {
+        if hasDeviceHinge {
             STResourcesAsset.Images.logoNavbar.swiftUIImage
         } else {
             STResourcesAsset.Images.logo.swiftUIImage

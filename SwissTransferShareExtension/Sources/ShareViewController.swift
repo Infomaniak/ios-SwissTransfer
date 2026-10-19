@@ -69,7 +69,7 @@ class ShareViewController: UIViewController {
                 .tint(.ST.primary)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
-                .detectFoldablePhone()
+                .detectDeviceHinge(store: .shared)
                 .environment(\.shareExtensionContext, ShareExtensionContext { self.dismiss(animated: true) })
                 .environment(\.currentSession, userSession)
                 .environmentObject(mainViewState)

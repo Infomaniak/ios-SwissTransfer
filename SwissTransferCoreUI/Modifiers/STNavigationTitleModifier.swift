@@ -20,7 +20,7 @@ import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public struct STNavigationTitleModifier: ViewModifier {
-    @Environment(\.isFoldable) private var isFoldable
+    @Environment(\.hasDeviceHinge) private var hasDeviceHinge
     public let title: String
 
     public func body(content: Content) -> some View {
@@ -29,7 +29,7 @@ public struct STNavigationTitleModifier: ViewModifier {
                 ToolbarItem(placement: .principal) {
                     Text(title)
                         .font(.ST.title2)
-                        .foregroundColor(isFoldable ? nil : .white)
+                        .foregroundColor(hasDeviceHinge ? nil : .white)
                 }
             }
     }

@@ -20,18 +20,19 @@ import InfomaniakCoreSwiftUI
 import SwiftUI
 
 struct STNavigationBarStyleModifier: ViewModifier {
-    @Environment(\.isFoldable) private var isFoldable
+    @Environment(\.hasDeviceHinge) private var hasDeviceHinge
+
     func body(content: Content) -> some View {
         content
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(
-                isFoldable
+                hasDeviceHinge
                     ? AnyShapeStyle(.bar)
                     : AnyShapeStyle(Color.ST.secondary),
                 for: .navigationBar
             )
             .toolbarBackground(
-                isFoldable ? .automatic : .visible,
+                hasDeviceHinge ? .automatic : .visible,
                 for: .navigationBar
             )
             .navigationTitle("")
