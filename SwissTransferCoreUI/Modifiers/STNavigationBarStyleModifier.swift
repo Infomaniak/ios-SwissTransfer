@@ -23,19 +23,17 @@ struct STNavigationBarStyleModifier: ViewModifier {
     @Environment(\.hasDeviceHinge) private var hasDeviceHinge
 
     func body(content: Content) -> some View {
-        content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(
-                hasDeviceHinge
-                    ? AnyShapeStyle(.bar)
-                    : AnyShapeStyle(Color.ST.secondary),
-                for: .navigationBar
-            )
-            .toolbarBackground(
-                hasDeviceHinge ? .automatic : .visible,
-                for: .navigationBar
-            )
-            .navigationTitle("")
+        if hasDeviceHinge {
+            content
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("")
+        } else {
+            content
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.ST.secondary, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .navigationTitle("")
+        }
     }
 }
 
