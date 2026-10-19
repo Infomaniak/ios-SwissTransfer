@@ -86,17 +86,16 @@ enum OrganizationType {
         }
     }
 
+    @ViewBuilder
     var label: some View {
         switch self {
         case .ksuite(let pack):
-            return AnyView(
-                Text(pack.capitalized)
+            Text(pack.capitalized)
                     .font(.ST.callout)
                     .foregroundStyle(Color.ST.textSecondary)
                     .lineLimit(1)
-            )
         case .myKSuite(let pack):
-            return AnyView(pack.image)
+            pack.image
         }
     }
 }
