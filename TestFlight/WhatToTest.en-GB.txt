@@ -1,4 +1,4 @@
 - Choose an organisation when creating a transfer, and switch organisations to see their sent transfers.
 - Share transfer links with a ready-to-send message.
 - Original filenames are preserved when sharing downloaded files.
-- Improved design for iPhone Duo
+- Improved design for iPhone Duo.

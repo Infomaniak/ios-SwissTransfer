@@ -112,7 +112,9 @@ struct OnboardingBottomButtonsView: View {
             }
         }
         .padding(.horizontal, value: .medium)
-        .task {
+        .task(id: selection) {
+            guard isLastSlide else { return }
+
             excludedUserIds = await accountManager.getAccountIds()
             let accounts = await connectedAccountsManager.listAllLocalAccounts()
             if !accounts.isEmpty {
