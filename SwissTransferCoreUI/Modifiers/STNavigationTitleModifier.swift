@@ -21,6 +21,7 @@ import SwiftUI
 
 public struct STNavigationTitleModifier: ViewModifier {
     @Environment(\.hasDeviceHinge) private var hasDeviceHinge
+
     public let title: String
 
     public func body(content: Content) -> some View {
@@ -29,7 +30,7 @@ public struct STNavigationTitleModifier: ViewModifier {
                 ToolbarItem(placement: .principal) {
                     Text(title)
                         .font(.ST.title2)
-                        .foregroundColor(hasDeviceHinge ? nil : .white)
+                        .foregroundStyle(hasDeviceHinge ? .primary : Color.white)
                 }
             }
     }

@@ -26,6 +26,7 @@ import SwissTransferCoreUI
 
 public struct TransferList<EmptyView: View, HeaderAccessory: View>: View {
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.hasDeviceHinge) private var hasDeviceHinge
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var transferManager: TransferManager
@@ -116,7 +117,7 @@ public struct TransferList<EmptyView: View, HeaderAccessory: View>: View {
                 if !isCompactWindow {
                     Text(direction.title)
                         .font(.ST.title2)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(hasDeviceHinge ? .primary : Color.white)
                 }
             }
         }
