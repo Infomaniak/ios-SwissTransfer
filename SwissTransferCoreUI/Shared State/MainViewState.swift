@@ -102,7 +102,7 @@ public final class MainViewState: ObservableObject {
     /// Only used by STTabView
     @ModalPublished public var selectedFullscreenTransfer: TransferData?
 
-    public var isSplitView = false
+    @Published public private(set) var isSplitView = false
 
     @ModalPublished public var isShowingUpdateAvailable = false
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
@@ -163,6 +163,33 @@ public final class MainViewState: ObservableObject {
     public init(swissTransferManager: SwissTransferInjection, uploadBackendRouter: UploadBackendRouter) {
         self.swissTransferManager = swissTransferManager
         self.uploadBackendRouter = uploadBackendRouter
+    }
+
+    public func updateLayout(isSplitView newValue: Bool) {
+        guard newValue != isSplitView else { return }
+
+        if newValue {
+            let fullscreenTransfer = selectedFullscreenTransfer
+            selectedFullscreenTransfer = nil
+            isSplitView = true
+
+            if let fullscreenTransfer {
+                selectedDestination = .transfer(fullscreenTransfer)
+            }
+        } else {
+            let destination = selectedDestination
+            paths = paths.mapValues { path in
+                path.filter {
+                    if case .transfer = $0 { return false }
+                    return true
+                }
+            }
+            isSplitView = false
+
+            if case .transfer(let transfer) = destination {
+                selectedFullscreenTransfer = transfer
+            }
+        }
     }
 
     public func handleDeepLink(_ linkResult: UniversalLinkResult) {
