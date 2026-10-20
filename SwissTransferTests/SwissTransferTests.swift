@@ -17,11 +17,29 @@
  */
 
 import Foundation
+import STCore
 @testable import SwissTransferCoreUI
 import XCTest
 
 @MainActor
 final class SwissTransferTests: XCTestCase {
+    func testTransferWithoutValidityPeriodIsInvalid() {
+        let viewModel = RootTransferViewModel()
+
+        XCTAssertNil(viewModel.validityPeriod)
+        XCTAssertFalse(viewModel.isTransferConfigurationValid)
+    }
+
+    func testNewTransferDoesNotReusePreviousValidityPeriod() {
+        let previousTransfer = RootTransferViewModel()
+        previousTransfer.validityPeriod = .thirty
+
+        let newTransfer = RootTransferViewModel()
+
+        XCTAssertNil(newTransfer.validityPeriod)
+        XCTAssertFalse(newTransfer.isTransferConfigurationValid)
+    }
+
     override func tearDown() async throws {
         let newTransferManager = NewTransferFileManager(shouldDoInitialClean: true)
         await NewTransferFileManager.cleanTmpDir(type: .all)

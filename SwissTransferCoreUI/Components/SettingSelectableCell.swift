@@ -25,7 +25,7 @@ import SwissTransferCore
 
 struct SettingSelectableCell<T: SettingSelectable>: View {
     let item: T
-    let selectedItem: T
+    let selectedItem: T?
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {

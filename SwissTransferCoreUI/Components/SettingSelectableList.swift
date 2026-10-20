@@ -27,12 +27,12 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
     @Environment(\.dismiss) private var dismiss
 
     let items: [T]
-    let selected: T
+    let selected: T?
     let onSelection: (T) -> Void
 
     public init(
         _ type: T.Type,
-        selected: T,
+        selected: T?,
         onSelection: @escaping (T) -> Void
     ) {
         items = Array(type.allCases)
