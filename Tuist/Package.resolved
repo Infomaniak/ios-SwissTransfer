@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Infomaniak/ios-core-ui",
       "state" : {
-        "revision" : "8e879add6ab2432f40a18302a7ca6bedebff9e84",
-        "version" : "26.2.1"
+        "revision" : "fa789107d7685c5555518c6b73d496043d085eec",
+        "version" : "26.3.0"
       }
     },
     {
