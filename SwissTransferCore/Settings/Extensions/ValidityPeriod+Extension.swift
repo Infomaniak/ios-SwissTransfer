@@ -39,6 +39,15 @@ extension ValidityPeriod: SettingSelectable {
         nil
     }
 
+    public var rightImage: Image? {
+        switch self {
+        case .one:
+            return STResourcesAsset.Images.leaf.swiftUIImage
+        default:
+            return nil
+        }
+    }
+
     public var matomoName: MatomoName {
         switch self {
         case .one:

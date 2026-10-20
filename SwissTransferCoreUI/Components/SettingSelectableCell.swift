@@ -31,9 +31,13 @@ struct SettingSelectableCell<T: SettingSelectable>: View {
         VStack(spacing: IKPadding.medium) {
             HStack(spacing: IKPadding.medium) {
                 Label {
-                    Text(item.title)
-                        .font(.ST.body)
-                        .foregroundStyle(Color.ST.textPrimary)
+                    HStack(spacing: IKPadding.medium) {
+                        Text(item.title)
+                            .font(.ST.body)
+                            .foregroundStyle(Color.ST.textPrimary)
+
+                        item.rightImage
+                    }
                 } icon: {
                     item.leftImage
                 }
