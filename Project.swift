@@ -279,6 +279,7 @@ let project = Project(
                 .target(name: "SwissTransferCore"),
                 .target(name: "SwissTransferCoreUI"),
                 .external(name: "InfomaniakCoreUIKit"),
+                .external(name: "InfomaniakCoreSwiftUI"),
                 .external(name: "InfomaniakDI"),
                 rootTransferView.asDependency
             ],
