@@ -50,10 +50,10 @@ public struct MainView: View {
 
     public var body: some View {
         ZStack {
-            if isCompactWindow {
-                STTabView()
-            } else {
+            if mainViewState.isSplitView {
                 STSplitView()
+            } else {
+                STTabView()
             }
         }
         .id(currentUser?.id)
@@ -83,8 +83,11 @@ public struct MainView: View {
 
             mainViewState.selectedTransfer = .transfer(tappedTransfer)
         }
-        .task(id: isCompactWindow) {
-            mainViewState.isSplitView = !isCompactWindow
+        .onAppear {
+            mainViewState.updateLayout(isSplitView: !isCompactWindow)
+        }
+        .onChange(of: isCompactWindow) { newIsCompactWindow in
+            mainViewState.updateLayout(isSplitView: !newIsCompactWindow)
         }
         .fullScreenCover(item: $mainViewState.newTransferContainer) { container in
             switch container.content {
