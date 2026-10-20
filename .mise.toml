@@ -2,7 +2,7 @@
 tuist = { version = "4.201.0", os = ["macos"] }
 "github:Infomaniak/periphery" = { version = "3.8.1", asset_pattern = "periphery-{{ version }}.zip", os = ["macos"] }
 swiftformat = { version = "0.58.6", os = ["macos", "linux"] }
-swiftlint = { version = "0.62.2", os = ["macos", "linux"] }
+swiftlint = { version = "0.65.1", os = ["macos", "linux"] }
 sentry-cli = { version = "latest", os = ["macos"] }
 pipx = { version = "1.8.0", os = ["macos", "linux"] }
 "pipx:infomaniak/importloco" = { version = '2.3.0', os = ["macos", "linux"] }
