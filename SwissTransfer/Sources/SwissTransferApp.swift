@@ -73,6 +73,7 @@ struct SwissTransferApp: App {
                 .environmentObject(rootViewState)
                 .ikButtonTheme(.swissTransfer)
                 .detectCompactWindow()
+                .detectDeviceHinge(store: .shared)
                 .preferredColorScheme(savedColorScheme)
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
                     guard let url = activity.webpageURL else { return }

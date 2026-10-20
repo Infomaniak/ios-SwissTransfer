@@ -16,9 +16,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import InfomaniakCoreSwiftUI
 import SwiftUI
 
 public struct STNavigationTitleModifier: ViewModifier {
+    @Environment(\.hasDeviceHinge) private var hasDeviceHinge
+
     public let title: String
 
     public func body(content: Content) -> some View {
@@ -27,7 +30,7 @@ public struct STNavigationTitleModifier: ViewModifier {
                 ToolbarItem(placement: .principal) {
                     Text(title)
                         .font(.ST.title2)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(hasDeviceHinge ? .primary : Color.white)
                 }
             }
     }

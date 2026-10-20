@@ -29,6 +29,8 @@ struct SplitViewDetailsEmptyView: View {
             style: .emptyState
         )
         .padding(value: .medium)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .appBackground()
     }
 }
 
