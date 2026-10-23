@@ -289,6 +289,12 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Empfangen";
 
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "85 %% der Transfers werden innerhalb von 24 Stunden heruntergeladen. Weniger Zeit auf unseren Servern, weniger Energieverbrauch.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Empfohlene Zeiträume";
+
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer ist an Ihrem Standort nicht verfügbar";
 

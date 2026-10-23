@@ -289,6 +289,12 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Vastaanotettu";
 
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "85 %% siirroista ladataan 24 tunnin kuluessa. Vähemmän aikaa palvelimillamme, vähemmän energiankulutusta.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Suositellut kestot";
+
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer ei ole saatavilla alueellasi";
 
