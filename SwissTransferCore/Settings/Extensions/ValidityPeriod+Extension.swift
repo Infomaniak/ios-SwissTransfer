@@ -55,7 +55,7 @@ extension ValidityPeriod: SettingSelectable {
         case .one:
             return .oneDay
         case .three:
-            return .oneDay
+            return .threeDays
         case .seven:
             return .sevenDays
         case .fifteen:
