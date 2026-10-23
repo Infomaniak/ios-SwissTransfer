@@ -289,6 +289,12 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Received";
 
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "85%% of transfers are downloaded within 24 hours. Less time on our servers, less energy used.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Recommended durations";
+
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer is not available in your location";
 

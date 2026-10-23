@@ -289,6 +289,12 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Mottaget";
 
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "85 %% av överföringarna laddas ner inom 24 timmar. Kortare tid på våra servrar, lägre energiförbrukning.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Rekommenderade tidsperioder";
+
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer är inte tillgänglig på din plats";
 

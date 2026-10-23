@@ -289,6 +289,12 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Recebido";
 
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "85%% das transferências são descarregadas no prazo de 24 horas. Menos tempo nos nossos servidores, menos energia consumida.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Durações recomendadas";
+
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "O Infomaniak SwissTransfer não está disponível na tua localização";
 

@@ -289,6 +289,12 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Ελήφθη";
 
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "Το 85%% των μεταφορών λαμβάνεται εντός 24 ωρών. Λιγότερος χρόνος στους διακομιστές μας, λιγότερη κατανάλωση ενέργειας.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Προτεινόμενες διάρκειες";
+
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Το Infomaniak SwissTransfer δεν είναι διαθέσιμο στην τοποθεσία σου";
 
