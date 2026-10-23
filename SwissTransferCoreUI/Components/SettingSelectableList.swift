@@ -42,6 +42,25 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 
     public var body: some View {
         VStack(spacing: 0) {
+            if T.self == ValidityPeriod.self {
+                VStack(alignment: .leading, spacing: IKPadding.small) {
+                    Label {
+                        Text(STResourcesStrings.Localizable.recommendedDurationsTitle)
+                            .font(.ST.calloutMedium)
+                    } icon: {
+                        STResourcesAsset.Images.leaf.swiftUIImage
+                    }
+                    .labelStyle(.ikLabel(IKPadding.small))
+                    .foregroundStyle(Color.ST.primary)
+
+                    Text(STResourcesStrings.Localizable.recommendedDurationsDescription)
+                        .font(.ST.callout)
+                        .foregroundStyle(Color.ST.textSecondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(value: .medium)
+            }
+
             ForEach(items, id: \.self) { item in
                 Button {
                     @InjectService var matomo: MatomoUtils
