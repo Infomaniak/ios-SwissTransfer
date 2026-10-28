@@ -41,7 +41,7 @@ public struct TransferList<EmptyView: View, HeaderAccessory: View>: View {
     private let headerAccessory: HeaderAccessory?
 
     private var isShowingTitle: Bool {
-        isCompactWindow && viewModel.sections?.isEmpty == false
+        isCompactWindow && (direction == .sent || viewModel.sections?.isEmpty == false)
     }
 
     public init(
