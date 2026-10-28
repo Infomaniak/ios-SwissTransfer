@@ -67,7 +67,8 @@ public struct TransferDetailsMenu: View {
                     Label {
                         Text(STResourcesStrings.Localizable.reportTransfer)
                     } icon: {
-                        STResourcesAsset.Images.arrowDownCircle.swiftUIImage
+                        STResourcesAsset.Images.warning.swiftUIImage
+                            .foregroundStyle(.black)
                     }
                 }
             }
@@ -78,14 +79,14 @@ public struct TransferDetailsMenu: View {
                 Label {
                     Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
                 } icon: {
-                    STResourcesAsset.Images.delete.swiftUIImage
+                    STResourcesAsset.Images.bin.swiftUIImage
                 }
             }
         } label: {
             Label {
                 Text("More")
             } icon: {
-                STResourcesAsset.Images.plus.swiftUIImage
+                STResourcesAsset.Images.plusActions.swiftUIImage
             }
         }
     }
