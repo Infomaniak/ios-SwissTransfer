@@ -105,6 +105,6 @@ public struct TransferDetailsMenu: View {
         @InjectService var matomo: MatomoUtils
         matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
 
-        dismiss()
+        mainViewState.selectedDestination = nil
     }
 }
