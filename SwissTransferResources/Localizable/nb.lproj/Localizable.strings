@@ -295,6 +295,9 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Mottatt";
 
+/* loco:6ae1bf97dd8518890c053748 */
+"reportTransfer" = "Rapporter denne overføringen";
+
 /* loco:6adb28bfa7d084fee0021577 */
 "recommendedDurationsDescription" = "85 %% av overføringene lastes ned innen 24 timer. Kortere tid på serverne våre, lavere energiforbruk.";
 
