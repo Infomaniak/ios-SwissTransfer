@@ -29,6 +29,7 @@ public struct TransferDetailsMenu: View {
     @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var mainViewState: MainViewState
+    @EnvironmentObject private var downloadManager: DownloadManager
 
     private let transfer: TransferUi
 
@@ -96,6 +97,7 @@ public struct TransferDetailsMenu: View {
 
     private func deleteTransferLocally(_ transfer: TransferUi) {
         Task {
+            await downloadManager.cancelDownloadsForDeletedTransfer(transferUUID: transfer.uuid)
             try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
             transfer.removeLocalContainer()
         }
