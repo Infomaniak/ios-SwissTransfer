@@ -35,6 +35,10 @@ public struct TransferDetailsMenu: View {
         self.transfer = transfer
     }
 
+    private var actionsByDirection: [MoreActions] {
+        transfer.direction == .received ? [.report, .delete] : [.download, .delete]
+    }
+
     private var reportURL: URL? {
         let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
         let transferLink: String
@@ -59,29 +63,15 @@ public struct TransferDetailsMenu: View {
 
     public var body: some View {
         Menu {
-            if let reportURL {
-                Button {
-                    @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
-
-                    openURL(reportURL)
+            ForEach(actionsByDirection, id: \.self) { action in
+                Button(role: action.role) {
+                    handle(action)
                 } label: {
                     Label {
-                        Text(STResourcesStrings.Localizable.reportTransfer)
+                        Text(action.title)
                     } icon: {
-                        STResourcesAsset.Images.warning.swiftUIImage
-                            .foregroundStyle(.black)
+                        action.icon
                     }
-                }
-            }
-
-            Button(role: .destructive) {
-                deleteTransferLocally(transfer)
-            } label: {
-                Label {
-                    Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
-                } icon: {
-                    STResourcesAsset.Images.bin.swiftUIImage
                 }
             }
         } label: {
@@ -93,15 +83,58 @@ public struct TransferDetailsMenu: View {
         }
     }
 
+    private func handle(_ action: MoreActions) {
+        switch action {
+        case .report:
+            @InjectService var matomo: MatomoUtils
+            matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
+            if let reportURL { openURL(reportURL) }
+        case .delete:
+            @InjectService var matomo: MatomoUtils
+            matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
+            deleteTransferLocally(transfer)
+        case .download:
+            print("coucou")
+        }
+    }
+
     private func deleteTransferLocally(_ transfer: TransferUi) {
         Task {
             try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
             transfer.removeLocalContainer()
         }
 
-        @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
-
         mainViewState.selectedDestination = nil
+    }
+}
+
+enum MoreActions: CaseIterable, Identifiable {
+    var id: Self { self }
+
+    case report
+    case delete
+    case download
+
+    var title: String {
+        switch self {
+        case .report: STResourcesStrings.Localizable.reportTransfer
+        case .delete: STResourcesStrings.Localizable.buttonDeleteTransfer
+        case .download: "Downlaod file(s)"
+        }
+    }
+
+    var icon: Image {
+        switch self {
+        case .report: STResourcesAsset.Images.warning.swiftUIImage
+        case .delete: STResourcesAsset.Images.bin.swiftUIImage
+        case .download: STResourcesAsset.Images.arrowDownLine.swiftUIImage
+        }
+    }
+
+    var role: ButtonRole? {
+        switch self {
+        case .delete: .destructive
+        case .report, .download: nil
+        }
     }
 }
