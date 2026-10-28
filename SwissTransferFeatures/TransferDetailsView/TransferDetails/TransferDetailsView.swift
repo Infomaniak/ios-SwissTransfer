@@ -19,6 +19,7 @@
 import DesignSystem
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
+import InfomaniakDI
 import STCore
 import STResources
 import SwiftUI
@@ -28,6 +29,7 @@ import SwissTransferCoreUI
 public struct TransferDetailsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isCompactWindow) private var isCompactWindow
+    @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var multipleSelectionManager: MultipleSelectionManager
     @EnvironmentObject private var mainViewState: MainViewState
@@ -48,26 +50,53 @@ public struct TransferDetailsView: View {
         self.transfer = transfer
     }
 
-    @ViewBuilder
+    private var reportURL: URL? {
+        guard let transfer else { return nil }
+
+        let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
+        let transferLink: String
+
+        if transfer.apiSource == .v1 {
+            transferLink = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
+        } else if let linkId = transfer.linkId {
+            transferLink = apiURLCreator.shareTransferV2Url(linkUUID: linkId)
+        } else {
+            return nil
+        }
+
+        var components = URLComponents(
+            string: "https://www.infomaniak.com/fr/report_abuse"
+        )
+        components?.queryItems = [
+            URLQueryItem(name: "from", value: "swisstransfer"),
+            URLQueryItem(name: "url", value: transferLink)
+        ]
+        return components?.url
+    }
+
     private var menuItems: some View {
         Menu {
-            Button {
-                print("report")
-            } label: {
-                Label {
-                    Text("Signaler ce transfert")
-                } icon: {
-                    STResourcesAsset.Images.arrowDownCircle.swiftUIImage
+            if let reportURL {
+                Button {
+                    openURL(reportURL)
+                } label: {
+                    Label {
+                        Text("Signaler ce transfert")
+                    } icon: {
+                        STResourcesAsset.Images.arrowDownCircle.swiftUIImage
+                    }
                 }
             }
 
-            Button(role: .destructive) {
-                print("remove")
-            } label: {
-                Label {
-                    Text("Supprimer ce transfer")
-                } icon: {
-                    STResourcesAsset.Images.delete.swiftUIImage
+            if let transfer {
+                Button(role: .destructive) {
+                    deleteTransferLocally(transfer)
+                } label: {
+                    Label {
+                        Text("Supprimer ce transfer")
+                    } icon: {
+                        STResourcesAsset.Images.delete.swiftUIImage
+                    }
                 }
             }
         } label: {
@@ -137,6 +166,19 @@ public struct TransferDetailsView: View {
         }
         .environment(\.dismissModal) { dismiss() }
         .matomoView(view: transfer?.direction == .sent ? .sentTransferDetails : .receivedTransferDetails)
+    }
+
+    private func deleteTransferLocally(_ transfer: TransferUi) {
+        Task {
+            try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+            transfer.removeLocalContainer()
+        }
+
+        // TODO: Replace matomoName
+        @InjectService var matomo: MatomoUtils
+        matomo.track(eventWithCategory: .deleteTransferHistory, name: MatomoName.deleteFile)
+
+        dismiss()
     }
 }
 
