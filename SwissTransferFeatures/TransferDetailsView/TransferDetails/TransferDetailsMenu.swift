@@ -62,6 +62,9 @@ public struct TransferDetailsMenu: View {
         Menu {
             if let reportURL {
                 Button {
+                    @InjectService var matomo: MatomoUtils
+                    matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
+
                     openURL(reportURL)
                 } label: {
                     Label {
@@ -97,9 +100,8 @@ public struct TransferDetailsMenu: View {
             transfer.removeLocalContainer()
         }
 
-        // TODO: Replace matomoName
         @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: .deleteTransferHistory, name: MatomoName.deleteFile)
+        matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
 
         dismiss()
     }
