@@ -20,6 +20,7 @@ import DesignSystem
 import InfomaniakCoreCommonUI
 import InfomaniakCoreSwiftUI
 import STCore
+import STResources
 import SwiftUI
 import SwissTransferCore
 import SwissTransferCoreUI
@@ -45,6 +46,37 @@ public struct TransferDetailsView: View {
 
     public init(transfer: TransferUi?) {
         self.transfer = transfer
+    }
+
+    @ViewBuilder
+    private var menuItems: some View {
+        Menu {
+            Button {
+                print("report")
+            } label: {
+                Label {
+                    Text("Signaler ce transfert")
+                } icon: {
+                    STResourcesAsset.Images.arrowDownCircle.swiftUIImage
+                }
+            }
+
+            Button(role: .destructive) {
+                print("remove")
+            } label: {
+                Label {
+                    Text("Supprimer ce transfer")
+                } icon: {
+                    STResourcesAsset.Images.delete.swiftUIImage
+                }
+            }
+        } label: {
+            Label {
+                Text("More")
+            } icon: {
+                STResourcesAsset.Images.plus.swiftUIImage
+            }
+        }
     }
 
     public var body: some View {
@@ -90,6 +122,7 @@ public struct TransferDetailsView: View {
         ) {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }
+        .toolbar { transfer?.direction == .received ? menuItems : nil }
         .navigationDestination(for: FileUi.self) { file in
             if let transfer {
                 FileListView(
