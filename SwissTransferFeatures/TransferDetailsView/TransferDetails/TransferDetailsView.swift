@@ -91,7 +91,7 @@ public struct TransferDetailsView: View {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }
         .toolbar {
-            if let transfer, transfer.direction == .received {
+            if let transfer, transfer.direction == .received && !multipleSelectionManager.isEnabled {
                 ToolbarItem(placement: .topBarTrailing) {
                     TransferDetailsMenu(transfer: transfer)
                 }
