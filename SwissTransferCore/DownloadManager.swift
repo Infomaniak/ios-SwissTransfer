@@ -20,6 +20,7 @@
 import Foundation
 import InfomaniakCoreCommonUI
 import InfomaniakDI
+import OSLog
 @preconcurrency import STCore
 
 public struct DownloadTask: Equatable, Sendable, Identifiable {
@@ -119,6 +120,7 @@ public class DownloadManager: ObservableObject {
     private let session: URLSession
 
     private var cancellables: Set<AnyCancellable> = []
+    private var deletedTransferUUIDs = Set<String>()
 
     @Published public var trackedMultiDownloadTask: MultiDownloadTask?
 
@@ -377,6 +379,17 @@ public class DownloadManager: ObservableObject {
         let transferUUID = String(transferUUIDAndFileUUID[0])
         let fileUUID = transferUUIDAndFileUUID.count > 1 ? String(transferUUIDAndFileUUID[1]) : nil
 
+        if deletedTransferUUIDs.contains(transferUUID) {
+            if case .success(let downloadedFile) = downloadTaskCompletion.result {
+                do {
+                    try FileManager.default.removeItem(at: downloadedFile.url)
+                } catch {
+                    Logger.general.error("Failed to clean ignored download: \(error)")
+                }
+            }
+            return
+        }
+
         switch downloadTaskCompletion.result {
         case .success(let downloadedFile):
             do {
@@ -434,6 +447,21 @@ public class DownloadManager: ObservableObject {
         try FileManager.default.moveItem(at: downloadedFile.url, to: destinationURL)
 
         return destinationURL
+    }
+
+    public func cancelDownloadsForDeletedTransfer(transferUUID: String) async {
+        deletedTransferUUIDs.insert(transferUUID)
+        let prefix = "\(transferUUID)__"
+
+        for task in await session.allTasks {
+            if task.taskDescription?.hasPrefix(prefix) == true {
+                task.cancel()
+            }
+        }
+
+        if trackedMultiDownloadTask?.id.hasPrefix(prefix) == true {
+            trackedMultiDownloadTask = nil
+        }
     }
 }
 
