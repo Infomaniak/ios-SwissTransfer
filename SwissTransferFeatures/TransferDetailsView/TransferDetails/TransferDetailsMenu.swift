@@ -65,7 +65,7 @@ public struct TransferDetailsMenu: View {
                     openURL(reportURL)
                 } label: {
                     Label {
-                        Text("Signaler ce transfert")
+                        Text(STResourcesStrings.Localizable.reportTransfer)
                     } icon: {
                         STResourcesAsset.Images.arrowDownCircle.swiftUIImage
                     }
@@ -76,7 +76,7 @@ public struct TransferDetailsMenu: View {
                 deleteTransferLocally(transfer)
             } label: {
                 Label {
-                    Text("Supprimer ce transfer")
+                    Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
                 } icon: {
                     STResourcesAsset.Images.delete.swiftUIImage
                 }
