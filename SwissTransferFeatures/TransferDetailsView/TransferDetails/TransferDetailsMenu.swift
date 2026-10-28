@@ -25,7 +25,6 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferDetailsMenu: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var mainViewState: MainViewState
