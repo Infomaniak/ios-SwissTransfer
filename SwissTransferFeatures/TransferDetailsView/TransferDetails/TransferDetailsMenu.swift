@@ -87,7 +87,7 @@ public struct TransferDetailsMenu: View {
             }
         } label: {
             Label {
-                Text("More")
+                Text(STResourcesStrings.Localizable.moreButton)
             } icon: {
                 STResourcesAsset.Images.plusActions.swiftUIImage
             }
