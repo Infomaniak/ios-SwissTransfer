@@ -75,8 +75,7 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
                     SettingSelectableCell(item: item, selectedItem: selected)
                 }
 
-                if item != items.last,
-                   T.self != ValidityPeriod.self || item == items.last(where: { $0.rightImage != nil }) {
+                if item != items.last {
                     DividerView()
                         .padding(.horizontal, value: .medium)
                 }
