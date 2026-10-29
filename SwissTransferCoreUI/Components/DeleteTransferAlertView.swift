@@ -32,7 +32,6 @@ public struct DeleteTransferAlertView: View {
     }
 
     @EnvironmentObject private var mainViewState: MainViewState
-    @EnvironmentObject private var downloadManager: DownloadManager
 
     @State private var error: UserFacingError?
 
