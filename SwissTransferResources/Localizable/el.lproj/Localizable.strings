@@ -175,6 +175,9 @@
 /* loco:6abb79b0fda0a79b240b8558 */
 "messageShareIntro" = "Χρησιμοποίησα το SwissTransfer, την ελβετική και ηθική λύση της Infomaniak, για να σας στείλω αρχεία δωρεάν και με ασφάλεια.";
 
+/* loco:6ae3047628a709f5b505b6b4 */
+"moreButton" = "Περισσότερα";
+
 /* loco:6707f41e004c1612f407fae2 */
 "myFilesTitle" = "Τα αρχεία μου";
 
@@ -295,14 +298,14 @@
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Ελήφθη";
 
-/* loco:6ae1bf97dd8518890c053748 */
-"reportTransfer" = "Αναφορά αυτής της μεταφοράς";
-
 /* loco:6adb28bfa7d084fee0021577 */
 "recommendedDurationsDescription" = "Το 85%% των μεταφορών λαμβάνεται εντός 24 ωρών. Λιγότερος χρόνος στους διακομιστές μας, λιγότερη κατανάλωση ενέργειας.";
 
 /* loco:6adb26a32dc22442df0bc74b */
 "recommendedDurationsTitle" = "Προτεινόμενες διάρκειες";
+
+/* loco:6ae1bf97dd8518890c053748 */
+"reportTransfer" = "Αναφορά αυτής της μεταφοράς";
 
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Το Infomaniak SwissTransfer δεν είναι διαθέσιμο στην τοποθεσία σου";
