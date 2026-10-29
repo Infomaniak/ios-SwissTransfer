@@ -92,19 +92,10 @@ public struct TransferDetailsMenu: View {
         case .delete:
             @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
-            deleteTransferLocally(transfer)
+            mainViewState.isShowingDeleteTransferConfirmation = transfer
         case .download:
             print("coucou")
         }
-    }
-
-    private func deleteTransferLocally(_ transfer: TransferUi) {
-        Task {
-            try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
-            transfer.removeLocalContainer()
-        }
-
-        mainViewState.selectedDestination = nil
     }
 }
 
