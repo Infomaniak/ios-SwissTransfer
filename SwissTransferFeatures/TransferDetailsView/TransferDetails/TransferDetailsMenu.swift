@@ -35,10 +35,6 @@ public struct TransferDetailsMenu: View {
         self.transfer = transfer
     }
 
-    private var actionsByDirection: [MoreActions] {
-        transfer.direction == .received ? [.report, .delete] : [.delete]
-    }
-
     private var reportURL: URL? {
         let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
         let transferLink: String
@@ -61,66 +57,48 @@ public struct TransferDetailsMenu: View {
         return components?.url
     }
 
-    public var body: some View {
-        Menu {
-            ForEach(actionsByDirection, id: \.self) { action in
-                Button(role: action.role) {
-                    handle(action)
-                } label: {
-                    Label {
-                        Text(action.title)
-                    } icon: {
-                        action.icon
-                    }
-                }
-            }
-        } label: {
-            Label {
-                Text(STResourcesStrings.Localizable.moreButton)
-            } icon: {
-                STResourcesAsset.Images.plusActions.swiftUIImage
-            }
-        }
-    }
-
-    private func handle(_ action: MoreActions) {
-        switch action {
-        case .report:
+    private var reportButton: some View {
+        Button {
             @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
             if let reportURL { openURL(reportURL) }
-        case .delete:
+        } label: {
+            Label {
+                Text(STResourcesStrings.Localizable.reportTransfer)
+            } icon: {
+                STResourcesAsset.Images.warning.swiftUIImage
+            }
+        }
+    }
+
+    private var deleteButton: some View {
+        Button(role: .destructive) {
             @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
             mainViewState.isShowingDeleteTransferConfirmation = transfer
-        }
-    }
-}
-
-enum MoreActions: CaseIterable, Identifiable {
-    var id: Self { self }
-
-    case report
-    case delete
-
-    var title: String {
-        switch self {
-        case .report: STResourcesStrings.Localizable.reportTransfer
-        case .delete: STResourcesStrings.Localizable.buttonDeleteTransfer
+        } label: {
+            Label {
+                Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
+            } icon: {
+                STResourcesAsset.Images.bin.swiftUIImage
+            }
         }
     }
 
-    var icon: Image {
-        switch self {
-        case .report: STResourcesAsset.Images.warning.swiftUIImage
-        case .delete: STResourcesAsset.Images.bin.swiftUIImage
-        }
-    }
-
-    var role: ButtonRole? {
-        switch self {
-        case .delete: .destructive
-        case .report: nil
+    public var body: some View {
+        if transfer.direction == .received {
+            Menu {
+                reportButton
+                deleteButton
+            } label: {
+                Label {
+                    Text(STResourcesStrings.Localizable.moreButton)
+                } icon: {
+                    STResourcesAsset.Images.plusActions.swiftUIImage
+                }
+            }
+        } else {
+            deleteButton
         }
     }
 }
