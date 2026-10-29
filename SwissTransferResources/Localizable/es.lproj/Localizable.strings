@@ -52,6 +52,9 @@
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Reintentar";
 
+/* loco:6ae3408067588928e40adc04 */
+"buttonSelect" = "Seleccionar";
+
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Compartir";
 
@@ -189,6 +192,9 @@
 
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Sí, cancelar";
+
+/* loco:6ae3461f5c5f70d2f6018253 */
+"newTransferValidityPeriodTitle" = "Transferencia disponible durante";
 
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Selecciona un parámetro para su visualización";
@@ -422,7 +428,7 @@
 "settingsOptionTermsAndConditions" = "Términos y condiciones";
 
 /* loco:66c334f8fe4641955405f122 */
-"settingsOptionValidityPeriod" = "Periodo de validez";
+"settingsOptionValidityPeriod" = "Disponible durante";
 
 /* loco:6707f75349305b1a670f8f62 */
 "settingsPasswordDescription" = "Los destinatarios tendrán que introducir la contraseña para descargar los archivos.";

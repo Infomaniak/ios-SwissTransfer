@@ -52,6 +52,9 @@
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Prøv igjen";
 
+/* loco:6ae3408067588928e40adc04 */
+"buttonSelect" = "Velg";
+
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Del";
 
@@ -189,6 +192,9 @@
 
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Ja, avbryt";
+
+/* loco:6ae3461f5c5f70d2f6018253 */
+"newTransferValidityPeriodTitle" = "Overføring tilgjengelig i";
 
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Velg en parameter for å vise den";
@@ -422,7 +428,7 @@
 "settingsOptionTermsAndConditions" = "Vilkår og betingelser";
 
 /* loco:66c334f8fe4641955405f122 */
-"settingsOptionValidityPeriod" = "Gyldighetsperiode";
+"settingsOptionValidityPeriod" = "Tilgjengelig i";
 
 /* loco:6707f75349305b1a670f8f62 */
 "settingsPasswordDescription" = "Mottakerne dine må angi passordet for å laste ned filene.";

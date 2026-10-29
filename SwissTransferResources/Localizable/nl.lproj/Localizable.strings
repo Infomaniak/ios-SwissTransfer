@@ -52,6 +52,9 @@
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Opnieuw proberen";
 
+/* loco:6ae3408067588928e40adc04 */
+"buttonSelect" = "Selecteren";
+
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Delen";
 
@@ -189,6 +192,9 @@
 
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Ja, annuleren";
+
+/* loco:6ae3461f5c5f70d2f6018253 */
+"newTransferValidityPeriodTitle" = "Overdracht beschikbaar gedurende";
 
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Selecteer een parameter om het weer te geven";
@@ -422,7 +428,7 @@
 "settingsOptionTermsAndConditions" = "Algemene voorwaarden";
 
 /* loco:66c334f8fe4641955405f122 */
-"settingsOptionValidityPeriod" = "Geldigheidsperiode";
+"settingsOptionValidityPeriod" = "Beschikbaar gedurende";
 
 /* loco:6707f75349305b1a670f8f62 */
 "settingsPasswordDescription" = "Je ontvangers moeten het wachtwoord invoeren om de bestanden te downloaden.";
