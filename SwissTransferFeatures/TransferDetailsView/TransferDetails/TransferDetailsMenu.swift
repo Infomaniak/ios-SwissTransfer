@@ -36,7 +36,7 @@ public struct TransferDetailsMenu: View {
     }
 
     private var actionsByDirection: [MoreActions] {
-        transfer.direction == .received ? [.report, .delete] : [.download, .delete]
+        transfer.direction == .received ? [.report, .delete] : [.delete]
     }
 
     private var reportURL: URL? {
@@ -93,8 +93,6 @@ public struct TransferDetailsMenu: View {
             @InjectService var matomo: MatomoUtils
             matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
             mainViewState.isShowingDeleteTransferConfirmation = transfer
-        case .download:
-            print("coucou")
         }
     }
 }
@@ -104,13 +102,11 @@ enum MoreActions: CaseIterable, Identifiable {
 
     case report
     case delete
-    case download
 
     var title: String {
         switch self {
         case .report: STResourcesStrings.Localizable.reportTransfer
         case .delete: STResourcesStrings.Localizable.buttonDeleteTransfer
-        case .download: "Downlaod file(s)"
         }
     }
 
@@ -118,14 +114,13 @@ enum MoreActions: CaseIterable, Identifiable {
         switch self {
         case .report: STResourcesAsset.Images.warning.swiftUIImage
         case .delete: STResourcesAsset.Images.bin.swiftUIImage
-        case .download: STResourcesAsset.Images.arrowDownLine.swiftUIImage
         }
     }
 
     var role: ButtonRole? {
         switch self {
         case .delete: .destructive
-        case .report, .download: nil
+        case .report: nil
         }
     }
 }
