@@ -22,10 +22,15 @@ import SwiftUI
 public protocol SettingSelectable: CaseIterable, Hashable {
     var title: String { get }
     var leftImage: Image? { get }
+    var rightImage: Image? { get }
     var matomoName: MatomoName { get }
     static var matomoCategoryLocal: MatomoCategory? { get }
     static var matomoCategoryGlobal: MatomoCategory? { get }
 
     /// Call this function on a conforming type to serialise a setting
     func setSelected() async
+}
+
+public extension SettingSelectable {
+    var rightImage: Image? { nil }
 }

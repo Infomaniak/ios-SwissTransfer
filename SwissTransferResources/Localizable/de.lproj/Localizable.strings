@@ -52,6 +52,9 @@
 /* loco:672a116b6135bb977203e762 */
 "buttonRetry" = "Wiederholen";
 
+/* loco:6ae3408067588928e40adc04 */
+"buttonSelect" = "Auswählen";
+
 /* loco:670f74260368c869540093b2 */
 "buttonShare" = "Teilen";
 
@@ -190,6 +193,9 @@
 /* loco:675aed916909b0ae120a2512 */
 "newTransferLeavingDialogPositiveButton" = "Ja, abbrechen";
 
+/* loco:6ae3461f5c5f70d2f6018253 */
+"newTransferValidityPeriodTitle" = "Transfer verfügbar für";
+
 /* loco:674dbabbdd957af5740cf002 */
 "noSettingsSelectedDescription" = "Wählt einen Parameter zur Anzeige aus";
 
@@ -288,6 +294,12 @@
 
 /* loco:669f759d2093b5a83708e5e2 */
 "receivedTitle" = "Empfangen";
+
+/* loco:6adb28bfa7d084fee0021577 */
+"recommendedDurationsDescription" = "85 %% der Transfers werden innerhalb von 24 Stunden heruntergeladen. Weniger Zeit auf unseren Servern, weniger Energieverbrauch.";
+
+/* loco:6adb26a32dc22442df0bc74b */
+"recommendedDurationsTitle" = "Empfohlene Zeiträume";
 
 /* loco:67bd58877695a8511309f862 */
 "restrictedLocation" = "Infomaniak SwissTransfer ist an Ihrem Standort nicht verfügbar";
@@ -416,7 +428,7 @@
 "settingsOptionTermsAndConditions" = "Allgemeine Geschäftsbedingungen";
 
 /* loco:66c334f8fe4641955405f122 */
-"settingsOptionValidityPeriod" = "Dauer der Gültigkeit";
+"settingsOptionValidityPeriod" = "Verfügbar für";
 
 /* loco:6707f75349305b1a670f8f62 */
 "settingsPasswordDescription" = "Deine Empfänger müssen das Passwort eingeben, um die Dateien herunterzuladen.";
@@ -465,6 +477,12 @@
 
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Optional)";
+
+/* loco:6ae441ca9c8a3ebe660cb8c2 */
+"transferAvailabilityAlertDescription" = "Dein Link bleibt in den ersten 15 Tagen aktiv. Du erhältst eine E-Mail mit der Einladung, ihn um weitere 15 Tage zu verlängern.";
+
+/* loco:6ae441cadfeda88dca05a3e2 */
+"transferAvailabilityAlertTitle" = "Verfügbarkeit des Transfers";
 
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Inhalt der Übertragung:";

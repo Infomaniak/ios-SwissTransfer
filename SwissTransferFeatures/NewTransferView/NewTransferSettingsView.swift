@@ -36,7 +36,7 @@ struct NewTransferSettingsView: View {
 
     @State private var organizations: [STDOrganizationAccount] = []
 
-    @Binding var duration: ValidityPeriod
+    @Binding var duration: ValidityPeriod?
     @Binding var limit: DownloadLimit
     @Binding var language: EmailLanguage
     @Binding var password: String
@@ -73,13 +73,13 @@ struct NewTransferSettingsView: View {
                 NewTransferSettingCell(
                     title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
                     icon: STResourcesAsset.Images.clock.swiftUIImage,
-                    value: duration.title
+                    value: duration?.title ?? STResourcesStrings.Localizable.buttonSelect
                 ) {
                     isShowingValiditySetting = true
                 }
                 .stFloatingPanel(
                     isPresented: $isShowingValiditySetting,
-                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod
+                    title: STResourcesStrings.Localizable.newTransferValidityPeriodTitle
                 ) {
                     SettingSelectableList(ValidityPeriod.self, selected: duration) {
                         duration = $0

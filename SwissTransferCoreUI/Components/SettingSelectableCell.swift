@@ -25,15 +25,19 @@ import SwissTransferCore
 
 struct SettingSelectableCell<T: SettingSelectable>: View {
     let item: T
-    let selectedItem: T
+    let selectedItem: T?
 
     var body: some View {
         VStack(spacing: IKPadding.medium) {
             HStack(spacing: IKPadding.medium) {
                 Label {
-                    Text(item.title)
-                        .font(.ST.body)
-                        .foregroundStyle(Color.ST.textPrimary)
+                    HStack(spacing: IKPadding.medium) {
+                        Text(item.title)
+                            .font(.ST.body)
+                            .foregroundStyle(Color.ST.textPrimary)
+
+                        item.rightImage
+                    }
                 } icon: {
                     item.leftImage
                 }

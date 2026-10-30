@@ -26,6 +26,8 @@ extension ValidityPeriod: SettingSelectable {
         switch self {
         case .one:
             return STResourcesStrings.Localizable.settingsValidityPeriodValue(1)
+        case .three:
+            return STResourcesStrings.Localizable.settingsValidityPeriodValue(3)
         case .seven:
             return STResourcesStrings.Localizable.settingsValidityPeriodValue(7)
         case .fifteen:
@@ -39,10 +41,21 @@ extension ValidityPeriod: SettingSelectable {
         nil
     }
 
+    public var rightImage: Image? {
+        switch self {
+        case .one, .three:
+            return STResourcesAsset.Images.leaf.swiftUIImage
+        default:
+            return nil
+        }
+    }
+
     public var matomoName: MatomoName {
         switch self {
         case .one:
             return .oneDay
+        case .three:
+            return .threeDays
         case .seven:
             return .sevenDays
         case .fifteen:
