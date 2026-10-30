@@ -26,6 +26,7 @@ import SwiftUI
 import SwissTransferCore
 
 public struct SettingSelectableList<T: SettingSelectable>: View {
+    @Environment(\.currentSession) private var currentSession
     @Environment(\.dismiss) private var dismiss
 
     @State private var isShowingAvailabilityAlert = false
@@ -70,7 +71,9 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 
             ForEach(items, id: \.self) { item in
                 Button {
-                    if let period = item as? ValidityPeriod, period == .thirty {
+                    if let period = item as? ValidityPeriod,
+                       period == .thirty,
+                       currentSession?.userProfile != nil {
                         isShowingAvailabilityAlert = true
                     } else {
                         select(item)
