@@ -23,11 +23,12 @@ import XCTest
 
 @MainActor
 final class SwissTransferTests: XCTestCase {
-    func testTransferWithoutValidityPeriodIsInvalid() {
+    func testTransferWithoutValidityPeriodAllowsContinuing() {
         let viewModel = RootTransferViewModel()
+        viewModel.transferType = .link
 
         XCTAssertNil(viewModel.validityPeriod)
-        XCTAssertFalse(viewModel.isTransferConfigurationValid)
+        XCTAssertTrue(viewModel.isTransferConfigurationValid)
     }
 
     func testNewTransferDoesNotReusePreviousValidityPeriod() {
@@ -35,9 +36,10 @@ final class SwissTransferTests: XCTestCase {
         previousTransfer.validityPeriod = .thirty
 
         let newTransfer = RootTransferViewModel()
+        newTransfer.transferType = .link
 
         XCTAssertNil(newTransfer.validityPeriod)
-        XCTAssertFalse(newTransfer.isTransferConfigurationValid)
+        XCTAssertTrue(newTransfer.isTransferConfigurationValid)
     }
 
     override func tearDown() async throws {

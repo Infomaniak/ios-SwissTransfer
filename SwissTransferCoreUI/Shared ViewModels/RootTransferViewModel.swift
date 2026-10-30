@@ -50,8 +50,6 @@ public final class RootTransferViewModel: ObservableObject {
     public private(set) var initializedFromShare: Bool
 
     public var isTransferConfigurationValid: Bool {
-        guard validityPeriod != nil else { return false }
-
         if !password.isEmpty,
            password.count < NewTransferConstants.minPasswordLength || password.count > NewTransferConstants.maxPasswordLength {
             return false

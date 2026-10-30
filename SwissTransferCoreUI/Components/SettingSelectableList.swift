@@ -32,15 +32,18 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 
     let items: [T]
     let selected: T?
+    let confirmationButtonTitle: String
     let onSelection: (T) -> Void
 
     public init(
         _ type: T.Type,
         selected: T?,
+        confirmationButtonTitle: String = STResourcesStrings.Localizable.buttonConfirm,
         onSelection: @escaping (T) -> Void
     ) {
         items = Array(type.allCases)
         self.selected = selected
+        self.confirmationButtonTitle = confirmationButtonTitle
         self.onSelection = onSelection
     }
 
@@ -94,7 +97,7 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
                     .foregroundStyle(Color.ST.textSecondary)
 
                 ModalButtonsView(
-                    primaryButtonTitle: STResourcesStrings.Localizable.buttonConfirm,
+                    primaryButtonTitle: confirmationButtonTitle,
                     secondaryButtonTitle: STResourcesStrings.Localizable.buttonCancel,
                     primaryButtonAction: {
                         if let item = ValidityPeriod.thirty as? T {
