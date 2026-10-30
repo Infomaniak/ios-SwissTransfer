@@ -299,7 +299,8 @@ let project = Project(
             resources: [],
             dependencies: [
                 .target(name: "SwissTransfer"),
-                .target(name: "SwissTransferCoreUI")
+                .target(name: "SwissTransferCoreUI"),
+                .external(name: "STCore")
             ],
             settings: .settings(base: Constants.baseSettings),
             environmentVariables: [
