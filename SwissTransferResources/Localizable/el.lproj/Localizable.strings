@@ -478,6 +478,12 @@
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Προαιρετικό)";
 
+/* loco:6ae441ca9c8a3ebe660cb8c2 */
+"transferAvailabilityAlertDescription" = "Ο σύνδεσμός σας θα παραμείνει ενεργός για τις πρώτες 15 ημέρες. Θα λάβετε ένα email που θα σας προσκαλεί να παρατείνετε την ισχύ του για άλλες 15 ημέρες.";
+
+/* loco:6ae441cadfeda88dca05a3e2 */
+"transferAvailabilityAlertTitle" = "Διαθεσιμότητα μεταφοράς";
+
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Περιεχόμενο μεταφοράς:";
 

@@ -28,6 +28,8 @@ import SwissTransferCore
 public struct SettingSelectableList<T: SettingSelectable>: View {
     @Environment(\.dismiss) private var dismiss
 
+    @State private var isShowingAvailabilityAlert = false
+
     let items: [T]
     let selected: T?
     let onSelection: (T) -> Void
@@ -65,12 +67,11 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 
             ForEach(items, id: \.self) { item in
                 Button {
-                    @InjectService var matomo: MatomoUtils
-                    if let category = T.matomoCategoryLocal {
-                        matomo.track(eventWithCategory: category, name: item.matomoName)
+                    if let period = item as? ValidityPeriod, period == .thirty {
+                        isShowingAvailabilityAlert = true
+                    } else {
+                        select(item)
                     }
-                    onSelection(item)
-                    dismiss()
                 } label: {
                     SettingSelectableCell(item: item, selectedItem: selected)
                 }
@@ -82,6 +83,36 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
             }
         }
         .padding(.vertical, value: .medium)
+        .stCustomAlert(isPresented: $isShowingAvailabilityAlert) {
+            VStack(alignment: .leading, spacing: IKPadding.large) {
+                Text(STResourcesStrings.Localizable.transferAvailabilityAlertTitle)
+                    .font(.ST.headline)
+                    .foregroundStyle(Color.ST.textPrimary)
+
+                Text(STResourcesStrings.Localizable.transferAvailabilityAlertDescription)
+                    .font(.ST.body)
+                    .foregroundStyle(Color.ST.textSecondary)
+
+                ModalButtonsView(
+                    primaryButtonTitle: STResourcesStrings.Localizable.buttonConfirm,
+                    secondaryButtonTitle: STResourcesStrings.Localizable.buttonCancel,
+                    primaryButtonAction: {
+                        if let item = ValidityPeriod.thirty as? T {
+                            select(item)
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    private func select(_ item: T) {
+        @InjectService var matomo: MatomoUtils
+        if let category = T.matomoCategoryLocal {
+            matomo.track(eventWithCategory: category, name: item.matomoName)
+        }
+        onSelection(item)
+        dismiss()
     }
 }
 

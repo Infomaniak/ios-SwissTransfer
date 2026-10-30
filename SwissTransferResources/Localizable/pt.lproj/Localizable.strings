@@ -478,6 +478,12 @@
 /* loco:6718df9028c2ea33b001c522 */
 "textFieldOptional" = "(Opcional)";
 
+/* loco:6ae441ca9c8a3ebe660cb8c2 */
+"transferAvailabilityAlertDescription" = "O teu link permanecerá ativo durante os primeiros 15 dias. Receberás um e-mail a convidar-te a prolongar a sua validade por mais 15 dias.";
+
+/* loco:6ae441cadfeda88dca05a3e2 */
+"transferAvailabilityAlertTitle" = "Disponibilidade da transferência";
+
 /* loco:66a24b1d3472a720090cfd58 */
 "transferContentHeader" = "Conteúdo da transferência:";
 
