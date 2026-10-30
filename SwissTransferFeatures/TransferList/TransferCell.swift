@@ -71,10 +71,7 @@ struct TransferCell: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: IKRadius.large))
         .contextMenu {
             Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
-                Task {
-                    try? await mainViewState.swissTransferManager.transferManager.deleteTransfer(transferUUID: transfer.uuid)
-                    transfer.removeLocalContainer()
-                }
+                mainViewState.isShowingDeleteTransferConfirmation = transfer
             }
         }
         .overlay {

@@ -26,14 +26,23 @@ import SwiftUI
 import SwissTransferCore
 
 public struct DeleteTransferAlertView: View {
+    public enum Source {
+        case deleteLink(DeleteTransferLinkResult)
+        case localTransfer(TransferUi)
+    }
+
     @EnvironmentObject private var mainViewState: MainViewState
 
     @State private var error: UserFacingError?
 
-    private let deleteLink: DeleteTransferLinkResult
+    private let source: Source
 
     public init(deleteLink: DeleteTransferLinkResult) {
-        self.deleteLink = deleteLink
+        source = .deleteLink(deleteLink)
+    }
+
+    public init(transfer: TransferUi) {
+        source = .localTransfer(transfer)
     }
 
     public var body: some View {
@@ -69,8 +78,15 @@ public struct DeleteTransferAlertView: View {
             let feedback = UINotificationFeedbackGenerator()
             feedback.prepare()
 
-            try await mainViewState.transferManager.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
-            TransferUi.removeLocalContainer(transferUUID: deleteLink.uuid)
+            switch source {
+            case .deleteLink(let deleteLink):
+                try await mainViewState.transferManager.deleteTransfer(transferUUID: deleteLink.uuid, token: deleteLink.token)
+                TransferUi.removeLocalContainer(transferUUID: deleteLink.uuid)
+            case .localTransfer(let transfer):
+                try await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
+                TransferUi.removeLocalContainer(transferUUID: transfer.uuid)
+                mainViewState.selectedDestination = nil
+            }
 
             feedback.notificationOccurred(.success)
         } catch {

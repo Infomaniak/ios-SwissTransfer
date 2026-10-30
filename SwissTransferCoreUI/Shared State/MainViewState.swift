@@ -108,6 +108,7 @@ public final class MainViewState: ObservableObject {
     @ModalPublished public var isShowingProtectedDeepLink: IdentifiableURL?
     @ModalPublished public var isShowingReviewAlert = false
     @ModalPublished public var isShowingDeleteTransferDeeplink: DeleteTransferLinkResult?
+    @ModalPublished public var isShowingDeleteTransferConfirmation: TransferUi?
     @ModalPublished public var isShowingLoginView = false
     @ModalPublished public var isShowingSwitchAccountListView = false
     @ModalPublished public var isShowingSwitchOrgaListView = false

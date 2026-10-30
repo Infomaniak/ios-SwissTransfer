@@ -57,51 +57,48 @@ public struct TransferDetailsMenu: View {
         return components?.url
     }
 
-    public var body: some View {
-        Menu {
-            if let reportURL {
-                Button {
-                    @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
-
-                    openURL(reportURL)
-                } label: {
-                    Label {
-                        Text(STResourcesStrings.Localizable.reportTransfer)
-                    } icon: {
-                        STResourcesAsset.Images.warning.swiftUIImage
-                            .foregroundStyle(.black)
-                    }
-                }
-            }
-
-            Button(role: .destructive) {
-                deleteTransferLocally(transfer)
-            } label: {
-                Label {
-                    Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
-                } icon: {
-                    STResourcesAsset.Images.bin.swiftUIImage
-                }
-            }
+    private var reportButton: some View {
+        Button {
+            @InjectService var matomo: MatomoUtils
+            matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
+            if let reportURL { openURL(reportURL) }
         } label: {
             Label {
-                Text(STResourcesStrings.Localizable.moreButton)
+                Text(STResourcesStrings.Localizable.reportTransfer)
             } icon: {
-                STResourcesAsset.Images.plusActions.swiftUIImage
+                STResourcesAsset.Images.warning.swiftUIImage
             }
         }
     }
 
-    private func deleteTransferLocally(_ transfer: TransferUi) {
-        Task {
-            try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
-            transfer.removeLocalContainer()
+    private var deleteButton: some View {
+        Button(role: .destructive) {
+            @InjectService var matomo: MatomoUtils
+            matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
+            mainViewState.isShowingDeleteTransferConfirmation = transfer
+        } label: {
+            Label {
+                Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
+            } icon: {
+                STResourcesAsset.Images.bin.swiftUIImage
+            }
         }
+    }
 
-        @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
-
-        mainViewState.selectedDestination = nil
+    public var body: some View {
+        if transfer.direction == .received {
+            Menu {
+                reportButton
+                deleteButton
+            } label: {
+                Label {
+                    Text(STResourcesStrings.Localizable.moreButton)
+                } icon: {
+                    STResourcesAsset.Images.plusActions.swiftUIImage
+                }
+            }
+        } else {
+            deleteButton
+        }
     }
 }
