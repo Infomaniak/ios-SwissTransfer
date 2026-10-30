@@ -17,7 +17,6 @@
  */
 
 import Foundation
-import STCore
 @testable import SwissTransferCoreUI
 import XCTest
 
