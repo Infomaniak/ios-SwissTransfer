@@ -98,13 +98,12 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
 
                 ModalButtonsView(
                     primaryButtonTitle: confirmationButtonTitle,
-                    secondaryButtonTitle: STResourcesStrings.Localizable.buttonCancel,
-                    primaryButtonAction: {
-                        if let item = ValidityPeriod.thirty as? T {
-                            select(item)
-                        }
+                    secondaryButtonTitle: STResourcesStrings.Localizable.buttonCancel
+                ) {
+                    if let item = ValidityPeriod.thirty as? T {
+                        select(item)
                     }
-                )
+                }
             }
         }
     }
