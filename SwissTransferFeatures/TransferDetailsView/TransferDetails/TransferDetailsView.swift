@@ -90,6 +90,13 @@ public struct TransferDetailsView: View {
         ) {
             multipleSelectionManager.selectAll(files: transfer?.files)
         }
+        .toolbar {
+            if let transfer, transfer.direction == .received && !multipleSelectionManager.isEnabled {
+                ToolbarItem(placement: .topBarTrailing) {
+                    TransferDetailsMenu(transfer: transfer)
+                }
+            }
+        }
         .navigationDestination(for: FileUi.self) { file in
             if let transfer {
                 FileListView(
