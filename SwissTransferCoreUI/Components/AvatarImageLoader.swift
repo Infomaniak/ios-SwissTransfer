@@ -61,9 +61,9 @@ public class AvatarImageLoader: ObservableObject {
             InitialsView(
                 initials: NameFormatter(fullName: user.displayName).initials,
                 backgroundColor: Color.backgroundColor(from: user.email.hash),
-                foregroundColor: Color.white,
-                size: size
+                foregroundColor: Color.white
             )
+            .frame(width: size, height: size)
         }
     }
 }

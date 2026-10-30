@@ -35,7 +35,8 @@ public struct AvatarView: View {
            let avatarURL = URL(string: rawAvatarURL) {
             LazyImage(request: ImageRequest(url: avatarURL)) { state in
                 if let image = state.image {
-                    AvatarImage(image: image, size: avatarSize)
+                    AvatarImage(image: image)
+                        .frame(width: avatarSize, height: avatarSize)
                 } else {
                     initialsView
                 }
@@ -49,8 +50,8 @@ public struct AvatarView: View {
         InitialsView(
             initials: NameFormatter(fullName: user.displayName).initials,
             backgroundColor: Color.backgroundColor(from: user.email.hash),
-            foregroundColor: Color.white,
-            size: avatarSize
+            foregroundColor: Color.white
         )
+        .frame(width: avatarSize, height: avatarSize)
     }
 }
