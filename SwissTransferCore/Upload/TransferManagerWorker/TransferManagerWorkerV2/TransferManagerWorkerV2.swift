@@ -135,12 +135,13 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
 
-            try await allFiles.asyncForEach { uploadFile in
-                if uploadFile.uploadChunks.isEmpty {
-                    try await self.uploadFile(forFile: uploadFile)
-                } else {
-                    try await self.uploadAllChunks(forFile: uploadFile)
-                }
+            let chunkedFiles = allFiles.filter { !$0.uploadChunks.isEmpty }
+            let directFiles = allFiles.filter { $0.uploadChunks.isEmpty }
+
+            try await uploadFiles(forFiles: directFiles)
+
+            try await chunkedFiles.asyncForEach { uploadFile in
+                try await self.uploadAllChunks(forFile: uploadFile)
             }
 
             let linkId = try await uploadBackendRouter.finishUploadSession(

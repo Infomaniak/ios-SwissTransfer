@@ -52,38 +52,49 @@ extension TransferManagerWorkerV2 {
         return STNChunkEtag(etag: etag, chunkIndex: chunkIndex)
     }
 
-    func uploadFile(forFile uploadFile: WorkerFileV2) async throws {
-        let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
-        let fileSize = try rangeProvider.fileSize
-        let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
-        overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
+    func uploadFiles(forFiles uploadFiles: [WorkerFileV2]) async throws {
+        for batch in uploadFiles.batched(ofCount: 10) {
+            let requests = batch.map { STNBatchPresignedUrlRequest(file: $0.remoteUploadFileUUID, chunk: nil) }
+            let responses = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getBatchPresignedUploadUrls(
+                transferId: uploadSession.uuid,
+                uploadUrlRequests: requests
+            )
 
-        let rawFileUrl = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileUrl(
-            transferId: uploadFile.uploadUUID, fileId: uploadFile.remoteUploadFileUUID
-        )
+            let urlByFile = Dictionary(uniqueKeysWithValues: responses.map { ($0.file, $0.url) })
 
-        guard let fileUrl = URL(string: rawFileUrl) else {
-            throw TransferManagerWorkerError.invalidURL(rawURL: rawFileUrl)
+            for uploadFile in batch {
+                let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
+                let fileSize = try rangeProvider.fileSize
+                let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
+                overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
+
+                guard let rawURL = urlByFile[uploadFile.remoteUploadFileUUID] else {
+                    throw TransferManagerWorkerError.missingPresignedURL(fileId: uploadFile.remoteUploadFileUUID)
+                }
+
+                guard let fileUrl = URL(string: rawURL) else { throw TransferManagerWorkerError.invalidURL(rawURL: rawURL) }
+
+                var uploadRequest = URLRequest(url: fileUrl)
+                uploadRequest.httpMethod = Method.PUT.rawValue
+
+                let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
+                                                                      fromFile: uploadFile.fileURL,
+                                                                      delegate: progressTracker)
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw TransferManagerWorkerError.invalidResponse
+                }
+
+                guard httpResponse.statusCode < 400 else {
+                    throw TransferManagerWorkerError.invalidFileResponse
+                }
+
+                try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
+                    transferId: uploadSession.uuid,
+                    fileId: uploadFile.remoteUploadFileUUID
+                )
+
+                uploadedFiles.append(uploadFile)
+            }
         }
-
-        var uploadRequest = URLRequest(url: fileUrl)
-        uploadRequest.httpMethod = Method.PUT.rawValue
-
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
-                                                              fromFile: uploadFile.fileURL,
-                                                              delegate: progressTracker)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw TransferManagerWorkerError.invalidResponse
-        }
-
-        guard httpResponse.statusCode < 400 else {
-            throw TransferManagerWorkerError.invalidFileResponse
-        }
-
-        try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
-            transferId: uploadSession.uuid,
-            fileId: uploadFile.remoteUploadFileUUID
-        )
-        uploadedFiles.append(uploadFile)
     }
 }
