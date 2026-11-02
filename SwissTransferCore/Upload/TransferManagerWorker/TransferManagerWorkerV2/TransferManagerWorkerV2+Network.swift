@@ -23,8 +23,14 @@ import STCore
 import STNetwork
 
 extension TransferManagerWorkerV2 {
-    func uploadChunk(chunkData: Data, chunk: WorkerChunkV2,
-                     presignedURL: String, progressTracker: UploadTaskProgressTracker) async throws -> STNChunkEtag {
+    func uploadChunk(
+        chunkData: Data,
+        chunk: WorkerChunkV2,
+        presignedURL: String,
+        progressTracker: UploadTaskProgressTracker
+    ) async throws -> STNChunkEtag {
+        try Task.checkCancellation()
+
         let chunkIndex = Int32(chunk.index)
 
         guard let chunkURL = URL(string: presignedURL) else {
@@ -47,13 +53,17 @@ extension TransferManagerWorkerV2 {
         return STNChunkEtag(etag: etag, chunkIndex: chunkIndex)
     }
 
-    func uploadFiles(forFiles uploadFiles: [WorkerFileV2]) async throws {
+    func uploadFiles(forFiles uploadFiles: [WorkerFileV2], runID: UUID) async throws {
         for batch in uploadFiles.batched(ofCount: 10) {
+            try checkUploadRunIsActive(runID)
+
             let requests = batch.map { STNBatchPresignedUrlRequest(file: $0.remoteUploadFileUUID, chunk: nil) }
             let responses = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getBatchPresignedUploadUrls(
                 transferId: uploadSession.uuid,
                 uploadUrlRequests: requests
             )
+
+            try checkUploadRunIsActive(runID)
 
             let urlByFile = Dictionary(uniqueKeysWithValues: responses.map { ($0.file, $0.url) })
 
@@ -75,6 +85,9 @@ extension TransferManagerWorkerV2 {
                 let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
                                                                       fromFile: uploadFile.fileURL,
                                                                       delegate: progressTracker)
+
+                try checkUploadRunIsActive(runID)
+
                 guard let httpResponse = response as? HTTPURLResponse else {
                     throw TransferManagerWorkerError.invalidResponse
                 }
@@ -88,6 +101,7 @@ extension TransferManagerWorkerV2 {
                     fileId: uploadFile.remoteUploadFileUUID
                 )
 
+                try checkUploadRunIsActive(runID)
                 uploadedFiles.append(uploadFile)
             }
         }
