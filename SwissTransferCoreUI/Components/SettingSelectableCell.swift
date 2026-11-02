@@ -36,10 +36,10 @@ struct SettingSelectableCell<T: SettingSelectable>: View {
                             .font(.ST.body)
                             .foregroundStyle(Color.ST.textPrimary)
 
-                        item.rightImage
+                        item.trailingImage
                     }
                 } icon: {
-                    item.leftImage
+                    item.leadingImage
                 }
                 .labelStyle(.ikLabel(IKPadding.medium))
                 .frame(maxWidth: .infinity, alignment: .leading)

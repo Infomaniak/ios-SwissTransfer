@@ -32,7 +32,7 @@ extension EmailLanguage: SettingSelectable {
         }
     }
 
-    public var leftImage: Image? {
+    public var leadingImage: Image? {
         switch self {
         case .english:
             return STResourcesAsset.Images.flagEn.swiftUIImage

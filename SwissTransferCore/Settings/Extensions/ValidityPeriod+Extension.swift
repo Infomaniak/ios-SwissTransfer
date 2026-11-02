@@ -37,11 +37,11 @@ extension ValidityPeriod: SettingSelectable {
         }
     }
 
-    public var leftImage: Image? {
+    public var leadingImage: Image? {
         nil
     }
 
-    public var rightImage: Image? {
+    public var trailingImage: Image? {
         switch self {
         case .one, .three:
             return STResourcesAsset.Images.leaf.swiftUIImage

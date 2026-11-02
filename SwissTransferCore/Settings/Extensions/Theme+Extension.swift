@@ -34,7 +34,7 @@ extension Theme: SettingSelectable {
         }
     }
 
-    public var leftImage: Image? {
+    public var leadingImage: Image? {
         switch self {
         case .dark:
             return STResourcesAsset.Images.circleDark.swiftUIImage

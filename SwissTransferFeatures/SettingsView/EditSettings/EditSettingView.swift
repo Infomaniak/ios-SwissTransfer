@@ -52,7 +52,7 @@ struct EditSettingView<T: SettingSelectable>: View {
                         EditSettingCell(
                             selected: item == selected,
                             label: item.title,
-                            leftImage: item.leftImage,
+                            leadingImage: item.leadingImage,
                             matomoCategory: category,
                             matomoName: item.matomoName
                         ) {

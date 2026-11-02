@@ -21,8 +21,8 @@ import SwiftUI
 
 public protocol SettingSelectable: CaseIterable, Hashable {
     var title: String { get }
-    var leftImage: Image? { get }
-    var rightImage: Image? { get }
+    var leadingImage: Image? { get }
+    var trailingImage: Image? { get }
     var matomoName: MatomoName { get }
     static var matomoCategoryLocal: MatomoCategory? { get }
     static var matomoCategoryGlobal: MatomoCategory? { get }
@@ -32,5 +32,5 @@ public protocol SettingSelectable: CaseIterable, Hashable {
 }
 
 public extension SettingSelectable {
-    var rightImage: Image? { nil }
+    var trailingImage: Image? { nil }
 }

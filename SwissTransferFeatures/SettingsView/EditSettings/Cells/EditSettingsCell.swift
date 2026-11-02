@@ -27,7 +27,7 @@ import SwiftUI
 struct EditSettingCell: View {
     let selected: Bool
     let label: String
-    var leftImage: Image?
+    var leadingImage: Image?
     let matomoCategory: MatomoCategory
     let matomoName: MatomoName
     let action: () -> Void
@@ -39,8 +39,8 @@ struct EditSettingCell: View {
             action()
         } label: {
             HStack(spacing: IKPadding.small) {
-                if let leftImage {
-                    leftImage
+                if let leadingImage {
+                    leadingImage
                         .iconSize(.large)
                 }
 

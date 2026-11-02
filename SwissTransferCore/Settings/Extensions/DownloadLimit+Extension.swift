@@ -25,7 +25,7 @@ extension DownloadLimit: SettingSelectable {
         return "\(value)"
     }
 
-    public var leftImage: Image? {
+    public var leadingImage: Image? {
         nil
     }
 
