@@ -28,6 +28,7 @@ import STNetwork
 
 public actor TransferManagerWorkerV2: TransferManagerWorker {
     private static let maxParallelUploads = 4
+    private static let maxPresignedUrlsPerBatch = 10
 
     private let appStateObserver = AppStateObserver()
     let uploadSession: SendableUploadSession
@@ -186,27 +187,73 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         let uploadedChunksInFile = uploadedChunks.filter { chunkInFile in
             chunkInFile.file == uploadFile
         }.map(\.chunk)
+
         let chunksToUpload = uploadFile.uploadChunks.filter { !uploadedChunksInFile.contains($0) }
 
-        let chunkEtags = try await chunksToUpload.concurrentMap(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
-            guard let self else {
-                throw TransferManagerWorkerError.invalidChunk
-            }
-            let chunkEtag = try await trackAndPerformUploadTask(withChunk: chunk, inFile: uploadFile)
-            return chunkEtag
+        var uploadedChunkEtags = [STNChunkEtag]()
+
+        for batch in chunksToUpload.batched(ofCount: Self.maxPresignedUrlsPerBatch) {
+            let batchEtags = try await uploadChunkBatch(batch, forFile: uploadFile)
+            uploadedChunkEtags.append(contentsOf: batchEtags)
         }
 
         try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeFileUploadedInChunks(
             transferId: uploadSession.uuid,
             fileId: uploadFile.remoteUploadFileUUID,
-            etags: chunkEtags.sorted { $0.chunkIndex < $1.chunkIndex }
+            etags: uploadedChunkEtags.sorted { $0.chunkIndex < $1.chunkIndex }
         )
         uploadedFiles.append(uploadFile)
     }
 
+    private func uploadChunkBatch(
+        _ chunks: [WorkerChunkV2],
+        forFile uploadFile: WorkerFileV2
+    ) async throws -> [STNChunkEtag] {
+        let urlRequests = chunks.map { chunk in
+            STNBatchPresignedUrlRequest(
+                file: uploadFile.remoteUploadFileUUID,
+                chunk: KotlinInt(int: Int32(chunk.index))
+            )
+        }
+
+        let uploadURLs = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getBatchPresignedUploadUrls(
+            transferId: uploadSession.uuid,
+            uploadUrlRequests: urlRequests
+        )
+
+        let uploadURLByChunkIndex: [Int: String] = Dictionary(
+            uniqueKeysWithValues: uploadURLs.compactMap { response in
+                guard let chunkIndex = response.chunk else {
+                    return nil
+                }
+
+                return (Int(chunkIndex.intValue), response.url)
+            }
+        )
+
+        return try await chunks.concurrentMap(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
+            guard let self else {
+                throw TransferManagerWorkerError.invalidChunk
+            }
+
+            guard let presignedURL = uploadURLByChunkIndex[chunk.index] else {
+                throw TransferManagerWorkerError.missingPresignedURL(
+                    fileId: uploadFile.remoteUploadFileUUID
+                )
+            }
+
+            return try await trackAndPerformUploadTask(
+                withChunk: chunk,
+                inFile: uploadFile,
+                presignedURL: presignedURL
+            )
+        }
+    }
+
     private func trackAndPerformUploadTask(withChunk chunk: WorkerChunkV2,
-                                           inFile uploadFile: WorkerFileV2) async throws -> STNChunkEtag {
-        let task = getTask(withChunk: chunk)
+                                           inFile uploadFile: WorkerFileV2,
+                                           presignedURL: String) async throws -> STNChunkEtag {
+        let task = getTask(withChunk: chunk, presignedURL: presignedURL)
         setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
         let chunkEtag = try await task.value
         setDoneUploading(chunk: chunk, inFile: uploadFile)
@@ -214,7 +261,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         return chunkEtag
     }
 
-    private func getTask(withChunk chunk: WorkerChunkV2) -> Task<STNChunkEtag, Error> {
+    private func getTask(withChunk chunk: WorkerChunkV2, presignedURL: String) -> Task<STNChunkEtag, Error> {
         let progressTracker = getProgressTracker(withChunk: chunk)
         return Task { [weak self] in
             guard let self else {
@@ -231,6 +278,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
             return try await uploadChunk(chunkData: chunkData,
                                          chunk: chunk,
+                                         presignedURL: presignedURL,
                                          progressTracker: progressTracker)
         }
     }

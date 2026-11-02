@@ -24,16 +24,11 @@ import STNetwork
 
 extension TransferManagerWorkerV2 {
     func uploadChunk(chunkData: Data, chunk: WorkerChunkV2,
-                     progressTracker: UploadTaskProgressTracker) async throws -> STNChunkEtag {
+                     presignedURL: String, progressTracker: UploadTaskProgressTracker) async throws -> STNChunkEtag {
         let chunkIndex = Int32(chunk.index)
-        let rawChunkURL = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileChunkUrl(
-            transferId: chunk.uploadUUID,
-            fileId: chunk.remoteUploadFileUUID,
-            chunkIndex: chunkIndex
-        )
 
-        guard let chunkURL = URL(string: rawChunkURL) else {
-            throw TransferManagerWorkerError.invalidURL(rawURL: rawChunkURL)
+        guard let chunkURL = URL(string: presignedURL) else {
+            throw TransferManagerWorkerError.invalidURL(rawURL: presignedURL)
         }
 
         var uploadRequest = URLRequest(url: chunkURL)
