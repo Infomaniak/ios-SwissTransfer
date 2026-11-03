@@ -90,7 +90,9 @@ public struct UploadProgressView: View {
             }
             .stIconNavigationBar()
             .navigationBarBackButtonHidden()
-            .task(startUpload)
+            .task(id: localSessionUUID) {
+                await startUpload()
+            }
             .onAppear {
                 UIApplication.shared.isIdleTimerDisabled = true
             }
