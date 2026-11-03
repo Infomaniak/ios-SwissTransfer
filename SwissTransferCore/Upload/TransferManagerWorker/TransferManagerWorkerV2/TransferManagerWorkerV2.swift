@@ -46,6 +46,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     private var uploadedChunks = [WorkerChunkInFileV2]()
 
     private var chunkProgress = [WorkerChunkV2: UploadTaskProgressTracker]()
+    private var fileProgress = [String: UploadTaskProgressTracker]()
 
     private var suspendedUploads = false
 
@@ -351,6 +352,18 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             return progress
         }
 
+        return progress
+    }
+
+    func getProgressTracker(forFile uploadFile: WorkerFileV2, fileSize: Int) -> UploadTaskProgressTracker {
+        guard let progress = fileProgress[uploadFile.remoteUploadFileUUID] else {
+            let progress = UploadTaskProgressTracker(totalBytesExpectedToSend: fileSize)
+            overallProgress.addChild(progress.taskProgress, withPendingUnitCount: Int64(fileSize))
+            fileProgress[uploadFile.remoteUploadFileUUID] = progress
+            return progress
+        }
+
+        progress.taskProgress.completedUnitCount = 0
         return progress
     }
 

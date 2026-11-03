@@ -70,8 +70,7 @@ extension TransferManagerWorkerV2 {
             for uploadFile in batch {
                 let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
                 let fileSize = try rangeProvider.fileSize
-                let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
-                overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
+                let progressTracker = getProgressTracker(forFile: uploadFile, fileSize: Int(fileSize))
 
                 guard let rawURL = urlByFile[uploadFile.remoteUploadFileUUID] else {
                     throw TransferManagerWorkerError.missingPresignedURL(fileId: uploadFile.remoteUploadFileUUID)
