@@ -168,6 +168,7 @@ public struct UploadProgressView: View {
             rootTransferViewState.transition(to: .error(.restrictedLocation))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
+            guard !Task.isCancelled else { return }
 
             sendErrorToSentryIfNeeded(error: error)
             Logger.general.error("Error trying to start upload: \(error)")
