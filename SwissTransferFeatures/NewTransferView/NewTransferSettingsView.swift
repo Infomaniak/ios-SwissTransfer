@@ -81,8 +81,8 @@ struct NewTransferSettingsView: View {
                     isPresented: $isShowingValiditySetting,
                     title: STResourcesStrings.Localizable.newTransferValidityPeriodTitle
                 ) {
-                    SettingSelectableList(ValidityPeriod.self, selected: duration) {
-                        duration = $0
+                    ValidityPeriodList(selected: duration) { selectedPeriod in
+                        duration = selectedPeriod
                     }
                 }
 
