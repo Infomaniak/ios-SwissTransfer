@@ -52,6 +52,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
     private var uploadTask: Task<Void, Never>?
     private var activeUploadRunID: UUID?
+    private var finalizationTask: Task<Void, Never>?
 
     let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -78,6 +79,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
     deinit {
         uploadTask?.cancel()
+        finalizationTask?.cancel()
         uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
     }
 
@@ -179,17 +181,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
             try checkUploadRunIsActive(runID)
 
-            let linkId = try await uploadBackendRouter.finishUploadSession(
-                uuid: uploadSession.uuid,
-                organizationAccountId: uploadSession.organizationAccountId
-            )
-
-            try checkUploadRunIsActive(runID)
-
-            await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
-                transferUUID: uploadSession.uuid,
-                transferLinkId: linkId
-            )))
+            await finalizeTransferIfNeeded()
         } catch is CancellationError {
             // Suspension or superseded upload run.
         } catch let error as URLError where error.code == .cancelled {
@@ -203,12 +195,51 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }
     }
 
+    private func finalizeTransferIfNeeded() async {
+        if let existing = finalizationTask {
+            await existing.value
+            return
+        }
+
+        let task = Task { [weak self] in
+            guard let self else { return }
+            await finalizeTransfer()
+        }
+        finalizationTask = task
+        await task.value
+    }
+
+    private func finalizeTransfer() async {
+        do {
+            let linkId = try await uploadBackendRouter.finishUploadSession(
+                uuid: uploadSession.uuid,
+                organizationAccountId: uploadSession.organizationAccountId
+            )
+            await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
+                transferUUID: uploadSession.uuid,
+                transferLinkId: linkId
+            )))
+        } catch is CancellationError {
+            // Worker deallocated, no one left to notify.
+        } catch let error as URLError where error.code == .cancelled {
+            // Worker deallocated, no one left to notify.
+        } catch {
+            await delegate?.uploadDidComplete(result: .failure(error as NSError))
+        }
+    }
+
     private func retryRemainingFiles() async throws {
         guard suspendedUploads, !doneUploading else {
             return
         }
 
         uploadingChunks.removeAll()
+        guard !doneUploading else {
+            suspendedUploads = false
+            await finalizeTransferIfNeeded()
+            return
+        }
+
         suspendedUploads = false
         await uploadAllFiles()
     }
