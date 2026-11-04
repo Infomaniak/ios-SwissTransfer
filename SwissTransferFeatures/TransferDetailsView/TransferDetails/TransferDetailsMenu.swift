@@ -48,7 +48,7 @@ public struct TransferDetailsMenu: View {
         }
 
         var components = URLComponents(
-            string: "https://www.infomaniak.com/fr/report_abuse"
+            string: "https://www.infomaniak.com/gtl/report_abuse"
         )
         components?.queryItems = [
             URLQueryItem(name: "from", value: "swisstransfer"),
