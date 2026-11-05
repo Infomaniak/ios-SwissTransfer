@@ -5,5 +5,5 @@ platform:
 executionOrder:
   continueOnFailure: false
   flowsOrder:
-    - UITestCreateTransfer
-    - UITestDownload
+    - UITestCreateTransferLogin
+    - UITestDownloadLogin

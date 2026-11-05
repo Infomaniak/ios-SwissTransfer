@@ -3,7 +3,7 @@ appId: com.infomaniak.swisstransfer
 - launchApp:
     clearState: true
 
-- runFlow: UITestCreateTransfer.yaml
+- runFlow: UITestCreateTransferLogin.yaml
 - tapOn: ${output.fileName}
 - tapOn: "Download"
 
