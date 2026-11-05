@@ -1,0 +1,16 @@
+appId: com.infomaniak.swisstransfer
+---
+- launchApp:
+    clearState: true
+
+- runFlow: UITestCreateTransfer.yaml
+- tapOn: ${output.fileName}
+- tapOn: "Download"
+
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    point: 0%,28%
+- tapOn: "close"
+
+- assertVisible: "Downloaded"
