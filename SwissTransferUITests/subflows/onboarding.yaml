@@ -1,0 +1,11 @@
+appId: com.infomaniak.swisstransfer
+---
+- repeat:
+    times: 3
+    commands:
+        - runFlow:
+            when:
+                visible: "Next"
+            commands:
+                - tapOn: "Next"
+

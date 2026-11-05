@@ -1,0 +1,52 @@
+appId: com.infomaniak.swisstransfer
+---
+- runFlow:
+    when:
+      visible: "Start"
+    commands:
+      - tapOn: "Start"
+
+- tapOn: "My Account"
+- tapOn: "Sign in"
+- tapOn: "Login"
+
+- waitForAnimationToEnd:
+    timeout: 5000
+
+- extendedWaitUntil:
+    visible: "example@ik.me"
+    timeout: 30000
+- tapOn: "example@ik.me"
+- inputText: "${MAESTRO_USER}"
+
+- extendedWaitUntil:
+    visible: "Password *"
+    timeout: 30000
+- tapOn: "Password *"
+- inputText: "${MAESTRO_PASSWORD}"
+
+- runFlow:
+    when:
+      visible: "retour"
+    commands:
+      - tapOn: "retour"
+
+- waitForAnimationToEnd:
+    timeout: 3000
+
+- repeat:
+    times: 3
+    commands:
+      - runFlow:
+          when:
+            visible: "Password *"
+          commands:
+            - tapOn:
+                text: "Sign in"
+                index: 1
+            - waitForAnimationToEnd:
+                timeout: 4000
+
+- extendedWaitUntil:
+    notVisible: "Password *"
+    timeout: 10000

@@ -1,0 +1,9 @@
+platform:
+  ios:
+    snapshotKeyHonorModalViews: false
+
+executionOrder:
+  continueOnFailure: false
+  flowsOrder:
+    - UITestCreateTransfer
+    - UITestDownload
