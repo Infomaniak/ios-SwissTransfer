@@ -78,17 +78,6 @@ public struct SettingsView: View {
             }
 
             Section(header: Text(STResourcesStrings.Localizable.settingsCategoryDefaultSettings)) {
-                SettingsCell(title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                             subtitle: appSettings.value?.validityPeriod.title ?? "",
-                             icon: STResourcesAsset.Images.clock) {
-                    EditSettingView(ValidityPeriod.self,
-                                    selected: appSettings.value?.validityPeriod ?? .thirty,
-                                    title: STResourcesStrings.Localizable.settingsOptionValidityPeriod,
-                                    section: STResourcesStrings.Localizable.settingsValidityPeriodTitle,
-                                    matomoScreen: .validityPeriodSetting)
-                }
-                .settingsCell()
-
                 SettingsCell(title: STResourcesStrings.Localizable.settingsOptionDownloadLimit,
                              subtitle: appSettings.value?.downloadLimit.title ?? "",
                              icon: STResourcesAsset.Images.fileDownload) {

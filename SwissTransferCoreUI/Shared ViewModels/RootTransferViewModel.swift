@@ -40,7 +40,7 @@ public final class RootTransferViewModel: ObservableObject {
     @Published public var message = ""
     @Published public var title = ""
     @Published public var password = ""
-    @Published public var validityPeriod = ValidityPeriod.thirty
+    @Published public var validityPeriod: ValidityPeriod?
     @Published public var downloadLimit = DownloadLimit.twoHundredFifty
     @Published public var emailLanguage = EmailLanguage.french
     @Published public var files = [TransferableFile]()
@@ -81,7 +81,6 @@ public final class RootTransferViewModel: ObservableObject {
 
             authorEmail = appSettings.lastAuthorEmail ?? ""
             transferType = appSettings.lastTransferType
-            validityPeriod = appSettings.validityPeriod
             downloadLimit = appSettings.downloadLimit
             emailLanguage = appSettings.emailLanguage
         }
@@ -89,6 +88,8 @@ public final class RootTransferViewModel: ObservableObject {
 
     public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager,
                                        swissTransferManager: SwissTransferInjection) async -> NewUploadSession? {
+        guard let validityPeriod else { return nil }
+
         var authorTrimmedEmail = ""
         if transferType == .mail {
             authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)

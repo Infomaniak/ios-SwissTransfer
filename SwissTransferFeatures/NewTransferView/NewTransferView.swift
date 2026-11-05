@@ -41,6 +41,7 @@ public struct NewTransferView: View {
 
     @StateObject private var router = FileListRouter()
     @State private var isLoadingFileToUpload = false
+    @State private var isShowingValiditySetting = false
     @State private var importFilesTasks = [ImportTask]()
 
     private var isNewTransferValid: Bool {
@@ -88,7 +89,7 @@ public struct NewTransferView: View {
             .background(Color.ST.background)
             .safeAreaButtons {
                 Button(action: startUpload) {
-                    Text(CoreUILocalizable.buttonNext)
+                    Text(STResourcesStrings.Localizable.transferSendButton)
                 }
                 .buttonStyle(.ikBorderedProminent)
                 .ikButtonLoading(isLoadingFileToUpload || !newTransferFileManager.importedItems.isEmpty)
@@ -108,6 +109,19 @@ public struct NewTransferView: View {
             }
         }
         .environmentObject(router)
+        .stFloatingPanel(
+            isPresented: $isShowingValiditySetting,
+            title: STResourcesStrings.Localizable.newTransferValidityPeriodTitle
+        ) {
+            ValidityPeriodList(
+                selected: viewModel.validityPeriod,
+                confirmationButtonTitle: STResourcesStrings.Localizable.transferSendButton
+            ) { selectedPeriod in
+                viewModel.validityPeriod = selectedPeriod
+                isShowingValiditySetting = false
+                startUpload()
+            }
+        }
         .environment(\.dismissModal) {
             if let shareExtensionContext {
                 shareExtensionContext.dismissShareSheet()
@@ -120,6 +134,11 @@ public struct NewTransferView: View {
     }
 
     private func startUpload() {
+        guard viewModel.validityPeriod != nil else {
+            isShowingValiditySetting = true
+            return
+        }
+
         Task {
             if viewModel.transferType == .mail {
                 let trimmedEmailText = viewModel.emailText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -131,6 +150,7 @@ public struct NewTransferView: View {
             viewModel.emailText = ""
 
             isLoadingFileToUpload = true
+            defer { isLoadingFileToUpload = false }
 
             guard let newUploadSession = await viewModel.toNewUploadSessionWith(
                 newTransferFileManager,
@@ -153,7 +173,6 @@ public struct NewTransferView: View {
             } else {
                 rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             }
-            isLoadingFileToUpload = false
         }
     }
 
