@@ -7,3 +7,5 @@ executionOrder:
   flowsOrder:
     - UITestCreateTransferLogin
     - UITestDownloadLogin
+    - UITestCreateTransfer
+    - UITestDownload
