@@ -72,3 +72,6 @@ SwissTransferTests/Env.swift
 
 ### Import Loco ###
 .import_loco_api
+
+### E2E (Maestro) — secrets locaux ###
+SwissTransferUITests/.env
