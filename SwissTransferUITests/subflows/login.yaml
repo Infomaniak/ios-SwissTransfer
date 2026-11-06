@@ -43,11 +43,7 @@ appId: com.infomaniak.swisstransfer
 - tapOn: "Password *"
 - inputText: "${MAESTRO_PASSWORD}"
 
-- runFlow:
-    when:
-      visible: "retour"
-    commands:
-      - tapOn: "retour"
+- hideKeyboard
 
 - waitForAnimationToEnd:
     timeout: 3000
