@@ -1,4 +1,4 @@
-- Elige una organización al crear una transferencia y cambia de organización para ver las transferencias enviadas correspondientes.
-- Comparte enlaces de transferencia con un mensaje listo para enviar.
-- Los archivos descargados conservan sus nombres originales al compartirlos.
-- Diseño mejorado para iPhone Duo.
+- Elige cuánto tiempo estará disponible cada transferencia al enviarla, con nuevas duraciones recomendadas, incluida la de 3 días.
+- Las transferencias recibidas ahora tienen un menú para denunciarlas o eliminarlas.
+- Eliminar una transferencia ahora requiere confirmación y detiene las descargas en curso.
+- Visualización mejorada del progreso de las transferencias en la Dynamic Island y las Actividades en directo.

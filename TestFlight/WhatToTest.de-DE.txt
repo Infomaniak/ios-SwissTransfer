@@ -1,4 +1,4 @@
-- Wählen Sie beim Erstellen eines Transfers eine Organisation aus und wechseln Sie die Organisation, um die zugehörigen gesendeten Transfers anzuzeigen.
-- Teilen Sie Transferlinks mit einer vorbereiteten Nachricht.
-- Heruntergeladene Dateien behalten beim Teilen ihre ursprünglichen Dateinamen.
-- Verbessertes Design für iPhone Duo.
+- Wählen Sie beim Senden, wie lange jeder Transfer verfügbar bleibt – mit neuen empfohlenen Zeiträumen, darunter 3 Tage.
+- Empfangene Transfers haben jetzt ein Menü, um sie zu melden oder zu löschen.
+- Das Löschen eines Transfers erfordert jetzt eine Bestätigung und stoppt laufende Downloads.
+- Verbesserte Fortschrittsanzeige von Transfers in der Dynamic Island und in Live-Aktivitäten.
