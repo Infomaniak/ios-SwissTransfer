@@ -1,10 +1,24 @@
 appId: com.infomaniak.swisstransfer
 ---
 - launchApp:
-    clearState: true
+    clearState: true 
 
-- runFlow: UITestCreateTransferLogin.yaml
-- tapOn: ${output.fileName}
+- runFlow: subflows/onboarding.yaml
+- runFlow: subflows/login.yaml
+- runScript: setFileName.js
+
+- runFlow:
+    when:
+        visible: "Start"
+    commands:
+        - tapOn: "Start"
+
+- runFlow: subflows/createSteps.yaml
+
+- tapOn: "chevron.right"
+
+- assertVisible: ${output.fileName}
+
 - tapOn: "Download"
 
 - waitForAnimationToEnd:
@@ -14,3 +28,5 @@ appId: com.infomaniak.swisstransfer
 - tapOn: "close"
 
 - assertVisible: "Downloaded"
+
+- stopApp

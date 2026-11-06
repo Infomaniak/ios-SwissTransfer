@@ -7,42 +7,13 @@ appId: com.infomaniak.swisstransfer
 - runFlow: subflows/login.yaml
 - runScript: setFileName.js
 
-- waitForAnimationToEnd:
-    timeout: 3000
-- tapOn: "Sent"
-- tapOn: "New transfer"
-- tapOn: "Photo and video gallery"
-- waitForAnimationToEnd:
-    timeout: 3000
-- tapOn:
-    id: "PXGGridLayout-Info"
-- tapOn: "Done"
+- runFlow: subflows/createSteps.yaml
 
-- tapOn: "Give a title to your transfer"
-- inputText: ${output.fileName}
-- tapOn: "retour"
-
-- tapOn: "Validity period"
-- waitForAnimationToEnd:
-    timeout: 3000
-- tapOn:
-    id: "ValidityPeriod_oneDay"
-
-- tapOn: "Next"
-
-- runFlow:
-    when:
-      visible: "Finish"
-    commands:
-      - tapOn: "Finish"
-
-- runFlow:
-    when:
-      visible: "Do you like SwissTransfer?"
-    commands:
-      - tapOn: "No"
+- tapOn: "chevron.right"
 
 - assertVisible: ${output.fileName}
+
+- stopApp
 
 
 
