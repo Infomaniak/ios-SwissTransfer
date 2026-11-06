@@ -36,25 +36,10 @@ public struct TransferDetailsMenu: View {
     }
 
     private var reportURL: URL? {
-        let apiURLCreator = mainViewState.swissTransferManager.sharedApiUrlCreator
-        let transferLink: String
+        let urlString = mainViewState.swissTransferManager.sharedApiUrlCreator
+            .reportTransferUrl(transfer: transfer)
 
-        if transfer.apiSource == .v1 {
-            transferLink = apiURLCreator.shareTransferUrl(transferUUID: transfer.uuid)
-        } else if let linkId = transfer.linkId {
-            transferLink = apiURLCreator.shareTransferV2Url(linkUUID: linkId)
-        } else {
-            return nil
-        }
-
-        var components = URLComponents(
-            string: "https://www.infomaniak.com/gtl/report_abuse"
-        )
-        components?.queryItems = [
-            URLQueryItem(name: "from", value: "swisstransfer"),
-            URLQueryItem(name: "url", value: transferLink)
-        ]
-        return components?.url
+        return URL(string: urlString)
     }
 
     public var body: some View {
