@@ -75,6 +75,10 @@ public struct ValidityPeriodList: View {
                 } label: {
                     SettingSelectableCell(item: period, selectedItem: selected)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(period.title)
+                .accessibilityAddTraits(.isButton)
+                .accessibilityIdentifier("\(String(describing: ValidityPeriod.self))_\(period.matomoName)")
 
                 if period != items.last {
                     DividerView()
