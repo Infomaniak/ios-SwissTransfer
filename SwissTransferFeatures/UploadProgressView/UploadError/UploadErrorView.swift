@@ -19,6 +19,7 @@
 import InfomaniakCoreSwiftUI
 import InfomaniakCoreUIResources
 import InfomaniakDI
+import OSLog
 import STCore
 import STResources
 import SwiftUI
@@ -65,24 +66,28 @@ public struct UploadErrorView: View {
     }
 
     private func retryTransfer() {
+        guard !isRetryingUpload else { return }
+        isRetryingUpload = true
         Task {
-            isRetryingUpload = true
-            guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(
-                newTransferFileManager,
-                swissTransferManager: mainViewState.swissTransferManager
-            ) else {
-                isRetryingUpload = false
-                return
+            defer { isRetryingUpload = false }
+            do {
+                guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(
+                    newTransferFileManager,
+                    swissTransferManager: mainViewState.swissTransferManager
+                ) else {
+                    return
+                }
+
+                let localUploadSessionUUID = try await mainViewState.uploadBackendRouter
+                    .createAndGetLocalUploadSessionUUID(
+                        newUploadSession: newUploadSession,
+                        organizationAccountId: rootTransferViewModel.selectedOrganizationId
+                    )
+
+                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
+            } catch {
+                Logger.general.error("Failed to retry upload: \(error)")
             }
-
-            let localUploadSessionUUID = try await mainViewState.uploadBackendRouter
-                .createAndGetLocalUploadSessionUUID(
-                    newUploadSession: newUploadSession,
-                    organizationAccountId: rootTransferViewModel.selectedOrganizationId
-                )
-
-            rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
-            isRetryingUpload = false
         }
     }
 
