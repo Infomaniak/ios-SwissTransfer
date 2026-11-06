@@ -25,9 +25,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferDetailsMenu: View {
-    @Environment(\.openURL) private var openURL
-
-    @EnvironmentObject private var mainViewState: MainViewState
+    @State private var transferToDelete: TransferUi?
 
     private let transfer: TransferUi
 
@@ -35,55 +33,31 @@ public struct TransferDetailsMenu: View {
         self.transfer = transfer
     }
 
-    private var reportURL: URL? {
-        let urlString = mainViewState.swissTransferManager.sharedApiUrlCreator
-            .reportTransferUrl(transfer: transfer)
-
-        return URL(string: urlString)
-    }
-
-    private var reportButton: some View {
-        Button {
-            @InjectService var matomo: MatomoUtils
-            matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
-            if let reportURL { openURL(reportURL) }
-        } label: {
-            Label {
-                Text(STResourcesStrings.Localizable.reportTransfer)
-            } icon: {
-                STResourcesAsset.Images.warning.swiftUIImage
-            }
-        }
-    }
-
-    private var deleteButton: some View {
-        Button(role: .destructive) {
-            @InjectService var matomo: MatomoUtils
-            matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
-            mainViewState.isShowingDeleteTransferConfirmation = transfer
-        } label: {
-            Label {
-                Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
-            } icon: {
-                STResourcesAsset.Images.bin.swiftUIImage
-            }
-        }
-    }
-
     public var body: some View {
-        if transfer.direction == .received {
-            Menu {
-                reportButton
-                deleteButton
-            } label: {
-                Label {
-                    Text(STResourcesStrings.Localizable.moreButton)
-                } icon: {
-                    STResourcesAsset.Images.plusActions.swiftUIImage
+        Group {
+            if transfer.direction == .received {
+                Menu {
+                    ReportTransferButton(transfer: transfer)
+                    DeleteTransferButton(
+                        transfer: transfer,
+                        transferToDelete: $transferToDelete
+                    )
+                } label: {
+                    Label {
+                        Text(STResourcesStrings.Localizable.moreButton)
+                    } icon: {
+                        STResourcesAsset.Images.plusActions.swiftUIImage
+                    }
                 }
+            } else {
+                DeleteTransferButton(
+                    transfer: transfer,
+                    transferToDelete: $transferToDelete
+                )
             }
-        } else {
-            deleteButton
+        }
+        .stCustomAlert(item: $transferToDelete) { transfer in
+            DeleteTransferAlertView(transfer: transfer)
         }
     }
 }
