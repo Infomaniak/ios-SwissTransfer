@@ -85,7 +85,10 @@ public struct DeleteTransferAlertView: View {
             case .localTransfer(let transfer):
                 try await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
                 TransferUi.removeLocalContainer(transferUUID: transfer.uuid)
-                mainViewState.selectedDestination = nil
+                if case .transfer(let selectedTransfer) = mainViewState.selectedTransfer,
+                   selectedTransfer.uuid == transfer.uuid {
+                    mainViewState.selectedDestination = nil
+                }
             }
 
             feedback.notificationOccurred(.success)

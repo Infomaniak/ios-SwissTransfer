@@ -48,8 +48,5 @@ public struct DeleteTransferButton: View {
                 STResourcesAsset.Images.bin.swiftUIImage
             }
         }
-        .stCustomAlert(item: $transferToDelete) { transfer in
-            DeleteTransferAlertView(transfer: transfer)
-        }
     }
 }
