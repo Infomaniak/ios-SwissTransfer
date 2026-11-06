@@ -25,9 +25,7 @@ import SwissTransferCore
 import SwissTransferCoreUI
 
 public struct TransferDetailsMenu: View {
-    @Environment(\.openURL) private var openURL
-
-    @EnvironmentObject private var mainViewState: MainViewState
+    @State private var transferToDelete: TransferUi?
 
     private let transfer: TransferUi
 
@@ -35,58 +33,31 @@ public struct TransferDetailsMenu: View {
         self.transfer = transfer
     }
 
-    private var reportURL: URL? {
-        let urlString = mainViewState.swissTransferManager.sharedApiUrlCreator
-            .reportTransferUrl(transfer: transfer)
-
-        return URL(string: urlString)
-    }
-
     public var body: some View {
-        Menu {
-            if let reportURL {
-                Button {
-                    @InjectService var matomo: MatomoUtils
-                    matomo.track(eventWithCategory: .receivedTransfer, name: .reportTransfer)
-
-                    openURL(reportURL)
+        Group {
+            if transfer.direction == .received {
+                Menu {
+                    ReportTransferButton(transfer: transfer)
+                    DeleteTransferButton(
+                        transfer: transfer,
+                        transferToDelete: $transferToDelete
+                    )
                 } label: {
                     Label {
-                        Text(STResourcesStrings.Localizable.reportTransfer)
+                        Text(STResourcesStrings.Localizable.moreButton)
                     } icon: {
-                        STResourcesAsset.Images.warning.swiftUIImage
-                            .foregroundStyle(.black)
+                        STResourcesAsset.Images.plusActions.swiftUIImage
                     }
                 }
-            }
-
-            Button(role: .destructive) {
-                deleteTransferLocally(transfer)
-            } label: {
-                Label {
-                    Text(STResourcesStrings.Localizable.buttonDeleteTransfer)
-                } icon: {
-                    STResourcesAsset.Images.bin.swiftUIImage
-                }
-            }
-        } label: {
-            Label {
-                Text(STResourcesStrings.Localizable.moreButton)
-            } icon: {
-                STResourcesAsset.Images.plusActions.swiftUIImage
+            } else {
+                DeleteTransferButton(
+                    transfer: transfer,
+                    transferToDelete: $transferToDelete
+                )
             }
         }
-    }
-
-    private func deleteTransferLocally(_ transfer: TransferUi) {
-        Task {
-            try? await mainViewState.transferManager.deleteTransfer(transferUUID: transfer.uuid)
-            transfer.removeLocalContainer()
+        .stCustomAlert(item: $transferToDelete) { transfer in
+            DeleteTransferAlertView(transfer: transfer)
         }
-
-        @InjectService var matomo: MatomoUtils
-        matomo.track(eventWithCategory: .deleteTransferHistory, name: .transferDetailsMenu)
-
-        mainViewState.selectedDestination = nil
     }
 }

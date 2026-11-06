@@ -27,6 +27,7 @@ import SwissTransferCoreUI
 
 struct TransferCell: View {
     @EnvironmentObject private var mainViewState: MainViewState
+    @State private var transferToDelete: TransferUi?
 
     let transfer: TransferUi
 
@@ -71,11 +72,11 @@ struct TransferCell: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: IKRadius.large))
         .contextMenu {
             Button(STResourcesStrings.Localizable.buttonDeleteTransfer, role: .destructive) {
-                Task {
-                    try? await mainViewState.swissTransferManager.transferManager.deleteTransfer(transferUUID: transfer.uuid)
-                    transfer.removeLocalContainer()
-                }
+                transferToDelete = transfer
             }
+        }
+        .stCustomAlert(item: $transferToDelete) { transfer in
+            DeleteTransferAlertView(transfer: transfer)
         }
         .overlay {
             if isSelected {
