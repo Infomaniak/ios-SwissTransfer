@@ -27,3 +27,4 @@ executionOrder:
     - UITestDownloadLogin
     - UITestCreateTransfer
     - UITestDownload
+    - UITestDeleteTransfer

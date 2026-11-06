@@ -32,12 +32,13 @@ appId: com.infomaniak.swisstransfer
 - tapOn: "A message to pass on?"
 - inputText: ${output.fileName}
 
-- hideKeyboard
+- scroll
 
 - scrollUntilVisible:
     element: "Available for"
 
 - tapOn: "Available for"
+
 - waitForAnimationToEnd:
     timeout: 3000
 - tapOn:
