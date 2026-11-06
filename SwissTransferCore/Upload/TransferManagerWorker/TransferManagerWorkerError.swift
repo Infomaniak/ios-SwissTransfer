@@ -25,4 +25,5 @@ enum TransferManagerWorkerError: Error {
     case invalidResponse
     case invalidChunkResponse
     case invalidFileResponse
+    case missingPresignedURL(fileId: String)
 }

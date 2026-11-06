@@ -23,17 +23,18 @@ import STCore
 import STNetwork
 
 extension TransferManagerWorkerV2 {
-    func uploadChunk(chunkData: Data, chunk: WorkerChunkV2,
-                     progressTracker: UploadTaskProgressTracker) async throws -> STNChunkEtag {
-        let chunkIndex = Int32(chunk.index)
-        let rawChunkURL = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileChunkUrl(
-            transferId: chunk.uploadUUID,
-            fileId: chunk.remoteUploadFileUUID,
-            chunkIndex: chunkIndex
-        )
+    func uploadChunk(
+        chunkData: Data,
+        chunk: WorkerChunkV2,
+        presignedURL: String,
+        progressTracker: UploadTaskProgressTracker
+    ) async throws -> STNChunkEtag {
+        try Task.checkCancellation()
 
-        guard let chunkURL = URL(string: rawChunkURL) else {
-            throw TransferManagerWorkerError.invalidURL(rawURL: rawChunkURL)
+        let chunkIndex = Int32(chunk.index)
+
+        guard let chunkURL = URL(string: presignedURL) else {
+            throw TransferManagerWorkerError.invalidURL(rawURL: presignedURL)
         }
 
         var uploadRequest = URLRequest(url: chunkURL)
@@ -52,38 +53,56 @@ extension TransferManagerWorkerV2 {
         return STNChunkEtag(etag: etag, chunkIndex: chunkIndex)
     }
 
-    func uploadFile(forFile uploadFile: WorkerFileV2) async throws {
-        let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
-        let fileSize = try rangeProvider.fileSize
-        let progressTracker = UploadTaskProgressTracker(totalBytesExpectedToSend: Int(fileSize))
-        overallProgress.addChild(progressTracker.taskProgress, withPendingUnitCount: Int64(fileSize))
+    func uploadFiles(forFiles uploadFiles: [WorkerFileV2], runID: UUID) async throws {
+        for batch in uploadFiles.batched(ofCount: 10) {
+            try checkUploadRunIsActive(runID)
 
-        let rawFileUrl = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getUploadFileUrl(
-            transferId: uploadFile.uploadUUID, fileId: uploadFile.remoteUploadFileUUID
-        )
+            let requests = batch.map { STNBatchPresignedUrlRequest(file: $0.remoteUploadFileUUID, chunk: nil) }
+            let responses = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getBatchPresignedUploadUrls(
+                transferId: uploadSession.uuid,
+                uploadUrlRequests: requests
+            )
 
-        guard let fileUrl = URL(string: rawFileUrl) else {
-            throw TransferManagerWorkerError.invalidURL(rawURL: rawFileUrl)
+            try checkUploadRunIsActive(runID)
+
+            let urlByFile = Dictionary(uniqueKeysWithValues: responses.map { ($0.file, $0.url) })
+
+            for uploadFile in batch {
+                let rangeProvider = RangeProvider(fileURL: uploadFile.fileURL, config: rangeProviderConfig)
+                let fileSize = try rangeProvider.fileSize
+                let progressTracker = getProgressTracker(forFile: uploadFile, fileSize: Int(fileSize))
+
+                guard let rawURL = urlByFile[uploadFile.remoteUploadFileUUID] else {
+                    throw TransferManagerWorkerError.missingPresignedURL(fileId: uploadFile.remoteUploadFileUUID)
+                }
+
+                guard let fileUrl = URL(string: rawURL) else { throw TransferManagerWorkerError.invalidURL(rawURL: rawURL) }
+
+                var uploadRequest = URLRequest(url: fileUrl)
+                uploadRequest.httpMethod = Method.PUT.rawValue
+
+                let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
+                                                                      fromFile: uploadFile.fileURL,
+                                                                      delegate: progressTracker)
+
+                try checkUploadRunIsActive(runID)
+
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw TransferManagerWorkerError.invalidResponse
+                }
+
+                guard httpResponse.statusCode < 400 else {
+                    throw TransferManagerWorkerError.invalidFileResponse
+                }
+
+                try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
+                    transferId: uploadSession.uuid,
+                    fileId: uploadFile.remoteUploadFileUUID
+                )
+
+                try checkUploadRunIsActive(runID)
+                uploadedFiles.append(uploadFile)
+            }
         }
-
-        var uploadRequest = URLRequest(url: fileUrl)
-        uploadRequest.httpMethod = Method.PUT.rawValue
-
-        let (_, response) = try await uploadURLSession.upload(for: uploadRequest,
-                                                              fromFile: uploadFile.fileURL,
-                                                              delegate: progressTracker)
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw TransferManagerWorkerError.invalidResponse
-        }
-
-        guard httpResponse.statusCode < 400 else {
-            throw TransferManagerWorkerError.invalidFileResponse
-        }
-
-        try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeDirectFileUploaded(
-            transferId: uploadSession.uuid,
-            fileId: uploadFile.remoteUploadFileUUID
-        )
-        uploadedFiles.append(uploadFile)
     }
 }
