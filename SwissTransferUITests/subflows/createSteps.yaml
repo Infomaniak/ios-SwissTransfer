@@ -41,11 +41,10 @@ appId: com.example.app
 
 - tapOn: "Send"
 
-- runFlow:
-    when:
-      visible: "Finish"
-    commands:
-      - tapOn: "Finish"
+- extendedWaitUntil:
+    visible: "Finish"
+    timeout: 120000
+- tapOn: "Finish"
 
 - runFlow:
     when:
