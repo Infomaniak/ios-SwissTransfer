@@ -1,0 +1,36 @@
+appId: com.example.app
+---
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: "Sent"
+- tapOn: "New transfer"
+- tapOn: "Photo and video gallery"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: "PXGGridLayout-Info"
+- tapOn: "Done"
+
+- tapOn: "A message to pass on?"
+- inputText: ${output.fileName}
+- scroll
+
+- tapOn: "Available for"
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: "ValidityPeriod_oneDay"
+
+- tapOn: "Send"
+
+- runFlow:
+    when:
+      visible: "Finish"
+    commands:
+      - tapOn: "Finish"
+
+- runFlow:
+    when:
+      visible: "Do you like SwissTransfer?"
+    commands:
+      - tapOn: "No"
