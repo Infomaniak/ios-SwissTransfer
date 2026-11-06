@@ -1,4 +1,4 @@
-- Choisissez une organisation lors de la création d’un transfert et changez d’organisation pour consulter les transferts envoyés correspondants.
-- Partagez vos liens de transfert avec un message prêt à envoyer.
-- Les fichiers téléchargés conservent leur nom d’origine lors du partage.
-- Design amélioré pour iPhone Duo.
+- Choisissez la durée de disponibilité de chaque transfert lors de l’envoi, avec de nouvelles durées recommandées, dont 3 jours.
+- Les transferts reçus disposent désormais d’un menu pour les signaler ou les supprimer.
+- La suppression d’un transfert demande désormais une confirmation et interrompt les téléchargements en cours.
+- Affichage amélioré de la progression des transferts dans la Dynamic Island et les Activités en direct.

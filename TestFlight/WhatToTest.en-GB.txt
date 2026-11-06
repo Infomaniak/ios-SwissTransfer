@@ -1,4 +1,4 @@
-- Choose an organisation when creating a transfer, and switch organisations to see their sent transfers.
-- Share transfer links with a ready-to-send message.
-- Original filenames are preserved when sharing downloaded files.
-- Improved design for iPhone Duo.
+- Choose how long each transfer stays available when sending, with new recommended durations including 3 days.
+- Received transfers now have a menu to report or delete them.
+- Deleting a transfer now asks for confirmation and stops any ongoing downloads.
+- Improved transfer progress display in the Dynamic Island and Live Activities.

@@ -1,4 +1,4 @@
-- Scegli un’organizzazione quando crei un trasferimento e cambia organizzazione per vedere i trasferimenti inviati corrispondenti.
-- Condividi i link di trasferimento con un messaggio pronto da inviare.
-- Quando condividi i file scaricati, i nomi originali vengono mantenuti.
-- Design migliorato per iPhone Duo.
+- Scegli per quanto tempo ogni trasferimento resta disponibile al momento dell’invio, con nuove durate consigliate, tra cui 3 giorni.
+- I trasferimenti ricevuti ora hanno un menu per segnalarli o eliminarli.
+- L’eliminazione di un trasferimento ora richiede una conferma e interrompe i download in corso.
+- Visualizzazione migliorata dell’avanzamento dei trasferimenti nella Dynamic Island e nelle Attività in tempo reale.
