@@ -24,31 +24,32 @@ appId: com.infomaniak.swisstransfer
 - runFlow: subflows/onboarding.yaml
 - runFlow: subflows/login.yaml
 - runScript: setFileName.js
-
-- runFlow:
-    when:
-        visible: "Start"
-    commands:
-        - tapOn: "Start"
-
 - runFlow: subflows/createSteps.yaml
 
-- tapOn: "chevron.right"
+- tapOn:
+    id: "transfer-row"
+    index: 0
 
 - assertVisible: ${output.fileName}
 
 - tapOn: "Close"
 
-- longPressOn: "chevron.right"
+- longPressOn:
+    id: "transfer-row"
+    index: 0
+
 - tapOn: "Delete transfer"
 
 - extendedWaitUntil:
-    notVisible: "chevron.right"
+    notVisible:
+      id: "transfer-row"
     timeout: 10000
 
 - stopApp
 - launchApp
 - tapOn: "Sent"
-- assertNotVisible: "chevron.right"
+
+- assertNotVisible:
+    id: "transfer-row"
 
 - stopApp

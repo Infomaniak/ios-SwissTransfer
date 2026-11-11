@@ -48,10 +48,22 @@ appId: com.infomaniak.swisstransfer
 - waitForAnimationToEnd:
     timeout: 3000
 
-- tapOn:
-    text: "Sign in"
-    below: "Stay connected.*"
+- runFlow:
+    when:
+      visible: "Password \\*"
+    commands:
+      - tapOn:
+          text: "Sign in"
+          below: "Stay connected.*"
 
 - extendedWaitUntil:
     notVisible: "Password \\*"
     timeout: 30000
+
+- tapOn: "My Account"
+
+- extendedWaitUntil:
+    visible: "${MAESTRO_USER}"
+    timeout: 30000
+
+

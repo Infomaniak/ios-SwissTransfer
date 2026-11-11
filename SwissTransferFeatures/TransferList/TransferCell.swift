@@ -67,6 +67,8 @@ struct TransferCell: View {
                 .foregroundStyle(Color.ST.textPrimary)
                 .accessibilityHidden(true)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("transfer-row")
         .padding(value: .medium)
         .background(Color.ST.cardBackground, in: .rect(cornerRadius: IKRadius.large))
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: IKRadius.large))
