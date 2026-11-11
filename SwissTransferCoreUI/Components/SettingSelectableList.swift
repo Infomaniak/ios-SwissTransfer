@@ -53,6 +53,10 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
                 } label: {
                     SettingSelectableCell(item: item, selectedItem: selected)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(item.title)
+                .accessibilityAddTraits(.isButton)
+                .accessibilityIdentifier("\(String(describing: T.self))_\(item.matomoName)")
 
                 if item != items.last {
                     DividerView()
