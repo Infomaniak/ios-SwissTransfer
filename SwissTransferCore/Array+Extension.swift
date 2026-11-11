@@ -23,3 +23,12 @@ public extension Array where Element: DisplayableFile {
         return map { $0.fileSize }.reduce(0, +)
     }
 }
+
+public extension Array {
+    func batched(ofCount batchSize: Int) -> [[Element]] {
+        precondition(batchSize > 0, "Batch size must be greater than zero")
+        return stride(from: 0, to: count, by: batchSize).map { start in
+            Array(self[start ..< Swift.min(start + batchSize, count)])
+        }
+    }
+}

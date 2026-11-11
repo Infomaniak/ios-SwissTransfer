@@ -28,6 +28,7 @@ import STNetwork
 
 public actor TransferManagerWorkerV2: TransferManagerWorker {
     private static let maxParallelUploads = 4
+    private static let maxPresignedUrlsPerBatch = 10
 
     private let appStateObserver = AppStateObserver()
     let uploadSession: SendableUploadSession
@@ -45,8 +46,13 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     private var uploadedChunks = [WorkerChunkInFileV2]()
 
     private var chunkProgress = [WorkerChunkV2: UploadTaskProgressTracker]()
+    private var fileProgress = [String: UploadTaskProgressTracker]()
 
     private var suspendedUploads = false
+
+    private var uploadTask: Task<Void, Never>?
+    private var activeUploadRunID: UUID?
+    private var finalizationTask: Task<Void, Never>?
 
     let rangeProviderConfig = RangeProvider.Config(
         chunkMinSize: 50 * 1024 * 1024,
@@ -72,6 +78,8 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     }
 
     deinit {
+        uploadTask?.cancel()
+        finalizationTask?.cancel()
         uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
     }
 
@@ -90,9 +98,14 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     }
 
     public func suspendAllTasks() {
+        suspendedUploads = true
+        activeUploadRunID = nil
+
+        uploadTask?.cancel()
+        uploadTask = nil
+
         uploadingChunks.compactMap(\.task).forEach { $0.cancel() }
         uploadingChunks.removeAll()
-        suspendedUploads = true
     }
 
     private func buildAllUploadTasks(forFileAtPath path: String, remoteUploadFileUUID: String, uploadUUID: String) async throws {
@@ -126,6 +139,26 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
     }
 
     private func uploadAllFiles(useExpiringActivity: Bool = false) async {
+        guard activeUploadRunID == nil else { return }
+
+        let runID = UUID()
+        activeUploadRunID = runID
+
+        let task = Task<Void, Never> { [weak self] in
+            guard let self else { return }
+            await performUploadAllFiles(runID: runID, useExpiringActivity: useExpiringActivity)
+        }
+
+        uploadTask = task
+        await task.value
+
+        if activeUploadRunID == runID {
+            activeUploadRunID = nil
+            uploadTask = nil
+        }
+    }
+
+    private func performUploadAllFiles(runID: UUID, useExpiringActivity: Bool) async {
         let expiringActivity: ExpiringActivity? = useExpiringActivity
             ? ExpiringActivity(id: "upload-\(UUID().uuidString)", delegate: self)
             : nil
@@ -133,27 +166,63 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
             expiringActivity?.start()
             defer { expiringActivity?.endAll() }
 
+            try checkUploadRunIsActive(runID)
+
             let allFiles = uploadingFiles.filter { !uploadedFiles.contains($0) }
 
-            try await allFiles.asyncForEach { uploadFile in
-                if uploadFile.uploadChunks.isEmpty {
-                    try await self.uploadFile(forFile: uploadFile)
-                } else {
-                    try await self.uploadAllChunks(forFile: uploadFile)
-                }
+            let chunkedFiles = allFiles.filter { !$0.uploadChunks.isEmpty }
+            let directFiles = allFiles.filter { $0.uploadChunks.isEmpty }
+
+            try await uploadFiles(forFiles: directFiles, runID: runID)
+
+            try await chunkedFiles.asyncForEach { uploadFile in
+                try await self.uploadAllChunks(forFile: uploadFile, runID: runID)
             }
 
+            try checkUploadRunIsActive(runID)
+
+            await finalizeTransferIfNeeded()
+        } catch is CancellationError {
+            // Suspension or superseded upload run.
+        } catch let error as URLError where error.code == .cancelled {
+            // silent catching, uploads are suspending
+        } catch {
+            guard activeUploadRunID == runID, !Task.isCancelled else {
+                return
+            }
+
+            await delegate?.uploadDidComplete(result: .failure(error as NSError))
+        }
+    }
+
+    private func finalizeTransferIfNeeded() async {
+        if let existing = finalizationTask {
+            await existing.value
+            return
+        }
+
+        let task = Task { [weak self] in
+            guard let self else { return }
+            await finalizeTransfer()
+        }
+        finalizationTask = task
+        await task.value
+    }
+
+    private func finalizeTransfer() async {
+        do {
             let linkId = try await uploadBackendRouter.finishUploadSession(
                 uuid: uploadSession.uuid,
                 organizationAccountId: uploadSession.organizationAccountId
             )
-
             await delegate?.uploadDidComplete(result: .success(TransferCompletedResult(
                 transferUUID: uploadSession.uuid,
                 transferLinkId: linkId
             )))
+        } catch is CancellationError {
+            // Worker deallocated, no one left to notify.
         } catch let error as URLError where error.code == .cancelled {
-            // silent catching, uploads are suspending
+            // Worker deallocated, no one left to notify.
         } catch {
             await delegate?.uploadDidComplete(result: .failure(error as NSError))
         }
@@ -165,6 +234,12 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }
 
         uploadingChunks.removeAll()
+        guard !doneUploading else {
+            suspendedUploads = false
+            await finalizeTransferIfNeeded()
+            return
+        }
+
         suspendedUploads = false
         await uploadAllFiles()
     }
@@ -181,44 +256,108 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }
     }
 
-    private func uploadAllChunks(forFile uploadFile: WorkerFileV2) async throws {
+    private func uploadAllChunks(forFile uploadFile: WorkerFileV2, runID: UUID) async throws {
         let uploadedChunksInFile = uploadedChunks.filter { chunkInFile in
             chunkInFile.file == uploadFile
         }.map(\.chunk)
+
         let chunksToUpload = uploadFile.uploadChunks.filter { !uploadedChunksInFile.contains($0) }
 
-        let chunkEtags = try await chunksToUpload.concurrentMap(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
-            guard let self else {
-                throw TransferManagerWorkerError.invalidChunk
-            }
-            let chunkEtag = try await trackAndPerformUploadTask(withChunk: chunk, inFile: uploadFile)
-            return chunkEtag
+        var uploadedChunkEtags = [STNChunkEtag]()
+
+        for batch in chunksToUpload.batched(ofCount: Self.maxPresignedUrlsPerBatch) {
+            let batchEtags = try await uploadChunkBatch(batch, forFile: uploadFile, runID: runID)
+            uploadedChunkEtags.append(contentsOf: batchEtags)
         }
+
+        try checkUploadRunIsActive(runID)
 
         try await uploadBackendRouter.swissTransferManager.uploadV2Manager.finalizeFileUploadedInChunks(
             transferId: uploadSession.uuid,
             fileId: uploadFile.remoteUploadFileUUID,
-            etags: chunkEtags.sorted { $0.chunkIndex < $1.chunkIndex }
+            etags: uploadedChunkEtags.sorted { $0.chunkIndex < $1.chunkIndex }
         )
+
+        try checkUploadRunIsActive(runID)
         uploadedFiles.append(uploadFile)
     }
 
+    private func uploadChunkBatch(
+        _ chunks: [WorkerChunkV2],
+        forFile uploadFile: WorkerFileV2,
+        runID: UUID
+    ) async throws -> [STNChunkEtag] {
+        let urlRequests = chunks.map { chunk in
+            STNBatchPresignedUrlRequest(
+                file: uploadFile.remoteUploadFileUUID,
+                chunk: KotlinInt(int: Int32(chunk.index))
+            )
+        }
+
+        try checkUploadRunIsActive(runID)
+
+        let uploadURLs = try await uploadBackendRouter.swissTransferManager.uploadV2Manager.getBatchPresignedUploadUrls(
+            transferId: uploadSession.uuid,
+            uploadUrlRequests: urlRequests
+        )
+
+        try checkUploadRunIsActive(runID)
+
+        let uploadURLByChunkIndex: [Int: String] = Dictionary(
+            uniqueKeysWithValues: uploadURLs.compactMap { response in
+                guard let chunkIndex = response.chunk else {
+                    return nil
+                }
+
+                return (Int(chunkIndex.intValue), response.url)
+            }
+        )
+
+        return try await chunks.concurrentMap(customConcurrency: Self.maxParallelUploads) { [weak self] chunk in
+            guard let self else {
+                throw TransferManagerWorkerError.invalidChunk
+            }
+
+            guard let presignedURL = uploadURLByChunkIndex[chunk.index] else {
+                throw TransferManagerWorkerError.missingPresignedURL(
+                    fileId: uploadFile.remoteUploadFileUUID
+                )
+            }
+
+            return try await trackAndPerformUploadTask(
+                withChunk: chunk,
+                inFile: uploadFile,
+                presignedURL: presignedURL,
+                runID: runID
+            )
+        }
+    }
+
     private func trackAndPerformUploadTask(withChunk chunk: WorkerChunkV2,
-                                           inFile uploadFile: WorkerFileV2) async throws -> STNChunkEtag {
-        let task = getTask(withChunk: chunk)
+                                           inFile uploadFile: WorkerFileV2,
+                                           presignedURL: String,
+                                           runID: UUID) async throws -> STNChunkEtag {
+        try checkUploadRunIsActive(runID)
+
+        let task = getTask(withChunk: chunk, presignedURL: presignedURL)
         setStartUploading(chunk: chunk, inFile: uploadFile, task: task)
+
         let chunkEtag = try await task.value
+
+        try checkUploadRunIsActive(runID)
         setDoneUploading(chunk: chunk, inFile: uploadFile)
 
         return chunkEtag
     }
 
-    private func getTask(withChunk chunk: WorkerChunkV2) -> Task<STNChunkEtag, Error> {
+    private func getTask(withChunk chunk: WorkerChunkV2, presignedURL: String) -> Task<STNChunkEtag, Error> {
         let progressTracker = getProgressTracker(withChunk: chunk)
         return Task { [weak self] in
             guard let self else {
                 throw TransferManagerWorkerError.invalidChunk
             }
+
+            try Task.checkCancellation()
 
             guard let chunkReader = ChunkReader(fileURL: chunk.fileURL) else {
                 throw TransferManagerWorkerError.invalidURL(rawURL: chunk.fileURL.path)
@@ -230,6 +369,7 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
 
             return try await uploadChunk(chunkData: chunkData,
                                          chunk: chunk,
+                                         presignedURL: presignedURL,
                                          progressTracker: progressTracker)
         }
     }
@@ -244,6 +384,26 @@ public actor TransferManagerWorkerV2: TransferManagerWorker {
         }
 
         return progress
+    }
+
+    func getProgressTracker(forFile uploadFile: WorkerFileV2, fileSize: Int) -> UploadTaskProgressTracker {
+        guard let progress = fileProgress[uploadFile.remoteUploadFileUUID] else {
+            let progress = UploadTaskProgressTracker(totalBytesExpectedToSend: fileSize)
+            overallProgress.addChild(progress.taskProgress, withPendingUnitCount: Int64(fileSize))
+            fileProgress[uploadFile.remoteUploadFileUUID] = progress
+            return progress
+        }
+
+        progress.taskProgress.completedUnitCount = 0
+        return progress
+    }
+
+    func checkUploadRunIsActive(_ runID: UUID) throws {
+        try Task.checkCancellation()
+
+        guard activeUploadRunID == runID else {
+            throw CancellationError()
+        }
     }
 }
 
