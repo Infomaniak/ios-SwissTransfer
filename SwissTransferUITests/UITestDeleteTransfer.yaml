@@ -40,6 +40,8 @@ appId: com.infomaniak.swisstransfer
 
 - tapOn: "Delete transfer"
 
+- tapOn: "Yes, delete"
+
 - extendedWaitUntil:
     notVisible:
       id: "transfer-row"
