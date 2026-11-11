@@ -56,7 +56,7 @@ let package = Package(
         .package(url: "https://github.com/Infomaniak/ios-onboarding", .upToNextMajor(from: "1.5.0")),
         .package(url: "https://github.com/Infomaniak/ios-version-checker", .upToNextMajor(from: "19.0.0")),
         .package(url: "https://github.com/Infomaniak/ios-create-account", .upToNextMajor(from: "26.0.0")),
-        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", branch: "spm-ios-snapshot-12.0.1-202610301457-41074521429-1"),
+        .package(url: "https://github.com/Infomaniak/multiplatform-SwissTransfer", branch: "spm-ios-snapshot-12.0.2-202611110921-42993279902-1"),
         .package(url: "https://github.com/Infomaniak/swift-concurrency", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/Infomaniak/swift-modal-presentation", .upToNextMajor(from: "1.0.0")),
         .package(url: "https://github.com/matomo-org/matomo-sdk-ios", .upToNextMajor(from: "7.7.0")),
