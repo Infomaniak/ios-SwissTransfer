@@ -32,34 +32,11 @@ public struct RootTransferRestorableState: Sendable {
     public let emailLanguage: EmailLanguage
     public let organizationAccountId: Int64?
 
-    init(uploadSession: any UploadSession) {
-        authorEmail = uploadSession.authorEmail
-        recipientsEmail = OrderedSet(uploadSession.recipientsEmails)
-
-        if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
-            transferType = .mail
-        } else {
-            transferType = .link
-        }
-
-        password = uploadSession.password
-        message = uploadSession.message
-        title = ""
-        validityPeriod = uploadSession.duration
-        downloadLimit = uploadSession.numberOfDownload
-        emailLanguage = uploadSession.language
-        organizationAccountId = nil
-    }
-
     init(uploadSessionRequest: UploadSessionRequest) {
         authorEmail = uploadSessionRequest.authorEmail
         recipientsEmail = OrderedSet(uploadSessionRequest.recipientsEmails)
 
-        if !recipientsEmail.isEmpty || !authorEmail.isEmpty {
-            transferType = .mail
-        } else {
-            transferType = .link
-        }
+        transferType = recipientsEmail.isEmpty ? .link : .mail
 
         password = uploadSessionRequest.password
         message = uploadSessionRequest.message

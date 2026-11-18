@@ -29,13 +29,13 @@ struct EditSettingCell: View {
     let label: String
     var leadingImage: Image?
     let matomoCategory: MatomoCategory
-    let matomoName: MatomoName
+    let matomoName: String
     let action: () -> Void
 
     var body: some View {
         Button {
             @InjectService var matomo: MatomoUtils
-            matomo.track(eventWithCategory: matomoCategory, name: matomoName)
+            matomo.track(eventWithCategory: matomoCategory.value, name: matomoName)
             action()
         } label: {
             HStack(spacing: IKPadding.small) {
@@ -61,7 +61,12 @@ struct EditSettingCell: View {
 }
 
 #Preview {
-    EditSettingCell(selected: true, label: "EditSettingsView", matomoCategory: .settingsGlobalTheme, matomoName: .light) {
+    EditSettingCell(
+        selected: true,
+        label: "EditSettingsView",
+        matomoCategory: .settingsGlobalTheme,
+        matomoName: MatomoName.light.value
+    ) {
         print("EditSettingsView action")
     }
 }

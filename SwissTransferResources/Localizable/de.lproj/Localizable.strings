@@ -347,6 +347,8 @@
 /* loco:66c6beb4953867da65029872 */
 "settingsEmailLanguageTitle" = "Legt eine Standardsprache für Ihre Weiterleitungen per E-Mail fest";
 
+"settingsEmailLanguageValueDutch" = "Niederländisch";
+
 /* loco:66c6bfb72d51f3e429025a82 */
 "settingsEmailLanguageValueEnglish" = "Englisch";
 
@@ -358,6 +360,8 @@
 
 /* loco:66c6bf3e4e4926d9600599f2 */
 "settingsEmailLanguageValueItalian" = "Italienisch";
+
+"settingsEmailLanguageValuePortuguese" = "Portugiesisch";
 
 /* loco:66c6bf8d83619a4f090feb72 */
 "settingsEmailLanguageValueSpanish" = "Spanisch";

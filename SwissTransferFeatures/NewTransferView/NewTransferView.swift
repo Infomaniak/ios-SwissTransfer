@@ -45,7 +45,8 @@ public struct NewTransferView: View {
     @State private var importFilesTasks = [ImportTask]()
 
     private var isNewTransferValid: Bool {
-        viewModel.isTransferConfigurationValid && newTransferFileManager.importedFilesAreValid
+        viewModel.isTransferConfigurationValid(isGuest: mainViewState.uploadBackendRouter.isGuest)
+            && newTransferFileManager.importedFilesAreValid
     }
 
     public init() {}
@@ -104,9 +105,6 @@ public struct NewTransferView: View {
             .navigationDestination(for: TransferableRootFolder.self) { _ in
                 FileListView(parentFolder: nil)
             }
-            .navigationDestination(for: NewUploadSession.self) { newUploadSession in
-                VerifyMailView(newUploadSession: newUploadSession)
-            }
         }
         .environmentObject(router)
         .stFloatingPanel(
@@ -152,18 +150,14 @@ public struct NewTransferView: View {
             isLoadingFileToUpload = true
             defer { isLoadingFileToUpload = false }
 
-            guard let newUploadSession = await viewModel.toNewUploadSessionWith(
+            let uploadBackendRouter = mainViewState.uploadBackendRouter
+            guard let uploadSessionRequest = viewModel.toUploadSessionRequest(
                 newTransferFileManager,
-                swissTransferManager: mainViewState.swissTransferManager
+                isGuest: uploadBackendRouter.isGuest
             ) else { return }
 
-            let uploadBackendRouter = mainViewState.uploadBackendRouter
             let localUploadSessionUUID = try await uploadBackendRouter
-                .createAndGetLocalUploadSessionUUID(
-                    newUploadSession: newUploadSession,
-                    title: viewModel.title,
-                    organizationAccountId: viewModel.selectedOrganizationId
-                )
+                .createAndGetLocalUploadSessionUUID(request: uploadSessionRequest)
 
             if let shareExtensionContext {
                 let importURL = try mainViewState.swissTransferManager.sharedApiUrlCreator

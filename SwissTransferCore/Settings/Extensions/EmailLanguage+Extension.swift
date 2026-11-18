@@ -29,6 +29,8 @@ extension EmailLanguage: SettingSelectable {
         case .german: STResourcesStrings.Localizable.settingsEmailLanguageValueGerman
         case .italian: STResourcesStrings.Localizable.settingsEmailLanguageValueItalian
         case .spanish: STResourcesStrings.Localizable.settingsEmailLanguageValueSpanish
+        case .portuguese: STResourcesStrings.Localizable.settingsEmailLanguageValuePortuguese
+        case .dutch: STResourcesStrings.Localizable.settingsEmailLanguageValueDutch
         }
     }
 
@@ -44,22 +46,15 @@ extension EmailLanguage: SettingSelectable {
             return STResourcesAsset.Images.flagIt.swiftUIImage
         case .spanish:
             return STResourcesAsset.Images.flagEs.swiftUIImage
+        case .portuguese:
+            return STResourcesAsset.Images.flagPt.swiftUIImage
+        case .dutch:
+            return STResourcesAsset.Images.flagNl.swiftUIImage
         }
     }
 
-    public var matomoName: MatomoName {
-        switch self {
-        case .english:
-            return .english
-        case .french:
-            return .french
-        case .german:
-            return .german
-        case .italian:
-            return .italian
-        case .spanish:
-            return .spanish
-        }
+    public var matomoNameValue: String {
+        return value
     }
 
     public static var matomoCategoryLocal: MatomoCategory? {

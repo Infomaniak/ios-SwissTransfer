@@ -19,6 +19,7 @@
 import DesignSystem
 import InfomaniakCoreSwiftUI
 import InfomaniakDI
+import OSLog
 import STCore
 import STResources
 import SwiftUI
@@ -28,6 +29,10 @@ import SwissTransferCoreUI
 private extension UserFacingError {
     static let validateMailCodeIncorrect = UserFacingError(errorDescription:
         STResourcesStrings.Localizable.validateMailCodeIncorrectError)
+    static let validateMailUnknownError = UserFacingError(errorDescription:
+        STResourcesStrings.Localizable.validateMailUnknownError)
+    static let networkUnavailable = UserFacingError(errorDescription:
+        STResourcesStrings.Localizable.networkUnavailable)
 }
 
 public struct VerifyMailView: View {
@@ -35,15 +40,18 @@ public struct VerifyMailView: View {
 
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
-    @EnvironmentObject private var viewModel: RootTransferViewModel
 
     @State private var isVerifyingCode = false
+    @State private var hasStartedUpload = false
+    @State private var emailValidation: EmailValidation?
     @State private var error: UserFacingError?
 
-    let newUploadSession: NewUploadSession
+    let localSessionUUID: String
+    let authorEmail: String
 
-    public init(newUploadSession: NewUploadSession) {
-        self.newUploadSession = newUploadSession
+    public init(localSessionUUID: String, authorEmail: String) {
+        self.localSessionUUID = localSessionUUID
+        self.authorEmail = authorEmail
     }
 
     public var body: some View {
@@ -53,7 +61,7 @@ public struct VerifyMailView: View {
                     .font(.ST.title)
                     .foregroundStyle(Color.ST.textPrimary)
 
-                Text(STResourcesStrings.Localizable.validateMailDescription(newUploadSession.authorEmail))
+                Text(STResourcesStrings.Localizable.validateMailDescription(authorEmail))
                     .font(.ST.body)
                     .foregroundStyle(Color.ST.textSecondary)
 
@@ -93,17 +101,36 @@ public struct VerifyMailView: View {
                     .buttonStyle(.ikBorderedProminent)
                     .disabled(isVerifyingCode)
 
-                ResendCodeButton(emailToVerify: newUploadSession.authorEmail, resendTimeDelaySeconds: 30, error: $error)
+                ResendCodeButton(emailValidation: emailValidation, error: $error)
                     .disabled(isVerifyingCode)
             }
             .appBackground()
+            .task(observeEmailValidation)
         }
         .matomoView(view: .verifyMail)
+    }
+
+    @Sendable private func observeEmailValidation() async {
+        let emailValidationFlow = mainViewState.swissTransferManager.uploadV2Manager.emailValidationStatus(email: authorEmail)
+        for await emailValidation in emailValidationFlow {
+            guard !Task.isCancelled else { return }
+            self.emailValidation = emailValidation
+
+            if let emailValidation, emailValidation.lastSentCodeExpirationTimestampSeconds == nil {
+                startUpload()
+            }
+        }
     }
 
     private func openMailApp() {
         guard let openMailURL = URL(string: "message:") else { return }
         openURL(openMailURL)
+    }
+
+    private func startUpload() {
+        guard !hasStartedUpload else { return }
+        hasStartedUpload = true
+        rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localSessionUUID))
     }
 
     private func verifyCode(_ code: String) {
@@ -112,37 +139,26 @@ public struct VerifyMailView: View {
 
         Task {
             do {
-                let addressToVerify = newUploadSession.authorEmail
-                let token = try await mainViewState.swissTransferManager.uploadManager.verifyEmailCode(
-                    code: code,
-                    address: addressToVerify
-                )
-                .token
-
-                let uploadSessionWithEmailToken = NewUploadSession(
-                    duration: newUploadSession.duration,
-                    authorEmail: addressToVerify,
-                    authorEmailToken: token,
-                    password: newUploadSession.password,
-                    message: newUploadSession.message,
-                    numberOfDownload: newUploadSession.numberOfDownload,
-                    language: newUploadSession.language,
-                    recipientsEmails: newUploadSession.recipientsEmails,
-                    files: newUploadSession.files
+                try await mainViewState.swissTransferManager.uploadV2Manager.validateEmailWithCode(
+                    email: authorEmail,
+                    code: code
                 )
 
-                viewModel.authorEmailToken = token
-
-                let localUploadSessionUUID = try await mainViewState.swissTransferManager.uploadManager
-                    .createAndGetLocalUploadSessionUUID(newUploadSession: uploadSessionWithEmailToken)
-
-                rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
-            } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidPasswordException {
+                startUpload()
+            } catch let error as NSError where error.kotlinException is STNEmailValidationException.InvalidCode
+                || error.kotlinException is STNEmailValidationException.CodeExpired {
                 withAnimation {
                     self.error = UserFacingError.validateMailCodeIncorrect
                 }
+            } catch let error as NSError where error.kotlinException is STNNetworkException {
+                withAnimation {
+                    self.error = UserFacingError.networkUnavailable
+                }
             } catch {
-                rootTransferViewState.transition(to: .error(.default))
+                Logger.general.error("Error while validating email code: \(error)")
+                withAnimation {
+                    self.error = UserFacingError.validateMailUnknownError
+                }
             }
 
             isVerifyingCode = false
@@ -151,5 +167,5 @@ public struct VerifyMailView: View {
 }
 
 #Preview {
-    VerifyMailView(newUploadSession: PreviewHelper.sampleNewUploadSession)
+    VerifyMailView(localSessionUUID: "", authorEmail: "test@ik.me")
 }
