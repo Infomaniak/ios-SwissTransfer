@@ -45,6 +45,10 @@ extension Theme: SettingSelectable {
         }
     }
 
+    public var matomoNameValue: String {
+        return matomoName.value
+    }
+
     public var matomoName: MatomoName {
         switch self {
         case .dark:

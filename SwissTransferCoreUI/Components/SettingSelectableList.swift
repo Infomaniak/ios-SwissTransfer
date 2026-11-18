@@ -46,7 +46,7 @@ public struct SettingSelectableList<T: SettingSelectable>: View {
                 Button {
                     @InjectService var matomo: MatomoUtils
                     if let category = T.matomoCategoryLocal {
-                        matomo.track(eventWithCategory: category, name: item.matomoName)
+                        matomo.track(eventWithCategory: category.value, name: item.matomoNameValue)
                     }
                     onSelection(item)
                     dismiss()

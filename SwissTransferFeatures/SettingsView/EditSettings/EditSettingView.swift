@@ -54,7 +54,7 @@ struct EditSettingView<T: SettingSelectable>: View {
                             label: item.title,
                             leadingImage: item.leadingImage,
                             matomoCategory: category,
-                            matomoName: item.matomoName
+                            matomoName: item.matomoNameValue
                         ) {
                             action(item)
                         }

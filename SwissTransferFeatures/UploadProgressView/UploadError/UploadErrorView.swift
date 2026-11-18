@@ -67,19 +67,17 @@ public struct UploadErrorView: View {
     private func retryTransfer() {
         Task {
             isRetryingUpload = true
-            guard let newUploadSession = await rootTransferViewModel.toNewUploadSessionWith(
+            let uploadBackendRouter = mainViewState.uploadBackendRouter
+            guard let uploadSessionRequest = rootTransferViewModel.toUploadSessionRequest(
                 newTransferFileManager,
-                swissTransferManager: mainViewState.swissTransferManager
+                isGuest: uploadBackendRouter.isGuest
             ) else {
                 isRetryingUpload = false
                 return
             }
 
-            let localUploadSessionUUID = try await mainViewState.uploadBackendRouter
-                .createAndGetLocalUploadSessionUUID(
-                    newUploadSession: newUploadSession,
-                    organizationAccountId: rootTransferViewModel.selectedOrganizationId
-                )
+            let localUploadSessionUUID = try await uploadBackendRouter
+                .createAndGetLocalUploadSessionUUID(request: uploadSessionRequest)
 
             rootTransferViewState.transition(to: .uploadProgress(localSessionUUID: localUploadSessionUUID))
             isRetryingUpload = false

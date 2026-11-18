@@ -67,16 +67,12 @@ public final class UploadFile: Identifiable, Sendable {
     }
 }
 
-extension UploadFile: UploadFileSession {
-    public var localPath: String {
+public extension UploadFile {
+    var localPath: String {
         url.path(percentEncoded: false)
     }
 
-    public var name: String {
+    var name: String {
         url.lastPathComponent
-    }
-
-    public var remoteUploadFile: (any RemoteUploadFile)? {
-        nil
     }
 }
