@@ -24,7 +24,7 @@ import SwissTransferCore
 public enum RootTransferViewType {
     case newTransfer
     case uploadProgress(localSessionUUID: String)
-    case verifyMail(NewUploadSession)
+    case verifyMail(localSessionUUID: String, authorEmail: String)
     case error(UploadError)
     case success(TransferCompletedResult)
 }

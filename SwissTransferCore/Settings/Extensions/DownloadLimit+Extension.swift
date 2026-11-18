@@ -29,6 +29,10 @@ extension DownloadLimit: SettingSelectable {
         nil
     }
 
+    public var matomoNameValue: String {
+        return matomoName.value
+    }
+
     public var matomoName: MatomoName {
         switch self {
         case .one:

@@ -88,20 +88,6 @@ public enum PreviewHelper {
         avatar: "https://avatar.storage.infomaniak.com/AXo01iecwUeoGoydY7WaCmmG.png?1717510064"
     )
 
-    public static let sampleNewUploadSession = NewUploadSession(
-        duration: ValidityPeriod.thirty,
-        authorEmail: "",
-        authorEmailToken: nil,
-        password: "",
-        message: "Coucou",
-        numberOfDownload: DownloadLimit.twoHundredFifty,
-        language: .english,
-        recipientsEmails: [],
-        files: []
-    )
-
-    public static let sampleSendableUploadSession = SendableUploadSession(uploadSession: sampleNewUploadSession)
-
     public static let sampleListOfRecipients: [String] = {
         let recipients = Array(repeating: "short@ik.me", count: 2)
             + Array(repeating: "long-email@infomaniak.com", count: 2)

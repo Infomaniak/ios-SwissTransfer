@@ -129,8 +129,6 @@ public struct UploadProgressView: View {
 
             let uploadSession = try await uploadBackendRouter.createRemoteUploadSession(localSessionUUID: localSessionUUID)
 
-            await saveEmailTokenIfNeeded(uploadSession: uploadSession)
-
             currentUploadSession = uploadSession
 
             try await UploadContinuationCoordinator()
@@ -152,23 +150,38 @@ public struct UploadProgressView: View {
         } catch let error as STDeviceCheckError {
             sendErrorToSentryIfNeeded(error: error.underlyingError)
             rootTransferViewState.transition(to: .error(.appIntegrity))
-        } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DailyQuotaExceededException {
-            rootTransferViewState.transition(to: .error(.dailyQuotaExceeded))
-        } catch let error as NSError where error.kotlinException is STNContainerErrorsException.EmailValidationRequired {
-            guard let newUploadSession = await viewModel.toNewUploadSessionWith(
-                newTransferFileManager,
-                swissTransferManager: mainViewState.swissTransferManager
-            ) else {
-                return
-            }
-            rootTransferViewState.transition(to: .verifyMail(newUploadSession))
-        } catch let error as NSError where error.kotlinException is STNContainerErrorsException.DomainBlockedException {
+        } catch let error as NSError where error.kotlinException is STNUploadErrorsException.EmailValidationRequired {
+            await startEmailValidation()
+        } catch let error as NSError where error.kotlinException is STNUploadErrorsException.CountryBlocked {
             rootTransferViewState.transition(to: .error(.restrictedLocation))
+        } catch let error as NSError where error.kotlinException is STNUploadErrorsException.InvalidAttestationTokenException {
+            sendErrorToSentryIfNeeded(error: error)
+            rootTransferViewState.transition(to: .error(.appIntegrity))
         } catch {
             guard (error as NSError).code != NSURLErrorCancelled else { return }
 
             sendErrorToSentryIfNeeded(error: error)
             Logger.general.error("Error trying to start upload: \(error)")
+            rootTransferViewState.transition(to: .error(.default))
+        }
+    }
+
+    private func startEmailValidation() async {
+        do {
+            guard let authorEmail = try await mainViewState.uploadBackendRouter
+                .getLocalUploadSessionAuthorEmail(uuid: localSessionUUID),
+                !authorEmail.isEmpty else {
+                rootTransferViewState.transition(to: .error(.default))
+                return
+            }
+
+            try await mainViewState.swissTransferManager.uploadV2Manager.prepareEmailValidationRequest(email: authorEmail)
+            rootTransferViewState.transition(to: .verifyMail(localSessionUUID: localSessionUUID, authorEmail: authorEmail))
+        } catch {
+            guard (error as NSError).code != NSURLErrorCancelled else { return }
+
+            sendErrorToSentryIfNeeded(error: error)
+            Logger.general.error("Error trying to request email validation: \(error)")
             rootTransferViewState.transition(to: .error(.default))
         }
     }
@@ -201,20 +214,10 @@ public struct UploadProgressView: View {
         }
 
         SentrySDK.capture(error: customError) { scope in
-            if let containerError = (error as NSError).kotlinException as? STNContainerErrorsException {
-                scope.setContext(value: ["requestId": containerError.requestContextId], key: "Container Error")
+            if let apiError = (error as NSError).kotlinException as? STNApiException {
+                scope.setContext(value: ["requestId": apiError.requestContextId], key: "API Error")
             }
         }
-    }
-
-    private func saveEmailTokenIfNeeded(uploadSession: SendableUploadSession) async {
-        guard !uploadSession.authorEmail.isEmpty,
-              let authorEmailToken = uploadSession.authorEmailToken else { return }
-
-        try? await mainViewState.swissTransferManager.uploadTokensManager.setEmailToken(
-            email: uploadSession.authorEmail,
-            emailToken: authorEmailToken
-        )
     }
 
     private func cancelTransfer() {

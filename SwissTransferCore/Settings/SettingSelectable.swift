@@ -23,7 +23,7 @@ public protocol SettingSelectable: CaseIterable, Hashable {
     var title: String { get }
     var leadingImage: Image? { get }
     var trailingImage: Image? { get }
-    var matomoName: MatomoName { get }
+    var matomoNameValue: String { get }
     static var matomoCategoryLocal: MatomoCategory? { get }
     static var matomoCategoryGlobal: MatomoCategory? { get }
 
