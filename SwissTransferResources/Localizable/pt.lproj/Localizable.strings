@@ -347,6 +347,7 @@
 /* loco:66c6beb4953867da65029872 */
 "settingsEmailLanguageTitle" = "Define um idioma padrão para as tuas transferências por e-mail";
 
+/* loco:6afeef663f8d1799bb02c636 */
 "settingsEmailLanguageValueDutch" = "Holandês";
 
 /* loco:66c6bfb72d51f3e429025a82 */
@@ -361,6 +362,7 @@
 /* loco:66c6bf3e4e4926d9600599f2 */
 "settingsEmailLanguageValueItalian" = "Italiano";
 
+/* loco:6afeef66bee15f17160d5b54 */
 "settingsEmailLanguageValuePortuguese" = "Português";
 
 /* loco:66c6bf8d83619a4f090feb72 */
@@ -454,6 +456,9 @@
 
 /* loco:6978c92a07f250e2610b9342 */
 "settingsSwitchAccount" = "Mudar de conta";
+
+/* loco:6a55f8c028d2181185054b02 */
+"settingsSwitchOrganization" = "Mudar de organização";
 
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Selecionar um tema";
@@ -641,6 +646,9 @@
 /* loco:66c5ef608055a7b4f70c4022 */
 "urlUserReport" = "https://feedback.userreport.com/a61a740b-4800-4b53-8c9e-d2b010155416/";
 
+/* loco:6afeef663e0ba1517e022834 */
+"validateMailCodeExpiredError" = "Este código de verificação expirou. Pede um novo.";
+
 /* loco:6707f8d793cc933d520740f4 */
 "validateMailCodeIncorrectError" = "O código introduzido está incorreto";
 
@@ -657,10 +665,13 @@
 "validateMailResendCode" = "Reenviar um código";
 
 /* loco:67580fe013d5798b410521b3 */
-"validateMailResendCodeTemplate" = "Reenviar um código (%ds)";
+"validateMailResendCodeTemplate" = "Reenviar um código (%@)";
 
 /* loco:6707f9ac045804ab200b44f2 */
 "validateMailTitle" = "Verifica o teu e-mail";
+
+/* loco:6afeef660b137cb3ff0450b2 */
+"validateMailTooManyAttemptsError" = "Demasiadas tentativas. Tenta novamente mais tarde.";
 
 /* loco:677bf872ea9c5274c6075542 */
 "validateMailUnknownError" = "Ocorreu um erro. Tenta novamente dentro de alguns momentos.";

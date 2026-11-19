@@ -50,7 +50,7 @@ struct ResendCodeButton: View {
             Button(action: resendCode) {
                 Text(timeLeftSeconds <= 0 ?
                     STResourcesStrings.Localizable.validateMailResendCode :
-                    STResourcesStrings.Localizable.validateMailResendCodeTemplate(timeLeftSeconds))
+                    STResourcesStrings.Localizable.validateMailResendCodeTemplate(formattedTimeLeft(timeLeftSeconds)))
                     .monospacedDigit()
                     .contentTransition(.numericText(countsDown: true))
                     .animation(.default, value: timeLeftSeconds)
@@ -64,6 +64,10 @@ struct ResendCodeButton: View {
     private func timeLeftSeconds(at date: Date) -> Int {
         guard let codeExpirationDate else { return 0 }
         return max(0, Int(codeExpirationDate.timeIntervalSince(date).rounded(.up)))
+    }
+
+    private func formattedTimeLeft(_ seconds: Int) -> String {
+        return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
     }
 
     private func resendCode() {
@@ -86,12 +90,22 @@ struct ResendCodeButton: View {
 }
 
 #Preview {
-    ResendCodeButton(
-        emailValidation: EmailValidation(
-            email: "test@mail.com",
-            id: "",
-            lastSentCodeExpirationTimestampSeconds: KotlinLong(value: Int64(Date.now.timeIntervalSince1970) + 5)
-        ),
-        error: .constant(nil)
-    )
+    VStack {
+        ResendCodeButton(
+            emailValidation: EmailValidation(
+                email: "test@mail.com",
+                id: "",
+                lastSentCodeExpirationTimestampSeconds: KotlinLong(value: Int64(Date.now.timeIntervalSince1970) + 900)
+            ),
+            error: .constant(nil)
+        )
+        ResendCodeButton(
+            emailValidation: EmailValidation(
+                email: "test@mail.com",
+                id: "",
+                lastSentCodeExpirationTimestampSeconds: KotlinLong(value: Int64(Date.now.timeIntervalSince1970) + 61)
+            ),
+            error: .constant(nil)
+        )
+    }
 }

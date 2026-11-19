@@ -347,6 +347,7 @@
 /* loco:66c6beb4953867da65029872 */
 "settingsEmailLanguageTitle" = "Legt eine Standardsprache für Ihre Weiterleitungen per E-Mail fest";
 
+/* loco:6afeef663f8d1799bb02c636 */
 "settingsEmailLanguageValueDutch" = "Niederländisch";
 
 /* loco:66c6bfb72d51f3e429025a82 */
@@ -361,6 +362,7 @@
 /* loco:66c6bf3e4e4926d9600599f2 */
 "settingsEmailLanguageValueItalian" = "Italienisch";
 
+/* loco:6afeef66bee15f17160d5b54 */
 "settingsEmailLanguageValuePortuguese" = "Portugiesisch";
 
 /* loco:66c6bf8d83619a4f090feb72 */
@@ -454,6 +456,9 @@
 
 /* loco:6978c92a07f250e2610b9342 */
 "settingsSwitchAccount" = "Konto wechseln";
+
+/* loco:6a55f8c028d2181185054b02 */
+"settingsSwitchOrganization" = "Organisation wechseln";
 
 /* loco:66c342a1e87c8303b10b2372 */
 "settingsThemeTitle" = "Wähle ein Design aus";
@@ -641,6 +646,9 @@
 /* loco:66c5ef608055a7b4f70c4022 */
 "urlUserReport" = "https://feedback.userreport.com/31390528-fdff-4f55-9ad6-c79f848e0b98/";
 
+/* loco:6afeef663e0ba1517e022834 */
+"validateMailCodeExpiredError" = "Dieser Bestätigungscode ist abgelaufen. Bitte fordere einen neuen an.";
+
 /* loco:6707f8d793cc933d520740f4 */
 "validateMailCodeIncorrectError" = "Der eingegebene Code ist falsch";
 
@@ -657,10 +665,13 @@
 "validateMailResendCode" = "Code erneut senden";
 
 /* loco:67580fe013d5798b410521b3 */
-"validateMailResendCodeTemplate" = "Code erneut senden (%ds)";
+"validateMailResendCodeTemplate" = "Code erneut senden (%@)";
 
 /* loco:6707f9ac045804ab200b44f2 */
 "validateMailTitle" = "Überprüfe deine E-Mail";
+
+/* loco:6afeef660b137cb3ff0450b2 */
+"validateMailTooManyAttemptsError" = "Zu viele Versuche. Bitte versuche es später erneut.";
 
 /* loco:677bf872ea9c5274c6075542 */
 "validateMailUnknownError" = "Es ist ein Fehler aufgetreten. Bitte versuche dein Glück in Kürze erneut.";
