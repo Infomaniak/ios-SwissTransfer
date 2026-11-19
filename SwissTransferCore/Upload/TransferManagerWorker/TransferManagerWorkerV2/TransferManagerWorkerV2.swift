@@ -18,6 +18,7 @@
 
 import Combine
 import Foundation
+import InfomaniakChunking
 import InfomaniakConcurrency
 import InfomaniakCore
 import InfomaniakDI
