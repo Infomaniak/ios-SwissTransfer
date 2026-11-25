@@ -27,10 +27,20 @@ jobs:
       - name: Check implicit imports
         run: tuist inspect dependencies --only implicit
       - name: Build
-        run: tuist build --clean "SwissTransfer"
+        run: |
+          tuist build --clean "SwissTransfer" --configuration Debug \
+            -- -derivedDataPath "$RUNNER_TEMP/build-${GITHUB_RUN_ID}"
       - name: Maestro UI tests
         env:
+          SIMULATOR_MODEL: ${{ vars.LATEST_IPHONE_SIMULATOR }}
           MAESTRO_USER: ${{ secrets.UITEST_ACCOUNT_EMAIL }}
           MAESTRO_PASSWORD: ${{ secrets.UITEST_ACCOUNT_PASSWORD }}
           MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
-        run: maestro test --config SwissTransferUITests/config.yaml SwissTransferUITests/
+        run: |
+          UDID=$(xcrun simctl create "Maestro-${GITHUB_RUN_ID}" "$SIMULATOR_MODEL")
+          trap 'xcrun simctl shutdown "$UDID"; xcrun simctl delete "$UDID"' EXIT
+
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$RUNNER_TEMP/build-${GITHUB_RUN_ID}/Build/Products/Debug-iphonesimulator/SwissTransfer.app"
+          maestro test --config SwissTransferUITests/config.yaml --device "$UDID" SwissTransferUITests/
