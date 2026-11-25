@@ -20,9 +20,17 @@ jobs:
         uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654
         with:
           cache: false
+      - name: Verify Maestro installation
+        run: maestro --version
       - name: Generate
         run: tuist install && tuist generate
       - name: Check implicit imports
         run: tuist inspect dependencies --only implicit
       - name: Build
         run: tuist build --clean "SwissTransfer"
+      - name: Maestro UI tests
+        env:
+          MAESTRO_USER: ${{ secrets.UITEST_ACCOUNT_EMAIL }}
+          MAESTRO_PASSWORD: ${{ secrets.UITEST_ACCOUNT_PASSWORD }}
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
+        run: maestro test --config SwissTransferUITests/config.yaml SwissTransferUITests/
