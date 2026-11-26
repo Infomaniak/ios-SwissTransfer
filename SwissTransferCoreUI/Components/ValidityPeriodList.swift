@@ -67,7 +67,7 @@ public struct ValidityPeriodList: View {
 
             ForEach(items, id: \.self) { period in
                 Button {
-                    if period == .thirty, currentSession?.userProfile != nil {
+                    if period == .thirty, currentSession?.userProfile == nil {
                         isShowingAvailabilityAlert = true
                     } else {
                         select(period)
