@@ -17,7 +17,7 @@
  */
 
 import Foundation
-import InfomaniakCore
+import InfomaniakChunking
 
 struct WorkerChunkInFile: Equatable, Sendable {
     let file: WorkerFile

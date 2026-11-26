@@ -17,7 +17,7 @@
  */
 
 import Foundation
-import InfomaniakCore
+import InfomaniakChunking
 import STCore
 
 struct WorkerChunkInFileV2: Equatable, Sendable {
