@@ -38,7 +38,6 @@ public struct UploadProgressView: View {
     @EnvironmentObject private var mainViewState: MainViewState
     @EnvironmentObject private var rootTransferViewState: RootTransferViewState
     @EnvironmentObject private var viewModel: RootTransferViewModel
-    @EnvironmentObject private var newTransferFileManager: NewTransferFileManager
 
     @StateObject private var transferSessionManager = TransferSessionManager()
 
