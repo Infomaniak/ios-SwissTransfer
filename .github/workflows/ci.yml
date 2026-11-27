@@ -27,9 +27,7 @@ jobs:
       - name: Check implicit imports
         run: tuist inspect dependencies --only implicit
       - name: Build
-        run: |
-          tuist build --clean "SwissTransfer" --configuration Debug \
-            -- -derivedDataPath "$RUNNER_TEMP/build-${GITHUB_RUN_ID}"
+        run: tuist build --clean "SwissTransfer"
       - name: Maestro UI tests
         env:
           SIMULATOR_MODEL: ${{ vars.LATEST_IPHONE_SIMULATOR }}
@@ -37,10 +35,20 @@ jobs:
           MAESTRO_PASSWORD: ${{ secrets.UITEST_ACCOUNT_PASSWORD }}
           MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
         run: |
-          UDID=$(xcrun simctl create "Maestro-${GITHUB_RUN_ID}" "$SIMULATOR_MODEL")
-          trap 'xcrun simctl shutdown "$UDID"; xcrun simctl delete "$UDID"' EXIT
+            APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/SwissTransfer.app" -maxdepth 6 -type d | head -n1)
+            [ -n "$APP_PATH" ] || { echo "SwissTransfer.app not found"; exit 1; }
 
-          xcrun simctl boot "$UDID"
-          xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl install "$UDID" "$RUNNER_TEMP/build-${GITHUB_RUN_ID}/Build/Products/Debug-iphonesimulator/SwissTransfer.app"
-          maestro test --config SwissTransferUITests/config.yaml --device "$UDID" SwissTransferUITests/
+            LINE=$(maestro list-devices 2>/dev/null | awk '/^iOS/{f=1; next} f && NF {print; exit}')
+            MODEL=$(echo "$LINE" | awk '{print $1}')
+            OS=$(echo "$LINE" | awk '{print $2}' | tr -d ',')
+            MAJOR=$(echo "$OS" | cut -d- -f2)
+            echo "Using $MODEL / $OS"
+            
+            OUTPUT=$(maestro start-device --platform ios --device-model "$MODEL" --device-os "$OS" 2>&1 | tee /dev/stderr)
+            UDID=$(echo "$OUTPUT" | sed -n 's/.*UUID \([0-9A-Fa-f-]\{36\}\).*/\1/p' | head -n1)
+            echo "UDID: $UDID"
+            
+            xcrun simctl bootstatus "$UDID" -b
+            xcrun simctl install "$UDID" "$APP_PATH"
+            maestro --device "$UDID" test --config SwissTransferUITests/config.yaml SwissTransferUITests/
+
