@@ -35,11 +35,12 @@ jobs:
           MAESTRO_PASSWORD: ${{ secrets.UITEST_ACCOUNT_PASSWORD }}
           MAESTRO_DRIVER_STARTUP_TIMEOUT: 180000
         run: |
-        
             DEVICE_MODEL="iPhone-18-Pro"
             DEVICE_OS="iOS-27-2"
             MAJOR=$(echo "$DEVICE_OS" | cut -d- -f2)
             DEVICE_NAME="Maestro_IOS_${DEVICE_MODEL}_${MAJOR}"
+            
+            xcrun simctl shutdown "$DEVICE_NAME" || true
             
             OUTPUT=$(maestro start-device --platform ios --device-model "$DEVICE_MODEL" --device-os "$DEVICE_OS" 2>&1 | tee /dev/stderr)
             UDID=$(echo "$OUTPUT" | sed -n 's/.*UUID \([0-9A-Fa-f-]\{36\}\).*/\1/p' | head -n1 | tr 'a-f' 'A-F')
