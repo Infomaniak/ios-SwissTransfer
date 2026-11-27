@@ -21,7 +21,7 @@ import STCore
 
 public extension SharedApiUrlCreator {
     func importFromShareExtensionURL(localImportUUID: String) throws -> URL {
-        guard let host = URL(string: createUploadContainerUrl)?.host() else {
+        guard let host = URL(string: shareTransferUrl(transferUUID: localImportUUID))?.host() else {
             fatalError("Couldn't create host from URL")
         }
         var urlComponents = URLComponents(string: "https://\(host)/import")

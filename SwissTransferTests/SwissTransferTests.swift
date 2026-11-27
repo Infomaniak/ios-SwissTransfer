@@ -27,7 +27,7 @@ final class SwissTransferTests: XCTestCase {
         viewModel.transferType = .link
 
         XCTAssertNil(viewModel.validityPeriod)
-        XCTAssertTrue(viewModel.isTransferConfigurationValid)
+        XCTAssertTrue(viewModel.isTransferConfigurationValid(isGuest: false))
     }
 
     func testNewTransferDoesNotReusePreviousValidityPeriod() {
@@ -38,7 +38,18 @@ final class SwissTransferTests: XCTestCase {
         newTransfer.transferType = .link
 
         XCTAssertNil(newTransfer.validityPeriod)
-        XCTAssertTrue(newTransfer.isTransferConfigurationValid)
+        XCTAssertTrue(newTransfer.isTransferConfigurationValid(isGuest: false))
+    }
+
+    func testGuestLinkTransferRequiresAuthorEmail() {
+        let viewModel = RootTransferViewModel()
+        viewModel.transferType = .link
+        viewModel.authorEmail = ""
+
+        XCTAssertFalse(viewModel.isTransferConfigurationValid(isGuest: true))
+
+        viewModel.authorEmail = " guest@ik.me "
+        XCTAssertTrue(viewModel.isTransferConfigurationValid(isGuest: true))
     }
 
     override func tearDown() async throws {

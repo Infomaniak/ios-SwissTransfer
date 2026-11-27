@@ -36,16 +36,20 @@ struct NewTransferDetailsView: View {
 
     let transferType: TransferType
 
+    private var isGuest: Bool {
+        currentSession?.userProfile == nil
+    }
+
     var body: some View {
         VStack(spacing: IKPadding.medium) {
-            if currentSession?.userProfile != nil {
-                TitleTextFieldView(title: $title)
+            TitleTextFieldView(title: $title)
+
+            if isGuest || transferType == .mail {
+                AuthorMailTextFieldView(authorEmail: $authorEmail)
+                    .disabled(currentSession?.userProfile?.email != nil)
             }
 
             if transferType == .mail {
-                AuthorMailTextFieldView(authorEmail: $authorEmail)
-                    .disabled(currentSession?.userProfile?.email != nil)
-
                 RecipientsTextFieldView(recipients: $recipientsEmail, text: $emailText)
             }
 
@@ -56,6 +60,7 @@ struct NewTransferDetailsView: View {
             )
         }
         .onChange(of: transferType) { newValue in
+            guard !isGuest else { return }
             if newValue == .link {
                 authorEmail = ""
             } else {

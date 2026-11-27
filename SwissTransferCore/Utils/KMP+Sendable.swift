@@ -17,27 +17,21 @@
  */
 
 import Foundation
-import InfomaniakDeviceCheck
 import STCore
 
 // The following objects should be Sendable as discussed with the KMP team.
 extension TransferUi: @retroactive @unchecked Sendable {}
 extension FileUi: @retroactive @unchecked Sendable {}
-extension NewUploadSession: @retroactive @unchecked Sendable {}
 
 extension TransferManager: @retroactive @unchecked Sendable {}
-extension UploadManager: @retroactive @unchecked Sendable {}
-extension UploadTokensManager: @retroactive @unchecked Sendable {}
 extension SharedApiUrlCreator: @retroactive @unchecked Sendable {}
 extension STCore.AccountManager: @retroactive @unchecked Sendable {}
-extension STNAuthorEmailToken: @retroactive @unchecked Sendable {}
 extension STNChunkEtag: @retroactive @unchecked Sendable {}
 extension UploadSessionRequest: @retroactive @unchecked Sendable {}
 
 @frozen public struct SendableUploadSession {
     public let uuid: String
     public let authorEmail: String
-    public let authorEmailToken: String?
     public let files: [SendableUploadFileSession]
     public let organizationAccountId: Int64?
 
@@ -45,20 +39,9 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
         case noLocalPathMatchingRemotePath(localPath: String, remotePath: String)
     }
 
-    /// V1 api models
-    init(uploadSession: any UploadSession) {
-        uuid = uploadSession.uuid
-        authorEmail = uploadSession.authorEmail
-        authorEmailToken = uploadSession.authorEmailToken
-        files = uploadSession.files.map { SendableUploadFileSession(uploadFileSession: $0) }
-        organizationAccountId = nil
-    }
-
-    /// V2 api models
     init(transfer: STNTransferApi, authorEmail: String, organizationAccountId: Int64?, localFilePaths: Set<String>) throws {
         uuid = transfer.id
         self.authorEmail = authorEmail
-        authorEmailToken = nil
         self.organizationAccountId = organizationAccountId
 
         var localFilePaths = localFilePaths
@@ -83,17 +66,6 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
     public let remoteUploadFile: SendableRemoteUploadFile?
     public let size: Int64
 
-    init(uploadFileSession: any UploadFileSession) {
-        localPath = uploadFileSession.localPath
-        size = uploadFileSession.size
-
-        if let remoteUploadFile = uploadFileSession.remoteUploadFile {
-            self.remoteUploadFile = SendableRemoteUploadFile(remoteUploadFile: remoteUploadFile)
-        } else {
-            remoteUploadFile = nil
-        }
-    }
-
     init(transferFile: STNFileApi, localPath: String) {
         self.localPath = localPath
         size = transferFile.size
@@ -104,12 +76,4 @@ extension UploadSessionRequest: @retroactive @unchecked Sendable {}
 
 @frozen public struct SendableRemoteUploadFile {
     public let uuid: String
-
-    init(remoteUploadFile: any RemoteUploadFile) {
-        uuid = remoteUploadFile.uuid
-    }
-
-    init(uuid: String) {
-        self.uuid = uuid
-    }
 }

@@ -27,18 +27,18 @@ public struct STDeviceCheckError: Error, Sendable {
 }
 
 public extension InfomaniakDeviceCheck {
-    static func generateAttestationTokenForUploadContainer(sharedApiUrlCreator: SharedApiUrlCreator) async throws -> String {
+    static func generateAttestationToken(targetUrl: URL) async throws -> String {
         do {
             #if DEBUG
             let attestationToken = try await InfomaniakDeviceCheck(environment: .preprod).generateAttestationFor(
-                targetUrl: URL(string: sharedApiUrlCreator.createUploadContainerUrl)!,
+                targetUrl: targetUrl,
                 bundleId: Constants.bundleId,
                 bypassValidation: true
             )
             Logger.general.warning("Since this is a debug build, attestation token validation is bypassed")
             #else
             let attestationToken = try await InfomaniakDeviceCheck(environment: .prod).generateAttestationFor(
-                targetUrl: URL(string: sharedApiUrlCreator.createUploadContainerUrl)!,
+                targetUrl: targetUrl,
                 bundleId: Constants.bundleId,
                 bypassValidation: false
             )
@@ -46,6 +46,35 @@ public extension InfomaniakDeviceCheck {
             return attestationToken
         } catch {
             throw STDeviceCheckError(underlyingError: error)
+        }
+    }
+}
+
+/// Generates attestation tokens on demand for guest transfer creation.
+///
+/// Errors thrown back to Kotlin from this callback are not declared by `prepareTransfer` and would be fatal,
+/// so on failure we return an empty token (making the backend reject the request) and keep the underlying error
+/// to be rethrown by the caller.
+final class UploadAttestationTokenGenerator: NSObject, AttestationTokenGenerator, @unchecked Sendable {
+    private let lock = NSLock()
+    private var _lastError: STDeviceCheckError?
+
+    var lastError: STDeviceCheckError? {
+        lock.withLock { _lastError }
+    }
+
+    func __generateAttestationToken(targetUrl: String) async throws -> String {
+        do {
+            guard let url = URL(string: targetUrl) else {
+                throw URLError(.badURL)
+            }
+            return try await InfomaniakDeviceCheck.generateAttestationToken(targetUrl: url)
+        } catch {
+            Logger.general.error("Error while generating attestation token: \(error)")
+            lock.withLock {
+                _lastError = (error as? STDeviceCheckError) ?? STDeviceCheckError(underlyingError: error)
+            }
+            return ""
         }
     }
 }

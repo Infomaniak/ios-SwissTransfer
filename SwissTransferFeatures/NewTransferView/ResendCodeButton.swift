@@ -17,6 +17,7 @@
  */
 
 import InfomaniakDI
+import OSLog
 import STCore
 import STResources
 import SwiftUI
@@ -25,57 +26,61 @@ import SwissTransferCoreUI
 struct ResendCodeButton: View {
     @EnvironmentObject private var mainViewState: MainViewState
 
-    @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var isSendingCode = false
-    @State private var timeLeftSeconds: Int
 
     @Binding private var error: UserFacingError?
 
-    private let emailToVerify: String
-    private let resendTimeDelaySeconds: Int
+    private let emailValidation: EmailValidation?
 
-    private var isSendCodeDelayDone: Bool {
-        return timeLeftSeconds <= 0
+    private var codeExpirationDate: Date? {
+        guard let expirationTimestamp = emailValidation?.lastSentCodeExpirationTimestampSeconds?.int64Value else {
+            return nil
+        }
+        return Date(timeIntervalSince1970: TimeInterval(expirationTimestamp))
     }
 
-    init(emailToVerify: String, resendTimeDelaySeconds: Int, error: Binding<UserFacingError?>) {
-        self.emailToVerify = emailToVerify
-        self.resendTimeDelaySeconds = resendTimeDelaySeconds
-        _timeLeftSeconds = State(initialValue: resendTimeDelaySeconds)
+    init(emailValidation: EmailValidation?, error: Binding<UserFacingError?>) {
+        self.emailValidation = emailValidation
         _error = error
     }
 
     var body: some View {
-        Button(action: resendCode) {
-            Text(isSendCodeDelayDone ?
-                STResourcesStrings.Localizable.validateMailResendCode :
-                STResourcesStrings.Localizable.validateMailResendCodeTemplate(timeLeftSeconds))
-                .monospacedDigit()
-                .contentTransition(.numericText(countsDown: true))
-                .onReceive(timer) { _ in
-                    withAnimation {
-                        timeLeftSeconds -= 1
-                        if isSendCodeDelayDone {
-                            timer.upstream.connect().cancel()
-                        }
-                    }
-                }
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            let timeLeftSeconds = timeLeftSeconds(at: context.date)
+            Button(action: resendCode) {
+                Text(timeLeftSeconds <= 0 ?
+                    STResourcesStrings.Localizable.validateMailResendCode :
+                    STResourcesStrings.Localizable.validateMailResendCodeTemplate(formattedTimeLeft(timeLeftSeconds)))
+                    .monospacedDigit()
+                    .contentTransition(.numericText(countsDown: true))
+                    .animation(.default, value: timeLeftSeconds)
+            }
+            .buttonStyle(.ikBorderless)
+            .ikButtonLoading(isSendingCode)
+            .disabled(emailValidation == nil || timeLeftSeconds > 0)
         }
-        .buttonStyle(.ikBorderless)
-        .ikButtonLoading(isSendingCode)
-        .disabled(!isSendCodeDelayDone)
+    }
+
+    private func timeLeftSeconds(at date: Date) -> Int {
+        guard let codeExpirationDate else { return 0 }
+        return max(0, Int(codeExpirationDate.timeIntervalSince(date).rounded(.up)))
+    }
+
+    private func formattedTimeLeft(_ seconds: Int) -> String {
+        return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
     }
 
     private func resendCode() {
-        guard !isSendingCode else { return }
+        guard !isSendingCode, let validationId = emailValidation?.id else { return }
         isSendingCode = true
 
         Task {
             do {
-                try await mainViewState.swissTransferManager.uploadManager.resendEmailCode(address: emailToVerify)
-                timeLeftSeconds = resendTimeDelaySeconds
-                timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+                _ = try await mainViewState.swissTransferManager.uploadV2Manager.resendValidationEmail(
+                    validationId: validationId
+                )
             } catch {
+                Logger.general.error("Error while resending validation email: \(error)")
                 self.error = UserFacingError.unknownError
             }
 
@@ -85,5 +90,22 @@ struct ResendCodeButton: View {
 }
 
 #Preview {
-    ResendCodeButton(emailToVerify: "test@mail.com", resendTimeDelaySeconds: 5, error: .constant(nil))
+    VStack {
+        ResendCodeButton(
+            emailValidation: EmailValidation(
+                email: "test@mail.com",
+                id: "",
+                lastSentCodeExpirationTimestampSeconds: KotlinLong(value: Int64(Date.now.timeIntervalSince1970) + 900)
+            ),
+            error: .constant(nil)
+        )
+        ResendCodeButton(
+            emailValidation: EmailValidation(
+                email: "test@mail.com",
+                id: "",
+                lastSentCodeExpirationTimestampSeconds: KotlinLong(value: Int64(Date.now.timeIntervalSince1970) + 61)
+            ),
+            error: .constant(nil)
+        )
+    }
 }

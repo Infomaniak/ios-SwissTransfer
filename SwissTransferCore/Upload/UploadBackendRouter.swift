@@ -25,6 +25,10 @@ public final class UploadBackendRouter: Sendable {
     let swissTransferManager: SwissTransferInjection
     let sessionStore: LocalUploadSessionStore
 
+    public var isGuest: Bool {
+        currentUser == nil
+    }
+
     enum DomainError: Error {
         case localUploadSessionNotFound
     }
@@ -38,131 +42,76 @@ public final class UploadBackendRouter: Sendable {
     public func instantiateTransferManagerWorker(overallProgress: Progress,
                                                  uploadSession: SendableUploadSession,
                                                  delegate: TransferManagerWorkerDelegate) -> TransferManagerWorker {
-        if currentUser != nil {
-            return TransferManagerWorkerV2(
-                overallProgress: overallProgress,
-                uploadSession: uploadSession,
-                uploadBackendRouter: self,
-                delegate: delegate
-            )
-        } else {
-            return TransferManagerWorkerV1(
-                overallProgress: overallProgress,
-                uploadSession: uploadSession,
-                uploadBackendRouter: self,
-                delegate: delegate
-            )
-        }
+        return TransferManagerWorkerV2(
+            overallProgress: overallProgress,
+            uploadSession: uploadSession,
+            uploadBackendRouter: self,
+            delegate: delegate
+        )
     }
 
     public func getRestorableLocalUploadSession(uuid: String) async throws -> RootTransferRestorableState? {
-        if currentUser != nil {
-            guard let uploadSessionRequest = try await sessionStore.get(uuid: uuid) else {
-                return nil
-            }
-
-            return RootTransferRestorableState(uploadSessionRequest: uploadSessionRequest)
-        } else {
-            guard let uploadSession = try await swissTransferManager.uploadManager.getUploads().first(where: { $0.uuid == uuid })
-            else {
-                return nil
-            }
-
-            return RootTransferRestorableState(uploadSession: uploadSession)
+        guard let uploadSessionRequest = try await sessionStore.get(uuid: uuid) else {
+            return nil
         }
+
+        return RootTransferRestorableState(uploadSessionRequest: uploadSessionRequest)
     }
 
-    public func createAndGetLocalUploadSessionUUID(newUploadSession: NewUploadSession,
-                                                   title: String? = nil,
-                                                   organizationAccountId: Int64? = nil) async throws -> String {
-        if currentUser != nil {
-            var filesMetadata: [FileToUploadMetadata] = []
-            var sizeOfUpload: Int64 = 0
-            for file in newUploadSession.files {
-                filesMetadata.append(FileToUploadMetadata(
-                    name: file.name,
-                    size: file.size,
-                    mimeType: file.mimeType,
-                    localPath: file.localPath
-                ))
-                sizeOfUpload += file.size
-            }
+    public func getLocalUploadSessionAuthorEmail(uuid: String) async throws -> String? {
+        return try await sessionStore.get(uuid: uuid)?.authorEmail
+    }
 
-            let request = UploadSessionRequest(
-                validityPeriod: newUploadSession.duration,
-                authorEmail: newUploadSession.authorEmail,
-                password: newUploadSession.password,
-                title: title,
-                message: newUploadSession.message,
-                sizeOfUpload: sizeOfUpload,
-                downloadCountLimit: newUploadSession.numberOfDownload,
-                filesCount: Int32(newUploadSession.files.count),
-                languageCode: newUploadSession.language,
-                filesMetadata: filesMetadata,
-                recipientsEmails: newUploadSession.recipientsEmails,
-                organizationAccountId: KotlinLong(value: organizationAccountId)
-            )
+    public func createAndGetLocalUploadSessionUUID(request: UploadSessionRequest) async throws -> String {
+        let localUUID = UUID().uuidString
+        try await sessionStore.save(uuid: localUUID, session: request)
 
-            let localUUID = UUID().uuidString
-            try await sessionStore.save(uuid: localUUID, session: request)
-
-            return localUUID
-        } else {
-            return try await swissTransferManager.uploadManager
-                .createAndGetLocalUploadSessionUUID(newUploadSession: newUploadSession)
-        }
+        return localUUID
     }
 
     public func createRemoteUploadSession(localSessionUUID: String) async throws -> SendableUploadSession {
-        if currentUser != nil {
-            guard let localUploadSession = try await sessionStore.get(uuid: localSessionUUID) else {
-                throw DomainError.localUploadSessionNotFound
-            }
-
-            do {
-                let transfer = try await swissTransferManager.uploadV2Manager.prepareTransfer(request: localUploadSession)
-                let localFilePaths = Set(localUploadSession.filesMetadata.map { $0.localPath })
-
-                try await sessionStore.remove(uuid: localSessionUUID)
-
-                return try SendableUploadSession(
-                    transfer: transfer,
-                    authorEmail: localUploadSession.authorEmail,
-                    organizationAccountId: localUploadSession.organizationAccountId?.int64Value,
-                    localFilePaths: localFilePaths
-                )
-            } catch {
-                throw error
-            }
-        } else {
-            return try await swissTransferManager.uploadManager.createRemoteUploadSession(
-                localSessionUUID: localSessionUUID,
-                uploadTokensManager: swissTransferManager.uploadTokensManager,
-                sharedApiUrlCreator: swissTransferManager.sharedApiUrlCreator
-            )
+        guard let localUploadSession = try await sessionStore.get(uuid: localSessionUUID) else {
+            throw DomainError.localUploadSessionNotFound
         }
+
+        let attestationTokenGenerator = UploadAttestationTokenGenerator()
+        let transfer: STNTransferApi
+        do {
+            transfer = try await swissTransferManager.uploadV2Manager.prepareTransfer(
+                request: localUploadSession,
+                attestationTokenGenerator: attestationTokenGenerator
+            )
+        } catch {
+            if let deviceCheckError = attestationTokenGenerator.lastError {
+                throw deviceCheckError
+            }
+            throw error
+        }
+
+        let localFilePaths = Set(localUploadSession.filesMetadata.map { $0.localPath })
+
+        try await sessionStore.remove(uuid: localSessionUUID)
+
+        return try SendableUploadSession(
+            transfer: transfer,
+            authorEmail: localUploadSession.authorEmail,
+            organizationAccountId: localUploadSession.organizationAccountId?.int64Value,
+            localFilePaths: localFilePaths
+        )
     }
 
     public func finishUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws -> String {
-        if currentUser != nil {
-            return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(
-                transferId: uuid,
-                organizationAccountId: KotlinLong(value: organizationAccountId)
-            )
-        } else {
-            return try await swissTransferManager.uploadManager.finishUploadSession(uuid: uuid)
-        }
+        return try await swissTransferManager.uploadV2Manager.finalizeTransferAndGetLinkUuid(
+            transferId: uuid,
+            organizationAccountId: KotlinLong(value: organizationAccountId)
+        )
     }
 
     public func cancelUploadSession(uuid: String, organizationAccountId: Int64? = nil) async throws {
-        if currentUser != nil {
-            _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(
-                transferId: uuid,
-                organizationAccountId: KotlinLong(value: organizationAccountId),
-                failed: false
-            )
-        } else {
-            try await swissTransferManager.uploadManager.cancelUploadSession(uuid: uuid)
-        }
+        _ = try await swissTransferManager.uploadV2Manager.cancelTransfer(
+            transferId: uuid,
+            organizationAccountId: KotlinLong(value: organizationAccountId),
+            failed: false
+        )
     }
 }

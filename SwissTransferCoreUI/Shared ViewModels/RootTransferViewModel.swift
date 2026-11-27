@@ -35,7 +35,6 @@ public enum NewTransferConstants: Sendable {
 public final class RootTransferViewModel: ObservableObject {
     @Published public var transferType = TransferType.defaultChoice
     @Published public var authorEmail = ""
-    public var authorEmailToken: String?
     @Published public var recipientsEmail = OrderedSet<String>()
     @Published public var message = ""
     @Published public var title = ""
@@ -49,17 +48,20 @@ public final class RootTransferViewModel: ObservableObject {
 
     public private(set) var initializedFromShare: Bool
 
-    public var isTransferConfigurationValid: Bool {
+    public func isTransferConfigurationValid(isGuest: Bool) -> Bool {
         if !password.isEmpty,
            password.count < NewTransferConstants.minPasswordLength || password.count > NewTransferConstants.maxPasswordLength {
             return false
         }
 
-        if transferType == .mail {
+        if isAuthorEmailRequired(isGuest: isGuest) {
             let trimmedAuthorEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-            if authorEmail.isEmpty || !EmailChecker(email: trimmedAuthorEmail).validate() {
+            if trimmedAuthorEmail.isEmpty || !EmailChecker(email: trimmedAuthorEmail).validate() {
                 return false
             }
+        }
+
+        if transferType == .mail {
             let trimmedEmailText = emailText.trimmingCharacters(in: .whitespacesAndNewlines)
             if recipientsEmail.isEmpty && !EmailChecker(email: trimmedEmailText).validate() {
                 return false
@@ -86,34 +88,42 @@ public final class RootTransferViewModel: ObservableObject {
         }
     }
 
-    public func toNewUploadSessionWith(_ newTransferFileManager: NewTransferFileManager,
-                                       swissTransferManager: SwissTransferInjection) async -> NewUploadSession? {
-        guard let validityPeriod else { return nil }
+    public func isAuthorEmailRequired(isGuest: Bool) -> Bool {
+        return isGuest || transferType == .mail
+    }
 
-        var authorTrimmedEmail = ""
-        if transferType == .mail {
-            authorTrimmedEmail = authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-            authorEmailToken = try? await swissTransferManager.uploadTokensManager.getTokenForEmail(email: authorTrimmedEmail)
-        }
+    public func toUploadSessionRequest(_ newTransferFileManager: NewTransferFileManager,
+                                       isGuest: Bool) -> UploadSessionRequest? {
+        guard let validityPeriod else { return nil }
 
         guard let filesToUpload = try? newTransferFileManager.filesToUpload(),
               !filesToUpload.isEmpty else {
             return nil
         }
 
-        let newUploadSession = NewUploadSession(
-            duration: validityPeriod,
-            authorEmail: authorTrimmedEmail,
-            authorEmailToken: authorEmailToken,
-            password: password,
-            message: message.trimmingCharacters(in: .whitespacesAndNewlines),
-            numberOfDownload: downloadLimit,
-            language: emailLanguage,
-            recipientsEmails: Set(recipientsEmail),
-            files: filesToUpload
-        )
+        let authorTrimmedEmail = isAuthorEmailRequired(isGuest: isGuest)
+            ? authorEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+            : ""
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        return newUploadSession
+        let filesMetadata = filesToUpload.map {
+            FileToUploadMetadata(name: $0.name, size: $0.size, mimeType: $0.mimeType, localPath: $0.localPath)
+        }
+
+        return UploadSessionRequest(
+            validityPeriod: validityPeriod,
+            authorEmail: authorTrimmedEmail,
+            password: password,
+            title: trimmedTitle.isEmpty ? nil : trimmedTitle,
+            message: message.trimmingCharacters(in: .whitespacesAndNewlines),
+            sizeOfUpload: filesToUpload.reduce(0) { $0 + $1.size },
+            downloadCountLimit: downloadLimit,
+            filesCount: Int32(filesToUpload.count),
+            languageCode: emailLanguage,
+            filesMetadata: filesMetadata,
+            recipientsEmails: Set(recipientsEmail),
+            organizationAccountId: selectedOrganizationId.map { KotlinLong(value: $0) }
+        )
     }
 
     public func restoreWith(state: RootTransferRestorableState) {
