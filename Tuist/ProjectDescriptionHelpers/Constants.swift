@@ -36,12 +36,17 @@ public enum Constants {
 
     public static let destinations = Set<Destination>([.iPhone, .iPad, .mac])
 
-    public static let swiftlintScript = TargetScript.post(path: "Scripts/lint.sh", name: "Swiftlint")
+    public static let swiftlintScript = TargetScript.post(
+        path: "Scripts/lint.sh",
+        name: "Swiftlint",
+        basedOnDependencyAnalysis: false
+    )
 
     public static let stripSymbolsScript = TargetScript.post(
         path: "scripts/strip_symbols.sh",
         name: "Strip Symbols (Release)",
-        inputPaths: ["${DWARF_DSYM_FOLDER_PATH}/${EXECUTABLE_NAME}.app.dSYM/Contents/Resources/DWARF/${EXECUTABLE_NAME}"]
+        inputPaths: ["${DWARF_DSYM_FOLDER_PATH}/${EXECUTABLE_NAME}.app.dSYM/Contents/Resources/DWARF/${EXECUTABLE_NAME}"],
+        basedOnDependencyAnalysis: false
     )
 
     public static var productTypeBasedOnEnv: Product {
