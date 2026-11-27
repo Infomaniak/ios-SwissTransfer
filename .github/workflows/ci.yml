@@ -39,14 +39,16 @@ jobs:
             DEVICE_OS="iOS-27-2"
             MAJOR=$(echo "$DEVICE_OS" | cut -d- -f2)
             DEVICE_NAME="Maestro_IOS_${DEVICE_MODEL}_${MAJOR}"
-            
-            xcrun simctl shutdown "$DEVICE_NAME" || true
-            
-            OUTPUT=$(maestro start-device --platform ios --device-model "$DEVICE_MODEL" --device-os "$DEVICE_OS" 2>&1 | tee /dev/stderr)
-            UDID=$(echo "$OUTPUT" | sed -n 's/.*UUID \([0-9A-Fa-f-]\{36\}\).*/\1/p' | head -n1 | tr 'a-f' 'A-F')
-            echo "UDID: $UDID"
-            
-            xcrun simctl bootstatus "$UDID" -b
-            tuist run "SwissTransfer" --device "$DEVICE_NAME" --os 27.2 --configuration Debug
-            maestro --device "$UDID" test --config SwissTransferUITests/config.yaml SwissTransferUITests/
 
+            xcrun simctl shutdown "$DEVICE_NAME" || true
+
+            OUTPUT=$(maestro start-device --platform ios --device-model "$DEVICE_MODEL" --device-os "$DEVICE_OS" 2>&1 | tee /dev/stderr)
+            UDID=$(echo "$OUTPUT" | sed -n 's/.*\([0-9A-Fa-f-]\{36\}\).*/\1/p' | head -n1 | tr 'a-f' 'A-F')
+            [ -n "$UDID" ] || { echo "FATAL: Maestro did not report a device ID"; exit 1; }
+            echo "UDID: $UDID"
+            echo "tuist version: $(tuist version 2>/dev/null || echo 'not found')"
+
+            xcrun simctl bootstatus "$UDID" -b
+            export DEVELOPER_DIR="$(cd "$DEVELOPER_DIR" && pwd -P)"
+            tuist run --device "$DEVICE_NAME" --os 27.2 --configuration Debug "SwissTransfer"
+            maestro --device "$UDID" test --config SwissTransferUITests/config.yaml SwissTransferUITests/
