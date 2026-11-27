@@ -45,7 +45,7 @@ jobs:
             echo "Using $MODEL / $OS"
             
             OUTPUT=$(maestro start-device --platform ios --device-model "$MODEL" --device-os "$OS" 2>&1 | tee /dev/stderr)
-            UDID=$(echo "$OUTPUT" | sed -n 's/.*UUID \([0-9A-Fa-f-]\{36\}\).*/\1/p' | head -n1)
+            UDID=$(echo "$OUTPUT" | sed -n 's/.*UUID \([0-9A-Fa-f-]\{36\}\).*/\1/p' | head -n1 | tr 'a-f' 'A-F')
             echo "UDID: $UDID"
             
             xcrun simctl bootstatus "$UDID" -b
