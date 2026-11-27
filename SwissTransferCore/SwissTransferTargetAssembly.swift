@@ -58,7 +58,7 @@ open class SwissTransferTargetAssembly {
     static let logger = Logger(category: "TargetAssembly")
 
     #if DEBUG
-    private static let apiEnvironment = ApiEnvironment.preprod
+    private static let apiEnvironment = ApiEnvironment.prod
     #else
     private static let apiEnvironment = ApiEnvironment.prod
     #endif

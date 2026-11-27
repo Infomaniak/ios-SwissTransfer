@@ -376,5 +376,6 @@ let project = Project(
                 ],
                 settings: .settings(base: Constants.baseSettings))
     ],
-    fileHeaderTemplate: .file("file-header-template.txt")
+    fileHeaderTemplate: .file("file-header-template.txt"),
+    additionalFiles: [.folderReference(path: "SwissTransferUITests")]
 )
